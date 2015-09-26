@@ -1,0 +1,20 @@
+//
+//  ChatDemo-UI3.0-Prefix.pch
+//  ChatDemo-UI3.0
+//
+//  Created by EaseMob on 15/9/22.
+//  Copyright (c) 2015年 easemob.com. All rights reserved.
+//
+
+#ifndef ChatDemo_UI3_0_ChatDemo_UI3_0_Prefix_pch
+#define ChatDemo_UI3_0_ChatDemo_UI3_0_Prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#endif
+
+#ifdef __OBJC__
+
+    #import <EaseUI/EaseUI.h>
+
+#endif
