@@ -15,6 +15,7 @@
 #import "CallViewController.h"
 
 #define kAlertViewTag_Close 100
+#define kLocalCallBitrate @"EaseMobLocalCallBitrate"
 
 @interface CallViewController (){
     NSString * _audioCategory;
@@ -46,6 +47,11 @@
         
         [[EaseMob sharedInstance].callManager removeDelegate:self];
         [[EaseMob sharedInstance].callManager addDelegate:self delegateQueue:nil];
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        if ([ud valueForKey:kLocalCallBitrate]) {
+            [[EaseMob sharedInstance].callManager setBitrate:[[ud valueForKey:kLocalCallBitrate] intValue]];
+        }
         
         g_callCenter = [[CTCallCenter alloc] init];
         g_callCenter.callEventHandler=^(CTCall* call)
@@ -723,6 +729,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
     
     return YES;
+}
+
++ (void)saveBitrate:(NSString*)value
+{
+    NSScanner* scan = [NSScanner scannerWithString:value];
+    int val;
+    if ([scan scanInt:&val] && [scan isAtEnd]) {
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        [ud setObject:value forKey:kLocalCallBitrate];
+        [ud synchronize];
+    }
 }
 
 @end

@@ -20,7 +20,7 @@
 //    #import "UIViewController+HUD.h"
     #import "UIViewController+DismissKeyboard.h"
     #import "NSString+Valid.h"
-    #import <EaseUI/EaseUI.h>
+    #import "EaseUI.h"
 
     #import "EaseMob.h"
 

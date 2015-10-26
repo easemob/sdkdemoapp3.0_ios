@@ -18,6 +18,7 @@
 #import "DebugViewController.h"
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
+#import "CallViewController.h"
 //#import "BackupViewController.h"
 
 @interface SettingsViewController ()
@@ -113,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -173,6 +174,13 @@
                 UIView* child = cell.contentView.subviews.lastObject;
                 [child removeFromSuperview];
             }
+        } else if (indexPath.row == 9){
+            cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            while (cell.contentView.subviews.count) {
+                UIView* child = cell.contentView.subviews.lastObject;
+                [child removeFromSuperview];
+            }
         }
 //        else if (indexPath.row == 8){
 //            cell.textLabel.text = @"聊天记录备份和恢复";
@@ -213,11 +221,37 @@
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         
+    } else if (indexPath.row == 9) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [alert show];
     }
 //    else if(indexPath.row == 8){
 //        BackupViewController *backupController = [[BackupViewController alloc] initWithNibName:nil bundle:nil];
 //        [self.navigationController pushViewController:backupController animated:YES];
 //    }
+}
+
+//弹出提示的代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ([alertView cancelButtonIndex] != buttonIndex) {
+        //获取文本输入框
+        UITextField *nameTextField = [alertView textFieldAtIndex:0];
+        BOOL flag = YES;
+        if(nameTextField.text.length > 0) {
+            NSScanner* scan = [NSScanner scannerWithString:nameTextField.text];
+            int val;
+            if ([scan scanInt:&val] && [scan isAtEnd]) {
+                if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
+                    [CallViewController saveBitrate:nameTextField.text];
+                    flag = NO;
+                }
+            }
+        }
+        if (flag) {
+            [self showHint:NSLocalizedString(@"setting.setBitrateTips", @"Set Bitrate should be 150-1000")];
+        }
+    }
 }
 
 #pragma mark - getter

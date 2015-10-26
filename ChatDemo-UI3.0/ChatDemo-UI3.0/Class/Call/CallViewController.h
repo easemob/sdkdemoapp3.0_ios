@@ -62,4 +62,6 @@ static CTCallCenter *g_callCenter;
 
 + (BOOL)canVideo;
 
++ (void)saveBitrate:(NSString*)value;
+
 @end
