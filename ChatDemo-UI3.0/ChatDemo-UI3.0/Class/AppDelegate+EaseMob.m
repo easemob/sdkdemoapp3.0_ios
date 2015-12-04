@@ -66,31 +66,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     [alert show];
 }
 
-// 注册推送
-- (void)registerRemoteNotification{
-    UIApplication *application = [UIApplication sharedApplication];
-    application.applicationIconBadgeNumber = 0;
-    
-    if([application respondsToSelector:@selector(registerUserNotificationSettings:)])
-    {
-        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
-        [application registerUserNotificationSettings:settings];
-    }
-    
-#if !TARGET_IPHONE_SIMULATOR
-    //iOS8 注册APNS
-    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
-        [application registerForRemoteNotifications];
-    }else{
-        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
-        UIRemoteNotificationTypeSound |
-        UIRemoteNotificationTypeAlert;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
-    }
-#endif
-}
-
 #pragma mark - login changed
 
 - (void)loginStateChange:(NSNotification *)notification

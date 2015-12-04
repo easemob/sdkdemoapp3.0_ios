@@ -39,7 +39,7 @@
     BOOL flag = YES;
     if (self.messageModel) {
         if (self.messageModel.bodyType == eMessageBodyType_Text) {
-            [EaseSDKHelper sendTextMessage:self.messageModel.text to:userModel.buddy.username messageType:eMessageTypeChat requireEncryption:NO messageExt:nil];
+            [EaseSDKHelper sendTextMessage:self.messageModel.text to:userModel.buddy.username messageType:eMessageTypeChat requireEncryption:NO messageExt:self.messageModel.message.ext];
         } else if (self.messageModel.bodyType == eMessageBodyType_Image) {
             flag = NO;
             [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transpondFailing...")];
@@ -50,7 +50,7 @@
                     if (localPath && localPath.length > 0) {
                         UIImage *image = [UIImage imageWithContentsOfFile:localPath];
                         if (image) {
-                            [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy.username messageType:eMessageTypeChat requireEncryption:NO messageExt:nil quality:1.0f progress:nil];
+                            [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy.username messageType:eMessageTypeChat requireEncryption:NO messageExt:self.messageModel.message.ext quality:1.0f progress:nil];
                             isSucceed = YES;
                         } else {
                             NSLog(@"Read %@ failed!", localPath);

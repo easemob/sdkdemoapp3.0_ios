@@ -10,7 +10,6 @@
 
 #import "ChatGroupDetailViewController.h"
 #import "ChatroomDetailViewController.h"
-#import "CustomMessageCell.h"
 #import "UserProfileViewController.h"
 #import "UserProfileManager.h"
 #import "ContactListSelectViewController.h"
@@ -24,6 +23,8 @@
 
 @property (nonatomic) BOOL isPlayingAudio;
 
+@property (nonatomic) NSMutableDictionary *emotionDic;
+
 @end
 
 @implementation ChatViewController
@@ -34,6 +35,11 @@
     self.showRefreshHeader = YES;
     self.delegate = self;
     self.dataSource = self;
+    
+//    CGFloat chatbarHeight = [EaseChatToolbar defaultHeight];
+//    EMChatToolbarType barType = self.conversation.conversationType == eConversationTypeChat ? EMChatToolbarTypeChat : EMChatToolbarTypeGroup;
+//    self.chatToolbar = [[EaseMessageToolBar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - chatbarHeight, self.view.frame.size.width, chatbarHeight) type:barType];
+//    self.chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     
     [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
     [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
@@ -55,9 +61,6 @@
     
     //通过会话管理者获取已收发消息
     [self tableViewDidTriggerHeaderRefresh];
-    
-    EaseEmotionManager *manager= [[EaseEmotionManager alloc] initWithType:EMEmotionDefault emotionRow:3 emotionCol:7 emotions:[EaseEmoji allEmoji]];
-    [self.faceView setEmotionManagers:@[manager]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,6 +120,17 @@
 
 #pragma mark - EaseMessageViewControllerDelegate
 
+- (UITableViewCell *)messageViewController:(UITableView *)tableView
+                       cellForMessageModel:(id<IMessageModel>)messageModel
+{
+    return nil;
+}
+
+- (CGFloat)messageViewController:(EaseMessageViewController *)viewController heightForMessageModel:(id<IMessageModel>)messageModel withCellWidth:(CGFloat)cellWidth
+{
+    return 0;
+}
+
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController
    canLongPressRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -136,101 +150,11 @@
     return YES;
 }
 
-- (UITableViewCell *)messageViewController:(UITableView *)tableView cellForMessageModel:(id<IMessageModel>)model
-{
-    if (model.bodyType == eMessageBodyType_Text) {
-        NSString *CellIdentifier = [CustomMessageCell cellIdentifierWithModel:model];
-        //发送cell
-        CustomMessageCell *sendCell = (CustomMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        // Configure the cell...
-        if (sendCell == nil) {
-            sendCell = [[CustomMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
-            sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        sendCell.model = model;
-        return sendCell;
-    }
-    return nil;
-}
-
-- (CGFloat)messageViewController:(EaseMessageViewController *)viewController
-           heightForMessageModel:(id<IMessageModel>)messageModel
-                   withCellWidth:(CGFloat)cellWidth
-{
-    if (messageModel.bodyType == eMessageBodyType_Text) {
-        return [CustomMessageCell cellHeightWithModel:messageModel];
-    }
-    return 0.f;
-}
-
-- (BOOL)messageViewController:(EaseMessageViewController *)viewController didSelectMessageModel:(id<IMessageModel>)messageModel
-{
-    BOOL flag = NO;
-    return flag;
-}
-
 - (void)messageViewController:(EaseMessageViewController *)viewController
    didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
 {
-    UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.nickname];
+    UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
-}
-
-
-- (void)messageViewController:(EaseMessageViewController *)viewController
-            didSelectMoreView:(EaseChatBarMoreView *)moreView
-                      AtIndex:(NSInteger)index
-{
-    // 隐藏键盘
-    [self.chatToolbar endEditing:YES];
-}
-
-- (void)messageViewController:(EaseMessageViewController *)viewController
-          didSelectRecordView:(UIView *)recordView
-                 withEvenType:(EaseRecordViewType)type
-{
-    switch (type) {
-        case EaseRecordViewTypeTouchDown:
-        {
-            if ([self.recordView isKindOfClass:[EaseRecordView class]]) {
-                [(EaseRecordView *)self.recordView  recordButtonTouchDown];
-            }
-        }
-            break;
-        case EaseRecordViewTypeTouchUpInside:
-        {
-            if ([self.recordView isKindOfClass:[EaseRecordView class]]) {
-                [(EaseRecordView *)self.recordView recordButtonTouchUpInside];
-            }
-            [self.recordView removeFromSuperview];
-        }
-            break;
-        case EaseRecordViewTypeTouchUpOutside:
-        {
-            if ([self.recordView isKindOfClass:[EaseRecordView class]]) {
-                [(EaseRecordView *)self.recordView recordButtonTouchUpOutside];
-            }
-            [self.recordView removeFromSuperview];
-        }
-            break;
-        case EaseRecordViewTypeDragInside:
-        {
-            if ([self.recordView isKindOfClass:[EaseRecordView class]]) {
-                [(EaseRecordView *)self.recordView recordButtonDragInside];
-            }
-        }
-            break;
-        case EaseRecordViewTypeDragOutside:
-        {
-            if ([self.recordView isKindOfClass:[EaseRecordView class]]) {
-                [(EaseRecordView *)self.recordView recordButtonDragOutside];
-            }
-        }
-            break;
-        default:
-            break;
-    }
 }
 
 #pragma mark - EaseMessageViewControllerDataSource
@@ -244,9 +168,62 @@
     UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.nickname];
     if (profileEntity) {
         model.avatarURLPath = profileEntity.imageUrl;
+        model.nickname = profileEntity.nickname;
     }
     model.failImageName = @"imageDownloadFail";
     return model;
+}
+
+- (NSArray*)emotionFormessageViewController:(EaseMessageViewController *)viewController
+{
+    NSMutableArray *emotions = [NSMutableArray array];
+    for (NSString *name in [EaseEmoji allEmoji]) {
+        EaseEmotion *emotion = [[EaseEmotion alloc] initWithName:@"" emotionId:name emotionThumbnail:name emotionOriginal:name emotionOriginalURL:@"" emotionType:EMEmotionDefault];
+        [emotions addObject:emotion];
+    }
+    EaseEmotion *temp = [emotions objectAtIndex:0];
+    EaseEmotionManager *managerDefault = [[EaseEmotionManager alloc] initWithType:EMEmotionDefault emotionRow:3 emotionCol:7 emotions:emotions tagImage:[UIImage imageNamed:temp.emotionId]];
+    
+    NSMutableArray *emotionGifs = [NSMutableArray array];
+    _emotionDic = [NSMutableDictionary dictionary];
+    NSArray *names = @[@"icon_002",@"icon_007",@"icon_010",@"icon_012",@"icon_013",@"icon_018",@"icon_019",@"icon_020",@"icon_021",@"icon_022",@"icon_024",@"icon_027",@"icon_029",@"icon_030",@"icon_035",@"icon_040"];
+    int index = 0;
+    for (NSString *name in names) {
+        index++;
+        EaseEmotion *emotion = [[EaseEmotion alloc] initWithName:[NSString stringWithFormat:@"[示例%d]",index] emotionId:[NSString stringWithFormat:@"em%d",(1000 + index)] emotionThumbnail:[NSString stringWithFormat:@"%@_cover",name] emotionOriginal:[NSString stringWithFormat:@"%@",name] emotionOriginalURL:@"" emotionType:EMEmotionGif];
+        [emotionGifs addObject:emotion];
+        [_emotionDic setObject:emotion forKey:[NSString stringWithFormat:@"em%d",(1000 + index)]];
+    }
+    EaseEmotionManager *managerGif= [[EaseEmotionManager alloc] initWithType:EMEmotionGif emotionRow:2 emotionCol:4 emotions:emotionGifs tagImage:[UIImage imageNamed:@"icon_002_cover"]];
+    
+    return @[managerDefault,managerGif];
+}
+
+- (BOOL)isEmotionMessageFormessageViewController:(EaseMessageViewController *)viewController
+                                    messageModel:(id<IMessageModel>)messageModel
+{
+    BOOL flag = NO;
+    if ([messageModel.message.ext objectForKey:MESSAGE_ATTR_IS_BIG_EXPRESSION]) {
+        return YES;
+    }
+    return flag;
+}
+
+- (EaseEmotion*)emotionURLFormessageViewController:(EaseMessageViewController *)viewController
+                                      messageModel:(id<IMessageModel>)messageModel
+{
+    NSString *emotionId = [messageModel.message.ext objectForKey:MESSAGE_ATTR_EXPRESSION_ID];
+    EaseEmotion *emotion = [_emotionDic objectForKey:emotionId];
+    if (emotion == nil) {
+        emotion = [[EaseEmotion alloc] initWithName:@"" emotionId:emotionId emotionThumbnail:@"" emotionOriginal:@"" emotionOriginalURL:@"" emotionType:EMEmotionGif];
+    }
+    return emotion;
+}
+
+- (NSDictionary*)emotionExtFormessageViewController:(EaseMessageViewController *)viewController
+                                        easeEmotion:(EaseEmotion*)easeEmotion
+{
+    return @{MESSAGE_ATTR_EXPRESSION_ID:easeEmotion.emotionId,MESSAGE_ATTR_IS_BIG_EXPRESSION:@(YES)};
 }
 
 #pragma mark - EaseMob
