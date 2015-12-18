@@ -11,12 +11,9 @@
  */
 
 #import <AVFoundation/AVFoundation.h>
-#import <CoreTelephony/CTCallCenter.h>
 #import <UIKit/UIKit.h>
 
-static CTCallCenter *g_callCenter;
-
-@interface CallViewController : UIViewController<UIAlertViewDelegate, EMCallManagerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface CallViewController : UIViewController
 {
     NSTimer *_timeTimer;
     AVAudioPlayer *_ringPlayer;
@@ -27,41 +24,33 @@ static CTCallCenter *g_callCenter;
     UILabel *_nameLabel;
     UIImageView *_headerImageView;
     
-    UIView *_smallView;
-    OpenGLView20 *_openGLView;
-    AVCaptureVideoPreviewLayer *_smallCaptureLayer;
-    AVCaptureSession *_session;
-    AVCaptureVideoDataOutput *_captureOutput;
-    AVCaptureDeviceInput *_captureInput;
-    
+    //操作按钮显示
     UIView *_actionView;
     UIButton *_silenceButton;
     UILabel *_silenceLabel;
     UIButton *_speakerOutButton;
     UILabel *_speakerOutLabel;
-    
     UIButton *_rejectButton;
     UIButton *_answerButton;
-    
-    UIButton *_hangupButton;
-    
-    BOOL _isIncoming;
-    int _timeLength;
-    EMCallSession *_callSession;
-    UITapGestureRecognizer *_tapRecognizer;
-    
-    UInt8 *_imageDataBuffer;
+    UIButton *_cancelButton;
 }
 
-@property (strong, nonatomic) NSString *chatter;
 @property (strong, nonatomic) UILabel *statusLabel;
-@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
-- (instancetype)initWithSession:(EMCallSession *)session
-                     isIncoming:(BOOL)isIncoming;
+@property (strong, nonatomic) UILabel *timeLabel;
+
+@property (strong, nonatomic) UIButton *rejectButton;
+
+@property (strong, nonatomic) UIButton *answerButton;
+
+@property (strong, nonatomic) UIButton *cancelButton;
+
+- (instancetype)initWithUsername:(NSString *)username
+                          status:(NSString *)statusString
+                        isCaller:(BOOL)isCaller;
 
 + (BOOL)canVideo;
 
-+ (void)saveBitrate:(NSString*)value;
+- (void)startTimer;
 
 @end

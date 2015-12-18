@@ -209,47 +209,49 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"group.create.ongoing", @"create a group...")];
     
     NSMutableArray *source = [NSMutableArray array];
-    for (EMBuddy *buddy in selectedSources) {
-        [source addObject:buddy.username];
+    for (NSString *username in selectedSources) {
+        [source addObject:username];
     }
     
-    EMGroupStyleSetting *setting = [[EMGroupStyleSetting alloc] init];
-    setting.groupMaxUsersCount = maxUsersCount;
+    EMGroupOptions *setting = [[EMGroupOptions alloc] init];
+    setting.maxUsersCount = maxUsersCount;
     
     if (_isPublic) {
         if(_isMemberOn)
         {
-            setting.groupStyle = eGroupStyle_PublicOpenJoin;
+            setting.style = EMGroupStylePublicOpenJoin;
         }
         else{
-            setting.groupStyle = eGroupStyle_PublicJoinNeedApproval;
+            setting.style = EMGroupStylePublicJoinNeedApproval;
         }
     }
     else{
         if(_isMemberOn)
         {
-            setting.groupStyle = eGroupStyle_PrivateMemberCanInvite;
+            setting.style = EMGroupStylePrivateMemberCanInvite;
         }
         else{
-            setting.groupStyle = eGroupStyle_PrivateOnlyOwnerInvite;
+            setting.style = EMGroupStylePrivateOnlyOwnerInvite;
         }
     }
     
     __weak CreateGroupViewController *weakSelf = self;
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *username = [loginInfo objectForKey:kSDKUsername];
+    NSString *username = [[EMClient shareClient] currentUsername];
     NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join groups \'%@\'"), username, self.textField.text];
-    [[EaseMob sharedInstance].chatManager asyncCreateGroupWithSubject:self.textField.text description:self.textView.text invitees:source initialWelcomeMessage:messageStr styleSetting:setting completion:^(EMGroup *group, EMError *error) {
-        [weakSelf hideHud];
-        if (group && !error) {
-            [weakSelf showHint:NSLocalizedString(@"group.create.success", @"create group success")];
-            [weakSelf.navigationController popViewControllerAnimated:YES];
-        }
-        else{
-            [weakSelf showHint:NSLocalizedString(@"group.create.fail", @"Failed to create a group, please operate again")];
-        }
-    } onQueue:nil];
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        EMGroup *group = [[EMClient shareClient].groupManager createGroupWithSubject:self.textField.text description:self.textView.text invitees:source message:messageStr setting:setting error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (group && !error) {
+                [weakSelf showHint:NSLocalizedString(@"group.create.success", @"create group success")];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+            else{
+                [weakSelf showHint:NSLocalizedString(@"group.create.fail", @"Failed to create a group, please operate again")];
+            }
+        });
+    });
     return YES;
 }
 

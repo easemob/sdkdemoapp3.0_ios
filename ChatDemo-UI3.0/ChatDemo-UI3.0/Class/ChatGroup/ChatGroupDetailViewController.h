@@ -20,7 +20,7 @@ typedef enum{
     GroupOccupantTypeMember,//成员
 }GroupOccupantType;
 
-@interface ChatGroupDetailViewController : UITableViewController<IChatManagerDelegate>
+@interface ChatGroupDetailViewController : UITableViewController
 
 - (instancetype)initWithGroup:(EMGroup *)chatGroup;
 

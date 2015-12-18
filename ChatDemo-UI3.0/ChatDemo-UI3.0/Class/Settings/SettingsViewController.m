@@ -88,7 +88,7 @@
     if (!_delConversationSwitch)
     {
         _delConversationSwitch = [[UISwitch alloc] init];
-        _delConversationSwitch.on = [EaseMob sharedInstance].chatManager.isAutoDeleteConversationWhenLeaveGroup;
+        _delConversationSwitch.on = [[EMClient shareClient].options isDeleteMessagesWhenExitGroup];
         [_delConversationSwitch addTarget:self action:@selector(delConversationChanged:) forControlEvents:UIControlEventValueChanged];
     }
     return _delConversationSwitch;
@@ -243,7 +243,7 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
-                    [CallViewController saveBitrate:nameTextField.text];
+//                    [CallViewController saveBitrate:nameTextField.text];
                     flag = NO;
                 }
             }
@@ -268,8 +268,7 @@
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, _footerView.frame.size.width - 20, 45)];
         [logoutButton setBackgroundColor:RGBACOLOR(0xfe, 0x64, 0x50, 1)];
-        NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
-        NSString *username = [loginInfo objectForKey:kSDKUsername];
+        NSString *username = [[EMClient shareClient] currentUsername];
         NSString *logoutButtonTitle = [[NSString alloc] initWithFormat:NSLocalizedString(@"setting.loginUser", @"log out(%@)"), username];
         [logoutButton setTitle:logoutButtonTitle forState:UIControlStateNormal];
         [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -284,12 +283,12 @@
 
 - (void)autoLoginChanged:(UISwitch *)autoSwitch
 {
-    [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:autoSwitch.isOn];
+    [[EMClient shareClient].options setIsAutoLogin:autoSwitch.isOn];
 }
 
 - (void)useIpChanged:(UISwitch *)ipSwitch
 {
-    [[EaseMob sharedInstance].chatManager setIsUseIp:ipSwitch.isOn];
+    [[EMClient shareClient].options setEnableDnsConfig:ipSwitch.on];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
     [ud synchronize];
@@ -297,7 +296,7 @@
 
 - (void)delConversationChanged:(UISwitch *)control
 {
-    [EaseMob sharedInstance].chatManager.isAutoDeleteConversationWhenLeaveGroup = control.isOn;
+    [[EMClient shareClient].options setIsDeleteMessagesWhenExitGroup:control.on];
 }
 
 - (void)showCallInfoChanged:(UISwitch *)control
@@ -309,8 +308,8 @@
 
 - (void)refreshConfig
 {
-    [self.autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
-    [self.ipSwitch setOn:[[EaseMob sharedInstance].chatManager isUseIp] animated:YES];
+    [self.autoLoginSwitch setOn:[[EMClient shareClient].options isAutoLogin] animated:YES];
+    [self.ipSwitch setOn:[[EMClient shareClient].options enableDnsConfig] animated:YES];
     
     [self.tableView reloadData];
 }
@@ -319,16 +318,19 @@
 {
     __weak SettingsViewController *weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
-    [[EaseMob sharedInstance].chatManager asyncLogoffWithUnbindDeviceToken:YES completion:^(NSDictionary *info, EMError *error) {
-        [weakSelf hideHud];
-        if (error && error.errorCode != EMErrorServerNotLogin) {
-            [weakSelf showHint:error.description];
-        }
-        else{
-            [[ApplyViewController shareController] clear];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-        }
-    } onQueue:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient shareClient] logout:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (error && error.code != EMErrorServerNotLogin) {
+                [weakSelf showHint:error.domain];
+            }
+            else{
+                [[ApplyViewController shareController] clear];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            }
+        });
+    });
 }
  
 @end

@@ -13,8 +13,9 @@
 #import "UserProfileViewController.h"
 #import "UserProfileManager.h"
 #import "ContactListSelectViewController.h"
+#import "ChatDemoHelper.h"
 
-@interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource>
+@interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
@@ -36,11 +37,6 @@
     self.delegate = self;
     self.dataSource = self;
     
-//    CGFloat chatbarHeight = [EaseChatToolbar defaultHeight];
-//    EMChatToolbarType barType = self.conversation.conversationType == eConversationTypeChat ? EMChatToolbarTypeChat : EMChatToolbarTypeGroup;
-//    self.chatToolbar = [[EaseMessageToolBar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - chatbarHeight, self.view.frame.size.width, chatbarHeight) type:barType];
-//    self.chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    
     [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
     [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
     
@@ -61,6 +57,8 @@
     
     //通过会话管理者获取已收发消息
     [self tableViewDidTriggerHeaderRefresh];
+    
+    [[EMClient shareClient] addDelegate:self delegateQueue:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,10 +66,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [[EMClient shareClient] removeDelegate:self];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (self.conversation.conversationType == eConversationTypeGroupChat) {
+    if (self.conversation.type == EMConversationTypeChat) {
         if ([[self.conversation.ext objectForKey:@"groupSubject"] length])
         {
             self.title = [self.conversation.ext objectForKey:@"groupSubject"];
@@ -90,7 +93,7 @@
     [self.navigationItem setLeftBarButtonItem:backItem];
     
     //单聊
-    if (self.conversation.conversationType == eConversationTypeChat) {
+    if (self.conversation.type == EMConversationTypeChat) {
         UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(deleteAllMessages:) forControlEvents:UIControlEventTouchUpInside];
@@ -110,7 +113,7 @@
 {
     if (alertView.cancelButtonIndex != buttonIndex) {
         self.messageTimeIntervalTag = -1;
-        [self.conversation removeAllMessages];
+        [self.conversation deleteAllMessages];
         [self.dataArray removeAllObjects];
         [self.messsagesSource removeAllObjects];
         
@@ -228,7 +231,7 @@
 
 #pragma mark - EaseMob
 
-#pragma mark - EMChatManagerLoginDelegate
+#pragma mark - EMClientDelegate
 
 - (void)didLoginFromOtherDevice
 {
@@ -248,26 +251,21 @@
 
 - (void)backAction
 {
-    if (self.deleteConversationIfNull) {
-        //判断当前会话是否为空，若符合则删除该会话
-        EMMessage *message = [self.conversation latestMessage];
-        if (message == nil) {
-            [[EaseMob sharedInstance].chatManager removeConversationByChatter:self.conversation.chatter deleteMessages:NO append2Chat:YES];
-        }
-    }
+    [[EMClient shareClient].chatManager removeDelegate:self];
+    [[ChatDemoHelper shareHelper] setChatVC:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)showGroupDetailAction
 {
     [self.view endEditing:YES];
-    if (self.conversation.conversationType == eConversationTypeGroupChat) {
-        ChatGroupDetailViewController *detailController = [[ChatGroupDetailViewController alloc] initWithGroupId:self.conversation.chatter];
+    if (self.conversation.type == EMConversationTypeGroupChat) {
+        ChatGroupDetailViewController *detailController = [[ChatGroupDetailViewController alloc] initWithGroupId:self.conversation.conversationId];
         [self.navigationController pushViewController:detailController animated:YES];
     }
-    else if (self.conversation.conversationType == eConversationTypeChatRoom)
+    else if (self.conversation.type == EMConversationTypeChatRoom)
     {
-        ChatroomDetailViewController *detailController = [[ChatroomDetailViewController alloc] initWithChatroomId:self.conversation.chatter];
+        ChatroomDetailViewController *detailController = [[ChatroomDetailViewController alloc] initWithChatroomId:self.conversation.conversationId];
         [self.navigationController pushViewController:detailController animated:YES];
     }
 }
@@ -281,10 +279,10 @@
     
     if ([sender isKindOfClass:[NSNotification class]]) {
         NSString *groupId = (NSString *)[(NSNotification *)sender object];
-        BOOL isDelete = [groupId isEqualToString:self.conversation.chatter];
-        if (self.conversation.conversationType != eConversationTypeChat && isDelete) {
+        BOOL isDelete = [groupId isEqualToString:self.conversation.conversationId];
+        if (self.conversation.type != EMConversationTypeChat && isDelete) {
             self.messageTimeIntervalTag = -1;
-            [self.conversation removeAllMessages];
+            [self.conversation deleteAllMessages];
             [self.messsagesSource removeAllObjects];
             [self.dataArray removeAllObjects];
             
@@ -328,7 +326,7 @@
         NSMutableIndexSet *indexs = [NSMutableIndexSet indexSetWithIndex:self.menuIndexPath.row];
         NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:self.menuIndexPath, nil];
         
-        [self.conversation removeMessage:model.message];
+        [self.conversation deleteMessageWithId:model.message.messageId];
         [self.messsagesSource removeObject:model.message];
         
         if (self.menuIndexPath.row - 1 >= 0) {
@@ -347,6 +345,10 @@
         [self.tableView beginUpdates];
         [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
+        
+        if ([self.dataArray count] == 0) {
+            self.messageTimeIntervalTag = -1;
+        }
     }
     
     self.menuIndexPath = nil;
@@ -365,7 +367,7 @@
     if (object) {
         EMMessage *message = (EMMessage *)object;
         [self addMessageToDataSource:message progress:nil];
-        [[EaseMob sharedInstance].chatManager insertMessageToDB:message append2Chat:YES];
+        [[EMClient shareClient].chatManager importMessages:@[message]];
     }
 }
 
@@ -385,7 +387,7 @@
 
 - (void)_showMenuViewController:(UIView *)showInView
                    andIndexPath:(NSIndexPath *)indexPath
-                    messageType:(MessageBodyType)messageType
+                    messageType:(EMMessageBodyType)messageType
 {
     if (self.menuController == nil) {
         self.menuController = [UIMenuController sharedMenuController];
@@ -403,9 +405,9 @@
         _transpondMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"transpond", @"Transpond") action:@selector(transpondMenuAction:)];
     }
     
-    if (messageType == eMessageBodyType_Text) {
+    if (messageType == EMMessageBodyTypeText) {
         [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
-    } else if (messageType == eMessageBodyType_Image){
+    } else if (messageType == EMMessageBodyTypeImage){
         [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
     } else {
         [self.menuController setMenuItems:@[_deleteMenuItem]];

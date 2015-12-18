@@ -13,7 +13,7 @@
 
 #import "RobotManager.h"
 
-#import "EMRobot.h"
+//#import "EMRobot.h"
 
 @interface RobotManager ()
 
@@ -43,7 +43,7 @@ static RobotManager *sharedInstance = nil;
 - (BOOL)isRobotWithUsername:(NSString*)username
 {
     if ([[_robotSource allKeys] count] == 0) {
-        [self addRobotsToMemory:[[EaseMob sharedInstance].chatManager robotList]];
+//        [self addRobotsToMemory:[[EMClient shareClient].chatManager robotList]];
     }
     if ([_robotSource objectForKey:[username lowercaseString]]) {
         return YES;
@@ -54,8 +54,8 @@ static RobotManager *sharedInstance = nil;
 - (NSString*)getRobotNickWithUsername:(NSString*)username
 {
     if ([_robotSource objectForKey:[username lowercaseString]]) {
-        EMRobot *robot = [_robotSource objectForKey:[username lowercaseString]];
-        return robot.nickname;
+//        EMRobot *robot = [_robotSource objectForKey:[username lowercaseString]];
+//        return robot.nickname;
     }
     return username;
 }
@@ -64,11 +64,11 @@ static RobotManager *sharedInstance = nil;
 {
     if (robots && [robots count] > 0) {
         [_robotSource removeAllObjects];
-        for (EMRobot *robot in robots) {
-            if ([robot isKindOfClass:[EMRobot class]]) {
-                [_robotSource setObject:robot forKey:[robot.username lowercaseString]];
-            }
-        }
+//        for (EMRobot *robot in robots) {
+//            if ([robot isKindOfClass:[EMRobot class]]) {
+//                [_robotSource setObject:robot forKey:[robot.username lowercaseString]];
+//            }
+//        }
     }
 }
 

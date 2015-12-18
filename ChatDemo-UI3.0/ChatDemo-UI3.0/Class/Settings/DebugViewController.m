@@ -88,7 +88,7 @@
     if (indexPath.row == 0)
     {
         cell.textLabel.text = NSLocalizedString(@"setting.sdkVersion", @"SDK version");
-        NSString *ver = [[EaseMob sharedInstance] sdkVersion];
+        NSString *ver = [[EMClient shareClient] version];
         cell.detailTextLabel.text = ver;
     }
     
@@ -106,7 +106,7 @@
 {
 //    __weak typeof(self) weakSelf = self;
 //    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
-//    [[EaseMob sharedInstance] asyncUploadLogToServerWithCompletion:^(EMError *error) {
+//    [[EMClient shareClient] asyncUploadLogToServerWithCompletion:^(EMError *error) {
 //        [weakSelf hideHud];
 //        if (error) {
 //            [weakSelf showHint:error.description];

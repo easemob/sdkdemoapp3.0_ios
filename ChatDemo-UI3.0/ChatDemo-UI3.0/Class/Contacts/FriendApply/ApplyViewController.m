@@ -87,8 +87,7 @@ static ApplyViewController *controller = nil;
 
 - (NSString *)loginUsername
 {
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    return [loginInfo objectForKey:kSDKUsername];
+    return [[EMClient shareClient] currentUsername];
 }
 
 #pragma mark - Table view data source
@@ -174,21 +173,21 @@ static ApplyViewController *controller = nil;
         ApplyStyle applyStyle = [entity.style intValue];
         EMError *error;
         
-        /*if (applyStyle == ApplyStyleGroupInvitation) {
-            [[EaseMob sharedInstance].chatManager acceptInvitationFromGroup:entity.groupId error:&error];
+        if (applyStyle == ApplyStyleGroupInvitation) {
+            [[EMClient shareClient].groupManager acceptInvitationFromGroup:entity.groupId inviter:entity.applicantUsername error:&error];
         }
-        else */if (applyStyle == ApplyStyleJoinGroup)
+        else if (applyStyle == ApplyStyleJoinGroup)
         {
-            [[EaseMob sharedInstance].chatManager acceptApplyJoinGroup:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername error:&error];
+            error = [[EMClient shareClient].groupManager acceptJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername];
         }
         else if(applyStyle == ApplyStyleFriend){
-            [[EaseMob sharedInstance].chatManager acceptBuddyRequest:entity.applicantUsername error:&error];
+            error = [[EMClient shareClient].contactManager acceptInvitationForUsername:entity.applicantUsername];
         }
         
         [self hideHud];
         if (!error) {
             [self.dataSource removeObject:entity];
-            NSString *loginUsername = [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:kSDKUsername];
+            NSString *loginUsername = [[EMClient shareClient] currentUsername];
             [[InvitationManager sharedInstance] removeInvitation:entity loginUser:loginUsername];
             [self.tableView reloadData];
         }
@@ -207,20 +206,20 @@ static ApplyViewController *controller = nil;
         EMError *error;
         
         if (applyStyle == ApplyStyleGroupInvitation) {
-            [[EaseMob sharedInstance].chatManager rejectInvitationForGroup:entity.groupId toInviter:entity.applicantUsername reason:@""];
+            error = [[EMClient shareClient].groupManager declineInvitationFromGroup:entity.groupId inviter:entity.applicantUsername reason:nil];
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            [[EaseMob sharedInstance].chatManager rejectApplyJoinGroup:entity.groupId groupname:entity.groupSubject toApplicant:entity.applicantUsername reason:nil];
+            error = [[EMClient shareClient].groupManager declineJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername reason:nil];
         }
         else if(applyStyle == ApplyStyleFriend){
-            [[EaseMob sharedInstance].chatManager rejectBuddyRequest:entity.applicantUsername reason:@"" error:&error];
+            [[EMClient shareClient].contactManager declineInvitationForUsername:entity.applicantUsername];
         }
         
         [self hideHud];
         if (!error) {
             [self.dataSource removeObject:entity];
-            NSString *loginUsername = [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:kSDKUsername];
+            NSString *loginUsername = [[EMClient shareClient] currentUsername];
             [[InvitationManager sharedInstance] removeInvitation:entity loginUser:loginUsername];
             
             [self.tableView reloadData];
@@ -267,8 +266,7 @@ static ApplyViewController *controller = nil;
             newEntity.style = [dictionary objectForKey:@"applyStyle"];
             newEntity.reason = [dictionary objectForKey:@"applyMessage"];
             
-            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-            NSString *loginName = [loginInfo objectForKey:kSDKUsername];
+            NSString *loginName = [[EMClient shareClient] currentUsername];
             newEntity.receiverUsername = loginName;
             
             NSString *groupId = [dictionary objectForKey:@"groupId"];
@@ -277,7 +275,7 @@ static ApplyViewController *controller = nil;
             NSString *groupSubject = [dictionary objectForKey:@"groupname"];
             newEntity.groupSubject = (groupSubject && groupSubject.length > 0) ? groupSubject : @"";
             
-            NSString *loginUsername = [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:kSDKUsername];
+            NSString *loginUsername = [[EMClient shareClient] currentUsername];
             [[InvitationManager sharedInstance] addInvitation:newEntity loginUser:loginUsername];
             
             [_dataSource insertObject:newEntity atIndex:0];
@@ -290,11 +288,9 @@ static ApplyViewController *controller = nil;
 - (void)loadDataSourceFromLocalDB
 {
     [_dataSource removeAllObjects];
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginName = [loginInfo objectForKey:kSDKUsername];
+    NSString *loginName = [self loginUsername];
     if(loginName && [loginName length] > 0)
     {
-        
         NSArray * applyArray = [[InvitationManager sharedInstance] applyEmtitiesWithloginUser:loginName];
         [self.dataSource addObjectsFromArray:applyArray];
         

@@ -84,7 +84,7 @@
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, _headerView.frame.size.width - 80 - 20, 30)];
         _nameLabel.backgroundColor = [UIColor clearColor];
-        _nameLabel.text = (_group.groupSubject && _group.groupSubject.length) > 0 ? _group.groupSubject : _group.groupId;
+        _nameLabel.text = (_group.subject && _group.subject.length) > 0 ? _group.subject : _group.groupId;
         [_headerView addSubview:_nameLabel];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, _headerView.frame.size.height - 0.5, _headerView.frame.size.width, 0.5)];
@@ -110,7 +110,6 @@
         [_footerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_footerButton addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
         [_footerButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
-        _footerButton.enabled = NO;
         [_footerView addSubview:_footerButton];
     }
     
@@ -147,7 +146,7 @@
     }
     else{
         cell.textLabel.text = NSLocalizedString(@"group.describe", @"Describe");
-        cell.detailTextLabel.text = _group.groupDescription;
+        cell.detailTextLabel.text = _group.description;
     }
     
     return cell;
@@ -161,7 +160,7 @@
         return 50;
     }
     else{
-        CGSize size = [_group.groupDescription sizeWithFont:[UIFont systemFontOfSize:15.0] constrainedToSize:CGSizeMake(220, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
+        CGSize size = [_group.description sizeWithFont:[UIFont systemFontOfSize:15.0] constrainedToSize:CGSizeMake(220, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
         
         return size.height > 30 ? (20 + size.height) : 50;
     }
@@ -177,7 +176,7 @@
         if (messageTextField.text.length > 0) {
             messageStr = messageTextField.text;
         }
-        [self applyJoinGroup:_groupId withGroupname:_group.groupSubject message:messageStr];
+        [self applyJoinGroup:_groupId withGroupname:_group.subject message:messageStr];
     }
 }
 
@@ -186,7 +185,7 @@
 - (BOOL)isJoined:(EMGroup *)group
 {
     if (group) {
-        NSArray *groupList = [[EaseMob sharedInstance].chatManager groupList];
+        NSArray *groupList = [[EMClient shareClient].groupManager getAllGroups];
         for (EMGroup *tmpGroup in groupList) {
             if (tmpGroup.isPublic == group.isPublic && [group.groupId isEqualToString:tmpGroup.groupId]) {
                 return YES;
@@ -201,18 +200,24 @@
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak PublicGroupDetailViewController *weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncFetchGroupInfo:_groupId includesOccupantList:NO completion:^(EMGroup *group, EMError *error) {
-        weakSelf.group = group;
-        [weakSelf reloadSubviewsInfo];
-        [weakSelf hideHud];
-    } onQueue:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        EMGroup *group = [[EMClient shareClient].groupManager fetchGroupInfo:weakSelf.groupId includeMembersList:NO error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                weakSelf.group = group;
+                [weakSelf reloadSubviewsInfo];
+            }
+            [weakSelf hideHud];
+        });
+    });
 }
 
 - (void)reloadSubviewsInfo
 {
     __weak PublicGroupDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        weakSelf.nameLabel.text = (weakSelf.group.groupSubject && weakSelf.group.groupSubject.length) > 0 ? weakSelf.group.groupSubject : weakSelf.group.groupId;
+        weakSelf.nameLabel.text = (weakSelf.group.subject && weakSelf.group.subject.length) > 0 ? weakSelf.group.subject : weakSelf.group.groupId;
         if ([weakSelf isJoined:weakSelf.group]) {
             weakSelf.footerButton.enabled = NO;
             [weakSelf.footerButton setTitle:NSLocalizedString(@"group.joined", @"joined") forState:UIControlStateNormal | UIControlStateDisabled];
@@ -234,10 +239,10 @@
 
 - (void)joinAction
 {
-    if (self.group.groupSetting.groupStyle == eGroupStyle_PublicJoinNeedApproval) {
+    if (self.group.setting.style == EMGroupStylePublicJoinNeedApproval) {
         [self showMessageAlertView];
     }
-    else if (self.group.groupSetting.groupStyle == eGroupStyle_PublicOpenJoin)
+    else if (self.group.setting.style == EMGroupStylePublicOpenJoin)
     {
         [self joinGroup:_groupId];
     }
@@ -247,31 +252,36 @@
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"group.join.ongoing", @"join the group...")];
     __weak PublicGroupDetailViewController *weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncJoinPublicGroup:groupId completion:^(EMGroup *group, EMError *error) {
-        [weakSelf hideHud];
-        if(!error)
-        {
-            [weakSelf.navigationController popViewControllerAnimated:YES];
-        }
-        else{
-            [weakSelf showHint:NSLocalizedString(@"group.join.fail", @"again failed to join the group, please")];
-        }
-    } onQueue:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        [[EMClient shareClient].groupManager joinPublicGroup:groupId error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(!error) {
+                [weakSelf hideHud];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            } else {
+                [weakSelf showHint:NSLocalizedString(@"group.join.fail", @"again failed to join the group, please")];
+            }
+        });
+    });
 }
 
 - (void)applyJoinGroup:(NSString *)groupId withGroupname:(NSString *)groupName message:(NSString *)message
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"group.sendingApply", @"send group of application...")];
     __weak typeof(self) weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncApplyJoinPublicGroup:groupId withGroupname:groupName message:message completion:^(EMGroup *group, EMError *error) {
-        [weakSelf hideHud];
-        if (!error) {
-            [weakSelf showHint:NSLocalizedString(@"group.sendApplyRepeat", @"application has been sent")];
-        }
-        else{
-            [weakSelf showHint:error.description];
-        }
-    } onQueue:nil];
-}
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        [[EMClient shareClient].groupManager applyJoinPublicGroup:groupId message:groupName error:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                [weakSelf showHint:NSLocalizedString(@"group.sendApplyRepeat", @"application has been sent")];
+            }
+            else{
+                [weakSelf showHint:error.domain];
+            }
+        });
+    });}
 
 @end

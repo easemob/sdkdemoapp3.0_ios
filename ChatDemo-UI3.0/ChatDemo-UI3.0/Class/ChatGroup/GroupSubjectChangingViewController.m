@@ -28,8 +28,7 @@
     self = [self init];
     if (self) {
         _group = group;
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        NSString *loginUsername = [[EMClient shareClient] currentUsername];
         _isOwner = [_group.owner isEqualToString:loginUsername];
         self.view.backgroundColor = [UIColor whiteColor];
     }
@@ -61,7 +60,7 @@
     _subjectField.layer.cornerRadius = 5.0;
     _subjectField.layer.borderWidth = 1.0;
     _subjectField.placeholder = NSLocalizedString(@"group.setting.subject", @"Please input group name");
-    _subjectField.text = _group.groupSubject;
+    _subjectField.text = _group.subject;
     if (!_isOwner)
     {
         _subjectField.enabled = NO;
@@ -114,18 +113,18 @@
 
 - (void)saveSubject
 {
-    EMConversation *conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:_group.groupId conversationType:eConversationTypeGroupChat];
-    [[EaseMob sharedInstance].chatManager asyncChangeGroupSubject:_subjectField.text forGroup:_group.groupId completion:^(EMGroup *group, EMError *error) {
-        if (!error) {
-            if ([_group.groupId isEqualToString:conversation.chatter]) {
-                NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                [ext setObject:_group.groupSubject forKey:@"groupSubject"];
-                [ext setObject:[NSNumber numberWithBool:_group.isPublic] forKey:@"isPublic"];
-                conversation.ext = ext;
-            }
+    EMConversation *conversation = [[EMClient shareClient].chatManager getConversation:_group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+    EMError *error = nil;
+    [[EMClient shareClient].groupManager changeGroupSubject:_subjectField.text forGroup:_group.groupId error:&error];
+    if (!error) {
+        if ([_group.groupId isEqualToString:conversation.conversationId]) {
+            NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
+            [ext setObject:_group.subject forKey:@"groupSubject"];
+            [ext setObject:[NSNumber numberWithBool:_group.isPublic] forKey:@"isPublic"];
+            conversation.ext = ext;
         }
-        [self back];
-    } onQueue:NULL];
+    }
+    [self back];
 }
 
 @end

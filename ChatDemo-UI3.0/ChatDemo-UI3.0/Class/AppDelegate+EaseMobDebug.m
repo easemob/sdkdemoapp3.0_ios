@@ -14,6 +14,7 @@
 
 
 -(BOOL)isSpecifyServer{
+    /*
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
     NSNumber *specifyServer = [ud objectForKey:@"identifier_enable"];
@@ -58,7 +59,7 @@
                               kSDKServerChatDomain:@"easemob.com",
                               kSDKServerChatPort:imPort};
         
-        id easemob = [EaseMob sharedInstance];
+        id easemob = [EMClient shareClient];
         SEL selector = @selector(registerPrivateServerWithParams:);
         [easemob performSelector:selector withObject:dic];
         return YES;
@@ -68,9 +69,9 @@
             [ud setObject:[NSNumber numberWithBool:YES] forKey:@"identifier_userip_enable"];
             [ud synchronize];
         } else {
-            [[EaseMob sharedInstance].chatManager setIsUseIp:[useIP boolValue]];
+            [[EMClient shareClient].options setEnableDnsConfig:[useIP boolValue]];
         }
-    }
+    }*/
     
     return NO;
 }

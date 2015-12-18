@@ -19,7 +19,7 @@
 #import "RealtimeSearchUtil.h"
 #import "EMCursorResult.h"
 
-@interface ChatroomListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate, EMChatManagerDelegate>
+@interface ChatroomListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate, EMChatroomManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
@@ -49,7 +49,7 @@
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient shareClient].roomManager addDelegate:self delegateQueue:nil];
     // Uncomment the following line to preserve selection between presentations.
     self.title = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
     
@@ -87,7 +87,7 @@
             [chatrooms removeAllObjects];
         });
     }
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[EMClient shareClient].roomManager removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -141,7 +141,7 @@
             EMChatroom *chatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             NSString *imageName =  @"groupPublicHeader";
             cell.imageView.image = [UIImage imageNamed:imageName];
-            cell.textLabel.text = chatroom.chatroomSubject;
+            cell.textLabel.text = chatroom.subject;
             
             return cell;
         }];
@@ -155,8 +155,8 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMChatroom *myChatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:eConversationTypeChatRoom];
-            chatController.title = myChatroom.chatroomSubject;
+            ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
+            chatController.title = myChatroom.subject;
             [weakSelf.navigationController pushViewController:chatController animated:YES];
         }];
     }
@@ -190,8 +190,8 @@
     
     EMChatroom *chatroom = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupPublicHeader"];
-    if ([chatroom.chatroomSubject length]) {
-        cell.textLabel.text = chatroom.chatroomSubject;
+    if ([chatroom.subject length]) {
+        cell.textLabel.text = chatroom.subject;
     }
     else {
         cell.textLabel.text = chatroom.chatroomId;
@@ -212,8 +212,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     EMChatroom *myChatroom = [self.dataSource objectAtIndex:indexPath.row];
-    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:eConversationTypeChatRoom];
-    chatController.title = myChatroom.chatroomSubject;
+    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
+    chatController.title = myChatroom.subject;
     [self.navigationController pushViewController:chatController animated:YES];
 }
 
@@ -229,7 +229,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(chatroomSubject) resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.searchController.resultsSource removeAllObjects];
@@ -249,7 +249,7 @@
 {
     [searchBar resignFirstResponder];
     
-//    [[EaseMob sharedInstance].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
+//    [[EMClient shareClient].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
 //        if (!error) {
 //            [self.searchController.resultsSource removeAllObjects];
 //            [self.searchController.resultsSource addObject:group];
@@ -300,33 +300,36 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     
     __weak typeof(self) weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncFetchChatroomsFromServerWithCursor:nil pageSize:-1 andCompletion:^(EMCursorResult *result, EMError *error) {
-        ChatroomListViewController *strongSelf = weakSelf;
-        if (strongSelf)
-        {
-            [strongSelf hideHud];
-            [strongSelf.dataSource removeAllObjects];
-            [strongSelf.dataSource addObjectsFromArray:result.list];
-            [strongSelf.tableView reloadData];
-        }
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        NSArray *list = [[EMClient shareClient].roomManager fetchAllChatroomsWithError:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.dataSource removeAllObjects];
+            [weakSelf.dataSource addObjectsFromArray:list];
+            [weakSelf.tableView reloadData];
+            [weakSelf hideHud];
+        });
+    });
 }
 
-- (void)beKickedOutFromChatroom:(EMChatroom *)leavedChatroom reason:(EMChatroomBeKickedReason)reason
+#pragma mark - EMChatroomManagerDelegate
+
+- (void)didReceiveKickedFromChatroom:(EMChatroom *)aChatroom
+                              reason:(EMChatroomBeKickedReason)aReason
 {
-    if (reason != eChatroomBeKickedReason_Destroyed)
-    {
-        return;
-    }
-    
-    [self.dataSource enumerateObjectsUsingBlock:^(EMChatroom *chatroom, NSUInteger idx, BOOL *stop){
-        if ([leavedChatroom.chatroomId isEqualToString:chatroom.chatroomId])
-        {
-            [self.dataSource removeObjectAtIndex:idx];
-            *stop = YES;
-        }
-    }];
-    [self.tableView reloadData];
+//    if (aReason != EMChatroomBeKickedReasonDestroyed)
+//    {
+//        return;
+//    }
+//    
+//    [self.dataSource enumerateObjectsUsingBlock:^(EMChatroom *chatroom, NSUInteger idx, BOOL *stop){
+//        if ([aChatroom.chatroomId isEqualToString:chatroom.chatroomId])
+//        {
+//            [self.dataSource removeObjectAtIndex:idx];
+//            *stop = YES;
+//        }
+//    }];
+//    [self.tableView reloadData];
 }
 
 @end

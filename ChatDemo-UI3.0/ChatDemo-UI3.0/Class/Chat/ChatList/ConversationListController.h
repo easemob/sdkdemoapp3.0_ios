@@ -8,6 +8,9 @@
 
 @interface ConversationListController : EaseConversationListViewController
 
+@property (strong, nonatomic) NSMutableArray *conversationsArray;
+
+- (void)refresh;
 - (void)refreshDataSource;
 
 - (void)isConnect:(BOOL)isConnect;

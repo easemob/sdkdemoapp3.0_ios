@@ -111,7 +111,7 @@
     if(_nickTextField.text.length > 0)
     {
         //设置推送设置
-        [[EaseMob sharedInstance].chatManager setApnsNickname:_nickTextField.text];
+        [[EMClient shareClient] setApnsNickname:_nickTextField.text];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [EMAlertView showAlertWithTitle:NSLocalizedString(@"prompt", @"Prompt")
