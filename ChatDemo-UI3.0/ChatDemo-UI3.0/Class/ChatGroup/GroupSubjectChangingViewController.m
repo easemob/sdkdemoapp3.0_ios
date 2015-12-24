@@ -119,7 +119,7 @@
     if (!error) {
         if ([_group.groupId isEqualToString:conversation.conversationId]) {
             NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-            [ext setObject:_group.subject forKey:@"groupSubject"];
+            [ext setObject:_group.subject forKey:@"subject"];
             [ext setObject:[NSNumber numberWithBool:_group.isPublic] forKey:@"isPublic"];
             conversation.ext = ext;
         }

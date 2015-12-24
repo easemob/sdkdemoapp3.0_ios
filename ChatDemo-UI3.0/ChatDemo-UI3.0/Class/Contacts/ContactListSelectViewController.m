@@ -39,7 +39,23 @@
     BOOL flag = YES;
     if (self.messageModel) {
         if (self.messageModel.bodyType == EMMessageBodyTypeText) {
-            [EaseSDKHelper sendTextMessage:self.messageModel.text to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
+            EMMessage *message = [EaseSDKHelper sendTextMessage:self.messageModel.text to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
+            __weak typeof(self) weakself = self;
+            [[EMClient shareClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *aMessage, EMError *aError) {
+                if (!aError) {
+                    NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+                    chatController.title = userModel.nickname;
+                    if ([array count] >= 3) {
+                        [array removeLastObject];
+                        [array removeLastObject];
+                    }
+                    [array addObject:chatController];
+                    [weakself.navigationController setViewControllers:array animated:YES];
+                } else {
+                    [self showHudInView:self.view hint:NSLocalizedString(@"transpondFail", @"transpond Fail")];
+                }
+            }];
         } else if (self.messageModel.bodyType == EMMessageBodyTypeImage) {
             flag = NO;
             [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transpondFailing...")];

@@ -43,6 +43,8 @@
 
 + (instancetype)shareHelper;
 
+- (void)asyncPushOptions;
+
 - (void)asyncGroupFromServer;
 
 - (void)asyncConversationFromDB;

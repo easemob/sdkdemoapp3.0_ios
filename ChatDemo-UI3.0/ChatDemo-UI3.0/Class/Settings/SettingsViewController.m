@@ -288,7 +288,7 @@
 
 - (void)useIpChanged:(UISwitch *)ipSwitch
 {
-    [[EMClient shareClient].options setEnableDnsConfig:ipSwitch.on];
+    [[EMClient shareClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
     [ud synchronize];
@@ -309,7 +309,7 @@
 - (void)refreshConfig
 {
     [self.autoLoginSwitch setOn:[[EMClient shareClient].options isAutoLogin] animated:YES];
-    [self.ipSwitch setOn:[[EMClient shareClient].options enableDnsConfig] animated:YES];
+    [self.ipSwitch setOn:[[EMClient shareClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
     
     [self.tableView reloadData];
 }

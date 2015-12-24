@@ -27,8 +27,8 @@
         }
         return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
     } else if (self.type == EMConversationTypeGroupChat) {
-        if ([self.ext objectForKey:@"groupSubject"] || [self.ext objectForKey:@"isPublic"]) {
-            return [self.ext objectForKey:@"groupSubject"];
+        if ([self.ext objectForKey:@"subject"] || [self.ext objectForKey:@"isPublic"]) {
+            return [self.ext objectForKey:@"subject"];
         }
     }
     return self.conversationId;
@@ -49,7 +49,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[EMClient shareClient].chatManager loadAllConversationsFromDB];
+    [[EMClient shareClient].groupManager loadAllMyGroupsFromDB];
     // Do any additional setup after loading the view.
     self.showRefreshHeader = YES;
     self.delegate = self;
@@ -69,7 +69,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.tableView reloadData];
+    [self refresh];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -223,7 +223,7 @@
         }
     } else if (model.conversation.type == EMConversationTypeGroupChat) {
         NSString *imageName = @"groupPublicHeader";
-        if (![conversation.ext objectForKey:@"groupSubject"] || ![conversation.ext objectForKey:@"isPublic"])
+        if (![conversation.ext objectForKey:@"subject"] || ![conversation.ext objectForKey:@"isPublic"])
         {
             NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
             for (EMGroup *group in groupArray) {
@@ -233,7 +233,7 @@
                     model.avatarImage = [UIImage imageNamed:imageName];
                     
                     NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                    [ext setObject:group.subject forKey:@"groupSubject"];
+                    [ext setObject:group.subject forKey:@"subject"];
                     [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
                     conversation.ext = ext;
                     break;
@@ -246,17 +246,17 @@
                     imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
                     
                     NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                    [ext setObject:group.subject forKey:@"groupSubject"];
+                    [ext setObject:group.subject forKey:@"subject"];
                     [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
-                    NSString *groupSubject = [ext objectForKey:@"groupSubject"];
-                    NSString *conversationSubject = [conversation.ext objectForKey:@"groupSubject"];
+                    NSString *groupSubject = [ext objectForKey:@"subject"];
+                    NSString *conversationSubject = [conversation.ext objectForKey:@"subject"];
                     if (groupSubject && conversationSubject && ![groupSubject isEqualToString:conversationSubject]) {
                         conversation.ext = ext;
                     }
                     break;
                 }
             }
-            model.title = [conversation.ext objectForKey:@"groupSubject"];
+            model.title = [conversation.ext objectForKey:@"subject"];
             imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
             model.avatarImage = [UIImage imageNamed:imageName];
         }
@@ -362,7 +362,7 @@
 
 -(void)refresh
 {
-    [self.tableView reloadData];
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 -(void)refreshDataSource

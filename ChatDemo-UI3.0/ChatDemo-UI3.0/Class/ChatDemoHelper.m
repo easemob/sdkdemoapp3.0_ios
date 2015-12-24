@@ -60,6 +60,14 @@ static ChatDemoHelper *helper = nil;
 #endif
 }
 
+- (void)asyncPushOptions
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        [[EMClient shareClient] getPushOptionsFromServerWithError:&error];
+    });
+}
+
 - (void)asyncGroupFromServer
 {
     __weak typeof(self) weakself = self;
@@ -120,9 +128,10 @@ static ChatDemoHelper *helper = nil;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [[EMClient shareClient] dataMigrationTo3];
-            [self asyncGroupFromServer];
-            [self asyncConversationFromDB];
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self asyncGroupFromServer];
+                [self asyncConversationFromDB];
+                [self asyncPushOptions];
                 [MBProgressHUD hideAllHUDsForView:view animated:YES];
             });
         });

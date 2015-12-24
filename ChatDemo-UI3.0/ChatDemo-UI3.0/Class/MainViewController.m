@@ -335,7 +335,7 @@ static NSString *kGroupName = @"GroupName";
             NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
             for (EMGroup *group in groupArray) {
                 if ([group.groupId isEqualToString:message.conversationId]) {
-                    title = [NSString stringWithFormat:@"%@(%@)", message.conversationId, group.subject];
+                    title = [NSString stringWithFormat:@"%@(%@)", message.from, group.subject];
                     break;
                 }
             }
@@ -348,7 +348,7 @@ static NSString *kGroupName = @"GroupName";
             NSString *chatroomName = [chatrooms objectForKey:message.conversationId];
             if (chatroomName)
             {
-                title = [NSString stringWithFormat:@"%@(%@)", message.conversationId, chatroomName];
+                title = [NSString stringWithFormat:@"%@(%@)", message.from, chatroomName];
             }
         }
         

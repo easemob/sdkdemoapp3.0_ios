@@ -374,17 +374,19 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
         EMGroup *group = [[EMClient shareClient].groupManager fetchGroupInfo:weakSelf.chatGroup.groupId includeMembersList:YES error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+        });
         if (!error) {
             weakSelf.chatGroup = group;
             EMConversation *conversation = [[EMClient shareClient].chatManager getConversation:group.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
             if ([group.groupId isEqualToString:conversation.conversationId]) {
                 NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                [ext setObject:group.subject forKey:@"groupSubject"];
+                [ext setObject:group.subject forKey:@"subject"];
                 [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
                 conversation.ext = ext;
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf hideHud];
                 [weakSelf reloadDataSource];
             });
         }

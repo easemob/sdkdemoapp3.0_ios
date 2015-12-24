@@ -52,7 +52,7 @@
     
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    [self refreshPushOptions];
+    [self loadPushOptions];
     [self.tableView reloadData];
 }
 
@@ -246,11 +246,20 @@
         options.noDisturbingEndH = _noDisturbingEnd;
     }
     
-    if (isUpdate) {
-        [[EMClient shareClient] updatePushOptionsToServer];
-    }
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        if (isUpdate) {
+            error = [[EMClient shareClient] updatePushOptionsToServer];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                [weakself.navigationController popViewControllerAnimated:YES];
+            } else {
+                [weakself showHint:[NSString stringWithFormat:@"保存失败-error:%@",error.description]];
+            }
+        });
+    });
 }
 
 - (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
@@ -261,6 +270,26 @@
     }
     else{
         _pushDisplayStyle = EMPushDisplayStyleSimpleBanner;
+    }
+}
+
+- (void)loadPushOptions
+{
+    if ([EMClient shareClient].pushOptions.displayStyle < 0) {
+        __weak typeof(self) weakself = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = nil;
+            [[EMClient shareClient] getPushOptionsFromServerWithError:&error];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error == nil) {
+                    [weakself refreshPushOptions];
+                } else {
+                    
+                }
+            });
+        });
+    } else {
+        [self refreshPushOptions];
     }
 }
 
@@ -277,6 +306,7 @@
     
     BOOL isDisplayOn = _pushDisplayStyle == EMPushDisplayStyleSimpleBanner ? NO : YES;
     [self.pushDisplaySwitch setOn:isDisplayOn animated:YES];
+    [self.tableView reloadData];
 }
 
 @end

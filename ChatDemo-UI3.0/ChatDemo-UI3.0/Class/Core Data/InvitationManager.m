@@ -88,7 +88,7 @@ static InvitationManager *sharedInstance = nil;
     [aCoder encodeObject:_receiverNick forKey:@"receiverNick"];
     [aCoder encodeObject:_style forKey:@"style"];
     [aCoder encodeObject:_groupId forKey:@"groupId"];
-    [aCoder encodeObject:_groupSubject forKey:@"groupSubject"];
+    [aCoder encodeObject:_groupSubject forKey:@"subject"];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder{
@@ -100,7 +100,7 @@ static InvitationManager *sharedInstance = nil;
         _receiverNick = [aDecoder decodeObjectForKey:@"receiverNick"];
         _style = [aDecoder decodeObjectForKey:@"style"];
         _groupId = [aDecoder decodeObjectForKey:@"groupId"];
-        _groupSubject = [aDecoder decodeObjectForKey:@"groupSubject"];
+        _groupSubject = [aDecoder decodeObjectForKey:@"subject"];
         
     }
     

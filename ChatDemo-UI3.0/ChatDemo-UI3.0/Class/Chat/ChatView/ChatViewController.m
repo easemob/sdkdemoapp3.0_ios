@@ -68,6 +68,24 @@
 
 - (void)dealloc
 {
+    if (self.conversation.type == EMConversationTypeChatRoom)
+    {
+        //退出聊天室，删除会话
+        NSString *chatter = [self.conversation.conversationId copy];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = nil;
+            [[EMClient shareClient].roomManager leaveChatroom:chatter error:&error];
+            if (error ==nil) {
+                [[EMClient shareClient].chatManager deleteConversation:chatter deleteMessages:YES];
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Leave chatroom '%@' failed [%@]", chatter, error.domain] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alertView show];
+                });
+            }
+        });
+    }
+    
     [[EMClient shareClient] removeDelegate:self];
 }
 
@@ -75,9 +93,9 @@
 {
     [super viewWillAppear:animated];
     if (self.conversation.type == EMConversationTypeChat) {
-        if ([[self.conversation.ext objectForKey:@"groupSubject"] length])
+        if ([[self.conversation.ext objectForKey:@"subject"] length])
         {
-            self.title = [self.conversation.ext objectForKey:@"groupSubject"];
+            self.title = [self.conversation.ext objectForKey:@"subject"];
         }
     }
 }
@@ -252,7 +270,17 @@
 - (void)backAction
 {
     [[EMClient shareClient].chatManager removeDelegate:self];
+    [[EMClient shareClient].roomManager removeDelegate:self];
     [[ChatDemoHelper shareHelper] setChatVC:nil];
+    
+    if (self.deleteConversationIfNull) {
+        //判断当前会话是否为空，若符合则删除该会话
+        EMMessage *message = [self.conversation latestMessage];
+        if (message == nil) {
+            [[EMClient shareClient].chatManager deleteConversation:self.conversation.conversationId deleteMessages:NO];
+        }
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

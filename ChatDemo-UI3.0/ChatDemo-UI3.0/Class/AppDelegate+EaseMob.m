@@ -36,13 +36,22 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
     
-    [ChatDemoHelper shareHelper];
-    
     [[EaseSDKHelper shareHelper] easemobApplication:application
                     didFinishLaunchingWithOptions:launchOptions
                                            appkey:@"easemob-demo#no1"
                                      apnsCertName:apnsCertName
                                       otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],kEaseUISDKConfigIsUseLite:[NSNumber numberWithBool:YES]}];
+    
+    [ChatDemoHelper shareHelper];
+    
+    BOOL isAutoLogin = [EMClient shareClient].options.isAutoLogin;
+    if (isAutoLogin){
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+    }
     
     [self registerEaseMobNotification];
 }
