@@ -72,6 +72,7 @@ static ChatDemoHelper *helper = nil;
 {
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[EMClient shareClient].groupManager loadAllMyGroupsFromDB];
         EMError *error = nil;
         [[EMClient shareClient].groupManager getMyGroupsFromServerWithError:&error];
         if (!error) {
@@ -91,7 +92,8 @@ static ChatDemoHelper *helper = nil;
         NSArray *array = [[EMClient shareClient].chatManager loadAllConversationsFromDB];
         [array enumerateObjectsUsingBlock:^(EMConversation *conversation, NSUInteger idx, BOOL *stop){
             if (conversation.type == EMConversationTypeChatRoom){
-                [[EMClient shareClient].chatManager deleteConversation:conversation.conversationId deleteMessages:YES];
+//                [[EMClient shareClient].roomManager leaveChatroom:conversation.conversationId error:nil];
+//                [[EMClient shareClient].chatManager deleteConversation:conversation.conversationId deleteMessages:YES];
             }
             else if(conversation.latestMessage == nil){
                 [[EMClient shareClient].chatManager deleteConversation:conversation.conversationId deleteMessages:NO];
@@ -129,9 +131,6 @@ static ChatDemoHelper *helper = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [[EMClient shareClient] dataMigrationTo3];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self asyncGroupFromServer];
-                [self asyncConversationFromDB];
-                [self asyncPushOptions];
                 [MBProgressHUD hideAllHUDsForView:view animated:YES];
             });
         });

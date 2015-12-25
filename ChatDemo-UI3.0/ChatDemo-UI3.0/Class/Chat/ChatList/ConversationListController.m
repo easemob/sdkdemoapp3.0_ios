@@ -49,7 +49,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[EMClient shareClient].groupManager loadAllMyGroupsFromDB];
+    
     // Do any additional setup after loading the view.
     self.showRefreshHeader = YES;
     self.delegate = self;
@@ -223,6 +223,23 @@
         }
     } else if (model.conversation.type == EMConversationTypeGroupChat) {
         NSString *imageName = @"groupPublicHeader";
+        if (![conversation.ext objectForKey:@"subject"])
+        {
+            NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
+            for (EMGroup *group in groupArray) {
+                if ([group.groupId isEqualToString:conversation.conversationId]) {
+                    NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
+                    [ext setObject:group.subject forKey:@"subject"];
+                    [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
+                    conversation.ext = ext;
+                    break;
+                }
+            }
+        }
+        model.title = [conversation.ext objectForKey:@"subject"];
+        imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
+        model.avatarImage = [UIImage imageNamed:imageName];
+        /*
         if (![conversation.ext objectForKey:@"subject"] || ![conversation.ext objectForKey:@"isPublic"])
         {
             NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
@@ -259,7 +276,7 @@
             model.title = [conversation.ext objectForKey:@"subject"];
             imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
             model.avatarImage = [UIImage imageNamed:imageName];
-        }
+        }*/
     }
     return model;
 }
@@ -362,13 +379,12 @@
 
 -(void)refresh
 {
-    [self tableViewDidTriggerHeaderRefresh];
+    [self refreshAndSortView];
 }
 
 -(void)refreshDataSource
 {
     [self tableViewDidTriggerHeaderRefresh];
-    [self hideHud];
 }
 
 - (void)isConnect:(BOOL)isConnect{

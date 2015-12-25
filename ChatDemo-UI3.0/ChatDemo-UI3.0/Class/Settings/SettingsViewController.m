@@ -114,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 9;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -146,35 +146,35 @@
         {
             cell.textLabel.text = NSLocalizedString(@"title.debug", @"Debug");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
+        }/*
         else if (indexPath.row == 4){
             cell.textLabel.text = NSLocalizedString(@"setting.useIp", @"Use IP");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.ipSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.ipSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.ipSwitch.frame.size.height) / 2, self.ipSwitch.frame.size.width, self.ipSwitch.frame.size.height);
             [cell.contentView addSubview:self.ipSwitch];
-        }
-        else if (indexPath.row == 5){
+        }*/
+        else if (indexPath.row == 4){
             cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
             [cell.contentView addSubview:self.delConversationSwitch];
-        } else if (indexPath.row == 6){
+        } else if (indexPath.row == 5){
             cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        else if (indexPath.row == 7){
+        else if (indexPath.row == 6){
             cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
             [cell.contentView addSubview:self.showCallInfoSwitch];
-        } else if (indexPath.row == 8){
+        } else if (indexPath.row == 7){
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             while (cell.contentView.subviews.count) {
                 UIView* child = cell.contentView.subviews.lastObject;
                 [child removeFromSuperview];
             }
-        } else if (indexPath.row == 9){
+        } else if (indexPath.row == 8){
             cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             while (cell.contentView.subviews.count) {
@@ -214,14 +214,14 @@
     {
         DebugViewController *debugController = [[DebugViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:debugController animated:YES];
-    } else if (indexPath.row == 6) {
+    } else if (indexPath.row == 5) {
         EditNicknameViewController *editName = [[EditNicknameViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:editName animated:YES];
-    } else if (indexPath.row == 8){
+    } else if (indexPath.row == 7){
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         
-    } else if (indexPath.row == 9) {
+    } else if (indexPath.row == 8) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
         [alert show];
@@ -288,10 +288,10 @@
 
 - (void)useIpChanged:(UISwitch *)ipSwitch
 {
-    [[EMClient shareClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
-    [ud synchronize];
+//    [[EMClient shareClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//    [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
+//    [ud synchronize];
 }
 
 - (void)delConversationChanged:(UISwitch *)control
@@ -309,7 +309,7 @@
 - (void)refreshConfig
 {
     [self.autoLoginSwitch setOn:[[EMClient shareClient].options isAutoLogin] animated:YES];
-    [self.ipSwitch setOn:[[EMClient shareClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
+//    [self.ipSwitch setOn:[[EMClient shareClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
     
     [self.tableView reloadData];
 }
@@ -319,10 +319,10 @@
     __weak SettingsViewController *weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient shareClient] logout:NO];
+        EMError *error = [[EMClient shareClient] logout:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
-            if (error && error.code != EMErrorServerNotLogin) {
+            if (error != nil) {
                 [weakSelf showHint:error.domain];
             }
             else{

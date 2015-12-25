@@ -40,7 +40,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                     didFinishLaunchingWithOptions:launchOptions
                                            appkey:@"easemob-demo#no1"
                                      apnsCertName:apnsCertName
-                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],kEaseUISDKConfigIsUseLite:[NSNumber numberWithBool:YES]}];
+                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],kEaseUISDKConfigIsUseLite:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
     
     [ChatDemoHelper shareHelper];
     
@@ -94,6 +94,10 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         [self initParse];
         
         [ChatDemoHelper shareHelper].mainVC = self.mainController;
+        
+        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
+        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
+        [[ChatDemoHelper shareHelper] asyncPushOptions];
     }
     else{//登陆失败加载登陆页面控制器
         self.mainController = nil;

@@ -63,7 +63,6 @@
     
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
     
-//    [self reloadDataSource];
     // 环信UIdemo中有用到Parse, 加载用户好友个人信息
     [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
 }
@@ -549,25 +548,28 @@
         EMError *error = nil;
         NSArray *buddyList = [[EMClient shareClient].contactManager getContactsFromServerWithError:&error];
         if (!error) {
-            [weakself.contactsSource removeAllObjects];
-            
-            for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
-                NSString *username = [buddyList objectAtIndex:i];
-                [weakself.contactsSource addObject:username];
+            [[EMClient shareClient].contactManager getBlackListFromServerWithError:&error];
+            if (!error) {
+                [weakself.contactsSource removeAllObjects];
+                
+                for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
+                    NSString *username = [buddyList objectAtIndex:i];
+                    [weakself.contactsSource addObject:username];
+                }
+                
+                NSString *loginUsername = [[EMClient shareClient] currentUsername];
+                if (loginUsername && loginUsername.length > 0) {
+                    [weakself.contactsSource addObject:loginUsername];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself _sortDataArray:self.contactsSource];
+                });
             }
-            
-            NSString *loginUsername = [[EMClient shareClient] currentUsername];
-            if (loginUsername && loginUsername.length > 0) {
-                [weakself.contactsSource addObject:loginUsername];
-            }
+        }
+        if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself _sortDataArray:self.contactsSource];
-//                [weakself hideHud];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-//                [weakself hideHud];
                 [weakself showHint:NSLocalizedString(@"loadDataFailed", @"Load data failed.")];
+                [weakself reloadDataSource];
             });
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
@@ -582,11 +584,9 @@
     [self.contactsSource removeAllObjects];
     
     NSArray *buddyList = [[EMClient shareClient].contactManager getContactsFromDB];
-    NSArray *blockList = [[EMClient shareClient].contactManager getBlackListFromDB];
+    
     for (NSString *buddy in buddyList) {
-        if (![blockList containsObject:buddy]) {
-            [self.contactsSource addObject:buddy];
-        }
+        [self.contactsSource addObject:buddy];
     }
     
     NSString *loginUsername = [[EMClient shareClient] currentUsername];
