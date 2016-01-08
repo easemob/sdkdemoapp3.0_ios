@@ -91,11 +91,7 @@ static ChatDemoHelper *helper = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSArray *array = [[EMClient shareClient].chatManager loadAllConversationsFromDB];
         [array enumerateObjectsUsingBlock:^(EMConversation *conversation, NSUInteger idx, BOOL *stop){
-            if (conversation.type == EMConversationTypeChatRoom){
-//                [[EMClient shareClient].roomManager leaveChatroom:conversation.conversationId error:nil];
-//                [[EMClient shareClient].chatManager deleteConversation:conversation.conversationId deleteMessages:YES];
-            }
-            else if(conversation.latestMessage == nil){
+            if(conversation.latestMessage == nil){
                 [[EMClient shareClient].chatManager deleteConversation:conversation.conversationId deleteMessages:NO];
             }
         }];
@@ -173,10 +169,6 @@ static ChatDemoHelper *helper = nil;
         [_mainVC setupUnreadMessageCount];
     }
     
-    if (self.mainVC) {
-        [_conversationListVC refreshDataSource];
-    }
-    
     if (self.conversationListVC) {
         [_conversationListVC refreshDataSource];
     }
@@ -238,7 +230,7 @@ static ChatDemoHelper *helper = nil;
     
     if (isRefreshCons) {
         if (self.conversationListVC) {
-            [_conversationListVC refreshDataSource];
+            [_conversationListVC refresh];
         }
         
         if (self.mainVC) {
@@ -338,10 +330,32 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
+- (void)didReceiveGroupInvitation:(NSString *)aGroupId
+                          inviter:(NSString *)aInviter
+                          message:(NSString *)aMessage
+{
+    if (!aGroupId || !aInviter) {
+        return;
+    }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
+    [[ApplyViewController shareController] addNewApply:dic];
+    if (self.mainVC) {
+        [self.mainVC setupUntreatedApplyCount];
+#if !TARGET_IPHONE_SIMULATOR
+        [self.mainVC playSoundAndVibration];
+#endif
+    }
+    
+    if (self.contactViewVC) {
+        [self.contactViewVC reloadApplyView];
+    }
+}
+
 #pragma mark - EMContactManagerDelegate
 - (void)didReceiveAgreedFromUsername:(NSString *)aUsername
 {
-    
+    [self.contactViewVC reloadDataSource];
 }
 
 - (void)didReceiveDeclinedFromUsername:(NSString *)aUsername

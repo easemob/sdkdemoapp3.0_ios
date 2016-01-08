@@ -239,44 +239,6 @@
         model.title = [conversation.ext objectForKey:@"subject"];
         imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
         model.avatarImage = [UIImage imageNamed:imageName];
-        /*
-        if (![conversation.ext objectForKey:@"subject"] || ![conversation.ext objectForKey:@"isPublic"])
-        {
-            NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
-            for (EMGroup *group in groupArray) {
-                if ([group.groupId isEqualToString:conversation.conversationId]) {
-                    model.title = group.subject;
-                    imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
-                    model.avatarImage = [UIImage imageNamed:imageName];
-                    
-                    NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                    [ext setObject:group.subject forKey:@"subject"];
-                    [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
-                    conversation.ext = ext;
-                    break;
-                }
-            }
-        } else {
-            NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
-            for (EMGroup *group in groupArray) {
-                if ([group.groupId isEqualToString:conversation.conversationId]) {
-                    imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
-                    
-                    NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                    [ext setObject:group.subject forKey:@"subject"];
-                    [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
-                    NSString *groupSubject = [ext objectForKey:@"subject"];
-                    NSString *conversationSubject = [conversation.ext objectForKey:@"subject"];
-                    if (groupSubject && conversationSubject && ![groupSubject isEqualToString:conversationSubject]) {
-                        conversation.ext = ext;
-                    }
-                    break;
-                }
-            }
-            model.title = [conversation.ext objectForKey:@"subject"];
-            imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
-            model.avatarImage = [UIImage imageNamed:imageName];
-        }*/
     }
     return model;
 }

@@ -52,8 +52,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     }
-    
-    [self registerEaseMobNotification];
 }
 
 #pragma mark - App Delegate
@@ -136,17 +134,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                           otherButtonTitles:nil];
     [alert show];
     
-}
-
-#pragma mark - registerEaseMobNotification
-- (void)registerEaseMobNotification{
-    [self unRegisterEaseMobNotification];
-    // 将self 添加到SDK回调中，以便本类可以收到SDK回调
-    [[EMClient shareClient].chatManager addDelegate:self delegateQueue:nil];
-}
-
-- (void)unRegisterEaseMobNotification{
-    [[EMClient shareClient].chatManager removeDelegate:self];
 }
 
 @end

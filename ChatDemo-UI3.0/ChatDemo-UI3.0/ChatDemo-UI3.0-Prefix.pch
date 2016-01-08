@@ -35,8 +35,9 @@
     #import "EMFileMessageBody.h"
     #import "EMGroupManagerDelegate.h"
     #import "EMChatroomManagerDelegate.h"
-
+#if DEMO_CALL == 1
     #import "EMClient+Call.h"
+#endif
     #import "EaseUI.h"
 
 #define DEMO_CALL 0

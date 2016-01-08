@@ -57,8 +57,6 @@
     
     //通过会话管理者获取已收发消息
     [self tableViewDidTriggerHeaderRefresh];
-    
-    [[EMClient shareClient] addDelegate:self delegateQueue:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,9 +73,7 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
             [[EMClient shareClient].roomManager leaveChatroom:chatter error:&error];
-            if (error ==nil) {
-                [[EMClient shareClient].chatManager deleteConversation:chatter deleteMessages:YES];
-            } else {
+            if (error !=nil) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Leave chatroom '%@' failed [%@]", chatter, error.domain] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertView show];
@@ -92,7 +88,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (self.conversation.type == EMConversationTypeChat) {
+    if (self.conversation.type == EMConversationTypeGroupChat) {
         if ([[self.conversation.ext objectForKey:@"subject"] length])
         {
             self.title = [self.conversation.ext objectForKey:@"subject"];
@@ -140,17 +136,6 @@
 }
 
 #pragma mark - EaseMessageViewControllerDelegate
-
-- (UITableViewCell *)messageViewController:(UITableView *)tableView
-                       cellForMessageModel:(id<IMessageModel>)messageModel
-{
-    return nil;
-}
-
-- (CGFloat)messageViewController:(EaseMessageViewController *)viewController heightForMessageModel:(id<IMessageModel>)messageModel withCellWidth:(CGFloat)cellWidth
-{
-    return 0;
-}
 
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController
    canLongPressRowAtIndexPath:(NSIndexPath *)indexPath

@@ -127,7 +127,7 @@ static const CGFloat kBorderWidth = 2.0f;
     
     if (animated) {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"progress"];
-        animation.duration = fabsf(self.progress - pinnedProgress) + 0.1f;
+        animation.duration = fabs(self.progress - pinnedProgress) + 0.1f;
         animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         animation.fromValue = [NSNumber numberWithFloat:self.progress];
         animation.toValue = [NSNumber numberWithFloat:pinnedProgress];

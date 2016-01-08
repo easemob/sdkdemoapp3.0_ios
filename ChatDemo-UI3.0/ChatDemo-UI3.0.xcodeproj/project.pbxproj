@@ -46,7 +46,6 @@
 		9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8621939D8D000DC38A4 /* ApplyFriendCell.m */; };
 		9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8641939D8D000DC38A4 /* ApplyViewController.m */; };
 		9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8671939D8D000DC38A4 /* RealtimeSearchUtil.m */; };
-		90133EC11972DFF400C49B56 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
 		90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */; };
 		90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */; };
@@ -59,8 +58,6 @@
 		90911034192EEA70008A48AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911033192EEA70008A48AA /* main.m */; };
 		9091103A192EEA70008A48AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90911039192EEA70008A48AA /* Images.xcassets */; };
 		90911117192EEAED008A48AA /* THProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E0192EEAED008A48AA /* THProgressView.m */; };
-		90911119192EEAED008A48AA /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E6192EEAED008A48AA /* NSDate+Category.m */; };
-		9091111A192EEAED008A48AA /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E8192EEAED008A48AA /* NSDateFormatter+Category.m */; };
 		9091111B192EEAED008A48AA /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110EA192EEAED008A48AA /* UIResponder+Router.m */; };
 		90911126192EEBB8008A48AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911122192EEBB8008A48AA /* AppDelegate.m */; };
 		9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9091112E192EEC0F008A48AA /* SettingsViewController.m */; };
@@ -82,7 +79,6 @@
 		90F1BED11930493200121AEC /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED01930493100121AEC /* libiconv.dylib */; };
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
-		D202A3D01C20296A00A9D804 /* libEaseMobSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D202A3CF1C20296A00A9D804 /* libEaseMobSDK.a */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
@@ -99,6 +95,7 @@
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
 		D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */; };
+		D2B1B3981C34DC1B0087A74F /* libHyphenateSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B1B3971C34DC1B0087A74F /* libHyphenateSDK.a */; };
 		D2B3DAC51BF1D7B700913BD5 /* icon_002_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B3DAA51BF1D7B700913BD5 /* icon_002_cover.png */; };
 		D2B3DAC61BF1D7B700913BD5 /* icon_002.gif in Resources */ = {isa = PBXBuildFile; fileRef = D2B3DAA61BF1D7B700913BD5 /* icon_002.gif */; };
 		D2B3DAC71BF1D7B700913BD5 /* icon_007_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B3DAA71BF1D7B700913BD5 /* icon_007_cover.png */; };
@@ -315,8 +312,6 @@
 		9003D8661939D8D000DC38A4 /* RealtimeSearchUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealtimeSearchUtil.h; sourceTree = "<group>"; };
 		9003D8671939D8D000DC38A4 /* RealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealtimeSearchUtil.m; sourceTree = "<group>"; };
 		9003D91B1939D9C300DC38A4 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
-		90133EBF1972DFF400C49B56 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
-		90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		90517D651A5C3C1F008F1315 /* AppDelegate+EaseMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+EaseMob.h"; sourceTree = "<group>"; };
 		90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+EaseMob.m"; sourceTree = "<group>"; };
@@ -338,10 +333,6 @@
 		90911039192EEA70008A48AA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		909110DF192EEAED008A48AA /* THProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THProgressView.h; sourceTree = "<group>"; };
 		909110E0192EEAED008A48AA /* THProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THProgressView.m; sourceTree = "<group>"; };
-		909110E5192EEAED008A48AA /* NSDate+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Category.h"; sourceTree = "<group>"; };
-		909110E6192EEAED008A48AA /* NSDate+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Category.m"; sourceTree = "<group>"; };
-		909110E7192EEAED008A48AA /* NSDateFormatter+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+Category.h"; sourceTree = "<group>"; };
-		909110E8192EEAED008A48AA /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		909110E9192EEAED008A48AA /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
 		909110EA192EEAED008A48AA /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
 		90911121192EEBB8008A48AA /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -533,6 +524,9 @@
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D29A6BB71B720A62002324BB /* AppDelegate+Parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Parse.h"; sourceTree = "<group>"; };
 		D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Parse.m"; sourceTree = "<group>"; };
+		D2B1B3971C34DC1B0087A74F /* libHyphenateSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateSDK.a; path = "../../emclient-ios/newSDK/build/Debug-iphoneos/libHyphenateSDK.a"; sourceTree = "<group>"; };
+		D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		D2B1B9EE1C3B80290087A74F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D2B3DAA51BF1D7B700913BD5 /* icon_002_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_002_cover.png; sourceTree = "<group>"; };
 		D2B3DAA61BF1D7B700913BD5 /* icon_002.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_002.gif; sourceTree = "<group>"; };
 		D2B3DAA71BF1D7B700913BD5 /* icon_007_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_007_cover.png; sourceTree = "<group>"; };
@@ -672,7 +666,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D202A3D01C20296A00A9D804 /* libEaseMobSDK.a in Frameworks */,
+				D2B1B3981C34DC1B0087A74F /* libHyphenateSDK.a in Frameworks */,
 				D2E34D721C1EDEB80024BADC /* libEaseUI.a in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
@@ -898,6 +892,9 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2B1B9EE1C3B80290087A74F /* MessageUI.framework */,
+				D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */,
+				D2B1B3971C34DC1B0087A74F /* libHyphenateSDK.a */,
 				D202A3CF1C20296A00A9D804 /* libEaseMobSDK.a */,
 				D2E34D711C1EDEB80024BADC /* libEaseUI.a */,
 				D29A6BB41B7209C1002324BB /* Accounts.framework */,
@@ -989,14 +986,8 @@
 			children = (
 				D29A6BA71B7208DF002324BB /* UIImageView+HeadImage.h */,
 				D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */,
-				909110E5192EEAED008A48AA /* NSDate+Category.h */,
-				909110E6192EEAED008A48AA /* NSDate+Category.m */,
-				909110E7192EEAED008A48AA /* NSDateFormatter+Category.h */,
-				909110E8192EEAED008A48AA /* NSDateFormatter+Category.m */,
 				909110E9192EEAED008A48AA /* UIResponder+Router.h */,
 				909110EA192EEAED008A48AA /* UIResponder+Router.m */,
-				90133EBF1972DFF400C49B56 /* UIViewController+DismissKeyboard.h */,
-				90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1860,7 +1851,6 @@
 				3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */,
 				3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */,
 				3C9DDAB4193871D8007C765A /* EMSearchDisplayController.m in Sources */,
-				90133EC11972DFF400C49B56 /* UIViewController+DismissKeyboard.m in Sources */,
 				906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
@@ -1871,7 +1861,6 @@
 				9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */,
-				9091111A192EEAED008A48AA /* NSDateFormatter+Category.m in Sources */,
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
@@ -1883,7 +1872,6 @@
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
-				90911119192EEAED008A48AA /* NSDate+Category.m in Sources */,
 				3C6FFA2419A2F5560003EB25 /* DebugViewController.m in Sources */,
 				90B42A381B65E62C00968342 /* RobotManager.m in Sources */,
 				3C35365C19A22164003EF79E /* GroupSettingViewController.m in Sources */,
@@ -2036,7 +2024,7 @@
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../EaseMobSDK/include/**",
+					"$(PROJECT_DIR)/../EaseMobSDK/include",
 					"$(PROJECT_DIR)/../../emclient-ios/newSDK/export/**",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
@@ -2089,7 +2077,7 @@
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../EaseMobSDK/include/**",
+					"$(PROJECT_DIR)/../EaseMobSDK/include",
 					"$(PROJECT_DIR)/../../emclient-ios/newSDK/export/**",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;

@@ -45,7 +45,7 @@
                 if (!aError) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                     ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-                    chatController.title = userModel.nickname;
+                    chatController.title = userModel.nickname.length != 0 ? [userModel.nickname copy] : [userModel.buddy copy];
                     if ([array count] >= 3) {
                         [array removeLastObject];
                         [array removeLastObject];
@@ -64,13 +64,13 @@
             if (image) {
                 image = [UIImage imageWithContentsOfFile:self.messageModel.fileLocalPath];
             }
-            EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat requireEncryption:NO messageExt:self.messageModel.message.ext quality:1.0f progress:nil];
+            EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat requireEncryption:NO messageExt:self.messageModel.message.ext progress:nil];
             
             [[EMClient shareClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
                 if (!error) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                     ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-                    chatController.title = userModel.nickname;
+                    chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
                     if ([array count] >= 3) {
                         [array removeLastObject];
                         [array removeLastObject];
@@ -82,17 +82,6 @@
                 }
             }];
         }
-    }
-    if (flag) {
-        NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-        chatController.title = userModel.nickname;
-        if ([array count] >= 3) {
-            [array removeLastObject];
-            [array removeLastObject];
-        }
-        [array addObject:chatController];
-        [self.navigationController setViewControllers:array animated:YES];
     }
 }
 

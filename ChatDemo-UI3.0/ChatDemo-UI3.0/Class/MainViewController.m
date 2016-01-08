@@ -27,7 +27,11 @@ static NSString *kMessageType = @"MessageType";
 static NSString *kConversationChatter = @"ConversationChatter";
 static NSString *kGroupName = @"GroupName";
 
+#if DEMO_CALL == 1
 @interface MainViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
+#else
+@interface MainViewController () <UIAlertViewDelegate>
+#endif
 {
     ConversationListController *_chatListVC;
     ContactListViewController *_contactsVC;
@@ -270,7 +274,7 @@ static NSString *kGroupName = @"GroupName";
 //    [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
 //    [audioSession setActive:YES error:nil];
  
-    [[EMClient shareClient].callManager addDelegate:self delegateQueue:nil];
+//    [[EMClient shareClient].callManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)playSoundAndVibration{
