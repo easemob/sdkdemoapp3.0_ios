@@ -128,7 +128,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        EMError *error = [[EMClient shareClient].contactManager removeUserFromBlackList:username];
+        EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
         if (!error)
         {
             [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
@@ -136,7 +136,7 @@
         }
         else
         {
-            [self showHint:error.domain];
+            [self showHint:error.errorDescription];
         }
     }
 }
@@ -266,7 +266,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [weakself.dataSource removeAllObjects];
         EMError *error = nil;
-        NSArray *blocked = [[EMClient shareClient].contactManager getBlackListFromServerWithError:&error];
+        NSArray *blocked = [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
         [weakself.dataSource addObjectsFromArray:[weakself sortDataArray:blocked]];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.tableView reloadData];

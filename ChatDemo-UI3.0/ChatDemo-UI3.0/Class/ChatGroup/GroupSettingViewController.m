@@ -39,7 +39,7 @@
     if (self) {
         _group = group;
         
-        NSString *loginUsername = [[EMClient shareClient] currentUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         _isOwner = [_group.owner isEqualToString:loginUsername];
     }
     
@@ -165,7 +165,7 @@
     
     __weak GroupSettingViewController *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient shareClient].groupManager ignoreGroupPush:_group.groupId ignore:isIgnore];
+        EMError *error = [[EMClient sharedClient].groupManager ignoreGroupPush:_group.groupId ignore:isIgnore];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (!error) {
@@ -207,7 +207,7 @@
         if (_blockSwitch.isOn) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 EMError *error;
-                [[EMClient shareClient].groupManager blockGroup:_group.groupId error:&error];
+                [[EMClient sharedClient].groupManager blockGroup:_group.groupId error:&error];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error) {
                         [weakSelf hideHud];
@@ -222,7 +222,7 @@
         else{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 EMError *error;
-                [[EMClient shareClient].groupManager unblockGroup:_group.groupId error:&error];
+                [[EMClient sharedClient].groupManager unblockGroup:_group.groupId error:&error];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error) {
                         [weakSelf hideHud];

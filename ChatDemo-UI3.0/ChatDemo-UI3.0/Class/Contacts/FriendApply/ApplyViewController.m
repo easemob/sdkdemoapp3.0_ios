@@ -87,7 +87,7 @@ static ApplyViewController *controller = nil;
 
 - (NSString *)loginUsername
 {
-    return [[EMClient shareClient] currentUsername];
+    return [[EMClient sharedClient] currentUsername];
 }
 
 #pragma mark - Table view data source
@@ -174,20 +174,20 @@ static ApplyViewController *controller = nil;
         EMError *error;
         
         if (applyStyle == ApplyStyleGroupInvitation) {
-            [[EMClient shareClient].groupManager acceptInvitationFromGroup:entity.groupId inviter:entity.applicantUsername error:&error];
+            [[EMClient sharedClient].groupManager acceptInvitationFromGroup:entity.groupId inviter:entity.applicantUsername error:&error];
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            error = [[EMClient shareClient].groupManager acceptJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername];
+            error = [[EMClient sharedClient].groupManager acceptJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername];
         }
         else if(applyStyle == ApplyStyleFriend){
-            error = [[EMClient shareClient].contactManager acceptInvitationForUsername:entity.applicantUsername];
+            error = [[EMClient sharedClient].contactManager acceptInvitationForUsername:entity.applicantUsername];
         }
         
         [self hideHud];
         if (!error) {
             [self.dataSource removeObject:entity];
-            NSString *loginUsername = [[EMClient shareClient] currentUsername];
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
             [[InvitationManager sharedInstance] removeInvitation:entity loginUser:loginUsername];
             [self.tableView reloadData];
         }
@@ -206,26 +206,32 @@ static ApplyViewController *controller = nil;
         EMError *error;
         
         if (applyStyle == ApplyStyleGroupInvitation) {
-            error = [[EMClient shareClient].groupManager declineInvitationFromGroup:entity.groupId inviter:entity.applicantUsername reason:nil];
+            error = [[EMClient sharedClient].groupManager declineInvitationFromGroup:entity.groupId inviter:entity.applicantUsername reason:nil];
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            error = [[EMClient shareClient].groupManager declineJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername reason:nil];
+            error = [[EMClient sharedClient].groupManager declineJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername reason:nil];
         }
         else if(applyStyle == ApplyStyleFriend){
-            [[EMClient shareClient].contactManager declineInvitationForUsername:entity.applicantUsername];
+            [[EMClient sharedClient].contactManager declineInvitationForUsername:entity.applicantUsername];
         }
         
         [self hideHud];
         if (!error) {
             [self.dataSource removeObject:entity];
-            NSString *loginUsername = [[EMClient shareClient] currentUsername];
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
             [[InvitationManager sharedInstance] removeInvitation:entity loginUser:loginUsername];
             
             [self.tableView reloadData];
         }
         else{
             [self showHint:NSLocalizedString(@"rejectFail", @"reject failure")];
+            [self.dataSource removeObject:entity];
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
+            [[InvitationManager sharedInstance] removeInvitation:entity loginUser:loginUsername];
+            
+            [self.tableView reloadData];
+
         }
     }
 }
@@ -266,7 +272,7 @@ static ApplyViewController *controller = nil;
             newEntity.style = [dictionary objectForKey:@"applyStyle"];
             newEntity.reason = [dictionary objectForKey:@"applyMessage"];
             
-            NSString *loginName = [[EMClient shareClient] currentUsername];
+            NSString *loginName = [[EMClient sharedClient] currentUsername];
             newEntity.receiverUsername = loginName;
             
             NSString *groupId = [dictionary objectForKey:@"groupId"];
@@ -275,7 +281,7 @@ static ApplyViewController *controller = nil;
             NSString *groupSubject = [dictionary objectForKey:@"groupname"];
             newEntity.groupSubject = (groupSubject && groupSubject.length > 0) ? groupSubject : @"";
             
-            NSString *loginUsername = [[EMClient shareClient] currentUsername];
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
             [[InvitationManager sharedInstance] addInvitation:newEntity loginUser:loginUsername];
             
             [_dataSource insertObject:newEntity atIndex:0];

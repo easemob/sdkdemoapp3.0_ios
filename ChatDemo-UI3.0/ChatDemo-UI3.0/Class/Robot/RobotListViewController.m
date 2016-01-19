@@ -47,7 +47,7 @@
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
-    [[EMClient shareClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
 
     self.title = NSLocalizedString(@"title.robotlist",@"robot list");
     
@@ -171,7 +171,7 @@
 //    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
 //    
 //    __weak typeof(self) weakSelf = self;
-//    [[EMClient shareClient].chatManager asyncFetchRobotsFromServerWithCompletion:^(NSArray *robots, EMError *error) {
+//    [[EMClient sharedClient].chatManager asyncFetchRobotsFromServerWithCompletion:^(NSArray *robots, EMError *error) {
 //        [weakSelf hideHud];
 //        if (!error) {
 //            [weakSelf.dataSource removeAllObjects];
@@ -179,7 +179,7 @@
 //            [weakSelf.tableView reloadData];
 //            [[RobotManager sharedInstance] addRobotsToMemory:robots];
 //        } else {
-//            NSArray *robots = [[EMClient shareClient].chatManager robotList];
+//            NSArray *robots = [[EMClient sharedClient].chatManager robotList];
 //            if (robots) {
 //                [weakSelf.dataSource removeAllObjects];
 //                for (EMRobot *robot in robots) {
@@ -204,7 +204,7 @@
             [robots removeAllObjects];
         });
     }
-    [[EMClient shareClient].chatManager removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
 }
 
 @end

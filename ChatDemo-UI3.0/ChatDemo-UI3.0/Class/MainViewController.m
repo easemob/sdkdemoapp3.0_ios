@@ -172,7 +172,7 @@ static NSString *kGroupName = @"GroupName";
 // 统计未读消息数
 -(void)setupUnreadMessageCount
 {
-    NSArray *conversations = [[EMClient shareClient].chatManager getAllConversations];
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     NSInteger unreadCount = 0;
     for (EMConversation *conversation in conversations) {
         unreadCount += conversation.unreadMessagesCount;
@@ -244,24 +244,24 @@ static NSString *kGroupName = @"GroupName";
         EMCallSessionType type = [[object objectForKey:@"type"] intValue];
         EMCallSession *callSession = nil;
         if (type == eCallSessionTypeAudio) {
-            callSession = [[EMClient shareClient].callManager makeVoiceCall:chatter error:&error];
+            callSession = [[EMClient sharedClient].callManager makeVoiceCall:chatter error:&error];
         }
         else if (type == eCallSessionTypeVideo){
             if (![CallViewController canVideo]) {
                 return;
             }
-            callSession = [[EMClient shareClient].callManager makeVideoCall:chatter error:&error];
+            callSession = [[EMClient sharedClient].callManager makeVideoCall:chatter error:&error];
         }
         
         if (callSession && !error) {
-            [[EMClient shareClient].callManager removeDelegate:self];
+            [[EMClient sharedClient].callManager removeDelegate:self];
             CallViewController *callController = [[CallViewController alloc] initWithUsername:callSession.username status:@"连接建立完成" isCaller:NO];
             callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
             [self presentViewController:callController animated:NO completion:nil];
         }
         
         if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", @"error") message:error.domain delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", @"error") message:error.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
         }
     }
@@ -274,7 +274,7 @@ static NSString *kGroupName = @"GroupName";
 //    [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
 //    [audioSession setActive:YES error:nil];
  
-//    [[EMClient shareClient].callManager addDelegate:self delegateQueue:nil];
+//    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)playSoundAndVibration{
@@ -297,7 +297,7 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)showNotificationWithMessage:(EMMessage *)message
 {
-    EMPushOptions *options = [[EMClient shareClient] pushOptions];
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     //发送本地推送
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = [NSDate date]; //触发通知的时间
@@ -336,7 +336,7 @@ static NSString *kGroupName = @"GroupName";
         
         NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
         if (message.chatType == EMChatTypeGroupChat) {
-            NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
+            NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
             for (EMGroup *group in groupArray) {
                 if ([group.groupId isEqualToString:message.conversationId]) {
                     title = [NSString stringWithFormat:@"%@(%@)", message.from, group.subject];
@@ -347,7 +347,7 @@ static NSString *kGroupName = @"GroupName";
         else if (message.chatType == EMChatTypeChatRoom)
         {
             NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            NSString *key = [NSString stringWithFormat:@"OnceJoinedChatrooms_%@", [[EMClient shareClient] currentUsername]];
+            NSString *key = [NSString stringWithFormat:@"OnceJoinedChatrooms_%@", [[EMClient sharedClient] currentUsername]];
             NSMutableDictionary *chatrooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
             NSString *chatroomName = [chatrooms objectForKey:message.conversationId];
             if (chatroomName)
@@ -436,7 +436,7 @@ static NSString *kGroupName = @"GroupName";
             }
             
             if (!isShowPicker){
-                [[EMClient shareClient].callManager removeDelegate:self];
+                [[EMClient sharedClient].callManager removeDelegate:self];
 //                CallViewController *callController = [[CallViewController alloc] initWithSession:callSession isIncoming:YES];
                 CallViewController *callController = [[CallViewController alloc] initWithUsername:callSession.username status:@"连接建立完成" isCaller:YES];
                 callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
@@ -450,7 +450,7 @@ static NSString *kGroupName = @"GroupName";
         } while (0);
         
         if (error) {
-            [[EMClient shareClient].callManager asyncEndCall:callSession.sessionId reason:eCallReasonHangup];
+            [[EMClient sharedClient].callManager asyncEndCall:callSession.sessionId reason:eCallReasonHangup];
             return;
         }
     }
@@ -520,7 +520,7 @@ static NSString *kGroupName = @"GroupName";
                         switch (messageType) {
                             case EMChatTypeChat:
                                 {
-                                    NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
+                                    NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
                                     for (EMGroup *group in groupArray) {
                                         if ([group.groupId isEqualToString:conversationChatter]) {
                                             chatViewController.title = group.subject;
@@ -547,7 +547,7 @@ static NSString *kGroupName = @"GroupName";
                 switch (messageType) {
                     case EMChatTypeGroupChat:
                     {
-                        NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
+                        NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
                         for (EMGroup *group in groupArray) {
                             if ([group.groupId isEqualToString:conversationChatter]) {
                                 chatViewController.title = group.subject;

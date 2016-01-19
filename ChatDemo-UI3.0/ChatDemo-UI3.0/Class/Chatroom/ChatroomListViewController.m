@@ -49,7 +49,7 @@
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
-    [[EMClient shareClient].roomManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     // Uncomment the following line to preserve selection between presentations.
     self.title = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
     
@@ -87,7 +87,7 @@
             [chatrooms removeAllObjects];
         });
     }
-    [[EMClient shareClient].roomManager removeDelegate:self];
+    [[EMClient sharedClient].roomManager removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -249,7 +249,7 @@
 {
     [searchBar resignFirstResponder];
     
-//    [[EMClient shareClient].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
+//    [[EMClient sharedClient].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
 //        if (!error) {
 //            [self.searchController.resultsSource removeAllObjects];
 //            [self.searchController.resultsSource addObject:group];
@@ -302,7 +302,7 @@
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        NSArray *list = [[EMClient shareClient].roomManager fetchAllChatroomsWithError:&error];
+        NSArray *list = [[EMClient sharedClient].roomManager getAllChatroomsFromServerWithError:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.dataSource removeAllObjects];
             [weakSelf.dataSource addObjectsFromArray:list];

@@ -64,7 +64,7 @@
         options.apnsCertName = @"chatdemoui_dev";
         options.enableConsoleLog = YES;
         
-        [[EMClient shareClient] initializeSDKWithOptions:options];
+        [[EMClient sharedClient] initializeSDKWithOptions:options];
         return YES;
     }
     

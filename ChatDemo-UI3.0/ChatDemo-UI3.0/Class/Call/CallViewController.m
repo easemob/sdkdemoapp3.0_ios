@@ -264,7 +264,7 @@
 - (void)silenceAction
 {
     _silenceButton.selected = !_silenceButton.selected;
-    //    [[EMClient shareClient].callManager markCallSession:_callSession.sessionId asSilence:_silenceButton.selected];
+    //    [[EMClient sharedClient].callManager markCallSession:_callSession.sessionId asSilence:_silenceButton.selected];
 }
 
 - (void)speakerOutAction

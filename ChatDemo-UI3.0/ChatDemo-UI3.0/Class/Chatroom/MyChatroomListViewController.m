@@ -257,7 +257,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
         [tableView reloadData];
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient shareClient] currentUsername]];
+        NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient sharedClient] currentUsername]];
         NSMutableDictionary *chatRooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
         [chatRooms removeObjectForKey:chatroom.chatroomId];
         [ud setObject:chatRooms forKey:key];
@@ -381,7 +381,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
     [self.dataSource removeAllObjects];
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient shareClient] currentUsername]];
+    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient sharedClient] currentUsername]];
     NSDictionary *chatRooms = [ud objectForKey:key];
     for (NSString *chatroomId in [chatRooms allKeys])
     {
@@ -423,7 +423,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
     }
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient shareClient] currentUsername]];
+    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient sharedClient] currentUsername]];
     NSMutableDictionary *chatRooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
     [chatRooms removeObjectForKey:myChatroom.chatroomId];
     [ud setObject:chatRooms forKey:key];

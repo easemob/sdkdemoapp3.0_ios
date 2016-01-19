@@ -58,7 +58,7 @@
         _usernameTextField.text = username;
     }
     
-//    [_useIpSwitch setOn:[[EMClient shareClient].options enableDnsConfig] animated:YES];
+//    [_useIpSwitch setOn:[[EMClient sharedClient].options enableDnsConfig] animated:YES];
     
     self.title = NSLocalizedString(@"AppName", @"EaseMobDemo");
 }
@@ -95,7 +95,7 @@
         [self showHudInView:self.view hint:NSLocalizedString(@"register.ongoing", @"Is to register...")];
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = [[EMClient shareClient] registerWithUsername:weakself.usernameTextField.text password:weakself.passwordTextField.text];
+            EMError *error = [[EMClient sharedClient] registerWithUsername:weakself.usernameTextField.text password:weakself.passwordTextField.text];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself hideHud];
                 if (!error) {
@@ -131,17 +131,17 @@
     //异步登陆账号
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient shareClient] loginWithUsername:username password:password];
+        EMError *error = [[EMClient sharedClient] loginWithUsername:username password:password];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself hideHud];
             if (!error) {
                 //设置是否自动登录
-                [[EMClient shareClient].options setIsAutoLogin:YES];
+                [[EMClient sharedClient].options setIsAutoLogin:YES];
                 
                 //获取数据库中数据
                 [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[EMClient shareClient] dataMigrationTo3];
+                    [[EMClient sharedClient] dataMigrationTo3];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
                         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
@@ -158,7 +158,7 @@
                 switch (error.code)
                 {
 //                    case EMErrorNotFound:
-//                        TTAlertNoTitle(error.domain);
+//                        TTAlertNoTitle(error.errorDescription);
 //                        break;
                     case EMErrorNerworkUnavailable:
                         TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
@@ -167,7 +167,7 @@
                         TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
                         break;
                     case EMErrorUserAuthenticationFailed:
-                        TTAlertNoTitle(error.domain);
+                        TTAlertNoTitle(error.errorDescription);
                         break;
                     case EMErrorServerTimeout:
                         TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
@@ -189,7 +189,7 @@
         if(nameTextField.text.length > 0)
         {
             //设置推送设置
-            [[EMClient shareClient] setApnsNickname:nameTextField.text];
+            [[EMClient sharedClient] setApnsNickname:nameTextField.text];
         }
     }
     //登陆
@@ -233,7 +233,7 @@
 - (IBAction)useIpAction:(id)sender
 {
 //    UISwitch *ipSwitch = (UISwitch *)sender;
-//    [[EMClient shareClient].options setEnableDnsConfig:ipSwitch.isOn];
+//    [[EMClient sharedClient].options setEnableDnsConfig:ipSwitch.isOn];
 }
 
 //判断账号和密码是否为空
@@ -278,7 +278,7 @@
 #pragma  mark - private
 - (void)saveLastLoginUsername
 {
-    NSString *username = [[EMClient shareClient] currentUsername];
+    NSString *username = [[EMClient sharedClient] currentUsername];
     if (username && username.length > 0) {
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         [ud setObject:username forKey:[NSString stringWithFormat:@"em_lastLogin_username"]];

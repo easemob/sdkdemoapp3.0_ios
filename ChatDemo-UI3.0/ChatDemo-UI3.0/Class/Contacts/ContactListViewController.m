@@ -139,7 +139,7 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             NSString *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            NSString *loginUsername = [[EMClient shareClient] currentUsername];
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
             if (loginUsername && loginUsername.length > 0) {
                 if ([loginUsername isEqualToString:buddy]) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
@@ -300,7 +300,7 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
-        NSString *loginUsername = [[EMClient shareClient] currentUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         if (loginUsername && loginUsername.length > 0) {
             if ([loginUsername isEqualToString:model.buddy]) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
@@ -327,7 +327,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *loginUsername = [[EMClient shareClient] currentUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
         if ([model.buddy isEqualToString:loginUsername]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
@@ -336,9 +336,9 @@
             return;
         }
         
-        EMError *error = [[EMClient shareClient].contactManager deleteContact:model.buddy];
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
         if (!error) {
-            [[EMClient shareClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
+            [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
             
             [tableView beginUpdates];
             [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
@@ -347,7 +347,7 @@
             [tableView endUpdates];
         }
         else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.domain]];
+            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
             [tableView reloadData];
         }
     }
@@ -402,7 +402,7 @@
         // 群组，聊天室
         return;
     }
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
     if ([model.buddy isEqualToString:loginUsername])
     {
@@ -431,7 +431,7 @@
     NSMutableArray *contactsSource = [NSMutableArray array];
     
     //从获取的数据中剔除黑名单中的好友
-    NSArray *blockList = [[EMClient shareClient].contactManager getBlackListFromDB];
+    NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
     for (NSString *buddy in buddyList) {
         if (![blockList containsObject:buddy]) {
             [contactsSource addObject:buddy];
@@ -501,7 +501,7 @@
         // 群组，聊天室
         return;
     }
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
     if ([model.buddy isEqualToString:loginUsername])
     {
@@ -521,7 +521,7 @@
         EaseUserModel *model = [[self.dataArray objectAtIndex:(_currentLongPressIndex.section - 1)] objectAtIndex:_currentLongPressIndex.row];
         [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
         
-        EMError *error = [[EMClient shareClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
+        EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
         [self hideHud];
         if (!error) {
             //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
@@ -532,7 +532,7 @@
             [self.tableView endUpdates];
         }
         else {
-            [self showHint:error.domain];
+            [self showHint:error.errorDescription];
         }
     }
     _currentLongPressIndex = nil;
@@ -546,9 +546,9 @@
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        NSArray *buddyList = [[EMClient shareClient].contactManager getContactsFromServerWithError:&error];
+        NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
         if (!error) {
-            [[EMClient shareClient].contactManager getBlackListFromServerWithError:&error];
+            [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
             if (!error) {
                 [weakself.contactsSource removeAllObjects];
                 
@@ -557,7 +557,7 @@
                     [weakself.contactsSource addObject:username];
                 }
                 
-                NSString *loginUsername = [[EMClient shareClient] currentUsername];
+                NSString *loginUsername = [[EMClient sharedClient] currentUsername];
                 if (loginUsername && loginUsername.length > 0) {
                     [weakself.contactsSource addObject:loginUsername];
                 }
@@ -583,13 +583,13 @@
     [self.dataArray removeAllObjects];
     [self.contactsSource removeAllObjects];
     
-    NSArray *buddyList = [[EMClient shareClient].contactManager getContactsFromDB];
+    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
     
     for (NSString *buddy in buddyList) {
         [self.contactsSource addObject:buddy];
     }
     
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     if (loginUsername && loginUsername.length > 0) {
         [self.contactsSource addObject:loginUsername];
     }

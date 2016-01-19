@@ -112,7 +112,7 @@
         if (entity && entity.nickname.length>0) {
             cell.detailTextLabel.text = entity.nickname;
         } else {
-            cell.detailTextLabel.text = [[EMClient shareClient] currentUsername];
+            cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -151,7 +151,7 @@
             //设置推送设置
             [self showHint:NSLocalizedString(@"setting.saving", "saving...")];
             __weak typeof(self) weakSelf = self;
-            [[EMClient shareClient] setApnsNickname:nameTextField.text];
+            [[EMClient sharedClient] setApnsNickname:nameTextField.text];
             [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:nameTextField.text} completion:^(BOOL success, NSError *error) {
                 [self hideHud];
                 if (success) {

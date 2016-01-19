@@ -55,11 +55,11 @@
 
 - (void)registerNotifications {
     [self unregisterNotifications];
-    [[EMClient shareClient].groupManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)unregisterNotifications {
-    [[EMClient shareClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
 }
 
 - (void)dealloc {
@@ -82,7 +82,7 @@
 - (instancetype)initWithGroupId:(NSString *)chatGroupId
 {
     EMGroup *chatGroup = nil;
-    NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
+    NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
     for (EMGroup *group in groupArray) {
         if ([group.groupId isEqualToString:chatGroupId]) {
             chatGroup = group;
@@ -328,10 +328,10 @@
             [source addObject:username];
         }
         
-        NSString *username = [[EMClient shareClient] currentUsername];
+        NSString *username = [[EMClient sharedClient] currentUsername];
         NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join group \'%@\'"), username, weakSelf.chatGroup.subject];
         EMError *error = nil;
-        weakSelf.chatGroup = [[EMClient shareClient].groupManager addOccupants:source toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:&error];
+        weakSelf.chatGroup = [[EMClient sharedClient].groupManager addOccupants:source toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 [weakSelf reloadDataSource];
@@ -339,7 +339,7 @@
             else
             {
                 [weakSelf hideHud];
-                [weakSelf showHint:error.domain];
+                [weakSelf showHint:error.errorDescription];
             }
         
         });
@@ -373,13 +373,13 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
-        EMGroup *group = [[EMClient shareClient].groupManager fetchGroupInfo:weakSelf.chatGroup.groupId includeMembersList:YES error:&error];
+        EMGroup *group = [[EMClient sharedClient].groupManager fetchGroupInfo:weakSelf.chatGroup.groupId includeMembersList:YES error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
         });
         if (!error) {
             weakSelf.chatGroup = group;
-            EMConversation *conversation = [[EMClient shareClient].chatManager getConversation:group.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
+            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:group.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
             if ([group.groupId isEqualToString:conversation.conversationId]) {
                 NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
                 [ext setObject:group.subject forKey:@"subject"];
@@ -403,7 +403,7 @@
     [self.dataSource removeAllObjects];
     
     self.occupantType = GroupOccupantTypeMember;
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     if ([self.chatGroup.owner isEqualToString:loginUsername]) {
         self.occupantType = GroupOccupantTypeOwner;
     }
@@ -450,7 +450,7 @@
     self.scrollView.frame = CGRectMake(10, 20, self.tableView.frame.size.width - 20, row * kContactSize);
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, row * kContactSize);
     
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     
     int i = 0;
     int j = 0;
@@ -475,7 +475,7 @@
                     NSArray *occupants = [NSArray arrayWithObject:[weakSelf.dataSource objectAtIndex:index]];
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
                         EMError *error = nil;
-                        EMGroup *group = [[EMClient shareClient].groupManager removeOccupants:occupants fromGroup:weakSelf.chatGroup.groupId error:&error];
+                        EMGroup *group = [[EMClient sharedClient].groupManager removeOccupants:occupants fromGroup:weakSelf.chatGroup.groupId error:&error];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf hideHud];
                             if (!error) {
@@ -484,7 +484,7 @@
                                 [weakSelf refreshScrollView];
                             }
                             else{
-                                [weakSelf showHint:error.domain];
+                                [weakSelf showHint:error.errorDescription];
                             }
                         });
                     });
@@ -539,7 +539,7 @@
 {
     if (longPress.state == UIGestureRecognizerStateBegan)
     {
-        NSString *loginUsername = [[EMClient shareClient] currentUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         for (ContactView *contactView in self.scrollView.subviews)
         {
             CGPoint locaton = [longPress locationInView:contactView];
@@ -560,7 +560,7 @@
 
 - (void)setScrollViewEditing:(BOOL)isEditing
 {
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     
     for (ContactView *contactView in self.scrollView.subviews)
     {
@@ -605,7 +605,7 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"group.destroy", @"dissolution of the group")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
-        [[EMClient shareClient].groupManager destroyGroup:weakSelf.chatGroup.groupId error:&error];
+        [[EMClient sharedClient].groupManager destroyGroup:weakSelf.chatGroup.groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (error) {
@@ -623,7 +623,7 @@
     // todo
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        [[EMClient shareClient].groupManager ignoreGroupPush:weakSelf.chatGroup.groupId ignore:weakSelf.chatGroup.isPushNotificationEnabled];
+        [[EMClient sharedClient].groupManager ignoreGroupPush:weakSelf.chatGroup.groupId ignore:weakSelf.chatGroup.isPushNotificationEnabled];
     });
 }
 
@@ -634,7 +634,7 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"group.leave", @"quit the group")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
-        [[EMClient shareClient].groupManager leaveGroup:weakSelf.chatGroup.groupId error:&error];
+        [[EMClient sharedClient].groupManager leaveGroup:weakSelf.chatGroup.groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (error) {
@@ -669,7 +669,7 @@
         __weak ChatGroupDetailViewController *weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
             EMError *error = nil;
-            EMGroup *group = [[EMClient shareClient].groupManager blockOccupants:occupants
+            EMGroup *group = [[EMClient sharedClient].groupManager blockOccupants:occupants
                                                                        fromGroup:weakSelf.chatGroup.groupId
                                                                            error:&error];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -680,7 +680,7 @@
                     [weakSelf refreshScrollView];
                 }
                 else{
-                    [weakSelf showHint:error.domain];
+                    [weakSelf showHint:error.errorDescription];
                 }
             });
         });

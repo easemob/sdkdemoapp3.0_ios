@@ -79,7 +79,7 @@
 
 - (void)removeEmptyConversationsFromDB
 {
-    NSArray *conversations = [[EMClient shareClient].chatManager getAllConversations];
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     NSMutableArray *needRemoveConversations;
     for (EMConversation *conversation in conversations) {
         if (!conversation.latestMessage || (conversation.type == EMConversationTypeChatRoom)) {
@@ -92,7 +92,7 @@
     }
     
     if (needRemoveConversations && needRemoveConversations.count > 0) {
-        [[EMClient shareClient].chatManager deleteConversations:needRemoveConversations deleteMessages:YES];
+        [[EMClient sharedClient].chatManager deleteConversations:needRemoveConversations deleteMessages:YES];
     }
 }
 
@@ -225,7 +225,7 @@
         NSString *imageName = @"groupPublicHeader";
         if (![conversation.ext objectForKey:@"subject"])
         {
-            NSArray *groupArray = [[EMClient shareClient].groupManager getAllGroups];
+            NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
             for (EMGroup *group in groupArray) {
                 if ([group.groupId isEqualToString:conversation.conversationId]) {
                     NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];

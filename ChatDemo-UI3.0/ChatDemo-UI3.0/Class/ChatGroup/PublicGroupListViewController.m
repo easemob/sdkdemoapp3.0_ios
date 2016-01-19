@@ -317,7 +317,7 @@ typedef NS_ENUM(NSInteger, GettingMoreFooterViewState){
         _isGettingMore = YES;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
-            EMCursorResult *result = [[EMClient shareClient].groupManager getPublicGroupsFromServerWithCursor:weakSelf.cursor pageSize:FetchPublicGroupsPageSize error:&error];
+            EMCursorResult *result = [[EMClient sharedClient].groupManager getPublicGroupsFromServerWithCursor:weakSelf.cursor pageSize:FetchPublicGroupsPageSize error:&error];
             if (weakSelf)
             {
                 PublicGroupListViewController *strongSelf = weakSelf;
@@ -403,7 +403,7 @@ typedef NS_ENUM(NSInteger, GettingMoreFooterViewState){
             [self showHudInView:self.view hint:NSLocalizedString(@"searching", @"Searching")];
             dispatch_async(dispatch_get_main_queue(), ^{
                 EMError *error = nil;
-                EMGroup *group = [[EMClient shareClient].groupManager searchPublicGroupWithId:searchBar.text error:&error];
+                EMGroup *group = [[EMClient sharedClient].groupManager searchPublicGroupWithId:searchBar.text error:&error];
                 if (weakSelf)
                 {
                     PublicGroupListViewController *strongSelf = weakSelf;
@@ -468,7 +468,7 @@ typedef NS_ENUM(NSInteger, GettingMoreFooterViewState){
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        EMCursorResult *result = [[EMClient shareClient].groupManager getPublicGroupsFromServerWithCursor:weakSelf.cursor pageSize:FetchPublicGroupsPageSize error:&error];
+        EMCursorResult *result = [[EMClient sharedClient].groupManager getPublicGroupsFromServerWithCursor:weakSelf.cursor pageSize:FetchPublicGroupsPageSize error:&error];
         if (weakSelf)
         {
             PublicGroupListViewController *strongSelf = weakSelf;

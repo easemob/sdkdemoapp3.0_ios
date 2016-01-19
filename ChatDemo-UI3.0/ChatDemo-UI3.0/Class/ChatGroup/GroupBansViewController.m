@@ -126,7 +126,7 @@
 
 - (void)setScrollViewEditing:(BOOL)isEditing
 {
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     
     for (ContactView *contactView in self.scrollView.subviews)
     {
@@ -158,7 +158,7 @@
         return;
     }
     
-    NSString *loginUsername = [[EMClient shareClient] currentUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     
     int i = 0;
     int j = 0;
@@ -182,7 +182,7 @@
                     NSArray *occupants = [NSArray arrayWithObject:[weakSelf.group.bans objectAtIndex:index]];
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                         EMError *error = nil;
-                        EMGroup *group = [[EMClient shareClient].groupManager unblockOccupants:occupants forGroup:weakSelf.group.groupId error:&error];
+                        EMGroup *group = [[EMClient sharedClient].groupManager unblockOccupants:occupants forGroup:weakSelf.group.groupId error:&error];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf hideHud];
                             if (!error) {
@@ -190,7 +190,7 @@
                                 [weakSelf refreshScrollView];
                             }
                             else{
-                                [weakSelf showHint:error.domain];
+                                [weakSelf showHint:error.errorDescription];
                             }
                         });
                     });
@@ -208,14 +208,14 @@
     [self showHudInView:weakSelf.view hint:NSLocalizedString(@"group.ban.fetching", @"getting group blacklist...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        [[EMClient shareClient].groupManager fetchGroupBansList:weakSelf.group.groupId error:&error];
+        [[EMClient sharedClient].groupManager fetchGroupBansList:weakSelf.group.groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (!error) {
                 [weakSelf refreshScrollView];
             }
             else{
-                NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.ban.fetchFail", @"fail to get blacklist: %@"), error.domain];
+                NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.ban.fetchFail", @"fail to get blacklist: %@"), error.errorDescription];
                 [weakSelf showHint:errorStr];
             }
         });

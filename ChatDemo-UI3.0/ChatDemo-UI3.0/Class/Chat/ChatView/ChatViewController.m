@@ -72,17 +72,17 @@
         NSString *chatter = [self.conversation.conversationId copy];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
-            [[EMClient shareClient].roomManager leaveChatroom:chatter error:&error];
+            [[EMClient sharedClient].roomManager leaveChatroom:chatter error:&error];
             if (error !=nil) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Leave chatroom '%@' failed [%@]", chatter, error.domain] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Leave chatroom '%@' failed [%@]", chatter, error.errorDescription] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertView show];
                 });
             }
         });
     }
     
-    [[EMClient shareClient] removeDelegate:self];
+    [[EMClient sharedClient] removeDelegate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -254,15 +254,15 @@
 
 - (void)backAction
 {
-    [[EMClient shareClient].chatManager removeDelegate:self];
-    [[EMClient shareClient].roomManager removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[EMClient sharedClient].roomManager removeDelegate:self];
     [[ChatDemoHelper shareHelper] setChatVC:nil];
     
     if (self.deleteConversationIfNull) {
         //判断当前会话是否为空，若符合则删除该会话
         EMMessage *message = [self.conversation latestMessage];
         if (message == nil) {
-            [[EMClient shareClient].chatManager deleteConversation:self.conversation.conversationId deleteMessages:NO];
+            [[EMClient sharedClient].chatManager deleteConversation:self.conversation.conversationId deleteMessages:NO];
         }
     }
     
@@ -380,7 +380,7 @@
     if (object) {
         EMMessage *message = (EMMessage *)object;
         [self addMessageToDataSource:message progress:nil];
-        [[EMClient shareClient].chatManager importMessages:@[message]];
+        [[EMClient sharedClient].chatManager importMessages:@[message]];
     }
 }
 

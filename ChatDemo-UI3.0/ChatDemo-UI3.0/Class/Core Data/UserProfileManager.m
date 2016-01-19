@@ -15,7 +15,7 @@
 
 //#import "MessageModel.h"
 
-#define kCURRENT_USERNAME [[EMClient shareClient] currentUsername]
+#define kCURRENT_USERNAME [[EMClient sharedClient] currentUsername]
 
 @implementation UIImage (UIImageExt)
 

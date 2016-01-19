@@ -27,14 +27,14 @@ static ChatDemoHelper *helper = nil;
 
 - (void)dealloc
 {
-    [[EMClient shareClient] removeDelegate:self];
-    [[EMClient shareClient].groupManager removeDelegate:self];
-    [[EMClient shareClient].contactManager removeDelegate:self];
-    [[EMClient shareClient].roomManager removeDelegate:self];
-    [[EMClient shareClient].chatManager removeDelegate:self];
+    [[EMClient sharedClient] removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].contactManager removeDelegate:self];
+    [[EMClient sharedClient].roomManager removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     
 #if DEMO_CALL == 1
-    [[EMClient shareClient].callManager removeDelegate:self];
+    [[EMClient sharedClient].callManager removeDelegate:self];
 #endif
 }
 
@@ -49,14 +49,14 @@ static ChatDemoHelper *helper = nil;
 
 - (void)initHelper
 {
-    [[EMClient shareClient] addDelegate:self delegateQueue:nil];
-    [[EMClient shareClient].groupManager addDelegate:self delegateQueue:nil];
-    [[EMClient shareClient].contactManager addDelegate:self delegateQueue:nil];
-    [[EMClient shareClient].roomManager addDelegate:self delegateQueue:nil];
-    [[EMClient shareClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     
 #if DEMO_CALL == 1
-    [[EMClient shareClient].callManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
 #endif
 }
 
@@ -64,7 +64,7 @@ static ChatDemoHelper *helper = nil;
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        [[EMClient shareClient] getPushOptionsFromServerWithError:&error];
+        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
     });
 }
 
@@ -72,9 +72,9 @@ static ChatDemoHelper *helper = nil;
 {
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[EMClient shareClient].groupManager loadAllMyGroupsFromDB];
+        [[EMClient sharedClient].groupManager loadAllMyGroupsFromDB];
         EMError *error = nil;
-        [[EMClient shareClient].groupManager getMyGroupsFromServerWithError:&error];
+        [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
         if (!error) {
             if (weakself.contactViewVC) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -89,10 +89,10 @@ static ChatDemoHelper *helper = nil;
 {
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSArray *array = [[EMClient shareClient].chatManager loadAllConversationsFromDB];
+        NSArray *array = [[EMClient sharedClient].chatManager loadAllConversationsFromDB];
         [array enumerateObjectsUsingBlock:^(EMConversation *conversation, NSUInteger idx, BOOL *stop){
             if(conversation.latestMessage == nil){
-                [[EMClient shareClient].chatManager deleteConversation:conversation.conversationId deleteMessages:NO];
+                [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId deleteMessages:NO];
             }
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -121,11 +121,11 @@ static ChatDemoHelper *helper = nil;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"自动登录失败，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         alertView.tag = 100;
         [alertView show];
-    } else if([[EMClient shareClient] isConnected]){
+    } else if([[EMClient sharedClient] isConnected]){
         UIView *view = self.mainVC.view;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [[EMClient shareClient] dataMigrationTo3];
+            [[EMClient sharedClient] dataMigrationTo3];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideAllHUDsForView:view animated:YES];
             });
@@ -459,7 +459,7 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallIncoming:(EMCallSession *)aSession
 {
     if(_callSession && _callSession.status != EMCallSessionStatusDisconnected){
-        [[EMClient shareClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonBusy];
+        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonBusy];
     }
     
     _callSession = aSession;
@@ -538,7 +538,7 @@ static ChatDemoHelper *helper = nil;
         _callSession = nil;
         [_callController dismissViewControllerAnimated:NO completion:nil];
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.domain delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aerror.errorDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
     }
 }
@@ -554,7 +554,7 @@ static ChatDemoHelper *helper = nil;
         return;
     }
     
-    _callSession = [[EMClient shareClient].callManager makeVoiceCall:username error:nil];
+    _callSession = [[EMClient sharedClient].callManager makeVoiceCall:username error:nil];
     if(_callSession){
         _callController = [[CallViewController alloc] initWithUsername:username status:@"正在呼叫..." isCaller:YES];
         [self.mainVC presentViewController:_callController animated:YES completion:nil];
@@ -568,7 +568,7 @@ static ChatDemoHelper *helper = nil;
 - (void)hangupCall
 {
     if (_callSession) {
-        [[EMClient shareClient].callManager endCall:_callSession.sessionId reason:EMCallEndReasonHangup];
+        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:EMCallEndReasonHangup];
     }
     
     _callSession = nil;
@@ -579,7 +579,7 @@ static ChatDemoHelper *helper = nil;
 - (void)answerCall
 {
     if (_callSession) {
-        [[EMClient shareClient].callManager answerCall:_callSession.sessionId];
+        [[EMClient sharedClient].callManager answerCall:_callSession.sessionId];
     }
 }
 #endif
@@ -588,7 +588,7 @@ static ChatDemoHelper *helper = nil;
 - (BOOL)_needShowNotification:(NSString *)fromChatter
 {
     BOOL ret = YES;
-    NSArray *igGroupIds = [[EMClient shareClient].groupManager getAllIgnoredGroupIds];
+    NSArray *igGroupIds = [[EMClient sharedClient].groupManager getAllIgnoredGroupIds];
     for (NSString *str in igGroupIds) {
         if ([str isEqualToString:fromChatter]) {
             ret = NO;

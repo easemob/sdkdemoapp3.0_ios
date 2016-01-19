@@ -185,7 +185,7 @@
 - (BOOL)isJoined:(EMGroup *)group
 {
     if (group) {
-        NSArray *groupList = [[EMClient shareClient].groupManager getAllGroups];
+        NSArray *groupList = [[EMClient sharedClient].groupManager getAllGroups];
         for (EMGroup *tmpGroup in groupList) {
             if (tmpGroup.isPublic == group.isPublic && [group.groupId isEqualToString:tmpGroup.groupId]) {
                 return YES;
@@ -202,7 +202,7 @@
     __weak PublicGroupDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        EMGroup *group = [[EMClient shareClient].groupManager fetchGroupInfo:weakSelf.groupId includeMembersList:NO error:&error];
+        EMGroup *group = [[EMClient sharedClient].groupManager fetchGroupInfo:weakSelf.groupId includeMembersList:NO error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 weakSelf.group = group;
@@ -254,7 +254,7 @@
     __weak PublicGroupDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        [[EMClient shareClient].groupManager joinPublicGroup:groupId error:&error];
+        [[EMClient sharedClient].groupManager joinPublicGroup:groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if(!error) {
                 [weakSelf hideHud];
@@ -272,14 +272,14 @@
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        [[EMClient shareClient].groupManager applyJoinPublicGroup:groupId message:groupName error:nil];
+        [[EMClient sharedClient].groupManager applyJoinPublicGroup:groupId message:groupName error:nil];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (!error) {
                 [weakSelf showHint:NSLocalizedString(@"group.sendApplyRepeat", @"application has been sent")];
             }
             else{
-                [weakSelf showHint:error.domain];
+                [weakSelf showHint:error.errorDescription];
             }
         });
     });}

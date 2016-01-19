@@ -88,7 +88,7 @@
     if (!_delConversationSwitch)
     {
         _delConversationSwitch = [[UISwitch alloc] init];
-        _delConversationSwitch.on = [[EMClient shareClient].options isDeleteMessagesWhenExitGroup];
+        _delConversationSwitch.on = [[EMClient sharedClient].options isDeleteMessagesWhenExitGroup];
         [_delConversationSwitch addTarget:self action:@selector(delConversationChanged:) forControlEvents:UIControlEventValueChanged];
     }
     return _delConversationSwitch;
@@ -268,7 +268,7 @@
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, _footerView.frame.size.width - 20, 45)];
         [logoutButton setBackgroundColor:RGBACOLOR(0xfe, 0x64, 0x50, 1)];
-        NSString *username = [[EMClient shareClient] currentUsername];
+        NSString *username = [[EMClient sharedClient] currentUsername];
         NSString *logoutButtonTitle = [[NSString alloc] initWithFormat:NSLocalizedString(@"setting.loginUser", @"log out(%@)"), username];
         [logoutButton setTitle:logoutButtonTitle forState:UIControlStateNormal];
         [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -283,12 +283,12 @@
 
 - (void)autoLoginChanged:(UISwitch *)autoSwitch
 {
-    [[EMClient shareClient].options setIsAutoLogin:autoSwitch.isOn];
+    [[EMClient sharedClient].options setIsAutoLogin:autoSwitch.isOn];
 }
 
 - (void)useIpChanged:(UISwitch *)ipSwitch
 {
-//    [[EMClient shareClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
+//    [[EMClient sharedClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
 //    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 //    [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
 //    [ud synchronize];
@@ -296,7 +296,7 @@
 
 - (void)delConversationChanged:(UISwitch *)control
 {
-    [[EMClient shareClient].options setIsDeleteMessagesWhenExitGroup:control.on];
+    [[EMClient sharedClient].options setIsDeleteMessagesWhenExitGroup:control.on];
 }
 
 - (void)showCallInfoChanged:(UISwitch *)control
@@ -308,8 +308,8 @@
 
 - (void)refreshConfig
 {
-    [self.autoLoginSwitch setOn:[[EMClient shareClient].options isAutoLogin] animated:YES];
-//    [self.ipSwitch setOn:[[EMClient shareClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
+    [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:YES];
+//    [self.ipSwitch setOn:[[EMClient sharedClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
     
     [self.tableView reloadData];
 }
@@ -319,11 +319,11 @@
     __weak SettingsViewController *weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient shareClient] logout:YES];
+        EMError *error = [[EMClient sharedClient] logout:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (error != nil) {
-                [weakSelf showHint:error.domain];
+                [weakSelf showHint:error.errorDescription];
             }
             else{
                 [[ApplyViewController shareController] clear];

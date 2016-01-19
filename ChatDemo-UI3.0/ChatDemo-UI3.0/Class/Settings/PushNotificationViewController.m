@@ -228,7 +228,7 @@
 - (void)savePushOptions
 {
     BOOL isUpdate = NO;
-    EMPushOptions *options = [[EMClient shareClient] pushOptions];
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     if (_pushDisplayStyle != options.displayStyle) {
         options.displayStyle = _pushDisplayStyle;
         isUpdate = YES;
@@ -250,7 +250,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
         if (isUpdate) {
-            error = [[EMClient shareClient] updatePushOptionsToServer];
+            error = [[EMClient sharedClient] updatePushOptionsToServer];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
@@ -275,11 +275,11 @@
 
 - (void)loadPushOptions
 {
-    if ([EMClient shareClient].pushOptions.displayStyle < 0) {
+    if ([EMClient sharedClient].pushOptions.displayStyle < 0) {
         __weak typeof(self) weakself = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
-            [[EMClient shareClient] getPushOptionsFromServerWithError:&error];
+            [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (error == nil) {
                     [weakself refreshPushOptions];
@@ -295,7 +295,7 @@
 
 - (void)refreshPushOptions
 {
-    EMPushOptions *options = [[EMClient shareClient] pushOptions];
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     _nickName = options.nickname;
     _pushDisplayStyle = options.displayStyle;
     _noDisturbingStatus = options.noDisturbStatus;

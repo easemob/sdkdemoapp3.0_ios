@@ -236,11 +236,11 @@
     }
     
     __weak CreateGroupViewController *weakSelf = self;
-    NSString *username = [[EMClient shareClient] currentUsername];
+    NSString *username = [[EMClient sharedClient] currentUsername];
     NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join groups \'%@\'"), username, self.textField.text];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        EMGroup *group = [[EMClient shareClient].groupManager createGroupWithSubject:self.textField.text description:self.textView.text invitees:source message:messageStr setting:setting error:&error];
+        EMGroup *group = [[EMClient sharedClient].groupManager createGroupWithSubject:self.textField.text description:self.textView.text invitees:source message:messageStr setting:setting error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (group && !error) {

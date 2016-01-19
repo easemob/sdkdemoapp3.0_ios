@@ -43,7 +43,7 @@ static RobotManager *sharedInstance = nil;
 - (BOOL)isRobotWithUsername:(NSString*)username
 {
     if ([[_robotSource allKeys] count] == 0) {
-//        [self addRobotsToMemory:[[EMClient shareClient].chatManager robotList]];
+//        [self addRobotsToMemory:[[EMClient sharedClient].chatManager robotList]];
     }
     if ([_robotSource objectForKey:[username lowercaseString]]) {
         return YES;

@@ -28,7 +28,7 @@
     self = [self init];
     if (self) {
         _group = group;
-        NSString *loginUsername = [[EMClient shareClient] currentUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         _isOwner = [_group.owner isEqualToString:loginUsername];
         self.view.backgroundColor = [UIColor whiteColor];
     }
@@ -113,9 +113,9 @@
 
 - (void)saveSubject
 {
-    EMConversation *conversation = [[EMClient shareClient].chatManager getConversation:_group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:_group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
     EMError *error = nil;
-    [[EMClient shareClient].groupManager changeGroupSubject:_subjectField.text forGroup:_group.groupId error:&error];
+    [[EMClient sharedClient].groupManager changeGroupSubject:_subjectField.text forGroup:_group.groupId error:&error];
     if (!error) {
         if ([_group.groupId isEqualToString:conversation.conversationId]) {
             NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];

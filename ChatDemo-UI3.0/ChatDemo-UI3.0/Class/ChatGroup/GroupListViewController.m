@@ -55,8 +55,8 @@
     self.title = NSLocalizedString(@"title.group", @"Group");
     
 #warning 把self注册为SDK的delegate
-    [[EMClient shareClient].groupManager removeDelegate:self];
-    [[EMClient shareClient].groupManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -94,7 +94,7 @@
 
 - (void)dealloc
 {
-    [[EMClient shareClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -354,7 +354,7 @@
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        NSArray *groups = [[EMClient shareClient].groupManager getMyGroupsFromServerWithError:&error];
+        NSArray *groups = [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 [weakself.dataSource removeAllObjects];
@@ -379,7 +379,7 @@
 {
     [self.dataSource removeAllObjects];
     
-    NSArray *rooms = [[EMClient shareClient].groupManager getAllGroups];
+    NSArray *rooms = [[EMClient sharedClient].groupManager getAllGroups];
     [self.dataSource addObjectsFromArray:rooms];
     
     [self.tableView reloadData];

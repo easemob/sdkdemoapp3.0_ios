@@ -146,10 +146,10 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
         EMCursorResult *result = nil;
-        EMChatroom *chatroom = [[EMClient shareClient].chatManager fetchChatroomInfo:weakSelf.chatroom.chatroomId error:&error];
+        EMChatroom *chatroom = [[EMClient sharedClient].chatManager fetchChatroomInfo:weakSelf.chatroom.chatroomId error:&error];
         if (!error)
         {
-            result = [[EMClient shareClient].chatManager fetchOccupantsForChatroom:chatroom.chatroomId cursor:nil pageSize:-1 andError:&error];
+            result = [[EMClient sharedClient].chatManager fetchOccupantsForChatroom:chatroom.chatroomId cursor:nil pageSize:-1 andError:&error];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error)
