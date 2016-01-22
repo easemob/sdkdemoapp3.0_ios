@@ -149,17 +149,17 @@ static ChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
-- (void)didServersChanged
-{
-    [self _clearHelper];
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-}
-
-- (void)didAppkeyChanged
-{
-    [self _clearHelper];
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-}
+//- (void)didServersChanged
+//{
+//    [self _clearHelper];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+//}
+//
+//- (void)didAppkeyChanged
+//{
+//    [self _clearHelper];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+//}
 
 #pragma mark - EMChatManagerDelegate
 
@@ -355,7 +355,9 @@ static ChatDemoHelper *helper = nil;
 #pragma mark - EMContactManagerDelegate
 - (void)didReceiveAgreedFromUsername:(NSString *)aUsername
 {
-    [self.contactViewVC reloadDataSource];
+    NSString *msgstr = [NSString stringWithFormat:@"%@同意了加好友申请", aUsername];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
 }
 
 - (void)didReceiveDeclinedFromUsername:(NSString *)aUsername
@@ -365,14 +367,13 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
-- (void)didReceiveDeletedFromUsernames:(NSArray *)aArray
+- (void)didReceiveDeletedFromUsername:(NSString *)aUsername
 {
-    [_conversationListVC refreshDataSource];
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:_mainVC.navigationController.viewControllers];
     ChatViewController *chatViewContrller = nil;
     for (id viewController in viewControllers)
     {
-        if ([viewController isKindOfClass:[ChatViewController class]] && [aArray containsObject:[(ChatViewController *)viewController conversation].conversationId])
+        if ([viewController isKindOfClass:[ChatViewController class]] && [aUsername isEqualToString:[(ChatViewController *)viewController conversation].conversationId])
         {
             chatViewContrller = viewController;
             break;
@@ -387,17 +388,12 @@ static ChatDemoHelper *helper = nil;
             [_mainVC.navigationController setViewControllers:viewControllers animated:YES];
         }
     }
-    [_mainVC showHint:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"delete", @"delete"), aArray[0]]];
+    [_mainVC showHint:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"delete", @"delete"), aUsername]];
     [_contactViewVC reloadDataSource];
 }
 
-- (void)didReceiveAddedFromUsernames:(NSArray *)aArray
+- (void)didReceiveAddedFromUsername:(NSString *)aUsername
 {
-    for (NSString *username in aArray) {
-        NSString *msgstr = [NSString stringWithFormat:@"%@同意了加好友申请", username];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-    }
     [_contactViewVC reloadDataSource];
 }
 
@@ -619,6 +615,8 @@ static ChatDemoHelper *helper = nil;
     self.conversationListVC = nil;
     self.chatVC = nil;
     self.contactViewVC = nil;
+    
+    [[EMClient sharedClient] logout:NO];
     
 #if DEMO_CALL == 1
     [self hangupCall];

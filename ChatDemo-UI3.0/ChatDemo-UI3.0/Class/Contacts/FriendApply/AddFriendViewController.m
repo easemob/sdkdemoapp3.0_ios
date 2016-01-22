@@ -227,8 +227,8 @@
 
 - (BOOL)hasSendBuddyRequest:(NSString *)buddyName
 {
-    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
-    for (NSString *username in buddyList) {
+    NSArray *userlist = [[EMClient sharedClient].contactManager getContactsFromDB];
+    for (NSString *username in userlist) {
         if ([username isEqualToString:buddyName]) {
             return YES;
         }
@@ -238,8 +238,8 @@
 
 - (BOOL)didBuddyExist:(NSString *)buddyName
 {
-    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
-    for (NSString *username in buddyList) {
+    NSArray *userlist = [[EMClient sharedClient].contactManager getContactsFromDB];
+    for (NSString *username in userlist) {
         if ([username isEqualToString:buddyName]){
             return YES;
         }

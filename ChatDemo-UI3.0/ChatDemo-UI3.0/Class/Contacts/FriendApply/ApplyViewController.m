@@ -178,7 +178,7 @@ static ApplyViewController *controller = nil;
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            error = [[EMClient sharedClient].groupManager acceptJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername];
+            error = [[EMClient sharedClient].groupManager acceptJoinApplication:entity.groupId applicant:entity.applicantUsername];
         }
         else if(applyStyle == ApplyStyleFriend){
             error = [[EMClient sharedClient].contactManager acceptInvitationForUsername:entity.applicantUsername];
@@ -210,7 +210,7 @@ static ApplyViewController *controller = nil;
         }
         else if (applyStyle == ApplyStyleJoinGroup)
         {
-            error = [[EMClient sharedClient].groupManager declineJoinApplication:entity.groupId groupname:entity.groupSubject applicant:entity.applicantUsername reason:nil];
+            error = [[EMClient sharedClient].groupManager declineJoinApplication:entity.groupId applicant:entity.applicantUsername reason:nil];
         }
         else if(applyStyle == ApplyStyleFriend){
             [[EMClient sharedClient].contactManager declineInvitationForUsername:entity.applicantUsername];

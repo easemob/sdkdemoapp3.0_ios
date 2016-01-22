@@ -136,7 +136,7 @@
             [weakself hideHud];
             if (!error) {
                 //设置是否自动登录
-                [[EMClient sharedClient].options setIsAutoLogin:YES];
+                [[EMClient sharedClient] setIsAutoLogin:YES];
                 
                 //获取数据库中数据
                 [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
