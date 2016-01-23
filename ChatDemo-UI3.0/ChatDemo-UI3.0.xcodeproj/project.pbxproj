@@ -83,7 +83,6 @@
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
 		D266585A1C4F41B9008EEFBF /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D26658581C4F41B9008EEFBF /* libEaseUI.a */; };
 		D266585B1C4F41B9008EEFBF /* libHyphenateSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D26658591C4F41B9008EEFBF /* libHyphenateSDK.a */; };
-		D26CE2641C2A3EB300697F48 /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE2631C2A3EB300697F48 /* EaseMob.bundle */; };
 		D26CE2FC1C2A3EDD00697F48 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE27F1C2A3EDD00697F48 /* MJRefresh.bundle */; };
 		D26CE2FD1C2A3EDD00697F48 /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE2A31C2A3EDD00697F48 /* MWPhotoBrowser.bundle */; };
 		D26CE2FE1C2A3EDD00697F48 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE2FB1C2A3EDD00697F48 /* EaseUIResource.bundle */; };
@@ -377,7 +376,6 @@
 		D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListSelectViewController.m; sourceTree = "<group>"; };
 		D26658581C4F41B9008EEFBF /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/emsdk-autwtnpqmbzsvydyihdnnhktnoni/Build/Products/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		D26658591C4F41B9008EEFBF /* libHyphenateSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateSDK.a; path = "../../emclient-ios/newSDK/build/Debug-iphoneos/libHyphenateSDK.a"; sourceTree = "<group>"; };
-		D26CE2631C2A3EB300697F48 /* EaseMob.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseMob.bundle; path = ../../EaseMobSDK/resources/EaseMob.bundle; sourceTree = "<group>"; };
 		D26CE2691C2A3EDD00697F48 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
 		D26CE26A1C2A3EDD00697F48 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
 		D26CE26B1C2A3EDD00697F48 /* DemoErrorCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoErrorCode.h; sourceTree = "<group>"; };
@@ -868,7 +866,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				D26CE2631C2A3EB300697F48 /* EaseMob.bundle */,
 				90C641DA1B09CAC400E1E6C9 /* EaseMobSDK */,
 				9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */,
 				90911026192EEA70008A48AA /* Frameworks */,
@@ -1804,7 +1801,6 @@
 				EBD2AB3C1A7CDAC000D16528 /* call_out_h@2x.png in Resources */,
 				D2B3DAC51BF1D7B700913BD5 /* icon_002_cover.png in Resources */,
 				EBD2ABB11A7CDAC000D16528 /* tabbar_contacts.png in Resources */,
-				D26CE2641C2A3EB300697F48 /* EaseMob.bundle in Resources */,
 				EBD2ABAE1A7CDAC000D16528 /* tabbar_chats@2x.png in Resources */,
 				EBD2AB071A7CDAC000D16528 /* chatListCellHead.png in Resources */,
 				EB3CC3A21ACD343D00FB8662 /* callRing.mp3 in Resources */,

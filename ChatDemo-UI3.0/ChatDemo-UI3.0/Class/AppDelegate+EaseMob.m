@@ -40,7 +40,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                     didFinishLaunchingWithOptions:launchOptions
                                            appkey:@"easemob-demo#no1"
                                      apnsCertName:apnsCertName
-                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],kEaseUISDKConfigIsUseLite:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
+                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
     
     [ChatDemoHelper shareHelper];
     

@@ -256,7 +256,7 @@
             if (!error) {
                 [weakself.navigationController popViewControllerAnimated:YES];
             } else {
-                [weakself showHint:[NSString stringWithFormat:@"保存失败-error:%@",error.description]];
+                [weakself showHint:[NSString stringWithFormat:@"保存失败-error:%@",error.errorDescription]];
             }
         });
     });
@@ -275,22 +275,18 @@
 
 - (void)loadPushOptions
 {
-    if ([EMClient sharedClient].pushOptions.displayStyle < 0) {
-        __weak typeof(self) weakself = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = nil;
-            [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error == nil) {
-                    [weakself refreshPushOptions];
-                } else {
-                    
-                }
-            });
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error == nil) {
+                [weakself refreshPushOptions];
+            } else {
+                
+            }
         });
-    } else {
-        [self refreshPushOptions];
-    }
+    });
 }
 
 - (void)refreshPushOptions

@@ -114,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    return 7;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,19 +161,18 @@
         } else if (indexPath.row == 5){
             cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        else if (indexPath.row == 6){
-            cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
-            [cell.contentView addSubview:self.showCallInfoSwitch];
-        } else if (indexPath.row == 7){
+        } else if (indexPath.row == 6){
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             while (cell.contentView.subviews.count) {
                 UIView* child = cell.contentView.subviews.lastObject;
                 [child removeFromSuperview];
             }
+        } else if (indexPath.row == 7){
+            cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
+            [cell.contentView addSubview:self.showCallInfoSwitch];
         } else if (indexPath.row == 8){
             cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -217,7 +216,7 @@
     } else if (indexPath.row == 5) {
         EditNicknameViewController *editName = [[EditNicknameViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:editName animated:YES];
-    } else if (indexPath.row == 7){
+    } else if (indexPath.row == 6){
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         

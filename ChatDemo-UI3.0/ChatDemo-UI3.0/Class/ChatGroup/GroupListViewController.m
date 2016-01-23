@@ -370,7 +370,9 @@
 
 - (void)didUpdateGroupList:(NSArray *)groupList
 {
-    [self reloadDataSource];
+    [self.dataSource removeAllObjects];
+    [self.dataSource addObjectsFromArray:groupList];
+    [self.tableView reloadData];
 }
 
 #pragma mark - data
