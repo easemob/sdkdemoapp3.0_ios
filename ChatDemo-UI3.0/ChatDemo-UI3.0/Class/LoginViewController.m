@@ -108,7 +108,7 @@
                         case EMErrorUserAlreadyExist:
                             TTAlertNoTitle(NSLocalizedString(@"register.repeat", @"You registered user already exists!"));
                             break;
-                        case EMErrorNerworkUnavailable:
+                        case EMErrorNetworkUnavailable:
                             TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
                             break;
                         case EMErrorServerTimeout:
@@ -136,7 +136,7 @@
             [weakself hideHud];
             if (!error) {
                 //设置是否自动登录
-                [[EMClient sharedClient] setIsAutoLogin:YES];
+                [[EMClient sharedClient].options setIsAutoLogin:YES];
                 
                 //获取数据库中数据
                 [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
@@ -160,7 +160,7 @@
 //                    case EMErrorNotFound:
 //                        TTAlertNoTitle(error.errorDescription);
 //                        break;
-                    case EMErrorNerworkUnavailable:
+                    case EMErrorNetworkUnavailable:
                         TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
                         break;
                     case EMErrorServerNotReachable:
