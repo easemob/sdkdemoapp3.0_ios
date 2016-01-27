@@ -88,7 +88,7 @@
     if (!_delConversationSwitch)
     {
         _delConversationSwitch = [[UISwitch alloc] init];
-        _delConversationSwitch.on = [EaseMob sharedInstance].chatManager.isAutoDeleteConversationWhenLeaveGroup;
+        _delConversationSwitch.on = [[EMClient sharedClient].options isDeleteMessagesWhenExitGroup];
         [_delConversationSwitch addTarget:self action:@selector(delConversationChanged:) forControlEvents:UIControlEventValueChanged];
     }
     return _delConversationSwitch;
@@ -114,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 7;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -146,35 +146,34 @@
         {
             cell.textLabel.text = NSLocalizedString(@"title.debug", @"Debug");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
+        }/*
         else if (indexPath.row == 4){
             cell.textLabel.text = NSLocalizedString(@"setting.useIp", @"Use IP");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.ipSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.ipSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.ipSwitch.frame.size.height) / 2, self.ipSwitch.frame.size.width, self.ipSwitch.frame.size.height);
             [cell.contentView addSubview:self.ipSwitch];
-        }
-        else if (indexPath.row == 5){
+        }*/
+        else if (indexPath.row == 4){
             cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
             [cell.contentView addSubview:self.delConversationSwitch];
-        } else if (indexPath.row == 6){
+        } else if (indexPath.row == 5){
             cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        else if (indexPath.row == 7){
-            cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
-            [cell.contentView addSubview:self.showCallInfoSwitch];
-        } else if (indexPath.row == 8){
+        } else if (indexPath.row == 6){
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             while (cell.contentView.subviews.count) {
                 UIView* child = cell.contentView.subviews.lastObject;
                 [child removeFromSuperview];
             }
-        } else if (indexPath.row == 9){
+        } else if (indexPath.row == 7){
+            cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
+            [cell.contentView addSubview:self.showCallInfoSwitch];
+        } else if (indexPath.row == 8){
             cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             while (cell.contentView.subviews.count) {
@@ -214,14 +213,14 @@
     {
         DebugViewController *debugController = [[DebugViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:debugController animated:YES];
-    } else if (indexPath.row == 6) {
+    } else if (indexPath.row == 5) {
         EditNicknameViewController *editName = [[EditNicknameViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:editName animated:YES];
-    } else if (indexPath.row == 8){
+    } else if (indexPath.row == 6){
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         
-    } else if (indexPath.row == 9) {
+    } else if (indexPath.row == 8) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
         [alert show];
@@ -243,7 +242,7 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
-                    [CallViewController saveBitrate:nameTextField.text];
+//                    [CallViewController saveBitrate:nameTextField.text];
                     flag = NO;
                 }
             }
@@ -268,8 +267,7 @@
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, _footerView.frame.size.width - 20, 45)];
         [logoutButton setBackgroundColor:RGBACOLOR(0xfe, 0x64, 0x50, 1)];
-        NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
-        NSString *username = [loginInfo objectForKey:kSDKUsername];
+        NSString *username = [[EMClient sharedClient] currentUsername];
         NSString *logoutButtonTitle = [[NSString alloc] initWithFormat:NSLocalizedString(@"setting.loginUser", @"log out(%@)"), username];
         [logoutButton setTitle:logoutButtonTitle forState:UIControlStateNormal];
         [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -284,20 +282,20 @@
 
 - (void)autoLoginChanged:(UISwitch *)autoSwitch
 {
-    [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:autoSwitch.isOn];
+    [[EMClient sharedClient].options setIsAutoLogin:autoSwitch.isOn];
 }
 
 - (void)useIpChanged:(UISwitch *)ipSwitch
 {
-    [[EaseMob sharedInstance].chatManager setIsUseIp:ipSwitch.isOn];
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
-    [ud synchronize];
+//    [[EMClient sharedClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//    [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
+//    [ud synchronize];
 }
 
 - (void)delConversationChanged:(UISwitch *)control
 {
-    [EaseMob sharedInstance].chatManager.isAutoDeleteConversationWhenLeaveGroup = control.isOn;
+    [[EMClient sharedClient].options setIsDeleteMessagesWhenExitGroup:control.on];
 }
 
 - (void)showCallInfoChanged:(UISwitch *)control
@@ -309,8 +307,8 @@
 
 - (void)refreshConfig
 {
-    [self.autoLoginSwitch setOn:[[EaseMob sharedInstance].chatManager isAutoLoginEnabled] animated:YES];
-    [self.ipSwitch setOn:[[EaseMob sharedInstance].chatManager isUseIp] animated:YES];
+    [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:YES];
+//    [self.ipSwitch setOn:[[EMClient sharedClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
     
     [self.tableView reloadData];
 }
@@ -319,16 +317,19 @@
 {
     __weak SettingsViewController *weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
-    [[EaseMob sharedInstance].chatManager asyncLogoffWithUnbindDeviceToken:YES completion:^(NSDictionary *info, EMError *error) {
-        [weakSelf hideHud];
-        if (error && error.errorCode != EMErrorServerNotLogin) {
-            [weakSelf showHint:error.description];
-        }
-        else{
-            [[ApplyViewController shareController] clear];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-        }
-    } onQueue:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient] logout:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (error != nil) {
+                [weakSelf showHint:error.errorDescription];
+            }
+            else{
+                [[ApplyViewController shareController] clear];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            }
+        });
+    });
 }
  
 @end

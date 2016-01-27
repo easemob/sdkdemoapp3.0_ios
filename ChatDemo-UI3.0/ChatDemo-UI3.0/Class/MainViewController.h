@@ -21,8 +21,14 @@
 
 - (void)setupUntreatedApplyCount;
 
+- (void)setupUnreadMessageCount;
+
 - (void)networkChanged:(EMConnectionState)connectionState;
 
 - (void)didReceiveLocalNotification:(UILocalNotification *)notification;
+
+- (void)playSoundAndVibration;
+
+- (void)showNotificationWithMessage:(EMMessage *)message;
 
 @end

@@ -8,6 +8,8 @@
 
 #import "AppDelegate+EaseMobDebug.h"
 
+#import "EMOptions+PrivateDeploy.h"
+
 #warning 环信内部测试用，开发者不需要使用此类
 
 @implementation AppDelegate (EaseMobDebug)
@@ -27,49 +29,43 @@
         NSString *appkey = [ud stringForKey:@"identifier_appkey"];
         if (!appkey)
         {
-            appkey = @"easemob-demo#chatdemoui";
+            appkey = @"easemob-demo#no1";
             [ud setObject:appkey forKey:@"identifier_appkey"];
         }
         NSString *imServer = [ud stringForKey:@"identifier_imserver"];
         if (!imServer)
         {
-            imServer = @"im1.sandbox.easemob.com";
+            imServer = @"120.26.12.158";
             [ud setObject:imServer forKey:@"identifier_imserver"];
         }
         NSString *imPort = [ud stringForKey:@"identifier_import"];
         if (!imPort)
         {
-            imPort = @"443";
+            imPort = @"6717";
             [ud setObject:imPort forKey:@"identifier_import"];
         }
         NSString *restServer = [ud stringForKey:@"identifier_restserver"];
         if (!restServer)
         {
-            restServer = @"a1.sdb.easemob.com";
+            restServer = @"42.121.255.137";
             [ud setObject:restServer forKey:@"identifier_restserver"];
         }
         [ud synchronize];
         
-        NSDictionary *dic = @{kSDKAppKey:appkey,
-                              kSDKApnsCertName:apnsCertName,
-                              kSDKServerApi:restServer,
-                              kSDKServerChat:imServer,
-                              kSDKServerGroupDomain:@"conference.easemob.com",
-                              kSDKServerChatDomain:@"easemob.com",
-                              kSDKServerChatPort:imPort};
-        
-        id easemob = [EaseMob sharedInstance];
-        SEL selector = @selector(registerPrivateServerWithParams:);
-        [easemob performSelector:selector withObject:dic];
-        return YES;
-    } else {
-        NSNumber *useIP = [ud objectForKey:@"identifier_userip_enable"];
-        if (!useIP) {
-            [ud setObject:[NSNumber numberWithBool:YES] forKey:@"identifier_userip_enable"];
-            [ud synchronize];
-        } else {
-            [[EaseMob sharedInstance].chatManager setIsUseIp:[useIP boolValue]];
+        EMOptions *options = [EMOptions optionsWithAppkey:appkey];
+        if (![ud boolForKey:@"enable_dns"])
+        {
+            options.enableDnsConfig = NO;
+            options.chatPort = [[ud stringForKey:@"identifier_import"] intValue];
+            options.chatServer = [ud stringForKey:@"identifier_imserver"];
+            options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
+        //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+        options.apnsCertName = @"chatdemoui_dev";
+        options.enableConsoleLog = YES;
+        
+        [[EMClient sharedClient] initializeSDKWithOptions:options];
+        return YES;
     }
     
     return NO;

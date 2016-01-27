@@ -24,7 +24,7 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.easemob.enterprise.demo.ui</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
@@ -46,6 +46,11 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>需要使用定位</string>
+	<key>NSAppTransportSecurity</key>
+    		<dict>
+        		<key>NSAllowsArbitraryLoads</key>
+        		<true/>
+    		</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

@@ -14,9 +14,11 @@
 
 #import "BaseTableViewCell.h"
 #import "SRRefreshView.h"
+
+#import "ChatDemoHelper.h"
 //#import "EaseChineseToPinyin.h"
 
-@interface BlackListViewController ()<IChatManagerDelegate, UITableViewDataSource, UITableViewDelegate, SRRefreshDelegate>
+@interface BlackListViewController ()<UITableViewDataSource, UITableViewDelegate, SRRefreshDelegate>
 {
     NSMutableArray *_dataSource;
 }
@@ -128,15 +130,16 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        EMError *error = [[EaseMob sharedInstance].chatManager unblockBuddy:username];
+        EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
         if (!error)
         {
+            [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
             [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
             [tableView reloadData];
         }
         else
         {
-            [self showHint:error.description];
+            [self showHint:error.errorDescription];
         }
     }
 }
@@ -262,10 +265,16 @@
 
 - (void)reloadDataSource
 {
-    [_dataSource removeAllObjects];
-    NSArray *blocked = [[EaseMob sharedInstance].chatManager fetchBlockedList:nil];
-    [_dataSource addObjectsFromArray:[self sortDataArray:blocked]];
-    [self.tableView reloadData];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [weakself.dataSource removeAllObjects];
+        EMError *error = nil;
+        NSArray *blocked = [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
+        [weakself.dataSource addObjectsFromArray:[weakself sortDataArray:blocked]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.tableView reloadData];
+        });
+    });
 }
 
 @end

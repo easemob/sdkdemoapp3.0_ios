@@ -39,8 +39,7 @@
     if (self) {
         _group = group;
         
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         _isOwner = [_group.owner isEqualToString:loginUsername];
     }
     
@@ -165,15 +164,18 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"group.setting.save", @"set properties")];
     
     __weak GroupSettingViewController *weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncIgnoreGroupPushNotification:_group.groupId isIgnore:isIgnore completion:^(NSArray *ignoreGroupsList, EMError *error) {
-        [weakSelf hideHud];
-        if (!error) {
-            [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
-        }
-        else{
-            [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
-        }
-    } onQueue:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient].groupManager ignoreGroupPush:_group.groupId ignore:isIgnore];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
+            }
+            else{
+                [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
+            }
+        });
+    });
 }
 
 #pragma mark - action
@@ -203,26 +205,34 @@
         __weak typeof(self) weakSelf = self;
         [self showHudInView:self.view hint:NSLocalizedString(@"group.setting.save", @"set properties")];
         if (_blockSwitch.isOn) {
-            [[EaseMob sharedInstance].chatManager asyncBlockGroup:_group.groupId completion:^(EMGroup *group, EMError *error) {
-                if (error) {
-                    [weakSelf hideHud];
-                    [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
-                } else {
-                    [weakSelf hideHud];
-                    [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
-                }
-            } onQueue:nil];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                EMError *error;
+                [[EMClient sharedClient].groupManager blockGroup:_group.groupId error:&error];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error) {
+                        [weakSelf hideHud];
+                        [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
+                    } else {
+                        [weakSelf hideHud];
+                        [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
+                    }
+                });
+            });
         }
         else{
-            [[EaseMob sharedInstance].chatManager asyncUnblockGroup:_group.groupId completion:^(EMGroup *group, EMError *error) {
-                if (error) {
-                    [weakSelf hideHud];
-                    [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
-                } else {
-                    [weakSelf hideHud];
-                    [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
-                }
-            } onQueue:nil];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                EMError *error;
+                [[EMClient sharedClient].groupManager unblockGroup:_group.groupId error:&error];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error) {
+                        [weakSelf hideHud];
+                        [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
+                    } else {
+                        [weakSelf hideHud];
+                        [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
+                    }
+                });
+            });
         }
     }
     

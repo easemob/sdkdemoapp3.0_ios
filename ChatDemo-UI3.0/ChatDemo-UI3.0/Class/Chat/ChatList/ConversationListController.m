@@ -21,17 +21,17 @@
 //根据用户昵称,环信机器人名称,群名称进行搜索
 - (NSString*)showName
 {
-    if (self.conversationType == eConversationTypeChat) {
-        if ([[RobotManager sharedInstance] isRobotWithUsername:self.chatter]) {
-            return [[RobotManager sharedInstance] getRobotNickWithUsername:self.chatter];
+    if (self.type == EMConversationTypeChat) {
+        if ([[RobotManager sharedInstance] isRobotWithUsername:self.conversationId]) {
+            return [[RobotManager sharedInstance] getRobotNickWithUsername:self.conversationId];
         }
-        return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.chatter];
-    } else if (self.conversationType == eConversationTypeGroupChat) {
-        if ([self.ext objectForKey:@"groupSubject"] || [self.ext objectForKey:@"isPublic"]) {
-            return [self.ext objectForKey:@"groupSubject"];
+        return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
+    } else if (self.type == EMConversationTypeGroupChat) {
+        if ([self.ext objectForKey:@"subject"] || [self.ext objectForKey:@"isPublic"]) {
+            return [self.ext objectForKey:@"subject"];
         }
     }
-    return self.chatter;
+    return self.conversationId;
 }
 
 @end
@@ -49,7 +49,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[EaseMob sharedInstance].chatManager loadAllConversationsFromDatabaseWithAppend2Chat:NO];
+    
     // Do any additional setup after loading the view.
     self.showRefreshHeader = YES;
     self.delegate = self;
@@ -66,6 +66,12 @@
     [self removeEmptyConversationsFromDB];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self refresh];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -73,22 +79,20 @@
 
 - (void)removeEmptyConversationsFromDB
 {
-    NSArray *conversations = [[EaseMob sharedInstance].chatManager conversations];
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     NSMutableArray *needRemoveConversations;
     for (EMConversation *conversation in conversations) {
-        if (!conversation.latestMessage || (conversation.conversationType == eConversationTypeChatRoom)) {
+        if (!conversation.latestMessage || (conversation.type == EMConversationTypeChatRoom)) {
             if (!needRemoveConversations) {
                 needRemoveConversations = [[NSMutableArray alloc] initWithCapacity:0];
             }
             
-            [needRemoveConversations addObject:conversation.chatter];
+            [needRemoveConversations addObject:conversation];
         }
     }
     
     if (needRemoveConversations && needRemoveConversations.count > 0) {
-        [[EaseMob sharedInstance].chatManager removeConversationsByChatters:needRemoveConversations
-                                                             deleteMessages:YES
-                                                                append2Chat:NO];
+        [[EMClient sharedClient].chatManager deleteConversations:needRemoveConversations deleteMessages:YES];
     }
 }
 
@@ -148,7 +152,6 @@
             cell.model = model;
             
             cell.detailLabel.text = [weakSelf conversationListViewController:weakSelf latestMessageTitleForConversationModel:model];
-            cell.detailLabel.attributedText = [EaseEmotionEscape attStringFromTextForChatting:cell.detailLabel.text];
             cell.timeLabel.text = [weakSelf conversationListViewController:weakSelf latestMessageTimeForConversationModel:model];
             return cell;
         }];
@@ -163,14 +166,16 @@
             id<IConversationModel> model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             EMConversation *conversation = model.conversation;
             ChatViewController *chatController;
-            if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.chatter]) {
-                chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
-                chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
+            if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
+                chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+                chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
             }else {
-                chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+                chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
                 chatController.title = [conversation showName];
             }
             [weakSelf.navigationController pushViewController:chatController animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
+            [weakSelf.tableView reloadData];
         }];
     }
     
@@ -185,16 +190,18 @@
     if (conversationModel) {
         EMConversation *conversation = conversationModel.conversation;
         if (conversation) {
-            if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.chatter]) {
-                RobotChatViewController *chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
-                chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
+            if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
+                RobotChatViewController *chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+                chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
                 [self.navigationController pushViewController:chatController animated:YES];
             } else {
-                ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+                ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
                 chatController.title = conversationModel.title;
                 [self.navigationController pushViewController:chatController animated:YES];
             }
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
+        [self.tableView reloadData];
     }
 }
 
@@ -204,55 +211,34 @@
                                     modelForConversation:(EMConversation *)conversation
 {
     EaseConversationModel *model = [[EaseConversationModel alloc] initWithConversation:conversation];
-    if (model.conversation.conversationType == eConversationTypeChat) {
-        if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.chatter]) {
-            model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
+    if (model.conversation.type == EMConversationTypeChat) {
+        if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
+            model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
         } else {
-            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:conversation.chatter];
+            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:conversation.conversationId];
             if (profileEntity) {
                 model.title = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
                 model.avatarURLPath = profileEntity.imageUrl;
             }
         }
-    } else if (model.conversation.conversationType == eConversationTypeGroupChat) {
+    } else if (model.conversation.type == EMConversationTypeGroupChat) {
         NSString *imageName = @"groupPublicHeader";
-        if (![conversation.ext objectForKey:@"groupSubject"] || ![conversation.ext objectForKey:@"isPublic"])
+        if (![conversation.ext objectForKey:@"subject"])
         {
-            NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+            NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
             for (EMGroup *group in groupArray) {
-                if ([group.groupId isEqualToString:conversation.chatter]) {
-                    model.title = group.groupSubject;
-                    imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
-                    model.avatarImage = [UIImage imageNamed:imageName];
-                    
+                if ([group.groupId isEqualToString:conversation.conversationId]) {
                     NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                    [ext setObject:group.groupSubject forKey:@"groupSubject"];
+                    [ext setObject:group.subject forKey:@"subject"];
                     [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
                     conversation.ext = ext;
                     break;
                 }
             }
-        } else {
-            NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
-            for (EMGroup *group in groupArray) {
-                if ([group.groupId isEqualToString:conversation.chatter]) {
-                    imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
-                    
-                    NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                    [ext setObject:group.groupSubject forKey:@"groupSubject"];
-                    [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
-                    NSString *groupSubject = [ext objectForKey:@"groupSubject"];
-                    NSString *conversationSubject = [conversation.ext objectForKey:@"groupSubject"];
-                    if (groupSubject && conversationSubject && ![groupSubject isEqualToString:conversationSubject]) {
-                        conversation.ext = ext;
-                    }
-                    break;
-                }
-            }
-            model.title = [conversation.ext objectForKey:@"groupSubject"];
-            imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
-            model.avatarImage = [UIImage imageNamed:imageName];
         }
+        model.title = [conversation.ext objectForKey:@"subject"];
+        imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
+        model.avatarImage = [UIImage imageNamed:imageName];
     }
     return model;
 }
@@ -263,27 +249,30 @@
     NSString *latestMessageTitle = @"";
     EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage) {
-        id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
-        switch (messageBody.messageBodyType) {
-            case eMessageBodyType_Image:{
+        EMMessageBody *messageBody = lastMessage.body;
+        switch (messageBody.type) {
+            case EMMessageBodyTypeImage:{
                 latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
             } break;
-            case eMessageBodyType_Text:{
+            case EMMessageBodyTypeText:{
                 // 表情映射。
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
                 latestMessageTitle = didReceiveText;
+                if ([lastMessage.ext objectForKey:MESSAGE_ATTR_IS_BIG_EXPRESSION]) {
+                    latestMessageTitle = @"[动画表情]";
+                }
             } break;
-            case eMessageBodyType_Voice:{
+            case EMMessageBodyTypeVoice:{
                 latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
             } break;
-            case eMessageBodyType_Location: {
+            case EMMessageBodyTypeLocation: {
                 latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
             } break;
-            case eMessageBodyType_Video: {
+            case EMMessageBodyTypeVideo: {
                 latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
             } break;
-            case eMessageBodyType_File: {
+            case EMMessageBodyTypeFile: {
                 latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
             } break;
             default: {
@@ -350,10 +339,14 @@
 
 #pragma mark - public
 
+-(void)refresh
+{
+    [self refreshAndSortView];
+}
+
 -(void)refreshDataSource
 {
     [self tableViewDidTriggerHeaderRefresh];
-    [self hideHud];
 }
 
 - (void)isConnect:(BOOL)isConnect{
@@ -368,26 +361,12 @@
 
 - (void)networkChanged:(EMConnectionState)connectionState
 {
-    if (connectionState == eEMConnectionDisconnected) {
+    if (connectionState == EMConnectionDisconnected) {
         self.tableView.tableHeaderView = _networkStateView;
     }
     else{
         self.tableView.tableHeaderView = nil;
     }
 }
-
-- (void)willReceiveOfflineMessages{
-    NSLog(NSLocalizedString(@"message.beginReceiveOffine", @"Begin to receive offline messages"));
-}
-
-- (void)didReceiveOfflineMessages:(NSArray *)offlineMessages
-{
-    [self refreshDataSource];
-}
-
-- (void)didFinishedReceiveOfflineMessages{
-    NSLog(NSLocalizedString(@"message.endReceiveOffine", @"End to receive offline messages"));
-}
-
 
 @end

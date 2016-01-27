@@ -16,7 +16,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<string>easemob-demo#chatdemoui</string>
+			<string>easemob-demo#no1</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>
@@ -50,7 +50,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<string>im1.sandbox.easemob.com</string>
+			<string>120.26.12.158</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>
@@ -68,7 +68,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<string>443</string>
+			<string>6717</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>
@@ -86,7 +86,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<string>a1.sdb.easemob.com</string>
+			<string>42.121.255.137</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>

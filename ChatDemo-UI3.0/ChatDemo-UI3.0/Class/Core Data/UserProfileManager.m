@@ -15,7 +15,7 @@
 
 //#import "MessageModel.h"
 
-#define kCURRENT_USERNAME [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:kSDKUsername]
+#define kCURRENT_USERNAME [[EMClient sharedClient] currentUsername]
 
 @implementation UIImage (UIImageExt)
 
@@ -237,12 +237,12 @@ static UserProfileManager *sharedInstance = nil;
                                   completion:(void (^)(BOOL success, NSError *error))completion
 {
     NSMutableArray *usernames = [NSMutableArray array];
-    for (EMBuddy *buddy in buddyList)
+    for (NSString *buddy in buddyList)
     {
-        if ([buddy.username length])
+        if ([buddy length])
         {
-            if (![self getUserProfileByUsername:buddy.username]) {
-                [usernames addObject:buddy.username];
+            if (![self getUserProfileByUsername:buddy]) {
+                [usernames addObject:buddy];
             }
         }
     }

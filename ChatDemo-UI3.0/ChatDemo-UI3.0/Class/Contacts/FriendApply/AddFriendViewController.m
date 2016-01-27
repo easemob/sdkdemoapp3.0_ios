@@ -195,8 +195,7 @@
     {
 #warning 由用户体系的用户，需要添加方法在已有的用户体系中查询符合填写内容的用户
 #warning 以下代码为测试代码，默认用户体系中有一个符合要求的同名用户
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         if ([_textField.text isEqualToString:loginUsername]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notAddSelf", @"can't add yourself as a friend") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
@@ -228,11 +227,9 @@
 
 - (BOOL)hasSendBuddyRequest:(NSString *)buddyName
 {
-    NSArray *buddyList = [[[EaseMob sharedInstance] chatManager] buddyList];
-    for (EMBuddy *buddy in buddyList) {
-        if ([buddy.username isEqualToString:buddyName] &&
-            buddy.followState == eEMBuddyFollowState_NotFollowed &&
-            buddy.isPendingApproval) {
+    NSArray *userlist = [[EMClient sharedClient].contactManager getContactsFromDB];
+    for (NSString *username in userlist) {
+        if ([username isEqualToString:buddyName]) {
             return YES;
         }
     }
@@ -241,10 +238,9 @@
 
 - (BOOL)didBuddyExist:(NSString *)buddyName
 {
-    NSArray *buddyList = [[[EaseMob sharedInstance] chatManager] buddyList];
-    for (EMBuddy *buddy in buddyList) {
-        if ([buddy.username isEqualToString:buddyName] &&
-            buddy.followState != eEMBuddyFollowState_NotFollowed) {
+    NSArray *userlist = [[EMClient sharedClient].contactManager getContactsFromDB];
+    for (NSString *username in userlist) {
+        if ([username isEqualToString:buddyName]){
             return YES;
         }
     }
@@ -267,8 +263,7 @@
         UITextField *messageTextField = [alertView textFieldAtIndex:0];
         
         NSString *messageStr = @"";
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *username = [loginInfo objectForKey:kSDKUsername];
+        NSString *username = [[EMClient sharedClient] currentUsername];
         if (messageTextField.text.length > 0) {
             messageStr = [NSString stringWithFormat:@"%@：%@", username, messageTextField.text];
         }
@@ -286,8 +281,7 @@
     NSString *buddyName = [self.dataSource objectAtIndex:indexPath.row];
     if (buddyName && buddyName.length > 0) {
         [self showHudInView:self.view hint:NSLocalizedString(@"friend.sendApply", @"sending application...")];
-        EMError *error;
-        [[EaseMob sharedInstance].chatManager addBuddy:buddyName message:message error:&error];
+        EMError *error = [[EMClient sharedClient].contactManager addContact:buddyName message:message];
         [self hideHud];
         if (error) {
             [self showHint:NSLocalizedString(@"friend.sendApplyFail", @"send application fails, please operate again")];
