@@ -221,6 +221,8 @@
 "call.videoLostcnt"="Lostcnt: ";
 "call.videoLocalBitrate"="Local Bitrate: ";
 "call.videoRemoteBitrate"="Remote Bitrate: ";
+"call.nodata"="No Call Data";
+"call.networkUnstable"="Network Unstable";
 
 //message
 "message.image" = "image";

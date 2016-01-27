@@ -221,6 +221,8 @@
 "call.videoLostcnt"="丢包数: ";
 "call.videoLocalBitrate"="本地比特率: ";
 "call.videoRemoteBitrate"="对方比特率: ";
+"call.nodata"="没有通话数据";
+"call.networkUnstable"="当前网络不稳定";
 
 //message
 "message.image" = "图片";
