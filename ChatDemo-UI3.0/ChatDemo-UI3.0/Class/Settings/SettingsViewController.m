@@ -18,7 +18,6 @@
 #import "DebugViewController.h"
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
-#import "CallViewController.h"
 //#import "BackupViewController.h"
 
 @interface SettingsViewController ()

@@ -21,20 +21,7 @@
     #import "UIViewController+DismissKeyboard.h"
     #import "NSString+Valid.h"
 
-    #import "EMClient.h"
-    #import "EMClientDelegate.h"
-    #import "EMConversation.h"
-    #import "EMMessage.h"
-    #import "EMGroup.h"
-    #import "EMChatroom.h"
-    #import "EMTextMessageBody.h"
-    #import "EMImageMessageBody.h"
-    #import "EMLocationMessageBody.h"
-    #import "EMVoiceMessageBody.h"
-    #import "EMVideoMessageBody.h"
-    #import "EMFileMessageBody.h"
-    #import "EMGroupManagerDelegate.h"
-    #import "EMChatroomManagerDelegate.h"
+    #import "EMSDK.h"
 #if DEMO_CALL == 1
     #import "EMClient+Call.h"
 #endif

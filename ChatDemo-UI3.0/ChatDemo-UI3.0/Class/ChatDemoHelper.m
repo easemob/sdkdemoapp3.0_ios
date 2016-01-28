@@ -125,7 +125,11 @@ static ChatDemoHelper *helper = nil;
         UIView *view = self.mainVC.view;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [[EMClient sharedClient] dataMigrationTo3];
+            BOOL flag = [[EMClient sharedClient] dataMigrationTo3];
+            if (flag) {
+                [self asyncGroupFromServer];
+                [self asyncConversationFromDB];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideAllHUDsForView:view animated:YES];
             });

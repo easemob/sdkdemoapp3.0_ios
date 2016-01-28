@@ -14,9 +14,7 @@
 
 #import "SettingsViewController.h"
 #import "ApplyViewController.h"
-#import "CallViewController.h"
 #import "ChatViewController.h"
-#import "RobotManager.h"
 #import "UserProfileManager.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
@@ -69,8 +67,6 @@ static NSString *kGroupName = @"GroupName";
 //    [self didUnreadMessagesCountChanged];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUnreadMessageCount) name:@"setupUnreadMessageCount" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callOutWithChatter:) name:@"callOutWithChatter" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callControllerClose:) name:@"callControllerClose" object:nil];
     
     [self setupSubviews];
     self.selectedIndex = 0;
@@ -207,76 +203,6 @@ static NSString *kGroupName = @"GroupName";
     [_chatListVC networkChanged:connectionState];
 }
 
-#pragma mark - call
-
-- (BOOL)canRecord
-{
-    __block BOOL bCanRecord = YES;
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending)
-    {
-        if ([audioSession respondsToSelector:@selector(requestRecordPermission:)]) {
-            [audioSession performSelector:@selector(requestRecordPermission:) withObject:^(BOOL granted) {
-                bCanRecord = granted;
-            }];
-        }
-    }
-    
-    if (!bCanRecord) {
-        UIAlertView * alt = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"setting.microphoneNoAuthority", @"No microphone permissions") message:NSLocalizedString(@"setting.microphoneAuthority", @"Please open in \"Setting\"-\"Privacy\"-\"Microphone\".") delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
-        [alt show];
-    }
-    
-    return bCanRecord;
-}
-
-- (void)callOutWithChatter:(NSNotification *)notification
-{
-    /*
-    id object = notification.object;
-    if ([object isKindOfClass:[NSDictionary class]]) {
-        if (![self canRecord]) {
-            return;
-        }
-        
-        EMError *error = nil;
-        NSString *chatter = [object objectForKey:@"chatter"];
-        EMCallSessionType type = [[object objectForKey:@"type"] intValue];
-        EMCallSession *callSession = nil;
-        if (type == eCallSessionTypeAudio) {
-            callSession = [[EMClient sharedClient].callManager makeVoiceCall:chatter error:&error];
-        }
-        else if (type == eCallSessionTypeVideo){
-            if (![CallViewController canVideo]) {
-                return;
-            }
-            callSession = [[EMClient sharedClient].callManager makeVideoCall:chatter error:&error];
-        }
-        
-        if (callSession && !error) {
-            [[EMClient sharedClient].callManager removeDelegate:self];
-            CallViewController *callController = [[CallViewController alloc] initWithUsername:callSession.username status:@"连接建立完成" isCaller:NO];
-            callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-            [self presentViewController:callController animated:NO completion:nil];
-        }
-        
-        if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", @"error") message:error.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-    }
-    */
-}
-
-- (void)callControllerClose:(NSNotification *)notification
-{
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
-//    [audioSession setActive:YES error:nil];
- 
-//    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
-}
-
 - (void)playSoundAndVibration{
     NSTimeInterval timeInterval = [[NSDate date]
                                    timeIntervalSinceDate:self.lastPlaySoundDate];
@@ -409,52 +335,6 @@ static NSString *kGroupName = @"GroupName";
         }
     }
 }
-
-#pragma mark - ICallManagerDelegate
-/*
-- (void)callSessionStatusChanged:(EMCallSession *)callSession changeReason:(EMCallStatusChangedReason)reason error:(EMError *)error
-{
-    if (callSession.status == eCallSessionStatusConnected)
-    {
-        EMError *error = nil;
-        do {
-            BOOL isShowPicker = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isShowPicker"] boolValue];
-            if (isShowPicker) {
-                error = [EMError errorWithCode:EMErrorInitFailure andDescription:NSLocalizedString(@"call.initFailed", @"Establish call failure")];
-                break;
-            }
-            
-            if (![self canRecord]) {
-                error = [EMError errorWithCode:EMErrorInitFailure andDescription:NSLocalizedString(@"call.initFailed", @"Establish call failure")];
-                break;
-            }
-            
-#warning 在后台不能进行视频通话
-            if(callSession.type == eCallSessionTypeVideo && ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive || ![CallViewController canVideo])){
-                error = [EMError errorWithCode:EMErrorInitFailure andDescription:NSLocalizedString(@"call.initFailed", @"Establish call failure")];
-                break;
-            }
-            
-            if (!isShowPicker){
-                [[EMClient sharedClient].callManager removeDelegate:self];
-//                CallViewController *callController = [[CallViewController alloc] initWithSession:callSession isIncoming:YES];
-                CallViewController *callController = [[CallViewController alloc] initWithUsername:callSession.username status:@"连接建立完成" isCaller:YES];
-                callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                [self presentViewController:callController animated:NO completion:nil];
-                if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]])
-                {
-                    ChatViewController *chatVc = (ChatViewController *)self.navigationController.topViewController;
-                    chatVc.isViewDidAppear = NO;
-                }
-            }
-        } while (0);
-        
-        if (error) {
-            [[EMClient sharedClient].callManager asyncEndCall:callSession.sessionId reason:eCallReasonHangup];
-            return;
-        }
-    }
-}*/
 
 #pragma mark - public
 
