@@ -788,7 +788,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)jumpToChatList
 {
     if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
-        ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+//        ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
 //        [chatController hideImagePicker];
     }
     else if(_chatListVC)

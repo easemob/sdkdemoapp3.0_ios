@@ -45,6 +45,9 @@ static CTCallCenter *g_callCenter;
     
     UIButton *_hangupButton;
     
+    UIButton *_recordButton;
+    UILabel *_recordLabel;
+    
     BOOL _isIncoming;
     int _timeLength;
     EMCallSession *_callSession;

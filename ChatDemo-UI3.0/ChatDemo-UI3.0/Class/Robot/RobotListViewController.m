@@ -29,6 +29,7 @@
 
 @implementation RobotListViewController
 
+/*
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -206,5 +207,5 @@
     }
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
 }
-
+*/
 @end

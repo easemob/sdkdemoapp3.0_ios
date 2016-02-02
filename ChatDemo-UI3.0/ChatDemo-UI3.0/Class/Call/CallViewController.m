@@ -21,6 +21,7 @@
     NSString * _audioCategory;
     
     UIView *_propertyView;
+    UILabel *_networkLabel;
     UILabel *_sizeLabel;
     UILabel *_timedelayLabel;
     UILabel *_framerateLabel;
@@ -59,10 +60,10 @@
             if(call.callState == CTCallStateIncoming)
             {
                 NSLog(@"Call is incoming");
-                [_timeTimer invalidate];
+                [self->_timeTimer invalidate];
                 [self _stopRing];
                 
-                [[EaseMob sharedInstance].callManager asyncEndCall:_callSession.sessionId reason:eCallReasonHangup];
+                [[EaseMob sharedInstance].callManager asyncEndCall:self->_callSession.sessionId reason:eCallReasonHangup];
                 [self _close];
             }
         };
@@ -217,11 +218,19 @@
     _nameLabel.text = _chatter;
     [_topView addSubview:_nameLabel];
     
+    _networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(_nameLabel.frame), CGRectGetMaxY(_nameLabel.frame), CGRectGetWidth(_nameLabel.frame), CGRectGetHeight(_nameLabel.frame))];
+    _networkLabel.backgroundColor = [UIColor clearColor];
+    _networkLabel.textColor = [UIColor whiteColor];
+    _networkLabel.textAlignment = NSTextAlignmentCenter;
+    _networkLabel.font = [UIFont systemFontOfSize:14];
+    [_topView addSubview:_networkLabel];
+    
     _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 180, self.view.frame.size.width, 180)];
     _actionView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_actionView];
 
-    CGFloat tmpWidth = _actionView.frame.size.width / 2;
+    CGFloat tmpWidth = 0;
+    tmpWidth = _actionView.frame.size.width / 2;
     _silenceButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth - 40) / 2, 20, 40, 40)];
     [_silenceButton setImage:[UIImage imageNamed:@"call_silence"] forState:UIControlStateNormal];
     [_silenceButton setImage:[UIImage imageNamed:@"call_silence_h"] forState:UIControlStateSelected];
@@ -234,7 +243,7 @@
     _silenceLabel.textAlignment = NSTextAlignmentCenter;
     _silenceLabel.text = NSLocalizedString(@"call.silence", @"Silence");
     
-    _speakerOutButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2, _silenceButton.frame.origin.y, 40, 40)];
+    _speakerOutButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2 , _silenceButton.frame.origin.y, 40, 40)];
     [_speakerOutButton setImage:[UIImage imageNamed:@"call_out"] forState:UIControlStateNormal];
     [_speakerOutButton setImage:[UIImage imageNamed:@"call_out_h"] forState:UIControlStateSelected];
     [_speakerOutButton addTarget:self action:@selector(speakerOutAction) forControlEvents:UIControlEventTouchUpInside];
@@ -246,19 +255,35 @@
     _speakerOutLabel.textAlignment = NSTextAlignmentCenter;
     _speakerOutLabel.text = NSLocalizedString(@"call.speaker", @"Speaker");
     
+    /*
+    if (_callSession.type != eCallSessionTypeAudio) {
+        _recordButton= [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth * 2 + (tmpWidth - 40) / 2 , _silenceButton.frame.origin.y, 40, 40)];
+        [_recordButton setImage:[UIImage imageNamed:@"call_out"] forState:UIControlStateNormal];
+        [_recordButton setImage:[UIImage imageNamed:@"call_out_h"] forState:UIControlStateSelected];
+        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
+        
+        _recordLabel = [[UILabel alloc] initWithFrame:CGRectMake(tmpWidth * 2 + 30, CGRectGetMaxY(_recordButton.frame) + 5, tmpWidth - 60, 20)];
+        _recordLabel.backgroundColor = [UIColor clearColor];
+        _recordLabel.textColor = [UIColor whiteColor];
+        _recordLabel.font = [UIFont systemFontOfSize:13.0];
+        _recordLabel.textAlignment = NSTextAlignmentCenter;
+        _recordLabel.text =@"录制";
+    }*/
+    
+    tmpWidth = _actionView.frame.size.width / 2;
     _rejectButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth - 100) / 2, CGRectGetMaxY(_speakerOutLabel.frame) + 30, 100, 40)];
     [_rejectButton setTitle:NSLocalizedString(@"call.reject", @"Reject") forState:UIControlStateNormal];
-    [_rejectButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
+    [_rejectButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
     [_rejectButton addTarget:self action:@selector(rejectAction) forControlEvents:UIControlEventTouchUpInside];
     
     _answerButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 100) / 2, _rejectButton.frame.origin.y, 100, 40)];
     [_answerButton setTitle:NSLocalizedString(@"call.answer", @"Answer") forState:UIControlStateNormal];
-    [_answerButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
+    [_answerButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
     [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
     
     _hangupButton = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200) / 2, _rejectButton.frame.origin.y, 200, 40)];
     [_hangupButton setTitle:NSLocalizedString(@"call.hangup", @"Hangup") forState:UIControlStateNormal];
-    [_hangupButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
+    [_hangupButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
     [_hangupButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -577,6 +602,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     [self hideHud];
     [self _stopRing];
+    
     if(error){
         _statusLabel.text = NSLocalizedString(@"call.connectFailed", @"Connect failed");
         [self _insertMessageWithStr:NSLocalizedString(@"call.failed", @"Call failed")];
@@ -601,6 +627,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             }
             else if (reason == eCallReasonBusy){
                 str = NSLocalizedString(@"call.in", @"In the call...");
+            }
+            else if (reason == eCallReasonNull){
+                return;
             }
         }
         [self _insertMessageWithStr:str];
@@ -630,11 +659,32 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         [_actionView addSubview:_silenceLabel];
         [_actionView addSubview:_speakerOutButton];
         [_actionView addSubview:_speakerOutLabel];
+//        if (callSession.type == eCallSessionTypeVideo) {
+//            [_actionView addSubview:_recordButton];
+//            [_actionView addSubview:_recordLabel];
+//        }
         
         if ([self isShowCallInfo]) {
             [self _reloadPropertyData];
             _propertyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(_reloadPropertyData) userInfo:nil repeats:YES];
         }
+    }
+}
+
+- (void)callSessionNetWorkStatusChanged:(EMCallSession *)callSession
+                           changeReason:(EMCallStatusNetWorkChangedReason)reason
+                                  error:(EMError *)error
+{
+    if (reason == eCallReasonNetworkUnstable) {
+        if (error) {
+            if (error.errorCode == EMErrorCallNoData) {
+                _networkLabel.text = NSLocalizedString(@"call.nodata", @"No call data");
+            } else if (error.errorCode == EMErrorCallUnstable) {
+                _networkLabel.text = NSLocalizedString(@"call.networkUnstable", @"Network Unstable");
+            }
+        }
+    } else if (reason == eCallReasonNetworkNormal) {
+        _networkLabel.text = @"";
     }
 }
 
@@ -660,6 +710,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (void)silenceAction
 {
     _silenceButton.selected = !_silenceButton.selected;
+//    if (_silenceButton.selected) {
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+//    } else {
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+//    }
+//    [[AVAudioSession sharedInstance] setActive:YES error:nil];
     [[EaseMob sharedInstance].callManager markCallSession:_callSession.sessionId asSilence:_silenceButton.selected];
 }
 
@@ -717,6 +773,36 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         [self _close];
     }
 }
+
+- (void)recordAction
+{
+    _recordButton.selected = !_recordButton.selected;
+    if (_recordButton.selected) {
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *WovDir = @"/";  //wov目录
+        WovDir = [documentsDirectory stringByAppendingString:WovDir];
+        if(![fm fileExistsAtPath:WovDir]){
+            [fm createDirectoryAtPath:WovDir
+          withIntermediateDirectories:YES
+                           attributes:nil
+                                error:nil];
+        }
+        [[EaseMob sharedInstance].callManager videoStartRecord:WovDir];
+    } else {
+        NSString *path = [[EaseMob sharedInstance].callManager videoStopRecord];
+        if (path.length == 0) {
+            return;
+        }
+        NSURL *videoURL = [NSURL fileURLWithPath:path];
+        MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+        [moviePlayerController.moviePlayer prepareToPlay];
+        moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+        [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+    }
+}
+
 
 + (BOOL)canVideo
 {

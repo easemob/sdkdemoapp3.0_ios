@@ -300,7 +300,7 @@
        latestMessageTimeForConversationModel:(id<IConversationModel>)conversationModel
 {
     NSString *latestMessageTime = @"";
-    EMMessage *lastMessage = [conversationModel.conversation latestMessage];;
+    EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage) {
         latestMessageTime = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
