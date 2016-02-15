@@ -29,6 +29,7 @@
 "delete" = "Delete";
 "copy" = "Copy";
 "transpond" = "Transpond";
+"revoke" = "Revoke";
 "save" = "Save";
 "prompt" = "Prompt";
 "add" = "Add";
@@ -223,6 +224,7 @@
 "call.videoRemoteBitrate"="Remote Bitrate: ";
 
 //message
+"message.burn" = "Burn after reading";
 "message.image" = "image";
 "message.location" = "location";
 "message.voice" = "audio";

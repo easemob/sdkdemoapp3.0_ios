@@ -262,6 +262,13 @@
 {
     NSString *latestMessageTitle = @"";
     EMMessage *lastMessage = [conversationModel.conversation latestMessage];
+    if (lastMessage.ext &&
+        [RemoveAfterReadManager isReadAfterRemoveMessage:lastMessage] &&
+        [lastMessage.to isEqualToString:[[EaseMob sharedInstance].chatManager loginInfo][kSDKUsername]])
+    {
+        latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
+        return latestMessageTitle;
+    }
     if (lastMessage) {
         id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
         switch (messageBody.messageBodyType) {
@@ -387,6 +394,15 @@
 
 - (void)didFinishedReceiveOfflineMessages{
     NSLog(NSLocalizedString(@"message.endReceiveOffine", @"End to receive offline messages"));
+}
+
+#pragma mark - NSNotification
+/**
+ *  阅后即焚或消息回撤处理结果，刷新UI的通知，需要子类去实现
+ */
+- (void)updateMainUINotification:(NSNotification *)notification
+{
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 
