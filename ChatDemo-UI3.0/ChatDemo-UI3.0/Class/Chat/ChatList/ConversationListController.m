@@ -148,7 +148,6 @@
             cell.model = model;
             
             cell.detailLabel.text = [weakSelf conversationListViewController:weakSelf latestMessageTitleForConversationModel:model];
-            cell.detailLabel.attributedText = [EaseEmotionEscape attStringFromTextForChatting:cell.detailLabel.text];
             cell.timeLabel.text = [weakSelf conversationListViewController:weakSelf latestMessageTimeForConversationModel:model];
             return cell;
         }];
@@ -273,6 +272,9 @@
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
                 latestMessageTitle = didReceiveText;
+                if ([lastMessage.ext objectForKey:MESSAGE_ATTR_IS_BIG_EXPRESSION]) {
+                    latestMessageTitle = @"[动画表情]";
+                }
             } break;
             case eMessageBodyType_Voice:{
                 latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
@@ -298,7 +300,7 @@
        latestMessageTimeForConversationModel:(id<IConversationModel>)conversationModel
 {
     NSString *latestMessageTime = @"";
-    EMMessage *lastMessage = [conversationModel.conversation latestMessage];;
+    EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage) {
         latestMessageTime = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
