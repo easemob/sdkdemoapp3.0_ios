@@ -16,7 +16,8 @@
 #import "ContactListSelectViewController.h"
 #import "ReadFireCell.h"
 
-#define KEMEFFECT_REVOKEM_EXT_PROMPT       @"messageRevokePrompt"
+/** @brief 用于消息撤销后，插入的提示消息ext的字段，对应值为BOOL类型*/
+#define KEM_REVOKE_EXTKEY_REVOKEPROMPT       @"em_revoke_extKey_revokePrompt"
 
 @interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource>
 {
@@ -138,6 +139,16 @@
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController
    canLongPressRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    id object = [self.dataArray objectAtIndex:indexPath.row];
+    if ([object conformsToProtocol:@protocol(IMessageModel)])
+    {
+        id<IMessageModel> model = (id<IMessageModel>)object;
+        //如果是文本类型的消息撤销的提示信息，使用EaseMessageTimeCell，不允许长按事件
+        if ([model.message.ext[KEM_REVOKE_EXTKEY_REVOKEPROMPT] boolValue] && model.bodyType == eMessageBodyType_Text)
+        {
+            return NO;
+        }
+    }
     return YES;
 }
 
@@ -156,7 +167,7 @@
 
 - (UITableViewCell *)messageViewController:(UITableView *)tableView cellForMessageModel:(id<IMessageModel>)model
 {
-    if ([RemoveAfterReadManager isReadAfterRemoveMessage:model.message])
+    if ([RemoveAfterReadManager isRemoveAfterReadMessage:model.message])
     {
         NSString *CellIdentifier = [ReadFireCell cellIdentifierWithModel:model];
         ReadFireCell *cell = (ReadFireCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -170,7 +181,8 @@
         
         return cell;
     }
-    else if ([model.message.ext[KEMEFFECT_REVOKEM_EXT_PROMPT] boolValue])
+    else if ([model.message.ext[KEM_REVOKE_EXTKEY_REVOKEPROMPT] boolValue]
+             && model.bodyType == eMessageBodyType_Text)
     {//消息撤销提示
         NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
         EaseMessageTimeCell *timeCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
@@ -204,7 +216,7 @@
            heightForMessageModel:(id<IMessageModel>)messageModel
                    withCellWidth:(CGFloat)cellWidth
 {
-    if ([messageModel.message.ext[KEMEFFECT_REVOKEM_EXT_PROMPT] boolValue])
+    if ([messageModel.message.ext[KEM_REVOKE_EXTKEY_REVOKEPROMPT] boolValue])
     {
         //消息撤销提示
         return self.timeCellHeight;
@@ -217,7 +229,7 @@
 
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController didSelectMessageModel:(id<IMessageModel>)messageModel
 {
-    if (!messageModel.isSender && [RemoveAfterReadManager isReadAfterRemoveMessage:messageModel.message])
+    if (!messageModel.isSender && [RemoveAfterReadManager isRemoveAfterReadMessage:messageModel.message])
     {
         [self markReadingMessage:messageModel];
         switch (messageModel.bodyType) {
@@ -335,14 +347,14 @@
 //图片、音频、视频
 - (void)readMessageFinished:(id<IMessageModel>)model
 {
-    [self readFireMessageDeal:model];
+    [self handleCurrentRemoveAfterReadMessage:model];
 }
 
 #pragma mark - EMLocationViewDelegate
 //地理位置
 - (void)locationMessageReadAck:(id<IMessageModel>)messageModel
 {
-    [self readFireMessageDeal:messageModel];
+    [self handleCurrentRemoveAfterReadMessage:messageModel];
 }
 
 
@@ -565,8 +577,8 @@
     [self.tableView reloadData];
 }
 
-//处理阅读即焚消息
-- (void)readFireMessageDeal:(id<IMessageModel>)model
+//处理当前阅读的阅后即焚消息
+- (void)handleCurrentRemoveAfterReadMessage:(id<IMessageModel>)model
 {
     id<IMessageModel> messageModel = model;
     if (!messageModel) {
@@ -579,7 +591,7 @@
         return;
     }
     
-    [[RemoveAfterReadManager sharedInstance] readFireMessageDeal:messageModel.message];
+    [[RemoveAfterReadManager sharedInstance] handleRemoveAfterReadMessage:messageModel.message];
 }
 
 #pragma mark - timer
@@ -590,7 +602,7 @@
         [_textReadAlert dismissWithClickedButtonIndex:0 animated:NO];
     }
     
-    [self readFireMessageDeal:_currentModel];
+    [self handleCurrentRemoveAfterReadMessage:_currentModel];
     _currentModel = nil;
     if (_timer.isValid) {
         [_timer invalidate];
@@ -644,9 +656,7 @@
     [self.tableView reloadData];
     [self.conversation removeMessageWithId:model.messageId];
     //发送cmd消息
-    [MessageRevokeManager sendRevokeMessageToChatter:model.message.conversationChatter
-                                           messageId:model.message.messageId
-                                    conversationType:self.conversation.conversationType];
+    [MessageRevokeManager sendRevokeCMDMessage:model.message];
     //重置
     self.menuIndexPath = nil;
 }
@@ -670,7 +680,7 @@
     __block BOOL isNeedRemove = YES;
     [messages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         EMMessage *m = (EMMessage *)obj;
-        if (![m.ext objectForKey:KEMEFFECT_REVOKEM_EXT_PROMPT])
+        if (![m.ext objectForKey:KEM_REVOKE_EXTKEY_REVOKEPROMPT])
         {
             isNeedRemove = NO;
             *stop = YES;
@@ -737,7 +747,7 @@
     message.isReadAcked = YES;
     message.isDeliveredAcked = YES;
     message.deliveryState = eMessageDeliveryState_Delivered;
-    message.ext = [NSDictionary dictionaryWithObjectsAndKeys:@YES, KEMEFFECT_REVOKEM_EXT_PROMPT, nil];
+    message.ext = [NSDictionary dictionaryWithObjectsAndKeys:@YES, KEM_REVOKE_EXTKEY_REVOKEPROMPT, nil];
     return message;
 }
 
@@ -759,7 +769,7 @@
                 continue;
             }
             BOOL isHasRemove = NO;
-            if (![RemoveAfterReadManager isReadAfterRemoveMessage:message] && _isHasRevokePrompt)
+            if (![RemoveAfterReadManager isRemoveAfterReadMessage:message] && _isHasRevokePrompt)
             {
                 //此时为消息撤销模式，且显示消息撤销提示
                 id<IMessageModel> newModel = [self insertRevokePromptMessageToDB:message];

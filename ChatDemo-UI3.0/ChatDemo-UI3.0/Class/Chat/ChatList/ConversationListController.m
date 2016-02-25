@@ -263,7 +263,7 @@
     NSString *latestMessageTitle = @"";
     EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage.ext &&
-        [RemoveAfterReadManager isReadAfterRemoveMessage:lastMessage] &&
+        [RemoveAfterReadManager isRemoveAfterReadMessage:lastMessage] &&
         [lastMessage.to isEqualToString:[[EaseMob sharedInstance].chatManager loginInfo][kSDKUsername]])
     {
         latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
