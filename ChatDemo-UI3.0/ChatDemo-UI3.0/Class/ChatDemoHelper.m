@@ -483,7 +483,7 @@ static ChatDemoHelper *helper = nil;
         [self _startCallTimer];
         
         _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:NO status:@"连接建立完成"];
-        [_mainVC presentViewController:_callController animated:YES completion:nil];
+        [_mainVC presentViewController:_callController animated:NO completion:nil];
     }
 }
 
@@ -522,7 +522,7 @@ static ChatDemoHelper *helper = nil;
         
         _callSession.displayView = nil;
         _callSession = nil;
-        [_callController dismissViewControllerAnimated:YES completion:nil];
+        [_callController dismissViewControllerAnimated:NO completion:nil];
         _callController = nil;
         
         if (aReason != EMCallEndReasonHangup) {
@@ -620,7 +620,7 @@ static ChatDemoHelper *helper = nil;
         [self _startCallTimer];
         
         _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:YES status:@"正在呼叫..."];
-        [_mainVC presentViewController:_callController animated:YES completion:nil];
+        [_mainVC presentViewController:_callController animated:NO completion:nil];
     }
     else{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建实时通话失败，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -638,7 +638,7 @@ static ChatDemoHelper *helper = nil;
     }
     
     _callSession = nil;
-    [_callController dismissViewControllerAnimated:YES completion:nil];
+    [_callController dismissViewControllerAnimated:NO completion:nil];
     _callController = nil;
 }
 

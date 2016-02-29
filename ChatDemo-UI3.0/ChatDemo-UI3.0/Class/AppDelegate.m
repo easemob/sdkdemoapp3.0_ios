@@ -55,7 +55,7 @@
 #endif
     [self easemobApplication:application
 didFinishLaunchingWithOptions:launchOptions
-                      appkey:@"easemob-demo#no1"
+                      appkey:@"easemob-demo#chatdemoui"
                 apnsCertName:apnsCertName
                  otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
 
