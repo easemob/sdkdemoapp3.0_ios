@@ -36,7 +36,6 @@
 #if DEMO_CALL == 1
 
 @property (strong, nonatomic) EMCallSession *callSession;
-
 @property (strong, nonatomic) CallViewController *callController;
 
 #endif
@@ -50,11 +49,14 @@
 - (void)asyncConversationFromDB;
 
 #if DEMO_CALL == 1
-- (void)makeVoiceCallWithUsername:(NSString *)username;
 
-- (void)hangupCall;
+- (void)makeCallWithUsername:(NSString *)aUsername
+                     isVideo:(BOOL)aIsVideo;
+
+- (void)hangupCallWithReason:(EMCallEndReason)aReason;
 
 - (void)answerCall;
+
 #endif
 
 @end

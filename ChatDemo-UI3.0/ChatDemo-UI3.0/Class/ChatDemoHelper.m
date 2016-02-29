@@ -12,6 +12,20 @@
 #import "ApplyViewController.h"
 #import "MBProgressHUD.h"
 
+
+#if DEMO_CALL == 1
+
+#import "CallViewController.h"
+
+@interface ChatDemoHelper()<EMCallManagerDelegate>
+{
+    NSTimer *_callTimer;
+}
+
+@end
+
+#endif
+
 static ChatDemoHelper *helper = nil;
 
 @implementation ChatDemoHelper
@@ -57,6 +71,8 @@ static ChatDemoHelper *helper = nil;
     
 #if DEMO_CALL == 1
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
 #endif
 }
 
@@ -464,9 +480,10 @@ static ChatDemoHelper *helper = nil;
     
     _callSession = aSession;
     if(_callSession){
-        _callController = [[CallViewController alloc] initWithUsername:_callSession.username status:@"连接建立完成" isCaller:NO];
-//        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-//        [delegate.navigationController presentViewController:_callController animated:YES completion:nil];
+        [self _startCallTimer];
+        
+        _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:NO status:@"连接建立完成"];
+        [_mainVC presentViewController:_callController animated:YES completion:nil];
     }
 }
 
@@ -474,12 +491,18 @@ static ChatDemoHelper *helper = nil;
 {
     if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
         _callController.statusLabel.text = @"连接建立完成";
+        
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [audioSession setActive:YES error:nil];
     }
 }
 
 - (void)didReceiveCallAccepted:(EMCallSession *)aSession
 {
     if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+        [self _stopCallTimer];
+        
         NSString *connectStr = aSession.connectType == EMCallConnectTypeRelay ? @"Relay" : @"Direct";
         _callController.statusLabel.text = [NSString stringWithFormat:@"正在通话 %@", connectStr];
         _callController.timeLabel.hidden = NO;
@@ -491,22 +514,26 @@ static ChatDemoHelper *helper = nil;
 }
 
 - (void)didReceiveCallTerminated:(EMCallSession *)aSession
-                          reason:(EMCallEndReason)iReason
+                          reason:(EMCallEndReason)aReason
+                           error:(EMError *)aError
 {
     if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+        [self _stopCallTimer];
+        
+        _callSession.displayView = nil;
         _callSession = nil;
-        [_callController dismissViewControllerAnimated:NO completion:nil];
+        [_callController dismissViewControllerAnimated:YES completion:nil];
         _callController = nil;
         
-        if (iReason != EMCallEndReasonHangup) {
+        if (aReason != EMCallEndReasonHangup) {
             NSString *reasonStr = @"";
-            switch (iReason) {
+            switch (aReason) {
                 case EMCallEndReasonNoResponse:
                 {
                     reasonStr = @"对方没有回应";
                 }
                     break;
-                case EMCallEndReasonReject:
+                case EMCallEndReasonDecline:
                 {
                     reasonStr = @"对方拒接";
                 }
@@ -516,7 +543,7 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = @"对方正在通话中";
                 }
                     break;
-                case EMCallEndReasonFailure:
+                case EMCallEndReasonFailed:
                 {
                     reasonStr = @"建立连接失败";
                 }
@@ -525,21 +552,15 @@ static ChatDemoHelper *helper = nil;
                     break;
             }
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alertView show];
+            if (aError) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alertView show];
+            }
+            else{
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alertView show];
+            }
         }
-    }
-}
-
-- (void)didReceiveCallError:(EMCallSession *)aSession
-                      error:(EMError *)aError
-{
-    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
-        _callSession = nil;
-        [_callController dismissViewControllerAnimated:NO completion:nil];
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aerror.errorDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
     }
 }
 
@@ -548,40 +569,99 @@ static ChatDemoHelper *helper = nil;
 #pragma mark - public 
 
 #if DEMO_CALL == 1
-- (void)makeVoiceCallWithUsername:(NSString *)username
+
+- (void)makeCall:(NSNotification*)notify
 {
-    if ([username length] == 0) {
+    if (notify.object) {
+        if ([notify.object valueForKey:@"chatter"]) {
+            [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] isVideo:[[notify.object valueForKey:@"type"] boolValue]];
+        }
+    }
+}
+
+- (void)_startCallTimer
+{
+    _callTimer = [NSTimer scheduledTimerWithTimeInterval:50 target:self selector:@selector(_cancelCall) userInfo:nil repeats:NO];
+}
+
+- (void)_stopCallTimer
+{
+    if (_callTimer == nil) {
         return;
     }
     
-    _callSession = [[EMClient sharedClient].callManager makeVoiceCall:username error:nil];
+    [_callTimer invalidate];
+    _callTimer = nil;
+}
+
+- (void)_cancelCall
+{
+    [self hangupCallWithReason:EMCallEndReasonNoResponse];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"没有响应，自动挂断" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)makeCallWithUsername:(NSString *)aUsername
+                     isVideo:(BOOL)aIsVideo
+{
+    if ([aUsername length] == 0) {
+        return;
+    }
+    
+    if (aIsVideo) {
+        _callSession = [[EMClient sharedClient].callManager makeVideoCall:aUsername error:nil];
+    }
+    else{
+        _callSession = [[EMClient sharedClient].callManager makeVoiceCall:aUsername error:nil];
+    }
+    
     if(_callSession){
-        _callController = [[CallViewController alloc] initWithUsername:username status:@"正在呼叫..." isCaller:YES];
-        [self.mainVC presentViewController:_callController animated:YES completion:nil];
+        [self _startCallTimer];
+        
+        _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:YES status:@"正在呼叫..."];
+        [_mainVC presentViewController:_callController animated:YES completion:nil];
     }
     else{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建实时通话失败，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
     }
+    
 }
 
-- (void)hangupCall
+- (void)hangupCallWithReason:(EMCallEndReason)aReason
 {
+    [self _stopCallTimer];
+    
     if (_callSession) {
         [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:EMCallEndReasonHangup];
     }
     
     _callSession = nil;
-    [_callController dismissViewControllerAnimated:NO completion:nil];
+    [_callController dismissViewControllerAnimated:YES completion:nil];
     _callController = nil;
 }
 
 - (void)answerCall
 {
     if (_callSession) {
-        [[EMClient sharedClient].callManager answerCall:_callSession.sessionId];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = [[EMClient sharedClient].callManager answerCall:_callSession.sessionId];
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.code == EMErrorNetworkUnavailable) {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"网络连接失败，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                        [alertView show];
+                    }
+                    else{
+                        [self hangupCallWithReason:EMCallEndReasonFailed];
+                    }
+                });
+            }
+        });
     }
 }
+
 #endif
 
 #pragma mark - private
@@ -623,7 +703,7 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient] logout:NO];
     
 #if DEMO_CALL == 1
-    [self hangupCall];
+    [self hangupCallWithReason:EMCallEndReasonFailed];
 #endif
 }
 @end

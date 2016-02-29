@@ -522,18 +522,14 @@
         [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
         
         EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
-        [self hideHud];
         if (!error) {
             //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
-            [self.tableView beginUpdates];
-            [[self.dataArray objectAtIndex:(_currentLongPressIndex.section - 1)] removeObjectAtIndex:_currentLongPressIndex.row];
-            [self.contactsSource removeObject:model.buddy];
-            [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:_currentLongPressIndex] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
+            [self reloadDataSource];
         }
         else {
             [self showHint:error.errorDescription];
         }
+        [self hideHud];
     }
     _currentLongPressIndex = nil;
 }
