@@ -203,6 +203,9 @@
 "call.reject"="Reject";
 "call.answer"="Answer";
 "call.hangup"="Hangup";
+"call.finished"="Establish call finished";
+"call.autoHangup"="No response and Hang up";
+"call.noResponse"="NO response";
 "call.connectFailed"="Connect failed";
 "call.failed"="Call failed";
 "call.suspended"="Call has been suspended";
