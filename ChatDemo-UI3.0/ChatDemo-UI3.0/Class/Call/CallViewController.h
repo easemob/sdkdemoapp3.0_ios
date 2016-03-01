@@ -54,4 +54,6 @@
 
 - (void)startTimer;
 
+- (void)close;
+
 @end

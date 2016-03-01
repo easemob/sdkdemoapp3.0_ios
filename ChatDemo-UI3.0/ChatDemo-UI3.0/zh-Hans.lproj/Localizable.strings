@@ -195,7 +195,7 @@
 "chatroom.remove" = "被踢出聊天室\'%@\'";
 
 //call
-"call.initFailed"="通话建立失败";
+"call.initFailed"="创建实时通话失败，请稍后重试";
 "call.waiting"="等待接听...";
 "call.connecting"="正在建立连接...";
 "call.silence"="静音";
@@ -203,6 +203,9 @@
 "call.reject"="拒接";
 "call.answer"="接听";
 "call.hangup"="挂断";
+"call.finished"="连接建立完成";
+"call.autoHangup"="没有响应，自动挂断";
+"call.noResponse"="对方没有回应";
 "call.connectFailed"="建立连接失败";
 "call.failed"="通话失败";
 "call.suspended"="通话已挂断";
