@@ -261,43 +261,11 @@
       latestMessageTitleForConversationModel:(id<IConversationModel>)conversationModel
 {
     NSString *latestMessageTitle = @"";
-    EMMessage *lastMessage = [conversationModel.conversation latestMessage];
-    if (lastMessage.ext &&
-        [RemoveAfterReadManager isRemoveAfterReadMessage:lastMessage] &&
-        [lastMessage.to isEqualToString:[[EaseMob sharedInstance].chatManager loginInfo][kSDKUsername]])
+    EMMessage *latestMessage = [conversationModel.conversation latestMessage];
+    if (latestMessage)
     {
-        latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
-        return latestMessageTitle;
+        latestMessageTitle = [self commonLatestMessageTitle:latestMessage];
     }
-    if (lastMessage) {
-        id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
-        switch (messageBody.messageBodyType) {
-            case eMessageBodyType_Image:{
-                latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
-            } break;
-            case eMessageBodyType_Text:{
-                // 表情映射。
-                NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-                                            convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
-                latestMessageTitle = didReceiveText;
-            } break;
-            case eMessageBodyType_Voice:{
-                latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
-            } break;
-            case eMessageBodyType_Location: {
-                latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
-            } break;
-            case eMessageBodyType_Video: {
-                latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
-            } break;
-            case eMessageBodyType_File: {
-                latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
-            } break;
-            default: {
-            } break;
-        }
-    }
-    
     return latestMessageTitle;
 }
 
@@ -309,9 +277,73 @@
     if (lastMessage) {
         latestMessageTime = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
-
-    
     return latestMessageTime;
+}
+
+- (NSAttributedString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController latestMessageAttributedTitleForConversationModel:(id<IConversationModel>)conversationModel
+{
+    NSMutableAttributedString *latestMessageAttributedTitle = nil;
+    EMMessage *latestMessage = [conversationModel.conversation latestMessage];
+    if (latestMessage)
+    {
+        if ([EaseMessageHelper isConversationHasUnreadGroupAtMessage:conversationModel.conversation])
+        {
+            //如果当前会话有未读的、针对当前用户的群组@消息
+            NSString *latestMessageTitle = [self commonLatestMessageTitle:latestMessage];
+            NSString *senderName = [EaseMessageHelper getLatestGroupAtMessageSenderName:conversationModel.conversation];
+            if (senderName)
+            {
+                NSString *prefixTitle = [@"[有人@你]:" stringByAppendingString:senderName];
+                NSString *allTitleStr = [NSString stringWithFormat:@"%@ %@",prefixTitle,latestMessageTitle];
+                latestMessageAttributedTitle = [[NSMutableAttributedString alloc] initWithString:allTitleStr];
+                [latestMessageAttributedTitle addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:[allTitleStr rangeOfString:prefixTitle]];
+            }
+        }
+        if (!latestMessageAttributedTitle) {
+            latestMessageAttributedTitle = [[NSMutableAttributedString alloc] initWithString:[self commonLatestMessageTitle:latestMessage]];
+        }
+    }
+    return latestMessageAttributedTitle;
+}
+
+#pragma mark - 普通消息显示
+- (NSString *)commonLatestMessageTitle:(EMMessage *)latestMessage
+{
+    NSString *latestMessageTitle = @"";
+    if (latestMessage.ext &&
+        [EaseMessageHelper isRemoveAfterReadMessage:latestMessage] &&
+        [latestMessage.to isEqualToString:[[EaseMob sharedInstance].chatManager loginInfo][kSDKUsername]])
+    {
+        latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
+        return latestMessageTitle;
+    }
+    id<IEMMessageBody> messageBody = latestMessage.messageBodies.lastObject;
+    switch (messageBody.messageBodyType) {
+        case eMessageBodyType_Image:{
+            latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
+        } break;
+        case eMessageBodyType_Text:{
+            // 表情映射。
+            NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                        convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
+            latestMessageTitle = didReceiveText;
+        } break;
+        case eMessageBodyType_Voice:{
+            latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
+        } break;
+        case eMessageBodyType_Location: {
+            latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
+        } break;
+        case eMessageBodyType_Video: {
+            latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
+        } break;
+        case eMessageBodyType_File: {
+            latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
+        } break;
+        default: {
+        } break;
+    }
+    return latestMessageTitle;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -396,14 +428,45 @@
     NSLog(NSLocalizedString(@"message.endReceiveOffine", @"End to receive offline messages"));
 }
 
-#pragma mark - NSNotification
-/**
- *  阅后即焚或消息回撤处理结果，刷新UI的通知，需要子类去实现
- */
-- (void)updateMainUINotification:(NSNotification *)notification
+#pragma mark - EaseMessageHelpProtocal
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
 {
     [self tableViewDidTriggerHeaderRefresh];
 }
 
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRemoveAfterReadMessage:(EMMessage *)removeMessage
+{
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleGroupAtMessage:(NSArray *)messages isOffLine:(BOOL)isOffLine
+{
+    if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]])
+    {
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       
+        for (id<IConversationModel>model in self.dataArray)
+        {
+            [messages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([obj isKindOfClass:[EMMessage class]])
+                {
+                    EMMessage *message = (EMMessage *)obj;
+                    if ([EaseMessageHelper isGroupAtCurrentUserByMessage:message conversation:model.conversation] &&
+                        ![EaseMessageHelper isConversationHasUnreadGroupAtMessage:model.conversation])
+                    {
+                        //此处的会话没有被标记为 含有未读群组@消息的状态，才会更改会话扩展
+                        [EaseMessageHelper updateConversationToDB:model.conversation message:message isUnread:YES];
+                        *stop = YES;
+                    }
+                }
+            }];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self tableViewDidTriggerHeaderRefresh];
+        });
+    });
+}
 
 @end
