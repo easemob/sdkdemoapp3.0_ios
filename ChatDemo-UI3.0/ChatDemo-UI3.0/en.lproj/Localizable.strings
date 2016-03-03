@@ -224,7 +224,8 @@
 "call.videoRemoteBitrate"="Remote Bitrate: ";
 
 //message
-"message.burn" = "Burn after reading";
+"message.burn" = "[Burn after reading]";
+"message.burn.tips" = "Reading 6 seconds, the message automatically burned";
 "message.image" = "image";
 "message.location" = "location";
 "message.voice" = "audio";

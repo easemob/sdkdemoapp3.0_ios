@@ -225,6 +225,7 @@
 
 //message
 "message.burn" = "[阅后即焚]";
+"message.burn.tips" = "此消息阅读6秒后自动焚毁";
 "message.image" = "图片";
 "message.location" = "位置";
 "message.voice" = "音频";
