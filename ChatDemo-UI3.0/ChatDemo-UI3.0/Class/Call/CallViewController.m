@@ -217,7 +217,7 @@
     
     //2.自己窗口
     CGFloat width = 80;
-    CGFloat height = _callSession.remoteView.frame.size.height / _callSession.remoteView.frame.size.width * width;
+    CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
     _callSession.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
     [self.view addSubview:_callSession.localView];
     
