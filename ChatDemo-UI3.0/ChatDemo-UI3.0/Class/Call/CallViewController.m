@@ -380,8 +380,8 @@
 
 - (void)close
 {
-    _callSession = nil;
     _callSession.remoteView.hidden = YES;
+    _callSession = nil;
     _propertyView = nil;
     
     if (_timeTimer) {
