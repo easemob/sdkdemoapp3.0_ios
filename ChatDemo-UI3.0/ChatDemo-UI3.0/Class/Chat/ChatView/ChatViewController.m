@@ -199,7 +199,7 @@
             case EMMessageBodyTypeText:
             {
                 [self textReadFire];
-                _textReadAlert = [[UIAlertView alloc] initWithTitle:@"此消息阅读6秒后自动焚毁" message:messageModel.text delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                _textReadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"message.burn.tips", @"Reading 6 seconds, the message automatically burned") message:messageModel.text delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
                 [_textReadAlert show];
             }
                 break;
