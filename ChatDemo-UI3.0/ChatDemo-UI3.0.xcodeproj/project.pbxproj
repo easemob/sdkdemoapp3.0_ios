@@ -41,6 +41,7 @@
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
 		71788F1A1C8D898600D3A006 /* OccupantCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71788F171C8D898600D3A006 /* OccupantCell.m */; };
 		71788F1B1C8D898600D3A006 /* OccupantListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71788F191C8D898600D3A006 /* OccupantListViewController.m */; };
+		71788F1F1C8D8AC600D3A006 /* ReadFireCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71788F1E1C8D8AC600D3A006 /* ReadFireCell.m */; };
 		90011F921AE4BF090088D549 /* EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90011F911AE4BF090088D549 /* EMAlertView.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
 		9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D85E1939D8D000DC38A4 /* AddFriendCell.m */; };
@@ -300,6 +301,8 @@
 		71788F171C8D898600D3A006 /* OccupantCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OccupantCell.m; sourceTree = "<group>"; };
 		71788F181C8D898600D3A006 /* OccupantListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OccupantListViewController.h; sourceTree = "<group>"; };
 		71788F191C8D898600D3A006 /* OccupantListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OccupantListViewController.m; sourceTree = "<group>"; };
+		71788F1D1C8D8AC600D3A006 /* ReadFireCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadFireCell.h; sourceTree = "<group>"; };
+		71788F1E1C8D8AC600D3A006 /* ReadFireCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadFireCell.m; sourceTree = "<group>"; };
 		90011F901AE4BF090088D549 /* EMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAlertView.h; sourceTree = "<group>"; };
 		90011F911AE4BF090088D549 /* EMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAlertView.m; sourceTree = "<group>"; };
 		9003D7851939D8D000DC38A4 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -794,6 +797,15 @@
 			path = OccupantList;
 			sourceTree = "<group>";
 		};
+		71788F1C1C8D8AC600D3A006 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				71788F1D1C8D8AC600D3A006 /* ReadFireCell.h */,
+				71788F1E1C8D8AC600D3A006 /* ReadFireCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		90011F8F1AE4BF090088D549 /* EMAlertView */ = {
 			isa = PBXGroup;
 			children = (
@@ -825,6 +837,7 @@
 		9003D7821939D8D000DC38A4 /* ChatView */ = {
 			isa = PBXGroup;
 			children = (
+				71788F1C1C8D8AC600D3A006 /* Cell */,
 				9003D7851939D8D000DC38A4 /* ChatViewController.h */,
 				9003D7861939D8D000DC38A4 /* ChatViewController.m */,
 			);
@@ -1846,6 +1859,7 @@
 				90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */,
 				3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */,
 				9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */,
+				71788F1F1C8D8AC600D3A006 /* ReadFireCell.m in Sources */,
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
