@@ -15,16 +15,31 @@
 #import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
 
+#import "ReadFireCell.h"
+#import "OccupantListViewController.h"
+/** @brief 用于消息撤销后，插入的提示消息ext的字段，对应值为BOOL类型*/
+#define KEM_REVOKE_EXTKEY_REVOKEPROMPT       @"em_revoke_extKey_revokePrompt"
+
 @interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
     UIMenuItem *_transpondMenuItem;
+    
+    UIMenuItem *_revokeMenuItem;
+    
+    NSRunLoop *_runLoop;
+    NSTimer *_timer;
+    UIAlertView *_textReadAlert;
+    BOOL _isHasRevokePrompt;
+    NSString *_conversationTitle;
 }
 
 @property (nonatomic) BOOL isPlayingAudio;
 
 @property (nonatomic) NSMutableDictionary *emotionDic;
+
+@property (nonatomic, strong) id<IMessageModel> currentModel;
 
 @end
 
@@ -36,6 +51,7 @@
     self.showRefreshHeader = YES;
     self.delegate = self;
     self.dataSource = self;
+    _isHasRevokePrompt = YES;
     
     [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
     [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
@@ -57,6 +73,8 @@
     
     //通过会话管理者获取已收发消息
     [self tableViewDidTriggerHeaderRefresh];
+    
+    [self configEaseMessageHelp];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,6 +112,7 @@
             self.title = [self.conversation.ext objectForKey:@"subject"];
         }
     }
+    _conversationTitle = self.title;
 }
 
 #pragma mark - setup subviews
@@ -125,6 +144,11 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (alertView == _textReadAlert) {
+        
+        [self timerAction];
+        return;
+    }
     if (alertView.cancelButtonIndex != buttonIndex) {
         self.messageTimeIntervalTag = -1;
         [self.conversation deleteAllMessages];
@@ -140,6 +164,16 @@
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController
    canLongPressRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    id object = [self.dataArray objectAtIndex:indexPath.row];
+    if ([object conformsToProtocol:@protocol(IMessageModel)])
+    {
+        id<IMessageModel> model = (id<IMessageModel>)object;
+        //如果是文本类型的消息撤销的提示信息，使用EaseMessageTimeCell，不允许长按事件
+        if ([model.message.ext[KEM_REVOKE_EXTKEY_REVOKEPROMPT] boolValue] && model.bodyType == EMMessageBodyTypeText)
+        {
+            return NO;
+        }
+    }
     return YES;
 }
 
@@ -156,6 +190,27 @@
     return YES;
 }
 
+- (BOOL)messageViewController:(EaseMessageViewController *)viewController didSelectMessageModel:(id<IMessageModel>)messageModel
+{
+    if (!messageModel.isSender && [EaseMessageHelper isRemoveAfterReadMessage:messageModel.message])
+    {
+        [self markReadingMessage:messageModel];
+        switch (messageModel.bodyType) {
+            case EMMessageBodyTypeText:
+            {
+                [self textReadFire];
+                _textReadAlert = [[UIAlertView alloc] initWithTitle:@"此消息阅读6秒后自动焚毁" message:messageModel.text delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                [_textReadAlert show];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    BOOL flag = NO;
+    return flag;
+}
+
 - (void)messageViewController:(EaseMessageViewController *)viewController
    didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
 {
@@ -163,7 +218,86 @@
     [self.navigationController pushViewController:userprofile animated:YES];
 }
 
+- (void)messageViewController:(EaseMessageViewController *)viewController
+        handleEaseMessageHelp:(EMHelperType)easeMessageHelpType index:(NSInteger)index
+{
+    switch (easeMessageHelpType)
+    {
+        case emHelperTypeGroupAt:
+        {
+            OccupantListViewController *occupantListVC = [[OccupantListViewController alloc] initWithGroupId:self.conversation.conversationId];
+            __weak EaseTextView *weakTextView = viewController.chatToolbar.inputTextView;
+            __weak typeof(self) weakSelf = self;
+            occupantListVC.SelectedOccupant = ^(NSString *occupantName){
+                NSMutableString *content = [[NSMutableString alloc] initWithString:weakTextView.text];
+                if (!occupantName || occupantName.length == 0 || content.length < index)
+                {//此时选取@对象取消 或 选取错误, 重置emHelpType为默认状态
+                    [weakSelf resetEaseMessageHelpType];
+                    [EaseMessageHelper markSelectOccupantId:nil];
+                }
+                else {
+                    NSString *insertString = [occupantName stringByAppendingString:@" "];
+                    [content insertString:insertString atIndex:index];
+                    weakTextView.text = content;
+                    [weakSelf changeEaseMessageHelpType:emHelperTypeGroupAt];
+                    [EaseMessageHelper markSelectOccupantId:occupantName];
+                }
+            };
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:occupantListVC];
+            [self presentViewController:nav animated:YES completion:nil];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 #pragma mark - EaseMessageViewControllerDataSource
+
+- (CGFloat)messageViewController:(EaseMessageViewController *)viewController heightForMessageModel:(id<IMessageModel>)messageModel withCellWidth:(CGFloat)cellWidth
+{
+    if ([messageModel.message.ext[KEM_REVOKE_EXTKEY_REVOKEPROMPT] boolValue])
+    {
+        //消息撤销提示
+        return self.timeCellHeight;
+    }
+    return 0.f;
+}
+
+- (UITableViewCell *)messageViewController:(UITableView *)tableView cellForMessageModel:(id<IMessageModel>)messageModel
+{
+    if ([EaseMessageHelper isRemoveAfterReadMessage:messageModel.message])
+    {
+        NSString *CellIdentifier = [ReadFireCell cellIdentifierWithModel:messageModel];
+        ReadFireCell *cell = (ReadFireCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (!cell) {
+            cell = [[ReadFireCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:messageModel];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        cell.model = messageModel;
+        BOOL isReading = _currentModel && [_currentModel.messageId isEqualToString:messageModel.messageId];
+        [cell isReadMessage:isReading];
+        
+        return cell;
+    }
+    else if ([messageModel.message.ext[KEM_REVOKE_EXTKEY_REVOKEPROMPT] boolValue] && messageModel.bodyType == EMMessageBodyTypeText)
+    {//消息撤销提示
+        NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
+        EaseMessageTimeCell *timeCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
+        
+        if (timeCell == nil) {
+            timeCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
+            timeCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        EMTextMessageBody *body = (EMTextMessageBody *)messageModel.message.body;
+        timeCell.title = body.text;
+        return timeCell;
+    }
+    return nil;
+}
 
 - (id<IMessageModel>)messageViewController:(EaseMessageViewController *)viewController
                            modelForMessage:(EMMessage *)message
@@ -267,6 +401,8 @@
     }
     
     [self.navigationController popViewControllerAnimated:YES];
+    
+    [self cancellationEaseMessageHelp];
 }
 
 - (void)showGroupDetailAction
@@ -319,6 +455,11 @@
         [self.navigationController pushViewController:listViewController animated:YES];
     }
     self.menuIndexPath = nil;
+}
+
+- (void)revokeMessageAction:(id)sender
+{
+    [self revokeMessage];
 }
 
 - (void)copyMenuAction:(id)sender
@@ -418,15 +559,353 @@
         _transpondMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"transpond", @"Transpond") action:@selector(transpondMenuAction:)];
     }
     
-    if (messageType == EMMessageBodyTypeText) {
-        [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
-    } else if (messageType == EMMessageBodyTypeImage){
-        [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
-    } else {
-        [self.menuController setMenuItems:@[_deleteMenuItem]];
+    NSMutableArray *menuArray = [NSMutableArray arrayWithObjects:_deleteMenuItem, nil];
+    if ([self canRevokeMessage]) {
+        if (_revokeMenuItem == nil) {
+            _revokeMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"revoke", @"Revoke") action:@selector(revokeMessageAction:)];
+        }
+        [menuArray addObject:_revokeMenuItem];
     }
+    
+    if (messageType == EMMessageBodyTypeText) {
+        [menuArray addObjectsFromArray:@[_copyMenuItem,_transpondMenuItem]];
+    } else if (messageType == EMMessageBodyTypeImage){
+        [menuArray addObjectsFromArray:@[_transpondMenuItem]];
+    }
+    [self.menuController setMenuItems:menuArray];
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
+}
+
+
+#pragma mark - EaseChatBarMoreViewDelegate
+- (void)moreView:(EaseChatBarMoreView *)moreView removeAfterRead:(BOOL)isRemove
+{
+    if (isRemove)
+    {
+        [self changeEaseMessageHelpType:emHelperTypeRemoveAfterRead];
+    }
+    else {
+        [self resetEaseMessageHelpType];
+    }
+    
+    [self.chatToolbar endEditing:YES];
+}
+
+#pragma mark - EMReadManagerProtocol
+
+//图片、音频、视频
+- (void)readMessageFinished:(id<IMessageModel>)model
+{
+    [self handleRemoveAfterReadMessage:model];
+}
+
+#pragma mark - EMLocationViewDelegate
+//地理位置
+- (void)locationMessageReadAck:(id<IMessageModel>)messageModel
+{
+    [self handleRemoveAfterReadMessage:messageModel];
+}
+
+#pragma mark - ==============================================================================
+#pragma mark - 为了阅后即焚
+- (void)textReadFire {
+    _timer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(timerAction) userInfo:nil repeats:NO];
+    if (!_runLoop) {
+        _runLoop = [[NSRunLoop alloc] init];
+    }
+    [_runLoop addTimer:_timer forMode:NSRunLoopCommonModes];
+    [_runLoop run];
+}
+
+//标记正在阅读的消息
+- (void)markReadingMessage:(id<IMessageModel>)messageModel
+{
+    _currentModel = messageModel;
+    [[EaseMessageHelper sharedInstance] updateCurrentMsg:messageModel.message];
+    [self.tableView reloadData];
+}
+
+//处理阅读即焚消息
+- (void)handleRemoveAfterReadMessage:(id<IMessageModel>)model
+{
+    id<IMessageModel> messageModel = model;
+    if (!messageModel) {
+        return;
+    }
+    //未连接，当前查看的消息存入NSUserDefaults，待连接后处理阅后即焚
+    if (![[EMClient sharedClient] isConnected])
+    {
+        [self.tableView reloadData];
+        [[EaseMessageHelper sharedInstance] updateCurrentMsg:model.message];
+        [self showHint:NSLocalizedString(@"reconnection.fail", @"reconnection failure, later will continue to reconnection")];
+        return;
+    }
+    
+    [[EaseMessageHelper sharedInstance] handleRemoveAfterReadMessage:messageModel.message];
+}
+
+#pragma mark - timer
+
+- (void)timerAction
+{
+    if (_textReadAlert.visible) {
+        [_textReadAlert dismissWithClickedButtonIndex:0 animated:NO];
+    }
+    
+    [self handleRemoveAfterReadMessage:_currentModel];
+    _currentModel = nil;
+    if (_timer.isValid) {
+        [_timer invalidate];
+        _timer = nil;
+        _runLoop = nil;
+    }
+}
+
+#pragma mark - ==============================================================================
+#pragma mark - 为了消息撤销
+//验证是否符合2分钟内消息撤销
+- (BOOL)canRevokeMessage {
+    if (!self.menuIndexPath || self.menuIndexPath.row <= 0)
+    {
+        return NO;
+    }
+    id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    return [EaseMessageHelper canRevokeMessage:model.message];
+}
+
+//发送方,处理点击撤销
+- (void)revokeMessage
+{
+    if (![[EMClient sharedClient] isConnected])
+    {
+        //连接断开
+        [self showHint:NSLocalizedString(@"reconnection.fail", @"reconnection failure, later will continue to reconnection")];
+        return;
+    }
+    //执行删除，并穿透传消息
+    id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    [self.messsagesSource removeObject:model.message];
+    NSInteger index = self.menuIndexPath.row;
+    if (_isHasRevokePrompt)
+    {
+        //开启撤销提示
+        id<IMessageModel> newModel = [self insertRevokePromptMessageToDB:model.message];
+        if (newModel)
+        {
+            [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+        }
+        else {
+            [self.dataArray removeObject:model];
+        }
+    }
+    else {
+        NSIndexSet *indexSet = [[self removeTimePrompt:index] mutableCopy];
+        [self.dataArray removeObjectsAtIndexes:indexSet];
+        [self.messsagesSource removeObject:model.message];
+    }
+    [self.tableView reloadData];
+    [self.conversation deleteMessageWithId:model.messageId];
+    //发送cmd消息
+    [EaseMessageHelper sendRevokeCMDMessage:model.message];
+    //重置
+    self.menuIndexPath = nil;
+}
+
+#pragma mark - 插入撤销提示处理
+/**
+ * 向DB插入 撤销提示的消息
+ *
+ * @param messageModel 被替换的消息
+ * @return 带有撤销提示的文本消息
+ */
+- (id<IMessageModel>)insertRevokePromptMessageToDB:(EMMessage *)message
+{
+    NSString *prompt = [self prompt:message];
+    id<IMessageModel> newModel = nil;
+    EMMessage *newMessage = [self promptMessage:prompt oldMessage:message];
+    if ([[EMClient sharedClient].chatManager importMessages:@[newMessage]])
+    {
+        newModel = [[EaseMessageModel alloc] initWithMessage:newMessage];
+    }
+    return newModel;
+}
+
+//撤销提示语
+- (NSString *)prompt:(EMMessage *)message
+{
+    NSString *prompt = @"撤消了一条消息";
+    NSString *account = [EMClient sharedClient].currentUsername;
+    if ([message.from isEqualToString:account])
+    {
+        prompt = [@"您" stringByAppendingString:prompt];
+    }
+    else if (message.chatType == EMChatTypeChat)
+    {
+        prompt = [message.from stringByAppendingString:prompt];
+    }
+    else {
+        prompt = [message.from stringByAppendingString:prompt];
+    }
+    return prompt;
+}
+
+- (EMMessage *)promptMessage:(NSString *)prompt
+                  oldMessage:(EMMessage *)oldMessage
+{
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:prompt];
+    NSString *currentUsername = [EMClient sharedClient].currentUsername;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:oldMessage.conversationId from:currentUsername to:oldMessage.conversationId body:body ext:nil];
+    message.timestamp = oldMessage.timestamp;
+    message.chatType = oldMessage.chatType;
+    message.isRead = YES;
+    message.isReadAcked = YES;
+    message.isDeliverAcked = YES;
+    message.ext = [NSDictionary dictionaryWithObjectsAndKeys:@YES, KEM_REVOKE_EXTKEY_REVOKEPROMPT, nil];
+    return message;
+}
+
+//删除指定消息
+- (void)removeAppointMessage:(EMMessage *)message index:(NSInteger)index
+{
+    NSIndexSet *indexSet = [[self removeTimePrompt:index] mutableCopy];
+    [self.dataArray removeObjectsAtIndexes:indexSet];
+    [self.messsagesSource removeObject:message];
+}
+
+//获取消息在messageSource中的下标
+- (NSInteger)fetchMessageIndex:(EMMessage *)message
+{
+    __block NSInteger index = -1;
+    [self.messsagesSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[EMMessage class]]) {
+            EMMessage *msg = (EMMessage *)obj;
+            if ([msg.messageId isEqualToString:message.messageId])
+            {
+                index = idx;
+                *stop = YES;
+            }
+        }
+    }];
+    return index;
+}
+
+//获取待删除消息对象indexPath
+- (NSInteger)fetchRemoveMessageModelIndex:(EMMessage *)message
+{
+    if (![self.conversation.conversationId isEqualToString:message.conversationId])
+    {
+        return -1;
+    }
+    __block NSInteger index = -1;
+    [self.dataArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj conformsToProtocol:@protocol(IMessageModel)])
+        {
+            id<IMessageModel> model = (id<IMessageModel>)obj;
+            if ([model.messageId isEqualToString:message.messageId])
+            {
+                index = idx;
+                *stop = YES;
+            }
+        }
+    }];
+    return index;
+}
+
+//数据源移除时间提示
+- (NSIndexSet *)removeTimePrompt:(NSInteger)msgIndex
+{
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSetWithIndex:msgIndex];
+    if (msgIndex - 1 >= 0 && [[self.dataArray objectAtIndex:msgIndex - 1] isKindOfClass:[NSString class]])
+    {
+        BOOL isRemoveTimeString = YES;
+        if (msgIndex + 1 < self.dataArray.count && ![[self.dataArray objectAtIndex:msgIndex + 1] isKindOfClass:[NSString class]])
+        {
+            isRemoveTimeString = NO;
+        }
+        if (isRemoveTimeString)
+        {
+            [indexSet addIndex:msgIndex - 1];
+        }
+    }
+    return indexSet;
+}
+
+
+#pragma mark - 配置EaseMessageHelp
+
+- (void)configEaseMessageHelp
+{
+    if (self.conversation.type == EMConversationTypeChat)
+    {
+        [EaseMessageHelper openInputState];
+    }
+}
+
+- (void)cancellationEaseMessageHelp
+{
+    [EaseMessageHelper closeInputState];
+    if ([EaseMessageHelper isConversationHasUnreadGroupAtMessage:self.conversation])
+    {
+        [EaseMessageHelper updateConversationToDB:self.conversation message:nil isUnread:NO];
+        [[ChatDemoHelper shareHelper].conversationListVC refreshDataSource];
+    }
+}
+
+
+#pragma mark - EaseMessageHelperProtocal
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
+{
+    for (EMMessage *message in needRevokeMessags)
+    {
+        NSInteger index = [self fetchRemoveMessageModelIndex:message];
+        if (index >= 0)
+        {
+            if (_isHasRevokePrompt)
+            {
+                //此时为消息撤销模式，且显示消息撤销提示
+                id<IMessageModel> newModel = [self insertRevokePromptMessageToDB:message];
+                if (newModel)
+                {
+                    NSInteger msgIndex = [self fetchMessageIndex:message];
+                    if (msgIndex >= 0) {
+                        [self.messsagesSource replaceObjectAtIndex:msgIndex withObject:newModel.message];
+                        [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+                    }
+                }
+            }
+            else {
+                //消息撤销不显示撤销提示
+                [self removeAppointMessage:message index:index];
+            }
+        }
+    }
+    [self.tableView reloadData];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRemoveAfterReadMessage:(NSArray *)removeMessages
+{
+    for (EMMessage *message in removeMessages) {
+        NSInteger index = [self fetchRemoveMessageModelIndex:message];
+        if (index >= 0)
+        {
+            //阅后即焚
+            [self removeAppointMessage:message index:index];
+        }
+    }
+    [self.tableView reloadData];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleInputStateMessage:(NSString *)conversationTitle
+{
+    if (conversationTitle)
+    {
+        self.title = conversationTitle;
+    }
+    else {
+        self.title = _conversationTitle;
+    }
 }
 
 @end

@@ -249,6 +249,12 @@
     NSString *latestMessageTitle = @"";
     EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage) {
+        if (lastMessage.ext &&
+            [EaseMessageHelper isRemoveAfterReadMessage:lastMessage] &&
+            [lastMessage.to isEqualToString:[EMClient sharedClient].currentUsername]) {
+            latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
+            return latestMessageTitle;
+        }
         EMMessageBody *messageBody = lastMessage.body;
         switch (messageBody.type) {
             case EMMessageBodyTypeImage:{
@@ -279,8 +285,28 @@
             } break;
         }
     }
-    
     return latestMessageTitle;
+}
+
+- (NSAttributedString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController latestMessageAttributedTitleForConversationModel:(id<IConversationModel>)conversationModel
+{
+    NSMutableAttributedString *latestMessageAttributedTitle = nil;
+    NSString *latestMessageTitle = [self conversationListViewController:conversationListViewController latestMessageTitleForConversationModel:conversationModel];
+    if ([EaseMessageHelper isConversationHasUnreadGroupAtMessage:conversationModel.conversation])
+    {
+        //如果当前会话有未读的、针对当前用户的群组@消息
+        NSString *senderName = [EaseMessageHelper getLatestGroupAtMessageSenderName:conversationModel.conversation];
+        NSString *prefixTitle = [@"[有人@你]:" stringByAppendingString:senderName];
+        NSString *allTitleStr = [NSString stringWithFormat:@"%@ %@",prefixTitle,latestMessageTitle];
+        latestMessageAttributedTitle = [[NSMutableAttributedString alloc] initWithString:allTitleStr];
+        NSRange colorRange = [allTitleStr rangeOfString:prefixTitle];
+        [latestMessageAttributedTitle addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:colorRange];
+    }
+    else
+    {
+        latestMessageAttributedTitle = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
+    }
+    return latestMessageAttributedTitle;
 }
 
 - (NSString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController
@@ -367,6 +393,44 @@
     else{
         self.tableView.tableHeaderView = nil;
     }
+}
+
+#pragma mark - EaseMessageHelperProtocal
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
+{
+    [self refreshDataSource];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRemoveAfterReadMessage:(NSArray *)removeMessages
+{
+    [self refreshDataSource];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleGroupAtMessage:(NSArray *)messages
+{
+    if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]])
+    {
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        for (EMMessage *message in messages) {
+            //messages按照timestamp降序，各会话只取timestamp最大的
+            if (!dic[message.conversationId] &&
+                [EaseMessageHelper isGroupAtCurrentUserByMessage:message])
+            {
+                [dic setObject:message forKey:message.conversationId];
+            }
+        }
+        for (EMMessage *message in dic.allValues) {
+            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:message.conversationId type:(EMConversationType)message.chatType createIfNotExist:YES];
+            [EaseMessageHelper updateConversationToDB:conversation message:message isUnread:YES];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf refreshDataSource];
+        });
+    });
 }
 
 @end
