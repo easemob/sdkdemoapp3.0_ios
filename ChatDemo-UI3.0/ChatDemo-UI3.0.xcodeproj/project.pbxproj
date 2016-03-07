@@ -39,6 +39,8 @@
 		3CBB931C1A14B227007FED9E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBB931B1A14B227007FED9E /* libsqlite3.dylib */; };
 		3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
+		71788F1A1C8D898600D3A006 /* OccupantCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71788F171C8D898600D3A006 /* OccupantCell.m */; };
+		71788F1B1C8D898600D3A006 /* OccupantListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71788F191C8D898600D3A006 /* OccupantListViewController.m */; };
 		90011F921AE4BF090088D549 /* EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90011F911AE4BF090088D549 /* EMAlertView.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
 		9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D85E1939D8D000DC38A4 /* AddFriendCell.m */; };
@@ -294,6 +296,10 @@
 		3CBF90BE19302F5000AD68AE /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		3CBF90BF19302F5000AD68AE /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		71788F161C8D898600D3A006 /* OccupantCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OccupantCell.h; sourceTree = "<group>"; };
+		71788F171C8D898600D3A006 /* OccupantCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OccupantCell.m; sourceTree = "<group>"; };
+		71788F181C8D898600D3A006 /* OccupantListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OccupantListViewController.h; sourceTree = "<group>"; };
+		71788F191C8D898600D3A006 /* OccupantListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OccupantListViewController.m; sourceTree = "<group>"; };
 		90011F901AE4BF090088D549 /* EMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAlertView.h; sourceTree = "<group>"; };
 		90011F911AE4BF090088D549 /* EMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAlertView.m; sourceTree = "<group>"; };
 		9003D7851939D8D000DC38A4 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -777,6 +783,17 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		71788F151C8D898600D3A006 /* OccupantList */ = {
+			isa = PBXGroup;
+			children = (
+				71788F161C8D898600D3A006 /* OccupantCell.h */,
+				71788F171C8D898600D3A006 /* OccupantCell.m */,
+				71788F181C8D898600D3A006 /* OccupantListViewController.h */,
+				71788F191C8D898600D3A006 /* OccupantListViewController.m */,
+			);
+			path = OccupantList;
+			sourceTree = "<group>";
+		};
 		90011F8F1AE4BF090088D549 /* EMAlertView */ = {
 			isa = PBXGroup;
 			children = (
@@ -789,6 +806,7 @@
 		9003D7761939D8D000DC38A4 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				71788F151C8D898600D3A006 /* OccupantList */,
 				9003D7771939D8D000DC38A4 /* ChatList */,
 				9003D7821939D8D000DC38A4 /* ChatView */,
 			);
@@ -1800,6 +1818,7 @@
 				90911117192EEAED008A48AA /* THProgressView.m in Sources */,
 				D29A6BAF1B720960002324BB /* UserProfileEditViewController.m in Sources */,
 				3C5EB36319407CAF005C7704 /* EMChooseViewController.m in Sources */,
+				71788F1B1C8D898600D3A006 /* OccupantListViewController.m in Sources */,
 				3C914D8219514BBD0002DAD3 /* ChatGroupDetailViewController.m in Sources */,
 				D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */,
 				3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */,
@@ -1836,6 +1855,7 @@
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
+				71788F1A1C8D898600D3A006 /* OccupantCell.m in Sources */,
 				3C13D94B1A12095D00903622 /* GroupBansViewController.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
