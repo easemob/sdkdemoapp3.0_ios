@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 easemob.com. All rights reserved.
 //
 
+#import "EaseUI.h"
+
 @interface ConversationListController : EaseConversationListViewController
 
 - (void)refreshDataSource;
