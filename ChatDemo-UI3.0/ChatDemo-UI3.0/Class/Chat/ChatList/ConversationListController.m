@@ -414,7 +414,9 @@
 #pragma mark - EaseMessageHelpProtocal
 - (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
 {
-    if ([EaseMessageHelper revokePromptIsValid]) {
+    //添加判断，如果当前topViewController不为聊天页面且消息回撤提示可用，则进行插入
+    if (![self.navigationController.topViewController isKindOfClass:[ChatViewController class]] &&
+        [EaseMessageHelper revokePromptIsValid]) {
         for (EMMessage *message in needRevokeMessags)
         {
             for (id<IConversationModel>model in self.dataArray)
