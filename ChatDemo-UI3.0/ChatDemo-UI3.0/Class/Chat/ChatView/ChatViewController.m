@@ -550,7 +550,9 @@
     }
     
     NSMutableArray *menuArray = [NSMutableArray arrayWithObjects:_deleteMenuItem, nil];
-    if ([self canRevokeMessage]) {
+    //聊天室不可回撤消息
+    if ([self canRevokeMessage]  &&
+        self.conversation.conversationType != eConversationTypeChatRoom) {
         if (_revokeMenuItem == nil) {
             _revokeMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"revoke", @"Revoke") action:@selector(revokeMessageAction:)];
         }
