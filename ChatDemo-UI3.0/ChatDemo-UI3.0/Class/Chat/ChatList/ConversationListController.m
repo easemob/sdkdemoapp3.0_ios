@@ -64,6 +64,8 @@
     [self searchController];
     
     [self removeEmptyConversationsFromDB];
+    
+    [self configEaseMessageHelp];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -261,36 +263,11 @@
       latestMessageTitleForConversationModel:(id<IConversationModel>)conversationModel
 {
     NSString *latestMessageTitle = @"";
-    EMMessage *lastMessage = [conversationModel.conversation latestMessage];
-    if (lastMessage) {
-        id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
-        switch (messageBody.messageBodyType) {
-            case eMessageBodyType_Image:{
-                latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
-            } break;
-            case eMessageBodyType_Text:{
-                // 表情映射。
-                NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-                                            convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
-                latestMessageTitle = didReceiveText;
-            } break;
-            case eMessageBodyType_Voice:{
-                latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
-            } break;
-            case eMessageBodyType_Location: {
-                latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
-            } break;
-            case eMessageBodyType_Video: {
-                latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
-            } break;
-            case eMessageBodyType_File: {
-                latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
-            } break;
-            default: {
-            } break;
-        }
+    EMMessage *latestMessage = [conversationModel.conversation latestMessage];
+    if (latestMessage)
+    {
+        latestMessageTitle = [self commonLatestMessageTitle:latestMessage];
     }
-    
     return latestMessageTitle;
 }
 
@@ -302,9 +279,47 @@
     if (lastMessage) {
         latestMessageTime = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
-
-    
     return latestMessageTime;
+}
+
+#pragma mark - 阅后即焚或普通消息内容显示
+- (NSString *)commonLatestMessageTitle:(EMMessage *)latestMessage
+{
+    NSString *latestMessageTitle = @"";
+    if (latestMessage.ext &&
+        [EaseMessageHelper isRemoveAfterReadMessage:latestMessage] &&
+        [latestMessage.to isEqualToString:[[EaseMob sharedInstance].chatManager loginInfo][kSDKUsername]])
+    {
+        latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
+        return latestMessageTitle;
+    }
+    id<IEMMessageBody> messageBody = latestMessage.messageBodies.lastObject;
+    switch (messageBody.messageBodyType) {
+        case eMessageBodyType_Image:{
+            latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
+        } break;
+        case eMessageBodyType_Text:{
+            // 表情映射。
+            NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                        convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
+            latestMessageTitle = didReceiveText;
+        } break;
+        case eMessageBodyType_Voice:{
+            latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
+        } break;
+        case eMessageBodyType_Location: {
+            latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
+        } break;
+        case eMessageBodyType_Video: {
+            latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
+        } break;
+        case eMessageBodyType_File: {
+            latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
+        } break;
+        default: {
+        } break;
+    }
+    return latestMessageTitle;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -389,5 +404,34 @@
     NSLog(NSLocalizedString(@"message.endReceiveOffine", @"End to receive offline messages"));
 }
 
+#pragma mark - 配置EaseMessageHelp
+
+- (void)configEaseMessageHelp
+{
+    [EaseMessageHelper openRevokePrompt];
+}
+
+#pragma mark - EaseMessageHelpProtocal
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
+{
+    if ([EaseMessageHelper revokePromptIsValid]) {
+        for (EMMessage *message in needRevokeMessags)
+        {
+            for (id<IConversationModel>model in self.dataArray)
+            {
+                if ([message.conversationChatter isEqualToString:model.conversation.chatter]) {
+                    [EaseMessageHelper insertRevokePromptMessageToDB:message];
+                    break;
+                }
+            }
+        }
+    }
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRemoveAfterReadMessage:(EMMessage *)removeMessage
+{
+    [self tableViewDidTriggerHeaderRefresh];
+}
 
 @end
