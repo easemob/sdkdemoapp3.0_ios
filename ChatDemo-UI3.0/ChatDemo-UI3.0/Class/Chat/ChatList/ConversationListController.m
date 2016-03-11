@@ -414,7 +414,17 @@
 #pragma mark - EaseMessageHelpProtocal
 - (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
 {
-    if ([EaseMessageHelper revokePromptIsValid]) {
+    __block BOOL isContainChatVC = NO;
+    [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[ChatViewController class]])
+        {
+            isContainChatVC = YES;
+            *stop = YES;
+        }
+    }];
+    //添加判断，如果当前nav的viewControllers不含有ChatViewController且消息回撤提示可用，则进行插入
+    if (!isContainChatVC &&
+        [EaseMessageHelper revokePromptIsValid]) {
         for (EMMessage *message in needRevokeMessags)
         {
             for (id<IConversationModel>model in self.dataArray)
