@@ -31,9 +31,7 @@
     EMMessage *message = [EaseSDKHelper sendImageMessageWithImage:image
                                                                to:self.conversation.conversationId
                                                       messageType:[self _messageTypeFromConversationType]
-                                                requireEncryption:NO
-                                                       messageExt:ext
-                                                         progress:nil];
+                                                         messageExt:nil];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -46,9 +44,7 @@
                                                              duration:duration
                                                                    to:self.conversation.conversationId
                                                           messageType:[self _messageTypeFromConversationType]
-                                                    requireEncryption:NO
-                                                           messageExt:ext
-                                                             progress:nil];
+                                                             messageExt:nil];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -60,9 +56,7 @@
     EMMessage *message = [EaseSDKHelper sendVideoMessageWithURL:url
                                                              to:self.conversation.conversationId
                                                     messageType:[self _messageTypeFromConversationType]
-                                              requireEncryption:NO
-                                                     messageExt:ext
-                                                       progress:nil];
+                                                       messageExt:nil];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -78,7 +72,6 @@
                                                                 address:address
                                                                      to:self.conversation.conversationId
                                                             messageType:[self _messageTypeFromConversationType]
-                                                      requireEncryption:NO
                                                              messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];

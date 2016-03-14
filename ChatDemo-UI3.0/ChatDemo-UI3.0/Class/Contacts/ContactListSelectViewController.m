@@ -64,7 +64,7 @@
             if (image) {
                 image = [UIImage imageWithContentsOfFile:self.messageModel.fileLocalPath];
             }
-            EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat requireEncryption:NO messageExt:self.messageModel.message.ext progress:nil];
+            EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
             
             [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
                 if (!error) {
