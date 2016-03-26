@@ -1,11 +1,8 @@
 //
 //  MobClick.h
-//  MobClick
+//  Analytics
 //
-//  Created by Aladdin on 2010-03-25.
-//  Updated by Minghua on 2013-08-08.
-//  Copyright 2010-2012 Umeng.com . All rights reserved.
-//  Version 2.2.1.OpenUDID, updated_at 2013-09-12.
+//  Copyright (C) 2010-2015 Umeng.com . All rights reserved.
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
@@ -13,113 +10,127 @@
 #define UMOnlineConfigDidFinishedNotification @"OnlineConfigDidFinishedNotification"
 #define XcodeAppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
+/**
+ REALTIME只在“集成测试”设备的DEBUG模式下有效，其它情况下的REALTIME会改为使用BATCH策略。
+ */
 typedef enum {
-    REALTIME = 0,       //实时发送
+    REALTIME = 0,       //实时发送              (只在“集成测试”设备的DEBUG模式下有效)
     BATCH = 1,          //启动发送
-    SENDDAILY = 4,      //每日发送
-    SENDWIFIONLY = 5,   //仅在WIFI下启动时发送
-    SEND_INTERVAL = 6,   //按最小间隔发送
-    SEND_ON_EXIT = 7        //退出或进入后台时发送
+    SEND_INTERVAL = 6,  //最小间隔发送           ([90-86400]s, default 90s)
+    
+    // deprecated strategy:
+    SENDDAILY = 4,      //每日发送              (not available)
+    SENDWIFIONLY = 5,   //仅在WIFI下时启动发送   (not available)
+    SEND_ON_EXIT = 7    //进入后台时发送         (not avilable, will be support later)
 } ReportPolicy;
 
-@protocol MobClickDelegate;
+
 @class CLLocation;
+@interface MobClick : NSObject <UIAlertViewDelegate>
 
-/** MobClick是统计的核心类，本身不需要实例化，所有方法以类方法的形式提供.
-    目前发送策略有REALTIME,BATCH,SENDDAILY,SENDWIFIONLY,SEND_INTERVAL,SEND_ON_EXIT。
-    其中REALTIME,SENDWIFIONLY 只在模拟器和DEBUG模式下生效，真机release模式会自动改成BATCH。
-    关于发送策略的调整，请参见关于发送策略及发送策略变更的说明
-    http://blog.umeng.com/index.php/2012/12/0601/
-    SEND_INTERVAL 为按最小间隔发送,默认为10秒,取值范围为10 到 86400(一天)， 如果不在这个区间的话，会按10设置。
-    SEND_ON_EXIT 为退出或进入后台时发送,这种发送策略在App运行过程中不发送，对开发者和用户的影响最小。
-    不过这种发送策略只在iOS > 4.0时才会生效, iOS < 4.0 会被自动调整为BATCH。
-
- */
-@interface MobClick : NSObject <UIAlertViewDelegate> {
-@private
-    id _internal;
-}
 #pragma mark basics
 
 ///---------------------------------------------------------------------------------------
 /// @name  设置
 ///---------------------------------------------------------------------------------------
 
-/** 设置app版本号。由于历史原因需要和xcode3工程兼容,友盟提取的是Build号(CFBundleVersion),如果需要和App Store上的版本一致,需要调用此方法。
- 
+/** 设置app版本号。由于历史原因需要和xcode3工程兼容,友盟提取的是Build号(CFBundleVersion)，
+    如果需要和App Store上的版本一致,请调用此方法。
  @param appVersion 版本号，例如设置成`XcodeAppVersion`.
  @return void.
 */
 + (void)setAppVersion:(NSString *)appVersion;
 
-
-/** 开启CrashReport收集, 默认是开启状态.
- 
- @param value 设置成NO,就可以关闭友盟CrashReport收集.
+/** 开启CrashReport收集, 默认YES(开启状态).
+ @param value 设置为NO,可关闭友盟CrashReport收集功能.
  @return void.
 */
 + (void)setCrashReportEnabled:(BOOL)value;
 
-
-/** 设置是否打印sdk的log信息,默认不开启
- @param value 设置为YES,umeng SDK 会输出log信息,记得release产品时要设置回NO.
- @return .
- @exception .
+/** 设置是否打印sdk的log信息, 默认NO(不打印log).
+ @param value 设置为YES,umeng SDK 会输出log信息可供调试参考. 除非特殊需要，否则发布产品时需改回NO.
+ @return void.
  */
-
 + (void)setLogEnabled:(BOOL)value;
 
+/** 设置是否开启background模式, 默认YES.
+ @param value 为YES,SDK会确保在app进入后台的短暂时间保存日志信息的完整性，对于已支持background模式和一般app不会有影响.
+        如果该模式影响某些App在切换到后台的功能，也可将该值设置为NO.
+ @return void.
+ */
++ (void)setBackgroundTaskEnabled:(BOOL)value;
+
+/** 设置是否对日志信息进行加密, 默认NO(不加密).
+ @param value 设置为YES, umeng SDK 会将日志信息做加密处理
+ @return void.
+ */
++ (void)setEncryptEnabled:(BOOL)value;
 
 ///---------------------------------------------------------------------------------------
 /// @name  开启统计
 ///---------------------------------------------------------------------------------------
 
-
-/** 开启友盟统计,默认以BATCH方式发送log.
- 
+/** 初始化友盟统计模块
  @param appKey 友盟appKey.
- @param reportPolicy 发送策略.
- @param channelId 渠道名称,为nil或@""时,默认会被被当作@"App Store"渠道
  @return void
 */
 + (void)startWithAppkey:(NSString *)appKey;
+
+/** 初始化友盟统计模块
+ @param appKey 友盟appKey.
+ @param reportPolicy 发送策略, 默认值为：BATCH，即“启动发送”模式
+ @param channelId 渠道名称,为nil或@""时, 默认为@"App Store"渠道
+ @return void
+ */
 + (void)startWithAppkey:(NSString *)appKey reportPolicy:(ReportPolicy)rp channelId:(NSString *)cid;
 
 /** 当reportPolicy == SEND_INTERVAL 时设定log发送间隔
- 
- @param second 单位为秒,最小为10,最大为86400(一天).
+ @param second 单位为秒,最小90秒,最大86400秒(24hour).
  @return void.
 */
-
 + (void)setLogSendInterval:(double)second;
 
+/** 设置日志延迟发送
+ @param second 设置一个[0, second]范围的延迟发送秒数，最大值1800s.
+ @return void
+ */
++ (void)setLatency:(int)second;
 
 ///---------------------------------------------------------------------------------------
 /// @name  页面计时
 ///---------------------------------------------------------------------------------------
 
-
-/** 页面时长统计,记录某个view被打开多长时间,可以自己计时也可以调用beginLogPageView,endLogPageView自动计时
- 
- @param pageName 需要记录时长的view名称.
- @param seconds 秒数，int型.
+/** 手动页面时长统计, 记录某个页面展示的时长.
+ @param pageName 统计的页面名称.
+ @param seconds 单位为秒，int型.
  @return void.
 */
-
 + (void)logPageView:(NSString *)pageName seconds:(int)seconds;
+
+/** 自动页面时长统计, 开始记录某个页面展示时长.
+ 使用方法：必须配对调用beginLogPageView:和endLogPageView:两个函数来完成自动统计，若只调用某一个函数不会生成有效数据。
+ 在该页面展示时调用beginLogPageView:，当退出该页面时调用endLogPageView:
+ @param pageName 统计的页面名称.
+ @return void.
+ */
 + (void)beginLogPageView:(NSString *)pageName;
+
+/** 自动页面时长统计, 结束记录某个页面展示时长.
+ 使用方法：必须配对调用beginLogPageView:和endLogPageView:两个函数来完成自动统计，若只调用某一个函数不会生成有效数据。
+ 在该页面展示时调用beginLogPageView:，当退出该页面时调用endLogPageView:
+ @param pageName 统计的页面名称.
+ @return void.
+ */
 + (void)endLogPageView:(NSString *)pageName;
 
 #pragma mark event logs
-
 
 ///---------------------------------------------------------------------------------------
 /// @name  事件统计
 ///---------------------------------------------------------------------------------------
 
-
 /** 自定义事件,数量统计.
-    使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
+使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
  
  @param  eventId 网站上注册的事件Id.
  @param  label 分类标签。不同的标签会分别进行统计，方便同一事件的不同标签的对比,为nil或空字符串时后台会生成和eventId同名的标签.
@@ -131,18 +142,13 @@ typedef enum {
  使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
  */
 + (void)event:(NSString *)eventId label:(NSString *)label; // label为nil或@""时，等同于 event:eventId label:eventId;
-/** 自定义事件,数量统计.
- 使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
- */
-+ (void)event:(NSString *)eventId acc:(NSInteger)accumulation;
-/** 自定义事件,数量统计.
- 使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
- */
-+ (void)event:(NSString *)eventId label:(NSString *)label acc:(NSInteger)accumulation;
+
 /** 自定义事件,数量统计.
  使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
  */
 + (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes;
+
++ (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes counter:(int)number;
 
 /** 自定义事件,时长统计.
     使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID.
@@ -156,8 +162,7 @@ typedef enum {
  
  
  @warning 每个event的attributes不能超过10个
-    eventId、attributes中key和value都不能使用空格和特殊字符，eventId、attributes的key最大为128个bytes(128个英文及数字或42个左右汉字)。label、attributes的value最大为256个bytes(256个英文及数字或84个左右汉字),
-       超过后将被截短。其中eventId超过的将抛弃不再发送。
+    eventId、attributes中key和value都不能使用空格和特殊字符，且长度不能超过255个字符（否则将截取前255个字符）
     id， ts， du是保留字段，不能作为eventId及key的名称
 
 */
@@ -199,153 +204,71 @@ typedef enum {
 /** 自定义事件,时长统计.
  使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID.
  */
-
 + (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes durations:(int)millisecond;
 
 
-///---------------------------------------------------------------------------------------
-/// @name  按渠道自动更新
-///---------------------------------------------------------------------------------------
-
-
-/** 按渠道自动更新检测
-    检查当前app是否有更新，有更新弹出UIAlertView提示用户,当用户点击升级按钮时app会跳转到您预先设置的网址。
-    无更新不做任何操作。
-    您需要先在服务器端设置app版本信息，默认渠道是App Store.
-    如果您想自己控制自动更新操作流程，请实现MobClickDelegate的appUpdate方法。
- 
- @param title 对应UIAlertView的title.
- @param cancelTitle 对应UIAlertView的cancelTitle.
- @param otherTitle 对应UIAlertView的otherTitle.
- @param delegate 需要自定义checkUpdate的对象.
- @param callBackSelectorWithDictionary 当checkUpdate事件完成时此方法会被调用,同时标记app更新信息的字典被传回.
+#pragma mark - user methods
+/** active user sign-in.
+ 使用sign-In函数后，如果结束该PUID的统计，需要调用sign-Off函数
+ @param puid : user's ID
+ @param provider : 不能以下划线"_"开头，使用大写字母和数字标识; 如果是上市公司，建议使用股票代码。
  @return void.
  */
++ (void)profileSignInWithPUID:(NSString *)puid;
++ (void)profileSignInWithPUID:(NSString *)puid provider:(NSString *)provider;
 
-+ (void)checkUpdate;
-/** 按渠道自动更新检测
- */
-
-+ (void)checkUpdate:(NSString *)title cancelButtonTitle:(NSString *)cancelTitle otherButtonTitles:(NSString *)otherTitle;
-/** 按渠道自动更新检测
- */
-
-+ (void)checkUpdateWithDelegate:(id)delegate selector:(SEL)callBackSelectorWithDictionary;
-
-
-///---------------------------------------------------------------------------------------
-/// @name  在线参数
-///---------------------------------------------------------------------------------------
-
-
-/** 使用在线参数功能，可以让你动态修改应用中的参数值,
-    检查并更新服务器端配置的在线参数,缓存在[NSUserDefaults standardUserDefaults]里,
-    调用此方法您将自动拥有在线更改SDK端发送策略的功能,您需要先在服务器端设置好在线参数.
-    请在[MobClick startWithAppkey:]方法之后调用;
-    如果想知道在线参数是否完成完成，请监听UMOnlineConfigDidFinishedNotification
- @param 无.
+/** active user sign-off.
+ 停止sign-in PUID的统计
  @return void.
  */
-
-+ (void)updateOnlineConfig;
-
-/** 从[NSUserDefaults standardUserDefaults]获取缓存的在线参数的数值
-    带参数的方法获取某个key的值，不带参数的获取所有的在线参数.
-    需要先调用updateOnlineConfig才能使用,如果想知道在线参数是否完成完成，请监听UMOnlineConfigDidFinishedNotification
- 
- @param key
- @return (NSString *) .
- */
-
-+ (NSString *)getConfigParams:(NSString *)key;
-
-/** 从[NSUserDefaults standardUserDefaults]获取缓存的在线参数
-  @return (NSDictionary *).
- */
-
-+ (NSDictionary *)getConfigParams;
-
++ (void)profileSignOff;
 
 ///---------------------------------------------------------------------------------------
 /// @name 地理位置设置
+/// 需要链接 CoreLocation.framework 并且 #import <CoreLocation/CoreLocation.h>
 ///---------------------------------------------------------------------------------------
 
-
-/** 为了更精确的统计用户地理位置，可以调用此方法传入经纬度信息
-    需要链接 CoreLocation.framework 并且 #import <CoreLocation/CoreLocation.h>
+/** 设置经纬度信息
  @param latitude 纬度.
  @param longitude 经度.
- @param location CLLocation *型的地理信息
  @return void
  */
-
 + (void)setLatitude:(double)latitude longitude:(double)longitude;
-/** 为了更精确的统计用户地理位置，可以调用此方法传入经纬度信息
- */
 
+/** 设置经纬度信息
+ @param location CLLocation 经纬度信息
+ @return void
+ */
 + (void)setLocation:(CLLocation *)location;
 
 
 ///---------------------------------------------------------------------------------------
-/// @name helper方法
+/// @name Utility函数
 ///---------------------------------------------------------------------------------------
 
-
-/** 判断设备是否越狱，判断方法根据 apt和Cydia.app的path来判断
+/** 判断设备是否越狱，依据是否存在apt和Cydia.app
  */
 + (BOOL)isJailbroken;
-/** 判断你的App是否被破解
+
+/** 判断App是否被破解
  */
 + (BOOL)isPirated;
 
-#pragma mark DEPRECATED methods from version 1.7
+#pragma mark DEPRECATED
 
-
-/** 设置MobClick代理,已经startWithAppkey:所取代,不要再使用，原有代码可以删除
-*/
-
-+ (void)setDelegate:(id)delegate;
-+ (void)setDelegate:(id)delegate reportPolicy:(ReportPolicy)rp;
-
-/** 记录启动时间，模块开始启用,不要再使用，原有代码可以删除
-*/
-
-+ (void)appLaunched;
-
-/** 记录软件终止时间，模块终止,不要再使用，原有代码可以删除
++ (void)event:(NSString *)eventId acc:(NSInteger)accumulation;
+/** 自定义事件,数量统计.
+ 使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
  */
-
-+ (void)appTerminated;
++ (void)event:(NSString *)eventId label:(NSString *)label acc:(NSInteger)accumulation;
+/** 自定义事件,数量统计.
+ 使用前，请先到友盟App管理后台的设置->编辑自定义事件 中添加相应的事件ID，然后在工程中传入相应的事件ID
+ */
 
 /** 友盟模块启动
- [MobClick startWithAppkey:]通常在application:didFinishLaunchingWithOptions:里被调用监听
- App启动和退出事件，如果你没法在application:didFinishLaunchingWithOptions:里添加友盟的[MobClick startWithAppkey:]
- 方法，App的启动事件可能会无法监听，此时你就可以手动调用[MobClick startSession:nil]来启动友盟的session。
- 通常发生在某些第三方框架生成的app里，普通app使用不到.
- 
+ [MobClick startWithAppkey:]通常在application:didFinishLaunchingWithOptions:里被调用监听App启动和退出事件，
+ 如果开发者无法在此处添加友盟的[MobClick startWithAppkey:]方法，App的启动事件可能会无法监听，此时需要手动调用[MobClick startSession:nil]来启动友盟的session。
+ 上述情况通常发生在某些第三方框架生成的app里，普通app不用关注该API.
  */
-
 + (void)startSession:(NSNotification *)notification;
-
-
-/** 获取友盟sdk 版本号,目前友盟模块启动时自动调用,不要再使用，原有代码可以删除
- */
-
-+ (NSString *)getAgentVersion;  //
-@end
-
-/** MobClickDelegate protocol
-    此协议的三个方法不再建议使用，建议用新方法代替
-    + (void)startWithAppkey:(NSString *)appKey reportPolicy:(ReportPolicy)rp channelId:(NSString *)cid;
-    + (void)checkUpdate:(id)delegate selector:(SEL)callBackSelector;
-
- */
-
-
-@protocol MobClickDelegate <NSObject>
-@optional
-- (NSString *)appKey;
-- (NSString *)channelId;
-- (void)appUpdate:(NSDictionary *)appUpdateInfo;
-
 @end
