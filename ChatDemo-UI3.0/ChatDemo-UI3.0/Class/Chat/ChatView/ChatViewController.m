@@ -700,6 +700,25 @@
     [self.messsagesSource removeObject:message];
 }
 
+//获取消息在messageSource中的下标
+- (NSInteger)fetchMessageIndex:(EMMessage *)message
+{
+    __block NSInteger index = -1;
+    [self.messsagesSource enumerateObjectsWithOptions:NSEnumerationReverse
+                                           usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                               if ([obj isKindOfClass:[EMMessage class]]) {
+                                                   EMMessage *msg = (EMMessage *)obj;
+                                                   if ([msg.messageId isEqualToString:message.messageId])
+                                                   {
+                                                       index = idx;
+                                                       *stop = YES;
+                                                   }
+                                               }
+                                           }
+     ];
+    return index;
+}
+
 //获取数据源消息对象indexPath
 - (NSInteger)removeMessageModel:(EMMessage *)message
 {
@@ -758,9 +777,13 @@
                     id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:revokePromptMessage];
                     if (newModel)
                     {
-                        NSInteger msgIndex = [self.messsagesSource indexOfObject:message];
-                        [self.messsagesSource replaceObjectAtIndex:msgIndex withObject:newModel.message];
-                        [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+                        NSInteger msgIndex = [self fetchMessageIndex:message];
+                        if (msgIndex >= 0) {
+                            [self.messsagesSource replaceObjectAtIndex:msgIndex
+                                                            withObject:newModel.message];
+                            [self.dataArray replaceObjectAtIndex:index
+                                                      withObject:newModel];
+                        }
                     }
                 }
             }
