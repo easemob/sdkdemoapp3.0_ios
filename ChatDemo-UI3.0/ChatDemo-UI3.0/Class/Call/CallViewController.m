@@ -381,7 +381,6 @@
 - (void)close
 {
     _callSession.remoteView.hidden = YES;
-    _callSession.localView.hidden = YES;
     _callSession = nil;
     _propertyView = nil;
     
@@ -394,6 +393,8 @@
         [_propertyTimer invalidate];
         _propertyTimer = nil;
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:nil];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
