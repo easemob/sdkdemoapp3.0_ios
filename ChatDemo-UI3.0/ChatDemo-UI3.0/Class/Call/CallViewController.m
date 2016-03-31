@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Technologies. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Technologies.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Technologies.
  */
 
 #import <CoreTelephony/CTCallCenter.h>
@@ -34,6 +34,8 @@
     UILabel *_remoteBitrateLabel;
     UILabel *_localBitrateLabel;
     NSTimer *_propertyTimer;
+    //弱网检测
+    UILabel *_networkLabel;
 }
 
 @property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
@@ -157,12 +159,20 @@
     _nameLabel.text = _callSession.remoteUsername;
     [_topView addSubview:_nameLabel];
     
-    _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 180, self.view.frame.size.width, 180)];
+    _networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_nameLabel.frame) + 5, _topView.frame.size.width, 20)];
+    _networkLabel.font = [UIFont systemFontOfSize:14.0];
+    _networkLabel.backgroundColor = [UIColor clearColor];
+    _networkLabel.textColor = [UIColor whiteColor];
+    _networkLabel.textAlignment = NSTextAlignmentCenter;
+    _networkLabel.hidden = YES;
+    [_topView addSubview:_networkLabel];
+    
+    _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 260, self.view.frame.size.width, 260)];
     _actionView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_actionView];
     
     CGFloat tmpWidth = _actionView.frame.size.width / 2;
-    _silenceButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth - 40) / 2, 20, 40, 40)];
+    _silenceButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth - 40) / 2, 80, 40, 40)];
     [_silenceButton setImage:[UIImage imageNamed:@"call_silence"] forState:UIControlStateNormal];
     [_silenceButton setImage:[UIImage imageNamed:@"call_silence_h"] forState:UIControlStateSelected];
     [_silenceButton addTarget:self action:@selector(silenceAction) forControlEvents:UIControlEventTouchUpInside];
@@ -207,6 +217,34 @@
     [_cancelButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
     [_cancelButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
     [_actionView addSubview:_cancelButton];
+    
+    if (_callSession.type == EMCallTypeVideo) {
+        CGFloat tmpWidth = _actionView.frame.size.width / 3;
+        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
+        _recordButton.layer.cornerRadius = 20.f;
+        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
+        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
+        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [_recordButton setBackgroundColor:[UIColor grayColor]];
+        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
+        [_actionView addSubview:_recordButton];
+        _videoButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2, 20, 40, 40)];
+        _videoButton.layer.cornerRadius = 20.f;
+        [_videoButton setTitle:@"视频开启" forState:UIControlStateNormal];
+        [_videoButton setTitle:@"视频中断" forState:UIControlStateSelected];
+        [_videoButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [_videoButton setBackgroundColor:[UIColor grayColor]];
+        [_videoButton addTarget:self action:@selector(videoPauseAction) forControlEvents:UIControlEventTouchUpInside];
+        [_actionView addSubview:_videoButton];
+        _voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth * 2 + (tmpWidth - 40) / 2, 20, 40, 40)];
+        _voiceButton.layer.cornerRadius = 20.f;
+        [_voiceButton setTitle:@"音视开启" forState:UIControlStateNormal];
+        [_voiceButton setTitle:@"音视中断" forState:UIControlStateSelected];
+        [_voiceButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [_voiceButton setBackgroundColor:[UIColor grayColor]];
+        [_voiceButton addTarget:self action:@selector(voicePauseAction) forControlEvents:UIControlEventTouchUpInside];
+        [_actionView addSubview:_voiceButton];
+    }
 }
 
 - (void)_initializeVideoView
@@ -311,6 +349,52 @@
 
 #pragma mark - action
 
+- (void)recordAction
+{
+    _recordButton.selected = !_recordButton.selected;
+    if (_recordButton.selected) {
+        NSString *recordPath = NSHomeDirectory();
+        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if(![fm fileExistsAtPath:recordPath]){
+            [fm createDirectoryAtPath:recordPath
+          withIntermediateDirectories:YES
+                           attributes:nil
+                                error:nil];
+        }
+        [_callSession startVideoRecord:recordPath];
+    } else {
+        NSString *tempPath = [_callSession stopVideoRecord];
+        if (tempPath.length > 0) {
+//            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
+//            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+//            [moviePlayerController.moviePlayer prepareToPlay];
+//            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+//            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+        }
+    }
+}
+
+- (void)videoPauseAction
+{
+    _videoButton.selected = !_videoButton.selected;
+    if (_videoButton.selected) {
+        [[EMClient sharedClient].callManager pauseVideoTransfer:_callSession.sessionId];
+    } else {
+        [[EMClient sharedClient].callManager resumeVideoTransfer:_callSession.sessionId];
+    }
+}
+
+- (void)voicePauseAction
+{
+    _voiceButton.selected = !_voiceButton.selected;
+    if (_voiceButton.selected) {
+        [[EMClient sharedClient].callManager pauseVoiceAndVideoTransfer:_callSession.sessionId];
+    } else {
+        [[EMClient sharedClient].callManager resumeVoiceAndVideoTransfer:_callSession.sessionId];
+    }
+}
+
 - (void)silenceAction
 {
     _silenceButton.selected = !_silenceButton.selected;
@@ -378,6 +462,32 @@
     _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
 }
 
+- (void)setNetwork:(EMCallNetworkStatus)status
+{
+    switch (status) {
+        case EMCallNetworkStatusNormal:
+        {
+            _networkLabel.text = @"";
+            _networkLabel.hidden = YES;
+        }
+            break;
+        case EMCallNetworkStatusUnstable:
+        {
+            _networkLabel.text = @"当前网络不稳定";
+            _networkLabel.hidden = NO;
+        }
+            break;
+        case EMCallNetworkStatusNoData:
+        {
+            _networkLabel.text = @"没有通话数据";
+            _networkLabel.hidden = NO;
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)close
 {
     _callSession.remoteView.hidden = YES;
@@ -398,7 +508,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
-        [self dismissViewControllerAnimated:NO completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     });
 }
 
