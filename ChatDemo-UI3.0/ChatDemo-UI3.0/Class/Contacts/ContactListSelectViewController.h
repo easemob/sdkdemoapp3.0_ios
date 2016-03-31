@@ -1,10 +1,14 @@
-//
-//  ContactListSelectViewController.h
-//  ChatDemo-UI2.0
-//
-//  Created by EaseMob on 15/10/13.
-//  Copyright (c) 2015年 EaseMob. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Technologies. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Technologies.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Technologies.
+ */
 
 @interface ContactListSelectViewController : EaseUsersListViewController
 

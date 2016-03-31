@@ -1982,7 +1982,6 @@
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../EaseMobSDK/include",
 					"$(PROJECT_DIR)/../../emclient-ios/newSDK/export/**",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
@@ -1993,7 +1992,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/../EaseMobSDK/lib",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/../EaseUISDK/lib",
@@ -2036,7 +2034,6 @@
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../EaseMobSDK/include",
 					"$(PROJECT_DIR)/../../emclient-ios/newSDK/export/**",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
@@ -2047,7 +2044,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/../EaseMobSDK/lib",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/../EaseUISDK/lib",

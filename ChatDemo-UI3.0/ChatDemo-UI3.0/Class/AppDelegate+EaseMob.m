@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Technologies. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Technologies.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Technologies.
  */
 
 #import "AppDelegate+EaseMob.h"
@@ -59,7 +59,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[EMClient sharedClient] bindDeviceToken:deviceToken];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[EMClient sharedClient] bindDeviceToken:deviceToken];
+    });
 }
 
 // 注册deviceToken失败，此处失败，与环信SDK无关，一般是您的环境配置或者证书配置有误

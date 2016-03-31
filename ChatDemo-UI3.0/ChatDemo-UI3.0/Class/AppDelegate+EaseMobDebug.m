@@ -1,10 +1,14 @@
-//
-//  AppDelegate+EaseMobDebug.m
-//  ChatDemo-UI2.0
-//
-//  Created by dujiepeng on 15/7/1.
-//  Copyright (c) 2015年 dujiepeng. All rights reserved.
-//  测试用，开发者不需要使用此类
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Technologies. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Technologies.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Technologies.
+ */
 
 #import "AppDelegate+EaseMobDebug.h"
 
