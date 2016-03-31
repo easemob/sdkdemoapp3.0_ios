@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Technologies. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Technologies.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Technologies.
  */
 
 #import <AVFoundation/AVFoundation.h>
@@ -34,6 +34,10 @@
     UIButton *_rejectButton;
     UIButton *_answerButton;
     UIButton *_cancelButton;
+    
+    UIButton *_recordButton;
+    UIButton *_videoButton;
+    UIButton *_voiceButton;
 }
 
 @property (strong, nonatomic) UILabel *statusLabel;
@@ -55,5 +59,7 @@
 - (void)startTimer;
 
 - (void)close;
+
+- (void)setNetwork:(EMCallNetworkStatus)status;
 
 @end
