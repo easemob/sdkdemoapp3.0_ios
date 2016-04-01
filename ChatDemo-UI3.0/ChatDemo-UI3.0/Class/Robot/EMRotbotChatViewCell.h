@@ -1,10 +1,14 @@
-//
-//  EMRotbotChatViewCell.h
-//  ChatDemo-UI2.0
-//
-//  Created by dujiepeng on 15/8/3.
-//  Copyright (c) 2015年 dujiepeng. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 @interface EMRotbotChatViewCell : EaseMessageCell
 
