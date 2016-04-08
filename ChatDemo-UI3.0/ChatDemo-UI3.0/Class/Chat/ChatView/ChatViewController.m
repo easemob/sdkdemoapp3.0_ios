@@ -14,8 +14,10 @@
 #import "UserProfileManager.h"
 #import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
+#import "EMChooseViewController.h"
+#import "ContactSelectionViewController.h"
 
-@interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
+@interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate, EMChooseViewDelegate>
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
@@ -25,6 +27,7 @@
 @property (nonatomic) BOOL isPlayingAudio;
 
 @property (nonatomic) NSMutableDictionary *emotionDic;
+@property (nonatomic, copy) EaseSelectAtTargetCallback selectedCallback;
 
 @end
 
@@ -89,9 +92,17 @@
 {
     [super viewWillAppear:animated];
     if (self.conversation.type == EMConversationTypeGroupChat) {
-        if ([[self.conversation.ext objectForKey:@"subject"] length])
+        NSDictionary *ext = self.conversation.ext;
+        if ([[ext objectForKey:@"subject"] length])
         {
-            self.title = [self.conversation.ext objectForKey:@"subject"];
+            self.title = [ext objectForKey:@"subject"];
+        }
+        
+        if (ext && ext[kHaveUnreadAtMessage] != nil)
+        {
+            NSMutableDictionary *newExt = [ext mutableCopy];
+            [newExt removeObjectForKey:kHaveUnreadAtMessage];
+            self.conversation.ext = newExt;
         }
     }
 }
@@ -161,6 +172,79 @@
 {
     UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
+}
+
+- (void)messageViewController:(EaseMessageViewController *)viewController
+               selectAtTarget:(EaseSelectAtTargetCallback)selectedCallback
+{
+    _selectedCallback = selectedCallback;
+    EMGroup *chatGroup = nil;
+    NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+    for (EMGroup *group in groupArray) {
+        if ([group.groupId isEqualToString:self.conversation.conversationId]) {
+            chatGroup = group;
+            break;
+        }
+    }
+    
+    if (chatGroup == nil) {
+        chatGroup = [EMGroup groupWithId:self.conversation.conversationId];
+    }
+    
+    if (chatGroup) {
+        if (!chatGroup.occupants) {
+            __weak ChatViewController* weakSelf = self;
+            [self showHudInView:self.view hint:@"Fetching group members..."];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                EMError *error = nil;
+                EMGroup *group = [[EMClient sharedClient].groupManager fetchGroupInfo:chatGroup.groupId includeMembersList:YES error:&error];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    __strong ChatViewController *strongSelf = weakSelf;
+                    if (strongSelf) {
+                        [strongSelf hideHud];
+                        if (error) {
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Fetching group members failed [%@]", error.errorDescription] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                            [alertView show];
+                        }
+                        else {
+                            NSMutableArray *members = [group.occupants mutableCopy];
+                            NSString *loginUser = [EMClient sharedClient].currentUsername;
+                            if (loginUser) {
+                                [members removeObject:loginUser];
+                            }
+                            if (![members count]) {
+                                if (strongSelf.selectedCallback) {
+                                    strongSelf.selectedCallback(nil);
+                                }
+                                return;
+                            }
+                            ContactSelectionViewController *selectController = [[ContactSelectionViewController alloc] initWithContacts:members];
+                            selectController.mulChoice = NO;
+                            selectController.delegate = self;
+                            [self.navigationController pushViewController:selectController animated:YES];
+                        }
+                    }
+                });
+            });
+        }
+        else {
+            NSMutableArray *members = [chatGroup.occupants mutableCopy];
+            NSString *loginUser = [EMClient sharedClient].currentUsername;
+            if (loginUser) {
+                [members removeObject:loginUser];
+            }
+            if (![members count]) {
+                if (_selectedCallback) {
+                    _selectedCallback(nil);
+                }
+                return;
+            }
+            ContactSelectionViewController *selectController = [[ContactSelectionViewController alloc] initWithContacts:members];
+            selectController.mulChoice = NO;
+            selectController.delegate = self;
+            [self.navigationController pushViewController:selectController animated:YES];
+        }
+    }
 }
 
 #pragma mark - EaseMessageViewControllerDataSource
@@ -428,5 +512,30 @@
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
 }
+
+
+#pragma mark - EMChooseViewDelegate
+
+- (BOOL)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
+{
+    if ([selectedSources count]) {
+        EaseAtTarget *target = [[EaseAtTarget alloc] init];
+        target.userId = selectedSources.firstObject;
+        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:target.userId];
+        if (profileEntity) {
+            target.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+        }
+        if (_selectedCallback) {
+            _selectedCallback(target);
+        }
+    }
+    else {
+        if (_selectedCallback) {
+            _selectedCallback(nil);
+        }
+    }
+    return YES;
+}
+
 
 @end

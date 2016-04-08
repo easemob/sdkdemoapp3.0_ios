@@ -13,6 +13,8 @@
 #import "MainViewController.h"
 #import "ChatViewController.h"
 
+#define kHaveUnreadAtMessage  @"kHaveAtMessage"
+
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"

@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 #import "ApplyViewController.h"
 #import "MBProgressHUD.h"
-
+#import "EaseSDKHelper.h"
 
 #if DEMO_CALL == 1
 
@@ -209,6 +209,7 @@ static ChatDemoHelper *helper = nil;
 {
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
+        
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
         if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
@@ -237,6 +238,8 @@ static ChatDemoHelper *helper = nil;
             isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
         }
         if (_chatVC == nil || !isChatting) {
+            [self _handleReceivedAtMessage:message];
+            
             if (self.conversationListVC) {
                 [_conversationListVC refresh];
             }
@@ -727,4 +730,28 @@ static ChatDemoHelper *helper = nil;
     [self hangupCallWithReason:EMCallEndReasonFailed];
 #endif
 }
+
+- (void)_handleReceivedAtMessage:(EMMessage*)aMessage
+{
+    if (aMessage.chatType != EMChatTypeGroupChat || aMessage.direction != EMMessageDirectionReceive) {
+        return;
+    }
+    
+    NSString *loginUser = [EMClient sharedClient].currentUsername;
+    NSDictionary *ext = aMessage.ext;
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
+    if (loginUser && conversation && ext && [ext objectForKey:kMessageAtExt] && [ext[kMessageAtExt] isKindOfClass:[NSDictionary class]]) {
+        NSArray *target = [ext[kMessageAtExt] objectForKey:kMessageAtTarget];
+        if (target && [target isKindOfClass:[NSArray class]]) {
+            if ([target containsObject:loginUser]) {
+                if (conversation.ext[kHaveUnreadAtMessage] == nil) {
+                    NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+                    [conversationExt setObject:@YES forKey:kHaveUnreadAtMessage];
+                    conversation.ext = conversationExt;
+                }
+            }
+        }
+    }
+}
+
 @end
