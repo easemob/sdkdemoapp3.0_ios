@@ -292,6 +292,7 @@
 "title.apply" = "Application and notification";
 "title.groupApply" = "Group Notification";
 "title.groupSubjectChanging" = "Change group name";
+"title.groupSearchMessage" = "Search Message from History";
 "title.chatroomlist" = "Chatroom List";
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";

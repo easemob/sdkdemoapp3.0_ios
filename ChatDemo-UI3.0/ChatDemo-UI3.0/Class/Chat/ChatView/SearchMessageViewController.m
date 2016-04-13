@@ -16,7 +16,7 @@
 #import "EMSearchDisplayController.h"
 #import "UIImageView+HeadImage.h"
 
-#define SEARCHMESSAGE_PAGE_SIZE 15
+#define SEARCHMESSAGE_PAGE_SIZE 30
 
 @interface SearchMessageViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 {
@@ -54,7 +54,7 @@
         self.edgesForExtendedLayout =  UIRectEdgeNone;
     }
     
-    self.title = @"查找聊天记录";
+    self.title = NSLocalizedString(@"title.groupSearchMessage", @"Search Message from History");
     self.view.backgroundColor = [UIColor whiteColor];
     
     
@@ -139,11 +139,7 @@
         });
     }};
     
-    if (dispatch_get_specific(_queueTag)) {
-        block();
-    } else {
-        dispatch_async(_searchQueue, block);
-    }
+    dispatch_async(_searchQueue, block);
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
