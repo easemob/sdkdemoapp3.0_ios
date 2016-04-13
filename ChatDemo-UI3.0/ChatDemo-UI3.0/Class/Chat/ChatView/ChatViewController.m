@@ -18,6 +18,7 @@
 #import "UserProfileManager.h"
 #import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
+#import "SearchMessageViewController.h"
 
 @interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
 {
@@ -110,18 +111,24 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
+    UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [searchButton setTitle:@"查" forState:UIControlStateNormal];
+    [searchButton addTarget:self action:@selector(searchMessages:) forControlEvents:UIControlEventTouchUpInside];
+    
     //单聊
     if (self.conversation.type == EMConversationTypeChat) {
         UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(deleteAllMessages:) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
+        
+        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:clearButton],[[UIBarButtonItem alloc] initWithCustomView:searchButton]];
     }
     else{//群聊
         UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
         [detailButton setImage:[UIImage imageNamed:@"group_detail"] forState:UIControlStateNormal];
         [detailButton addTarget:self action:@selector(showGroupDetailAction) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
+        
+        self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:searchButton],[[UIBarButtonItem alloc] initWithCustomView:searchButton]];
     }
 }
 
@@ -285,6 +292,12 @@
         ChatroomDetailViewController *detailController = [[ChatroomDetailViewController alloc] initWithChatroomId:self.conversation.conversationId];
         [self.navigationController pushViewController:detailController animated:YES];
     }
+}
+
+- (void)searchMessages:(id)sender
+{
+    SearchMessageViewController *searchView = [[SearchMessageViewController alloc] initWithConversationId:self.conversation.conversationId conversationType:self.conversation.type];
+    [self.navigationController pushViewController:searchView animated:YES];
 }
 
 - (void)deleteAllMessages:(id)sender
