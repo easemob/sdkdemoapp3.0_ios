@@ -655,7 +655,7 @@ static ChatDemoHelper *helper = nil;
     [self _stopCallTimer];
     
     if (_callSession) {
-        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:EMCallEndReasonHangup];
+        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:aReason];
     }
     
     _callSession = nil;

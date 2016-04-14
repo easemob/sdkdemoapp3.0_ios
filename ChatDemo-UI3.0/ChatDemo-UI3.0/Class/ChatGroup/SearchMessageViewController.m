@@ -15,6 +15,7 @@
 #import "EMSearchBar.h"
 #import "EMSearchDisplayController.h"
 #import "UIImageView+HeadImage.h"
+#import "SearchChatViewController.h"
 
 #define SEARCHMESSAGE_PAGE_SIZE 30
 
@@ -112,6 +113,10 @@
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            
+            SearchChatViewController *chatView = [[SearchChatViewController alloc] initWithConversationChatter:weakSelf.conversation.conversationId conversationType:weakSelf.conversation.type fromMessageId:message.messageId];
+            [weakSelf.navigationController pushViewController:chatView animated:YES];
         }];
     }
     
@@ -131,7 +136,7 @@
 {
     __weak typeof(self) weakSelf = self;
     dispatch_block_t block = ^{ @autoreleasepool {
-        NSArray *results = [weakSelf.conversation loadMoreMessagesContain:searchBar.text before:[[NSDate date] timeIntervalSince1970]*1000 limit:SEARCHMESSAGE_PAGE_SIZE];
+        NSArray *results = [weakSelf.conversation loadMoreMessagesContain:searchBar.text before:[[NSDate date] timeIntervalSince1970]*1000 limit:SEARCHMESSAGE_PAGE_SIZE from:nil direction:EMMessageSearchDirectionUp];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.searchController.resultsSource removeAllObjects];
             [weakSelf.searchController.resultsSource addObjectsFromArray:results];

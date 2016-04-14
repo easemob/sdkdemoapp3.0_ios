@@ -203,7 +203,7 @@
     _rejectButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth - 100) / 2, CGRectGetMaxY(_speakerOutLabel.frame) + 30, 100, 40)];
     [_rejectButton setTitle:NSLocalizedString(@"call.reject", @"Reject") forState:UIControlStateNormal];
     [_rejectButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
-    [_rejectButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
+    [_rejectButton addTarget:self action:@selector(rejectAction) forControlEvents:UIControlEventTouchUpInside];
     [_actionView addSubview:_rejectButton];
     
     _answerButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 100) / 2, _rejectButton.frame.origin.y, 100, 40)];
@@ -438,6 +438,19 @@
     
 #if DEMO_CALL == 1
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
+#endif
+}
+
+- (void)rejectAction
+{
+    [_timeTimer invalidate];
+    [self _stopRing];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:_audioCategory error:nil];
+    [audioSession setActive:YES error:nil];
+    
+#if DEMO_CALL == 1
+    [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonDecline];
 #endif
 }
 
