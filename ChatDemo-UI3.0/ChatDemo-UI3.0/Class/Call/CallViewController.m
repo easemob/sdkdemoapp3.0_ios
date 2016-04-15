@@ -415,6 +415,7 @@
 
 - (void)answerAction
 {
+#if DEMO_CALL == 1
     [self _stopRing];
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     _audioCategory = audioSession.category;
@@ -423,33 +424,32 @@
         [audioSession setActive:YES error:nil];
     }
     
-#if DEMO_CALL == 1
     [[ChatDemoHelper shareHelper] answerCall];
 #endif
 }
 
 - (void)hangupAction
 {
+#if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:_audioCategory error:nil];
     [audioSession setActive:YES error:nil];
     
-#if DEMO_CALL == 1
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
 #endif
 }
 
 - (void)rejectAction
 {
+#if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:_audioCategory error:nil];
     [audioSession setActive:YES error:nil];
     
-#if DEMO_CALL == 1
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonDecline];
 #endif
 }
