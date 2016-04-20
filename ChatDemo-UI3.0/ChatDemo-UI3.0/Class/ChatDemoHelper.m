@@ -521,6 +521,7 @@ static ChatDemoHelper *helper = nil;
         _callController.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         _callController.timeLabel.hidden = NO;
         [_callController startTimer];
+        [_callController startShowInfo];
         _callController.cancelButton.hidden = NO;
         _callController.rejectButton.hidden = YES;
         _callController.answerButton.hidden = YES;

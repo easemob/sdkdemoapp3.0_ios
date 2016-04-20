@@ -55,6 +55,11 @@
         _timeLabel.text = @"";
         _timeLength = 0;
         _status = statusString;
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
+            [session setVideoBitrate:[[ud valueForKey:kLocalCallBitrate] intValue]];
+        }
     }
     
     return self;
@@ -260,45 +265,57 @@
     [self.view addSubview:_callSession.localView];
     
     //3、属性显示层
-    //    _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
-    //    _propertyView.backgroundColor = [UIColor clearColor];
-    //    _propertyView.hidden = ![self isShowCallInfo];
-    //    [self.view addSubview:_propertyView];
-    //
-    //    width = (CGRectGetWidth(_propertyView.frame) - 20) / 2;
-    //    height = CGRectGetHeight(_propertyView.frame) / 3;
-    //    _sizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    //    _sizeLabel.backgroundColor = [UIColor clearColor];
-    //    _sizeLabel.textColor = [UIColor redColor];
-    //    [_propertyView addSubview:_sizeLabel];
-    //
-    //    _timedelayLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, 0, width, height)];
-    //    _timedelayLabel.backgroundColor = [UIColor clearColor];
-    //    _timedelayLabel.textColor = [UIColor redColor];
-    //    [_propertyView addSubview:_timedelayLabel];
-    //
-    //    _framerateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height, width, height)];
-    //    _framerateLabel.backgroundColor = [UIColor clearColor];
-    //    _framerateLabel.textColor = [UIColor redColor];
-    //    [_propertyView addSubview:_framerateLabel];
-    //
-    //    _lostcntLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, height, width, height)];
-    //    _lostcntLabel.backgroundColor = [UIColor clearColor];
-    //    _lostcntLabel.textColor = [UIColor redColor];
-    //    [_propertyView addSubview:_lostcntLabel];
-    //
-    //    _localBitrateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height * 2, width, height)];
-    //    _localBitrateLabel.backgroundColor = [UIColor clearColor];
-    //    _localBitrateLabel.textColor = [UIColor redColor];
-    //    [_propertyView addSubview:_localBitrateLabel];
-    //
-    //    _remoteBitrateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, height * 2, width, height)];
-    //    _remoteBitrateLabel.backgroundColor = [UIColor clearColor];
-    //    _remoteBitrateLabel.textColor = [UIColor redColor];
-    //    [_propertyView addSubview:_remoteBitrateLabel];
+    _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
+    _propertyView.backgroundColor = [UIColor clearColor];
+    _propertyView.hidden = ![self isShowCallInfo];
+    [self.view addSubview:_propertyView];
+    
+    width = (CGRectGetWidth(_propertyView.frame) - 20) / 2;
+    height = CGRectGetHeight(_propertyView.frame) / 3;
+    _sizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    _sizeLabel.backgroundColor = [UIColor clearColor];
+    _sizeLabel.textColor = [UIColor redColor];
+    [_propertyView addSubview:_sizeLabel];
+    
+    _timedelayLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, 0, width, height)];
+    _timedelayLabel.backgroundColor = [UIColor clearColor];
+    _timedelayLabel.textColor = [UIColor redColor];
+    [_propertyView addSubview:_timedelayLabel];
+    
+    _framerateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height, width, height)];
+    _framerateLabel.backgroundColor = [UIColor clearColor];
+    _framerateLabel.textColor = [UIColor redColor];
+    [_propertyView addSubview:_framerateLabel];
+    
+    _lostcntLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, height, width, height)];
+    _lostcntLabel.backgroundColor = [UIColor clearColor];
+    _lostcntLabel.textColor = [UIColor redColor];
+    [_propertyView addSubview:_lostcntLabel];
+    
+    _localBitrateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, height * 2, width, height)];
+    _localBitrateLabel.backgroundColor = [UIColor clearColor];
+    _localBitrateLabel.textColor = [UIColor redColor];
+    [_propertyView addSubview:_localBitrateLabel];
+    
+    _remoteBitrateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, height * 2, width, height)];
+    _remoteBitrateLabel.backgroundColor = [UIColor clearColor];
+    _remoteBitrateLabel.textColor = [UIColor redColor];
+    [_propertyView addSubview:_remoteBitrateLabel];
 }
 
 #pragma mark - private
+
+- (void)_reloadPropertyData
+{
+    if (_callSession) {
+        _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getVideoWidth], [_callSession getVideoHeight]];
+        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getVideoTimedelay]];
+        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getVideoFramerate]];
+        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getVideoLostcnt]];
+        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), [_callSession getVideoLocalBitrate]];
+        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), [_callSession getVideoRemoteBitrate]];
+    }
+}
 
 - (void)_beginRing
 {
@@ -469,10 +486,29 @@
     return YES;
 }
 
++ (void)saveBitrate:(NSString*)value
+{
+    NSScanner* scan = [NSScanner scannerWithString:value];
+    int val;
+    if ([scan scanInt:&val] && [scan isAtEnd]) {
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        [ud setObject:value forKey:kLocalCallBitrate];
+        [ud synchronize];
+    }
+}
+
 - (void)startTimer
 {
     _timeLength = 0;
     _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
+}
+
+- (void)startShowInfo
+{
+    if (_callSession.type == EMCallTypeVideo && [self isShowCallInfo]) {
+        [self _reloadPropertyData];
+        _propertyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(_reloadPropertyData) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)setNetwork:(EMCallNetworkStatus)status
