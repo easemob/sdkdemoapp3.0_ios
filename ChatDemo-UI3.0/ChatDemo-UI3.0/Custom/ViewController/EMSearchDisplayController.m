@@ -33,12 +33,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (_numberOfSectionsInTableViewCompletion) {
+        return _numberOfSectionsInTableViewCompletion(tableView);
+    }
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (_numberOfRowsInSectionCompletion) {
+        return _numberOfRowsInSectionCompletion(tableView, section);
+    }
     // Return the number of rows in the section.
     return [self.resultsSource count];
 }

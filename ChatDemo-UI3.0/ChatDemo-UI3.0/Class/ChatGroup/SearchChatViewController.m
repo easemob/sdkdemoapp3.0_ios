@@ -12,7 +12,7 @@
 
 #import "SearchChatViewController.h"
 
-#define PAGE_SIZE 10
+#define SEARCHCHAT_PAGE_SIZE 10
 
 @interface SearchChatViewController ()
 {
@@ -81,14 +81,14 @@
     dispatch_async(_searchMessageQueue, ^{
         NSArray *moreMessages = nil;
         if (direction) {
-            moreMessages = [self.conversation loadMoreMessagesFromId:self.upMessageId limit:PAGE_SIZE direction:EMMessageSearchDirectionUp];
+            moreMessages = [self.conversation loadMoreMessagesFromId:self.upMessageId limit:SEARCHCHAT_PAGE_SIZE direction:EMMessageSearchDirectionUp];
             if ([moreMessages count] > 0) {
                 EMMessage *firstMessage = [moreMessages firstObject];
                 self.upMessageId = firstMessage.messageId;
             }
             
         } else {
-            moreMessages = [self.conversation loadMoreMessagesFromId:self.downMessageId limit:PAGE_SIZE direction:EMMessageSearchDirectionDownload];
+            moreMessages = [self.conversation loadMoreMessagesFromId:self.downMessageId limit:SEARCHCHAT_PAGE_SIZE direction:EMMessageSearchDirectionDownload];
             if ([moreMessages count] > 0) {
                 EMMessage *lastMessage = [moreMessages lastObject];
                 self.downMessageId = lastMessage.messageId;

@@ -19,7 +19,7 @@
 
 #define SEARCHMESSAGE_PAGE_SIZE 30
 
-@interface SearchMessageViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
+@interface SearchMessageViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UITextFieldDelegate>
 {
     dispatch_queue_t _searchQueue;
     void* _queueTag;
@@ -30,6 +30,14 @@
 @property (strong, nonatomic) EMSearchBar *searchBar;
 
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
+
+@property (strong, nonatomic) UILabel *timeLabel;
+@property (strong, nonatomic) UIDatePicker *datePicker;
+
+@property (strong, nonatomic) UILabel *fromLabel;
+@property (strong, nonatomic) UITextField *textField;
+
+@property (assign, nonatomic) BOOL hasMore;
 
 @end
 
@@ -65,9 +73,71 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
+//    UIButton *timeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+//    [timeButton setTitle:@"筛选" forState:UIControlStateNormal];
+//    [timeButton addTarget:self action:@selector(timeAction) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *timeItem = [[UIBarButtonItem alloc] initWithCustomView:timeButton];
+//    [self.navigationItem setRightBarButtonItem:timeItem];
+    
     [self searchController];
     self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
     [self.view addSubview:self.searchBar];
+}
+
+- (UILabel*)fromLabel
+{
+    if (_fromLabel == nil) {
+        _fromLabel = [[UILabel alloc] init];
+        _fromLabel.frame = CGRectMake(0, CGRectGetMaxY(self.searchBar.frame) + 5, CGRectGetWidth([UIScreen mainScreen].bounds), 20);
+        _fromLabel.text = @"筛选发送者:";
+        _fromLabel.textColor = [UIColor blackColor];
+        _fromLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    return _fromLabel;
+}
+
+- (UILabel*)timeLabel
+{
+    if (_timeLabel == nil) {
+        _timeLabel = [[UILabel alloc] init];
+        _timeLabel.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame) + 5, CGRectGetWidth([UIScreen mainScreen].bounds), 20);
+        _timeLabel.text = @"筛选发送时间:";
+        _timeLabel.textColor = [UIColor blackColor];
+        _timeLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    return _timeLabel;
+}
+
+- (UIDatePicker*)datePicker
+{
+    if(_datePicker == nil){
+        _datePicker = [[UIDatePicker alloc] init];
+        _datePicker.frame = CGRectMake(0, CGRectGetMaxY(self.timeLabel.frame), CGRectGetWidth([UIScreen mainScreen].bounds), CGRectGetHeight(_datePicker.frame));
+        _datePicker.backgroundColor = [UIColor whiteColor];
+        _datePicker.datePickerMode = UIDatePickerModeDate;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        NSDate *minDate = [formatter dateFromString:@"2012-01-01"];
+        _datePicker.minimumDate = minDate;
+        _datePicker.date = [NSDate date];
+    }
+    return _datePicker;
+}
+
+- (UITextField*)textField
+{
+    if (_textField == nil) {
+        _textField = [[UITextField alloc] init];
+        _textField.frame = CGRectMake(0, CGRectGetMaxY(self.fromLabel.frame), CGRectGetWidth([UIScreen mainScreen].bounds), 50.f);
+        _textField.textColor = [UIColor blackColor];
+        _textField.placeholder = @"填写发送者";
+        _textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _textField.layer.borderWidth = 0.5f;
+        _textField.returnKeyType = UIReturnKeyDone;
+        _textField.delegate = self;
+        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    }
+    return _textField;
 }
 
 - (EMSearchBar*)searchBar
@@ -91,20 +161,29 @@
         
         __weak SearchMessageViewController *weakSelf = self;
         [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-            NSString *CellIdentifier = [EaseConversationCell cellIdentifierWithModel:nil];
-            EaseConversationCell *cell = (EaseConversationCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            
-            // Configure the cell...
-            if (cell == nil) {
-                cell = [[EaseConversationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            if (indexPath.section == 0) {
+                NSString *CellIdentifier = [EaseConversationCell cellIdentifierWithModel:nil];
+                EaseConversationCell *cell = (EaseConversationCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                
+                // Configure the cell...
+                if (cell == nil) {
+                    cell = [[EaseConversationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                }
+                EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+                
+                cell.titleLabel.text = message.from;
+                cell.detailLabel.text = [weakSelf getContentFromMessage:message];
+                [cell.avatarView.imageView imageWithUsername:message.from placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
+                return cell;
+            } else {
+                NSString *CellIdentifier = @"loadMoreCell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                if (cell == nil) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                }
+                cell.textLabel.text = @"加载更多";
+                return cell;
             }
-            EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            
-            cell.titleLabel.text = message.from;
-            cell.detailLabel.text = [weakSelf getContentFromMessage:message];
-            [cell.avatarView.imageView imageWithUsername:message.from placeholderImage:[UIImage imageNamed:@"chatListCellHead.png"]];
-            return cell;
-
         }];
         
         [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
@@ -113,10 +192,45 @@
         
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            if (indexPath.section == 0) {
+                EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             
-            SearchChatViewController *chatView = [[SearchChatViewController alloc] initWithConversationChatter:weakSelf.conversation.conversationId conversationType:weakSelf.conversation.type fromMessageId:message.messageId];
-            [weakSelf.navigationController pushViewController:chatView animated:YES];
+                SearchChatViewController *chatView = [[SearchChatViewController alloc] initWithConversationChatter:weakSelf.conversation.conversationId conversationType:weakSelf.conversation.type fromMessageId:message.messageId];
+                [weakSelf.navigationController pushViewController:chatView animated:YES];
+            } else {
+                dispatch_block_t block = ^{ @autoreleasepool {
+                    EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:[weakSelf.searchController.resultsSource count]-1];
+                    NSArray *results = [weakSelf.conversation loadMoreMessagesContain:weakSelf.searchBar.text before:message.timestamp limit:SEARCHMESSAGE_PAGE_SIZE from:weakSelf.textField.text direction:EMMessageSearchDirectionUp];
+//                    
+//                    NSArray *results = [weakSelf.conversation loadMoreMessagesFrom:[[weakSelf.datePicker.date dateByAddingTimeInterval:-86400] timeIntervalSince1970]*1000 to:message.timestamp maxCount:SEARCHMESSAGE_PAGE_SIZE];
+                    if([results count]<SEARCHMESSAGE_PAGE_SIZE) {
+                        weakSelf.hasMore = NO;
+                    } else {
+                        weakSelf.hasMore = YES;
+                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf.searchController.resultsSource addObjectsFromArray:[[results reverseObjectEnumerator] allObjects]];
+                        [weakSelf.searchController.searchResultsTableView reloadData];
+                    });
+                }};
+                dispatch_async(_searchQueue, block);
+            }
+        }];
+        
+        [_searchController setNumberOfSectionsInTableViewCompletion:^NSInteger(UITableView *tableView) {
+            if (weakSelf.hasMore) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }];
+        
+        [_searchController setNumberOfRowsInSectionCompletion:^NSInteger(UITableView *tableView, NSInteger section) {
+            if (section == 0) {
+                return [weakSelf.searchController.resultsSource count];
+            } else {
+                return 1;
+            }
         }];
     }
     
@@ -136,10 +250,17 @@
 {
     __weak typeof(self) weakSelf = self;
     dispatch_block_t block = ^{ @autoreleasepool {
-        NSArray *results = [weakSelf.conversation loadMoreMessagesContain:searchBar.text before:[[NSDate date] timeIntervalSince1970]*1000 limit:SEARCHMESSAGE_PAGE_SIZE from:nil direction:EMMessageSearchDirectionUp];
+        NSArray *results = [weakSelf.conversation loadMoreMessagesContain:searchBar.text before:[self.datePicker.date timeIntervalSince1970]*1000 limit:SEARCHMESSAGE_PAGE_SIZE from:weakSelf.textField.text direction:EMMessageSearchDirectionUp];
+        
+//        NSArray *results = [weakSelf.conversation loadMoreMessagesFrom:[[self.datePicker.date dateByAddingTimeInterval:-86400] timeIntervalSince1970]*1000 to:[self.datePicker.date timeIntervalSince1970]*1000 maxCount:SEARCHMESSAGE_PAGE_SIZE];
+        if([results count]<SEARCHMESSAGE_PAGE_SIZE) {
+            weakSelf.hasMore = NO;
+        } else {
+            weakSelf.hasMore = YES;
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.searchController.resultsSource removeAllObjects];
-            [weakSelf.searchController.resultsSource addObjectsFromArray:results];
+            [weakSelf.searchController.resultsSource addObjectsFromArray:[[results reverseObjectEnumerator] allObjects]];
             [weakSelf.searchController.searchResultsTableView reloadData];
         });
     }};
@@ -201,11 +322,36 @@
     return content;
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 #pragma mark - action
 
 - (void)backAction
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)timeAction
+{
+    if (![self.datePicker superview]) {
+        [self.view addSubview:self.timeLabel];
+        [self.view addSubview:self.fromLabel];
+        [self.view addSubview:self.datePicker];
+        [self.view addSubview:self.textField];
+        self.searchBar.hidden = YES;
+    } else {
+        [self.timeLabel removeFromSuperview];
+        [self.fromLabel removeFromSuperview];
+        [self.datePicker removeFromSuperview];
+        [self.textField removeFromSuperview];
+        self.searchBar.hidden = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
