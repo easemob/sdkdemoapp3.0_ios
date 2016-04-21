@@ -13,6 +13,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
+#define kLocalCallBitrate @"EaseMobLocalCallBitrate"
+
 @class EMCallSession;
 @interface CallViewController : UIViewController
 {
@@ -56,10 +58,15 @@
 
 + (BOOL)canVideo;
 
++ (void)saveBitrate:(NSString*)value;
+
 - (void)startTimer;
+
+- (void)startShowInfo;
 
 - (void)close;
 
 - (void)setNetwork:(EMCallNetworkStatus)status;
+
 
 @end

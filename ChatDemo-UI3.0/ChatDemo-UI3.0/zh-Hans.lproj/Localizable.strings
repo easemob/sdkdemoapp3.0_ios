@@ -82,7 +82,7 @@
 "login.endAutoLogin" = "自动登录结束...";
 "login.errorAutoLogin" = "自动登录失败.";
 "login.nameNotSupportZh" = "用户名不支持中文";
-"login.ongoing" = "正在登陆...";
+"login.ongoing" = "正在登录...";
 "login.fail" = "登录失败";
 "login.inputNameAndPswd" = "请输入账号和密码";
 "login.inputApnsNickname" = "填写推送消息时使用的昵称";
@@ -290,6 +290,7 @@
 "title.apply" = "申请与通知";
 "title.groupApply" = "群组通知";
 "title.groupSubjectChanging" = "修改群名称";
+"title.groupSearchMessage" = "查找聊天记录";
 "title.chatroomlist" = "聊天室列表";
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";

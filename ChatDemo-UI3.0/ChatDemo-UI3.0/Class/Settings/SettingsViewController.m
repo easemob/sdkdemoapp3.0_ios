@@ -18,6 +18,7 @@
 #import "DebugViewController.h"
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
+#import "CallViewController.h"
 //#import "BackupViewController.h"
 
 @interface SettingsViewController ()
@@ -113,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 7;
+    return 9;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -241,7 +242,7 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
-//                    [CallViewController saveBitrate:nameTextField.text];
+                    [CallViewController saveBitrate:nameTextField.text];
                     flag = NO;
                 }
             }
