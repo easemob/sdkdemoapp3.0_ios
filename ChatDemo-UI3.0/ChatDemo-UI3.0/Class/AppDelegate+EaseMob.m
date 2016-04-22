@@ -100,6 +100,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         [[ChatDemoHelper shareHelper] asyncPushOptions];
     }
     else{//登陆失败加载登陆页面控制器
+        if (self.mainController) {
+            [self.mainController.navigationController popToRootViewControllerAnimated:NO];
+        }
         self.mainController = nil;
         [ChatDemoHelper shareHelper].mainVC = nil;
         
