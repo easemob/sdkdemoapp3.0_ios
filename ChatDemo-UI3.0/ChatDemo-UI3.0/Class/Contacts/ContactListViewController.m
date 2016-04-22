@@ -288,13 +288,14 @@
         }
         else if (row == 1)
         {
-            if (_groupController == nil) {
-                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-            }
-            else{
-                [_groupController reloadDataSource];
-            }
-            [self.navigationController pushViewController:_groupController animated:YES];
+//            if (_groupController == nil) {
+//                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+//            }
+//            else{
+//                [_groupController reloadDataSource];
+//            }
+            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:groupController animated:YES];
         }
         else if (row == 2)
         {
