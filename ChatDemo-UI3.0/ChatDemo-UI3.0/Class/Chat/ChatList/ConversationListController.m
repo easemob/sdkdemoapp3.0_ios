@@ -19,6 +19,7 @@
 #import "RobotChatViewController.h"
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
+#import "ChatDemoHelper.h"
 
 @implementation EMConversation (search)
 
@@ -240,8 +241,9 @@
                 }
             }
         }
-        model.title = [conversation.ext objectForKey:@"subject"];
-        imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
+        NSDictionary *ext = conversation.ext;
+        model.title = [ext objectForKey:@"subject"];
+        imageName = [[ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
         model.avatarImage = [UIImage imageNamed:imageName];
     }
     return model;
@@ -281,6 +283,21 @@
             } break;
             default: {
             } break;
+        }
+        
+        if (lastMessage.direction == EMMessageDirectionReceive) {
+            NSString *from = lastMessage.from;
+            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:from];
+            if (profileEntity) {
+                from = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+            }
+            NSDictionary *ext = conversationModel.conversation.ext;
+            if (ext && ext[kHaveUnreadAtMessage]) {
+                latestMessageTitle = [NSString stringWithFormat:NSLocalizedString(@"group.atTitle", @"[Somebody @ me] %@: %@"), from, latestMessageTitle];
+            }
+            else {
+                latestMessageTitle = [NSString stringWithFormat:@"%@: %@", from, latestMessageTitle];
+            }
         }
     }
     
