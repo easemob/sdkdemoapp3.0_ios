@@ -230,6 +230,7 @@
 "message.location" = "位置";
 "message.voice" = "音频";
 "message.video" = "视频";
+"message.vcard1" = "[名片]";
 "message.image1" = "[图片]";
 "message.location1" = "[位置]";
 "message.voice1" = "[音频]";

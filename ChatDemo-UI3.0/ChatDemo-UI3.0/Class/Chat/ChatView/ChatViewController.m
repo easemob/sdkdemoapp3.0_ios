@@ -19,6 +19,9 @@
 #import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
 
+//名片发送提示对话框tag
+#define KVCARD_ALERTTAG     103
+
 @interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
 {
     UIMenuItem *_copyMenuItem;
@@ -116,6 +119,18 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    //是否发名片
+    if (alertView.tag == KVCARD_ALERTTAG) {
+        if (buttonIndex == 1) {
+            //发送名片
+            [self sendTextMessage:@"" withExt:[EaseVcardHelper structureVcardMessageExt]];
+        }
+        else if (buttonIndex == 0) {
+            //取消发送
+            [EaseVcardHelper setValueForVcardModel:nil];
+        }
+        return;
+    }
     if (alertView.cancelButtonIndex != buttonIndex) {
         self.messageTimeIntervalTag = -1;
         [self.conversation deleteAllMessages];
@@ -152,6 +167,18 @@
 {
     UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
+}
+
+- (BOOL)messageViewController:(EaseMessageViewController *)viewController
+        didSelectMessageModel:(id<IMessageModel>)messageModel
+{
+    if ([EaseVcardHelper isVcardMessage:messageModel.message] &&
+        messageModel.bodyType == EMMessageBodyTypeText) {
+        NSString *username = [EaseVcardHelper fetchUsernameFromVcard:messageModel.message];
+        UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:username];
+        [self.navigationController pushViewController:userprofile animated:YES];
+    }
+    return NO;
 }
 
 #pragma mark - EaseMessageViewControllerDataSource
@@ -221,6 +248,35 @@
                                         easeEmotion:(EaseEmotion*)easeEmotion
 {
     return @{MESSAGE_ATTR_EXPRESSION_ID:easeEmotion.emotionId,MESSAGE_ATTR_IS_BIG_EXPRESSION:@(YES)};
+}
+
+
+#pragma mark - EaseChatBarMoreViewDelegate
+
+- (void)moreViewVcardAction:(EaseChatBarMoreView *)moreView
+{
+    ContactListSelectViewController *listViewController = [[ContactListSelectViewController alloc] initWithNibName:nil bundle:nil];
+    listViewController.isVcard = YES;
+    listViewController.SelectedBuddy = ^(id<IUserModel> userModel){
+
+        //此处字典的key要与EaseVcardModel的属性名一直
+        NSMutableDictionary *vcardInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:userModel.buddy, @"username", nil];
+        if (userModel.avatarURLPath.length > 0) {
+            [vcardInfo setObject:userModel.avatarURLPath forKey:@"avatarURL"];
+        }
+        if (userModel.nickname.length > 0) {
+            [vcardInfo setObject:userModel.nickname forKey:@"nickname"];
+        }
+        EaseVcardModel *model = [[EaseVcardModel alloc] initWithInfo:vcardInfo];
+        [EaseVcardHelper setValueForVcardModel:model];
+        //发送xx的名片到当前聊天
+        NSString *name = model.nickname != nil?model.nickname:model.username;
+        NSString *message = [NSString stringWithFormat:@"发送%@的名片到当前聊天",name];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"send", "Send"), nil];
+        alertView.tag = KVCARD_ALERTTAG;
+        [alertView show];
+    };
+    [self.navigationController pushViewController:listViewController animated:YES];
 }
 
 #pragma mark - EaseMob
@@ -306,7 +362,7 @@
         id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
         ContactListSelectViewController *listViewController = [[ContactListSelectViewController alloc] initWithNibName:nil bundle:nil];
         listViewController.messageModel = model;
-        [listViewController tableViewDidTriggerHeaderRefresh];
+//        [listViewController tableViewDidTriggerHeaderRefresh];
         [self.navigationController pushViewController:listViewController animated:YES];
     }
     self.menuIndexPath = nil;
@@ -410,7 +466,21 @@
     }
     
     if (messageType == EMMessageBodyTypeText) {
-        [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
+        BOOL isVcardMessage = NO;
+        if ([self.dataArray[indexPath.row] isKindOfClass:[EaseMessageModel class]]) {
+            EaseMessageModel *model = self.dataArray[indexPath.row];
+            if ([EaseVcardHelper isVcardMessage:model.message]) {
+                isVcardMessage = YES;
+            }
+        }
+        //名片消息取消复制
+        if (isVcardMessage) {
+            [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
+        }
+        else {
+            [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
+        }
+        
     } else if (messageType == EMMessageBodyTypeImage){
         [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
     } else {

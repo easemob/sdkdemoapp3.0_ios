@@ -259,6 +259,10 @@
                 latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
             } break;
             case EMMessageBodyTypeText:{
+                if ([EaseVcardHelper isVcardMessage:lastMessage]) {
+                    latestMessageTitle = NSLocalizedString(@"message.vcard1", @"[vcard]");
+                    break;
+                }
                 // 表情映射。
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];

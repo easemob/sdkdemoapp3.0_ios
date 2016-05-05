@@ -14,4 +14,8 @@
 
 @property (strong ,nonatomic) EaseMessageModel *messageModel;
 
+@property (assign, nonatomic) BOOL isVcard;
+
+@property (nonatomic, copy) void(^SelectedBuddy)(id<IUserModel> userModel);
+
 @end

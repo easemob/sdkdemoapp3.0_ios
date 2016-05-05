@@ -40,6 +40,11 @@
 - (void)userListViewController:(EaseUsersListViewController *)userListViewController
             didSelectUserModel:(id<IUserModel>)userModel
 {
+    if (_isVcard && self.SelectedBuddy) {
+        self.SelectedBuddy(userModel);
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
     BOOL flag = YES;
     if (self.messageModel) {
         if (self.messageModel.bodyType == EMMessageBodyTypeText) {

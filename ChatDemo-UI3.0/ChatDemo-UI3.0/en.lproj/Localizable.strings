@@ -230,6 +230,7 @@
 "message.location" = "location";
 "message.voice" = "audio";
 "message.video" = "video";
+"message.vcard1" = "[vcard]"; 
 "message.image1" = "[image]";
 "message.location1" = "[location]";
 "message.voice1" = "[audio]";
