@@ -17,6 +17,7 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+UMeng.h"
 #import "AppDelegate+Parse.h"
+#import "RedPacketUserConfig.h"
 
 
 @interface AppDelegate ()
@@ -24,10 +25,17 @@
 @end
 
 
+#define EaseMobAppKey   @"easemob-demo#chatdemoui"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    /**
+     *  通过环信的AppKey注册红包
+     */
+    [[RedPacketUserConfig sharedConfig] configWithAppKey:EaseMobAppKey];
+    
     _connectionState = eEMConnectionConnected;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -55,7 +63,7 @@
 #endif
     [self easemobApplication:application
 didFinishLaunchingWithOptions:launchOptions
-                      appkey:@"easemob-demo#chatdemoui"
+                      appkey:EaseMobAppKey
                 apnsCertName:apnsCertName
                  otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
 

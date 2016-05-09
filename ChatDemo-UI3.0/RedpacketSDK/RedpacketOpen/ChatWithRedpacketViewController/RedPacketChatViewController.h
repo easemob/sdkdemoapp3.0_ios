@@ -13,7 +13,7 @@
  *  1.可以发红包
  *  2.可以查看零钱
  */
-@interface ChatWithRedPacketViewController : ChatViewController
+@interface RedPacketChatViewController : ChatViewController
 
 
 @end

@@ -10,4 +10,15 @@
 
 @interface ChatViewController : EaseMessageViewController
 
+
+- (BOOL)messageViewController:(EaseMessageViewController *)viewController
+   canLongPressRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (UITableViewCell *)messageViewController:(UITableView *)tableView
+                       cellForMessageModel:(id<IMessageModel>)model;
+
+- (CGFloat)messageViewController:(EaseMessageViewController *)viewController
+           heightForMessageModel:(id<IMessageModel>)messageModel
+                   withCellWidth:(CGFloat)cellWidth;
+
 @end

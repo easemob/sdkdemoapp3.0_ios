@@ -6,7 +6,7 @@
 //  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
 
-#import "ChatWithRedPacketViewController.h"
+#import "RedPacketChatViewController.h"
 #import "EaseRedBagCell.h"
 #import "UIImageView+EMWebCache.h"
 #import "RedpacketMessageCell.h"
@@ -31,7 +31,7 @@ static NSInteger const _redpacket_change_index = 7;
 /**
  *  红包聊天窗口
  */
-@interface ChatWithRedPacketViewController () < EaseMessageCellDelegate,
+@interface RedPacketChatViewController () < EaseMessageCellDelegate,
 EaseMessageViewControllerDataSource>
 /**
  *  发红包的控制器
@@ -40,7 +40,7 @@ EaseMessageViewControllerDataSource>
 
 @end
 
-@implementation ChatWithRedPacketViewController
+@implementation RedPacketChatViewController
 
 - (void)viewDidLoad
 {
