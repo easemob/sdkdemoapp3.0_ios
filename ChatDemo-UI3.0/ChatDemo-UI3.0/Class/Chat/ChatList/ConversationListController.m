@@ -15,6 +15,8 @@
 #import "RobotChatViewController.h"
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
+#import "RedPacketChatViewController.h"
+
 
 @implementation EMConversation (search)
 
@@ -162,12 +164,16 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             id<IConversationModel> model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             EMConversation *conversation = model.conversation;
+            
             ChatViewController *chatController;
             if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.chatter]) {
                 chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
             }else {
-                chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+                /**
+                 * TODO: 会话列表-红包聊天窗口
+                 */
+                chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = [conversation showName];
             }
             [weakSelf.navigationController pushViewController:chatController animated:YES];
@@ -190,7 +196,10 @@
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
                 [self.navigationController pushViewController:chatController animated:YES];
             } else {
-                ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+                /**
+                 * TODO: 会话列表-红包聊天窗口
+                 */
+                RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = conversationModel.title;
                 [self.navigationController pushViewController:chatController animated:YES];
             }

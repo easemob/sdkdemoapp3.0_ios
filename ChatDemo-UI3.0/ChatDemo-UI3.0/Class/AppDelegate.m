@@ -32,7 +32,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     /**
-     *  通过环信的AppKey注册红包
+     *  TODO: 通过环信的AppKey注册红包
      */
     [[RedPacketUserConfig sharedConfig] configWithAppKey:EaseMobAppKey];
     
