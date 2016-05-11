@@ -207,14 +207,16 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     }else {
         [self.chatToolbar endEditing:YES];
     }
-
 }
 
 //  MARK: 发送红包消息
 - (void)sendRedPacketMessage:(RedpacketMessageModel *)model
 {
     NSDictionary *dic = [model redpacketMessageModelToDic];
-    [self sendTextMessage:[NSString stringWithFormat:@"[%@]%@", model.redpacket.redpacketOrgName, model.redpacket.redpacketGreeting] withExt:dic];
+    
+    NSString *message = @"你收到了一个红包，请升级后领取红包";
+    
+    [self sendTextMessage:message withExt:dic];
 }
 
 //  MARK: 发送红包被抢的消息
@@ -240,6 +242,11 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         [dic setValue:messageModel.redpacketReceiver.userNickname forKey:RedpacketKeyRedpacketReceiverId];
         [dic setValue:messageModel.redpacket.redpacketOrgName forKey:RedpacketKeyRedpacketOrgName];
         [dic setValue:messageModel.redpacket.redpacketOrgName forKey:RedpacketKeyRedpacketGreeting];
+        [dic setValue:@(YES) forKey:RedpacketKeyRedpacketTakenMessageSign];
+        
+        //  mark：内部有转换方法
+//        NSDictionary *dict = messageModel.redpacketMessageModelToDic;
+        
         // 群聊消息透传
         EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
         cmdChat.cmd = RedpacketKeyRedapcketCmd;
@@ -262,7 +269,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         if ([messageModel.redpacketSender.userId isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]) {
             text = @"你领取了自己发的红包";
         }
-        
+
         NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
         EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
         EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
@@ -275,9 +282,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         
         [self addMessageToDataSource:SelfMessage progress:nil];
         [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
-        
     }
-
 }
 
 #pragma mark - EaseMessageCellDelegate 单击了Cell 事件

@@ -456,6 +456,7 @@
 		90F1BED01930493100121AEC /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		90F1BED21930493F00121AEC /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		9259DA791CE33395004F83C6 /* RedpacketWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketWebController.h; sourceTree = "<group>"; };
 		92959DD31CE091B5008C4124 /* RedPacketChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPacketChatViewController.h; sourceTree = "<group>"; };
 		92959DD41CE091B5008C4124 /* RedPacketChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketChatViewController.m; sourceTree = "<group>"; };
 		92959DD51CE091B5008C4124 /* Redpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Redpacket.h; sourceTree = "<group>"; };
@@ -472,9 +473,7 @@
 		92959DE41CE091B5008C4124 /* libRedpacketLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRedpacketLib.a; sourceTree = "<group>"; };
 		92959DE51CE091B5008C4124 /* RedpacketMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketMessageModel.h; sourceTree = "<group>"; };
 		92959DE61CE091B5008C4124 /* RedpacketOpenConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketOpenConst.h; sourceTree = "<group>"; };
-		92959DE71CE091B5008C4124 /* RedpacketStatisticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketStatisticsManager.h; sourceTree = "<group>"; };
 		92959DE81CE091B5008C4124 /* RedpacketViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketViewControl.h; sourceTree = "<group>"; };
-		92959DE91CE091B5008C4124 /* RedpacketWebControllerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketWebControllerManager.h; sourceTree = "<group>"; };
 		92959DEB1CE091B5008C4124 /* RedPacketResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RedPacketResource.bundle; sourceTree = "<group>"; };
 		92959DEC1CE091B5008C4124 /* YZHRedpacketBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridge.h; sourceTree = "<group>"; };
 		92959DED1CE091B5008C4124 /* YZHRedpacketBridgeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridgeProtocol.h; sourceTree = "<group>"; };
@@ -1374,9 +1373,8 @@
 				92959DE31CE091B5008C4124 /* lib */,
 				92959DE51CE091B5008C4124 /* RedpacketMessageModel.h */,
 				92959DE61CE091B5008C4124 /* RedpacketOpenConst.h */,
-				92959DE71CE091B5008C4124 /* RedpacketStatisticsManager.h */,
+				9259DA791CE33395004F83C6 /* RedpacketWebController.h */,
 				92959DE81CE091B5008C4124 /* RedpacketViewControl.h */,
-				92959DE91CE091B5008C4124 /* RedpacketWebControllerManager.h */,
 				92959DEA1CE091B5008C4124 /* resources */,
 				92959DEC1CE091B5008C4124 /* YZHRedpacketBridge.h */,
 				92959DED1CE091B5008C4124 /* YZHRedpacketBridgeProtocol.h */,

@@ -33,8 +33,17 @@
 
 
 /*---------------------------------------
- *  Colors
+ *  Const
  ---------------------------------------*/
+
+/**
+ *  红包名称
+ */
+static NSString *const rp_redpacketName = @"环信红包";
+/**
+ *  红包归属
+ */
+static NSString *const rp_redpacketCompay = @"环信";
 
 /**
  *  红包字体颜色

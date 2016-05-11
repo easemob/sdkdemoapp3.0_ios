@@ -72,7 +72,7 @@
     
     self.titleLabel.text = prompt;
     CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(200, 20)];
-    self.widthContraint.constant = size.width + 40;
+    self.widthContraint.constant = size.width + 30;
     [self.backView updateConstraintsIfNeeded];
 }
 

@@ -77,7 +77,7 @@ static char _redpacketNameLabel_;
     
     [self addConstraints:self.marginConstraints];
     
-    NSLayoutConstraint *backImageConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:200];
+    NSLayoutConstraint *backImageConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0f constant:260];
     
     [self.superview addConstraint:backImageConstraint];
     
@@ -96,27 +96,22 @@ static char _redpacketNameLabel_;
 - (void)setupRedPacketBubbleView
 {
     self.redpacketIcon = [UIImageView new];
-    self.redpacketIcon.translatesAutoresizingMaskIntoConstraints = NO;
     [self.redpacketIcon setImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redPacket_redPacktIcon"]];
     [self.backgroundImageView addSubview:self.redpacketIcon];
     
     self.redpacketTitleLabel = [UILabel new];
-    self.redpacketTitleLabel.font = [UIFont systemFontOfSize:13.0f];
+    self.redpacketTitleLabel.font = [UIFont systemFontOfSize:15.0f];
     self.redpacketTitleLabel.textColor = [UIColor whiteColor];
-    self.redpacketTitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.backgroundImageView addSubview:self.redpacketTitleLabel];
     
     self.redpacketSubLabel = [UILabel new];
     self.redpacketSubLabel.font = [UIFont systemFontOfSize:12.0f];
     self.redpacketSubLabel.textColor = [UIColor whiteColor];
-    self.redpacketSubLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.backgroundImageView addSubview:self.redpacketSubLabel];
     
     self.redpacketNameLabel = [UILabel new];
     self.redpacketNameLabel.font = [UIFont systemFontOfSize:12.0f];
     self.redpacketNameLabel.textColor = rp_hexColor(rp_textColorGray);
-    
-    self.redpacketNameLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.backgroundImageView addSubview:self.redpacketNameLabel];
     
     self.redpacketCompanyIcon = [UIImageView new];
@@ -126,7 +121,7 @@ static char _redpacketNameLabel_;
     [self.backgroundImageView addSubview:self.redpacketCompanyIcon];
     
     [self _setupConstraints];
-
+    
 }
 
 - (void)updateRedpacketMargin:(UIEdgeInsets)margin

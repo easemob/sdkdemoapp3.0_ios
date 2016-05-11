@@ -16,6 +16,7 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "RedPacketChatViewController.h"
+#import "RedpacketOpenConst.h"
 
 
 @implementation EMConversation (search)
@@ -273,6 +274,32 @@
     EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage) {
         id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
+        
+        
+        //  TODO:Redpacket Modify
+        if (messageBody.messageBodyType == eMessageBodyType_Text) {
+            NSDictionary *dict = lastMessage.ext;
+            
+            //  是红包被抢的消息
+            if ([dict valueForKey:RedpacketKeyRedpacketSign]) {
+                NSString *orgName = [dict valueForKey:RedpacketKeyRedpacketOrgName];
+                NSString *greeting = [dict valueForKey:RedpacketKeyRedpacketGreeting];
+                ((EMTextMessageBody *)messageBody).text = [NSString stringWithFormat:@"[%@]%@", orgName, greeting];
+                
+            }else if ([dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
+                NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+                NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+                //  是发给发红包的人的消息
+                if ([sender isEqualToString:currentUserID]) {
+                    NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+                    ((EMTextMessageBody *)messageBody).text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
+                }
+                
+            }
+        }
+        //  END: Redpacket Modify
+
+        
         switch (messageBody.messageBodyType) {
             case eMessageBodyType_Image:{
                 latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");

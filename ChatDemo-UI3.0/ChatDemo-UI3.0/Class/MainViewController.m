@@ -20,6 +20,9 @@
 #import "UserProfileManager.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
+#import "RedpacketOpenConst.h"
+
+
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 static NSString *kMessageType = @"MessageType";
@@ -343,6 +346,15 @@ static NSString *kGroupName = @"GroupName";
 // 收到消息回调
 -(void)didReceiveMessage:(EMMessage *)message
 {
+    /**
+     *  TODO: 红包SDK
+     */
+    NSDictionary *dict = message.ext;
+    //  红包被抢的消息不处理
+    if (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
+        return;
+    }
+    
     BOOL needShowNotification = (message.messageType != eMessageTypeChat) ? [self needShowNotification:message.conversationChatter] : YES;
     if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
@@ -373,7 +385,40 @@ static NSString *kGroupName = @"GroupName";
 
 -(void)didReceiveCmdMessage:(EMMessage *)message
 {
-    [self showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
+    //  TODO: Redpacket
+    
+    // 群红包透传处理
+    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
+    
+    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
+        //发红包人，收到抢到红包者的透传消息的action
+        NSDictionary *dict = message.ext;
+        NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+        NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+        NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+        if ([senderID isEqualToString:currentUserID]){
+            // 此处消息 插入对应群聊天记录
+            
+            NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+            NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
+            EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
+            EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
+            EMMessage *SelfMessage = [[EMMessage alloc] initWithReceiver:message.conversationChatter bodies:[NSArray arrayWithObject:body1]];
+            SelfMessage.requireEncryption = NO;
+            SelfMessage.messageType = eMessageTypeGroupChat;
+            SelfMessage.ext = message.ext;
+            SelfMessage.deliveryState = eMessageDeliveryState_Delivered;
+            SelfMessage.isRead = YES;
+            
+            [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
+            
+        }
+    }else
+    {
+        //环信原调用
+        [self showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
+    }
+
 }
 
 - (void)playSoundAndVibration{
