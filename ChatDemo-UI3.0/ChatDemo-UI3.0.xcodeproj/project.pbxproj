@@ -2358,7 +2358,7 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
-						DevelopmentTeam = 499WYUV8Q2;
+						DevelopmentTeam = PUEB48NTQQ;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2784,6 +2784,7 @@
 				EASEMOB_LIB = "";
 				EASEMOB_LIBNAME = "";
 				EASEMOB_ROOT = "";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2810,7 +2811,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/../EaseMobSDK/lib",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrwb",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Untitled-czjjlphiybomehgoauqrxshuqrxk/Build/Products/Debug-iphoneos",
@@ -2821,6 +2821,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.demo.ease;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -2836,12 +2837,13 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: EaseMob Inc.";
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
 				EASEMOB_LIBNAME = "";
 				EASEMOB_ROOT = "";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2868,7 +2870,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/../EaseMobSDK/lib",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrwb",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Untitled-czjjlphiybomehgoauqrxshuqrxk/Build/Products/Debug-iphoneos",
@@ -2879,6 +2880,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpacket.demo.ease;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s arm64";
