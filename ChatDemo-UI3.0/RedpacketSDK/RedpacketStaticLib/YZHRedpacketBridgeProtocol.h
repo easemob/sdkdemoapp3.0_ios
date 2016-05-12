@@ -9,6 +9,8 @@
 #ifndef YZHRedpacketBridgeProtocol_h
 #define YZHRedpacketBridgeProtocol_h
 
+ /// 用通知减少耦合
+
 @class RedpacketUserInfo;
 
 typedef NS_ENUM(NSInteger, RequestTokenMethod) {
