@@ -10,6 +10,8 @@
 
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
+#import "RedPacketChatViewController.h"
+
 
 @interface ContactListSelectViewController () <EMUserListViewControllerDelegate,EMUserListViewControllerDataSource>
 
@@ -59,7 +61,10 @@
                 }
                 if (isSucceed) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+                    /**
+                     *  TODO:联系人列表-红包聊天窗口
+                     */
+                    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
                     chatController.title = userModel.nickname;
                     if ([array count] >= 3) {
                         [array removeLastObject];
@@ -74,8 +79,11 @@
         }
     }
     if (flag) {
+        /**
+         *  TODO: 联系人列表-红包聊天窗口
+         */
         NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
         chatController.title = userModel.nickname;
         if ([array count] >= 3) {
             [array removeLastObject];
