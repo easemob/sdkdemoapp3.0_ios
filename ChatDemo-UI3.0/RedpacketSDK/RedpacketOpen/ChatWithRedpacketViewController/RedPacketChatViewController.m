@@ -316,22 +316,22 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 }
 
 #pragma mark - EMChatManagerChatDelegate
-/*
-- (void)didReceiveCmdMessage:(EMMessage *)message
-{
-    //抢到红包以后发送消息的监听 判断
-    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
-    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
-        NSString *senderID = [NSString stringWithFormat:@"%@",message.ext[RedpacketKeyRedpacketSenderId]];
-        
-        if ([senderID isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]){
-            [self addMessageToDataSource:message progress:nil];
-        }
-        
-    }else{
-        [super didReceiveCmdMessage:message];
-    }
-}
- */
+
+//  FIXME: 在
+//- (void)didReceiveCmdMessage:(EMMessage *)message
+//{
+//    //抢到红包以后发送消息的监听 判断
+//    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
+//    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
+//        NSString *senderID = [NSString stringWithFormat:@"%@",message.ext[RedpacketKeyRedpacketSenderId]];
+//        
+//        if ([senderID isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]){
+//            [self addMessageToDataSource:message progress:nil];
+//        }
+//        
+//    }else{
+//        [super didReceiveCmdMessage:message];
+//    }
+//}
 
 @end

@@ -26,12 +26,18 @@
 + (UIViewController *)myRechangeQaWebController;
 
 /**
- *  红包服务协议的Web页面
+ *  用户服务务协议的Web页面
  *
  *  @return WebController
  */
 + (UIViewController *)bindCardProtocolController;
 
+/**
+ *  个人账户资金损失保险的Web页面
+ *
+ *  @return WebController
+ */
++ (UIViewController *)guaranteeTaipingyangProtocol;
 /**
  *  红包服务帮助文档
  *
