@@ -108,7 +108,7 @@ EaseMessageViewControllerDataSource>
             EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [cell becomeFirstResponder];
             self.menuIndexPath = indexPath;
-            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:eMessageBodyType_Text];//群聊报错修改
+            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:eMessageBodyType_Command];
             
             return NO;
         }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
@@ -163,12 +163,11 @@ EaseMessageViewControllerDataSource>
                    withCellWidth:(CGFloat)cellWidth
 {
     NSDictionary *ext = messageModel.message.ext;
-    if (![RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
-        return [super messageViewController:viewController heightForMessageModel:messageModel withCellWidth:cellWidth];
-    }
     
-    if ([RedpacketMessageModel isRedpacket:ext]) {
+    if ([RedpacketMessageModel isRedpacket:ext])    {
         return [EaseRedBagCell cellHeightWithModel:messageModel];
+    }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
+        return 36;
     }
     
     return [super messageViewController:viewController heightForMessageModel:messageModel withCellWidth:cellWidth];
@@ -209,12 +208,11 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     }
 }
 
-//  MARK: 发送红包消息
 - (void)sendRedPacketMessage:(RedpacketMessageModel *)model
 {
     NSDictionary *dic = [model redpacketMessageModelToDic];
     
-    NSString *message = @"你收到了一个红包，请升级后领取红包";
+    NSString *message = @"你收到了一个红包，升级后可以领取哦";
     
     [self sendTextMessage:message withExt:dic];
 }
@@ -238,14 +236,13 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         [dic setValue:messageModel.redpacketId forKey:RedpacketKeyRedpacketID];
         [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
         [dic setValue:Info[@"SenderNickname"] forKey:RedpacketKeyRedpacketSenderNickname];
-        [dic setValue:messageModel.redpacketReceiver.userNickname forKey:RedpacketKeyRedpacketReceiverNickname];
         [dic setValue:messageModel.redpacketReceiver.userNickname forKey:RedpacketKeyRedpacketReceiverId];
         [dic setValue:messageModel.redpacket.redpacketOrgName forKey:RedpacketKeyRedpacketOrgName];
-        [dic setValue:messageModel.redpacket.redpacketOrgName forKey:RedpacketKeyRedpacketGreeting];
+        [dic setValue:messageModel.redpacket.redpacketGreeting forKey:RedpacketKeyRedpacketGreeting];
         [dic setValue:@(YES) forKey:RedpacketKeyRedpacketTakenMessageSign];
         
-        //  mark：内部有转换方法
-//        NSDictionary *dict = messageModel.redpacketMessageModelToDic;
+        //  FIXME：内部有转换方法
+        //  NSDictionary *dict = messageModel.redpacketMessageModelToDic;
         
         // 群聊消息透传
         EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
@@ -268,6 +265,8 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         
         if ([messageModel.redpacketSender.userId isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]) {
             text = @"你领取了自己发的红包";
+        }else {
+            text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.redpacketSender.userNickname];
         }
 
         NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
@@ -318,6 +317,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 
 #pragma mark - EMChatManagerChatDelegate
 
+//  FIXME: 在
 //- (void)didReceiveCmdMessage:(EMMessage *)message
 //{
 //    //抢到红包以后发送消息的监听 判断
@@ -330,9 +330,8 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 //        }
 //        
 //    }else{
-////        [super didReceiveCmdMessage:message];
+//        [super didReceiveCmdMessage:message];
 //    }
 //}
-
 
 @end

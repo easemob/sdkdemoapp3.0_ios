@@ -58,12 +58,17 @@
             prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
         }
 
-    }else
-    {
-        if ([model.message.from isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]) {
-            prompt = model.text;
-        }else
-        {
+    }else{
+        
+        if(model.isSender) {
+            if([sender isEqualToString:model.message.from]) {
+                //  如果是自己发送的红包
+                prompt = [NSString stringWithFormat:@"你领取了自己的红包"];
+                
+            }else {
+                prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
+            }
+        }else{
             prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
         }
     }
@@ -72,6 +77,9 @@
     
     self.titleLabel.text = prompt;
     CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(200, 20)];
+//    CGRect rect = self.titleLabel.frame;
+//    rect.size = size;
+//    self.titleLabel.frame = rect;
     self.widthContraint.constant = size.width + 30;
     [self.backView updateConstraintsIfNeeded];
 }

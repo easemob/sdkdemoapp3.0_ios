@@ -62,11 +62,20 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     return __sharedConfig__;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self) {
+        [self beginObserve];
+    }
+    
+    return self;
+}
+
 - (void)configWithAppKey:(NSString *)appKey
 {
     _dealerAppKey = appKey;
-    
-    [self beginObserve];
 }
 
 #pragma mark - YZHUserInfo DataSource
@@ -130,6 +139,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
  */
 - (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method
 {
+    //  刷新环信Token
     EaseMob *easemob = [EaseMob sharedInstance];
     EMError *error = nil;
     

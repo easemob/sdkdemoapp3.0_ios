@@ -56,6 +56,7 @@ static uint const rp_textColorGray = 0x9e9e9e;
 static uint const rp_backGroundColorGray = 0xe3e3e3;
 
 
+
 UIKIT_STATIC_INLINE UIColor * rp_hexColor(uint color)
 {
     float r = (color&0xFF0000) >> 16;
