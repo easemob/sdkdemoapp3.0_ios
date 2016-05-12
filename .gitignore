@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 xcuserdata/
+=======
+
+#RedpacketIgnore
+ChatDemo-UI3.0/export/
+ChatDemo-UI3.0/export/
+ChatDemo-UI3.0/ChatDemo-UI3.0/export/
+ChatDemo-UI3.0/EaseMobSDK/
+>>>>>>> 4d0a840... 添加SDK
