@@ -61,7 +61,7 @@
     [_bubbleView updateRedpacketMargin:bubbleMargin];
     _bubbleView.translatesAutoresizingMaskIntoConstraints = YES;
     if (model.isSender) {
-        _bubbleView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 259, 2, 213, 94);
+        _bubbleView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 273.5, 2, 213, 94);
         self.bubbleView.redpacketIcon.frame = CGRectMake(13, 19, 26, 34);
         self.bubbleView.redpacketTitleLabel.frame = CGRectMake(48, 19, 156, 15);
         self.bubbleView.redpacketSubLabel.frame = CGRectMake(48, 41, 49, 12);

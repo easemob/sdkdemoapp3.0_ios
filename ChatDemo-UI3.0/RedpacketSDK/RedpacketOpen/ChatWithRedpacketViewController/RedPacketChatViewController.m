@@ -212,7 +212,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     NSDictionary *dic = [model redpacketMessageModelToDic];
     
-    NSString *message = @"你收到了一个红包，升级后可以领取哦";
+    NSString *message = [NSString stringWithFormat:@"[%@]%@", model.redpacket.redpacketOrgName, model.redpacket.redpacketGreeting];
     
     [self sendTextMessage:message withExt:dic];
 }
@@ -228,7 +228,6 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     NSDictionary *dict = messageModel.redpacketMessageModelToDic;
     
     if (self.conversation.conversationType == eConversationTypeChat) {
-   
         [self sendTextMessage:text withExt:dict];
         
     }else{
@@ -236,13 +235,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         [dic setValue:messageModel.redpacketId forKey:RedpacketKeyRedpacketID];
         [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
         [dic setValue:Info[@"SenderNickname"] forKey:RedpacketKeyRedpacketSenderNickname];
-        [dic setValue:messageModel.redpacketReceiver.userNickname forKey:RedpacketKeyRedpacketReceiverId];
+        [dic setValue:messageModel.redpacketReceiver.userId forKey:RedpacketKeyRedpacketReceiverId];
+        [dic setValue:messageModel.redpacketReceiver.userNickname forKey:RedpacketKeyRedpacketReceiverNickname];
         [dic setValue:messageModel.redpacket.redpacketOrgName forKey:RedpacketKeyRedpacketOrgName];
         [dic setValue:messageModel.redpacket.redpacketGreeting forKey:RedpacketKeyRedpacketGreeting];
         [dic setValue:@(YES) forKey:RedpacketKeyRedpacketTakenMessageSign];
         
-        //  FIXME：内部有转换方法
-        //  NSDictionary *dict = messageModel.redpacketMessageModelToDic;
+        //  FIXME：内部转换方法
+        // NSDictionary *dict = messageModel.redpacketMessageModelToDic;
         
         // 群聊消息透传
         EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
@@ -258,13 +258,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
             
         } onQueue:nil];
         
-        //抢到以后消息需要本地存储一条~====================
+        //抢到以后消息需要本地存储一条~
         
         NSDictionary *_ext = [[EaseMessageHelper structureEaseMessageHelperExt:dict
                                                                       bodyType:eMessageBodyType_Text] mutableCopy];
         
         if ([messageModel.redpacketSender.userId isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]) {
             text = @"你领取了自己发的红包";
+            
         }else {
             text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.redpacketSender.userNickname];
         }
@@ -317,21 +318,25 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 
 #pragma mark - EMChatManagerChatDelegate
 
-//  FIXME: 在
-//- (void)didReceiveCmdMessage:(EMMessage *)message
-//{
-//    //抢到红包以后发送消息的监听 判断
-//    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
-//    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
-//        NSString *senderID = [NSString stringWithFormat:@"%@",message.ext[RedpacketKeyRedpacketSenderId]];
-//        
-//        if ([senderID isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]){
-//            [self addMessageToDataSource:message progress:nil];
-//        }
-//        
-//    }else{
-//        [super didReceiveCmdMessage:message];
-//    }
-//}
+- (void)didReceiveCmdMessage:(EMMessage *)message
+{
+    //抢到红包以后发送消息的监听 判断
+    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
+    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
+        NSString *senderID = [NSString stringWithFormat:@"%@",message.ext[RedpacketKeyRedpacketSenderId]];
+        /**
+         *  当前用户是发红包的人
+         */
+        if ([senderID isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]){
+            /**
+             *  加入tableView的DataSource 并刷新界面
+             */
+            [self addMessageToDataSource:message progress:nil];
+        }
+        
+    }else{
+        [super didReceiveCmdMessage:message];
+    }
+}
 
 @end

@@ -39,7 +39,7 @@
 /**
  *  红包名称
  */
-static NSString *const rp_redpacketName = @"环信红包";
+static NSString *const rp_redpacketName = @"红包";
 /**
  *  红包归属
  */

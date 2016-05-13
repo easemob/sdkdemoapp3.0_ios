@@ -9,9 +9,7 @@
 #import "ChatViewController.h"
 
 /**
- *  带红包功能的聊天窗口, 
- *  1.可以发红包
- *  2.可以查看零钱
+ *  带红包功能的聊天窗口
  */
 @interface RedPacketChatViewController : ChatViewController
 
