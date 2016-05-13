@@ -344,7 +344,7 @@ static NSString *kGroupName = @"GroupName";
 }
 
 /**
- *  TODO : Redpacket
+ *  TODO: Redpacket
  */
 -(void)didReceiveMessage:(EMMessage *)message
 {
@@ -382,18 +382,17 @@ static NSString *kGroupName = @"GroupName";
     }
 }
 /**
- *  FIXME: 以下两个代理是不是可以放到RedpacketChatViewController中，这样可以减少客户集成的负担.
+ *  ???: 以下两个代理是不是可以放到RedpacketChatViewController中，这样可以减少客户集成的负担.
  */
 
 /**
- *  TODO : RedpacketSDK
+ *  TODO: RedpacketSDK
  */
 - (void)didReceiveOfflineCmdMessages:(NSArray *)offlineCmdMessages
 {
     /**
      *  群红包被抢的离线消息
      */
-    
     for (EMMessage *message in offlineCmdMessages) {
         EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
         if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
@@ -420,13 +419,15 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)handleCmdMessage:(EMMessage *)message
 {
-    //发红包人，收到抢到红包者的透传消息的action
     NSDictionary *dict = message.ext;
     NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
     NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
     NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+    
     if ([senderID isEqualToString:currentUserID]){
-        // 此处消息 插入对应群聊天记录
+        /**
+         *  当前用户是红包发送者。
+         */
         NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
         NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
         EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
@@ -438,6 +439,9 @@ static NSString *kGroupName = @"GroupName";
         SelfMessage.deliveryState = eMessageDeliveryState_Delivered;
         SelfMessage.isRead = YES;
         
+        /**
+         *  插入数据库，并更新当前聊天界面
+         */
         [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
     }
 }
