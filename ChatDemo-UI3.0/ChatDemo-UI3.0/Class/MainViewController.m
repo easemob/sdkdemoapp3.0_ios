@@ -390,6 +390,10 @@ static NSString *kGroupName = @"GroupName";
  */
 - (void)didReceiveOfflineCmdMessages:(NSArray *)offlineCmdMessages
 {
+    /**
+     *  群红包被抢的离线消息
+     */
+    
     for (EMMessage *message in offlineCmdMessages) {
         EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
         if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
@@ -400,14 +404,16 @@ static NSString *kGroupName = @"GroupName";
 
 -(void)didReceiveCmdMessage:(EMMessage *)message
 {
-    // 群红包透传处理
+    /**
+     *  群红包被抢的消息
+     */
     EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
     
     if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
         [self handleCmdMessage:message];
         
     }else{
-        //环信原调用
+        
         [self showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
     }
 }
@@ -421,7 +427,6 @@ static NSString *kGroupName = @"GroupName";
     NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
     if ([senderID isEqualToString:currentUserID]){
         // 此处消息 插入对应群聊天记录
-        
         NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
         NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
         EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];

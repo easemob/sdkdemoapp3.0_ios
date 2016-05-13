@@ -309,24 +309,35 @@
     
     //  TODO:Redpacket Modify
     if (messageBody.messageBodyType == eMessageBodyType_Text) {
+
         NSDictionary *dict = latestMessage.ext;
-        
-        //  是红包被抢的消息
         if ([dict valueForKey:RedpacketKeyRedpacketSign]) {
+            /**
+             *  点对点红包被抢的消息
+             */
             NSString *orgName = [dict valueForKey:RedpacketKeyRedpacketOrgName];
             NSString *greeting = [dict valueForKey:RedpacketKeyRedpacketGreeting];
             ((EMTextMessageBody *)messageBody).text = [NSString stringWithFormat:@"[%@]%@", orgName, greeting];
             
         }else if ([dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
-            NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            /**
+             *  群红包被抢的消息
+             */
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
             NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
             //  是发给发红包的人的消息
-            if ([sender isEqualToString:currentUserID]) {
+            if ([senderID isEqualToString:currentUserID]) {
                 NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-                ((EMTextMessageBody *)messageBody).text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
-            }
-            
-        }
+                NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+                NSString *prompt;
+                if ([senderID isEqualToString:receiverID]) {
+                    prompt = @"你领取了自己的红包";
+                }else {
+                    prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];;
+                }
+                
+                ((EMTextMessageBody *)messageBody).text = prompt;
+            }        }
     }
     //  END: Redpacket Modify
     
