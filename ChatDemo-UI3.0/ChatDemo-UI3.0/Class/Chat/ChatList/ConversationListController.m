@@ -15,6 +15,9 @@
 #import "RobotChatViewController.h"
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
+#import "RedPacketChatViewController.h"
+#import "RedpacketOpenConst.h"
+
 
 @implementation EMConversation (search)
 
@@ -164,12 +167,16 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             id<IConversationModel> model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             EMConversation *conversation = model.conversation;
+            
             ChatViewController *chatController;
             if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.chatter]) {
                 chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
             }else {
-                chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+                /**
+                 * TODO: 会话列表-红包聊天窗口
+                 */
+                chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = [conversation showName];
             }
             [weakSelf.navigationController pushViewController:chatController animated:YES];
@@ -192,7 +199,10 @@
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
                 [self.navigationController pushViewController:chatController animated:YES];
             } else {
-                ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+                /**
+                 * TODO: 会话列表-红包聊天窗口
+                 */
+                RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = conversationModel.title;
                 [self.navigationController pushViewController:chatController animated:YES];
             }
@@ -293,7 +303,33 @@
         latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
         return latestMessageTitle;
     }
+    
+    
     id<IEMMessageBody> messageBody = latestMessage.messageBodies.lastObject;
+    
+    //  TODO:Redpacket Modify
+    if (messageBody.messageBodyType == eMessageBodyType_Text) {
+        NSDictionary *dict = latestMessage.ext;
+        
+        //  是红包被抢的消息
+        if ([dict valueForKey:RedpacketKeyRedpacketSign]) {
+            NSString *orgName = [dict valueForKey:RedpacketKeyRedpacketOrgName];
+            NSString *greeting = [dict valueForKey:RedpacketKeyRedpacketGreeting];
+            ((EMTextMessageBody *)messageBody).text = [NSString stringWithFormat:@"[%@]%@", orgName, greeting];
+            
+        }else if ([dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
+            NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+            //  是发给发红包的人的消息
+            if ([sender isEqualToString:currentUserID]) {
+                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+                ((EMTextMessageBody *)messageBody).text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
+            }
+            
+        }
+    }
+    //  END: Redpacket Modify
+    
     switch (messageBody.messageBodyType) {
         case eMessageBodyType_Image:{
             latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
