@@ -20,6 +20,8 @@
 #import "UserProfileEditViewController.h"
 #import "CallViewController.h"
 //#import "BackupViewController.h"
+#import "RedpacketViewControl.h"
+
 
 @interface SettingsViewController ()
 
@@ -109,11 +111,21 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+#ifdef REDPACKET_AVALABLE
+    return 2;
+#else
     return 1;
+#endif
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+#ifdef REDPACKET_AVALABLE
+    if (section == 0)
+        return 1;
+#endif
+    
     return 10;
 }
 
@@ -125,7 +137,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
+#ifdef REDPACKET_AVALABLE
+    //  TODO: RedpacketBegin
     if (indexPath.section == 0) {
+        cell.textLabel.text = @"零钱";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+    }else if (indexPath.section == 1) {
+#else
+     if (indexPath.section == 0) {
+#endif
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"setting.autoLogin", @"automatic login");
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -201,6 +222,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+#ifdef REDPACKET_AVALABLE
+    //  TODO: Redpacket
+    if (indexPath.section == 0) {
+        // 零钱页面
+        UIViewController *changeController = [RedpacketViewControl changeMoneyController];
+        
+        //弹出方式
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:changeController];
+        [self presentViewController:nav animated:YES completion:^{
+            
+        }];
+        return;
+    }
+#endif
+    
     if (indexPath.row == 1) {
         PushNotificationViewController *pushController = [[PushNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:pushController animated:YES];
