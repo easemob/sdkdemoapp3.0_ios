@@ -14,7 +14,7 @@
  *  红包功能是否启用
  *  关闭红包功能只需注释掉下边的宏定义
  */
-//#define REDPACKET_AVALABLE
+#define REDPACKET_AVALABLE
 
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
