@@ -85,7 +85,6 @@
 		90F1BED11930493200121AEC /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED01930493100121AEC /* libiconv.dylib */; };
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		9259DA8D1CE4AA72004F83C6 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9259DA8C1CE4AA72004F83C6 /* libEaseUI.a */; };
-		92959DEE1CE091B5008C4124 /* RedPacketChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92959DD41CE091B5008C4124 /* RedPacketChatViewController.m */; };
 		92959DEF1CE091B5008C4124 /* EaseBubbleView+RedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 92959DD81CE091B5008C4124 /* EaseBubbleView+RedPacket.m */; };
 		92959DF01CE091B5008C4124 /* EaseRedBagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 92959DDA1CE091B5008C4124 /* EaseRedBagCell.m */; };
 		92959DF11CE091B5008C4124 /* RedpacketCellResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 92959DDB1CE091B5008C4124 /* RedpacketCellResource.bundle */; };
@@ -97,6 +96,7 @@
 		92959F911CE096A1008C4124 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 92959F901CE096A1008C4124 /* EaseUIResource.bundle */; };
 		9295A0771CE09F0F008C4124 /* libEaseMobClientSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9295A0731CE09F0F008C4124 /* libEaseMobClientSDK.a */; };
 		9295A0791CE09F0F008C4124 /* EaseMob.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9295A0761CE09F0F008C4124 /* EaseMob.bundle */; };
+		92BC51E31CE9E57F00B6DD32 /* RedPacketChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BC51E21CE9E57F00B6DD32 /* RedPacketChatViewController.m */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
 		D24A4A9D1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
@@ -459,10 +459,7 @@
 		90F1BED01930493100121AEC /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		90F1BED21930493F00121AEC /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		9259DA791CE33395004F83C6 /* RedpacketWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketWebController.h; sourceTree = "<group>"; };
 		9259DA8C1CE4AA72004F83C6 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEaseUI.a; sourceTree = "<group>"; };
-		92959DD31CE091B5008C4124 /* RedPacketChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPacketChatViewController.h; sourceTree = "<group>"; };
-		92959DD41CE091B5008C4124 /* RedPacketChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketChatViewController.m; sourceTree = "<group>"; };
 		92959DD51CE091B5008C4124 /* Redpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Redpacket.h; sourceTree = "<group>"; };
 		92959DD71CE091B5008C4124 /* EaseBubbleView+RedPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EaseBubbleView+RedPacket.h"; sourceTree = "<group>"; };
 		92959DD81CE091B5008C4124 /* EaseBubbleView+RedPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EaseBubbleView+RedPacket.m"; sourceTree = "<group>"; };
@@ -698,6 +695,8 @@
 		9295A0711CE09F0F008C4124 /* EMErrorDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMErrorDefs.h; sourceTree = "<group>"; };
 		9295A0731CE09F0F008C4124 /* libEaseMobClientSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEaseMobClientSDK.a; sourceTree = "<group>"; };
 		9295A0761CE09F0F008C4124 /* EaseMob.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseMob.bundle; sourceTree = "<group>"; };
+		92BC51E11CE9E57F00B6DD32 /* RedPacketChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPacketChatViewController.h; sourceTree = "<group>"; };
+		92BC51E21CE9E57F00B6DD32 /* RedPacketChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketChatViewController.m; sourceTree = "<group>"; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
 		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
@@ -1328,22 +1327,12 @@
 		92959DD11CE091B5008C4124 /* RedpacketOpen */ = {
 			isa = PBXGroup;
 			children = (
-				92959DD21CE091B5008C4124 /* RedPacketChatViewController */,
 				92959DD51CE091B5008C4124 /* Redpacket.h */,
+				92BC51E01CE9E57F00B6DD32 /* RedPacketChatViewController */,
 				92959DD61CE091B5008C4124 /* RedpacketCell */,
 				92959DDF1CE091B5008C4124 /* RedpacketUserConfig */,
 			);
 			path = RedpacketOpen;
-			sourceTree = "<group>";
-		};
-		92959DD21CE091B5008C4124 /* RedPacketChatViewController */ = {
-			isa = PBXGroup;
-			children = (
-				92959DD31CE091B5008C4124 /* RedPacketChatViewController.h */,
-				92959DD41CE091B5008C4124 /* RedPacketChatViewController.m */,
-			);
-			name = RedPacketChatViewController;
-			path = ChatWithRedpacketViewController;
 			sourceTree = "<group>";
 		};
 		92959DD61CE091B5008C4124 /* RedpacketCell */ = {
@@ -1376,7 +1365,6 @@
 				92959DE31CE091B5008C4124 /* lib */,
 				92959DE51CE091B5008C4124 /* RedpacketMessageModel.h */,
 				92959DE61CE091B5008C4124 /* RedpacketOpenConst.h */,
-				9259DA791CE33395004F83C6 /* RedpacketWebController.h */,
 				92959DE81CE091B5008C4124 /* RedpacketViewControl.h */,
 				92959DEA1CE091B5008C4124 /* resources */,
 				92959DEC1CE091B5008C4124 /* YZHRedpacketBridge.h */,
@@ -1951,6 +1939,15 @@
 				9295A0761CE09F0F008C4124 /* EaseMob.bundle */,
 			);
 			path = resources;
+			sourceTree = "<group>";
+		};
+		92BC51E01CE9E57F00B6DD32 /* RedPacketChatViewController */ = {
+			isa = PBXGroup;
+			children = (
+				92BC51E11CE9E57F00B6DD32 /* RedPacketChatViewController.h */,
+				92BC51E21CE9E57F00B6DD32 /* RedPacketChatViewController.m */,
+			);
+			path = RedPacketChatViewController;
 			sourceTree = "<group>";
 		};
 		D24C39B31B561F3B00F16AA8 /* Parse */ = {
@@ -2611,6 +2608,7 @@
 				3C5EB36319407CAF005C7704 /* EMChooseViewController.m in Sources */,
 				3C914D8219514BBD0002DAD3 /* ChatGroupDetailViewController.m in Sources */,
 				D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */,
+				92BC51E31CE9E57F00B6DD32 /* RedPacketChatViewController.m in Sources */,
 				3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */,
 				9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */,
 				906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */,
@@ -2626,7 +2624,6 @@
 				92959DF21CE091B5008C4124 /* RedpacketMessageCell.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
-				92959DEE1CE091B5008C4124 /* RedPacketChatViewController.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
 				3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */,
 				90133E611972D11000C49B56 /* NSString+Valid.m in Sources */,

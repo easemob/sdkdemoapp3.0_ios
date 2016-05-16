@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "RedpacketMessageModel.h"
 
-//  请红包成功回调
+//  抢红包成功回调
 typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
 //  环信接口发送红包消息回调
 typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
