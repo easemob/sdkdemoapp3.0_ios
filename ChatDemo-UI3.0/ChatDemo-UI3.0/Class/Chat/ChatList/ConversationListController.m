@@ -173,10 +173,15 @@
                 chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
             }else {
+                
+#ifdef REDPACKET_AVALABLE
                 /**
                  * TODO: 会话列表-红包聊天窗口
                  */
                 chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#else
+                chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#endif
                 chatController.title = [conversation showName];
             }
             [weakSelf.navigationController pushViewController:chatController animated:YES];
@@ -199,10 +204,14 @@
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
                 [self.navigationController pushViewController:chatController animated:YES];
             } else {
+#ifdef REDPACKET_AVALABLE
                 /**
                  * TODO: 会话列表-红包聊天窗口
                  */
                 RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#else
+                ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#endif
                 chatController.title = conversationModel.title;
                 [self.navigationController pushViewController:chatController animated:YES];
             }
@@ -306,6 +315,7 @@
     
     id<IEMMessageBody> messageBody = latestMessage.messageBodies.lastObject;
     
+#ifdef REDPACKET_AVALABLE
     //  TODO: Redpacket Modify
     if (messageBody.messageBodyType == eMessageBodyType_Text) {
         NSDictionary *dict = latestMessage.ext;
@@ -343,6 +353,7 @@
         }
     }
     //  END: Redpacket Modify
+#endif
     
     switch (messageBody.messageBodyType) {
         case eMessageBodyType_Image:{

@@ -348,12 +348,13 @@ static NSString *kGroupName = @"GroupName";
  */
 -(void)didReceiveMessage:(EMMessage *)message
 {
+#ifdef REDPACKET_AVALABLE
     NSDictionary *dict = message.ext;
     //  红包被抢的消息不提示，不震动
     if (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
         return;
     }
-    
+#endif
     BOOL needShowNotification = (message.messageType != eMessageTypeChat) ? [self needShowNotification:message.conversationChatter] : YES;
     if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
@@ -381,6 +382,8 @@ static NSString *kGroupName = @"GroupName";
 #endif
     }
 }
+
+#ifdef REDPACKET_AVALABLE
 /**
  *  ???: 以下两个代理是不是可以放到RedpacketChatViewController中，这样可以减少客户集成的负担.
  */
@@ -445,6 +448,8 @@ static NSString *kGroupName = @"GroupName";
         [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
     }
 }
+
+#endif
 
 - (void)playSoundAndVibration{
     NSTimeInterval timeInterval = [[NSDate date]

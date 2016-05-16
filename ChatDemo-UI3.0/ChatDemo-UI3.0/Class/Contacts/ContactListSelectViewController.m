@@ -61,10 +61,14 @@
                 }
                 if (isSucceed) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+#ifdef REDPACKET_AVALABLE
                     /**
                      *  TODO:联系人列表-红包聊天窗口
                      */
                     RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+#else
+                    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+#endif
                     chatController.title = userModel.nickname;
                     if ([array count] >= 3) {
                         [array removeLastObject];
@@ -79,11 +83,16 @@
         }
     }
     if (flag) {
-        /**
-         *  TODO: 联系人列表-红包聊天窗口
-         */
         NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+#ifdef REDPACKET_AVALABLE
+        /**
+         *  TODO:联系人列表-红包聊天窗口
+         */
         RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+#else
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+#endif
+
         chatController.title = userModel.nickname;
         if ([array count] >= 3) {
             [array removeLastObject];

@@ -111,13 +111,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+#ifdef REDPACKET_AVALABLE
     return 2;
+#else
+    return 1;
+#endif
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+#ifdef REDPACKET_AVALABLE
     if (section == 0)
         return 1;
+#endif
     
     return 10;
 }
@@ -129,13 +136,17 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-
+    
+#ifdef REDPACKET_AVALABLE
     //  TODO: RedpacketBegin
     if (indexPath.section == 0) {
         cell.textLabel.text = @"零钱";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
     }else if (indexPath.section == 1) {
+#else
+     if (indexPath.section == 0) {
+#endif
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"setting.autoLogin", @"automatic login");
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -212,6 +223,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+#ifdef REDPACKET_AVALABLE
     //  TODO: Redpacket
     if (indexPath.section == 0) {
         // 零钱页面
@@ -222,7 +234,9 @@
         [self presentViewController:nav animated:YES completion:^{
             
         }];
+        return;
     }
+#endif
     
     if (indexPath.row == 1) {
         PushNotificationViewController *pushController = [[PushNotificationViewController alloc] initWithStyle:UITableViewStylePlain];

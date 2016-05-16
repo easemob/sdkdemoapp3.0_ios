@@ -153,11 +153,18 @@
             }
             
             [weakSelf.searchController.searchBar endEditing:YES];
+#ifdef REDPACKET_AVALABLE
             /**
              *  TODO: 联系人列表-红包聊天窗口
              */
             RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy.username
-                                                                                conversationType:eConversationTypeChat];
+                                                                                                  conversationType:eConversationTypeChat];
+#else
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy.username
+                                                                                                  conversationType:eConversationTypeChat];
+#endif
+
+
             chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy.username];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
@@ -316,10 +323,15 @@
                 return;
             }
         }
+        
+#ifdef REDPACKET_AVALABLE
         /**
          *  TODO: 联系人列表-红包聊天窗口
          */
         RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy.username conversationType:eConversationTypeChat];
+#else
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy.username conversationType:eConversationTypeChat];
+#endif
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy.username;
         [self.navigationController pushViewController:chatController animated:YES];
     }

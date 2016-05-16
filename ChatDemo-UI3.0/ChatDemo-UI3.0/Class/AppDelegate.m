@@ -31,10 +31,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#ifdef REDPACKET_AVALABLE
     /**
      *  TODO: 通过环信的AppKey注册红包
      */
     [[RedPacketUserConfig sharedConfig] configWithAppKey:EaseMobAppKey];
+#endif
     
     _connectionState = eEMConnectionConnected;
     
