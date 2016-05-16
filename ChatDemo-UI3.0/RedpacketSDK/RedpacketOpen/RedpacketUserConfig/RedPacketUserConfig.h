@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  红包用户信息-配置类-依赖于环信当前登陆用户（EMClient），和环信UserProfileManager中的数据,
- *  如果第三方App不依赖环信的这些数据，请自行修改此类中的相关代码
+ *  @description: 红包用户配置服务
+ *  1.获取当前用户的信息
+ *  2.注册红包服务
+ *  3.检测用户登陆状态
  */
 
 @interface RedPacketUserConfig : NSObject

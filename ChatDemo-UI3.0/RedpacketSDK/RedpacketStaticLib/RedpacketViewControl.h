@@ -31,20 +31,6 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 @property (nonatomic, weak) UIViewController *conversationController;
 
 /**
- *  零钱页面
- *
- *  @return 零钱页面，App可以放在需要的位置
- */
-+ (UIViewController *)changeMoneyController;
-
-/**
- *  零钱明细页面
- *
- *  @return 零钱明细页面，App可以放在需要的位置
- */
-+ (UIViewController *)changeMoneyListController;
-
-/**
  *  用户单击了聊天窗口中的红包Cell后触发
  *
  *  @param messageModel 消息Model
@@ -59,6 +45,38 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
  */
 - (void)setRedpacketGrabBlock:(RedpacketGrabBlock)grabTouch andRedpacketBlock:(RedpacketSendBlock)sendBlock;
 
+#pragma mark - Controllers
+
+/**
+ *  点对点红包控制器
+ *
+ *  @return 返回红包控制器
+ */
+- (UIViewController *)redpacketViewController;
+
+/**
+ *  多人红包控制器
+ *
+ *  @param changeMoneyController 聊天室或者群人数
+ *
+ *  @return 返回多人红包控制器
+ */
+- (UIViewController *)mulityRedpacketViewController:(int)peopleCount;
+
+/**
+ *  零钱页面
+ *
+ *  @return 零钱页面，App可以放在需要的位置
+ */
++ (UIViewController *)changeMoneyController;
+
+/**
+ *  零钱明细页面
+ *
+ *  @return 零钱明细页面，App可以放在需要的位置
+ */
++ (UIViewController *)changeMoneyListController;
+
 #pragma mark - ShowViewControllers
 
 /**
@@ -67,7 +85,7 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 - (void)presentRedPacketMoreViewControllerWithCount:(int)count;
 
 /**
- *  显示单个红包页面
+ *  显示点对点红包页面
  */
 - (void)presentRedPacketViewController;
 

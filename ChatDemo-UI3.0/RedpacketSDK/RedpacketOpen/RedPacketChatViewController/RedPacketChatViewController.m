@@ -10,7 +10,6 @@
 #import "EaseRedBagCell.h"
 #import "UIImageView+EMWebCache.h"
 #import "RedpacketMessageCell.h"
-
 #import "RedpacketViewControl.h"
 #import "RedpacketMessageModel.h"
 #import "RedPacketUserConfig.h"
@@ -192,7 +191,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (void)messageViewController:(EaseMessageViewController *)viewController didSelectMoreView:(EaseChatBarMoreView *)moreView AtIndex:(NSInteger)index
 {
     if (index == _redpacket_send_index || index == 3) {
-        if (self.conversation.conversationType != eConversationTypeGroupChat) {
+        if (self.conversation.conversationType == eConversationTypeChat) {
             //单聊发送界面
             [self.viewControl presentRedPacketViewController];
         }else{
@@ -231,18 +230,10 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         [self sendTextMessage:text withExt:dict];
         
     }else{
-        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        [dic setValue:messageModel.redpacketId forKey:RedpacketKeyRedpacketID];
+        //  FIXME：内部转换方法
+         NSMutableDictionary *dic = [messageModel.redpacketMessageModelToDic mutableCopy];
         [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
         [dic setValue:Info[@"SenderNickname"] forKey:RedpacketKeyRedpacketSenderNickname];
-        [dic setValue:messageModel.redpacketReceiver.userId forKey:RedpacketKeyRedpacketReceiverId];
-        [dic setValue:messageModel.redpacketReceiver.userNickname forKey:RedpacketKeyRedpacketReceiverNickname];
-        [dic setValue:messageModel.redpacket.redpacketOrgName forKey:RedpacketKeyRedpacketOrgName];
-        [dic setValue:messageModel.redpacket.redpacketGreeting forKey:RedpacketKeyRedpacketGreeting];
-        [dic setValue:@(YES) forKey:RedpacketKeyRedpacketTakenMessageSign];
-        
-        //  FIXME：内部转换方法
-        // NSDictionary *dict = messageModel.redpacketMessageModelToDic;
         
         // 群聊消息透传
         EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
@@ -335,7 +326,8 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         }
         
     }else{
-        [super didReceiveCmdMessage:message];
+        // [super didReceiveCmdMessage:message];
+        
     }
 }
 

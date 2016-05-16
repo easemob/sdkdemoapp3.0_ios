@@ -29,11 +29,15 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 - (void)beginObserve
 {
-    //  登录代理
+    /**
+     *  监听用户的登陆操作
+     */
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     
-    //  如果接入的用户有通知，则接收通知
+    /**
+     *  检测切换用户的操做
+     */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginChanged:) name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 
@@ -78,7 +82,11 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     _dealerAppKey = appKey;
 }
 
-#pragma mark - YZHUserInfo DataSource
+#pragma mark - YZHRedpacketBridgeDataSource
+
+/**
+ *  获取当前用户登陆信息，YZHRedpacketBridgeDataSource
+ */
 - (RedpacketUserInfo *)redpacketUserInfo
 {
     RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
@@ -92,26 +100,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     userInfo.userAvatar = entity.imageUrl;;
     
     return userInfo;
-}
-
-#pragma mark - IChatManagerDelegate
-
-//  用户登录状态改变
-- (void)userLoginChanged:(NSNotification *)notification
-{
-    BOOL isLoginSuccess = [notification.object boolValue];
-    
-    if(isLoginSuccess) {
-        [self configRedpacketService];
-        
-    }else {
-        [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
-    }
-}
-
-- (void)didAutoLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
-{
-    [self configRedpacketService];
 }
 
 //  配置红包相关的服务
@@ -151,6 +139,31 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     if (!error) {
         [self configRedpacketService];
     }
+}
+
+#pragma mark - IChatManagerDelegate
+
+/**
+ *  检测用户登陆状态
+ */
+- (void)userLoginChanged:(NSNotification *)notification
+{
+    BOOL isLoginSuccess = [notification.object boolValue];
+    
+    if(isLoginSuccess) {
+        [self configRedpacketService];
+        
+    }else {
+        [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
+    }
+}
+
+/**
+ *  自动登录状态监听
+ */
+- (void)didAutoLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
+{
+    [self configRedpacketService];
 }
 
 @end
