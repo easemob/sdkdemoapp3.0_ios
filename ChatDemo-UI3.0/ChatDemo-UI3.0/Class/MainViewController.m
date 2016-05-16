@@ -20,7 +20,9 @@
 #import "UserProfileManager.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
+
 #import "RedpacketOpenConst.h"
+#import "RedPacketChatViewController.h"
 
 
 //两次提示的默认间隔
@@ -918,7 +920,12 @@ static NSString *kGroupName = @"GroupName";
                     {
                         [self.navigationController popViewControllerAnimated:NO];
                         EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
+                        
                         chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
                         switch (messageType) {
                             case eMessageTypeGroupChat:
                                 {
@@ -942,10 +949,15 @@ static NSString *kGroupName = @"GroupName";
             }
             else
             {
-                ChatViewController *chatViewController = (ChatViewController *)obj;
+                ChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
                 chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
+                
                 switch (messageType) {
                     case eMessageTypeGroupChat:
                     {
