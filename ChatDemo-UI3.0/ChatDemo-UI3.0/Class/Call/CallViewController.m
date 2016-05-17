@@ -54,11 +54,12 @@
         }
         
         g_callCenter = [[CTCallCenter alloc] init];
-        __strong CallViewController *strongSelf = self;
+        __weak typeof(self) weakSelf = self;
         g_callCenter.callEventHandler=^(CTCall* call)
         {
             if(call.callState == CTCallStateIncoming)
             {
+                __strong CallViewController *strongSelf = weakSelf;
                 NSLog(@"Call is incoming");
                 [strongSelf->_timeTimer invalidate];
                 [strongSelf _stopRing];
