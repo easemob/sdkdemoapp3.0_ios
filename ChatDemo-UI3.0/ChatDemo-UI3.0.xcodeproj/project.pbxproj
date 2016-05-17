@@ -48,8 +48,6 @@
 		9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8621939D8D000DC38A4 /* ApplyFriendCell.m */; };
 		9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8641939D8D000DC38A4 /* ApplyViewController.m */; };
 		9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8671939D8D000DC38A4 /* RealtimeSearchUtil.m */; };
-		90133E611972D11000C49B56 /* NSString+Valid.m in Sources */ = {isa = PBXBuildFile; fileRef = 90133E601972D11000C49B56 /* NSString+Valid.m */; };
-		90133EC11972DFF400C49B56 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
 		90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */; };
 		90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */; };
@@ -62,7 +60,6 @@
 		90911034192EEA70008A48AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911033192EEA70008A48AA /* main.m */; };
 		9091103A192EEA70008A48AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90911039192EEA70008A48AA /* Images.xcassets */; };
 		90911117192EEAED008A48AA /* THProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E0192EEAED008A48AA /* THProgressView.m */; };
-		90911119192EEAED008A48AA /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E6192EEAED008A48AA /* NSDate+Category.m */; };
 		9091111A192EEAED008A48AA /* NSDateFormatter+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110E8192EEAED008A48AA /* NSDateFormatter+Category.m */; };
 		9091111B192EEAED008A48AA /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 909110EA192EEAED008A48AA /* UIResponder+Router.m */; };
 		90911126192EEBB8008A48AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911122192EEBB8008A48AA /* AppDelegate.m */; };
@@ -313,7 +310,6 @@
 		28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChatroomListViewController.m; sourceTree = "<group>"; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		3C0CE53A193895E200219149 /* macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		3C117120197D243B00E2DBEC /* PushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationViewController.h; sourceTree = "<group>"; };
 		3C117121197D243B00E2DBEC /* PushNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotificationViewController.m; sourceTree = "<group>"; };
 		3C13D9491A12095D00903622 /* GroupBansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupBansViewController.h; sourceTree = "<group>"; };
@@ -382,10 +378,6 @@
 		9003D8661939D8D000DC38A4 /* RealtimeSearchUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealtimeSearchUtil.h; sourceTree = "<group>"; };
 		9003D8671939D8D000DC38A4 /* RealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealtimeSearchUtil.m; sourceTree = "<group>"; };
 		9003D91B1939D9C300DC38A4 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
-		90133E5F1972D11000C49B56 /* NSString+Valid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Valid.h"; sourceTree = "<group>"; };
-		90133E601972D11000C49B56 /* NSString+Valid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Valid.m"; sourceTree = "<group>"; };
-		90133EBF1972DFF400C49B56 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
-		90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		90517D651A5C3C1F008F1315 /* AppDelegate+EaseMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+EaseMob.h"; sourceTree = "<group>"; };
 		90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+EaseMob.m"; sourceTree = "<group>"; };
@@ -407,8 +399,6 @@
 		90911039192EEA70008A48AA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		909110DF192EEAED008A48AA /* THProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THProgressView.h; sourceTree = "<group>"; };
 		909110E0192EEAED008A48AA /* THProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THProgressView.m; sourceTree = "<group>"; };
-		909110E5192EEAED008A48AA /* NSDate+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Category.h"; sourceTree = "<group>"; };
-		909110E6192EEAED008A48AA /* NSDate+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Category.m"; sourceTree = "<group>"; };
 		909110E7192EEAED008A48AA /* NSDateFormatter+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+Category.h"; sourceTree = "<group>"; };
 		909110E8192EEAED008A48AA /* NSDateFormatter+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+Category.m"; sourceTree = "<group>"; };
 		909110E9192EEAED008A48AA /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
@@ -1213,7 +1203,6 @@
 				D24C39B31B561F3B00F16AA8 /* Parse */,
 				90011F8F1AE4BF090088D549 /* EMAlertView */,
 				9003D9191939D9C300DC38A4 /* UMeng */,
-				3C0CE53A193895E200219149 /* macros.h */,
 				905326B219333E8E00F064D7 /* TTGlobalUICommon */,
 				90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */,
 				909110DE192EEAED008A48AA /* THProgressView */,
@@ -1235,16 +1224,10 @@
 			children = (
 				D29A6BA71B7208DF002324BB /* UIImageView+HeadImage.h */,
 				D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */,
-				909110E5192EEAED008A48AA /* NSDate+Category.h */,
-				909110E6192EEAED008A48AA /* NSDate+Category.m */,
 				909110E7192EEAED008A48AA /* NSDateFormatter+Category.h */,
 				909110E8192EEAED008A48AA /* NSDateFormatter+Category.m */,
 				909110E9192EEAED008A48AA /* UIResponder+Router.h */,
 				909110EA192EEAED008A48AA /* UIResponder+Router.m */,
-				90133E5F1972D11000C49B56 /* NSString+Valid.h */,
-				90133E601972D11000C49B56 /* NSString+Valid.m */,
-				90133EBF1972DFF400C49B56 /* UIViewController+DismissKeyboard.h */,
-				90133EC01972DFF400C49B56 /* UIViewController+DismissKeyboard.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2530,7 +2513,6 @@
 				3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */,
 				D2B61D621BC7A396007CB53E /* EMBubbleView+Gif.m in Sources */,
 				3C9DDAB4193871D8007C765A /* EMSearchDisplayController.m in Sources */,
-				90133EC11972DFF400C49B56 /* UIViewController+DismissKeyboard.m in Sources */,
 				906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
@@ -2539,7 +2521,6 @@
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
 				3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */,
-				90133E611972D11000C49B56 /* NSString+Valid.m in Sources */,
 				9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */,
@@ -2555,7 +2536,6 @@
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
-				90911119192EEAED008A48AA /* NSDate+Category.m in Sources */,
 				3C6FFA2419A2F5560003EB25 /* DebugViewController.m in Sources */,
 				90B42A381B65E62C00968342 /* RobotManager.m in Sources */,
 				3C35365C19A22164003EF79E /* GroupSettingViewController.m in Sources */,

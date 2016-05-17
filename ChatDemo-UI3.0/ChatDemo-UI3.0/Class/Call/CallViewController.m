@@ -59,10 +59,10 @@
             if(call.callState == CTCallStateIncoming)
             {
                 NSLog(@"Call is incoming");
-                [_timeTimer invalidate];
+                [self->_timeTimer invalidate];
                 [self _stopRing];
                 
-                [[EaseMob sharedInstance].callManager asyncEndCall:_callSession.sessionId reason:eCallReasonHangup];
+                [[EaseMob sharedInstance].callManager asyncEndCall:self->_callSession.sessionId reason:eCallReasonHangup];
                 [self _close];
             }
         };
@@ -307,8 +307,24 @@
     //5.创建、配置输出
     _captureOutput = [[AVCaptureVideoDataOutput alloc] init];
     _captureOutput.videoSettings = _openGLView.outputSettings;
-//    [[_captureOutput connectionWithMediaType:AVMediaTypeVideo] setVideoMinFrameDuration:CMTimeMake(1, 15)];
-    _captureOutput.minFrameDuration = CMTimeMake(1, 15);
+    
+    if ([device respondsToSelector:@selector(setActiveVideoMinFrameDuration:)]) {
+        error = nil;
+        [device lockForConfiguration:&error];
+        if (error == nil) {
+            [device setActiveVideoMinFrameDuration:CMTimeMake(1, 15)];
+        }
+        [device unlockForConfiguration];
+    } else {
+        for (AVCaptureConnection *connection in _captureOutput.connections)
+        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            if ([connection respondsToSelector:@selector(setVideoMinFrameDuration:)])
+                connection.videoMinFrameDuration = CMTimeMake(1, 15);
+#pragma clang diagnostic pop
+        }
+    }
 //    _captureOutput.minFrameDuration = _openGLView.videoMinFrameDuration;
     _captureOutput.alwaysDiscardsLateVideoFrames = YES;
     dispatch_queue_t outQueue = dispatch_queue_create("com.gh.cecall", NULL);
@@ -490,7 +506,7 @@ void YUV420spRotate90(UInt8 *  dst, UInt8* src, size_t srcWidth, size_t srcHeigh
     //旋转Y
     int k = 0;
     for(int i = 0; i < srcWidth; i++) {
-        int nPos = wh-srcWidth;
+        int nPos = (int)(wh-srcWidth);
         for(int j = 0; j < srcHeight; j++) {
             dst[k] = src[nPos + i];
             k++;
@@ -498,7 +514,7 @@ void YUV420spRotate90(UInt8 *  dst, UInt8* src, size_t srcWidth, size_t srcHeigh
         }
     }
     for(int i = 0; i < uvWidth; i++) {
-        int nPos = wh+uvwh-uvWidth;
+        int nPos = (int)(wh+uvwh-uvWidth);
         for(int j = 0; j < uvHeight; j++) {
             dst[k] = src[nPos + i];
             dst[k+uvwh] = src[nPos + i+uvwh];
@@ -557,7 +573,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         }
         
         YUV420spRotate90(bufferPtr, _imageDataBuffer, width, height);
-        [[EaseMob sharedInstance].callManager processPreviewData:(char *)bufferPtr width:width height:height];
+        [[EaseMob sharedInstance].callManager processPreviewData:(char *)bufferPtr width:(int)width height:(int)height];
         
         /*We unlock the buffer*/
         CVPixelBufferUnlockBaseAddress(imageBuffer, 0);

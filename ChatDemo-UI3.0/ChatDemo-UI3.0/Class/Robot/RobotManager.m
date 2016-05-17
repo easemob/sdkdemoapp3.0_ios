@@ -42,26 +42,29 @@ static RobotManager *sharedInstance = nil;
 
 - (BOOL)isRobotWithUsername:(NSString*)username
 {
+    /*
     if ([[_robotSource allKeys] count] == 0) {
         [self addRobotsToMemory:[[EaseMob sharedInstance].chatManager robotList]];
     }
     if ([_robotSource objectForKey:[username lowercaseString]]) {
         return YES;
-    }
+    }*/
     return NO;
 }
 
 - (NSString*)getRobotNickWithUsername:(NSString*)username
 {
+    /*
     if ([_robotSource objectForKey:[username lowercaseString]]) {
         EMRobot *robot = [_robotSource objectForKey:[username lowercaseString]];
         return robot.nickname;
-    }
+    }*/
     return username;
 }
 
 - (void)addRobotsToMemory:(NSArray *)robots
 {
+    /*
     if (robots && [robots count] > 0) {
         [_robotSource removeAllObjects];
         for (EMRobot *robot in robots) {
@@ -69,7 +72,7 @@ static RobotManager *sharedInstance = nil;
                 [_robotSource setObject:robot forKey:[robot.username lowercaseString]];
             }
         }
-    }
+    }*/
 }
 
 - (BOOL)isRobotMenuMessage:(EMMessage *)message

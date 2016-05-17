@@ -18,7 +18,7 @@
 
 
 
-@interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource>
+@interface ChatViewController ()<UIAlertViewDelegate>
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
@@ -554,7 +554,9 @@
     }
     
     NSMutableArray *menuArray = [NSMutableArray arrayWithObjects:_deleteMenuItem, nil];
-    if ([self canRevokeMessage]) {
+    //聊天室不可回撤消息
+    if ([self canRevokeMessage]  &&
+        self.conversation.conversationType != eConversationTypeChatRoom) {
         if (_revokeMenuItem == nil) {
             _revokeMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"revoke", @"Revoke") action:@selector(revokeMessageAction:)];
         }
@@ -566,6 +568,12 @@
         [menuArray addObjectsFromArray:@[_copyMenuItem,_transpondMenuItem]];
     } else if (messageType == eMessageBodyType_Image){
         [menuArray addObjectsFromArray:@[_transpondMenuItem]];
+    }
+    id<IMessageModel> model = self.dataArray[indexPath.row]; //此处不可能是时间的提示以及消息撤销的提示（两者不会触发长按手势）
+    if ([EaseMessageHelper isRemoveAfterReadMessage:model.message])
+    {
+        //阅后即焚，删除消息转发
+        [menuArray removeObject:_transpondMenuItem];
     }
     
     [self.menuController setMenuItems:menuArray];
@@ -597,14 +605,6 @@
 {
     id<IMessageModel> messageModel = model;
     if (!messageModel) {
-        return;
-    }
-    //未连接，当前查看的消息存入NSUserDefaults，待连接后处理阅后即焚
-    if (![[EaseMob sharedInstance].chatManager isConnected])
-    {
-        [self.tableView reloadData];
-        [[EaseMessageHelper sharedInstance] updateCurrentMsg:model.message];
-        [self showHint:NSLocalizedString(@"reconnection.fail", @"reconnection failure, later will continue to reconnection")];
         return;
     }
     
@@ -704,6 +704,25 @@
     [self.messsagesSource removeObject:message];
 }
 
+//获取消息在messageSource中的下标
+- (NSInteger)fetchMessageIndex:(EMMessage *)message
+{
+    __block NSInteger index = -1;
+    [self.messsagesSource enumerateObjectsWithOptions:NSEnumerationReverse
+                                           usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                               if ([obj isKindOfClass:[EMMessage class]]) {
+                                                   EMMessage *msg = (EMMessage *)obj;
+                                                   if ([msg.messageId isEqualToString:message.messageId])
+                                                   {
+                                                       index = idx;
+                                                       *stop = YES;
+                                                   }
+                                               }
+                                           }
+     ];
+    return index;
+}
+
 //获取数据源消息对象indexPath
 - (NSInteger)removeMessageModel:(EMMessage *)message
 {
@@ -762,9 +781,13 @@
                     id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:revokePromptMessage];
                     if (newModel)
                     {
-                        NSInteger msgIndex = [self.messsagesSource indexOfObject:message];
-                        [self.messsagesSource replaceObjectAtIndex:msgIndex withObject:newModel.message];
-                        [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+                        NSInteger msgIndex = [self fetchMessageIndex:message];
+                        if (msgIndex >= 0) {
+                            [self.messsagesSource replaceObjectAtIndex:msgIndex
+                                                            withObject:newModel.message];
+                            [self.dataArray replaceObjectAtIndex:index
+                                                      withObject:newModel];
+                        }
                     }
                 }
             }
