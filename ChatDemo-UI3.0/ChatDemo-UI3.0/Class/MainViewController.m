@@ -20,6 +20,11 @@
 #import "UserProfileManager.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
+
+#import "RedpacketOpenConst.h"
+#import "RedPacketChatViewController.h"
+
+
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 static NSString *kMessageType = @"MessageType";
@@ -340,9 +345,18 @@ static NSString *kGroupName = @"GroupName";
     return ret;
 }
 
-// 收到消息回调
+/**
+ *  TODO: Redpacket
+ */
 -(void)didReceiveMessage:(EMMessage *)message
 {
+#ifdef REDPACKET_AVALABLE
+    NSDictionary *dict = message.ext;
+    //  红包被抢的消息不提示，不震动
+    if (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
+        return;
+    }
+#endif
     BOOL needShowNotification = (message.messageType != eMessageTypeChat) ? [self needShowNotification:message.conversationChatter] : YES;
     if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
@@ -371,10 +385,73 @@ static NSString *kGroupName = @"GroupName";
     }
 }
 
+#ifdef REDPACKET_AVALABLE
+/**
+ *  ???: 以下两个代理是不是可以放到RedpacketChatViewController中，这样可以减少客户集成的负担.
+ */
+
+/**
+ *  TODO: RedpacketSDK
+ */
+- (void)didReceiveOfflineCmdMessages:(NSArray *)offlineCmdMessages
+{
+    /**
+     *  群红包被抢的离线消息
+     */
+    for (EMMessage *message in offlineCmdMessages) {
+        EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
+        if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
+            [self handleCmdMessage:message];
+        }
+    }
+}
+
 -(void)didReceiveCmdMessage:(EMMessage *)message
 {
-    [self showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
+    /**
+     *  群红包被抢的消息
+     */
+    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
+    
+    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
+        [self handleCmdMessage:message];
+        
+    }else{
+        
+        [self showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
+    }
 }
+
+- (void)handleCmdMessage:(EMMessage *)message
+{
+    NSDictionary *dict = message.ext;
+    NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+    NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+    NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+    
+    if ([senderID isEqualToString:currentUserID]){
+        /**
+         *  当前用户是红包发送者。
+         */
+        NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+        NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
+        EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
+        EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
+        EMMessage *SelfMessage = [[EMMessage alloc] initWithReceiver:message.conversationChatter bodies:[NSArray arrayWithObject:body1]];
+        SelfMessage.requireEncryption = NO;
+        SelfMessage.messageType = eMessageTypeGroupChat;
+        SelfMessage.ext = message.ext;
+        SelfMessage.deliveryState = eMessageDeliveryState_Delivered;
+        SelfMessage.isRead = YES;
+        
+        /**
+         *  插入数据库，并更新当前聊天界面
+         */
+        [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
+    }
+}
+
+#endif
 
 - (void)playSoundAndVibration{
     NSTimeInterval timeInterval = [[NSDate date]
@@ -843,7 +920,12 @@ static NSString *kGroupName = @"GroupName";
                     {
                         [self.navigationController popViewControllerAnimated:NO];
                         EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
+                        
                         chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
                         switch (messageType) {
                             case eMessageTypeGroupChat:
                                 {
@@ -867,10 +949,15 @@ static NSString *kGroupName = @"GroupName";
             }
             else
             {
-                ChatViewController *chatViewController = (ChatViewController *)obj;
+                ChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
                 chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
+                
                 switch (messageType) {
                     case eMessageTypeGroupChat:
                     {
