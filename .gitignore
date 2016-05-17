@@ -1,0 +1,9 @@
+
+.gitignore
+ChatDemo-UI3.0/ChatDemo-UI3.0.xcodeproj/project.xcworkspace
+xcuserdata
+
+#RedpacketIgnore
+ChatDemo-UI3.0/export/
+ChatDemo-UI3.0/ChatDemo-UI3.0/export/
+ChatDemo-UI3.0/EaseMobSDK/

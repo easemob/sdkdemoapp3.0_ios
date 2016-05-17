@@ -20,7 +20,13 @@
 #import "UserProfileManager.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
+<<<<<<< HEAD
 #import "RedpacketOpenConst.h"
+=======
+
+#import "RedpacketOpenConst.h"
+#import "RedPacketChatViewController.h"
+>>>>>>> redpacketDev1
 
 
 //两次提示的默认间隔
@@ -418,6 +424,7 @@ static NSString *kGroupName = @"GroupName";
         
         [self showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
     }
+<<<<<<< HEAD
 }
 
 - (void)handleCmdMessage:(EMMessage *)message
@@ -449,6 +456,39 @@ static NSString *kGroupName = @"GroupName";
     }
 }
 
+=======
+}
+
+- (void)handleCmdMessage:(EMMessage *)message
+{
+    NSDictionary *dict = message.ext;
+    NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+    NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+    NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+    
+    if ([senderID isEqualToString:currentUserID]){
+        /**
+         *  当前用户是红包发送者。
+         */
+        NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+        NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
+        EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
+        EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
+        EMMessage *SelfMessage = [[EMMessage alloc] initWithReceiver:message.conversationChatter bodies:[NSArray arrayWithObject:body1]];
+        SelfMessage.requireEncryption = NO;
+        SelfMessage.messageType = eMessageTypeGroupChat;
+        SelfMessage.ext = message.ext;
+        SelfMessage.deliveryState = eMessageDeliveryState_Delivered;
+        SelfMessage.isRead = YES;
+        
+        /**
+         *  插入数据库，并更新当前聊天界面
+         */
+        [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
+    }
+}
+
+>>>>>>> redpacketDev1
 #endif
 
 - (void)playSoundAndVibration{
@@ -918,7 +958,12 @@ static NSString *kGroupName = @"GroupName";
                     {
                         [self.navigationController popViewControllerAnimated:NO];
                         EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
+                        
                         chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
                         switch (messageType) {
                             case eMessageTypeGroupChat:
                                 {
@@ -942,10 +987,15 @@ static NSString *kGroupName = @"GroupName";
             }
             else
             {
-                ChatViewController *chatViewController = (ChatViewController *)obj;
+                ChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
                 chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
+                
                 switch (messageType) {
                     case eMessageTypeGroupChat:
                     {
