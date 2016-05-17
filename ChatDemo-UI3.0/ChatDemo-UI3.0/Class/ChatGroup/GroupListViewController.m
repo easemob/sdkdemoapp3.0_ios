@@ -20,6 +20,8 @@
 #import "CreateGroupViewController.h"
 #import "PublicGroupListViewController.h"
 #import "RealtimeSearchUtil.h"
+#import "RedPacketChatViewController.h"
+
 
 @interface GroupListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate, SRRefreshDelegate>
 
@@ -163,8 +165,16 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:group.groupId
+#ifdef REDPACKET_AVALABLE
+            /**
+             * TODO: 群组列表-红包聊天窗口
+             */
+            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:group.groupId
                                                                                 conversationType:eConversationTypeGroupChat];
+#else
+            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:group.groupId
+                                                                                                  conversationType:eConversationTypeGroupChat];
+#endif
             chatVC.title = group.groupSubject;
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
@@ -258,8 +268,17 @@
         }
     } else {
         EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId
+#ifdef REDPACKET_AVALABLE
+        /**
+         * TODO: 群组列表-红包聊天窗口
+         */
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:group.groupId
                                                                                     conversationType:eConversationTypeGroupChat];
+#else
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId
+                                                                                                      conversationType:eConversationTypeGroupChat];
+  
+#endif
         chatController.title = group.groupSubject;
         [self.navigationController pushViewController:chatController animated:YES];
     }
