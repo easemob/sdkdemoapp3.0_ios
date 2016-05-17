@@ -23,9 +23,6 @@
     #import "ChatDemoUIDefine.h"
     #import "EMAlertView.h"
     #import "TTGlobalUICommon.h"
-//    #import "UIViewController+HUD.h"
-    #import "UIViewController+DismissKeyboard.h"
-    #import "NSString+Valid.h"
     #import "EaseUI.h"
 
     #import "EaseMob.h"
