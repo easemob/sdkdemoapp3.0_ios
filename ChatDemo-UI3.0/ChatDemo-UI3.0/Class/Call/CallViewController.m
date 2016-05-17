@@ -54,16 +54,17 @@
         }
         
         g_callCenter = [[CTCallCenter alloc] init];
+        __strong CallViewController *strongSelf = self;
         g_callCenter.callEventHandler=^(CTCall* call)
         {
             if(call.callState == CTCallStateIncoming)
             {
                 NSLog(@"Call is incoming");
-                [self->_timeTimer invalidate];
-                [self _stopRing];
+                [strongSelf->_timeTimer invalidate];
+                [strongSelf _stopRing];
                 
-                [[EaseMob sharedInstance].callManager asyncEndCall:self->_callSession.sessionId reason:eCallReasonHangup];
-                [self _close];
+                [[EaseMob sharedInstance].callManager asyncEndCall:strongSelf->_callSession.sessionId reason:eCallReasonHangup];
+                [strongSelf _close];
             }
         };
 
