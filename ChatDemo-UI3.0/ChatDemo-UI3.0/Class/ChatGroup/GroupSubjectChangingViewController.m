@@ -115,12 +115,14 @@
 - (void)saveSubject
 {
     EMConversation *conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:_group.groupId conversationType:eConversationTypeGroupChat];
+    
+    __strong GroupSubjectChangingViewController *strongSelf = self;
     [[EaseMob sharedInstance].chatManager asyncChangeGroupSubject:_subjectField.text forGroup:_group.groupId completion:^(EMGroup *group, EMError *error) {
         if (!error) {
-            if ([_group.groupId isEqualToString:conversation.chatter]) {
+            if ([strongSelf->_group.groupId isEqualToString:conversation.chatter]) {
                 NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                [ext setObject:_group.groupSubject forKey:@"groupSubject"];
-                [ext setObject:[NSNumber numberWithBool:_group.isPublic] forKey:@"isPublic"];
+                [ext setObject:strongSelf->_group.groupSubject forKey:@"groupSubject"];
+                [ext setObject:[NSNumber numberWithBool:strongSelf->_group.isPublic] forKey:@"isPublic"];
                 conversation.ext = ext;
             }
         }

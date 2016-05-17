@@ -63,9 +63,17 @@
 #else
     apnsCertName = @"chatdemoui";
 #endif
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *appkey = [ud stringForKey:@"identifier_appkey"];
+    if (!appkey)
+    {
+        appkey = @"easemob-demo#chatdemoui";
+        [ud setObject:appkey forKey:@"identifier_appkey"];
+    }
     [self easemobApplication:application
 didFinishLaunchingWithOptions:launchOptions
-                      appkey:EaseMobAppKey
+                      appkey:appkey
                 apnsCertName:apnsCertName
                  otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
 

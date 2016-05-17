@@ -30,9 +30,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[EaseSDKHelper shareHelper] easemobApplication:application
                     didFinishLaunchingWithOptions:launchOptions
-                                           appkey:@"easemob-demo#chatdemoui"
+                                           appkey:appkey
                                      apnsCertName:apnsCertName
-                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
+                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
     
     //注册登录状态监听
     [[NSNotificationCenter defaultCenter] addObserver:self

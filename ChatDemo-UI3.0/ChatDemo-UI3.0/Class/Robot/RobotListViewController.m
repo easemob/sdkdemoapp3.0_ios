@@ -38,7 +38,7 @@
     }
     return self;
 }
-
+/*
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -205,6 +205,6 @@
         });
     }
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
-}
+}*/
 
 @end

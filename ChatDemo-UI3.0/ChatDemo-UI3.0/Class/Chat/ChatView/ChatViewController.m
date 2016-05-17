@@ -338,11 +338,15 @@
     if (isRemove)
     {
         [self changeEaseMessageHelpType:emHelperTypeRemoveAfterRead];
-        [self.navigationController.navigationBar setBarTintColor:[UIColor redColor]];
+        if ([self.navigationController.navigationBar respondsToSelector:@selector(setBarTintColor:)]) {
+            [self.navigationController.navigationBar setBarTintColor:[UIColor redColor]];
+        }
     }
     else {
         [self resetEaseMessageHelpType];
-        [self.navigationController.navigationBar setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
+        if ([self.navigationController.navigationBar respondsToSelector:@selector(setBarTintColor:)]) {
+            [self.navigationController.navigationBar setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
+        }
     }
     
     [self.chatToolbar endEditing:YES];
