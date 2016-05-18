@@ -1,10 +1,14 @@
-//
-//  RobotChatViewController.m
-//  ChatDemo-UI2.0
-//
-//  Created by dujiepeng on 15/7/27.
-//  Copyright (c) 2015年 dujiepeng. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 #import "RobotChatViewController.h"
 #import "RobotManager.h"
@@ -31,9 +35,7 @@
     EMMessage *message = [EaseSDKHelper sendImageMessageWithImage:image
                                                                to:self.conversation.conversationId
                                                       messageType:[self _messageTypeFromConversationType]
-                                                requireEncryption:NO
-                                                       messageExt:ext
-                                                         progress:nil];
+                                                         messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -46,9 +48,7 @@
                                                              duration:duration
                                                                    to:self.conversation.conversationId
                                                           messageType:[self _messageTypeFromConversationType]
-                                                    requireEncryption:NO
-                                                           messageExt:ext
-                                                             progress:nil];
+                                                             messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -60,9 +60,7 @@
     EMMessage *message = [EaseSDKHelper sendVideoMessageWithURL:url
                                                              to:self.conversation.conversationId
                                                     messageType:[self _messageTypeFromConversationType]
-                                              requireEncryption:NO
-                                                     messageExt:ext
-                                                       progress:nil];
+                                                       messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -78,7 +76,6 @@
                                                                 address:address
                                                                      to:self.conversation.conversationId
                                                             messageType:[self _messageTypeFromConversationType]
-                                                      requireEncryption:NO
                                                              messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];

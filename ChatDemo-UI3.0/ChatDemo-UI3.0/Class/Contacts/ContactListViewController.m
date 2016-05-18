@@ -1,10 +1,14 @@
-//
-//  ContactListViewController.m
-//  ChatDemo-UI3.0
-//
-//  Created by dhc on 15/6/24.
-//  Copyright (c) 2015年 easemob.com. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 #import "ContactListViewController.h"
 
@@ -54,8 +58,6 @@
     
     _contactsSource = [NSMutableArray array];
     _sectionTitles = [NSMutableArray array];
-    
-    [self tableViewDidTriggerHeaderRefresh];
     
     [self searchController];
     self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
@@ -179,16 +181,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = [EaseUserCell cellIdentifierWithModel:nil];
-    EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    // Configure the cell...
-    if (cell == nil) {
-        cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
     if (indexPath.section == 0) {
-        cell.model = nil;
         if (indexPath.row == 0) {
             NSString *CellIdentifier = @"addFriend";
             EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -200,7 +193,14 @@
             cell.avatarView.badge = self.unapplyCount;
             return cell;
         }
-        else if (indexPath.row == 1) {
+        
+        NSString *CellIdentifier = @"commonCell";
+        EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        if (indexPath.row == 1) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.group", @"Group");
         }
@@ -212,8 +212,17 @@
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
         }
+        return cell;
     }
     else{
+        NSString *CellIdentifier = [EaseUserCell cellIdentifierWithModel:nil];
+        EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
         NSArray *userSection = [self.dataArray objectAtIndex:(indexPath.section - 1)];
         EaseUserModel *model = [userSection objectAtIndex:indexPath.row];
         UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
@@ -224,10 +233,9 @@
         cell.indexPath = indexPath;
         cell.delegate = self;
         cell.model = model;
-    }
-    
-    return cell;
-}
+        
+        return cell;
+    }}
 
 #pragma mark - Table view delegate
 
@@ -280,13 +288,14 @@
         }
         else if (row == 1)
         {
-            if (_groupController == nil) {
-                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-            }
-            else{
-                [_groupController reloadDataSource];
-            }
-            [self.navigationController pushViewController:_groupController animated:YES];
+//            if (_groupController == nil) {
+//                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+//            }
+//            else{
+//                [_groupController reloadDataSource];
+//            }
+            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:groupController animated:YES];
         }
         else if (row == 2)
         {

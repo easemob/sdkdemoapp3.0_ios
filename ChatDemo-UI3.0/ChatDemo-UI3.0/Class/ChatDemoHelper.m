@@ -1,10 +1,14 @@
-//
-//  ChatDemoHelper.m
-//  ChatDemo-UI3.0
-//
-//  Created by EaseMob on 15/12/8.
-//  Copyright © 2015年 EaseMob. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 #import "ChatDemoHelper.h"
 
@@ -70,6 +74,7 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     
 #if DEMO_CALL == 1
+    [[EMClient sharedClient].callManager setVideoAdaptive:YES];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
@@ -516,6 +521,7 @@ static ChatDemoHelper *helper = nil;
         _callController.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         _callController.timeLabel.hidden = NO;
         [_callController startTimer];
+        [_callController startShowInfo];
         _callController.cancelButton.hidden = NO;
         _callController.rejectButton.hidden = YES;
         _callController.answerButton.hidden = YES;
@@ -570,6 +576,13 @@ static ChatDemoHelper *helper = nil;
                 [alertView show];
             }
         }
+    }
+}
+
+- (void)didReceiveCallNetworkChanged:(EMCallSession *)aSession status:(EMCallNetworkStatus)aStatus
+{
+    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+        [_callController setNetwork:aStatus];
     }
 }
 
@@ -644,7 +657,7 @@ static ChatDemoHelper *helper = nil;
     [self _stopCallTimer];
     
     if (_callSession) {
-        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:EMCallEndReasonHangup];
+        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:aReason];
     }
     
     _callSession = nil;
