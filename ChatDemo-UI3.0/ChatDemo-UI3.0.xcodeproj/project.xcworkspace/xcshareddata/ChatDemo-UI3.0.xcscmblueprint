@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CA59206E14808EF3FA88B049798D0EE8747F2ADE",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "CA59206E14808EF3FA88B049798D0EE8747F2ADE" : 0,
+    "079CEDE0ED4B18C03A45FAA1C45085333F1A056C" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B0F8B773-CD5A-4622-AB61-EA3AF6643772",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "CA59206E14808EF3FA88B049798D0EE8747F2ADE" : "sdkdemoapp3.0_ios\/",
+    "079CEDE0ED4B18C03A45FAA1C45085333F1A056C" : "easeui_ios\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ChatDemo-UI3.0",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ChatDemo-UI3.0\/ChatDemo-UI3.0.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/easemob\/easeui_ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "079CEDE0ED4B18C03A45FAA1C45085333F1A056C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:YunzhanghuOpen\/sdkdemoapp3.0_ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CA59206E14808EF3FA88B049798D0EE8747F2ADE"
+    }
+  ]
+}

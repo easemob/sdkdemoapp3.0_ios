@@ -17,6 +17,7 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+UMeng.h"
 #import "AppDelegate+Parse.h"
+#import "RedPacketUserConfig.h"
 
 
 @interface AppDelegate ()
@@ -28,6 +29,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //TODO: Step1 配置商户的AppKey
+    [[RedPacketUserConfig sharedConfig] configWithAppKey:@"easemob-demo#chatdemoui"];
+    
+    
     _connectionState = EMConnectionConnected;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
