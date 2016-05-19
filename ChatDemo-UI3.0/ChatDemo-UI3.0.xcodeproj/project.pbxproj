@@ -204,6 +204,7 @@
 		92A627901CEC5AB700E7FB70 /* RedPacketUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A6277E1CEC5AB700E7FB70 /* RedPacketUserConfig.m */; };
 		92A627911CEC5AB700E7FB70 /* libRedpacketLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A627811CEC5AB700E7FB70 /* libRedpacketLib.a */; };
 		92A627921CEC5AB700E7FB70 /* RedPacketResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 92A627871CEC5AB700E7FB70 /* RedPacketResource.bundle */; };
+		92CF70171CEDD8FB00A201A1 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 92CF70161CEDD8FB00A201A1 /* EaseUIResource.bundle */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
@@ -798,6 +799,7 @@
 		92A627871CEC5AB700E7FB70 /* RedPacketResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RedPacketResource.bundle; sourceTree = "<group>"; };
 		92A627881CEC5AB700E7FB70 /* YZHRedpacketBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridge.h; sourceTree = "<group>"; };
 		92A627891CEC5AB700E7FB70 /* YZHRedpacketBridgeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridgeProtocol.h; sourceTree = "<group>"; };
+		92CF70161CEDD8FB00A201A1 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseUIResource.bundle; sourceTree = "<group>"; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
 		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
@@ -1224,6 +1226,7 @@
 		9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */ = {
 			isa = PBXGroup;
 			children = (
+				92CF70151CEDD8FB00A201A1 /* resources */,
 				9229D7521CED55280088AF97 /* EaseUI */,
 				92A6276D1CEC5AB700E7FB70 /* RedpacketSDK */,
 				92A626A21CEC579500E7FB70 /* HyphenateFullSDK */,
@@ -2061,6 +2064,15 @@
 			path = resources;
 			sourceTree = "<group>";
 		};
+		92CF70151CEDD8FB00A201A1 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				92CF70161CEDD8FB00A201A1 /* EaseUIResource.bundle */,
+			);
+			name = resources;
+			path = ../../../EaseSDKS/Ease3.0/EaseUI/export/resources;
+			sourceTree = "<group>";
+		};
 		D24C39B31B561F3B00F16AA8 /* Parse */ = {
 			isa = PBXGroup;
 			children = (
@@ -2427,6 +2439,7 @@
 				92A627921CEC5AB700E7FB70 /* RedPacketResource.bundle in Resources */,
 				D2BF97501AEB566B009E0D5C /* group_header@2x.png in Resources */,
 				EBD2AB8D1A7CDAC000D16528 /* chat_receiver_audio_playing_full@2x.png in Resources */,
+				92CF70171CEDD8FB00A201A1 /* EaseUIResource.bundle in Resources */,
 				D2B3DAE21BF1D7B700913BD5 /* icon_035.gif in Resources */,
 				EBD2ABBA1A7CDAC000D16528 /* tabbarBackground@2x.png in Resources */,
 				909E89C21A6E7A270064B20F /* LoginViewController.xib in Resources */,

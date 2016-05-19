@@ -125,9 +125,9 @@ EaseMessageViewControllerDataSource>
                        cellForMessageModel:(id<IMessageModel>)messageModel
 {
     NSDictionary *ext = messageModel.message.ext;
-    if (![RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
-        return [super messageViewController:tableView cellForMessageModel:messageModel];
-    }
+//    if (![RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
+//        return [super messageViewController:tableView cellForMessageModel:messageModel];
+//    }
     
     if ([RedpacketMessageModel isRedpacket:ext]) {
         EaseRedBagCell *cell = [tableView dequeueReusableCellWithIdentifier:[EaseRedBagCell cellIdentifierWithModel:messageModel]];
@@ -169,7 +169,8 @@ EaseMessageViewControllerDataSource>
         return 36;
     }
     
-    return [super messageViewController:viewController heightForMessageModel:messageModel withCellWidth:cellWidth];
+    return 36.0f;
+//    return [super messageViewController:viewController heightForMessageModel:messageModel withCellWidth:cellWidth];
 }
 
 #pragma mark - DataSource
@@ -222,7 +223,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     NSString *text = [NSString stringWithFormat:@"你领取了%@的红包", messageModel.redpacketSender.userNickname];
     
     NSDictionary *Info = [messageModel.redpacketDetailDic valueForKey:@"Info"];
-    NSString *GroupId = [NSString stringWithFormat:@"%@",[Info valueForKey:@"GroupId"]];
+//    NSString *GroupId = [NSString stringWithFormat:@"%@",[Info valueForKey:@"GroupId"]];
     
     NSMutableDictionary *dic = [messageModel.redpacketMessageModelToDic mutableCopy];
     [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
@@ -260,7 +261,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         textMessage.isRead = YES;
         
         [self addMessageToDataSource:textMessage progress:nil];
-        [[EMClient sharedClient].chatManager importMessages:textMessage];
+        [[EMClient sharedClient].chatManager importMessages:@[textMessage]];
     }
 }
 
