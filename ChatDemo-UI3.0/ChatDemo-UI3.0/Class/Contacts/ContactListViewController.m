@@ -206,7 +206,7 @@
         }
         else if (indexPath.row == 2) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
-            cell.titleLabel.text = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
+            cell.titleLabel.text = NSLocalizedString(@"title.chatroomlist",@"channels");
         }
         else if (indexPath.row == 3) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];

@@ -51,7 +51,7 @@
     }
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     // Uncomment the following line to preserve selection between presentations.
-    self.title = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
+    self.title = NSLocalizedString(@"title.chatroomlist",@"channels");
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

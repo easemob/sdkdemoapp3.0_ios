@@ -208,7 +208,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                cell.textLabel.text = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
+                cell.textLabel.text = NSLocalizedString(@"title.chatroomlist",@"channels");
                 cell.imageView.image = [UIImage imageNamed:@"group_joinpublicgroup"];
                 break;
             default:
