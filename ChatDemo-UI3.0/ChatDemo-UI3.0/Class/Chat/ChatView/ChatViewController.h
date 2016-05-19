@@ -12,6 +12,10 @@
 
 #define KNOTIFICATIONNAME_DELETEALLMESSAGE @"RemoveAllMessages"
 
-@interface ChatViewController : EaseMessageViewController
+@interface ChatViewController : EaseMessageViewController <EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource>
+
+- (void)showMenuViewController:(UIView *)showInView
+                  andIndexPath:(NSIndexPath *)indexPath
+                   messageType:(EMMessageBodyType)messageType;
 
 @end

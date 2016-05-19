@@ -8,9 +8,8 @@
 
 #import "RedpacketMessageCell.h"
 #import "RedpacketOpenConst.h"
-#import "EaseMob.h"
 #import "RedpacketMessageModel.h"
-
+#import "EMClient.h"
 
 @interface RedpacketMessageCell ()
 
@@ -54,7 +53,7 @@
     
     NSString *prompt;
     
-    if (model.message.messageType == eMessageTypeChat ) {
+    if (model.message.chatType == EMChatTypeChat) {
         /**
          *  点对点红包
          */
@@ -68,8 +67,7 @@
         /**
          *  群红包
          */
-        NSDictionary *userInfoDic = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *current = [userInfoDic objectForKey:kSDKUsername];
+        NSString *current = [EMClient sharedClient].currentUsername;
         
         if([receiverId isEqualToString:current]) {
             if([senderId isEqualToString:receiverId]) {

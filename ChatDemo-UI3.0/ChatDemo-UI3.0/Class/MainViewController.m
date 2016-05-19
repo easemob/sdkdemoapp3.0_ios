@@ -19,6 +19,8 @@
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
 #import "ChatDemoHelper.h"
+#import "RedPacketChatViewController.h"
+
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 static NSString *kMessageType = @"MessageType";
@@ -396,7 +398,12 @@ static NSString *kGroupName = @"GroupName";
                     {
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
-                        chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#ifdef REDPACKET_AVALABLE
+                        chatViewController = [[RedPacketChatViewController alloc]
+#else
+                        chatViewController = [[ChatViewController alloc]
+#endif
+                                              initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                         switch (messageType) {
                             case EMChatTypeChat:
                                 {
@@ -420,10 +427,15 @@ static NSString *kGroupName = @"GroupName";
             }
             else
             {
-                ChatViewController *chatViewController = (ChatViewController *)obj;
+                ChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
-                chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#ifdef REDPACKET_AVALABLE
+                chatViewController = [[RedPacketChatViewController alloc]
+#else
+                chatViewController = [[ChatViewController alloc]
+#endif
+                                      initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                 switch (messageType) {
                     case EMChatTypeGroupChat:
                     {

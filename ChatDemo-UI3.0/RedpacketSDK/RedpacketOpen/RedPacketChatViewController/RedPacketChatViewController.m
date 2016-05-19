@@ -53,7 +53,7 @@ EaseMessageViewControllerDataSource>
     _viewControl.conversationController = self;
     //  需要当前聊天窗口的会话ID
     RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
-    userInfo.userId = self.conversation.chatter;
+    userInfo.userId = self.conversation.conversationId;
     _viewControl.converstationInfo = userInfo;
     
     __weak typeof(self) weakSelf = self;
@@ -107,7 +107,7 @@ EaseMessageViewControllerDataSource>
             EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             [cell becomeFirstResponder];
             self.menuIndexPath = indexPath;
-            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:eMessageBodyType_Command];
+            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:EMMessageBodyTypeCmd];
             
             return NO;
         }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
@@ -191,12 +191,12 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (void)messageViewController:(EaseMessageViewController *)viewController didSelectMoreView:(EaseChatBarMoreView *)moreView AtIndex:(NSInteger)index
 {
     if (index == _redpacket_send_index || index == 3) {
-        if (self.conversation.conversationType == eConversationTypeChat) {
+        if (self.conversation.type == EMConversationTypeChat) {
             //单聊发送界面
             [self.viewControl presentRedPacketViewController];
         }else{
             //群聊红包发送界面
-            [self.viewControl presentRedPacketMoreViewControllerWithCount:(int)[EMGroup groupWithId:self.conversation.chatter].occupants.count];
+            [self.viewControl presentRedPacketMoreViewControllerWithCount:(int)[EMGroup groupWithId:self.conversation.conversationId].occupants.count];
         }
         
     } else if (index == _redpacket_change_index) {
@@ -224,37 +224,28 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     NSDictionary *Info = [messageModel.redpacketDetailDic valueForKey:@"Info"];
     NSString *GroupId = [NSString stringWithFormat:@"%@",[Info valueForKey:@"GroupId"]];
     
-    NSDictionary *dict = messageModel.redpacketMessageModelToDic;
+    NSMutableDictionary *dic = [messageModel.redpacketMessageModelToDic mutableCopy];
+    [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
+    [dic setValue:Info[@"SenderNickname"] forKey:RedpacketKeyRedpacketSenderNickname];
     
-    if (self.conversation.conversationType == eConversationTypeChat) {
-        [self sendTextMessage:text withExt:dict];
+    if (self.conversation.type == EMConversationTypeChat) {
+        [self sendTextMessage:text withExt:dic];
         
     }else{
         //  FIXME：内部转换方法
-         NSMutableDictionary *dic = [messageModel.redpacketMessageModelToDic mutableCopy];
-        [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
-        [dic setValue:Info[@"SenderNickname"] forKey:RedpacketKeyRedpacketSenderNickname];
         
         // 群聊消息透传
-        EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
-        cmdChat.cmd = RedpacketKeyRedapcketCmd;
-        EMCommandMessageBody *body = [[EMCommandMessageBody alloc] initWithChatObject:cmdChat];
+        EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:RedpacketKeyRedapcketCmd];
         // 生成message
-        EMMessage *message = [[EMMessage alloc] initWithReceiver:GroupId bodies:@[body]];
-        message.ext = dic;
-        message.messageType = eMessageTypeGroupChat; // 设置为群聊消息
-        [[EaseMob sharedInstance].chatManager asyncSendMessage:message progress:nil prepare:^(EMMessage *message, EMError *error) {
-            
-        } onQueue:nil completion:^(EMMessage *message, EMError *error) {
-            
-        } onQueue:nil];
+        NSString *currentUser = [EMClient sharedClient].currentUsername;
+        NSString *receiver = self.conversation.conversationId;
+        EMMessage *message = [[EMMessage alloc] initWithConversationID:receiver from:currentUser to:receiver body:body ext:dic];
+        message.chatType = EMConversationTypeGroupChat; // 设置为群聊消息
+
+        [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:nil];
         
         //抢到以后消息需要本地存储一条~
-        
-        NSDictionary *_ext = [[EaseMessageHelper structureEaseMessageHelperExt:dict
-                                                                      bodyType:eMessageBodyType_Text] mutableCopy];
-        
-        if ([messageModel.redpacketSender.userId isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]) {
+        if ([messageModel.redpacketSender.userId isEqualToString:currentUser]) {
             text = @"你领取了自己发的红包";
             
         }else {
@@ -262,17 +253,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         }
 
         NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
-        EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
-        EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
-        EMMessage *SelfMessage = [[EMMessage alloc] initWithReceiver:self.conversation.chatter bodies:[NSArray arrayWithObject:body1]];
-        SelfMessage.requireEncryption = NO;
-        SelfMessage.messageType = eMessageTypeGroupChat;
-        SelfMessage.ext = _ext;
-        SelfMessage.deliveryState = eMessageDeliveryState_Delivered;
-        SelfMessage.isRead = YES;
+        EMTextMessageBody *textMessageBody = [[EMTextMessageBody alloc] initWithText:willSendText];
+        EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:receiver from:currentUser to:receiver body:textMessageBody ext:dic];
+        textMessage.chatType = EMConversationTypeChat;
+        textMessage.ext = dic;
+        textMessage.isRead = YES;
         
-        [self addMessageToDataSource:SelfMessage progress:nil];
-        [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
+        [self addMessageToDataSource:textMessage progress:nil];
+        [[EMClient sharedClient].chatManager importMessages:textMessage];
     }
 }
 
@@ -293,7 +281,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (RedpacketMessageModel *)toRedpacketMessageModel:(id <IMessageModel>)model
 {
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
-    BOOL isGroup = self.conversation.conversationType == eConversationTypeGroupChat;
+    BOOL isGroup = self.conversation.type == EMConversationTypeChat;
     messageModel.redpacketReceiver.isGroup = isGroup;
     
     messageModel.redpacketSender.userAvatar = model.avatarURLPath;
@@ -312,13 +300,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (void)didReceiveCmdMessage:(EMMessage *)message
 {
     //抢到红包以后发送消息的监听 判断
-    EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
+    EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
     if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
         NSString *senderID = [NSString stringWithFormat:@"%@",message.ext[RedpacketKeyRedpacketSenderId]];
         /**
          *  当前用户是发红包的人
          */
-        if ([senderID isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]){
+        NSString *currentUser = [EMClient sharedClient].currentUsername;
+        if ([senderID isEqualToString:currentUser]){
             /**
              *  加入tableView的DataSource 并刷新界面
              */

@@ -8,7 +8,6 @@
 
 #import "RedPacketUserConfig.h"
 #import "UserProfileManager.h"
-#import "EaseMob.h"
 #import "YZHRedpacketBridge.h"
 #import "RedpacketMessageModel.h"
 
@@ -16,11 +15,18 @@
 
 static RedPacketUserConfig *__sharedConfig__ = nil;
 
-@interface RedPacketUserConfig () <IChatManagerDelegate,
+@interface RedPacketUserConfig () <EMClientDelegate,
                                     YZHRedpacketBridgeDataSource,
                                     YZHRedpacketBridgeDelegate>
 {
     NSString *_dealerAppKey;
+    
+    NSString *_imUserId;
+    NSString *_imUserPass;
+    /**
+     *  环信登陆用户名
+     */
+    NSString *_imUserName;
 }
 
 @end
@@ -29,21 +35,15 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 - (void)beginObserve
 {
-    /**
-     *  监听用户的登陆操作
-     */
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-    
-    /**
-     *  检测切换用户的操做
-     */
+    //  登录代理
+    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    //  如果接入的用户有通知，则接收通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginChanged:) name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 
 - (void)removeObserver
 {
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[EMClient sharedClient] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -82,6 +82,25 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     _dealerAppKey = appKey;
 }
 
+
+- (void)configWithImUserId:(NSString *)imUserId andImUserPass:(NSString *)imUserPass
+{
+    [self beginObserve];
+    
+    NSAssert(imUserId.length > 0, @"IM平台：用户登录id为空");
+    NSAssert(imUserPass.length > 0, @"IM平台：用户密码为空");
+    
+    _imUserId = imUserId;
+    _imUserPass = imUserPass;
+    
+    NSString *userId = self.redpacketUserInfo.userId;
+    
+    [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
+                                              appUserId:userId
+                                               imUserId:userId
+                                          andImUserpass:_imUserPass];
+}
+
 #pragma mark - YZHRedpacketBridgeDataSource
 
 /**
@@ -90,13 +109,11 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (RedpacketUserInfo *)redpacketUserInfo
 {
     RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
-    NSDictionary *userInfoDic = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *userId = [userInfoDic objectForKey:kSDKUsername];
-    userInfo.userId = userId;
+    userInfo.userId = [EMClient sharedClient].currentUsername;
     
     UserProfileEntity *entity = [[UserProfileManager sharedInstance] getCurUserProfile];
-    NSString *nickname = entity.nickname;;
-    userInfo.userNickname = nickname.length > 0 ? nickname : userId;
+    NSString *nickname = entity.nickname;
+    userInfo.userNickname = nickname.length > 0 ? nickname : userInfo.userId;
     userInfo.userAvatar = entity.imageUrl;;
     
     return userInfo;
@@ -105,19 +122,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 //  配置红包相关的服务
 - (void)configRedpacketService
 {
-    NSDictionary *userInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *userId = [userInfo objectForKey:kSDKUsername];
-    NSString *userToken = [userInfo objectForKey:kSDKToken];
     
-    if (_dealerAppKey.length == 0) {
-        NSLog(@"请先配置商户ID");
-        return;
-    }else if (userToken.length == 0) {
-        NSLog(@"用户还未登录");
-        return;
-    }
-    
-    [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey appUserId:userId imToken:userToken];
 }
 
 #pragma mark - YZHRedpacketBridgeDelegate
@@ -128,42 +133,38 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method
 {
     //  刷新环信Token
-    EaseMob *easemob = [EaseMob sharedInstance];
-    EMError *error = nil;
-    
-    SEL selector = NSSelectorFromString(@"fetchTokenFromServer");
-    IMP imp = [easemob methodForSelector:selector];
-    EMError *(*func)(id, SEL) = (void *)imp;
-    error = func(easemob, selector);
-    
-    if (!error) {
-        [self configRedpacketService];
-    }
+
 }
 
 #pragma mark - IChatManagerDelegate
 
-/**
- *  检测用户登陆状态
- */
-- (void)userLoginChanged:(NSNotification *)notification
+//  监测用户登录状态
+- (void)userLoginChanged:(NSNotification *)notifaction
 {
-    BOOL isLoginSuccess = [notification.object boolValue];
-    
-    if(isLoginSuccess) {
-        [self configRedpacketService];
+    BOOL isLoginSuccess = [[notifaction object] boolValue];
+    if (isLoginSuccess) {
         
-    }else {
-        [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
+        NSString *userId = self.redpacketUserInfo.userId;
+        [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
+                                                  appUserId:userId
+                                                   imUserId:userId
+                                              andImUserpass:_imUserPass];
+    }else  {
+        //  用户退出，清除数据
+        [self clearUserInfo];
     }
 }
 
-/**
- *  自动登录状态监听
- */
-- (void)didAutoLoginWithInfo:(NSDictionary *)loginInfo error:(EMError *)error
+- (void)didLoginFromOtherDevice
 {
-    [self configRedpacketService];
+    [self clearUserInfo];
 }
+
+- (void)clearUserInfo
+{
+    [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
+    _imUserId = nil;
+}
+
 
 @end

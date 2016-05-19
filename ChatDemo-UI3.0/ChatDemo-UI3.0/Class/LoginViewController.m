@@ -14,6 +14,7 @@
 #import "EMError.h"
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
+#import "RedPacketUserConfig.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -128,6 +129,9 @@
 //点击登陆后的操作
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
 {
+    //TODO: 服务器二次校验
+    [[RedPacketUserConfig sharedConfig] configWithImUserId:username andImUserPass:password];
+    
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     //异步登陆账号
     __weak typeof(self) weakself = self;

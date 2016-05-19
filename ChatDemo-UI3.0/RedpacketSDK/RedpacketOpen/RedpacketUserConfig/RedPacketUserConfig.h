@@ -26,4 +26,6 @@
  */
 - (void)configWithAppKey:(NSString *)appKey;
 
+- (void)configWithImUserId:(NSString *)imUserId andImUserPass:(NSString *)imUserPass;
+
 @end
