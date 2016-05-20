@@ -83,8 +83,7 @@ static ChatDemoHelper *helper = nil;
 - (void)asyncPushOptions
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
+        [[EMClient sharedClient] getPushOptionsFromServerWithError:nil];
     });
 }
 
@@ -145,11 +144,10 @@ static ChatDemoHelper *helper = nil;
         UIView *view = self.mainVC.view;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL flag = [[EMClient sharedClient] dataMigrationTo3];
-            if (flag) {
-                [self asyncGroupFromServer];
-                [self asyncConversationFromDB];
-            }
+            [[EMClient sharedClient] dataMigrationTo3];
+            [self asyncGroupFromServer];
+            [self asyncConversationFromDB];
+            [self asyncPushOptions];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideAllHUDsForView:view animated:YES];
             });
@@ -740,13 +738,22 @@ static ChatDemoHelper *helper = nil;
     NSString *loginUser = [EMClient sharedClient].currentUsername;
     NSDictionary *ext = aMessage.ext;
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
-    if (loginUser && conversation && ext && [ext objectForKey:kMessageAtExt] && [ext[kMessageAtExt] isKindOfClass:[NSDictionary class]]) {
-        NSArray *target = [ext[kMessageAtExt] objectForKey:kMessageAtTarget];
-        if (target && [target isKindOfClass:[NSArray class]]) {
+    if (loginUser && conversation && ext && [ext objectForKey:kMessageAtList]) {
+        id target = [ext objectForKey:kMessageAtList];
+        if ([target isKindOfClass:[NSString class]] && [(NSString*)target compare:kMessageAtAll options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            NSNumber *atAll = conversation.ext[kHaveUnreadAtMessage];
+            if ([atAll intValue] != kAtAllMessage) {
+                NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+                [conversationExt removeObjectForKey:kHaveUnreadAtMessage];
+                [conversationExt setObject:@kAtAllMessage forKey:kHaveUnreadAtMessage];
+                conversation.ext = conversationExt;
+            }
+        }
+        else if ([target isKindOfClass:[NSArray class]]) {
             if ([target containsObject:loginUser]) {
                 if (conversation.ext[kHaveUnreadAtMessage] == nil) {
                     NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
-                    [conversationExt setObject:@YES forKey:kHaveUnreadAtMessage];
+                    [conversationExt setObject:@kAtYouMessage forKey:kHaveUnreadAtMessage];
                     conversation.ext = conversationExt;
                 }
             }
