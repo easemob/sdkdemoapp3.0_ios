@@ -310,7 +310,7 @@
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 
 "setting.uploadLog" = "upload run log";
-"setting.sdkVersion" = "ONE SDK version";
+"setting.sdkVersion" = "SDK version";
 "setting.uploading" = "uploading...";
 "setting.uploadSuccess" = "uploaded successfully";
 "setting.uploadFail" = "uploaded failed";
