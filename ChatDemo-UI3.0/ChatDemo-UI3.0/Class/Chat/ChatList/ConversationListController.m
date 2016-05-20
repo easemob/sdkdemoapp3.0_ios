@@ -288,7 +288,10 @@
                 from = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
             }
             NSDictionary *ext = conversationModel.conversation.ext;
-            if (ext && ext[kHaveUnreadAtMessage]) {
+            if (ext && [ext[kHaveUnreadAtMessage] intValue] == kAtAllMessage) {
+                latestMessageTitle = [NSString stringWithFormat:@"%@ %@: %@", NSLocalizedString(@"group.atAll", nil), from, latestMessageTitle] ;
+            }
+            else if (ext && [ext[kHaveUnreadAtMessage] intValue] == kAtYouMessage) {
                 latestMessageTitle = [NSString stringWithFormat:NSLocalizedString(@"group.atTitle", @"[Somebody @ me] %@: %@"), from, latestMessageTitle];
             }
             else {
