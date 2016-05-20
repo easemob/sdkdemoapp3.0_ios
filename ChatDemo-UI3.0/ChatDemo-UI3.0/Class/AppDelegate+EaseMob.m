@@ -94,10 +94,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         [self initParse];
         
         [ChatDemoHelper shareHelper].mainVC = self.mainController;
-        
-        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
-        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
-        [[ChatDemoHelper shareHelper] asyncPushOptions];
     }
     else{//登陆失败加载登陆页面控制器
         if (self.mainController) {
