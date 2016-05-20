@@ -303,7 +303,7 @@
 "setting.logoutOngoing" = "loging out...";
 
 "setting.notDisturb" = "Do Not Disturb";
-"setting.showDetail" = "display message details in apns";
+"setting.showDetail" = "Show Message Details on Lock Screen";
 "setting.open" = "On";
 "setting.nightOpen" = "On only from 10pm to 7am.";
 "setting.close" = "Off";
