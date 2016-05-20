@@ -302,11 +302,11 @@
 "setting.loginUser" = "log out(%@)";
 "setting.logoutOngoing" = "loging out...";
 
-"setting.notDisturb" = "No disturbing";
+"setting.notDisturb" = "Do Not Disturb";
 "setting.showDetail" = "display message details in apns";
-"setting.open" = "open";
-"setting.nightOpen" = "only open at night (22:00 - 7:00)";
-"setting.close" = "close";
+"setting.open" = "On";
+"setting.nightOpen" = "On only from 10pm to 7am.";
+"setting.close" = "Off";
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 
 "setting.uploadLog" = "upload run log";
