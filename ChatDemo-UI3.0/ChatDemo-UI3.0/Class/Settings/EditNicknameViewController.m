@@ -116,11 +116,17 @@
     {
         //设置推送设置
         [[EMClient sharedClient] setApnsNickname:_nickTextField.text];
+        __weak typeof(self) weakSelf = self;
         [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:_nickTextField.text} completion:^(BOOL success, NSError *error) {
-            [self hideHud];
-            if (!success) {
-                [self showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(weakSelf) {
+                    EditNicknameViewController *strongSelf = weakSelf;
+                    [strongSelf hideHud];
+                    if (!success) {
+                        [strongSelf showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
+                    }
+                }
+            });
         }];
         [self.navigationController popViewControllerAnimated:YES];
     } else {

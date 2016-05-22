@@ -157,12 +157,17 @@
             __weak typeof(self) weakSelf = self;
             [[EMClient sharedClient] setApnsNickname:nameTextField.text];
             [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:nameTextField.text} completion:^(BOOL success, NSError *error) {
-                [self hideHud];
-                if (success) {
-                    [weakSelf.tableView reloadData];
-                } else {
-                    [self showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (weakSelf) {
+                        UserProfileEditViewController *strongSelf = weakSelf;
+                        [strongSelf hideHud];
+                        if (success) {
+                            [strongSelf.tableView reloadData];
+                        } else {
+                            [strongSelf showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
+                        }
+                    }
+                });
             }];
         }
     }
