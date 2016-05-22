@@ -318,10 +318,10 @@
 "setting.inputName" = "Please input nickname";
 "setting.saveName" = "Save Nickname";
 "setting.namenotempty" = "Name cannot be empty";
-"setting.personalInfo" = "Personal Information";
+"setting.personalInfo" = "Profile";
 "setting.setBitrate" = "Set Bitrate";
 "setting.setBitrateTips" = "Set Bitrate should be 150-1000";
-"setting.personalInfoUpload" = "HeadImage";
+"setting.personalInfoUpload" = "Profile Image";
 "setting.edittips" = "After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective";
 "setting.iospushname" = "iOS push nickname";
 "setting.useIp" = "Use IP";
