@@ -19,9 +19,9 @@
     //友盟
     NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
     if ([bundleID isEqualToString:@"com.easemob.enterprise.demo.ui"]) {
-        [MobClick startWithAppkey:@"5389bb7f56240ba94208ac97"
+        [MobClick startWithAppkey:@"56f36884e0f55a7d4c001ff1"
                      reportPolicy:BATCH
-                        channelId:Nil];
+                        channelId:nil];
 #if DEBUG
         [MobClick setLogEnabled:YES];
 #else

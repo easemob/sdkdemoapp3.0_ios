@@ -187,10 +187,7 @@
 
 - (void)pushSwitchChanged:(id)sender
 {
-    if (_isOwner) {
-        BOOL toOn = _pushSwitch.isOn;
-        [self isIgnoreGroup:!toOn];
-    }
+    [self isIgnoreGroup:![_pushSwitch isOn]];
     [self.tableView reloadData];
 }
 
