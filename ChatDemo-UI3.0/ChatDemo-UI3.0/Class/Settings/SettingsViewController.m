@@ -157,6 +157,7 @@
             cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
+            [self.delConversationSwitch setOn:NO animated:NO];
             [cell.contentView addSubview:self.delConversationSwitch];
         } else if (indexPath.row == 5){
             cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
@@ -173,18 +174,7 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
             [cell.contentView addSubview:self.showCallInfoSwitch];
-        } else if (indexPath.row == 8){
-            cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            while (cell.contentView.subviews.count) {
-                UIView* child = cell.contentView.subviews.lastObject;
-                [child removeFromSuperview];
-            }
         }
-//        else if (indexPath.row == 8){
-//            cell.textLabel.text = @"聊天记录备份和恢复";
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//        }
     }
     
     return cell;
@@ -219,16 +209,7 @@
     } else if (indexPath.row == 6){
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
-        
-    } else if (indexPath.row == 8) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
-        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-        [alert show];
     }
-//    else if(indexPath.row == 8){
-//        BackupViewController *backupController = [[BackupViewController alloc] initWithNibName:nil bundle:nil];
-//        [self.navigationController pushViewController:backupController animated:YES];
-//    }
 }
 
 //弹出提示的代理方法

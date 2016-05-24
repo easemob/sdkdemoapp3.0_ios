@@ -293,7 +293,6 @@
 "title.groupApply" = "Group Notification";
 "title.groupSubjectChanging" = "Change group name";
 "title.groupSearchMessage" = "Search Message from History";
-"title.chatroomlist" = "Chatroom List";
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
 
@@ -309,7 +308,6 @@
 "setting.close" = "Off";
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 
-"setting.uploadLog" = "upload run log";
 "setting.sdkVersion" = "SDK version";
 "setting.uploading" = "uploading...";
 "setting.uploadSuccess" = "uploaded successfully";

@@ -13,7 +13,6 @@
 #import "ChatViewController.h"
 
 #import "ChatGroupDetailViewController.h"
-#import "ChatroomDetailViewController.h"
 #import "UserProfileViewController.h"
 #import "UserProfileManager.h"
 #import "ContactListSelectViewController.h"
@@ -265,11 +264,6 @@
     [self.view endEditing:YES];
     if (self.conversation.type == EMConversationTypeGroupChat) {
         ChatGroupDetailViewController *detailController = [[ChatGroupDetailViewController alloc] initWithGroupId:self.conversation.conversationId];
-        [self.navigationController pushViewController:detailController animated:YES];
-    }
-    else if (self.conversation.type == EMConversationTypeChatRoom)
-    {
-        ChatroomDetailViewController *detailController = [[ChatroomDetailViewController alloc] initWithChatroomId:self.conversation.conversationId];
         [self.navigationController pushViewController:detailController animated:YES];
     }
 }
