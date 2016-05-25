@@ -194,8 +194,8 @@
         } else if (indexPath.row == 9) {
             cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
             cell.accessoryType = UITableViewCellAccessoryNone;
-            self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
-            [cell.contentView addSubview:self.autoLoginSwitch];
+            self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
+            [cell.contentView addSubview:self.sortMethodSwitch];
         }
 //        else if (indexPath.row == 8){
 //            cell.textLabel.text = @"聊天记录备份和恢复";
