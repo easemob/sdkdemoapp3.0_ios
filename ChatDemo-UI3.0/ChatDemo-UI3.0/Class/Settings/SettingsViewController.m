@@ -29,6 +29,7 @@
 @property (strong, nonatomic) UISwitch *ipSwitch;
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
 @property (strong, nonatomic) UISwitch *showCallInfoSwitch;
+@property (strong, nonatomic) UISwitch *sortMethodSwitch;
 
 @end
 
@@ -105,6 +106,16 @@
     return _showCallInfoSwitch;
 }
 
+- (UISwitch *)sortMethodSwitch
+{
+    if (_sortMethodSwitch == nil) {
+        _sortMethodSwitch = [[UISwitch alloc] init];
+        [_sortMethodSwitch addTarget:self action:@selector(sortMethodChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+
+    return _autoLoginSwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -114,7 +125,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -180,6 +191,11 @@
                 UIView* child = cell.contentView.subviews.lastObject;
                 [child removeFromSuperview];
             }
+        } else if (indexPath.row == 9) {
+            cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
+            [cell.contentView addSubview:self.autoLoginSwitch];
         }
 //        else if (indexPath.row == 8){
 //            cell.textLabel.text = @"聊天记录备份和恢复";
@@ -305,10 +321,15 @@
     [userDefaults synchronize];
 }
 
+- (void)sortMethodChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setSortMessageByServerTime:control.on];
+}
+
 - (void)refreshConfig
 {
-    [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:YES];
-//    [self.ipSwitch setOn:[[EMClient sharedClient].options performSelector:@selector(enableDnsConfig)] animated:YES];
+    [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:NO];
+    [self.sortMethodSwitch setOn:[[EMClient sharedClient].options sortMessageByServerTime] animated:NO];
     
     [self.tableView reloadData];
 }
