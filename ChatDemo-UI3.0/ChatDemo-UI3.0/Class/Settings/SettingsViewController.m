@@ -135,6 +135,11 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
+    else {
+        [cell.contentView.subviews enumerateObjectsUsingBlock:^(UIView * subView, NSUInteger idx, BOOL *stop) {
+            [subView removeFromSuperview];
+        }];
+    }
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
@@ -175,10 +180,6 @@
         } else if (indexPath.row == 6){
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            while (cell.contentView.subviews.count) {
-                UIView* child = cell.contentView.subviews.lastObject;
-                [child removeFromSuperview];
-            }
         } else if (indexPath.row == 7){
             cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -187,10 +188,6 @@
         } else if (indexPath.row == 8){
             cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            while (cell.contentView.subviews.count) {
-                UIView* child = cell.contentView.subviews.lastObject;
-                [child removeFromSuperview];
-            }
         } else if (indexPath.row == 9) {
             cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
             cell.accessoryType = UITableViewCellAccessoryNone;
