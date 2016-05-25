@@ -113,7 +113,7 @@
         [_sortMethodSwitch addTarget:self action:@selector(sortMethodChanged:) forControlEvents:UIControlEventValueChanged];
     }
 
-    return _autoLoginSwitch;
+    return _sortMethodSwitch;
 }
 
 #pragma mark - Table view datasource
