@@ -41,22 +41,7 @@ typedef NS_ENUM(NSInteger, RedpacketType) {
     RedpacketTypeAvg
 };
 
-typedef NS_ENUM(NSInteger, RedpacketStatusType) {
-    /**
-     *  红包可以抢
-     */
-    RedpacketStatusTypeZero = 0,
-    /**
-     *  红包被抢完
-     */
-    RedpacketStatusTypeOne = 1,
-    /**
-     *  红包已过期
-     */
-    RedpacketStatusTypeNegative = -1
-};
-
-@interface RedpacketUserInfo : NSObject <NSCopying>
+@interface RedpacketUserInfo : NSObject
 
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userNickname;
@@ -65,7 +50,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 
 @end
 
-@interface RedpacketViewModel : NSObject <NSCopying>
+@interface RedpacketViewModel : NSObject
 
 /**
  *  红包金额
@@ -93,7 +78,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 /**
  *  红包消息
  */
-@interface RedpacketMessageModel : NSObject <NSCopying>
+@interface RedpacketMessageModel : NSObject
 
 /**
  *  红包ID
@@ -109,16 +94,6 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
  *  红包的类型
  */
 @property (nonatomic, assign) RedpacketType redpacketType;
-
-/**
- *  红包的类型
- */
-@property (nonatomic, assign) RedpacketStatusType redpacketStatusType;
-
-/**
- *  红包详情里我抢到的金额
- */
-@property (nonatomic,assign) CGFloat myAmount;
 
 /**
  *  当前用户是否是红包的发送者

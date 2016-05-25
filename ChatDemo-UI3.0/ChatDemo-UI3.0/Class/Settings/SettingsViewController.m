@@ -218,7 +218,8 @@
 #ifdef REDPACKET_AVALABLE
     if (indexPath.section == 0) {
         UIViewController *controller = [RedpacketViewControl changeMoneyController];
-        [self presentViewController:controller animated:YES completion:nil];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+        [self presentViewController:nav animated:YES completion:nil];
         return;
     }
 #endif
