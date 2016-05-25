@@ -44,42 +44,9 @@
 {
     _model = model;
     
-    NSDictionary *dict = model.message.ext;
-    
-    NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderNickname];
-    NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-    NSString *senderId = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-    NSString *receiverId = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-    
     NSString *prompt;
-    
-    if (model.message.chatType == EMChatTypeChat) {
-        /**
-         *  点对点红包
-         */
-        if(model.isSender) {
-            prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
-        }else {
-            prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
-        }
-        
-    }else{
-        /**
-         *  群红包
-         */
-        NSString *current = [EMClient sharedClient].currentUsername;
-        
-        if([receiverId isEqualToString:current]) {
-            if([senderId isEqualToString:receiverId]) {
-                //  自己抢了自己发送的红包
-                prompt = [NSString stringWithFormat:@"你领取了自己的红包"];
-                
-            }else {
-                prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
-            }
-        }else{
-            prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
-        }
+    if ([model.message.body isKindOfClass:[EMTextMessageBody class]]) {
+        prompt = ((EMTextMessageBody *)model.message.body).text;
     }
     
     model.text = prompt;
@@ -89,7 +56,6 @@
     self.widthContraint.constant = size.width + 30;
     [self.backView updateConstraintsIfNeeded];
 }
-
 
 - (void)backViewTaped
 {

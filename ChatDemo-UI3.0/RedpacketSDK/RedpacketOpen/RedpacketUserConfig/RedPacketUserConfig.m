@@ -10,12 +10,13 @@
 #import "UserProfileManager.h"
 #import "YZHRedpacketBridge.h"
 #import "RedpacketMessageModel.h"
-
+#import "ChatDemoHelper.h"
 
 
 static RedPacketUserConfig *__sharedConfig__ = nil;
 
 @interface RedPacketUserConfig () <EMClientDelegate,
+                                    EMChatManagerDelegate,
                                     YZHRedpacketBridgeDataSource,
                                     YZHRedpacketBridgeDelegate>
 {
@@ -27,6 +28,10 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
      *  环信登陆用户名
      */
     NSString *_imUserName;
+    /**
+     *  是否已经注册了消息代理
+     */
+    BOOL _isRegeistMessageDelegate;
 }
 
 @end
@@ -37,13 +42,25 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 {
     //  登录代理
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    
     //  如果接入的用户有通知，则接收通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginChanged:) name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 
+- (void)beginObserveMessage
+{
+    if (!_isRegeistMessageDelegate && [EMClient sharedClient].chatManager) {
+        _isRegeistMessageDelegate = YES;
+        //  消息代理
+        [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    }
+}
+
 - (void)removeObserver
 {
+    _isRegeistMessageDelegate = NO;
     [[EMClient sharedClient] removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -61,27 +78,18 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
         [YZHRedpacketBridge sharedBridge].dataSource = __sharedConfig__;
         [YZHRedpacketBridge sharedBridge].delegate = __sharedConfig__;
         
+        [__sharedConfig__ beginObserve];
     });
     
+    [__sharedConfig__ beginObserveMessage];
+    
     return __sharedConfig__;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    
-    if (self) {
-        [self beginObserve];
-    }
-    
-    return self;
 }
 
 - (void)configWithAppKey:(NSString *)appKey
 {
     _dealerAppKey = appKey;
 }
-
 
 - (void)configWithImUserId:(NSString *)imUserId andImUserPass:(NSString *)imUserPass
 {
@@ -119,12 +127,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     return userInfo;
 }
 
-//  配置红包相关的服务
-- (void)configRedpacketService
-{
-    
-}
-
 #pragma mark - YZHRedpacketBridgeDelegate
 
 /**
@@ -136,7 +138,8 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 }
 
-#pragma mark - IChatManagerDelegate
+#pragma mark - 
+#pragma mark 用户登录状态监控
 
 //  监测用户登录状态
 - (void)userLoginChanged:(NSNotification *)notifaction
@@ -164,6 +167,121 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 {
     [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
     _imUserId = nil;
+}
+
+#pragma mark -
+#pragma mark  红包被抢消息监控
+
+- (void)didReceiveMessages:(NSArray *)aMessages
+{
+    /**
+     *  收到消息
+     */
+    [self handleMessage:aMessages];
+}
+-(void)didReceiveCmdMessages:(NSArray *)aCmdMessages
+{
+    /**
+     *  处理红包被抢的消息
+     */
+    [self handleCmdMessages:aCmdMessages];
+}
+
+/**
+ *  点对点红包，红包被抢的消息
+ */
+- (void)handleMessage:(NSArray <EMMessage *> *)aMessages
+{
+    for (EMMessage *message in aMessages) {
+        NSDictionary *dict = message.ext;
+        if (dict && [RedpacketMessageModel isRedpacketTakenMessage:dict]) {
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+            NSString *currentUserID = [EMClient sharedClient].currentUsername;
+            //  标记为已读
+            message.isRead = YES;
+            if ([senderID isEqualToString:currentUserID]){
+                /**
+                 *  当前用户是红包发送者。
+                 */
+                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+                EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
+                message.body = body;
+                
+                [[EMClient sharedClient].chatManager updateMessage:message];
+                
+                ConversationListController *listVC = [ChatDemoHelper shareHelper].conversationListVC;
+                UIViewController *currentVC = [ChatDemoHelper shareHelper].mainVC.selectedViewController;
+                if (listVC && listVC == currentVC) {
+                    [listVC.tableView reloadData];
+                    /**
+                     *  当前聊天界面是会话列表页
+                     */
+                    MainViewController *mainVC = [ChatDemoHelper shareHelper].mainVC;
+                    /**
+                     *  重新设置未读数
+                     */
+                    [mainVC setupUnreadMessageCount];
+                }
+            }
+        }
+    }
+}
+
+/**
+ *  群红包，红包被抢的消息
+ */
+- (void)handleCmdMessages:(NSArray <EMMessage *> *)aCmdMessages
+{
+    for (EMMessage *message in aCmdMessages) {
+        EMCmdMessageBody * body = (EMCmdMessageBody *)message.body;
+        if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
+            NSDictionary *dict = message.ext;
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+            NSString *currentUserID = [EMClient sharedClient].currentUsername;
+            
+            if ([senderID isEqualToString:currentUserID]){
+                /**
+                 *  当前用户是红包发送者。
+                 */
+                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+                /*
+                 NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
+                 */
+                EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithText:text];
+                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:message.conversationId from:message.from to:message.to body:body1 ext:message.ext];
+                textMessage.chatType = message.chatType;
+                textMessage.isRead = YES;
+
+                /**
+                 *  更新界面
+                 */
+                BOOL isCurrentConversation = [self.chatVC.conversation.conversationId isEqualToString:message.conversationId];
+                
+                if (self.chatVC && isCurrentConversation){
+                    /**
+                     *  刷新当前聊天界面
+                     */
+                    [self.chatVC addMessageToDataSource:textMessage progress:nil];
+                    /**
+                     *  存入当前会话并存入数据库
+                     */
+                    [self.chatVC.conversation insertMessage:textMessage];
+                    
+                }else {
+                    /**
+                     *  插入数据库
+                     */
+                    [[EMClient sharedClient].chatManager importMessages:@[textMessage]];
+                    ConversationListController *listVc = [ChatDemoHelper shareHelper].conversationListVC;
+                    if (listVc) {
+                        [listVc refresh];
+                    }
+                }
+            }
+        }
+    }
 }
 
 

@@ -16,6 +16,10 @@
 #import "ApplyViewController.h"
 #import "MBProgressHUD.h"
 
+#ifdef REDPACKET_AVALABLE
+#import "RedpacketOpenConst.h"
+#endif
+
 
 #if DEMO_CALL == 1
 
@@ -199,18 +203,20 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveCmdMessages:(NSArray *)aCmdMessages
-{
-    if (self.mainVC) {
-        [_mainVC showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
-    }
-}
-
 - (void)didReceiveMessages:(NSArray *)aMessages
 {
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
+        
+#ifdef REDPACKET_AVALABLE
+        /**
+         *  屏蔽红包被抢消息的提示
+         */
+        NSDictionary *dict = message.ext;
+        needShowNotification = (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) ? NO : needShowNotification;
+#endif
+        
         if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
             UIApplicationState state = [[UIApplication sharedApplication] applicationState];

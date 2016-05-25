@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ChatViewController.h"
 
 /**
  *  @description: 红包用户配置服务
@@ -18,6 +19,9 @@
 @interface RedPacketUserConfig : NSObject
 
 + (RedPacketUserConfig *)sharedConfig;
+
+@property (nonatomic, weak)ChatViewController *chatVC;
+
 
 /**
  *  配置环信IM分配的AppKey
