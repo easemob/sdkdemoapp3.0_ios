@@ -273,11 +273,20 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                     /**
                      *  插入数据库
                      */
-                    [[EMClient sharedClient].chatManager importMessages:@[textMessage]];
                     ConversationListController *listVc = [ChatDemoHelper shareHelper].conversationListVC;
+                    for (id <IConversationModel> model in listVc.dataArray) {
+                        EMConversation *conversation = model.conversation;
+                        if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
+                            [conversation insertMessage:textMessage];
+                        }
+                    }
+                    /*
+                    [[EMClient sharedClient].chatManager importMessages:@[textMessage]];
+                    */
                     if (listVc) {
                         [listVc refresh];
                     }
+                     
                 }
             }
         }
