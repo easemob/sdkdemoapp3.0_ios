@@ -59,6 +59,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)removeObserver
 {
     _isRegeistMessageDelegate = NO;
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient] removeDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -274,7 +275,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                      *  插入数据库
                      */
                     ConversationListController *listVc = [ChatDemoHelper shareHelper].conversationListVC;
-                    for (id <IConversationModel> model in listVc.dataArray) {
+                    for (id <IConversationModel> model in [listVc.dataArray copy]) {
                         EMConversation *conversation = model.conversation;
                         if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
                             [conversation insertMessage:textMessage];

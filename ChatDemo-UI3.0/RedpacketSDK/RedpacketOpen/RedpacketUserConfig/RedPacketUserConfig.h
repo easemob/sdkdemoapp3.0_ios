@@ -32,4 +32,9 @@
 
 - (void)configWithImUserId:(NSString *)imUserId andImUserPass:(NSString *)imUserPass;
 
+/**
+ *  监控信息收发
+ */
+- (void)beginObserveMessage;
+
 @end

@@ -18,6 +18,7 @@
 
 #ifdef REDPACKET_AVALABLE
 #import "RedpacketOpenConst.h"
+#import "RedPacketUserConfig.h"
 #endif
 
 
@@ -58,6 +59,10 @@ static ChatDemoHelper *helper = nil;
 #if DEMO_CALL == 1
     [[EMClient sharedClient].callManager removeDelegate:self];
 #endif
+
+#ifdef REDPACKET_AVALABLE
+    
+#endif
 }
 
 - (id)init
@@ -71,6 +76,10 @@ static ChatDemoHelper *helper = nil;
 
 - (void)initHelper
 {
+#ifdef REDPACKET_AVALABLE
+    [[RedPacketUserConfig sharedConfig] beginObserveMessage];
+#endif
+    
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
