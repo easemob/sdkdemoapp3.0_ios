@@ -1,0 +1,11 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '8.0'
+# Uncomment this line if you're using Swift
+# use_frameworks!
+
+target 'ChatDemo-UI3.0' do
+    
+    pod 'HyphenateFull-SDK', :git => 'https://github.com/HyphenateInc/hyphenate-full-cocoapods'
+    pod 'EaseUI', :git => 'https://github.com/HyphenateInc/easeui_ios'
+end
+
