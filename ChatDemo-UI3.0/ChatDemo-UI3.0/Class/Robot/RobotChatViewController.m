@@ -1,10 +1,14 @@
-//
-//  RobotChatViewController.m
-//  ChatDemo-UI2.0
-//
-//  Created by dujiepeng on 15/7/27.
-//  Copyright (c) 2015年 dujiepeng. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 #import "RobotChatViewController.h"
 #import "RobotManager.h"
@@ -17,9 +21,8 @@
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
     EMMessage *message = [EaseSDKHelper sendTextMessage:text
-                                                   to:self.conversation.chatter
+                                                   to:self.conversation.conversationId
                                           messageType:[self _messageTypeFromConversationType]
-                                    requireEncryption:NO
                                            messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
@@ -29,46 +32,37 @@
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    id<IEMChatProgressDelegate> progress = nil;
     EMMessage *message = [EaseSDKHelper sendImageMessageWithImage:image
-                                                               to:self.conversation.chatter
+                                                               to:self.conversation.conversationId
                                                       messageType:[self _messageTypeFromConversationType]
-                                                requireEncryption:NO
-                                                       messageExt:ext
-                                                         progress:progress];
+                                                         messageExt:ext];
     [self addMessageToDataSource:message
-                        progress:progress];
+                        progress:nil];
 }
 
 - (void)sendVoiceMessageWithLocalPath:(NSString *)localPath duration:(NSInteger)duration
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    id<IEMChatProgressDelegate> progress = nil;
     EMMessage *message = [EaseSDKHelper sendVoiceMessageWithLocalPath:localPath
                                                              duration:duration
-                                                                   to:self.conversation.chatter
+                                                                   to:self.conversation.conversationId
                                                           messageType:[self _messageTypeFromConversationType]
-                                                    requireEncryption:NO
-                                                           messageExt:ext
-                                                             progress:progress];
+                                                             messageExt:ext];
     [self addMessageToDataSource:message
-                        progress:progress];
+                        progress:nil];
 }
 
 - (void)sendVideoMessageWithURL:(NSURL *)url
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    id<IEMChatProgressDelegate> progress = nil;
     EMMessage *message = [EaseSDKHelper sendVideoMessageWithURL:url
-                                                             to:self.conversation.chatter
+                                                             to:self.conversation.conversationId
                                                     messageType:[self _messageTypeFromConversationType]
-                                              requireEncryption:NO
-                                                     messageExt:ext
-                                                       progress:progress];
+                                                       messageExt:ext];
     [self addMessageToDataSource:message
-                        progress:progress];
+                        progress:nil];
 }
 
 - (void)sendLocationMessageLatitude:(double)latitude
@@ -80,26 +74,25 @@
     EMMessage *message = [EaseSDKHelper sendLocationMessageWithLatitude:latitude
                                                               longitude:longitude
                                                                 address:address
-                                                                     to:self.conversation.chatter
+                                                                     to:self.conversation.conversationId
                                                             messageType:[self _messageTypeFromConversationType]
-                                                      requireEncryption:NO
                                                              messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
 
-- (EMMessageType)_messageTypeFromConversationType
+- (EMChatType)_messageTypeFromConversationType
 {
-    EMMessageType type = eMessageTypeChat;
-    switch (self.conversation.conversationType) {
-        case eConversationTypeChat:
-            type = eMessageTypeChat;
+    EMChatType type = EMChatTypeChat;
+    switch (self.conversation.type) {
+        case EMConversationTypeChat:
+            type = EMChatTypeChat;
             break;
-        case eConversationTypeGroupChat:
-            type = eMessageTypeGroupChat;
+        case EMConversationTypeGroupChat:
+            type = EMChatTypeGroupChat;
             break;
-        case eConversationTypeChatRoom:
-            type = eMessageTypeChatRoom;
+        case EMConversationTypeChatRoom:
+            type = EMChatTypeChatRoom;
             break;
         default:
             break;

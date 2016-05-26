@@ -1,10 +1,14 @@
-//
-//  EditNicknameViewController.m
-//  ChatDemo-UI2.0
-//
-//  Created by EaseMob on 15/4/16.
-//  Copyright (c) 2015年 EaseMob. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 #import "EditNicknameViewController.h"
 
@@ -85,10 +89,18 @@
     _tipLabel.text = NSLocalizedString(@"setting.edittips", @"After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective");
     CGFloat height = 0;
     NSDictionary *attributes = @{NSFontAttributeName :[UIFont systemFontOfSize:14.0f]};
-    CGRect rect = [_tipLabel.text boundingRectWithSize:CGSizeMake(kTextFieldWidth, MAXFLOAT)
-                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:attributes
-                                             context:nil];
+    CGRect rect;
+    if ([NSString instancesRespondToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
+        rect = [_tipLabel.text boundingRectWithSize:CGSizeMake(kTextFieldWidth, MAXFLOAT)
+                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                         attributes:attributes
+                                            context:nil];
+    } else {
+        rect.size = [_tipLabel.text sizeWithFont:_tipLabel.font
+                           constrainedToSize:CGSizeMake(kTextFieldWidth, MAXFLOAT)
+                               lineBreakMode:NSLineBreakByCharWrapping];
+    }
+    
     height = CGRectGetHeight(rect);
     CGRect frame = _tipLabel.frame;
     frame.size.height = height;
@@ -103,7 +115,7 @@
     if(_nickTextField.text.length > 0)
     {
         //设置推送设置
-        [[EaseMob sharedInstance].chatManager setApnsNickname:_nickTextField.text];
+        [[EMClient sharedClient] setApnsNickname:_nickTextField.text];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [EMAlertView showAlertWithTitle:NSLocalizedString(@"prompt", @"Prompt")

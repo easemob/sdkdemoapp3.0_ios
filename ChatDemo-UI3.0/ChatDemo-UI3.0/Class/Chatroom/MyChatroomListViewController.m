@@ -1,13 +1,13 @@
 /************************************************************
-  *  * EaseMob CONFIDENTIAL 
+  *  * Hyphenate CONFIDENTIAL 
   * __________________ 
-  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
+  * Copyright (C) 2016 Hyphenate Inc. All rights reserved. 
   *  
   * NOTICE: All information contained herein is, and remains 
-  * the property of EaseMob Technologies.
+  * the property of Hyphenate Inc.
   * Dissemination of this information or reproduction of this material 
   * is strictly forbidden unless prior written permission is obtained
-  * from EaseMob Technologies.
+  * from Hyphenate Inc.
   */
 
 #import "MyChatroomListViewController.h"
@@ -20,6 +20,8 @@
 #import "PublicGroupListViewController.h"
 #import "RealtimeSearchUtil.h"
 #import "ChatroomListViewController.h"
+#import "RedPacketChatViewController.h"
+
 
 @interface MyChatroom : NSObject
 @property (nonatomic, strong) NSString *chatroomId;
@@ -39,7 +41,7 @@
 
 static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
 
-@interface MyChatroomListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, IChatManagerDelegate, SRRefreshDelegate>
+@interface MyChatroomListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
@@ -72,10 +74,6 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
     
     self.title = NSLocalizedString(@"title.mychatroom", @"my chatroom");
     
-#warning 把self注册为SDK的delegate
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -100,7 +98,6 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
 
 - (void)dealloc
 {
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -174,7 +171,13 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
             [weakSelf.searchController.searchBar endEditing:YES];
             
             MyChatroom *myChatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:eConversationTypeChatRoom];
+            
+#ifdef REDPACKET_AVALABLE
+            RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+                                                           ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                                  initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
             chatController.title = myChatroom.chatroomName;
             [weakSelf.navigationController pushViewController:chatController animated:YES];
         }];
@@ -262,7 +265,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
         [tableView reloadData];
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:@"username" ]];
+        NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient sharedClient] currentUsername]];
         NSMutableDictionary *chatRooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
         [chatRooms removeObjectForKey:chatroom.chatroomId];
         [ud setObject:chatRooms forKey:key];
@@ -284,7 +287,12 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
         }
     } else {
         MyChatroom *myChatroom = [self.dataSource objectAtIndex:indexPath.row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:eConversationTypeChatRoom];
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+                                                       ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                              initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
         chatController.title = myChatroom.chatroomName;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -386,7 +394,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
     [self.dataSource removeAllObjects];
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:@"username" ]];
+    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient sharedClient] currentUsername]];
     NSDictionary *chatRooms = [ud objectForKey:key];
     for (NSString *chatroomId in [chatRooms allKeys])
     {
@@ -428,7 +436,7 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
     }
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:@"username"]];
+    NSString *key = [NSString stringWithFormat:kOnceJoinedChatroomsPattern, [[EMClient sharedClient] currentUsername]];
     NSMutableDictionary *chatRooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
     [chatRooms removeObjectForKey:myChatroom.chatroomId];
     [ud setObject:chatRooms forKey:key];

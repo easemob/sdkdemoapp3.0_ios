@@ -1,21 +1,21 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "PushNotificationViewController.h"
 
 @interface PushNotificationViewController ()
 {
-    EMPushNotificationDisplayStyle _pushDisplayStyle;
-    EMPushNotificationNoDisturbStatus _noDisturbingStatus;
+    EMPushDisplayStyle _pushDisplayStyle;
+    EMPushNoDisturbStatus _noDisturbingStatus;
     NSInteger _noDisturbingStart;
     NSInteger _noDisturbingEnd;
     NSString *_nickName;
@@ -52,7 +52,7 @@
     
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    [self refreshPushOptions];
+    [self loadPushOptions];
     [self.tableView reloadData];
 }
 
@@ -135,17 +135,17 @@
     {
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"setting.open", @"Open");
-            cell.accessoryType = _noDisturbingStatus == ePushNotificationNoDisturbStatusDay ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = _noDisturbingStatus == EMPushNoDisturbStatusDay ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
         else if (indexPath.row == 1)
         {
             cell.textLabel.text = NSLocalizedString(@"setting.nightOpen", @"only open at night (22:00 - 7:00)");
-            cell.accessoryType = _noDisturbingStatus == ePushNotificationNoDisturbStatusCustom ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = _noDisturbingStatus == EMPushNoDisturbStatusCustom ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
         else if (indexPath.row == 2)
         {
             cell.textLabel.text = NSLocalizedString(@"setting.close", @"Close");
-            cell.accessoryType = _noDisturbingStatus == ePushNotificationNoDisturbStatusClose ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = _noDisturbingStatus == EMPushNoDisturbStatusClose ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
     }
     
@@ -189,7 +189,7 @@
                                         default: {
                                             self->_noDisturbingStart = 0;
                                             self->_noDisturbingEnd = 24;
-                                            self->_noDisturbingStatus = ePushNotificationNoDisturbStatusDay;
+                                            self->_noDisturbingStatus = EMPushNoDisturbStatusDay;
                                             [tableView reloadData];
                                         } break;
                                     }
@@ -202,14 +202,14 @@
             {
                 _noDisturbingStart = 22;
                 _noDisturbingEnd = 7;
-                _noDisturbingStatus = ePushNotificationNoDisturbStatusCustom;
+                _noDisturbingStatus = EMPushNoDisturbStatusCustom;
             }
                 break;
             case 2:
             {
                 _noDisturbingStart = -1;
                 _noDisturbingEnd = -1;
-                _noDisturbingStatus = ePushNotificationNoDisturbStatusClose;
+                _noDisturbingStatus = EMPushNoDisturbStatusClose;
             }
                 break;
                 
@@ -228,7 +228,7 @@
 - (void)savePushOptions
 {
     BOOL isUpdate = NO;
-    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     if (_pushDisplayStyle != options.displayStyle) {
         options.displayStyle = _pushDisplayStyle;
         isUpdate = YES;
@@ -246,37 +246,63 @@
         options.noDisturbingEndH = _noDisturbingEnd;
     }
     
-    if (isUpdate) {
-        [[EaseMob sharedInstance].chatManager asyncUpdatePushOptions:options];
-    }
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        if (isUpdate) {
+            error = [[EMClient sharedClient] updatePushOptionsToServer];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                [weakself.navigationController popViewControllerAnimated:YES];
+            } else {
+                [weakself showHint:[NSString stringWithFormat:@"保存失败-error:%@",error.errorDescription]];
+            }
+        });
+    });
 }
 
 - (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
 {
     if (pushDisplaySwitch.isOn) {
 #warning 此处设置详情显示时的昵称，比如_nickName = @"环信";
-        _pushDisplayStyle = ePushNotificationDisplayStyle_messageSummary;
+        _pushDisplayStyle = EMPushDisplayStyleMessageSummary;
     }
     else{
-        _pushDisplayStyle = ePushNotificationDisplayStyle_simpleBanner;
+        _pushDisplayStyle = EMPushDisplayStyleSimpleBanner;
     }
+}
+
+- (void)loadPushOptions
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error == nil) {
+                [weakself refreshPushOptions];
+            } else {
+                
+            }
+        });
+    });
 }
 
 - (void)refreshPushOptions
 {
-    EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     _nickName = options.nickname;
     _pushDisplayStyle = options.displayStyle;
     _noDisturbingStatus = options.noDisturbStatus;
-    if (_noDisturbingStatus != ePushNotificationNoDisturbStatusClose) {
+    if (_noDisturbingStatus != EMPushNoDisturbStatusClose) {
         _noDisturbingStart = options.noDisturbingStartH;
         _noDisturbingEnd = options.noDisturbingEndH;
     }
     
-    BOOL isDisplayOn = _pushDisplayStyle == ePushNotificationDisplayStyle_simpleBanner ? NO : YES;
+    BOOL isDisplayOn = _pushDisplayStyle == EMPushDisplayStyleSimpleBanner ? NO : YES;
     [self.pushDisplaySwitch setOn:isDisplayOn animated:YES];
+    [self.tableView reloadData];
 }
 
 @end

@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 //general
@@ -203,6 +203,9 @@
 "call.reject"="Reject";
 "call.answer"="Answer";
 "call.hangup"="Hangup";
+"call.finished"="Establish call finished";
+"call.autoHangup"="No response and Hang up";
+"call.noResponse"="NO response";
 "call.connectFailed"="Connect failed";
 "call.failed"="Call failed";
 "call.suspended"="Call has been suspended";
@@ -289,6 +292,7 @@
 "title.apply" = "Application and notification";
 "title.groupApply" = "Group Notification";
 "title.groupSubjectChanging" = "Change group name";
+"title.groupSearchMessage" = "Search Message from History";
 "title.chatroomlist" = "Chatroom List";
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
@@ -306,7 +310,7 @@
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 
 "setting.uploadLog" = "upload run log";
-"setting.sdkVersion" = "SDK version";
+"setting.sdkVersion" = "ONE SDK version";
 "setting.uploading" = "uploading...";
 "setting.uploadSuccess" = "uploaded successfully";
 "setting.uploadFail" = "uploaded failed";

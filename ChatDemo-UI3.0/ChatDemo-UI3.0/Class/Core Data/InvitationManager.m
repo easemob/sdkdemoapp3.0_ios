@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "InvitationManager.h"
@@ -88,7 +88,7 @@ static InvitationManager *sharedInstance = nil;
     [aCoder encodeObject:_receiverNick forKey:@"receiverNick"];
     [aCoder encodeObject:_style forKey:@"style"];
     [aCoder encodeObject:_groupId forKey:@"groupId"];
-    [aCoder encodeObject:_groupSubject forKey:@"groupSubject"];
+    [aCoder encodeObject:_groupSubject forKey:@"subject"];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder{
@@ -100,7 +100,7 @@ static InvitationManager *sharedInstance = nil;
         _receiverNick = [aDecoder decodeObjectForKey:@"receiverNick"];
         _style = [aDecoder decodeObjectForKey:@"style"];
         _groupId = [aDecoder decodeObjectForKey:@"groupId"];
-        _groupSubject = [aDecoder decodeObjectForKey:@"groupSubject"];
+        _groupSubject = [aDecoder decodeObjectForKey:@"subject"];
         
     }
     
