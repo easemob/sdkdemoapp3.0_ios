@@ -172,6 +172,16 @@
     _networkLabel.hidden = YES;
     [_topView addSubview:_networkLabel];
     
+    if (_callSession.type == EMCallTypeVideo) {
+        _switchCameraButton = [[UIButton alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_statusLabel.frame) + 20, 60, 30)];
+        [_switchCameraButton setBackgroundColor:[UIColor grayColor]];
+        [_switchCameraButton setTitle:NSLocalizedString(@"call.switchCamera", @"Switch Camera") forState:UIControlStateNormal];
+        [_switchCameraButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [_switchCameraButton addTarget:self action:@selector(switchCameraAction) forControlEvents:UIControlEventTouchUpInside];
+        _switchCameraButton.userInteractionEnabled = YES;
+        [_topView addSubview:_switchCameraButton];
+    }
+    
     _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 260, self.view.frame.size.width, 260)];
     _actionView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_actionView];
@@ -365,6 +375,12 @@
 }
 
 #pragma mark - action
+
+- (void)switchCameraAction
+{
+    [_callSession setCameraBackOrFront:_switchCameraButton.selected];
+    _switchCameraButton.selected = !_switchCameraButton.selected;
+}
 
 - (void)recordAction
 {
