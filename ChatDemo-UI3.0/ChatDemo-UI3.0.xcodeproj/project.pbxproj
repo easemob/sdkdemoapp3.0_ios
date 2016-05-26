@@ -79,8 +79,6 @@
 		D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */; };
 		D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BAB1B72090F002324BB /* UserProfileManager.m */; };
 		D29A6BAF1B720960002324BB /* UserProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BAE1B720960002324BB /* UserProfileEditViewController.m */; };
-		D29A6BB21B72098D002324BB /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB01B72098D002324BB /* Bolts.framework */; };
-		D29A6BB31B72098D002324BB /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB11B72098D002324BB /* Parse.framework */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
 		D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */; };
@@ -356,8 +354,6 @@
 		D29A6BAB1B72090F002324BB /* UserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileManager.m; sourceTree = "<group>"; };
 		D29A6BAD1B720960002324BB /* UserProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileEditViewController.h; sourceTree = "<group>"; };
 		D29A6BAE1B720960002324BB /* UserProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileEditViewController.m; sourceTree = "<group>"; };
-		D29A6BB01B72098D002324BB /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		D29A6BB11B72098D002324BB /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D29A6BB71B720A62002324BB /* AppDelegate+Parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Parse.h"; sourceTree = "<group>"; };
 		D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Parse.m"; sourceTree = "<group>"; };
@@ -509,11 +505,9 @@
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
-				D29A6BB21B72098D002324BB /* Bolts.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
-				D29A6BB31B72098D002324BB /* Parse.framework in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
 				95044E5D35685C8AD0ACB20B /* libPods-ChatDemo-UI3.0.a in Frameworks */,
 			);
@@ -779,7 +773,6 @@
 		90911056192EEAED008A48AA /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
-				D24C39B31B561F3B00F16AA8 /* Parse */,
 				90011F8F1AE4BF090088D549 /* EMAlertView */,
 				9003D9191939D9C300DC38A4 /* UMeng */,
 				905326B219333E8E00F064D7 /* TTGlobalUICommon */,
@@ -863,15 +856,6 @@
 				90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */,
 			);
 			path = SlimeRefresh;
-			sourceTree = "<group>";
-		};
-		D24C39B31B561F3B00F16AA8 /* Parse */ = {
-			isa = PBXGroup;
-			children = (
-				D29A6BB01B72098D002324BB /* Bolts.framework */,
-				D29A6BB11B72098D002324BB /* Parse.framework */,
-			);
-			path = Parse;
 			sourceTree = "<group>";
 		};
 		D25787391B43EC7000B0E69F /* Robot */ = {
