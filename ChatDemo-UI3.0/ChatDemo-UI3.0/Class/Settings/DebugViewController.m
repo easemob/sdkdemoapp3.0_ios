@@ -104,17 +104,9 @@
 
 - (void)uploadLogAction
 {
-//    __weak typeof(self) weakSelf = self;
-//    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
-//    [[EMClient sharedClient] asyncUploadLogToServerWithCompletion:^(EMError *error) {
-//        [weakSelf hideHud];
-//        if (error) {
-//            [weakSelf showHint:error.description];
-//        }
-//        else{
-//            [weakSelf showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
-//        }
-//    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[EMClient sharedClient] uploadLogToServer];
+    });
 }
 
 @end

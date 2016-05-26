@@ -301,6 +301,7 @@
 "setting.autoLogin" = "automatic login";
 "setting.loginUser" = "log out(%@)";
 "setting.logoutOngoing" = "loging out...";
+"setting.sortbyservertime" = "Sort message by server time";
 
 "setting.notDisturb" = "Do Not Disturb";
 "setting.showDetail" = "Show Message Details on Lock Screen";
