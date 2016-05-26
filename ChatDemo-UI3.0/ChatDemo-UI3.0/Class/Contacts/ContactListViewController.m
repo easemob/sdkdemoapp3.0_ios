@@ -555,18 +555,18 @@
         if (!error) {
             [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
             if (!error) {
-                [weakself.contactsSource removeAllObjects];
-                
-                for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
-                    NSString *username = [buddyList objectAtIndex:i];
-                    [weakself.contactsSource addObject:username];
-                }
-                
-                NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-                if (loginUsername && loginUsername.length > 0) {
-                    [weakself.contactsSource addObject:loginUsername];
-                }
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself.contactsSource removeAllObjects];
+                    
+                    for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
+                        NSString *username = [buddyList objectAtIndex:i];
+                        [weakself.contactsSource addObject:username];
+                    }
+                    
+                    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
+                    if (loginUsername && loginUsername.length > 0) {
+                        [weakself.contactsSource addObject:loginUsername];
+                    }
                     [weakself _sortDataArray:self.contactsSource];
                 });
             }
@@ -577,7 +577,7 @@
                 [weakself reloadDataSource];
             });
         }
-        [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     });
 }
 
