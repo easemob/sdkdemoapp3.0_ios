@@ -41,9 +41,11 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)beginObserve
 {
     //  登录代理
+    [[EMClient sharedClient] removeDelegate:self];
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
     
     //  如果接入的用户有通知，则接收通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginChanged:) name:KNOTIFICATION_LOGINCHANGE object:nil];
 }
 
@@ -61,7 +63,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     _isRegeistMessageDelegate = NO;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient] removeDelegate:self];
-    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
