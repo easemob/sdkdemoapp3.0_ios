@@ -43,7 +43,7 @@
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"title.apnsSetting", @"Apns Settings");
+    self.title = NSLocalizedString(@"title.apnsSetting", @"Push Notification");
     
     UIButton *saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
     [saveButton setTitle:NSLocalizedString(@"save", @"Save") forState:UIControlStateNormal];
