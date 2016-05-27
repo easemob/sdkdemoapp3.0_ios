@@ -289,6 +289,9 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         nickName = model.message.from;
     }
     messageModel.redpacketSender.userNickname = nickName;
+    if (messageModel.redpacketSender.userId.length == 0) {
+        messageModel.redpacketSender.userId = model.message.from;
+    }
     
     return messageModel;
 }
