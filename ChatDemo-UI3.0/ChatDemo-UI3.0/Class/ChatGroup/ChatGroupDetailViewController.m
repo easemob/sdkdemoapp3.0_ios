@@ -40,7 +40,6 @@
 @property (strong, nonatomic) UIView *footerView;
 @property (strong, nonatomic) UIButton *clearButton;
 @property (strong, nonatomic) UIButton *exitButton;
-@property (strong, nonatomic) UIButton *dissolveButton;
 @property (strong, nonatomic) UIButton *configureButton;
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
 @property (strong, nonatomic) ContactView *selectedContact;
@@ -169,27 +168,20 @@
     return _clearButton;
 }
 
-- (UIButton *)dissolveButton
-{
-    if (_dissolveButton == nil) {
-        _dissolveButton = [[UIButton alloc] init];
-        [_dissolveButton setTitle:NSLocalizedString(@"group.destroy", @"dissolution of the group") forState:UIControlStateNormal];
-        [_dissolveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_dissolveButton addTarget:self action:@selector(dissolveAction) forControlEvents:UIControlEventTouchUpInside];
-        [_dissolveButton setBackgroundColor: [UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
-    }
-    
-    return _dissolveButton;
-}
-
 - (UIButton *)exitButton
 {
     if (_exitButton == nil) {
         _exitButton = [[UIButton alloc] init];
-        [_exitButton setTitle:NSLocalizedString(@"group.leave", @"quit the group") forState:UIControlStateNormal];
         [_exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
         [_exitButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
+    }
+    
+    if (self.occupantType == GroupOccupantTypeOwner) {
+        [_exitButton setTitle:NSLocalizedString(@"group.destroy", @"Dismiss the Group") forState:UIControlStateNormal];
+    }
+    else {
+        [_exitButton setTitle:NSLocalizedString(@"group.leave", @"Leave the Group") forState:UIControlStateNormal];
     }
     
     return _exitButton;
@@ -203,8 +195,6 @@
         
         self.clearButton.frame = CGRectMake(20, 40, _footerView.frame.size.width - 40, 35);
         [_footerView addSubview:self.clearButton];
-        
-        self.dissolveButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
         
         self.exitButton.frame = CGRectMake(20, CGRectGetMaxY(self.clearButton.frame) + 30, _footerView.frame.size.width - 40, 35);
     }
@@ -523,14 +513,8 @@
 
 - (void)refreshFooterView
 {
-    if (self.occupantType == GroupOccupantTypeOwner) {
-        [_exitButton removeFromSuperview];
-        [_footerView addSubview:self.dissolveButton];
-    }
-    else{
-        [_dissolveButton removeFromSuperview];
-        [_footerView addSubview:self.exitButton];
-    }
+    [self.exitButton removeFromSuperview];
+    [self.footerView addSubview:self.exitButton];
 }
 
 #pragma mark - action
@@ -641,7 +625,7 @@
 - (void)exitAction
 {
     __weak typeof(self) weakSelf = self;
-    [self showHudInView:self.view hint:NSLocalizedString(@"group.leave", @"quit the group")];
+    [self showHudInView:self.view hint:NSLocalizedString(@"group.leave", @"Leave the group")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
         [[EMClient sharedClient].groupManager leaveGroup:weakSelf.chatGroup.groupId error:&error];
