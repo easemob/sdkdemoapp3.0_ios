@@ -601,7 +601,8 @@
 				90011F901AE4BF090088D549 /* EMAlertView.h */,
 				90011F911AE4BF090088D549 /* EMAlertView.m */,
 			);
-			path = EMAlertView;
+			name = EMAlertView;
+			path = 3rdparty/EMAlertView;
 			sourceTree = "<group>";
 		};
 		9003D7761939D8D000DC38A4 /* Chat */ = {
@@ -720,6 +721,7 @@
 			children = (
 				3CBF90BC19302F5000AD68AE /* Custom */,
 				90911120192EEBB8008A48AA /* Class */,
+				90011F8F1AE4BF090088D549 /* EMAlertView */,
 				90911056192EEAED008A48AA /* 3rdparty */,
 				909110E4192EEAED008A48AA /* Category */,
 				90911039192EEA70008A48AA /* Images.xcassets */,
@@ -746,7 +748,6 @@
 		90911056192EEAED008A48AA /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
-				90011F8F1AE4BF090088D549 /* EMAlertView */,
 				905326B219333E8E00F064D7 /* TTGlobalUICommon */,
 			);
 			path = 3rdparty;
@@ -775,9 +776,9 @@
 				9003D7761939D8D000DC38A4 /* Chat */,
 				9003D84D1939D8D000DC38A4 /* Contacts */,
 				90911125192EEBB8008A48AA /* Settings */,
+				909E89C41A6E7A270064B20F /* LoginViewController.xib */,
 				90911134192EEC91008A48AA /* LoginViewController.h */,
 				90911135192EEC91008A48AA /* LoginViewController.m */,
-				909E89C41A6E7A270064B20F /* LoginViewController.xib */,
 				90911142192EEE6E008A48AA /* MainViewController.h */,
 				90911143192EEE6E008A48AA /* MainViewController.m */,
 				90911121192EEBB8008A48AA /* AppDelegate.h */,
@@ -1492,8 +1493,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
-					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/Parse",
-					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/Emoji",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
@@ -1510,7 +1509,6 @@
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrwb",
-					"$(PROJECT_DIR)/../EaseUISDK/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -1547,8 +1545,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
-					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/Parse",
-					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/Emoji",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
@@ -1565,7 +1561,6 @@
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrnb",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/VoiceConvert/opencore-amrwb",
-					"$(PROJECT_DIR)/../EaseUISDK/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
