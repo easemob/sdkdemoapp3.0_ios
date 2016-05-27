@@ -287,7 +287,7 @@
 "title.createGroup" = "Create a group";
 "title.publicGroup" = "Public group";
 "title.groupSetting" = "Group Setting";
-"title.apnsSetting" = "Apns Settings";
+"title.apnsSetting" = "Push Notification";
 "title.buddyBlock" = "Black List";
 "title.apply" = "Application and notification";
 "title.groupApply" = "Group Notification";
@@ -297,7 +297,7 @@
 "title.profile" = "Profile";
 
 //setting
-"setting.autoLogin" = "automatic login";
+"setting.autoLogin" = "Automatic Login";
 "setting.loginUser" = "log out(%@)";
 "setting.logoutOngoing" = "loging out...";
 
@@ -316,12 +316,12 @@
 "setting.inputName" = "Please input nickname";
 "setting.saveName" = "Save Nickname";
 "setting.namenotempty" = "Name cannot be empty";
-"setting.personalInfo" = "Profile";
+"setting.personalInfo" = "User Profile";
 "setting.setBitrate" = "Set Bitrate";
 "setting.setBitrateTips" = "Set Bitrate should be 150-1000";
 "setting.personalInfoUpload" = "Profile Image";
 "setting.edittips" = "After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective";
-"setting.iospushname" = "iOS push nickname";
+"setting.iospushname" = "APNs Display Name";
 "setting.useIp" = "Use IP";
 "setting.deleteConWhenLeave" = "Delete conversation when leave a group";
 "setting.showCallInfo" = "Show video call info";

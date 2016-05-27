@@ -127,7 +127,7 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = NSLocalizedString(@"setting.autoLogin", @"automatic login");
+            cell.textLabel.text = NSLocalizedString(@"setting.autoLogin", @"Automatic Login");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
             [cell.contentView addSubview:self.autoLoginSwitch];
@@ -160,7 +160,7 @@
             [self.delConversationSwitch setOn:NO animated:NO];
             [cell.contentView addSubview:self.delConversationSwitch];
         } else if (indexPath.row == 5){
-            cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
+            cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"APNs Display Name");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 6){
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);

@@ -15,7 +15,6 @@
 #import "LoginViewController.h"
 
 #import "AppDelegate+EaseMob.h"
-#import "AppDelegate+UMeng.h"
 #import "AppDelegate+Parse.h"
 
 
@@ -38,9 +37,6 @@
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
-    
-    // 环信UIdemo中有用到友盟统计crash，您的项目中不需要添加，可忽略此处。
-    [self setupUMeng];
     
     // 环信UIdemo中有用到Parse，您的项目中不需要添加，可忽略此处。
     [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
