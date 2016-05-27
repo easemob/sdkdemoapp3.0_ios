@@ -10,9 +10,13 @@
  * from Hyphenate Inc.
  */
 
+#ifdef REDPACKET_AVALABLE
+#import "RedPacketChatViewController.h"
+#endif
+
 #import "ChatViewController.h"
 
-@interface SearchChatViewController : ChatViewController
+@interface SearchChatViewController : RedPacketChatViewController
 
 - (instancetype)initWithConversationChatter:(NSString *)conversationChatter
                            conversationType:(EMConversationType)conversationType
