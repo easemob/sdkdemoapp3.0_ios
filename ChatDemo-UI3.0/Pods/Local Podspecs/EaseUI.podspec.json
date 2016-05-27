@@ -1,0 +1,30 @@
+{
+  "name": "EaseUI",
+  "version": "3.1.2",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "summary": "EaseMob UI Kit",
+  "homepage": "https://github.com/HyphenateInc/easeui_ios",
+  "authors": {
+    "EaseMob Inc.": "admin@easemob.com"
+  },
+  "source": {
+    "git": "https://github.com/HyphenateInc/easeui_ios.git",
+    "tag": "3.1.2"
+  },
+  "source_files": "EaseUI/**/*.{h,m,mm}",
+  "platforms": {
+    "ios": "6.0"
+  },
+  "vendored_libraries": [
+    "EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb/libopencore-amrnb.a",
+    "EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb/libopencore-amrwb.a"
+  ],
+  "requires_arc": true,
+  "resources": "export/resources/EaseUIResource.bundle",
+  "xcconfig": {
+    "OTHER_LDFLAGS": "-ObjC"
+  }
+}

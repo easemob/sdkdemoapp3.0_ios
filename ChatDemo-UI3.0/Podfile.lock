@@ -1,0 +1,35 @@
+PODS:
+  - Bolts/Tasks (1.7.0)
+  - EaseUI (3.1.2)
+  - HyphenateFull-SDK (3.1.2)
+  - Parse (1.7.5.3):
+    - Bolts/Tasks (>= 1.2.0)
+
+DEPENDENCIES:
+  - EaseUI (from `https://github.com/HyphenateInc/easeui_ios`)
+  - HyphenateFull-SDK (from `https://github.com/HyphenateInc/hyphenate-full-cocoapods`)
+  - Parse
+
+EXTERNAL SOURCES:
+  EaseUI:
+    :git: https://github.com/HyphenateInc/easeui_ios
+  HyphenateFull-SDK:
+    :git: https://github.com/HyphenateInc/hyphenate-full-cocoapods
+
+CHECKOUT OPTIONS:
+  EaseUI:
+    :commit: 2d006d37f6ab891088dbc56cbf396b9385c8bfc4
+    :git: https://github.com/HyphenateInc/easeui_ios
+  HyphenateFull-SDK:
+    :commit: 933dec0dc601721faa0bacc4f7ace6dede122f63
+    :git: https://github.com/HyphenateInc/hyphenate-full-cocoapods
+
+SPEC CHECKSUMS:
+  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  EaseUI: 7fa81823064995d85dde141a94f0a1c20829320f
+  HyphenateFull-SDK: 4e73e530fbcc2d5977a9fc2f2e29852c11d7634a
+  Parse: 373adbb1ad2e34d383542c3b28f678c49ebe4881
+
+PODFILE CHECKSUM: 04af8a80b22c3a9465e0dd3e45839eb973706890
+
+COCOAPODS: 1.0.0
