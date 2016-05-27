@@ -104,10 +104,13 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     NSString *userId = self.redpacketUserInfo.userId;
     
+    
+    /*
     [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
                                               appUserId:userId
                                                imUserId:userId
                                           andImUserpass:_imUserPass];
+     */
 }
 
 #pragma mark - YZHRedpacketBridgeDataSource
@@ -135,8 +138,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
  */
 - (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method
 {
-    //  刷新环信Token
-
+    [self configUserToken:YES];
 }
 
 #pragma mark - 
@@ -147,15 +149,32 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 {
     BOOL isLoginSuccess = [[notifaction object] boolValue];
     if (isLoginSuccess) {
+        [self configUserToken:NO];
         
-        NSString *userId = self.redpacketUserInfo.userId;
+    }else  {
+        //  用户退出，清除数据
+        [self clearUserInfo];
+    }
+}
+
+- (void)configUserToken:(BOOL)isRefresh
+{
+    NSString *userToken = nil;
+    
+    if ([[EMClient sharedClient] respondsToSelector:@selector(getUserToken:)]) {
+        userToken = [[EMClient sharedClient] performSelector:@selector(getUserToken:) withObject:@(isRefresh)];
+    }
+    
+    NSString *userId = self.redpacketUserInfo.userId;
+    if (userToken.length) {
+        [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
+                                                  appUserId:userId
+                                                    imToken:userToken];
+    }else {
         [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
                                                   appUserId:userId
                                                    imUserId:userId
                                               andImUserpass:_imUserPass];
-    }else  {
-        //  用户退出，清除数据
-        [self clearUserInfo];
     }
 }
 
