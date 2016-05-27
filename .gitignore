@@ -1,4 +1,9 @@
 
 *.a
 
+# Xcode
+xcuserdata/
 *.xcuserstate
+
+# Cocoapods
+Pods/
