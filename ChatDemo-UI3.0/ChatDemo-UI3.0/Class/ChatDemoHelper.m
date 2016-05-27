@@ -59,10 +59,6 @@ static ChatDemoHelper *helper = nil;
 #if DEMO_CALL == 1
     [[EMClient sharedClient].callManager removeDelegate:self];
 #endif
-
-#ifdef REDPACKET_AVALABLE
-    
-#endif
 }
 
 - (id)init
