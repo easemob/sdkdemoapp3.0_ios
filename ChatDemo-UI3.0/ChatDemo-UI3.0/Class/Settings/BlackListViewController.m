@@ -72,7 +72,7 @@
     _slimeView.slime.shadowColor = [UIColor grayColor];
     [self.tableView addSubview:_slimeView];
     
-    [self.slimeView setLoadingWithExpansion];
+    [self.slimeView setLoadingWithexpansion];
 }
 
 - (void)didReceiveMemoryWarning

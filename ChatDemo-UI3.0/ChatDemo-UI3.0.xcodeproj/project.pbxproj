@@ -62,10 +62,6 @@
 		90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A341B65E62C00968342 /* RobotChatViewController.m */; };
 		90B42A381B65E62C00968342 /* RobotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A361B65E62C00968342 /* RobotManager.m */; };
 		90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CE5C111B43C8E500810187 /* AppDelegate+EaseMobDebug.m */; };
-		90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */; };
-		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
-		90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
-		90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
 		90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECE1930492B00121AEC /* AddressBook.framework */; };
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
@@ -329,13 +325,6 @@
 		90B42A361B65E62C00968342 /* RobotManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RobotManager.m; sourceTree = "<group>"; };
 		90CE5C101B43C8E500810187 /* AppDelegate+EaseMobDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+EaseMobDebug.h"; sourceTree = "<group>"; };
 		90CE5C111B43C8E500810187 /* AppDelegate+EaseMobDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+EaseMobDebug.m"; sourceTree = "<group>"; };
-		90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
-		90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sr_refresh@2X.png"; sourceTree = "<group>"; };
-		90EF2CE7192F2B4E00BDC549 /* SRDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDefine.h; sourceTree = "<group>"; };
-		90EF2CE8192F2B4E00BDC549 /* SRRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRRefreshView.h; sourceTree = "<group>"; };
-		90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRRefreshView.m; sourceTree = "<group>"; };
-		90EF2CEA192F2B4E00BDC549 /* SRSlimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRSlimeView.h; sourceTree = "<group>"; };
-		90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRSlimeView.m; sourceTree = "<group>"; };
 		90F1BECC1930492300121AEC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -776,7 +765,6 @@
 				90011F8F1AE4BF090088D549 /* EMAlertView */,
 				9003D9191939D9C300DC38A4 /* UMeng */,
 				905326B219333E8E00F064D7 /* TTGlobalUICommon */,
-				90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */,
 			);
 			path = 3rdparty;
 			sourceTree = "<group>";
@@ -842,20 +830,6 @@
 				3C6FFA2319A2F5560003EB25 /* DebugViewController.m */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */ = {
-			isa = PBXGroup;
-			children = (
-				90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */,
-				90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */,
-				90EF2CE7192F2B4E00BDC549 /* SRDefine.h */,
-				90EF2CE8192F2B4E00BDC549 /* SRRefreshView.h */,
-				90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */,
-				90EF2CEA192F2B4E00BDC549 /* SRSlimeView.h */,
-				90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */,
-			);
-			path = SlimeRefresh;
 			sourceTree = "<group>";
 		};
 		D25787391B43EC7000B0E69F /* Robot */ = {
@@ -1204,7 +1178,6 @@
 				D2B3DAD51BF1D7B700913BD5 /* icon_021_cover.png in Resources */,
 				D2B3DACB1BF1D7B700913BD5 /* icon_012_cover.png in Resources */,
 				D2B3DADD1BF1D7B700913BD5 /* icon_029_cover.png in Resources */,
-				90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */,
 				EBD2AB581A7CDAC000D16528 /* messageSendFail@2x.png in Resources */,
 				EBD2ABB21A7CDAC000D16528 /* tabbar_contacts@2x.png in Resources */,
 				EBD2AB9E1A7CDAC000D16528 /* password.png in Resources */,
@@ -1279,7 +1252,6 @@
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
 				EBD2ABB81A7CDAC000D16528 /* tabbar_settingHL@2x.png in Resources */,
 				EBD2ABAA1A7CDAC000D16528 /* groupPublicHeader@2x.png in Resources */,
-				90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */,
 				EBD2ABBC1A7CDAC000D16528 /* tabbarSelectBg@2x.png in Resources */,
 				EBD2ABA51A7CDAC000D16528 /* titleBar@2x.png in Resources */,
 				D2B3DADF1BF1D7B700913BD5 /* icon_030_cover.png in Resources */,
@@ -1356,9 +1328,7 @@
 			files = (
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
-				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
-				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
 				905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,

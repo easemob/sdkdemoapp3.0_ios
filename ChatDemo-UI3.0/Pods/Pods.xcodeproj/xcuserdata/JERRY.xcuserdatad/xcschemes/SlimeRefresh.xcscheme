@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '73B078B87096FF0E93B1A23516CD7535'
-               BlueprintName = 'Pods-ChatDemo-UI3.0'
+               BlueprintIdentifier = '8D3FFCFFA991AC9E417FB5D3B67A3890'
+               BlueprintName = 'SlimeRefresh'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libPods-ChatDemo-UI3.0.a'>
+               BuildableName = 'libSlimeRefresh.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

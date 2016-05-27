@@ -81,9 +81,13 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "EaseUI/export/resources/EaseUIResource.bundle"
+  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh.png"
+  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh@2X.png"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "EaseUI/export/resources/EaseUIResource.bundle"
+  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh.png"
+  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh@2X.png"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
