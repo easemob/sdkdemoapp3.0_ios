@@ -1,1 +1,0 @@
-../../../HyphenateFull-SDK/HyphenateFullSDK/include/EMGroup.h

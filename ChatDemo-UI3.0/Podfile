@@ -5,7 +5,8 @@
 
 target 'ChatDemo-UI3.0' do
     
-    pod 'HyphenateFull-SDK', :git => 'https://github.com/HyphenateInc/hyphenate-full-cocoapods'
+#    pod 'HyphenateFull-SDK', :git => 'https://github.com/HyphenateInc/hyphenate-full-cocoapods'
+    pod 'HyphenateFullSDK'
     pod 'EaseUI', :git => 'https://github.com/HyphenateInc/easeui_ios'
     
     pod 'Parse'
