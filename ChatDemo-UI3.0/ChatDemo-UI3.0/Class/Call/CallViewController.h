@@ -40,6 +40,7 @@
     UIButton *_recordButton;
     UIButton *_videoButton;
     UIButton *_voiceButton;
+    UIButton *_switchCameraButton;
 }
 
 @property (strong, nonatomic) UILabel *statusLabel;

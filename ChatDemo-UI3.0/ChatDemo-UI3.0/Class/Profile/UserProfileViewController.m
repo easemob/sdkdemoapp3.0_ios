@@ -83,7 +83,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,10 +94,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     if (indexPath.row == 0) {
-        //cell.textLabel.text = NSLocalizedString(@"setting.personalInfoUpload", @"Upload HeadImage");
+        cell.detailTextLabel.text = NSLocalizedString(@"setting.personalInfoUpload", @"Upload HeadImage");
         [cell.contentView addSubview:self.headImageView];
-        [cell.contentView addSubview:self.usernameLabel];
     } else if (indexPath.row == 1) {
+        cell.textLabel.text = NSLocalizedString(@"username", @"username");
+        cell.detailTextLabel.text = self.usernameLabel.text;
+    } else if (indexPath.row == 2) {
         cell.textLabel.text = NSLocalizedString(@"setting.profileNickname", @"Nickname");
         UserProfileEntity *entity = [[UserProfileManager sharedInstance] getUserProfileByUsername:_username];
         if (entity && entity.nickname.length>0) {

@@ -224,6 +224,7 @@
 "call.videoLostcnt"="Lostcnt: ";
 "call.videoLocalBitrate"="Local Bitrate: ";
 "call.videoRemoteBitrate"="Remote Bitrate: ";
+"call.switchCamera"="Switch Camera";
 
 //message
 "message.image" = "image";
@@ -301,16 +302,17 @@
 "setting.autoLogin" = "automatic login";
 "setting.loginUser" = "log out(%@)";
 "setting.logoutOngoing" = "loging out...";
+"setting.sortbyservertime" = "Sort message by server time";
 
-"setting.notDisturb" = "No disturbing";
-"setting.showDetail" = "display message details in apns";
-"setting.open" = "open";
-"setting.nightOpen" = "only open at night (22:00 - 7:00)";
-"setting.close" = "close";
+"setting.notDisturb" = "Do Not Disturb";
+"setting.showDetail" = "Show Message Details on Lock Screen";
+"setting.open" = "On";
+"setting.nightOpen" = "On only from 10pm to 7am.";
+"setting.close" = "Off";
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 
 "setting.uploadLog" = "upload run log";
-"setting.sdkVersion" = "ONE SDK version";
+"setting.sdkVersion" = "SDK version";
 "setting.uploading" = "uploading...";
 "setting.uploadSuccess" = "uploaded successfully";
 "setting.uploadFail" = "uploaded failed";
@@ -318,10 +320,10 @@
 "setting.inputName" = "Please input nickname";
 "setting.saveName" = "Save Nickname";
 "setting.namenotempty" = "Name cannot be empty";
-"setting.personalInfo" = "Personal Information";
+"setting.personalInfo" = "Profile";
 "setting.setBitrate" = "Set Bitrate";
 "setting.setBitrateTips" = "Set Bitrate should be 150-1000";
-"setting.personalInfoUpload" = "HeadImage";
+"setting.personalInfoUpload" = "Profile Image";
 "setting.edittips" = "After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective";
 "setting.iospushname" = "iOS push nickname";
 "setting.useIp" = "Use IP";
