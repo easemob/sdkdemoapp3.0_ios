@@ -83,8 +83,7 @@ static ChatDemoHelper *helper = nil;
 - (void)asyncPushOptions
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
+        [[EMClient sharedClient] getPushOptionsFromServerWithError:nil];
     });
 }
 
@@ -145,11 +144,10 @@ static ChatDemoHelper *helper = nil;
         UIView *view = self.mainVC.view;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL flag = [[EMClient sharedClient] dataMigrationTo3];
-            if (flag) {
-                [self asyncGroupFromServer];
-                [self asyncConversationFromDB];
-            }
+            [[EMClient sharedClient] dataMigrationTo3];
+            [self asyncGroupFromServer];
+            [self asyncConversationFromDB];
+            [self asyncPushOptions];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideAllHUDsForView:view animated:YES];
             });
