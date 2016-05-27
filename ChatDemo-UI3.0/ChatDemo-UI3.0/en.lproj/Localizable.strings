@@ -224,6 +224,7 @@
 "call.videoLostcnt"="Lostcnt: ";
 "call.videoLocalBitrate"="Local Bitrate: ";
 "call.videoRemoteBitrate"="Remote Bitrate: ";
+"call.switchCamera"="Switch Camera";
 
 //message
 "message.image" = "image";
