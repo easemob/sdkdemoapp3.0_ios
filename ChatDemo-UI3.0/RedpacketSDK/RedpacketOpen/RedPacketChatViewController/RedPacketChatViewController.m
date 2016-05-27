@@ -173,7 +173,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     NSDictionary *ext = message.ext;
     
     if ([RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
-        return YES;
+        return NO;
     }
     
     return [super shouldSendHasReadAckForMessage:message read:read];
