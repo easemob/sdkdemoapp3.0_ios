@@ -20,6 +20,7 @@
 #import "CreateGroupViewController.h"
 #import "PublicGroupListViewController.h"
 #import "RealtimeSearchUtil.h"
+#import "RedPacketChatViewController.h"
 
 @interface GroupListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, EMGroupManagerDelegate, SRRefreshDelegate>
 
@@ -163,7 +164,12 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             
             EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:group.groupId
+#ifdef REDPACKET_AVALABLE
+            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+#else
+            ChatViewController *chatVC = [[ChatViewController alloc]
+#endif
+                                          initWithConversationChatter:group.groupId
                                                                                 conversationType:EMConversationTypeGroupChat];
             chatVC.title = group.subject;
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
@@ -258,7 +264,13 @@
         }
     } else {
         EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId
+        
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+        ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                              initWithConversationChatter:group.groupId
                                                                                     conversationType:EMConversationTypeGroupChat];
         chatController.title = group.subject;
         [self.navigationController pushViewController:chatController animated:YES];

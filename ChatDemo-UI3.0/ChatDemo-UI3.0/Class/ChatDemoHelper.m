@@ -16,6 +16,11 @@
 #import "ApplyViewController.h"
 #import "MBProgressHUD.h"
 
+#ifdef REDPACKET_AVALABLE
+#import "RedpacketOpenConst.h"
+#import "RedPacketUserConfig.h"
+#endif
+
 
 #if DEMO_CALL == 1
 
@@ -54,6 +59,10 @@ static ChatDemoHelper *helper = nil;
 #if DEMO_CALL == 1
     [[EMClient sharedClient].callManager removeDelegate:self];
 #endif
+
+#ifdef REDPACKET_AVALABLE
+    
+#endif
 }
 
 - (id)init
@@ -67,6 +76,10 @@ static ChatDemoHelper *helper = nil;
 
 - (void)initHelper
 {
+#ifdef REDPACKET_AVALABLE
+    [[RedPacketUserConfig sharedConfig] beginObserveMessage];
+#endif
+    
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
@@ -198,18 +211,20 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveCmdMessages:(NSArray *)aCmdMessages
-{
-    if (self.mainVC) {
-        [_mainVC showHint:NSLocalizedString(@"receiveCmd", @"receive cmd message")];
-    }
-}
-
 - (void)didReceiveMessages:(NSArray *)aMessages
 {
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
+        
+#ifdef REDPACKET_AVALABLE
+        /**
+         *  屏蔽红包被抢消息的提示
+         */
+        NSDictionary *dict = message.ext;
+        needShowNotification = (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) ? NO : needShowNotification;
+#endif
+        
         if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
             UIApplicationState state = [[UIApplication sharedApplication] applicationState];

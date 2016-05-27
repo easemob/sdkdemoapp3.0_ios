@@ -23,6 +23,8 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
+#import "RedPacketChatViewController.h"
+
 
 @implementation NSString (search)
 
@@ -152,7 +154,13 @@
             }
             
             [weakSelf.searchController.searchBar endEditing:YES];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
+
+#ifdef REDPACKET_AVALABLE
+            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+#else
+            ChatViewController *chatVC = [[ChatViewController alloc]
+#endif
+                                          initWithConversationChatter:buddy
                                                                                 conversationType:EMConversationTypeChat];
             chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
@@ -318,7 +326,12 @@
                 return;
             }
         }
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+        ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                              initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
