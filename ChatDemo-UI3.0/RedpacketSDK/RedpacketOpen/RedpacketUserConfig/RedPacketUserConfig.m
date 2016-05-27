@@ -159,8 +159,11 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 - (void)configUserToken:(BOOL)isRefresh
 {
-    NSString *userToken = nil;
+    if (![EMClient sharedClient].isLoggedIn) {
+        return;
+    }
     
+    NSString *userToken = nil;
     if ([[EMClient sharedClient] respondsToSelector:@selector(getUserToken:)]) {
         userToken = [[EMClient sharedClient] performSelector:@selector(getUserToken:) withObject:@(isRefresh)];
     }
@@ -181,6 +184,13 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)didLoginFromOtherDevice
 {
     [self clearUserInfo];
+}
+
+- (void)didAutoLoginWithError:(EMError *)aError
+{
+    if (!aError) {
+        [self configUserToken:NO];
+    }
 }
 
 - (void)clearUserInfo
