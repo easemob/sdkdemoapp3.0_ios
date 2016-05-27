@@ -224,6 +224,7 @@
 "call.videoLostcnt"="丢包数: ";
 "call.videoLocalBitrate"="本地比特率: ";
 "call.videoRemoteBitrate"="对方比特率: ";
+"call.switchCamera"="切换摄像头";
 
 //message
 "message.image" = "图片";
@@ -300,6 +301,7 @@
 "setting.autoLogin" = "自动登录";
 "setting.loginUser" = "退出登录(%@)";
 "setting.logoutOngoing" = "正在退出...";
+"setting.sortbyservertime" = "消息根据服务器时间排序";
 
 "setting.notDisturb" = "功能消息免打扰";
 "setting.showDetail" = "通知显示消息详情";

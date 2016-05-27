@@ -74,7 +74,6 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     
 #if DEMO_CALL == 1
-    [[EMClient sharedClient].callManager setVideoAdaptive:YES];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];

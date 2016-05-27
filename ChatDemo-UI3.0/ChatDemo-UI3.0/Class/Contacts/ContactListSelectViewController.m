@@ -72,9 +72,17 @@
             [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transpondFailing...")];
             
             UIImage *image = self.messageModel.image;
-            if (image) {
+            if (!image) {
                 image = [UIImage imageWithContentsOfFile:self.messageModel.fileLocalPath];
             }
+            
+            if (!image) {
+                [self hideHud];
+                [self showHudInView:self.view hint:NSLocalizedString(@"transpondFail", @"transpond Fail")];
+                [self performSelector:@selector(backAction) withObject:nil afterDelay:0.5];
+                return;
+            }
+            
             EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
             
             [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {

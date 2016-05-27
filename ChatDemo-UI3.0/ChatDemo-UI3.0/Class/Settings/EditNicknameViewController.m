@@ -11,7 +11,7 @@
  */
 
 #import "EditNicknameViewController.h"
-
+#import "UserProfileManager.h"
 #define kTextFieldWidth 290.0
 #define kTextFieldHeight 40.0
 #define kButtonHeight 40.0
@@ -116,6 +116,7 @@
     {
         //设置推送设置
         [[EMClient sharedClient] setApnsNickname:_nickTextField.text];
+        [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:_nickTextField.text} completion:^(BOOL success, NSError *error){}];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [EMAlertView showAlertWithTitle:NSLocalizedString(@"prompt", @"Prompt")
