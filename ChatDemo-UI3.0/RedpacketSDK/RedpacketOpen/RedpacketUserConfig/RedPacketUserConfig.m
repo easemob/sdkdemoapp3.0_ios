@@ -230,7 +230,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
             NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
             NSString *currentUserID = [EMClient sharedClient].currentUsername;
             //  标记为已读
-            message.isRead = YES;
             if ([senderID isEqualToString:currentUserID]){
                 /**
                  *  当前用户是红包发送者。
@@ -240,20 +239,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                 message.body = body;
                 
                 [[EMClient sharedClient].chatManager updateMessage:message];
-                
-                ConversationListController *listVC = [ChatDemoHelper shareHelper].conversationListVC;
-                UIViewController *currentVC = [ChatDemoHelper shareHelper].mainVC.selectedViewController;
-                if (listVC && listVC == currentVC) {
-                    [listVC.tableView reloadData];
-                    /**
-                     *  当前聊天界面是会话列表页
-                     */
-                    MainViewController *mainVC = [ChatDemoHelper shareHelper].mainVC;
-                    /**
-                     *  重新设置未读数
-                     */
-                    [mainVC setupUnreadMessageCount];
-                }
             }
         }
     }
