@@ -82,15 +82,15 @@
 "login.endAutoLogin" = "End automatic login...";
 "login.errorAutoLogin" = "Automatic logon failure.";
 "login.nameNotSupportZh" = "Name does not support Chinese";
-"login.ongoing" = "Is Login...";
+"login.ongoing" = "Login...";
 "login.fail" = "Logon failure";
 "login.inputNameAndPswd" = "Please enter username and password";
 "login.inputApnsNickname" = "Please enter nickname for apns";
 
 //register
-"register.ongoing" = "Is to register...";
+"register.ongoing" = "Registering...";
 "register.fail" = "Registration failed";
-"register.success" = "Registered successfully, please log in";
+"register.success" = "Register successfully";
 "register.repeat" = "You registered user already exists!";
 "register.confirmPassword" = "The two input password does not match, please input again";
 

@@ -100,7 +100,14 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself hideHud];
                 if (!error) {
-                    TTAlertNoTitle(NSLocalizedString(@"register.success", @"Registered successfully, please log in"));
+                    [weakself showHudInView:weakself.view hint:NSLocalizedString(@"register.success", @"Is to register...")];
+                    double delayInSeconds = 2.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [weakself hideHud];
+                        //code to be executed on the main queue after delay
+                        [weakself loginWithUsername:weakself.usernameTextField.text password:weakself.passwordTextField.text];
+                    });
                 }else{
                     switch (error.code) {
                         case EMErrorServerNotReachable:
