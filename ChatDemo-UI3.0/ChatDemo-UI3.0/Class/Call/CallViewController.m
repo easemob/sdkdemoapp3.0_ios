@@ -249,6 +249,7 @@
         [_voiceButton setBackgroundColor:[UIColor grayColor]];
         [_voiceButton addTarget:self action:@selector(voicePauseAction) forControlEvents:UIControlEventTouchUpInside];
         [_actionView addSubview:_voiceButton];
+        [_speakerOutButton sendActionsForControlEvents:UIControlEventTouchUpInside];
     }
 }
 
@@ -499,6 +500,15 @@
 
 - (void)startTimer
 {
+    if (_callSession.type == EMCallTypeVideo && _speakerOutButton.selected) {
+        double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            //code to be executed on the main queue after delay
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        });
+    }
     _timeLength = 0;
     _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
 }
