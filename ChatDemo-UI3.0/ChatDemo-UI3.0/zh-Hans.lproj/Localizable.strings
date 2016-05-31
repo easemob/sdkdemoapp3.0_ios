@@ -29,6 +29,7 @@
 "delete" = "删除";
 "copy" = "复制";
 "transpond" = "转发";
+"revoke" = "撤销";
 "save" = "保存";
 "prompt" = "提示";
 "add" = "添加";
@@ -223,6 +224,8 @@
 "call.videoRemoteBitrate"="对方比特率: ";
 
 //message
+"message.burn" = "[阅后即焚]";
+"message.burn.tips" = "此消息阅读6秒后自动焚毁";
 "message.image" = "图片";
 "message.location" = "位置";
 "message.voice" = "音频";

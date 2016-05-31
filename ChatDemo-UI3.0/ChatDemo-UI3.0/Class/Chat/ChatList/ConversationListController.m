@@ -15,6 +15,9 @@
 #import "RobotChatViewController.h"
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
+#import "RedPacketChatViewController.h"
+#import "RedpacketOpenConst.h"
+
 
 @implementation EMConversation (search)
 
@@ -64,6 +67,8 @@
     [self searchController];
     
     [self removeEmptyConversationsFromDB];
+    
+    [self configEaseMessageHelp];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -162,12 +167,21 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             id<IConversationModel> model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             EMConversation *conversation = model.conversation;
+            
             ChatViewController *chatController;
             if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.chatter]) {
                 chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
             }else {
+                
+#ifdef REDPACKET_AVALABLE
+                /**
+                 * TODO: 会话列表-红包聊天窗口
+                 */
+                chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#else
                 chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#endif
                 chatController.title = [conversation showName];
             }
             [weakSelf.navigationController pushViewController:chatController animated:YES];
@@ -190,7 +204,14 @@
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.chatter];
                 [self.navigationController pushViewController:chatController animated:YES];
             } else {
+#ifdef REDPACKET_AVALABLE
+                /**
+                 * TODO: 会话列表-红包聊天窗口
+                 */
+                RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#else
                 ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.chatter conversationType:conversation.conversationType];
+#endif
                 chatController.title = conversationModel.title;
                 [self.navigationController pushViewController:chatController animated:YES];
             }
@@ -261,36 +282,11 @@
       latestMessageTitleForConversationModel:(id<IConversationModel>)conversationModel
 {
     NSString *latestMessageTitle = @"";
-    EMMessage *lastMessage = [conversationModel.conversation latestMessage];
-    if (lastMessage) {
-        id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
-        switch (messageBody.messageBodyType) {
-            case eMessageBodyType_Image:{
-                latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
-            } break;
-            case eMessageBodyType_Text:{
-                // 表情映射。
-                NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-                                            convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
-                latestMessageTitle = didReceiveText;
-            } break;
-            case eMessageBodyType_Voice:{
-                latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
-            } break;
-            case eMessageBodyType_Location: {
-                latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
-            } break;
-            case eMessageBodyType_Video: {
-                latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
-            } break;
-            case eMessageBodyType_File: {
-                latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
-            } break;
-            default: {
-            } break;
-        }
+    EMMessage *latestMessage = [conversationModel.conversation latestMessage];
+    if (latestMessage)
+    {
+        latestMessageTitle = [self commonLatestMessageTitle:latestMessage];
     }
-    
     return latestMessageTitle;
 }
 
@@ -302,9 +298,89 @@
     if (lastMessage) {
         latestMessageTime = [NSDate formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
-
-    
     return latestMessageTime;
+}
+
+#pragma mark - 阅后即焚或普通消息内容显示
+- (NSString *)commonLatestMessageTitle:(EMMessage *)latestMessage
+{
+    NSString *latestMessageTitle = @"";
+    if (latestMessage.ext &&
+        [EaseMessageHelper isRemoveAfterReadMessage:latestMessage] &&
+        [latestMessage.to isEqualToString:[[EaseMob sharedInstance].chatManager loginInfo][kSDKUsername]])
+    {
+        latestMessageTitle = NSLocalizedString(@"message.burn", @"[Burn after reading]");
+        return latestMessageTitle;
+    }
+    
+    id<IEMMessageBody> messageBody = latestMessage.messageBodies.lastObject;
+    
+#ifdef REDPACKET_AVALABLE
+    //  TODO: Redpacket Modify
+    if (messageBody.messageBodyType == eMessageBodyType_Text) {
+        NSDictionary *dict = latestMessage.ext;
+        
+        if ([dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
+            /**
+             *  红包被抢的消息
+             */
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+            
+            if ([senderID isEqualToString:currentUserID]) {
+                /**
+                 *  发送红包的用户就是当前用户
+                 */
+                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+                NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+                NSString *prompt;
+                
+                if ([senderID isEqualToString:receiverID]) {
+                    /**
+                     *  自己抢了自己的红包
+                     */
+                    prompt = @"你领取了自己的红包";
+                }else {
+                    /**
+                     *  别人领取了当前用户的红包
+                     */
+                    prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];;
+                }
+                
+                ((EMTextMessageBody *)messageBody).text = prompt;
+            }
+            
+        }
+    }
+    //  END: Redpacket Modify
+#endif
+    
+    switch (messageBody.messageBodyType) {
+        case eMessageBodyType_Image:{
+            latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
+        } break;
+        case eMessageBodyType_Text:{
+            // 表情映射。
+            NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                        convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
+            latestMessageTitle = didReceiveText;
+        } break;
+        case eMessageBodyType_Voice:{
+            latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
+        } break;
+        case eMessageBodyType_Location: {
+            latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
+        } break;
+        case eMessageBodyType_Video: {
+            latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
+        } break;
+        case eMessageBodyType_File: {
+            latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
+        } break;
+        default: {
+        } break;
+    }
+    return latestMessageTitle;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -389,5 +465,44 @@
     NSLog(NSLocalizedString(@"message.endReceiveOffine", @"End to receive offline messages"));
 }
 
+#pragma mark - 配置EaseMessageHelp
+
+- (void)configEaseMessageHelp
+{
+    [EaseMessageHelper openRevokePrompt];
+}
+
+#pragma mark - EaseMessageHelpProtocal
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRevokeMessage:(NSArray *)needRevokeMessags
+{
+    __block BOOL isContainChatVC = NO;
+    [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[ChatViewController class]])
+        {
+            isContainChatVC = YES;
+            *stop = YES;
+        }
+    }];
+    //添加判断，如果当前nav的viewControllers不含有ChatViewController且消息回撤提示可用，则进行插入
+    if (!isContainChatVC &&
+        [EaseMessageHelper revokePromptIsValid]) {
+        for (EMMessage *message in needRevokeMessags)
+        {
+            for (id<IConversationModel>model in self.dataArray)
+            {
+                if ([message.conversationChatter isEqualToString:model.conversation.chatter]) {
+                    [EaseMessageHelper insertRevokePromptMessageToDB:message];
+                    break;
+                }
+            }
+        }
+    }
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+- (void)emHelper:(EaseMessageHelper *)emHelper handleRemoveAfterReadMessage:(EMMessage *)removeMessage
+{
+    [self tableViewDidTriggerHeaderRefresh];
+}
 
 @end
