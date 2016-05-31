@@ -9,13 +9,13 @@
 
 
 #import "EaseBubbleView+RedPacket.h"
-#import "EaseBaseMessageCell.h"
+#import "EaseCustomMessageCell.h"
 
 
 /**
  *  红包显示的Cell
  */
-@interface EaseRedBagCell : EaseBaseMessageCell
+@interface EaseRedBagCell : EaseCustomMessageCell
 
 
 @end
