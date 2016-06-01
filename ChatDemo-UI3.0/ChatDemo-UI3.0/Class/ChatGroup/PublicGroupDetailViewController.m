@@ -256,8 +256,8 @@
         EMError *error = nil;
         [[EMClient sharedClient].groupManager joinPublicGroup:groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
             if(!error) {
-                [weakSelf hideHud];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             } else {
                 [weakSelf showHint:NSLocalizedString(@"group.join.fail", @"again failed to join the group, please")];
