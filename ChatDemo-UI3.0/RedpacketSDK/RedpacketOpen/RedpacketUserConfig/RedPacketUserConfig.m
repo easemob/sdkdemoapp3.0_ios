@@ -269,6 +269,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                 EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:message.conversationId from:message.from to:message.to body:body1 ext:message.ext];
                 textMessage.chatType = message.chatType;
                 textMessage.isRead = YES;
+                textMessage.timestamp = message.timestamp;
 
                 /**
                  *  更新界面
@@ -295,6 +296,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                             EMConversation *conversation = model.conversation;
                             if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
                                 [conversation insertMessage:textMessage];
+                                break;
                             }
                         }
                         
