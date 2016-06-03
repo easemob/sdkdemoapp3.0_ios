@@ -51,7 +51,7 @@
     if (_isOwner)
     {
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(save:)];
-        saveItem.tintColor = [UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0];
+        saveItem.tintColor = [UIColor HIColorGreenDark];
         [self.navigationItem setRightBarButtonItem:saveItem];
     }
 

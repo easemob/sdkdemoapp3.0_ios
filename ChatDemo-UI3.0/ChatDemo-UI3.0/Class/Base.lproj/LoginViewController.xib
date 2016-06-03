@@ -75,7 +75,7 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7n-mh-wjo">
                             <rect key="frame" x="125" y="148" width="160" height="43"/>
-                            <color key="backgroundColor" red="0.0" green="0.396078431372549" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.42745098039215684" green="0.55686274509803924" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="boldSystem" size="button"/>
                             <state key="normal" title="登录">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

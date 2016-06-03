@@ -135,14 +135,14 @@
 "group.sendApplyRepeat" = "application has been sent";
 
 //Create Group
-"group.create.addOccupant" = "add members";
+"group.create.addOccupant" = "add member";
 "group.create.inputName" = "please enter the group name";
 "group.create.inputDescribe" = "please enter a group description";
-"group.create.groupPermission" = "group permission";
+"group.create.groupPermission" = "Group permission";
 "group.create.private" = "private group";
 "group.create.occupantPermissions" = "members invite permissions";
 "group.create.allowedOccupantInvite" = "allows group members to invite others";
-"group.create.unallowedOccupantInvite" = "don't allow group members to invite others";
+"group.create.unallowedOccupantInvite" = "Only group owner can invite new member";
 "group.create.ongoing" = "create a group...";
 "group.create.success" = "create group success";
 "group.create.fail" = "Failed to create a group, please operate again";
@@ -314,7 +314,7 @@
 "setting.uploadFail" = "uploaded failed";
 "setting.editName" = "Edit NickName";
 "setting.inputName" = "Please input nickname";
-"setting.saveName" = "Save Nickname";
+"setting.saveName" = "Save";
 "setting.namenotempty" = "Name cannot be empty";
 "setting.personalInfo" = "User Profile";
 "setting.setBitrate" = "Set Bitrate";

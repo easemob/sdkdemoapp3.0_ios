@@ -19,14 +19,14 @@
 
 @property (strong, nonatomic) UIView *switchView;
 @property (strong, nonatomic) UIBarButtonItem *rightItem;
-@property (strong, nonatomic) UITextField *textField;
-@property (strong, nonatomic) EMTextView *textView;
+@property (strong, nonatomic) UITextField *groupNameTextField;
+@property (strong, nonatomic) EMTextView *groupDescriptionTextView;
 
 @property (nonatomic) BOOL isPublic;
-@property (strong, nonatomic) UILabel *groupTypeLabel;//群组类型
+@property (strong, nonatomic) UILabel *groupTypeLabel;
 
 @property (nonatomic) BOOL isMemberOn;
-@property (strong, nonatomic) UILabel *groupMemberTitleLabel;
+@property (strong, nonatomic) UILabel *groupInvitePermissionLabel;
 @property (strong, nonatomic) UISwitch *groupMemberSwitch;
 @property (strong, nonatomic) UILabel *groupMemberLabel;
 
@@ -54,12 +54,12 @@
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     self.title = NSLocalizedString(@"title.createGroup", @"Create a group");
-    self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     addButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
-    [addButton setTitle:NSLocalizedString(@"group.create.addOccupant", @"add members") forState:UIControlStateNormal];
-    [addButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [addButton setTitle:NSLocalizedString(@"group.create.addOccupant", @"Add member") forState:UIControlStateNormal];
+    [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [addButton addTarget:self action:@selector(addContacts:) forControlEvents:UIControlEventTouchUpInside];
     _rightItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
@@ -71,8 +71,8 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
-    [self.view addSubview:self.textField];
-    [self.view addSubview:self.textView];
+    [self.view addSubview:self.groupNameTextField];
+    [self.view addSubview:self.groupDescriptionTextView];
     [self.view addSubview:self.switchView];
 }
 
@@ -84,63 +84,65 @@
 
 #pragma mark - getter
 
-- (UITextField *)textField
+- (UITextField *)groupNameTextField
 {
-    if (_textField == nil) {
-        _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, 40)];
-        _textField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        _textField.layer.borderWidth = 0.5;
-        _textField.layer.cornerRadius = 3;
-        _textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 30)];
-        _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        _textField.leftViewMode = UITextFieldViewModeAlways;
-        _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        _textField.font = [UIFont systemFontOfSize:15.0];
-        _textField.backgroundColor = [UIColor whiteColor];
-        _textField.placeholder = NSLocalizedString(@"group.create.inputName", @"please enter the group name");
-        _textField.returnKeyType = UIReturnKeyDone;
-        _textField.delegate = self;
+    if (_groupNameTextField == nil) {
+        _groupNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 40)];
+        _groupNameTextField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+        _groupNameTextField.layer.borderWidth = 0.5;
+        _groupNameTextField.layer.cornerRadius = 3;
+        _groupNameTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 30)];
+        _groupNameTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        _groupNameTextField.leftViewMode = UITextFieldViewModeAlways;
+        _groupNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _groupNameTextField.font = [UIFont systemFontOfSize:15.0];
+        _groupNameTextField.backgroundColor = [UIColor whiteColor];
+        _groupNameTextField.placeholder = NSLocalizedString(@"group.create.inputName", @"please enter the group name");
+        _groupNameTextField.returnKeyType = UIReturnKeyDone;
+        _groupNameTextField.delegate = self;
     }
     
-    return _textField;
+    return _groupNameTextField;
 }
 
-- (EMTextView *)textView
+- (EMTextView *)groupDescriptionTextView
 {
-    if (_textView == nil) {
-        _textView = [[EMTextView alloc] initWithFrame:CGRectMake(10, 70, 300, 80)];
-        _textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        _textView.layer.borderWidth = 0.5;
-        _textView.layer.cornerRadius = 3;
-        _textView.font = [UIFont systemFontOfSize:14.0];
-        _textView.backgroundColor = [UIColor whiteColor];
-        _textView.placeholder = NSLocalizedString(@"group.create.inputDescribe", @"please enter a group description");
-        _textView.returnKeyType = UIReturnKeyDone;
-        _textView.delegate = self;
+    if (_groupDescriptionTextView == nil) {
+        _groupDescriptionTextView = [[EMTextView alloc] initWithFrame:CGRectMake(10, 70, self.view.frame.size.width - 20, 80)];
+        _groupDescriptionTextView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+        _groupDescriptionTextView.layer.borderWidth = 0.5;
+        _groupDescriptionTextView.layer.cornerRadius = 3;
+        _groupDescriptionTextView.font = [UIFont systemFontOfSize:14.0];
+        _groupDescriptionTextView.backgroundColor = [UIColor whiteColor];
+        _groupDescriptionTextView.placeholder = NSLocalizedString(@"group.create.inputDescribe", @"please enter a group description");
+        _groupDescriptionTextView.returnKeyType = UIReturnKeyDone;
+        _groupDescriptionTextView.delegate = self;
     }
     
-    return _textView;
+    return _groupDescriptionTextView;
 }
 
 - (UIView *)switchView
 {
     if (_switchView == nil) {
+        
         _switchView = [[UIView alloc] initWithFrame:CGRectMake(10, 160, 300, 90)];
         _switchView.backgroundColor = [UIColor clearColor];
         
-        CGFloat oY = 0;
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, oY, 100, 35)];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont systemFontOfSize:14.0];
-        label.numberOfLines = 2;
-        label.text = NSLocalizedString(@"group.create.groupPermission", @"group permission");
-        [_switchView addSubview:label];
+        // Group Permission
+        CGFloat yAlignment = 0;
+        UILabel *groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yAlignment, 120, 35)];
+        groupTypeLabel.backgroundColor = [UIColor clearColor];
+        groupTypeLabel.font = [UIFont systemFontOfSize:14.0];
+        groupTypeLabel.numberOfLines = 2;
+        groupTypeLabel.text = NSLocalizedString(@"group.create.groupPermission", @"group permission");
+        [_switchView addSubview:groupTypeLabel];
         
-        UISwitch *switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(100, oY, 50, _switchView.frame.size.height)];
-        [switchControl addTarget:self action:@selector(groupTypeChange:) forControlEvents:UIControlEventValueChanged];
-        [_switchView addSubview:switchControl];
+        UISwitch *groupTypeSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(groupTypeLabel.frame.size.width + 10, yAlignment, 50, _switchView.frame.size.height)];
+        [groupTypeSwitch addTarget:self action:@selector(groupTypeChange:) forControlEvents:UIControlEventValueChanged];
+        [_switchView addSubview:groupTypeSwitch];
         
-        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(switchControl.frame.origin.x + switchControl.frame.size.width + 5, oY, 100, 35)];
+        _groupTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(groupTypeSwitch.frame.origin.x + groupTypeSwitch.frame.size.width + 10, yAlignment, 100, 35)];
         _groupTypeLabel.backgroundColor = [UIColor clearColor];
         _groupTypeLabel.font = [UIFont systemFontOfSize:12.0];
         _groupTypeLabel.textColor = [UIColor grayColor];
@@ -148,19 +150,20 @@
         _groupTypeLabel.numberOfLines = 2;
         [_switchView addSubview:_groupTypeLabel];
         
-        oY += (35 + 20);
-        _groupMemberTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, oY, 100, 35)];
-        _groupMemberTitleLabel.font = [UIFont systemFontOfSize:14.0];
-        _groupMemberTitleLabel.backgroundColor = [UIColor clearColor];
-        _groupMemberTitleLabel.text = NSLocalizedString(@"group.create.occupantPermissions", @"members invite permissions");
-        _groupMemberTitleLabel.numberOfLines = 2;
-        [_switchView addSubview:_groupMemberTitleLabel];
+        // Group invite permission
+        yAlignment += (35 + 20);
+        self.groupInvitePermissionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, yAlignment, 120, 35)];
+        self.groupInvitePermissionLabel.font = [UIFont systemFontOfSize:14.0];
+        self.groupInvitePermissionLabel.backgroundColor = [UIColor clearColor];
+        self.groupInvitePermissionLabel.text = NSLocalizedString(@"group.create.occupantPermissions", @"members invite permissions");
+        self.groupInvitePermissionLabel.numberOfLines = 2;
+        [_switchView addSubview:_groupInvitePermissionLabel];
         
-        _groupMemberSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, oY, 50, 35)];
+        _groupMemberSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(self.groupInvitePermissionLabel.frame.size.width + 10, yAlignment, 50, 35)];
         [_groupMemberSwitch addTarget:self action:@selector(groupMemberChange:) forControlEvents:UIControlEventValueChanged];
         [_switchView addSubview:_groupMemberSwitch];
         
-        _groupMemberLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupMemberSwitch.frame.origin.x + _groupMemberSwitch.frame.size.width + 5, oY, 150, 35)];
+        _groupMemberLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupMemberSwitch.frame.origin.x + _groupMemberSwitch.frame.size.width + 10, yAlignment, 150, 35)];
         _groupMemberLabel.backgroundColor = [UIColor clearColor];
         _groupMemberLabel.font = [UIFont systemFontOfSize:12.0];
         _groupMemberLabel.textColor = [UIColor grayColor];
@@ -237,10 +240,10 @@
     
     __weak CreateGroupViewController *weakSelf = self;
     NSString *username = [[EMClient sharedClient] currentUsername];
-    NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join groups \'%@\'"), username, self.textField.text];
+    NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join groups \'%@\'"), username, self.groupNameTextField.text];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        EMGroup *group = [[EMClient sharedClient].groupManager createGroupWithSubject:self.textField.text description:self.textView.text invitees:source message:messageStr setting:setting error:&error];
+        EMGroup *group = [[EMClient sharedClient].groupManager createGroupWithSubject:self.groupNameTextField.text description:self.groupDescriptionTextView.text invitees:source message:messageStr setting:setting error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (group && !error) {
@@ -275,7 +278,7 @@
 - (void)groupMemberChange:(UISwitch *)control
 {
     if (_isPublic) {
-        _groupMemberTitleLabel.text = NSLocalizedString(@"group.create.occupantJoinPermissions", @"members join permissions");
+        self.groupInvitePermissionLabel.text = NSLocalizedString(@"group.create.occupantJoinPermissions", @"members join permissions");
         if(control.isOn)
         {
             _groupMemberLabel.text = NSLocalizedString(@"group.create.open", @"random join");
@@ -285,7 +288,7 @@
         }
     }
     else{
-        _groupMemberTitleLabel.text = NSLocalizedString(@"group.create.occupantPermissions", @"members invite permissions");
+        self.groupInvitePermissionLabel.text = NSLocalizedString(@"group.create.occupantPermissions", @"members invite permissions");
         if(control.isOn)
         {
             _groupMemberLabel.text = NSLocalizedString(@"group.create.allowedOccupantInvite", @"allows group members to invite others");
@@ -300,7 +303,7 @@
 
 - (void)addContacts:(id)sender
 {
-    if (self.textField.text.length == 0) {
+    if (self.groupNameTextField.text.length == 0) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"group.create.inputName", @"please enter the group name") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
         [alertView show];
         return;

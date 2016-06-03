@@ -206,7 +206,7 @@ typedef NS_ENUM(NSInteger, GettingMoreFooterViewState){
         _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
-        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
+        _searchBar.backgroundColor = [UIColor HIColorGreenDark];
     }
     
     return _searchBar;

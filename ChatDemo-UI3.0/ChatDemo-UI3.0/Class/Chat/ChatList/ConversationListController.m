@@ -40,11 +40,11 @@
 
 @end
 
-@interface ConversationListController ()<EaseConversationListViewControllerDelegate, EaseConversationListViewControllerDataSource,UISearchDisplayDelegate, UISearchBarDelegate>
+@interface ConversationListController ()<EaseConversationListViewControllerDelegate, EaseConversationListViewControllerDataSource, UISearchDisplayDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UIView *networkStateView;
-@property (nonatomic, strong) EMSearchBar           *searchBar;
 
+@property (nonatomic, strong) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
@@ -61,11 +61,12 @@
     
     [self tableViewDidTriggerHeaderRefresh];
     
-    [self.view addSubview:self.searchBar];
-    self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
+//    [self.view addSubview:self.searchBar];
+//    self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
+    
     [self networkStateView];
     
-    [self searchController];
+//    [self searchController];
     
     [self removeEmptyConversationsFromDB];
 }
@@ -80,6 +81,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Data
 
 - (void)removeEmptyConversationsFromDB
 {
@@ -101,11 +104,12 @@
 }
 
 #pragma mark - getter
+
 - (UIView *)networkStateView
 {
     if (_networkStateView == nil) {
         _networkStateView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
-        _networkStateView.backgroundColor = [UIColor colorWithRed:255 / 255.0 green:199 / 255.0 blue:199 / 255.0 alpha:0.5];
+        _networkStateView.backgroundColor = [UIColor HIColorGreenMajor];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (_networkStateView.frame.size.height - 20) / 2, 20, 20)];
         imageView.image = [UIImage imageNamed:@"messageSendFail"];
@@ -122,13 +126,16 @@
     return _networkStateView;
 }
 
+
+#pragma mark - Search Bar
+
 - (UISearchBar *)searchBar
 {
     if (!_searchBar) {
         _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
         _searchBar.delegate = self;
         _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
-        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
+        _searchBar.backgroundColor = [UIColor HIColorGreenDark];
     }
     
     return _searchBar;

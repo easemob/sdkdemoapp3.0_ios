@@ -50,8 +50,10 @@
 
 @implementation ContactListViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     self.showRefreshHeader = YES;
     
@@ -101,7 +103,7 @@
         _searchBar = [[EMSearchBar alloc] init];
         _searchBar.delegate = self;
         _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
-        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
+        _searchBar.backgroundColor = [UIColor whiteColor];
     }
     
     return _searchBar;
@@ -241,28 +243,28 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
-    {
+    if (section == 0) {
         return 0;
     }
-    else{
+    else {
         return 22;
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
-    {
+    if (section == 0) {
         return nil;
     }
     
     UIView *contentView = [[UIView alloc] init];
-    [contentView setBackgroundColor:[UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0]];
+    [contentView setBackgroundColor:[UIColor HIColorGreenLight]];
+    
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 22)];
     label.backgroundColor = [UIColor clearColor];
     [label setText:[self.sectionTitles objectAtIndex:(section - 1)]];
     [contentView addSubview:label];
+    
     return contentView;
 }
 

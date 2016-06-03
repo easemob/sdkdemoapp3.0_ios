@@ -19,8 +19,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        _addLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, 0, 50, 30)];
-        _addLabel.backgroundColor = [UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0];
+        _addLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 10, 0, 50, 30)];
+        _addLabel.backgroundColor = [UIColor HIColorGreenDark];
         _addLabel.textAlignment = NSTextAlignmentCenter;
         _addLabel.text = NSLocalizedString(@"add", @"Add");
         _addLabel.textColor = [UIColor whiteColor];

@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"title.setting", @"Setting");
-    self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
+    self.view.backgroundColor = [UIColor HIColorGreenDark];
     
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = self.footerView;
@@ -247,7 +247,7 @@
         [_footerView addSubview:line];
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, _footerView.frame.size.width - 20, 45)];
-        [logoutButton setBackgroundColor:RGBACOLOR(0xfe, 0x64, 0x50, 1)];
+        [logoutButton setBackgroundColor:[UIColor HIColorRed]];
         NSString *username = [[EMClient sharedClient] currentUsername];
         NSString *logoutButtonTitle = [[NSString alloc] initWithFormat:NSLocalizedString(@"setting.loginUser", @"log out(%@)"), username];
         [logoutButton setTitle:logoutButtonTitle forState:UIControlStateNormal];

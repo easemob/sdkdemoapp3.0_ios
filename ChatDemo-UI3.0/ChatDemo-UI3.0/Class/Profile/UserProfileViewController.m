@@ -42,7 +42,7 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"title.profile", @"Profile");
     
-    self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
+    self.view.backgroundColor = [UIColor HIColorGreenDark];
     
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = [[UIView alloc] init];

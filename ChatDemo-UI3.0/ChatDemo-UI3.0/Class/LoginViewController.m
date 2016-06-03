@@ -63,20 +63,13 @@
     self.title = NSLocalizedString(@"AppName", @"EaseMobDemo");
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-//注册账号
-//Registered account
+//Register an account
 - (IBAction)doRegister:(id)sender {
     if (![self isEmpty]) {
         //隐藏键盘

@@ -39,7 +39,7 @@
         [self.contentView addSubview:_contentLabel];
         
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, 0, 50, 30)];
-        [_addButton setBackgroundColor:[UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0]];
+        [_addButton setBackgroundColor:[UIColor HIColorGreenDark]];
         [_addButton setTitle:NSLocalizedString(@"accept", @"Accept") forState:UIControlStateNormal];
         _addButton.clipsToBounds = YES;
         [_addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -48,7 +48,7 @@
         [self.contentView addSubview:_addButton];
         
         _refuseButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 120, 0, 50, 30)];
-        [_refuseButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
+        [_refuseButton setBackgroundColor:[UIColor HIColorRed]];
         [_refuseButton setTitle:NSLocalizedString(@"reject", @"Reject") forState:UIControlStateNormal];
         _refuseButton.clipsToBounds = YES;
         [_refuseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -57,7 +57,7 @@
         [self.contentView addSubview:_refuseButton];
         
         _bottomLineView = [[UIView alloc] init];
-        _bottomLineView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
+        _bottomLineView.backgroundColor = [UIColor HIColorGreenMajor];
         [self.contentView addSubview:_bottomLineView];
     }
     return self;
