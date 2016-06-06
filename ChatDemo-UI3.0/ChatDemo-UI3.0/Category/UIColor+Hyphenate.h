@@ -3,7 +3,7 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Jerry Wu on 6/3/16.
-//  Copyright © 2016 Jerry Wu. All rights reserved.
+//  Copyright © 2016 Hyphenate. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
