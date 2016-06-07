@@ -32,11 +32,9 @@
 
 @property (nonatomic) GroupOccupantType occupantType;
 @property (strong, nonatomic) EMGroup *chatGroup;
-
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIButton *addButton;
-
 @property (strong, nonatomic) UIView *footerView;
 @property (strong, nonatomic) UIButton *clearButton;
 @property (strong, nonatomic) UIButton *exitButton;
@@ -593,7 +591,6 @@
     [self.navigationController pushViewController:selectionController animated:YES];
 }
 
-//清空聊天记录
 - (void)clearAction
 {
     __weak typeof(self) weakSelf = self;
@@ -608,7 +605,6 @@
     
 }
 
-//解散群组
 - (void)dissolveAction
 {
     __weak typeof(self) weakSelf = self;
@@ -628,7 +624,6 @@
     });
 }
 
-//设置群组
 - (void)configureAction {
     // todo
     __weak typeof(self) weakSelf = self;
@@ -637,7 +632,6 @@
     });
 }
 
-//退出群组
 - (void)exitAction
 {
     __weak typeof(self) weakSelf = self;
@@ -659,7 +653,6 @@
 
 - (void)didIgnoreGroupPushNotification:(NSArray *)ignoredGroupList error:(EMError *)error {
     // todo
-    NSLog(@"ignored group list:%@.", ignoredGroupList);
 }
 
 #pragma mark - UIActionSheetDelegate

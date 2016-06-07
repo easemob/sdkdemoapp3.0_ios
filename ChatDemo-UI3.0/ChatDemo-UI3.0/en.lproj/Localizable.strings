@@ -28,7 +28,7 @@
 "error" = "Error";
 "delete" = "Delete";
 "copy" = "Copy";
-"transpond" = "Transpond";
+"transpond" = "Forward";
 "save" = "Save";
 "prompt" = "Prompt";
 "add" = "Add";
@@ -40,22 +40,22 @@
 "reject" = "Reject";
 "wait" = "Please wait...";
 
-"sendingApply" = "sending apply...";
-"acceptFail" = "accept failure";
-"rejectFail" = "reject failure";
-"transponding" = "transponding...";
-"transpondFail" = "transpond Fail";
+"sendingApply" = "Sending apply...";
+"acceptFail" = "Accept failed";
+"rejectFail" = "Reject failed";
+"transponding" = "Forwarding...";
+"transpondFail" = "Forward failed";
 "refreshData" = "Refresh data...";
 "loadData" = "Load data...";
 "loadDataFailed" = "Load more failed";
 "saySomething" = "Say somthing";
 "searchResults" = "The search results";
 "doneWithCount" = "Done(%i)";
-"sureToDelete" = "please make sure to delete";
-"receiveCmd" = "receive cmd message";
-"receiveMessage" = "you have a new message";
-"loginAtOtherDevice" = "your login account has been logged in other places";
-"loginUserRemoveFromServer" = "your account has been removed from the server side";
+"sureToDelete" = "Please make sure to delete";
+"receiveCmd" = "Receive cmd message";
+"receiveMessage" = "You have a new message";
+"loginAtOtherDevice" = "Your login account has been logged in other places";
+"loginUserRemoveFromServer" = "Your account has been removed from the server side";
 "deleteFailed" = "Delete failed:%@";
 "notFound" = "Can't found";
 "noMore" = "No more data";
@@ -76,11 +76,12 @@
 "error.recordStoping" = "Record voice is not over yet";
 "error.recordNotBegin" = "Recording has not yet begun";
 "error.recordTooShort" = "Recording time is too short";
+"error.save" = "Fail to save";
 
 //login
 "login.beginAutoLogin" = "Start automatic login...";
 "login.endAutoLogin" = "End automatic login...";
-"login.errorAutoLogin" = "Automatic logon failure.";
+"login.errorAutoLogin" = "Auto-login fails, please try to login again";
 "login.nameNotSupportZh" = "Name does not support Chinese";
 "login.ongoing" = "Login...";
 "login.fail" = "Logon failure";
@@ -224,6 +225,14 @@
 "call.videoLostcnt"="Lostcnt: ";
 "call.videoLocalBitrate"="Local Bitrate: ";
 "call.videoRemoteBitrate"="Remote Bitrate: ";
+"call.record" = "Record";
+"call.stopRecording" = "Stop Recording";
+"call.startVideo" = "Start the video";
+"call.pauseVideo" = "Pause the video";
+"call.startAudio" = "Start the audio";
+"call.pauseAudio" = "Pause the audio";
+"call.noDate" = "There is no data"
+"call.networkUnstable" = "Current network is unstable";
 
 //message
 "message.image" = "image";
@@ -334,6 +343,12 @@
 "setting.profileNickname" = "NickName";
 "setting.saving" = "saving...";
 "setting.saveFailed" = "save failed";
+
+//search
+"search.sender" = "Sender:";
+"search.sentTime" = "Sent time:";
+"search.loadMore" = "Load more";
+"search.emoji" = "Emoji";
 
 //NSDateCategory
 "NSDateCategory.text1" = "one minute";

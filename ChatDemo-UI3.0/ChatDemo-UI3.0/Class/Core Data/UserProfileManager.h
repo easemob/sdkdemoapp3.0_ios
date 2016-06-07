@@ -10,8 +10,6 @@
  * from Hyphenate Inc.
  */
 
-//  用来处理UIDemo上Parse相关逻辑
-
 #import <Foundation/Foundation.h>
 
 #define kPARSE_HXUSER @"hxuser"
@@ -30,46 +28,18 @@
 - (void)initParse;
 
 - (void)clearParse;
-
-/*
- *  上传个人头像
- */
 - (void)uploadUserHeadImageProfileInBackground:(UIImage*)image
                                     completion:(void (^)(BOOL success, NSError *error))completion;
-
-/*
- *  上传个人信息
- */
 - (void)updateUserProfileInBackground:(NSDictionary*)param
                                     completion:(void (^)(BOOL success, NSError *error))completion;
-
-/*
- *  获取用户信息 by username
- */
 - (void)loadUserProfileInBackground:(NSArray*)usernames
                        saveToLoacal:(BOOL)save
                          completion:(void (^)(BOOL success, NSError *error))completion;
-
-/*
- *  获取用户信息 by buddy
- */
 - (void)loadUserProfileInBackgroundWithBuddy:(NSArray*)buddyList
                                 saveToLoacal:(BOOL)save
                                   completion:(void (^)(BOOL success, NSError *error))completion;
-
-/*
- *  获取本地用户信息
- */
 - (UserProfileEntity*)getUserProfileByUsername:(NSString*)username;
-
-/*
- *  获取当前用户信息
- */
 - (UserProfileEntity*)getCurUserProfile;
-
-/*
- *  根据username获取当前用户昵称
- */
 - (NSString*)getNickNameWithUsername:(NSString*)username;
 
 @end

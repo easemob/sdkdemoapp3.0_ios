@@ -25,7 +25,6 @@
 
 @implementation NSString (search)
 
-//根据用户昵称进行搜索
 - (NSString*)showName
 {
     return [[UserProfileManager sharedInstance] getNickNameWithUsername:self];
@@ -66,7 +65,6 @@
     
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
     
-    // 环信UIdemo中有用到Parse, 加载用户好友个人信息
     [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
 }
 
@@ -400,7 +398,6 @@
 - (void)cellImageViewLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
         return;
     }
     NSString *loginUsername = [[EMClient sharedClient] currentUsername];
@@ -431,7 +428,6 @@
     [self.sectionTitles removeAllObjects];
     NSMutableArray *contactsSource = [NSMutableArray array];
     
-    //从获取的数据中剔除黑名单中的好友
     NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
     for (NSString *buddy in buddyList) {
         if (![blockList containsObject:buddy]) {
@@ -439,7 +435,6 @@
         }
     }
     
-    //建立索引的核心, 返回27，是a－z和＃
     UILocalizedIndexedCollation *indexCollation = [UILocalizedIndexedCollation currentCollation];
     [self.sectionTitles addObjectsFromArray:[indexCollation sectionTitles]];
     
@@ -450,7 +445,6 @@
         [sortedArray addObject:sectionArray];
     }
     
-    //按首字母分组
     for (NSString *buddy in contactsSource) {
         EaseUserModel *model = [[EaseUserModel alloc] initWithBuddy:buddy];
         if (model) {
@@ -465,7 +459,6 @@
         }
     }
     
-    //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EaseUserModel *obj1, EaseUserModel *obj2) {
             NSString *firstLetter1 = [EaseChineseToPinyin pinyinFromChineseString:obj1.buddy];
@@ -481,7 +474,6 @@
         [sortedArray replaceObjectAtIndex:i withObject:[NSMutableArray arrayWithArray:array]];
     }
     
-    //去掉空的section
     for (NSInteger i = [sortedArray count] - 1; i >= 0; i--) {
         NSArray *array = [sortedArray objectAtIndex:i];
         if ([array count] == 0) {
@@ -499,7 +491,6 @@
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
         return;
     }
     NSString *loginUsername = [[EMClient sharedClient] currentUsername];
@@ -524,7 +515,6 @@
         
         EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
         if (!error) {
-            //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
             [self reloadDataSource];
         }
         else {

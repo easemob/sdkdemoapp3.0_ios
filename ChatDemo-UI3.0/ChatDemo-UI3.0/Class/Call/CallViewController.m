@@ -25,7 +25,6 @@
     
     NSString * _audioCategory;
     
-    //视频属性显示区域
     UIView *_propertyView;
     UILabel *_sizeLabel;
     UILabel *_timedelayLabel;
@@ -34,7 +33,6 @@
     UILabel *_remoteBitrateLabel;
     UILabel *_localBitrateLabel;
     NSTimer *_propertyTimer;
-    //弱网检测
     UILabel *_networkLabel;
 }
 
@@ -227,24 +225,24 @@
         CGFloat tmpWidth = _actionView.frame.size.width / 3;
         _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
         _recordButton.layer.cornerRadius = 20.f;
-        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
-        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
+        [_recordButton setTitle:NSLocalizedString(@"call.record", @"Record") forState:UIControlStateNormal];
+        [_recordButton setTitle:NSLocalizedString(@"call.stopRecording", @"Stop Recording") forState:UIControlStateSelected];
         [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
         [_recordButton setBackgroundColor:[UIColor grayColor]];
         [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
         [_actionView addSubview:_recordButton];
         _videoButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2, 20, 40, 40)];
         _videoButton.layer.cornerRadius = 20.f;
-        [_videoButton setTitle:@"视频开启" forState:UIControlStateNormal];
-        [_videoButton setTitle:@"视频中断" forState:UIControlStateSelected];
+        [_videoButton setTitle:NSLocalizedString(@"call.startVideo", @"Start the video") forState:UIControlStateNormal];
+        [_videoButton setTitle:NSLocalizedString(@"call.pauseVideo", @"Pause the video") forState:UIControlStateSelected];
         [_videoButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
         [_videoButton setBackgroundColor:[UIColor grayColor]];
         [_videoButton addTarget:self action:@selector(videoPauseAction) forControlEvents:UIControlEventTouchUpInside];
         [_actionView addSubview:_videoButton];
         _voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth * 2 + (tmpWidth - 40) / 2, 20, 40, 40)];
         _voiceButton.layer.cornerRadius = 20.f;
-        [_voiceButton setTitle:@"音视开启" forState:UIControlStateNormal];
-        [_voiceButton setTitle:@"音视中断" forState:UIControlStateSelected];
+        [_voiceButton setTitle:NSLocalizedString(@"call.startAudio", @"Start the audio") forState:UIControlStateNormal];
+        [_voiceButton setTitle:NSLocalizedString(@"call.pauseAudio", @"Pause the audio") forState:UIControlStateSelected];
         [_voiceButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
         [_voiceButton setBackgroundColor:[UIColor grayColor]];
         [_voiceButton addTarget:self action:@selector(voicePauseAction) forControlEvents:UIControlEventTouchUpInside];
@@ -327,10 +325,10 @@
     
     _ringPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     [_ringPlayer setVolume:1];
-    _ringPlayer.numberOfLoops = -1; //设置音乐播放次数  -1为一直循环
+    _ringPlayer.numberOfLoops = -1; //-1 is for infinite loop
     if([_ringPlayer prepareToPlay])
     {
-        [_ringPlayer play]; //播放
+        [_ringPlayer play];
     }
 }
 
@@ -532,13 +530,13 @@
             break;
         case EMCallNetworkStatusUnstable:
         {
-            _networkLabel.text = @"当前网络不稳定";
+            _networkLabel.text = NSLocalizedString(@"call.networkUnstable", @"Current network is unstable");
             _networkLabel.hidden = NO;
         }
             break;
         case EMCallNetworkStatusNoData:
         {
-            _networkLabel.text = @"没有通话数据";
+            _networkLabel.text = NSLocalizedString(@"call.noDate", @"No data");
             _networkLabel.hidden = NO;
         }
             break;

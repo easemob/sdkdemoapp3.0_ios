@@ -10,9 +10,6 @@
  * from Hyphenate Inc.
  */
 
-
-//  用来处理UIDemo上的数据，您使用时请自己处理相关部分db
-
 #import <Foundation/Foundation.h>
 
 @class ApplyEntity;

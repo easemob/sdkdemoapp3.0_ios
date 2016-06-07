@@ -163,7 +163,6 @@ typedef NS_ENUM(NSInteger, GettingMoreFooterViewState){
 
 - (void)dealloc
 {
-    //由于可能有大量公有群在退出页面时需要释放，所以把释放操作放到其它线程避免卡UI
     NSMutableArray *publicGroups = [self.dataSource mutableCopy];
     [self.dataSource removeAllObjects];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

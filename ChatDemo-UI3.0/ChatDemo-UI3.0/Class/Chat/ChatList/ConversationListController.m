@@ -22,7 +22,6 @@
 
 @implementation EMConversation (search)
 
-//根据用户昵称,环信机器人名称,群名称进行搜索
 - (NSString*)showName
 {
     if (self.type == EMConversationTypeChat) {
@@ -266,12 +265,11 @@
                 latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
             } break;
             case EMMessageBodyTypeText:{
-                // 表情映射。
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
                 latestMessageTitle = didReceiveText;
                 if ([lastMessage.ext objectForKey:MESSAGE_ATTR_IS_BIG_EXPRESSION]) {
-                    latestMessageTitle = @"[动画表情]";
+                    latestMessageTitle = NSLocalizedString(@"search.emoji", @"Emoji");
                 }
             } break;
             case EMMessageBodyTypeVoice:{

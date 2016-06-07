@@ -89,7 +89,7 @@
     if (_fromLabel == nil) {
         _fromLabel = [[UILabel alloc] init];
         _fromLabel.frame = CGRectMake(0, CGRectGetMaxY(self.searchBar.frame) + 5, CGRectGetWidth([UIScreen mainScreen].bounds), 20);
-        _fromLabel.text = @"筛选发送者:";
+        _fromLabel.text = NSLocalizedString(@"search.sender", @"Sender:");
         _fromLabel.textColor = [UIColor blackColor];
         _fromLabel.textAlignment = NSTextAlignmentLeft;
     }
@@ -101,7 +101,7 @@
     if (_timeLabel == nil) {
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame) + 5, CGRectGetWidth([UIScreen mainScreen].bounds), 20);
-        _timeLabel.text = @"筛选发送时间:";
+        _timeLabel.text = NSLocalizedString(@"search.sentTime", @"Sent time:");
         _timeLabel.textColor = [UIColor blackColor];
         _timeLabel.textAlignment = NSTextAlignmentLeft;
     }
@@ -130,7 +130,7 @@
         _textField = [[UITextField alloc] init];
         _textField.frame = CGRectMake(0, CGRectGetMaxY(self.fromLabel.frame), CGRectGetWidth([UIScreen mainScreen].bounds), 50.f);
         _textField.textColor = [UIColor blackColor];
-        _textField.placeholder = @"填写发送者";
+        _textField.placeholder = NSLocalizedString(@"search.sender", @"Sender:");
         _textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _textField.layer.borderWidth = 0.5f;
         _textField.returnKeyType = UIReturnKeyDone;
@@ -181,7 +181,7 @@
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
                 }
-                cell.textLabel.text = @"加载更多";
+                cell.textLabel.text = NSLocalizedString(@"search.loadMore", @"Load more");
                 return cell;
             }
         }];
@@ -300,7 +300,7 @@
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
                 content = didReceiveText;
                 if ([message.ext objectForKey:MESSAGE_ATTR_IS_BIG_EXPRESSION]) {
-                    content = @"[动画表情]";
+                    content = NSLocalizedString(@"search.emoji", @"Emoji");
                 }
             } break;
             case EMMessageBodyTypeVoice:{

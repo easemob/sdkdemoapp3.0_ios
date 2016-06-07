@@ -130,7 +130,6 @@ static ChatDemoHelper *helper = nil;
 
 #pragma mark - EMClientDelegate
 
-// 网络状态变化回调
 - (void)didConnectionStateChanged:(EMConnectionState)connectionState
 {
     [self.mainVC networkChanged:connectionState];
@@ -139,7 +138,7 @@ static ChatDemoHelper *helper = nil;
 - (void)didAutoLoginWithError:(EMError *)error
 {
     if (error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"自动登录失败，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"login.errorAutoLogin", @"Auto-login fails, please try to login again") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         alertView.tag = 100;
         [alertView show];
     } else if([[EMClient sharedClient] isConnected]){
@@ -173,18 +172,6 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
-
-//- (void)didServersChanged
-//{
-//    [self _clearHelper];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-//}
-//
-//- (void)didAppkeyChanged
-//{
-//    [self _clearHelper];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-//}
 
 #pragma mark - EMChatManagerDelegate
 

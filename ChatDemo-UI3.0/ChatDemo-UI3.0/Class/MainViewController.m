@@ -19,7 +19,6 @@
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
 #import "ChatDemoHelper.h"
-//两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 static NSString *kMessageType = @"MessageType";
 static NSString *kConversationChatter = @"ConversationChatter";
@@ -34,7 +33,6 @@ static NSString *kGroupName = @"GroupName";
     ConversationListController *_chatListVC;
     ContactListViewController *_contactsVC;
     SettingsViewController *_settingsVC;
-//    __weak CallViewController *_callController;
     
     UIBarButtonItem *_addFriendItem;
 }
@@ -57,14 +55,11 @@ static NSString *kGroupName = @"GroupName";
 {
     [super viewDidLoad];
     
-    //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     self.title = NSLocalizedString(@"title.conversation", @"Chats");
     
-    //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
-//    [self didUnreadMessagesCountChanged];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUnreadMessageCount) name:@"setupUnreadMessageCount" object:nil];
     
@@ -151,7 +146,6 @@ static NSString *kGroupName = @"GroupName";
     [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:14], UITextAttributeFont, [UIColor HIColorGreenMajor], UITextAttributeTextColor, nil] forState:UIControlStateSelected];
 }
 
-// 统计未读消息数
 -(void)setupUnreadMessageCount
 {
     NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
@@ -193,26 +187,20 @@ static NSString *kGroupName = @"GroupName";
     NSTimeInterval timeInterval = [[NSDate date]
                                    timeIntervalSinceDate:self.lastPlaySoundDate];
     if (timeInterval < kDefaultPlaySoundInterval) {
-        //如果距离上次响铃和震动时间太短, 则跳过响铃
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
         return;
     }
     
-    //保存最后一次响铃时间
     self.lastPlaySoundDate = [NSDate date];
     
-    // 收到消息时，播放音频
     [[EMCDDeviceManager sharedInstance] playNewMessageSound];
-    // 收到消息时，震动
     [[EMCDDeviceManager sharedInstance] playVibration];
 }
 
 - (void)showNotificationWithMessage:(EMMessage *)message
 {
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    //发送本地推送
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.fireDate = [NSDate date]; //触发通知的时间
+    notification.fireDate = [NSDate date];
     
     if (options.displayStyle == EMPushDisplayStyleMessageSummary) {
         EMMessageBody *messageBody = message.body;
@@ -274,14 +262,10 @@ static NSString *kGroupName = @"GroupName";
         notification.alertBody = NSLocalizedString(@"receiveMessage", @"you have a new message");
     }
     
-#warning 去掉注释会显示[本地]开头, 方便在开发中区分是否为本地推送
-    //notification.alertBody = [[NSString alloc] initWithFormat:@"[本地]%@", notification.alertBody];
-    
     notification.alertAction = NSLocalizedString(@"open", @"Open");
     notification.timeZone = [NSTimeZone defaultTimeZone];
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
     if (timeInterval < kDefaultPlaySoundInterval) {
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
     } else {
         notification.soundName = UILocalNotificationDefaultSoundName;
         self.lastPlaySoundDate = [NSDate date];
@@ -292,13 +276,10 @@ static NSString *kGroupName = @"GroupName";
     [userInfo setObject:message.conversationId forKey:kConversationChatter];
     notification.userInfo = userInfo;
     
-    //发送通知
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-//    UIApplication *application = [UIApplication sharedApplication];
-//    application.applicationIconBadgeNumber += 1;
 }
 
-#pragma mark - 自动登录回调
+#pragma mark - Auto Reconnect
 
 - (void)willAutoReconnect{
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];

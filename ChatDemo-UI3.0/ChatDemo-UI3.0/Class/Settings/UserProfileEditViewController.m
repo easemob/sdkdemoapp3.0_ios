@@ -12,7 +12,6 @@
 
 #import "UserProfileEditViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-
 #import "UserProfileManager.h"
 #import "EditNicknameViewController.h"
 #import "UIImageView+HeadImage.h"
