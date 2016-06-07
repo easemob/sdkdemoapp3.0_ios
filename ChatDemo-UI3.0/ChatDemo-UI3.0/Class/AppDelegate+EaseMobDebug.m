@@ -14,8 +14,6 @@
 
 #import "EMOptions+PrivateDeploy.h"
 
-#warning 环信内部测试用，开发者不需要使用此类
-
 @implementation AppDelegate (EaseMobDebug)
 
 
@@ -64,7 +62,6 @@
             options.chatServer = [ud stringForKey:@"identifier_imserver"];
             options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
-        //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
         options.apnsCertName = @"chatdemoui_dev";
         options.enableConsoleLog = YES;
         

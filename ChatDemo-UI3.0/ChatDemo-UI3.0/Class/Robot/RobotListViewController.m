@@ -194,7 +194,6 @@
 
 - (void)dealloc
 {
-    //由于离开页面时可能有大量聊天室对象需要释放，所以把释放操作放到一个独立线程
     if ([self.dataSource count])
     {
         NSMutableArray *robots = self.dataSource;

@@ -19,7 +19,6 @@
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
 #import "CallViewController.h"
-//#import "BackupViewController.h"
 
 @interface SettingsViewController ()
 
@@ -212,10 +211,8 @@
     }
 }
 
-//弹出提示的代理方法
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if ([alertView cancelButtonIndex] != buttonIndex) {
-        //获取文本输入框
         UITextField *nameTextField = [alertView textFieldAtIndex:0];
         BOOL flag = YES;
         if(nameTextField.text.length > 0) {

@@ -507,13 +507,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		28BFD62F1B01D40500D0ADEC /* Chatroom */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Chatroom;
-			sourceTree = "<group>";
-		};
 		3C16149C1973D1A600564BF5 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -770,7 +763,6 @@
 				D2A910711C7FEEC20025AD0A /* Call */,
 				D2CB22591B60CB08001BC741 /* Profile */,
 				D25787391B43EC7000B0E69F /* Robot */,
-				28BFD62F1B01D40500D0ADEC /* Chatroom */,
 				3C16149C1973D1A600564BF5 /* Core Data */,
 				3C914D7019514BBD0002DAD3 /* ChatGroup */,
 				9003D7761939D8D000DC38A4 /* Chat */,

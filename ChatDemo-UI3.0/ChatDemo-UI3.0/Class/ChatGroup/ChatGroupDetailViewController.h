@@ -12,12 +12,9 @@
 
 #import <UIKit/UIKit.h>
 
-/**
- *  群组成员类型
- */
 typedef enum{
-    GroupOccupantTypeOwner,//创建者
-    GroupOccupantTypeMember,//成员
+    GroupOccupantTypeOwner,
+    GroupOccupantTypeMember,
 }GroupOccupantType;
 
 @interface ChatGroupDetailViewController : UITableViewController

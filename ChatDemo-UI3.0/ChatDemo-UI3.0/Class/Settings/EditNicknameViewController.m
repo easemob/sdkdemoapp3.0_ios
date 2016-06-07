@@ -114,7 +114,6 @@
 {
     if(_nickTextField.text.length > 0)
     {
-        //设置推送设置
         [[EMClient sharedClient] setApnsNickname:_nickTextField.text];
         [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:_nickTextField.text} completion:^(BOOL success, NSError *error){}];
         [self.navigationController popViewControllerAnimated:YES];
@@ -126,14 +125,5 @@
                       otherButtonTitles:nil];
     }
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

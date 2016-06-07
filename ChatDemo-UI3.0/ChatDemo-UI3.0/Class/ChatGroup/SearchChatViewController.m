@@ -43,16 +43,13 @@
 {
     [super viewDidLoad];
     
-    //隐藏底部输入bar
     self.chatToolbar.hidden = YES;
     CGRect frame = self.tableView.frame;
     frame.size.height += CGRectGetHeight(self.chatToolbar.frame);
     self.tableView.frame = frame;
     
-    //隐藏item
     self.navigationItem.rightBarButtonItem = nil;
     
-    //设置可以向下翻页
     [self setShowRefreshFooter:YES];
     
     [[EMClient sharedClient].chatManager removeDelegate:self];
@@ -100,7 +97,6 @@
             return;
         }
         
-        //格式化消息
         NSArray *formattedMessages;
         if ([weakSelf respondsToSelector:@selector(formatMessages:)]) {
             formattedMessages = [weakSelf performSelector:@selector(formatMessages:) withObject:moreMessages];
@@ -116,7 +112,6 @@
             [weakSelf.messsagesSource addObjectsFromArray:moreMessages];
         }
         
-        //合并消息
         id object = [weakSelf.dataArray firstObject];
         if ([object isKindOfClass:[NSString class]])
         {
@@ -136,7 +131,6 @@
             [weakSelf.dataArray addObjectsFromArray:formattedMessages];
         }
         
-        //刷新页面
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
             if (direction) {

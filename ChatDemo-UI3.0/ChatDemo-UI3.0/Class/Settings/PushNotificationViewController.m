@@ -256,7 +256,7 @@
             if (!error) {
                 [weakself.navigationController popViewControllerAnimated:YES];
             } else {
-                [weakself showHint:[NSString stringWithFormat:@"保存失败-error:%@",error.errorDescription]];
+                [weakself showHint:[NSString stringWithFormat:@"%@:%@", NSLocalizedString(@"error.save", @"Fail to save"),error.errorDescription]];
             }
         });
     });
@@ -265,7 +265,6 @@
 - (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
 {
     if (pushDisplaySwitch.isOn) {
-#warning 此处设置详情显示时的昵称，比如_nickName = @"环信";
         _pushDisplayStyle = EMPushDisplayStyleMessageSummary;
     }
     else{

@@ -76,6 +76,7 @@
 "error.recordStoping" = "语音录制还没有结束";
 "error.recordNotBegin" = "还没有开始语音录制";
 "error.recordTooShort" = "录制时间过短";
+"error.save" = "保存失败";
 
 //login
 "login.beginAutoLogin" = "自动登录开始...";
@@ -224,6 +225,14 @@
 "call.videoLostcnt"="丢包数: ";
 "call.videoLocalBitrate"="本地比特率: ";
 "call.videoRemoteBitrate"="对方比特率: ";
+"call.record" = "录制";
+"call.stopRecording" = "停止播放";
+"call.startVideo" = "视频开启";
+"call.pauseVideo" = "视频中断";
+"call.startAudio" = "音视开启";
+"call.pauseAudio" = "音视中断";
+"call.noDate" = "没有通话数据";
+"call.networkUnstable" = "当前网络不稳定";
 
 //message
 "message.image" = "图片";
@@ -335,6 +344,12 @@
 "setting.profileNickname" = "昵称";
 "setting.saving" = "修改中...";
 "setting.saveFailed" = "修改失败";
+
+//search
+"search.sender" = "发送者:";
+"search.sentTime" = "筛选发送时间:";
+"search.loadMore" = "加载更多";
+"search.emoji" = "[动画表情]";
 
 //NSDateCategory
 "NSDateCategory.text1" = "1分钟内";

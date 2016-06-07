@@ -76,11 +76,12 @@
 "error.recordStoping" = "Record voice is not over yet";
 "error.recordNotBegin" = "Recording has not yet begun";
 "error.recordTooShort" = "Recording time is too short";
+"error.save" = "Fail to save";
 
 //login
 "login.beginAutoLogin" = "Start automatic login...";
 "login.endAutoLogin" = "End automatic login...";
-"login.errorAutoLogin" = "Automatic logon failure.";
+"login.errorAutoLogin" = "Auto-login fails, please try to login again";
 "login.nameNotSupportZh" = "Name does not support Chinese";
 "login.ongoing" = "Login...";
 "login.fail" = "Logon failure";
@@ -224,6 +225,14 @@
 "call.videoLostcnt"="Lostcnt: ";
 "call.videoLocalBitrate"="Local Bitrate: ";
 "call.videoRemoteBitrate"="Remote Bitrate: ";
+"call.record" = "Record";
+"call.stopRecording" = "Stop Recording";
+"call.startVideo" = "Start the video";
+"call.pauseVideo" = "Pause the video";
+"call.startAudio" = "Start the audio";
+"call.pauseAudio" = "Pause the audio";
+"call.noDate" = "There is no data"
+"call.networkUnstable" = "Current network is unstable";
 
 //message
 "message.image" = "image";
@@ -334,6 +343,12 @@
 "setting.profileNickname" = "NickName";
 "setting.saving" = "saving...";
 "setting.saveFailed" = "save failed";
+
+//search
+"search.sender" = "Sender:";
+"search.sentTime" = "Sent time:";
+"search.loadMore" = "Load more";
+"search.emoji" = "Emoji";
 
 //NSDateCategory
 "NSDateCategory.text1" = "one minute";
