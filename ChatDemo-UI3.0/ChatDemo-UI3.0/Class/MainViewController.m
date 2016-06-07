@@ -201,7 +201,6 @@ static NSString *kGroupName = @"GroupName";
     NSTimeInterval timeInterval = [[NSDate date]
                                    timeIntervalSinceDate:self.lastPlaySoundDate];
     if (timeInterval < kDefaultPlaySoundInterval) {
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
         return;
     }
     
@@ -281,7 +280,6 @@ static NSString *kGroupName = @"GroupName";
     notification.timeZone = [NSTimeZone defaultTimeZone];
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
     if (timeInterval < kDefaultPlaySoundInterval) {
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
     } else {
         notification.soundName = UILocalNotificationDefaultSoundName;
         self.lastPlaySoundDate = [NSDate date];
