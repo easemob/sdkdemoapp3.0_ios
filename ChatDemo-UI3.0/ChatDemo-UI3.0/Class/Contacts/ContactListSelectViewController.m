@@ -14,6 +14,8 @@
 
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
+#import "RedPacketChatViewController.h"
+
 
 @interface ContactListSelectViewController () <EMUserListViewControllerDelegate,EMUserListViewControllerDataSource>
 
@@ -48,7 +50,12 @@
             [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *aMessage, EMError *aError) {
                 if (!aError) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+#ifdef REDPACKET_AVALABLE
+                    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+                    ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                                          initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
                     chatController.title = userModel.nickname.length != 0 ? [userModel.nickname copy] : [userModel.buddy copy];
                     if ([array count] >= 3) {
                         [array removeLastObject];
@@ -65,15 +72,28 @@
             [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transpondFailing...")];
             
             UIImage *image = self.messageModel.image;
-            if (image) {
+            if (!image) {
                 image = [UIImage imageWithContentsOfFile:self.messageModel.fileLocalPath];
             }
+            
+            if (!image) {
+                [self hideHud];
+                [self showHudInView:self.view hint:NSLocalizedString(@"transpondFail", @"transpond Fail")];
+                [self performSelector:@selector(backAction) withObject:nil afterDelay:0.5];
+                return;
+            }
+            
             EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
             
             [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
                 if (!error) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+#ifdef REDPACKET_AVALABLE
+                    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+                    ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                                          initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
                     chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
                     if ([array count] >= 3) {
                         [array removeLastObject];

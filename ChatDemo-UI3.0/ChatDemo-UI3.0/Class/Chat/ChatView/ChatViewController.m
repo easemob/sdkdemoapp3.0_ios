@@ -19,7 +19,7 @@
 #import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
 
-@interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
+@interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate>
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
@@ -142,7 +142,7 @@
         EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [cell becomeFirstResponder];
         self.menuIndexPath = indexPath;
-        [self _showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.model.bodyType];
+        [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.model.bodyType];
     }
     return YES;
 }
@@ -389,7 +389,7 @@
 
 #pragma mark - private
 
-- (void)_showMenuViewController:(UIView *)showInView
+- (void)showMenuViewController:(UIView *)showInView
                    andIndexPath:(NSIndexPath *)indexPath
                     messageType:(EMMessageBodyType)messageType
 {

@@ -20,6 +20,8 @@
 #import "PublicGroupListViewController.h"
 #import "RealtimeSearchUtil.h"
 #import "ChatroomListViewController.h"
+#import "RedPacketChatViewController.h"
+
 
 @interface MyChatroom : NSObject
 @property (nonatomic, strong) NSString *chatroomId;
@@ -169,7 +171,13 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
             [weakSelf.searchController.searchBar endEditing:YES];
             
             MyChatroom *myChatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
+            
+#ifdef REDPACKET_AVALABLE
+            RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+                                                           ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                                  initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
             chatController.title = myChatroom.chatroomName;
             [weakSelf.navigationController pushViewController:chatController animated:YES];
         }];
@@ -279,7 +287,12 @@ static NSString *kOnceJoinedChatroomsPattern = @"OnceJoinedChatrooms_%@";
         }
     } else {
         MyChatroom *myChatroom = [self.dataSource objectAtIndex:indexPath.row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+                                                       ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                              initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
         chatController.title = myChatroom.chatroomName;
         [self.navigationController pushViewController:chatController animated:YES];
     }
