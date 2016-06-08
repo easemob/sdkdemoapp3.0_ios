@@ -450,7 +450,6 @@
 			sourceTree = "<group>";
 		};
 		3C16149C1973D1A600564BF5 /* Data Models */ = {
-		3C16149C1973D1A600564BF5 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
 				D29A6BAA1B72090F002324BB /* UserProfileManager.h */,
@@ -711,7 +710,6 @@
 				D2CB22591B60CB08001BC741 /* Profile */,
 				D25787391B43EC7000B0E69F /* Robot */,
 				28BFD62F1B01D40500D0ADEC /* Chatroom */,
-				3C16149C1973D1A600564BF5 /* Core Data */,
 				3C914D7019514BBD0002DAD3 /* ChatGroup */,
 				9003D7761939D8D000DC38A4 /* Chat */,
 				9003D84D1939D8D000DC38A4 /* Contacts */,
