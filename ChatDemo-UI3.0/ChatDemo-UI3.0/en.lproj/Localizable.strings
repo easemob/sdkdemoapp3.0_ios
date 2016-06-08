@@ -231,7 +231,7 @@
 "call.pauseVideo" = "Pause the video";
 "call.startAudio" = "Start the audio";
 "call.pauseAudio" = "Pause the audio";
-"call.noDate" = "There is no data"
+"call.noDate" = "There is no data";
 "call.networkUnstable" = "Current network is unstable";
 
 //message
