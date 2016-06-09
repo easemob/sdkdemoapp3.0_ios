@@ -42,9 +42,9 @@
     
     NSString *apnsCertName = nil;
 #if DEBUG
-    apnsCertName = @"chatdemoui_dev";
+    apnsCertName = @"DevelopmentCertificate";
 #else
-    apnsCertName = @"chatdemoui";
+    apnsCertName = @"ProductionCertificate";
 #endif
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];

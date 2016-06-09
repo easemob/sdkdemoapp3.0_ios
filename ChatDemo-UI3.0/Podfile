@@ -8,6 +8,7 @@ target 'ChatDemo-UI3.0' do
     pod 'HyphenateFullSDK'
     pod 'EaseUI', :git => 'https://github.com/HyphenateInc/easeui_ios'
     
+    pod 'GoogleAnalytics', '~> 3.14'
     pod 'Parse'
     pod 'SlimeRefresh'
 
