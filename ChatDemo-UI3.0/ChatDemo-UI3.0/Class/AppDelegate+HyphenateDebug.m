@@ -24,9 +24,9 @@
     if ([specifyServer boolValue]) {
         NSString *apnsCertName = nil;
 #if DEBUG
-        apnsCertName = @"chatdemoui_dev";
+        apnsCertName = @"DevelopmentCertificate";
 #else
-        apnsCertName = @"chatdemoui";
+        apnsCertName = @"ProductionCertificate";
 #endif
         NSString *appkey = [ud stringForKey:@"identifier_appkey"];
         if (!appkey)
