@@ -220,7 +220,7 @@
     return @{MESSAGE_ATTR_EXPRESSION_ID:easeEmotion.emotionId,MESSAGE_ATTR_IS_BIG_EXPRESSION:@(YES)};
 }
 
-#pragma mark - EaseMob
+#pragma mark - Hyphenate
 
 #pragma mark - EMClientDelegate
 

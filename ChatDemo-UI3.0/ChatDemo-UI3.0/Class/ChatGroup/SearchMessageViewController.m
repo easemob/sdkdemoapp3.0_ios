@@ -49,7 +49,7 @@
     self = [super init];
     if (self) {
         _conversation = [[EMClient sharedClient].chatManager getConversation:conversationId type:conversationType createIfNotExist:NO];
-        _searchQueue = dispatch_queue_create("com.easemob.search.message", DISPATCH_QUEUE_SERIAL);
+        _searchQueue = dispatch_queue_create("com.hyphenate.search.message", DISPATCH_QUEUE_SERIAL);
         _queueTag = &_queueTag;
         dispatch_queue_set_specific(_searchQueue, _queueTag, _queueTag, NULL);
         

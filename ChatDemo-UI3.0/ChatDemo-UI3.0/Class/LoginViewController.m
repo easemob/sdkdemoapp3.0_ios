@@ -58,7 +58,7 @@
         _usernameTextField.text = username;
     }
         
-    self.title = NSLocalizedString(@"AppName", @"EaseMobDemo");
+    self.title = NSLocalizedString(@"AppName", @"HyphenateDemo");
 }
 
 - (void)viewDidAppear:(BOOL)animated

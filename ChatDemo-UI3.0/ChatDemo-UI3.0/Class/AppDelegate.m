@@ -14,7 +14,7 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 
-#import "AppDelegate+EaseMob.h"
+#import "AppDelegate+Hyphenate.h"
 #import "AppDelegate+Parse.h"
 
 
@@ -50,11 +50,11 @@
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSString *appkey = [ud stringForKey:@"identifier_appkey"];
     if (!appkey) {
-        appkey = @"easemob-demo#chatdemoui";
+        appkey = @"hyphenatedemo#hyphenatedemo";
         [ud setObject:appkey forKey:@"identifier_appkey"];
     }
 
-    [self easemobApplication:application
+    [self hyphenateApplication:application
 didFinishLaunchingWithOptions:launchOptions
                       appkey:appkey
                 apnsCertName:apnsCertName

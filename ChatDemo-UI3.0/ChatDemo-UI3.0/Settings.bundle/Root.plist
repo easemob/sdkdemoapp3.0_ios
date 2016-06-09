@@ -16,7 +16,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<string>easemob-demo#no1</string>
+			<string>hyphenatedemo#hyphenatedemo</string>
 			<key>IsSecure</key>
 			<false/>
 			<key>Key</key>

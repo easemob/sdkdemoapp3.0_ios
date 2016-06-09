@@ -10,17 +10,17 @@
  * from Hyphenate Inc.
  */
 
-#import "AppDelegate+EaseMob.h"
-#import "AppDelegate+EaseMobDebug.h"
+#import "AppDelegate+Hyphenate.h"
+#import "AppDelegate+HyphenateDebug.h"
 #import "AppDelegate+Parse.h"
 
 #import "LoginViewController.h"
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
 
-@implementation AppDelegate (EaseMob)
+@implementation AppDelegate (Hyphenate)
 
-- (void)easemobApplication:(UIApplication *)application
+- (void)hyphenateApplication:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                     appkey:(NSString *)appkey
               apnsCertName:(NSString *)apnsCertName

@@ -10,11 +10,11 @@
  * from Hyphenate Inc.
  */
 
-#import "AppDelegate+EaseMobDebug.h"
+#import "AppDelegate+HyphenateDebug.h"
 
 #import "EMOptions+PrivateDeploy.h"
 
-@implementation AppDelegate (EaseMobDebug)
+@implementation AppDelegate (HyphenateDebug)
 
 
 -(BOOL)isSpecifyServer{
@@ -31,7 +31,7 @@
         NSString *appkey = [ud stringForKey:@"identifier_appkey"];
         if (!appkey)
         {
-            appkey = @"easemob-demo#no1";
+            appkey = @"hyphenatedemo#hyphenatedemo";
             [ud setObject:appkey forKey:@"identifier_appkey"];
         }
         NSString *imServer = [ud stringForKey:@"identifier_imserver"];

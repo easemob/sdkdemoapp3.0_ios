@@ -12,9 +12,9 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate (EaseMob)
+@interface AppDelegate (Hyphenate)
 
-- (void)easemobApplication:(UIApplication *)application
+- (void)hyphenateApplication:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                     appkey:(NSString *)appkey
               apnsCertName:(NSString *)apnsCertName

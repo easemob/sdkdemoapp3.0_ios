@@ -34,7 +34,7 @@
     if (self) {
         self.upMessageId = messageId;
         self.downMessageId = messageId;
-        _searchMessageQueue = dispatch_queue_create("com.easemob.search.chat", DISPATCH_QUEUE_SERIAL);
+        _searchMessageQueue = dispatch_queue_create("com.hyphenate.search.chat", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
