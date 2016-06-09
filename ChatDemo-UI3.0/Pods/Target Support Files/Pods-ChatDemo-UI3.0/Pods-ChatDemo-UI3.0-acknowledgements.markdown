@@ -61,6 +61,26 @@ SOFTWARE.
 
 Copyright 2015 Google Inc.
 
+## GoogleCloudMessaging
+
+Copyright 2015 Google Inc.
+
+## GoogleIPhoneUtilities
+
+Copyright 2015 Google Inc.
+
+## GoogleInterchangeUtilities
+
+Copyright 2015 Google Inc.
+
+## GoogleSymbolUtilities
+
+Copyright 2015 Google Inc.
+
+## GoogleUtilities
+
+Copyright 2015 Google Inc.
+
 ## HyphenateFullSDK
 
 Copyright (c) 2016 Hyphenate Inc.
