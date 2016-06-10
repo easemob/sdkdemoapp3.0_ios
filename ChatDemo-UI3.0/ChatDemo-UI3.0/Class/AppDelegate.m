@@ -49,7 +49,7 @@
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSString *appkey = [ud stringForKey:@"identifier_appkey"];
     if (!appkey) {
-        appkey = @"hyphenatedemo#hyphenatedemo";
+        appkey = @"hyphenate#hyphenatedemo";
         [ud setObject:appkey forKey:@"identifier_appkey"];
     }
 
