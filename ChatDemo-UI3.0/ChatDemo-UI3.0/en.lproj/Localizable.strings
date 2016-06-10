@@ -62,7 +62,7 @@
 "hasRead" = "Read";
 
 //app
-"AppName" = "EaseMobDemo";
+"AppName" = "Hyphenate Demo";
 
 //error des
 "error.connectServerFail" = "Connect to the server failed!";
@@ -329,7 +329,7 @@
 "setting.setBitrate" = "Set Bitrate";
 "setting.setBitrateTips" = "Set Bitrate should be 150-1000";
 "setting.personalInfoUpload" = "Profile Image";
-"setting.edittips" = "After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective";
+"setting.edittips" = "After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a Hyphenate ID, if the other party to use the Android client this setting is not effective";
 "setting.iospushname" = "APNs Display Name";
 "setting.useIp" = "Use IP";
 "setting.deleteConWhenLeave" = "Delete conversation when leave a group";

@@ -41,6 +41,15 @@
     [self setupForDismissKeyboard];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:NSStringFromClass(self.class) value:@""];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -86,7 +95,7 @@
     _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake((CGRectGetWidth(self.view.bounds)-kTextFieldWidth)/2, CGRectGetMaxY(_saveButton.frame) + 10.0, kTextFieldWidth, 60)];
     _tipLabel.textAlignment = NSTextAlignmentLeft;
     _tipLabel.font = [UIFont systemFontOfSize:14];
-    _tipLabel.text = NSLocalizedString(@"setting.edittips", @"After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective");
+    _tipLabel.text = NSLocalizedString(@"setting.edittips", @"After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a Hyphenate ID, if the other party to use the Android client this setting is not effective");
     CGFloat height = 0;
     NSDictionary *attributes = @{NSFontAttributeName :[UIFont systemFontOfSize:14.0f]};
     CGRect rect;

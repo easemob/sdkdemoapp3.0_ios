@@ -76,6 +76,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:NSStringFromClass(self.class) value:@""];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
     if (self.conversation.type == EMConversationTypeGroupChat) {
         if ([[self.conversation.ext objectForKey:@"subject"] length])
         {
@@ -220,7 +225,7 @@
     return @{MESSAGE_ATTR_EXPRESSION_ID:easeEmotion.emotionId,MESSAGE_ATTR_IS_BIG_EXPRESSION:@(YES)};
 }
 
-#pragma mark - EaseMob
+#pragma mark - Hyphenate
 
 #pragma mark - EMClientDelegate
 

@@ -58,7 +58,16 @@
         _usernameTextField.text = username;
     }
         
-    self.title = NSLocalizedString(@"AppName", @"EaseMobDemo");
+    self.title = NSLocalizedString(@"AppName", @"Hyphenate Demo");
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:NSStringFromClass(self.class) value:@""];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)didReceiveMemoryWarning

@@ -12,7 +12,7 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate (EaseMobDebug)
+@interface AppDelegate (HyphenateDebug)
 
 -(BOOL)isSpecifyServer;
 

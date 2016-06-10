@@ -14,9 +14,8 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 
-#import "AppDelegate+EaseMob.h"
+#import "AppDelegate+Hyphenate.h"
 #import "AppDelegate+Parse.h"
-
 
 @interface AppDelegate ()
 
@@ -42,25 +41,36 @@
     
     NSString *apnsCertName = nil;
 #if DEBUG
-    apnsCertName = @"chatdemoui_dev";
+    apnsCertName = @"DevelopmentCertificate";
 #else
-    apnsCertName = @"chatdemoui";
+    apnsCertName = @"ProductionCertificate";
 #endif
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSString *appkey = [ud stringForKey:@"identifier_appkey"];
     if (!appkey) {
-        appkey = @"easemob-demo#chatdemoui";
+        appkey = @"hyphenate#hyphenatedemo";
         [ud setObject:appkey forKey:@"identifier_appkey"];
     }
 
-    [self easemobApplication:application
+    [self hyphenateApplication:application
 didFinishLaunchingWithOptions:launchOptions
                       appkey:appkey
                 apnsCertName:apnsCertName
                  otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
 
     [self.window makeKeyAndVisible];
+    
+    // Configure tracker from GoogleService-Info.plist.
+    NSError *configureError;
+    [[GGLContext sharedInstance] configureWithError:&configureError];
+    NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
+    
+    // Optional: configure GAI options.
+    GAI *gai = [GAI sharedInstance];
+    gai.trackUncaughtExceptions = YES;  // report uncaught exceptions
+    gai.logger.logLevel = kGAILogLevelVerbose;  // remove before app release
+    
     return YES;
 }
 

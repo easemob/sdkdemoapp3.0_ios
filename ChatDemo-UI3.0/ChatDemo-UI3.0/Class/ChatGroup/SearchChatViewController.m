@@ -34,7 +34,7 @@
     if (self) {
         self.upMessageId = messageId;
         self.downMessageId = messageId;
-        _searchMessageQueue = dispatch_queue_create("com.easemob.search.chat", DISPATCH_QUEUE_SERIAL);
+        _searchMessageQueue = dispatch_queue_create("com.hyphenate.search.chat", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -54,6 +54,15 @@
     
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].roomManager removeDelegate:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:NSStringFromClass(self.class) value:@""];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh

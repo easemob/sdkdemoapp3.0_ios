@@ -49,7 +49,7 @@
     self = [super init];
     if (self) {
         _conversation = [[EMClient sharedClient].chatManager getConversation:conversationId type:conversationType createIfNotExist:NO];
-        _searchQueue = dispatch_queue_create("com.easemob.search.message", DISPATCH_QUEUE_SERIAL);
+        _searchQueue = dispatch_queue_create("com.hyphenate.search.message", DISPATCH_QUEUE_SERIAL);
         _queueTag = &_queueTag;
         dispatch_queue_set_specific(_searchQueue, _queueTag, _queueTag, NULL);
         
@@ -82,6 +82,15 @@
     [self searchController];
     self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
     [self.view addSubview:self.searchBar];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:NSStringFromClass(self.class) value:@""];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (UILabel*)fromLabel

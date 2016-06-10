@@ -10,11 +10,11 @@
  * from Hyphenate Inc.
  */
 
-#import "AppDelegate+EaseMobDebug.h"
+#import "AppDelegate+HyphenateDebug.h"
 
 #import "EMOptions+PrivateDeploy.h"
 
-@implementation AppDelegate (EaseMobDebug)
+@implementation AppDelegate (HyphenateDebug)
 
 
 -(BOOL)isSpecifyServer{
@@ -24,14 +24,14 @@
     if ([specifyServer boolValue]) {
         NSString *apnsCertName = nil;
 #if DEBUG
-        apnsCertName = @"chatdemoui_dev";
+        apnsCertName = @"DevelopmentCertificate";
 #else
-        apnsCertName = @"chatdemoui";
+        apnsCertName = @"ProductionCertificate";
 #endif
         NSString *appkey = [ud stringForKey:@"identifier_appkey"];
         if (!appkey)
         {
-            appkey = @"easemob-demo#no1";
+            appkey = @"hyphenatedemo#hyphenatedemo";
             [ud setObject:appkey forKey:@"identifier_appkey"];
         }
         NSString *imServer = [ud stringForKey:@"identifier_imserver"];
@@ -62,7 +62,7 @@
             options.chatServer = [ud stringForKey:@"identifier_imserver"];
             options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
-        options.apnsCertName = @"chatdemoui_dev";
+        options.apnsCertName = @"ProductionCertificate";
         options.enableConsoleLog = YES;
         
         [[EMClient sharedClient] initializeSDKWithOptions:options];
