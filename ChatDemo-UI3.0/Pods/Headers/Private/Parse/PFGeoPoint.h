@@ -1,1 +1,1 @@
-../../../Parse/PFGeoPoint.h
+../../../Parse/Parse/PFGeoPoint.h

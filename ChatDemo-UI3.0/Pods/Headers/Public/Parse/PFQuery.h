@@ -1,1 +1,1 @@
-../../../Parse/PFQuery.h
+../../../Parse/Parse/PFQuery.h

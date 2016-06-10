@@ -1484,7 +1484,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Pods/GoogleAnalytics",
+				);
 				HYPHENATE_INC = "";
 				HYPHENATE_LIB = "";
 				HYPHENATE_LIBNAME = "";
@@ -1531,7 +1534,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Pods/GoogleAnalytics",
+				);
 				HYPHENATE_INC = "";
 				HYPHENATE_LIB = "";
 				HYPHENATE_LIBNAME = "";
