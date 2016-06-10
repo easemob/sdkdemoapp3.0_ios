@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   EaseUI:
-    :commit: b7f6f18616a11964dae5a4f8a7fbec4fcb80000c
+    :commit: 909ec8477e122f8a6865dd2b5d543a0dcb7e9e94
     :git: https://github.com/HyphenateInc/easeui_ios
 
 SPEC CHECKSUMS:
@@ -30,4 +30,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c8315b6d96fa5db1ac670c9b20e6d34dba16001b
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1
