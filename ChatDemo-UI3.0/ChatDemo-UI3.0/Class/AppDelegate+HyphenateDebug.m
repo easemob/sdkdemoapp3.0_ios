@@ -62,7 +62,7 @@
             options.chatServer = [ud stringForKey:@"identifier_imserver"];
             options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
-        options.apnsCertName = @"chatdemoui_dev";
+        options.apnsCertName = @"ProductionCertificate";
         options.enableConsoleLog = YES;
         
         [[EMClient sharedClient] initializeSDKWithOptions:options];
