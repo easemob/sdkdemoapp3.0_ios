@@ -67,6 +67,7 @@
 		95044E5D35685C8AD0ACB20B /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32CBCB7300651224AD5C95CF /* libPods-ChatDemo-UI3.0.a */; };
 		9A0F9CFA1CEC5B3D00F9606B /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9A0F9CF91CEC5B3D00F9606B /* EaseUIResource.bundle */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
+		C47808411D0A42A4000418E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C47808401D0A42A4000418E5 /* GoogleService-Info.plist */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
 		D26CE39B1C2BD37700697F48 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE39A1C2BD37700697F48 /* Settings.bundle */; };
@@ -324,6 +325,7 @@
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9A0F9CF91CEC5B3D00F9606B /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseUIResource.bundle; sourceTree = "<group>"; };
 		A99F9D3A4E67DBEFC8FB0AA1 /* Pods-ChatDemo-UI3.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.debug.xcconfig"; sourceTree = "<group>"; };
+		C47808401D0A42A4000418E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
 		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
@@ -726,6 +728,7 @@
 		9091102E192EEA70008A48AA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C47808401D0A42A4000418E5 /* GoogleService-Info.plist */,
 				D26CE39A1C2BD37700697F48 /* Settings.bundle */,
 				EBD2AA341A7CDABF00D16528 /* Resources */,
 				3C9B158D1A6D157E00D09FD6 /* InfoPlist.strings */,
@@ -1140,6 +1143,7 @@
 				EBD2ABB01A7CDAC000D16528 /* tabbar_chatsHL@2x.png in Resources */,
 				EBD2AB401A7CDAC000D16528 /* call_silence_h@2x.png in Resources */,
 				EBD2AB531A7CDAC000D16528 /* chat_location_preview.png in Resources */,
+				C47808411D0A42A4000418E5 /* GoogleService-Info.plist in Resources */,
 				EBD2ABA71A7CDAC000D16528 /* group_participant_add@2x.png in Resources */,
 				EBD2AB891A7CDAC000D16528 /* chat_receiver_audio_playing002@2x.png in Resources */,
 				EBD2AB3D1A7CDAC000D16528 /* call_silence.png in Resources */,
@@ -1484,10 +1488,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/Pods/GoogleAnalytics",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				HYPHENATE_INC = "";
 				HYPHENATE_LIB = "";
 				HYPHENATE_LIBNAME = "";
@@ -1534,10 +1535,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChatDemo-UI3.0/ChatDemo-UI3.0-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/Pods/GoogleAnalytics",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				HYPHENATE_INC = "";
 				HYPHENATE_LIB = "";
 				HYPHENATE_LIBNAME = "";
