@@ -14,12 +14,15 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
+    #import <Google/Analytics.h>
+
     #import "ChatDemoUIDefine.h"
     #import "EMAlertView.h"
     #import "TTGlobalUICommon.h"
 
     #import "EMSDKFull.h"
     #import "EaseUI.h"
+
 
 #define DEMO_CALL 1
 

@@ -509,7 +509,7 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		3C16149C1973D1A600564BF5 /* Core Data */ = {
+		3C16149C1973D1A600564BF5 /* Data Models */ = {
 			isa = PBXGroup;
 			children = (
 				D29A6BAA1B72090F002324BB /* UserProfileManager.h */,
@@ -517,6 +517,7 @@
 				90985E461A8A08D400976DD6 /* InvitationManager.h */,
 				90985E471A8A08D400976DD6 /* InvitationManager.m */,
 			);
+			name = "Data Models";
 			path = "Core Data";
 			sourceTree = "<group>";
 		};
@@ -766,7 +767,7 @@
 				D2A910711C7FEEC20025AD0A /* Call */,
 				D2CB22591B60CB08001BC741 /* Profile */,
 				D25787391B43EC7000B0E69F /* Robot */,
-				3C16149C1973D1A600564BF5 /* Core Data */,
+				3C16149C1973D1A600564BF5 /* Data Models */,
 				3C914D7019514BBD0002DAD3 /* ChatGroup */,
 				9003D7761939D8D000DC38A4 /* Chat */,
 				9003D84D1939D8D000DC38A4 /* Contacts */,

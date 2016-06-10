@@ -17,8 +17,6 @@
 #import "AppDelegate+Hyphenate.h"
 #import "AppDelegate+Parse.h"
 
-#import <Google/Analytics.h>
-
 @interface AppDelegate ()
 
 @end

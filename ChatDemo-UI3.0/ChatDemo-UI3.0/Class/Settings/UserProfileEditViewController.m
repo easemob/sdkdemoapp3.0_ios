@@ -44,6 +44,15 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:NSStringFromClass(self.class) value:@""];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
+
 - (UIImageView*)headImageView
 {
     if (!_headImageView) {
@@ -147,11 +156,10 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if ([alertView cancelButtonIndex] != buttonIndex) {
-        //获取文本输入框
+
         UITextField *nameTextField = [alertView textFieldAtIndex:0];
         if(nameTextField.text.length > 0)
         {
-            //设置推送设置
             [self showHint:NSLocalizedString(@"setting.saving", "saving...")];
             __weak typeof(self) weakSelf = self;
             [[EMClient sharedClient] setApnsNickname:nameTextField.text];
