@@ -58,7 +58,7 @@
         _usernameTextField.text = username;
     }
         
-    self.title = NSLocalizedString(@"AppName", @"HyphenateDemo");
+    self.title = NSLocalizedString(@"AppName", @"Hyphenate Demo");
 }
 
 - (void)viewDidAppear:(BOOL)animated
