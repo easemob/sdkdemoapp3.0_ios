@@ -88,7 +88,7 @@
             }
             
         } else {
-            moreMessages = [self.conversation loadMoreMessagesFromId:self.downMessageId limit:SEARCHCHAT_PAGE_SIZE direction:EMMessageSearchDirectionDownload];
+            moreMessages = [self.conversation loadMoreMessagesFromId:self.downMessageId limit:SEARCHCHAT_PAGE_SIZE direction:EMMessageSearchDirectionDown];
             if ([moreMessages count] > 0) {
                 EMMessage *lastMessage = [moreMessages lastObject];
                 self.downMessageId = lastMessage.messageId;
