@@ -314,47 +314,6 @@
     }
     
     id<IEMMessageBody> messageBody = latestMessage.messageBodies.lastObject;
-    
-#ifdef REDPACKET_AVALABLE
-    //  TODO: Redpacket Modify
-    if (messageBody.messageBodyType == eMessageBodyType_Text) {
-        NSDictionary *dict = latestMessage.ext;
-        
-        if ([dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) {
-            /**
-             *  红包被抢的消息
-             */
-            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-            NSString *currentUserID = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
-            
-            if ([senderID isEqualToString:currentUserID]) {
-                /**
-                 *  发送红包的用户就是当前用户
-                 */
-                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-                NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-                NSString *prompt;
-                
-                if ([senderID isEqualToString:receiverID]) {
-                    /**
-                     *  自己抢了自己的红包
-                     */
-                    prompt = @"你领取了自己的红包";
-                }else {
-                    /**
-                     *  别人领取了当前用户的红包
-                     */
-                    prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];;
-                }
-                
-                ((EMTextMessageBody *)messageBody).text = prompt;
-            }
-            
-        }
-    }
-    //  END: Redpacket Modify
-#endif
-    
     switch (messageBody.messageBodyType) {
         case eMessageBodyType_Image:{
             latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
