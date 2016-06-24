@@ -3,7 +3,6 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yang on 16/2/23.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
 
 #import "EaseBubbleView.h"
@@ -16,7 +15,7 @@
 @property (strong, nonatomic) UILabel *redpacketSubLabel;
 @property (strong, nonatomic) UILabel *redpacketNameLabel;
 @property (strong, nonatomic) UIImageView *redpacketCompanyIcon;
-
+@property (strong, nonatomic) UILabel *redpacketMemberLable;
 
 - (void)setupRedPacketBubbleView;
 

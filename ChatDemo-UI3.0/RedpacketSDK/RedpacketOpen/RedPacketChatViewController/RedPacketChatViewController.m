@@ -3,8 +3,8 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yang on 16/2/23.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
+
 
 #import "RedPacketChatViewController.h"
 #import "EaseRedBagCell.h"
@@ -15,6 +15,7 @@
 #import "RedPacketUserConfig.h"
 #import "RedpacketOpenConst.h"
 #import "YZHRedpacketBridge.h"
+#import "UserProfileManager.h"
 
 /**
  *  红包单击事件索引
@@ -31,7 +32,7 @@ static NSInteger const _redpacket_change_index = 7;
  *  红包聊天窗口
  */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
-EaseMessageViewControllerDataSource>
+EaseMessageViewControllerDataSource,RedpacketViewControlDelegate>
 /**
  *  发红包的控制器
  */
@@ -51,6 +52,8 @@ EaseMessageViewControllerDataSource>
     _viewControl = [[RedpacketViewControl alloc] init];
     //  需要当前的聊天窗口
     _viewControl.conversationController = self;
+    // 群红包需要的返回成员列表
+    _viewControl.delegate = self;
     //  需要当前聊天窗口的会话ID
     RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
     userInfo.userId = self.conversation.chatter;
@@ -68,9 +71,6 @@ EaseMessageViewControllerDataSource>
         [weakSelf sendRedPacketMessage:model];
         
     }];
-    
-    //  同步Token
-    [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken];
     
     //  设置用户头像
     [[EaseRedBagCell appearance] setAvatarSize:40.f];
@@ -91,6 +91,7 @@ EaseMessageViewControllerDataSource>
     
     //  显示红包的Cell视图
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([RedpacketMessageCell class]) bundle:nil]forCellReuseIdentifier:NSStringFromClass([RedpacketMessageCell class])];
+    
 }
 
 //  长时间按在某条Cell上的动作
@@ -119,6 +120,19 @@ EaseMessageViewControllerDataSource>
     return [super messageViewController:viewController canLongPressRowAtIndexPath:indexPath];
 }
 
+#pragma mark - EaseMessageCellDelegate 单击了Cell 事件
+
+- (void)messageCellSelected:(id<IMessageModel>)model
+{
+    NSDictionary *dict = model.message.ext;
+    
+    if ([RedpacketMessageModel isRedpacket:dict]) {
+        [self.viewControl redpacketCellTouchedWithMessageModel:[self toRedpacketMessageModel:model]];
+        
+    }else {
+        [super messageCellSelected:model];
+    }
+}
 
 #pragma mrak - 自定义红包的Cell
 - (UITableViewCell *)messageViewController:(UITableView *)tableView
@@ -144,15 +158,6 @@ EaseMessageViewControllerDataSource>
     
     RedpacketMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RedpacketMessageCell class])];
     cell.model = messageModel;
-    /*
-     __weak typeof(self) weakSelf = self;
-     //  在***领取了某人的红包消息上 查看红包详情
-     [cell setRedpacketMesageCellTaped:^(id<IMessageModel> model) {
-     //暂不支持
-     [weakSelf.viewControl redpacketCellTouchedWithMessageModel:[weakSelf toRedpacketMessageModel:model]];
-     
-     }];
-     */
     
     return cell;
 }
@@ -195,8 +200,10 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
             //单聊发送界面
             [self.viewControl presentRedPacketViewController];
         }else{
+            //群内指向红包
+            NSArray *groupArray = [EMGroup groupWithId:self.conversation.chatter].occupants;
             //群聊红包发送界面
-            [self.viewControl presentRedPacketMoreViewControllerWithCount:(int)[EMGroup groupWithId:self.conversation.chatter].occupants.count];
+            [self.viewControl presentRedPacketMoreViewControllerWithGroupMemberArray:groupArray];
         }
         
     } else if (index == _redpacket_change_index) {
@@ -207,10 +214,31 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     }
 }
 
+#pragma Delegate RedpacketViewControlDelegate
+//定向红包
+- (NSArray *)groupMemberList
+{
+    NSArray *groupArray = [[[EaseMob sharedInstance] chatManager] fetchOccupantList:self.conversation.chatter error:nil];
+    
+    NSMutableArray *mArray = [[NSMutableArray alloc]init];
+    
+    for (NSString *username in groupArray) {
+        //创建一个用户模型 并赋值
+        RedpacketUserInfo *userInfo = [self profileEntityWith:username];
+        if ([[[[[EaseMob sharedInstance] chatManager ] loginInfo] objectForKey:kSDKUsername] isEqualToString:userInfo.userId]) {
+            //定向红包 不能包含自己
+        }else
+        {
+            [mArray addObject:userInfo];
+        }
+    }
+    
+    return mArray;
+}
+
 - (void)sendRedPacketMessage:(RedpacketMessageModel *)model
 {
     NSDictionary *dic = [model redpacketMessageModelToDic];
-    
     NSString *message = [NSString stringWithFormat:@"[%@]%@", model.redpacket.redpacketOrgName, model.redpacket.redpacketGreeting];
     
     [self sendTextMessage:message withExt:dic];
@@ -219,75 +247,59 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 //  MARK: 发送红包被抢的消息
 - (void)sendRedpacketHasBeenTaked:(RedpacketMessageModel *)messageModel
 {
-    NSString *text = [NSString stringWithFormat:@"你领取了%@的红包", messageModel.redpacketSender.userNickname];
+    NSString *text = nil;
+    NSMutableDictionary *dict = [messageModel.redpacketMessageModelToDic mutableCopy];
     
-    NSDictionary *Info = [messageModel.redpacketDetailDic valueForKey:@"Info"];
-    NSString *GroupId = [NSString stringWithFormat:@"%@",[Info valueForKey:@"GroupId"]];
-    
-    NSDictionary *dict = messageModel.redpacketMessageModelToDic;
+    /**
+     *  当前用户的用户ID
+     */
+    NSString *currentUserId = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
     
     if (self.conversation.conversationType == eConversationTypeChat) {
+        /**
+         *  忽略推送
+         */
+        [dict setValue:@(YES) forKey:@"em_ignore_notification"];
+        NSString *receiver = messageModel.redpacketReceiver.userNickname;
+        if (receiver.length > 18) {
+            receiver = [[receiver substringToIndex:18] stringByAppendingString:@"..."];
+        }
+        text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
+        
         [self sendTextMessage:text withExt:dict];
         
     }else{
-        //  FIXME：内部转换方法
-         NSMutableDictionary *dic = [messageModel.redpacketMessageModelToDic mutableCopy];
-        [dic setValue:Info[@"SenderDuid"] forKey:RedpacketKeyRedpacketSenderId];
-        [dic setValue:Info[@"SenderNickname"] forKey:RedpacketKeyRedpacketSenderNickname];
-        
-        // 群聊消息透传
-        EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
-        cmdChat.cmd = RedpacketKeyRedapcketCmd;
-        EMCommandMessageBody *body = [[EMCommandMessageBody alloc] initWithChatObject:cmdChat];
-        // 生成message
-        EMMessage *message = [[EMMessage alloc] initWithReceiver:GroupId bodies:@[body]];
-        message.ext = dic;
-        message.messageType = eMessageTypeGroupChat; // 设置为群聊消息
-        [[EaseMob sharedInstance].chatManager asyncSendMessage:message progress:nil prepare:^(EMMessage *message, EMError *error) {
-            
-        } onQueue:nil completion:^(EMMessage *message, EMError *error) {
-            
-        } onQueue:nil];
-        
-        //抢到以后消息需要本地存储一条~
-        
-        NSDictionary *_ext = [[EaseMessageHelper structureEaseMessageHelperExt:dict
-                                                                      bodyType:eMessageBodyType_Text] mutableCopy];
-        
-        if ([messageModel.redpacketSender.userId isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]) {
-            text = @"你领取了自己发的红包";
+        if ([messageModel.redpacketSender.userId isEqualToString:currentUserId]) {
+            text = @"你领取了自己的红包";
             
         }else {
-            text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.redpacketSender.userNickname];
+            NSString *sender = messageModel.redpacketSender.userNickname;
+            if (sender.length > 18) {
+               sender = [[sender substringToIndex:18] stringByAppendingString:@"..."];
+            }
+            text = [NSString stringWithFormat:@"你领取了%@的红包", sender];
+            
+            [[EaseMob sharedInstance].chatManager asyncSendMessage:[self createCmdMessageWithModel:messageModel] progress:nil];
         }
 
-        NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
-        EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
-        EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
-        EMMessage *SelfMessage = [[EMMessage alloc] initWithReceiver:self.conversation.chatter bodies:[NSArray arrayWithObject:body1]];
-        SelfMessage.requireEncryption = NO;
-        SelfMessage.messageType = eMessageTypeGroupChat;
-        SelfMessage.ext = _ext;
-        SelfMessage.deliveryState = eMessageDeliveryState_Delivered;
-        SelfMessage.isRead = YES;
-        
-        [self addMessageToDataSource:SelfMessage progress:nil];
-        [[EaseMob sharedInstance].chatManager insertMessageToDB:SelfMessage append2Chat:YES];
+        EMMessage *redpacketGroupMessage = [self createTextMessageWithText:text receiver:self.conversation.chatter andExt:dict];
+        [self addMessageToDataSource:redpacketGroupMessage progress:nil];
+        [[EaseMob sharedInstance].chatManager insertMessageToDB:redpacketGroupMessage append2Chat:YES];
     }
 }
 
-#pragma mark - EaseMessageCellDelegate 单击了Cell 事件
-
-- (void)messageCellSelected:(id<IMessageModel>)model
+- (EMMessage *)createCmdMessageWithModel:(RedpacketMessageModel *)model
 {
-    NSDictionary *dict = model.message.ext;
+    NSMutableDictionary *dict = [model.redpacketMessageModelToDic mutableCopy];
     
-    if ([RedpacketMessageModel isRedpacket:dict]) {
-        [self.viewControl redpacketCellTouchedWithMessageModel:[self toRedpacketMessageModel:model]];
-        
-    }else {
-        [super messageCellSelected:model];
-    }
+    EMChatCommand *cmdChat = [[EMChatCommand alloc] init];
+    cmdChat.cmd = RedpacketKeyRedapcketCmd;
+    EMCommandMessageBody *body = [[EMCommandMessageBody alloc] initWithChatObject:cmdChat];
+    EMMessage *message = [[EMMessage alloc] initWithReceiver:model.redpacketSender.userId bodies:@[body]];
+    message.ext = dict;
+    message.messageType = eMessageTypeChat;
+    
+    return message;
 }
 
 - (RedpacketMessageModel *)toRedpacketMessageModel:(id <IMessageModel>)model
@@ -295,40 +307,92 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
     BOOL isGroup = self.conversation.conversationType == eConversationTypeGroupChat;
     messageModel.redpacketReceiver.isGroup = isGroup;
-    
-    messageModel.redpacketSender.userAvatar = model.avatarURLPath;
-
-    NSString *nickName = model.nickname;
-    if (nickName.length == 0) {
-        nickName = model.message.from;
+    if (isGroup) {
+        messageModel.redpacketSender = [self profileEntityWith:model.message.groupSenderName];
+        messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
+    }else
+    {
+        messageModel.redpacketSender = [self profileEntityWith:model.message.from];
     }
-    messageModel.redpacketSender.userNickname = nickName;
-    
     return messageModel;
+}
+
+// 要在此处根据userID获得用户昵称,和头像地址
+- (RedpacketUserInfo *)profileEntityWith:(NSString *)userId
+{
+    RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
+    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:userId];
+    if (profileEntity) {
+        if (profileEntity.nickname && profileEntity.nickname.length > 0) {
+            
+            userInfo.userNickname = profileEntity.nickname;
+            
+        } else {
+            userInfo.userNickname = userId;
+        }
+    } else {
+        userInfo.userNickname = userId;
+    }
+    userInfo.userAvatar = profileEntity.imageUrl;
+    userInfo.userId = userId;
+    return userInfo;
 }
 
 #pragma mark - EMChatManagerChatDelegate
 
 - (void)didReceiveCmdMessage:(EMMessage *)message
 {
-    //抢到红包以后发送消息的监听 判断
+    NSString *currentUserId = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+    NSString *senderId = message.ext[RedpacketKeyRedpacketSenderId];
+    /**
+     *  为了兼容老版本传过来的Cmd消息，必须做一下判断
+     */
+    BOOL isRedpacketSender = [currentUserId isEqualToString:senderId];
+    
     EMCommandMessageBody * body = (EMCommandMessageBody *)message.messageBodies[0];
-    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd]) {
-        NSString *senderID = [NSString stringWithFormat:@"%@",message.ext[RedpacketKeyRedpacketSenderId]];
+    if ([body.action isEqualToString:RedpacketKeyRedapcketCmd] && isRedpacketSender) {
+        NSString *receiver = message.ext[RedpacketKeyRedpacketCmdToGroup];
         /**
-         *  当前用户是发红包的人
+         *  红包消息属于当前聊天窗口
          */
-        if ([senderID isEqualToString:[[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername]]){
-            /**
-             *  加入tableView的DataSource 并刷新界面
-             */
-            [self addMessageToDataSource:message progress:nil];
+        if(receiver.length == 0) {
+            receiver = message.from;
         }
         
-    }else{
-        // [super didReceiveCmdMessage:message];
-        
+        if ([receiver isEqualToString:self.conversation.chatter]) {
+            [self addMessageToDataSource:[self cmdMessageBodyToTextMessageBody:message toReceiver:receiver] progress:nil];
+        }
     }
+}
+
+- (EMMessage *)cmdMessageBodyToTextMessageBody:(EMMessage *)message toReceiver:(NSString *)receiver
+{
+    NSDictionary *dict = message.ext;
+    NSString *receiverNick = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+    if (receiverNick.length > 18) {
+        receiverNick = [[receiverNick substringToIndex:18] stringByAppendingString:@"..."];
+    }
+    
+    NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverNick];
+    
+    return [self createTextMessageWithText:text receiver:receiver andExt:message.ext];
+}
+
+- (EMMessage *)createTextMessageWithText:(NSString *)text
+                                receiver:(NSString *)receiverId
+                                  andExt:(NSDictionary *)ext
+{
+    NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
+    EMChatText *textChat = [[EMChatText alloc] initWithText:willSendText];
+    EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithChatObject:textChat];
+    EMMessage *redpacketGroupMessage = [[EMMessage alloc] initWithReceiver:receiverId bodies:[NSArray arrayWithObject:body1]];
+    redpacketGroupMessage.requireEncryption = NO;
+    redpacketGroupMessage.messageType = eMessageTypeGroupChat;
+    redpacketGroupMessage.ext = ext;
+    redpacketGroupMessage.deliveryState = eMessageDeliveryState_Delivered;
+    redpacketGroupMessage.isRead = YES;
+
+    return redpacketGroupMessage;
 }
 
 @end
