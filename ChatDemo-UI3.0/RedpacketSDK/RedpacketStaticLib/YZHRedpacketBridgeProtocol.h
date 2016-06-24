@@ -13,17 +13,6 @@
 
 @class RedpacketUserInfo;
 
-typedef NS_ENUM(NSInteger, RequestTokenMethod) {
-    /**
-     *  通过ImToken验证
-     */
-    RequestTokenMethodByImToken,
-    /**
-     *  通过签名验证
-     */
-    RequestTokenMethodBySign
-};
-
 @protocol YZHRedpacketBridgeDataSource <NSObject>
 
 /**
@@ -39,11 +28,13 @@ typedef NS_ENUM(NSInteger, RequestTokenMethod) {
 @protocol YZHRedpacketBridgeDelegate <NSObject>
 
 /**
- *  环信Token过期会回调这个方法
+ *  Saas平台Token超时，需要重新注册Token
  *
- *  @param method 用到的获取Token的方法
+ *  @param error 错误内容
+ *  @param code  错误码
  */
-- (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method;
+- (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code;
+
 
 @end
 

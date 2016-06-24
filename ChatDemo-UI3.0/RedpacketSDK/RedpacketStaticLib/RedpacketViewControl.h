@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import "RedpacketMessageModel.h"
 
+@protocol RedpacketViewControlDelegate <NSObject>
+
+- (NSArray *)groupMemberList;
+
+@end
+
 //  抢红包成功回调
 typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
 //  环信接口发送红包消息回调
@@ -29,6 +35,11 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
  *  当前的聊天窗口
  */
 @property (nonatomic, weak) UIViewController *conversationController;
+
+/**
+ *  定向红包返回时的代理
+ */
+@property (nonatomic, weak) id <RedpacketViewControlDelegate> delegate;
 
 /**
  *  用户单击了聊天窗口中的红包Cell后触发
@@ -61,7 +72,7 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
  *
  *  @return 返回多人红包控制器
  */
-- (UIViewController *)mulityRedpacketViewController:(int)peopleCount;
+- (UIViewController *)mulityRedpacketViewControllerWiht:(NSArray *)groupMemberArray;
 
 /**
  *  零钱页面
@@ -82,7 +93,7 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 /**
  *  显示群红包页面
  */
-- (void)presentRedPacketMoreViewControllerWithCount:(int)count;
+- (void)presentRedPacketMoreViewControllerWithGroupMemberArray:(NSArray *)groupMemberArray;
 
 /**
  *  显示点对点红包页面
