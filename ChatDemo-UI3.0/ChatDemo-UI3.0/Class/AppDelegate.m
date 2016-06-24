@@ -92,6 +92,9 @@ didFinishLaunchingWithOptions:launchOptions
 
 #pragma mark - Alipay
 
+/**
+ *  iOS9 statusBar上的快捷返回监听
+ */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:nil];
