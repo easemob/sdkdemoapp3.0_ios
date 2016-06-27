@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
  */
 @property (nonatomic, assign) NSInteger redpacketCount;
 /**
- *  红包个数
+ *  定向红包，红包接收者ID
  */
 @property (nonatomic, copy) NSString *toReceiverDuid;
 

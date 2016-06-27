@@ -68,7 +68,9 @@
 - (void)reRequestRedpacketUserToken;
 
 /**
- *  请求完成Token后的回调
+ *  请求Token
+ *
+ *  @param tokenRequestCompletionBlock 请求Token完成后的回调
  */
 - (void)reRequestRedpacketUserToken:(void(^)(NSInteger code, NSString *msg))tokenRequestCompletionBlock;
 
