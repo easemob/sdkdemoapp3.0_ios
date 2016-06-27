@@ -46,7 +46,7 @@
              timeStamp:(long)timeStamp;
 
 /**
- *  Method2: 通过验证环信imToken的方式获取Token
+ *  Method2: 通过验证imToken的方式获取Token
  *
  *  @param appKey    商户在环信申请的APPKey
  *  @param appUserId 用户在App的用户ID，默认与imUserid相同

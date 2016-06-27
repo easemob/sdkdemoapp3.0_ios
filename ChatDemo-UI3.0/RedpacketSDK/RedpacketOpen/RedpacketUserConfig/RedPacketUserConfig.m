@@ -11,6 +11,10 @@
 #import "YZHRedpacketBridge.h"
 #import "RedpacketMessageModel.h"
 
+/**
+ *  环信IMToken过期
+ */
+#define RedpacketEaseMobTokenOutDate  20304
 
 
 static RedPacketUserConfig *__sharedConfig__ = nil;
@@ -126,23 +130,26 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)redpacketError:(NSString *)errorStr withErrorCode:(NSInteger)code
 {
     NSLog(@"获取RedpacketTokenFalied:%@", errorStr);
-    if (code == 20304) {
-        //  20304 环信Token验证问题
+    if (code == RedpacketEaseMobTokenOutDate) {
         //  刷新环信Token
         EaseMob *easemob = [EaseMob sharedInstance];
         EMError *error = nil;
         
         SEL selector = NSSelectorFromString(@"fetchTokenFromServer");
-        IMP imp = [easemob methodForSelector:selector];
-        EMError *(*func)(id, SEL) = (void *)imp;
-        error = func(easemob, selector);
+        if ([easemob respondsToSelector:selector]) {
+            IMP imp = [easemob methodForSelector:selector];
+            EMError *(*func)(id, SEL) = (void *)imp;
+            error = func(easemob, selector);
+            
+            if (!error) {
+                [self configRedpacketService];
+            }
+        }
     }
-    
-    [self configRedpacketService];
 }
 
 #pragma mark - IChatManagerDelegate
-
+    
 /**
  *  检测用户登陆状态
  */

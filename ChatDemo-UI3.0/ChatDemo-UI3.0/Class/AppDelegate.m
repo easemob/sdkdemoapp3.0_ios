@@ -100,6 +100,7 @@ didFinishLaunchingWithOptions:launchOptions
     [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:nil];
 }
 
+// NOTE: 9.0之前使用的API接口
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication

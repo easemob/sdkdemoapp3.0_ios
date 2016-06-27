@@ -53,15 +53,15 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
     /**
      *  红包可以抢
      */
-    RedpacketStatusTypeZero = 0,
+    RedpacketStatusTypeCanGrab = 0,
     /**
      *  红包被抢完
      */
-    RedpacketStatusTypeOne = 1,
+    RedpacketStatusTypeGrabFinish = 1,
     /**
      *  红包已过期
      */
-    RedpacketStatusTypeNegative = -1
+    RedpacketStatusTypeOutDate = -1
 };
 
 @interface RedpacketUserInfo : NSObject <NSCopying>

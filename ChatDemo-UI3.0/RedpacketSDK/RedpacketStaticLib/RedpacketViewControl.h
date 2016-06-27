@@ -72,7 +72,7 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
  *
  *  @return 返回多人红包控制器
  */
-- (UIViewController *)mulityRedpacketViewControllerWiht:(NSArray *)groupMemberArray;
+- (UIViewController *)multiRedpacketViewControllerWith:(NSArray *)groupMemberArray;
 
 /**
  *  零钱页面
