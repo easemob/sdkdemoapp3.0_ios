@@ -85,10 +85,13 @@
     _tipLabel.text = NSLocalizedString(@"setting.edittips", @"After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective");
     CGFloat height = 0;
     NSDictionary *attributes = @{NSFontAttributeName :[UIFont systemFontOfSize:14.0f]};
-    CGRect rect = [_tipLabel.text boundingRectWithSize:CGSizeMake(kTextFieldWidth, MAXFLOAT)
-                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:attributes
-                                             context:nil];
+    CGRect rect;
+    if ([NSString instancesRespondToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
+        rect = [_tipLabel.text boundingRectWithSize:CGSizeMake(kTextFieldWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+    } else {
+        rect.size = [_tipLabel.text sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:CGSizeMake(kTextFieldWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByCharWrapping];
+    }
+    
     height = CGRectGetHeight(rect);
     CGRect frame = _tipLabel.frame;
     frame.size.height = height;
