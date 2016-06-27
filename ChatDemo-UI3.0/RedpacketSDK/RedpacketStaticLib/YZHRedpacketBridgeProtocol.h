@@ -28,7 +28,7 @@
 @protocol YZHRedpacketBridgeDelegate <NSObject>
 
 /**
- *  Saas平台Token超时，需要重新注册Token
+ *  SDK错误处理代理，目前只有环信Token过期才会触发
  *
  *  @param error 错误内容
  *  @param code  错误码
