@@ -3,8 +3,8 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yang on 16/2/23.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
+
 
 #import "EaseBubbleView+RedPacket.h"
 #import <objc/runtime.h>
@@ -16,6 +16,7 @@ static char _redpacketTitleLabel_;
 static char _redpacketSubLabel_;
 static char _redpacketCompanyIcon_;
 static char _redpacketNameLabel_;
+static char _redpacketMemberLable_;
 
 @implementation EaseBubbleView (RedPacket)
 
@@ -114,6 +115,11 @@ static char _redpacketNameLabel_;
     self.redpacketNameLabel.textColor = rp_hexColor(rp_textColorGray);
     [self.backgroundImageView addSubview:self.redpacketNameLabel];
     
+    self.redpacketMemberLable = [UILabel new];
+    self.redpacketMemberLable.font = [UIFont systemFontOfSize:12.0f];
+    self.redpacketMemberLable.textColor = rp_hexColor(0xf14e46);
+    [self.backgroundImageView addSubview:self.redpacketMemberLable];
+    
     self.redpacketCompanyIcon = [UIImageView new];
     self.redpacketCompanyIcon.hidden = YES;
     [self.redpacketCompanyIcon setImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redPacket_yunAccount_icon"]];
@@ -187,6 +193,14 @@ static char _redpacketNameLabel_;
     return objc_getAssociatedObject(self, &_redpacketNameLabel_);
 }
 
+- (void)setRedpacketMemberLable:(UILabel *)memberLable
+{
+    objc_setAssociatedObject(self, &_redpacketMemberLable_, memberLable, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
+- (UILabel *)redpacketMemberLable
+{
+    return objc_getAssociatedObject(self, &_redpacketMemberLable_);
+}
 
 @end

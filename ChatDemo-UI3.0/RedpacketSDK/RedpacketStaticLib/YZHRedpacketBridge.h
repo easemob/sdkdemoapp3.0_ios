@@ -16,8 +16,13 @@
 
 @property (nonatomic, weak) id <YZHRedpacketBridgeDataSource>dataSource;
 
+/**
+ *  服务商名称
+ */
+@property (nonatomic, copy)  NSString *redpacketOrgName;
 
 + (YZHRedpacketBridge *)sharedBridge;
+
 
 /**
  *  检测Token是否存在
@@ -41,20 +46,7 @@
              timeStamp:(long)timeStamp;
 
 /**
- *  Method2: 通过验证imToken的方式获取Token
- *
- *  @param appKey    商户在环信申请的APPKey
- *  @param appUserId 用户在App的用户ID，默认与imUserid相同
- *  @param imUserId  用户在IM的登陆ID
- *  @param userPass  用户的登陆密码，用于验证环信Token
- */
-- (void)configWithAppKey:(NSString *)appKey
-               appUserId:(NSString *)appUserId
-                imUserId:(NSString*)imUserId
-           andImUserpass:(NSString *)userPass;
-
-/**
- *  Method3: 适用于环信2.0版本SDK
+ *  Method3: 通过环信imToken的方式获取Token
  *
  *  @param appKey    商户在环信申请的AppKey
  *  @param appUserId 用户在App的用户ID， 默认与imUserId相同
@@ -75,6 +67,12 @@
  */
 - (void)reRequestRedpacketUserToken;
 
+/**
+ *  请求Token
+ *
+ *  @param tokenRequestCompletionBlock 请求Token完成后的回调
+ */
+- (void)reRequestRedpacketUserToken:(void(^)(NSInteger code, NSString *msg))tokenRequestCompletionBlock;
 
 
 @end

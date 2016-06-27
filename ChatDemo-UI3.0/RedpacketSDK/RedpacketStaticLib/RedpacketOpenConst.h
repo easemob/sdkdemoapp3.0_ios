@@ -37,15 +37,6 @@
  ---------------------------------------*/
 
 /**
- *  红包名称
- */
-static NSString *const rp_redpacketName = @"环信红包";
-/**
- *  红包归属
- */
-static NSString *const rp_redpacketCompay = @"环信";
-
-/**
  *  红包字体颜色
  */
 static uint const rp_textColorGray = 0x9e9e9e;
@@ -74,7 +65,14 @@ UIKIT_STATIC_INLINE BOOL rp_isEmpty(id thing) {
         && [(NSArray *)thing count] == 0);
 }
 
-#pragma mark - Extern
+#pragma mark - RedpacketNotifaction
+
+/**
+ *  支付宝支付完成通知
+ */
+UIKIT_EXTERN NSString *const RedpacketAlipayNotifaction;
+
+#pragma mark - RedpacketView
 
 /**
  * 红包的名字（例如：云红包）
@@ -126,6 +124,18 @@ UIKIT_EXTERN NSString *const RedpacketKeyRedpacketID;
  */
 UIKIT_EXTERN NSString *const RedpacketKeyRedapcketCmd;
 
+/**
+ *  定向红包的Type类型
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToAnyone;
 
+/**
+ *  定向红包的接收者id
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToReceiver;
 
+/**
+ *  红包抢完后的透传消息是通过点对点Cmd消息发送，所以需要带上红包所在的群组ID
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketCmdToGroup;
 
