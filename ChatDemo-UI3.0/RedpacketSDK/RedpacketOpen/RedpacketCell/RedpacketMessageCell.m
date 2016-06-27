@@ -3,8 +3,8 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yang on 16/2/28.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
+
 
 #import "RedpacketMessageCell.h"
 #import "RedpacketOpenConst.h"
@@ -45,53 +45,38 @@
 {
     _model = model;
     
-    NSDictionary *dict = model.message.ext;
-    
-    NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderNickname];
-    NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-    NSString *senderId = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-    NSString *receiverId = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-    
-    NSString *prompt;
-    
-    if (model.message.messageType == eMessageTypeChat ) {
-        /**
-         *  点对点红包
-         */
-        if(model.isSender) {
-            prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
-        }else {
-            prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
-        }
+    /*-------为了兼容红包2.0版本--------*/
+    NSString *text = model.text;
+    if (model.bodyType == eMessageBodyType_Text &&
+        model.message.messageType == eMessageTypeChat) {
         
-    }else{
-        /**
-         *  群红包
-         */
-        NSDictionary *userInfoDic = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *current = [userInfoDic objectForKey:kSDKUsername];
+        NSDictionary *dict = model.message.ext;
+        NSString *currentUserId = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+        NSString *receiverId = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
         
-        if([receiverId isEqualToString:current]) {
-            if([senderId isEqualToString:receiverId]) {
-                //  自己抢了自己发送的红包
-                prompt = [NSString stringWithFormat:@"你领取了自己的红包"];
-                
-            }else {
-                prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
+        BOOL isReceiver = [receiverId isEqualToString:currentUserId];
+        if (isReceiver) {
+            NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderNickname];
+            if (sender.length == 0) {
+                sender = [dict valueForKey:RedpacketKeyRedpacketSenderId];
             }
-        }else{
-            prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
+            text = [NSString stringWithFormat:@"你领取了%@的红包", sender];
+        }else {
+            NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+            if (receiver.length == 0) {
+                receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+            }
+            text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
         }
     }
     
-    model.text = prompt;
+    /*-------------------------------------------*/
     
-    self.titleLabel.text = prompt;
+    self.titleLabel.text = text;
     CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(200, 20)];
     self.widthContraint.constant = size.width + 30;
     [self.backView updateConstraintsIfNeeded];
 }
-
 
 - (void)backViewTaped
 {

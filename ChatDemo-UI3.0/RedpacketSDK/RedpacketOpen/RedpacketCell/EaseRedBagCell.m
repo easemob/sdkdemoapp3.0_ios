@@ -3,8 +3,8 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yang on 16/2/23.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
+
 
 #import "EaseRedBagCell.h"
 #import "EaseBubbleView+RedPacket.h"
@@ -66,12 +66,15 @@
         self.bubbleView.redpacketTitleLabel.frame = CGRectMake(48, 19, 156, 15);
         self.bubbleView.redpacketSubLabel.frame = CGRectMake(48, 41, 49, 12);
         self.bubbleView.redpacketNameLabel.frame = CGRectMake(13, 73, 200, 20);
+        self.bubbleView.redpacketMemberLable.frame = CGRectMake(145, 73, 80, 20);
     }else{
         _bubbleView.frame = CGRectMake(55, 2, 213, 94);
         self.bubbleView.redpacketIcon.frame = CGRectMake(20, 19, 26, 34);
         self.bubbleView.redpacketTitleLabel.frame = CGRectMake(55, 19, 156, 15);
         self.bubbleView.redpacketSubLabel.frame = CGRectMake(55, 41, 49, 12);
         self.bubbleView.redpacketNameLabel.frame = CGRectMake(20, 73, 200, 20);
+        self.bubbleView.redpacketMemberLable.frame = CGRectMake(152, 73, 80, 20);
+
     }
 
 }
@@ -104,8 +107,15 @@
     
     self.bubbleView.redpacketSubLabel.text = @"查看红包";
     self.bubbleView.redpacketNameLabel.text = [dict valueForKey:RedpacketKeyRedpacketOrgName];
+    if ([[dict valueForKey:RedpacketKeyRedapcketToAnyone] isEqualToString:@"member"]) {
+        self.bubbleView.redpacketMemberLable.text = @"专属红包";
+    }else
+    {
+        self.bubbleView.redpacketMemberLable.text = @"";
+    }
     _hasRead.hidden = YES;//红包消息不显示已读
     _nameLabel = nil;// 不显示姓名
+    
 }
 
 - (void)layoutSubviews
