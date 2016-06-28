@@ -116,8 +116,9 @@
 {
     EMConversation *conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:_group.groupId conversationType:eConversationTypeGroupChat];
     
-    __strong GroupSubjectChangingViewController *strongSelf = self;
+    __weak typeof(self) weakSelf = self;
     [[EaseMob sharedInstance].chatManager asyncChangeGroupSubject:_subjectField.text forGroup:_group.groupId completion:^(EMGroup *group, EMError *error) {
+        __strong GroupSubjectChangingViewController *strongSelf = weakSelf;
         if (!error) {
             if ([strongSelf->_group.groupId isEqualToString:conversation.chatter]) {
                 NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
@@ -126,7 +127,7 @@
                 conversation.ext = ext;
             }
         }
-        [self back];
+        [weakSelf back];
     } onQueue:NULL];
 }
 
