@@ -21,7 +21,7 @@
 #import "EMChooseViewController.h"
 #import "ContactSelectionViewController.h"
 
-@interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource, EMChooseViewDelegate>
+@interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate, EMChooseViewDelegate>
 {
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
