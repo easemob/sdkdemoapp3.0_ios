@@ -135,6 +135,7 @@
 "group.sendApplyRepeat" = "application has been sent";
 "group.atMe" = "[Somebody @ me]";
 "group.atAll" = "[Everyone's message]";
+"group.atPushTitle" = " @ me in the group";
 
 //Create Group
 "group.create.addOccupant" = "add members";
