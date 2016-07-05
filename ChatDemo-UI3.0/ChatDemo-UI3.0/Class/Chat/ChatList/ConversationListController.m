@@ -20,6 +20,7 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "RedPacketChatViewController.h"
+#import "ChatDemoHelper.h"
 
 @implementation EMConversation (search)
 
@@ -156,7 +157,7 @@
             id<IConversationModel> model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             cell.model = model;
             
-            cell.detailLabel.text = [weakSelf conversationListViewController:weakSelf latestMessageTitleForConversationModel:model];
+            cell.detailLabel.attributedText = [weakSelf conversationListViewController:weakSelf latestMessageTitleForConversationModel:model];
             cell.timeLabel.text = [weakSelf conversationListViewController:weakSelf latestMessageTimeForConversationModel:model];
             return cell;
         }];
@@ -251,19 +252,21 @@
                 }
             }
         }
-        model.title = [conversation.ext objectForKey:@"subject"];
-        imageName = [[conversation.ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
+        NSDictionary *ext = conversation.ext;
+        model.title = [ext objectForKey:@"subject"];
+        imageName = [[ext objectForKey:@"isPublic"] boolValue] ? @"groupPublicHeader" : @"groupPrivateHeader";
         model.avatarImage = [UIImage imageNamed:imageName];
     }
     return model;
 }
 
-- (NSString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController
+- (NSAttributedString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController
       latestMessageTitleForConversationModel:(id<IConversationModel>)conversationModel
 {
-    NSString *latestMessageTitle = @"";
+    NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:@""];
     EMMessage *lastMessage = [conversationModel.conversation latestMessage];
     if (lastMessage) {
+        NSString *latestMessageTitle = @"";
         EMMessageBody *messageBody = lastMessage.body;
         switch (messageBody.type) {
             case EMMessageBodyTypeImage:{
@@ -293,9 +296,34 @@
             default: {
             } break;
         }
+        
+        if (lastMessage.direction == EMMessageDirectionReceive) {
+            NSString *from = lastMessage.from;
+            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:from];
+            if (profileEntity) {
+                from = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+            }
+            latestMessageTitle = [NSString stringWithFormat:@"%@: %@", from, latestMessageTitle];
+        }
+        
+        NSDictionary *ext = conversationModel.conversation.ext;
+        if (ext && [ext[kHaveUnreadAtMessage] intValue] == kAtAllMessage) {
+            latestMessageTitle = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"group.atAll", nil), latestMessageTitle];
+            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
+            [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, NSLocalizedString(@"group.atAll", nil).length)];
+            
+        }
+        else if (ext && [ext[kHaveUnreadAtMessage] intValue] == kAtYouMessage) {
+            latestMessageTitle = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"group.atMe", @"[Somebody @ me]"), latestMessageTitle];
+            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
+            [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, NSLocalizedString(@"group.atMe", @"[Somebody @ me]").length)];
+        }
+        else {
+            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
+        }
     }
     
-    return latestMessageTitle;
+    return attributedStr;
 }
 
 - (NSString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController

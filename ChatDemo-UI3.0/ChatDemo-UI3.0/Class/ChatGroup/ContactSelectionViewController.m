@@ -30,6 +30,8 @@
 @property (strong, nonatomic) UIScrollView *footerScrollView;
 @property (strong, nonatomic) UIButton *doneButton;
 
+@property (nonatomic) BOOL presetDataSource;
+
 @end
 
 @implementation ContactSelectionViewController
@@ -67,6 +69,17 @@
     return self;
 }
 
+- (instancetype)initWithContacts:(NSArray *)contacts
+{
+    self = [self initWithNibName:nil bundle:nil];
+    if (self) {
+        _presetDataSource = YES;
+        [_contactsSource addObjectsFromArray:contacts];
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -75,7 +88,7 @@
     self.navigationItem.rightBarButtonItem = nil;
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
@@ -207,7 +220,7 @@
 
 - (UIView *)footerView
 {
-    if (_footerView == nil) {
+    if (self.mulChoice && _footerView == nil) {
         _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50, self.view.frame.size.width, 50)];
         _footerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
         _footerView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
@@ -265,11 +278,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id object = [[_dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    if (![self.selectedContacts containsObject:object])
-    {
+    if (self.mulChoice) {
+        if (![self.selectedContacts containsObject:object])
+        {
+            [self.selectedContacts addObject:object];
+            [self reloadFooterView];
+        }
+    }
+    else {
         [self.selectedContacts addObject:object];
-        
-        [self reloadFooterView];
+        [self doneAction:nil];
     }
 }
 
@@ -359,24 +377,26 @@
 
 - (void)reloadFooterView
 {
-    [self.footerScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
-    CGFloat imageSize = self.footerScrollView.frame.size.height;
-    NSInteger count = [self.selectedContacts count];
-    self.footerScrollView.contentSize = CGSizeMake(imageSize * count, imageSize);
-    for (int i = 0; i < count; i++) {
-        NSString *username = [self.selectedContacts objectAtIndex:i];
-        EMRemarkImageView *remarkView = [[EMRemarkImageView alloc] initWithFrame:CGRectMake(i * imageSize, 0, imageSize, imageSize)];
-        remarkView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-        remarkView.remark = username;
-        [self.footerScrollView addSubview:remarkView];
-    }
-    
-    if ([self.selectedContacts count] == 0) {
-        [_doneButton setTitle:NSLocalizedString(@"ok", @"OK") forState:UIControlStateNormal];
-    }
-    else{
-        [_doneButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"doneWithCount", @"Done(%i)"), [self.selectedContacts count]] forState:UIControlStateNormal];
+    if (self.mulChoice) {
+        [self.footerScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        
+        CGFloat imageSize = self.footerScrollView.frame.size.height;
+        NSInteger count = [self.selectedContacts count];
+        self.footerScrollView.contentSize = CGSizeMake(imageSize * count, imageSize);
+        for (int i = 0; i < count; i++) {
+            NSString *username = [self.selectedContacts objectAtIndex:i];
+            EMRemarkImageView *remarkView = [[EMRemarkImageView alloc] initWithFrame:CGRectMake(i * imageSize, 0, imageSize, imageSize)];
+            remarkView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+            remarkView.remark = username;
+            [self.footerScrollView addSubview:remarkView];
+        }
+        
+        if ([self.selectedContacts count] == 0) {
+            [_doneButton setTitle:NSLocalizedString(@"ok", @"OK") forState:UIControlStateNormal];
+        }
+        else{
+            [_doneButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"doneWithCount", @"Done(%i)"), [self.selectedContacts count]] forState:UIControlStateNormal];
+        }
     }
 }
 
@@ -384,18 +404,23 @@
 
 - (void)loadDataSource
 {
-    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [_dataSource removeAllObjects];
-    [_contactsSource removeAllObjects];
-    
-    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
-    for (NSString *username in buddyList) {
-        [self.contactsSource addObject:username];
+    if (!_presetDataSource) {
+        [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+        [_dataSource removeAllObjects];
+        [_contactsSource removeAllObjects];
+        
+        NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
+        for (NSString *username in buddyList) {
+            [self.contactsSource addObject:username];
+        }
+        
+        [_dataSource addObjectsFromArray:[self sortRecords:self.contactsSource]];
+        
+        [self hideHud];
     }
-    
-    [_dataSource addObjectsFromArray:[self sortRecords:self.contactsSource]];
-    
-    [self hideHud];
+    else {
+        _dataSource = [[self sortRecords:self.contactsSource] mutableCopy];
+    }
     [self.tableView reloadData];
 }
 
@@ -421,6 +446,15 @@
     if (isPop) {
         [self.navigationController popViewControllerAnimated:NO];
     }
+}
+
+- (void)backAction:(id)sender
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(viewControllerDidSelectBack:)]) {
+        [_delegate viewControllerDidSelectBack:self];
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

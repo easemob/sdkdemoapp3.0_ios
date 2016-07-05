@@ -21,6 +21,7 @@
 #import "RedPacketUserConfig.h"
 #endif
 
+#import "EaseSDKHelper.h"
 
 #if DEMO_CALL == 1
 
@@ -248,6 +249,8 @@ static ChatDemoHelper *helper = nil;
             isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
         }
         if (_chatVC == nil || !isChatting) {
+            [self _handleReceivedAtMessage:message];
+            
             if (self.conversationListVC) {
                 [_conversationListVC refresh];
             }
@@ -679,7 +682,7 @@ static ChatDemoHelper *helper = nil;
 {
     if (_callSession) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = [[EMClient sharedClient].callManager answerCall:_callSession.sessionId];
+            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:_callSession.sessionId];
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.code == EMErrorNetworkUnavailable) {
@@ -739,4 +742,37 @@ static ChatDemoHelper *helper = nil;
     [self hangupCallWithReason:EMCallEndReasonFailed];
 #endif
 }
+
+- (void)_handleReceivedAtMessage:(EMMessage*)aMessage
+{
+    if (aMessage.chatType != EMChatTypeGroupChat || aMessage.direction != EMMessageDirectionReceive) {
+        return;
+    }
+    
+    NSString *loginUser = [EMClient sharedClient].currentUsername;
+    NSDictionary *ext = aMessage.ext;
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
+    if (loginUser && conversation && ext && [ext objectForKey:kGroupMessageAtList]) {
+        id target = [ext objectForKey:kGroupMessageAtList];
+        if ([target isKindOfClass:[NSString class]] && [(NSString*)target compare:kGroupMessageAtAll options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+            NSNumber *atAll = conversation.ext[kHaveUnreadAtMessage];
+            if ([atAll intValue] != kAtAllMessage) {
+                NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+                [conversationExt removeObjectForKey:kHaveUnreadAtMessage];
+                [conversationExt setObject:@kAtAllMessage forKey:kHaveUnreadAtMessage];
+                conversation.ext = conversationExt;
+            }
+        }
+        else if ([target isKindOfClass:[NSArray class]]) {
+            if ([target containsObject:loginUser]) {
+                if (conversation.ext[kHaveUnreadAtMessage] == nil) {
+                    NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+                    [conversationExt setObject:@kAtYouMessage forKey:kHaveUnreadAtMessage];
+                    conversation.ext = conversationExt;
+                }
+            }
+        }
+    }
+}
+
 @end
