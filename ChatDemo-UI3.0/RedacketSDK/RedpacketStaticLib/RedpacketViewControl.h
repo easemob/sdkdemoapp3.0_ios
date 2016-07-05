@@ -18,6 +18,7 @@
 
 //  抢红包成功回调
 typedef void(^RedpacketGrabBlock)(RedpacketMessageModel *messageModel);
+
 //  环信接口发送红包消息回调
 typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 
@@ -42,7 +43,7 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 @property (nonatomic, weak) id <RedpacketViewControlDelegate> delegate;
 
 /**
- *  用户单击了聊天窗口中的红包Cell后触发
+ *  用户抢红包触发事件
  *
  *  @param messageModel 消息Model
  */
@@ -59,20 +60,20 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 #pragma mark - Controllers
 
 /**
- *  点对点红包控制器
+ *  点对点红包Controller
  *
- *  @return 返回红包控制器
+ *  @return 返回点对点红包Controller
  */
 - (UIViewController *)redpacketViewController;
 
 /**
- *  多人红包控制器
+ *  返回群红包Controller
  *
- *  @param changeMoneyController 聊天室或者群人数
+ *  @param 群成员列表
  *
- *  @return 返回多人红包控制器
+ *  @return 返回多人红包页面
  */
-- (UIViewController *)multiRedpacketViewControllerWith:(NSArray *)groupMemberArray;
+- (UIViewController *)redPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray;
 
 /**
  *  零钱页面
@@ -91,17 +92,19 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 #pragma mark - ShowViewControllers
 
 /**
- *  显示群红包页面
+ *  Present的方式显示群红包页面
+ *
+ *  @param groupMemberArray 定向红包成员数组
  */
-- (void)presentRedPacketMoreViewControllerWithGroupMemberArray:(NSArray *)groupMemberArray;
+- (void)presentRedPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray;
 
 /**
- *  显示点对点红包页面
+ *  Present的方式显示点对点红包页面
  */
 - (void)presentRedPacketViewController;
 
 /**
- *  显示零钱页面
+ *  Present的方式显示零钱页面
  */
 - (void)presentChangeMoneyViewController;
 
