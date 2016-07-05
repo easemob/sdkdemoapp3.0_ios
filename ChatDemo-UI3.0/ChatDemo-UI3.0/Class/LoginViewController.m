@@ -129,11 +129,6 @@
 //点击登陆后的操作
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
 {
-#ifdef REDPACKET_AVALABLE
-    //TODO: 服务器二次校验
-    [[RedPacketUserConfig sharedConfig] configWithImUserId:username andImUserPass:password];
-#endif
-    
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     //异步登陆账号
     __weak typeof(self) weakself = self;

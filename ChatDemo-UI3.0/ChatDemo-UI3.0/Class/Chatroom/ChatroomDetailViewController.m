@@ -24,7 +24,6 @@
 
 @property (strong, nonatomic) EMChatroom *chatroom;
 @property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) NSArray *occupants;
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 @end
@@ -112,7 +111,7 @@
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.occupantCount", @"members count");
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)[self.occupants count], (int)_chatroom.maxOccupantsCount];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.occupantsCount, (int)_chatroom.maxOccupantsCount];
     }
     
     return cell;
@@ -140,37 +139,28 @@
 
 - (void)fetchChatroomInfo
 {
-    /*
-    __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        EMError *error = nil;
-        EMCursorResult *result = nil;
-        EMChatroom *chatroom = [[EMClient sharedClient].chatManager fetchChatroomInfo:weakSelf.chatroom.chatroomId error:&error];
-        if (!error)
-        {
-            result = [[EMClient sharedClient].chatManager fetchOccupantsForChatroom:chatroom.chatroomId cursor:nil pageSize:-1 andError:&error];
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient].roomManager asyncFetchChatroomInfo:_chatroom.chatroomId includeMembersList:YES success:^(EMChatroom *aChatroom) {
+        __strong ChatroomDetailViewController *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf hideHud];
+            strongSelf.chatroom = aChatroom;
+            [strongSelf reloadDataSource];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!error)
-            {
-                weakSelf.chatroom = chatroom;
-                weakSelf.title = chatroom.chatroomSubject;
-                weakSelf.occupants = result.list;
-            }
-            [weakSelf reloadDataSource];
-            if (error)
-            {
-                [weakSelf showHint:NSLocalizedString(@"chatroom.fetchInfoFail", @"failed to get the chatroom details, please try again later")];
-            }
-        });
-    });*/
+    } failure:^(EMError *aError) {
+        __strong ChatroomDetailViewController *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf hideHud];
+            [strongSelf showHint:NSLocalizedString(@"chatroom.fetchInfoFail", @"failed to get the chatroom details, please try again later")];
+        }
+    }];
 }
 
 - (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:self.occupants];
+    [self.dataSource addObjectsFromArray:self.chatroom.occupants];
     [self refreshScrollView];
     [self hideHud];
 }
