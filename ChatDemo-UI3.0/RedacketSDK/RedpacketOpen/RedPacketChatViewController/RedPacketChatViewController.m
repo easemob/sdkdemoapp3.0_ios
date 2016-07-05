@@ -96,7 +96,7 @@ EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
     
     NSMutableArray *mArray = [[NSMutableArray alloc]init];
     
-    for (NSString *username in group.members) {
+    for (NSString *username in group.occupants) {
         //创建一个用户模型 并赋值
         RedpacketUserInfo *userInfo = [self profileEntityWith:username];
         [mArray addObject:userInfo];
