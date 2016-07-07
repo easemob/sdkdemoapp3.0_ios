@@ -62,17 +62,22 @@
     if (self.conversation.type == EMConversationTypeChatRoom)
     {
         //退出聊天室，删除会话
-        NSString *chatter = [self.conversation.conversationId copy];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = nil;
-            [[EMClient sharedClient].roomManager leaveChatroom:chatter error:&error];
-            if (error !=nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Leave chatroom '%@' failed [%@]", chatter, error.errorDescription] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                    [alertView show];
-                });
-            }
-        });
+        if (self.isJoinedChatroom) {
+            NSString *chatter = [self.conversation.conversationId copy];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                EMError *error = nil;
+                [[EMClient sharedClient].roomManager leaveChatroom:chatter error:&error];
+                if (error !=nil) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Leave chatroom '%@' failed [%@]", chatter, error.errorDescription] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                        [alertView show];
+                    });
+                }
+            });
+        }
+        else {
+            [[EMClient sharedClient].chatManager deleteConversation:self.conversation.conversationId deleteMessages:YES];
+        }
     }
     
     [[EMClient sharedClient] removeDelegate:self];
