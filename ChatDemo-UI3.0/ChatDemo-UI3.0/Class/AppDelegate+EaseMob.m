@@ -36,11 +36,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
     
-    [[EaseSDKHelper shareHelper] hyphenateApplication:application
-                    didFinishLaunchingWithOptions:launchOptions
-                                           appkey:appkey
-                                     apnsCertName:apnsCertName
-                                      otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
+    [[EaseSDKHelper shareHelper] hyphenateInitWithAppkey:appkey
+                                            apnsCertName:apnsCertName
+                                             otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
     
     [ChatDemoHelper shareHelper];
     
