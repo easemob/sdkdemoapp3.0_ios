@@ -36,7 +36,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
     
-    [[EaseSDKHelper shareHelper] easemobApplication:application
+    [[EaseSDKHelper shareHelper] hyphenateApplication:application
                     didFinishLaunchingWithOptions:launchOptions
                                            appkey:appkey
                                      apnsCertName:apnsCertName

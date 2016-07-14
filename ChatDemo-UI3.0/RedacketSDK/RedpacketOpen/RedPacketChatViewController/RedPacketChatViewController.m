@@ -288,7 +288,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         /**
          *  存入当前会话并存入数据库
          */
-        [self.conversation insertMessage:textMessage];
+        [self.conversation appendMessage:textMessage];
     }
 }
 

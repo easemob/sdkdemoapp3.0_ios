@@ -262,29 +262,48 @@ static NSString *kGroupName = @"GroupName";
                 break;
         }
         
-        NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
-        if (message.chatType == EMChatTypeGroupChat) {
-            NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
-            for (EMGroup *group in groupArray) {
-                if ([group.groupId isEqualToString:message.conversationId]) {
-                    title = [NSString stringWithFormat:@"%@(%@)", message.from, group.subject];
-                    break;
+        do {
+            NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
+            if (message.chatType == EMChatTypeGroupChat) {
+                NSDictionary *ext = message.ext;
+                if (ext && ext[kGroupMessageAtList]) {
+                    id target = ext[kGroupMessageAtList];
+                    if ([target isKindOfClass:[NSString class]]) {
+                        if ([kGroupMessageAtAll compare:target options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+                            notification.alertBody = [NSString stringWithFormat:@"%@%@", title, NSLocalizedString(@"group.atPushTitle", @" @ me in the group")];
+                            break;
+                        }
+                    }
+                    else if ([target isKindOfClass:[NSArray class]]) {
+                        NSArray *atTargets = (NSArray*)target;
+                        if ([atTargets containsObject:[EMClient sharedClient].currentUsername]) {
+                            notification.alertBody = [NSString stringWithFormat:@"%@%@", title, NSLocalizedString(@"group.atPushTitle", @" @ me in the group")];
+                            break;
+                        }
+                    }
+                }
+                NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+                for (EMGroup *group in groupArray) {
+                    if ([group.groupId isEqualToString:message.conversationId]) {
+                        title = [NSString stringWithFormat:@"%@(%@)", message.from, group.subject];
+                        break;
+                    }
                 }
             }
-        }
-        else if (message.chatType == EMChatTypeChatRoom)
-        {
-            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            NSString *key = [NSString stringWithFormat:@"OnceJoinedChatrooms_%@", [[EMClient sharedClient] currentUsername]];
-            NSMutableDictionary *chatrooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
-            NSString *chatroomName = [chatrooms objectForKey:message.conversationId];
-            if (chatroomName)
+            else if (message.chatType == EMChatTypeChatRoom)
             {
-                title = [NSString stringWithFormat:@"%@(%@)", message.from, chatroomName];
+                NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+                NSString *key = [NSString stringWithFormat:@"OnceJoinedChatrooms_%@", [[EMClient sharedClient] currentUsername]];
+                NSMutableDictionary *chatrooms = [NSMutableDictionary dictionaryWithDictionary:[ud objectForKey:key]];
+                NSString *chatroomName = [chatrooms objectForKey:message.conversationId];
+                if (chatroomName)
+                {
+                    title = [NSString stringWithFormat:@"%@(%@)", message.from, chatroomName];
+                }
             }
-        }
-        
-        notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+            
+            notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+        } while (0);
     }
     else{
         notification.alertBody = NSLocalizedString(@"receiveMessage", @"you have a new message");
