@@ -32,7 +32,7 @@
 
 
 /**
- *  是否多选，默认NO
+ *  是否多选，默认YES
  *
  *  初始化类之后设置
  */
@@ -139,5 +139,12 @@
  *  @return 是否隐藏页面
  */
 - (BOOL)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources;
+
+/**
+ *  页面返回
+ *
+ *  @param viewController  列表视图
+ */
+- (void)viewControllerDidSelectBack:(EMChooseViewController *)viewController;
 
 @end

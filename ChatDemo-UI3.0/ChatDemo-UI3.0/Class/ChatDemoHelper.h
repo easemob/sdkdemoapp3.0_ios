@@ -17,6 +17,10 @@
 #import "MainViewController.h"
 #import "ChatViewController.h"
 
+#define kHaveUnreadAtMessage    @"kHaveAtMessage"
+#define kAtYouMessage           1
+#define kAtAllMessage           2
+
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"

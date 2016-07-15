@@ -31,7 +31,7 @@
             [self setEdgesForExtendedLayout:UIRectEdgeNone];
         }
         
-        _mulChoice = NO;
+        _mulChoice = YES;
         _defaultEditing = NO;
         _showAllIndex = NO;
     }
