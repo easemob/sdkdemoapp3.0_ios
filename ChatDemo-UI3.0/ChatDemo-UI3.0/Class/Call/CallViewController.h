@@ -53,8 +53,15 @@
 
 @property (strong, nonatomic) UIButton *cancelButton;
 
+@property (strong, nonatomic) EMCallSession *callSession;
+
 - (instancetype)initWithSession:(EMCallSession *)session
                        isCaller:(BOOL)isCaller
+                         status:(NSString *)statusString;
+
+- (instancetype)initWithRemoteName:(NSString *)aRemoteName
+                          isCaller:(BOOL)aIsCaller
+                              type:(EMCallType)aType
                          status:(NSString *)statusString;
 
 + (BOOL)canVideo;
