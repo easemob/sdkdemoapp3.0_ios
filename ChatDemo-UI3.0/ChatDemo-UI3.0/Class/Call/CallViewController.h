@@ -59,11 +59,6 @@
                        isCaller:(BOOL)isCaller
                          status:(NSString *)statusString;
 
-- (instancetype)initWithRemoteName:(NSString *)aRemoteName
-                          isCaller:(BOOL)aIsCaller
-                              type:(EMCallType)aType
-                         status:(NSString *)statusString;
-
 + (BOOL)canVideo;
 
 + (void)saveBitrate:(NSString*)value;

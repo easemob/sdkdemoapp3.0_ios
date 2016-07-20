@@ -20,7 +20,7 @@
     float _height;
 }
 
-@property (strong, nonatomic) LocalVideoView *localView;
+@property (strong, nonatomic) EMCallLocalView *localView;
 
 @property (strong, nonatomic) NSMutableDictionary *remoteViews;
 
@@ -68,7 +68,7 @@
     _width = 120;
     _height = 140;
     
-    self.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
+    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
     self.localView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.localView];
     _ox = 150;
@@ -116,7 +116,7 @@
 //    //2.自己窗口
 //    CGFloat width = 80;
 //    CGFloat height = _callSession.remoteView.frame.size.height / _callSession.remoteView.frame.size.width * width;
-//    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+//    _callSession.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
 }
 
 - (UIView *)inviteView
@@ -166,7 +166,7 @@
     
     EMError *error = nil;
     
-    RemoteVideoView *remoteView = [[RemoteVideoView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
+    EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
     remoteView.backgroundColor = [UIColor redColor];
     [self.view addSubview:remoteView];
     
@@ -207,7 +207,7 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Exit 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
         
-        RemoteVideoView *view = [self.remoteViews objectForKey:aExitedName];
+        EMCallRemoteView *view = [self.remoteViews objectForKey:aExitedName];
         if (view) {
             [view removeFromSuperview];
         }

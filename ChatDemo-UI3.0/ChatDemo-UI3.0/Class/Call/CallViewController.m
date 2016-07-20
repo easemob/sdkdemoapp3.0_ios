@@ -72,30 +72,6 @@
     return self;
 }
 
-- (instancetype)initWithRemoteName:(NSString *)aRemoteName
-                          isCaller:(BOOL)aIsCaller
-                              type:(EMCallType)aType
-                            status:(NSString *)statusString
-{
-    self = [super init];
-    if (self) {
-        _isCaller = aIsCaller;
-        _remoteName = aRemoteName;
-        _status = statusString;
-        _type = aType;
-        
-        _timeLabel.text = @"";
-        _timeLength = 0;
-        
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
-            //            [session setVideoBitrate:[[ud valueForKey:kLocalCallBitrate] intValue]];
-        }
-    }
-    
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -133,6 +109,16 @@
 - (void)dealloc
 {
     _callSession = nil;
+}
+
+#pragma mark - UIInterfaceOrientation
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - getter
@@ -279,7 +265,7 @@
     [_answerButton setTitle:NSLocalizedString(@"call.answer", @"Answer") forState:UIControlStateNormal];
     [_answerButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
     [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
-    _answerButton.enabled = NO;
+//    _answerButton.enabled = NO;
     [_actionView addSubview:_answerButton];
     
     _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200) / 2, _rejectButton.frame.origin.y, 200, 40)];
@@ -318,13 +304,13 @@
     [_actionView addSubview:_voiceButton];
     
     //1.对方窗口
-    _callSession.remoteView = [[RemoteVideoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:_callSession.remoteView];
     
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    _callSession.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
     [self.view addSubview:_callSession.localView];
     
     //3、属性显示层
@@ -437,28 +423,28 @@
 
 - (void)recordAction
 {
-    _recordButton.selected = !_recordButton.selected;
-    if (_recordButton.selected) {
-        NSString *recordPath = NSHomeDirectory();
-        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
-        NSFileManager *fm = [NSFileManager defaultManager];
-        if(![fm fileExistsAtPath:recordPath]){
-            [fm createDirectoryAtPath:recordPath
-          withIntermediateDirectories:YES
-                           attributes:nil
-                                error:nil];
-        }
-        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
-    } else {
-        NSString *tempPath = [_callSession stopVideoRecording:nil];
-        if (tempPath.length > 0) {
-//            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
-//            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-//            [moviePlayerController.moviePlayer prepareToPlay];
-//            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-//            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
-        }
-    }
+//    _recordButton.selected = !_recordButton.selected;
+//    if (_recordButton.selected) {
+//        NSString *recordPath = NSHomeDirectory();
+//        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+//        NSFileManager *fm = [NSFileManager defaultManager];
+//        if(![fm fileExistsAtPath:recordPath]){
+//            [fm createDirectoryAtPath:recordPath
+//          withIntermediateDirectories:YES
+//                           attributes:nil
+//                                error:nil];
+//        }
+//        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
+//    } else {
+//        NSString *tempPath = [_callSession stopVideoRecording:nil];
+//        if (tempPath.length > 0) {
+////            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
+////            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+////            [moviePlayerController.moviePlayer prepareToPlay];
+////            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+////            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+//        }
+//    }
 }
 
 - (void)videoPauseOrResumeAction
