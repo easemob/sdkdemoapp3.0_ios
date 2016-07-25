@@ -10,6 +10,7 @@
 #import "YZHRedpacketBridgeProtocol.h"
 
 
+
 @interface YZHRedpacketBridge : NSObject
 
 @property (nonatomic, weak) id <YZHRedpacketBridgeDelegate> delegate;
@@ -17,17 +18,22 @@
 @property (nonatomic, weak) id <YZHRedpacketBridgeDataSource>dataSource;
 
 /**
- *  服务商名称
+ *  商户名称
  */
-@property (nonatomic, copy)  NSString *redpacketOrgName;
+@property (nonatomic, copy)  NSString *redpacketOrgName __attribute__((deprecated("方法已经停用，请通过云账户后端进行配置")));
+
+/**
+ *  支付宝回调当前APP时的URL Scheme, 应该传入当前App的Bundle Identifier
+ */
+@property (nonatomic, copy)  NSString *redacketURLScheme;
 
 + (YZHRedpacketBridge *)sharedBridge;
 
-
 /**
- *  检测Token是否存在
+ *  是否需要更新签名
+ *  用户切换或者红包Token更新都需要更新Sign
  */
-@property (nonatomic, readonly, getter=isRedpacketTokenExist) BOOL redpacketTokenExist;
+- (BOOL)isNeedUpdateSignWithUserId:(NSString *)userId;
 
 /* 以下2种方法，根据IM选择其一 */
 
@@ -46,7 +52,7 @@
              timeStamp:(long)timeStamp;
 
 /**
- *  Method3: 通过环信imToken的方式获取Token
+ *  Method2: 通过环信imToken的方式获取Token
  *
  *  @param appKey    商户在环信申请的AppKey
  *  @param appUserId 用户在App的用户ID， 默认与imUserId相同
@@ -56,21 +62,15 @@
                appUserId:(NSString *)appUserId
                  imToken:(NSString *)imToken;
 
-
 /**
- *  用户退出登录，或者在其它地点登录后，清除用户信息
+ *  用户退出需要清空Token
  */
-- (void)redpacketUserLoginOut;
-
-/**
- *   重新请求红包用户Token
- */
-- (void)reRequestRedpacketUserToken;
+- (void)redpacketUserLoginOut __attribute__((deprecated("方法已经不需要调用, SDK根据用户变更和Token过期自动切换")));
 
 /**
  *  请求Token
  *
- *  @param tokenRequestCompletionBlock 请求Token完成后的回调
+ *  @param tokenRequestCompletionBlock 请求Token成功后的回调
  */
 - (void)reRequestRedpacketUserToken:(void(^)(NSInteger code, NSString *msg))tokenRequestCompletionBlock;
 

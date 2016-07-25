@@ -108,5 +108,17 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
  */
 - (void)presentChangeMoneyViewController;
 
+/**
+ *  零钱接口返回零钱
+ *
+ *  @param amount 零钱金额
+ */
++ (void)getChangeMoney:(void (^)(NSString *amount))amount;
+
+/**
+ *  专属红包拉取列表的回调 配合代理 RedpacketViewControlDelegate 返回nil的时候可调用此方法
+ *  @param  isSuccess传 YES 会根据 memberListArray 刷新页面，传 NO 会显示错误页面
+ */
+- (void)getGroupMemberList:(NSArray<RedpacketUserInfo *> *)memberListArray with:(BOOL)isSuccess;
 
 @end

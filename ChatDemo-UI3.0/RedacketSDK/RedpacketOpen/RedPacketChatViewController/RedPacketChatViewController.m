@@ -70,9 +70,6 @@ EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
         
     }];
     
-    //  同步Token
-    [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken];
-    
     //  设置用户头像
     [[EaseRedBagCell appearance] setAvatarSize:40.f];
     //  设置头像圆角
