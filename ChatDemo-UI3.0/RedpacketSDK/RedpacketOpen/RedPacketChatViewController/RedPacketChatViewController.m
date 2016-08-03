@@ -203,7 +203,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
             //群内指向红包
             NSArray *groupArray = [EMGroup groupWithId:self.conversation.chatter].occupants;
             //群聊红包发送界面
-            [self.viewControl presentRedPacketMoreViewControllerWithGroupMemberArray:groupArray];
+            [self.viewControl presentRedPacketMoreViewControllerWithGroupMembers:groupArray];
         }
         
     } else if (index == _redpacket_change_index) {

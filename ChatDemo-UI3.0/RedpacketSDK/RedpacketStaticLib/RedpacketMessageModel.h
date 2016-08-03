@@ -221,5 +221,11 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
  */
 - (NSDictionary *)redpacketMessageModelToDic;
 
+/**
+ *  红包类型赋值
+ *
+ *  @param groupType 红包类型字符串
+ */
+- (void)redpacketTypeVoluationWithGroupType:(NSString *)groupType;
 
 @end
