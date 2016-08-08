@@ -210,7 +210,6 @@
 "call.autoHangup"="No response and Hang up";
 "call.noResponse"="NO response";
 "call.connectFailed"="Connect failed";
-"call.remoteOffline"="Remote offline";
 "call.failed"="Call failed";
 "call.suspended"="Call has been suspended";
 "call.over"="Call end";

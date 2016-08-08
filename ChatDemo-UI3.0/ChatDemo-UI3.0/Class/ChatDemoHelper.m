@@ -26,13 +26,10 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
-#import "ConferenceViewController.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
     NSTimer *_callTimer;
-    NSConditionLock *_callConteollerLock;
-    NSInteger _callCount;
 }
 
 @end
@@ -90,10 +87,6 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONF object:nil];
-    _callConteollerLock = [[NSConditionLock alloc] init];
-    
-    _callCount = 0;
 #endif
 }
 
@@ -212,18 +205,6 @@ static ChatDemoHelper *helper = nil;
     
     if (self.conversationListVC) {
         [_conversationListVC refreshDataSource];
-    }
-}
-
-- (void)didReceiveCmdMessages:(NSArray *)aCmdMessages
-{
-    for(EMMessage *message in aCmdMessages){
-        EMCmdMessageBody *body = (EMCmdMessageBody *)message.body;
-        if ([body.action containsString:@"inviteJoinConf"]) {
-            NSString *confId = [body.action pathExtension];
-            NSString *from = message.from;
-            [self recvToJoinConference:confId from:from];
-        }
     }
 }
 
@@ -538,8 +519,8 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveCallConnected:(EMCallSession *)aSession
 {
-    if (!aSession) {
-        return;
+    if(_callSession && _callSession.status != EMCallSessionStatusDisconnected){
+        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonBusy];
     }
     
     if (aSession.isCaller) {
@@ -610,10 +591,9 @@ static ChatDemoHelper *helper = nil;
 //        return;
 //    }
     
-    if (_callController && [aSession.callId isEqualToString:_callController.callSession.callId]) {
+    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
         [self _stopCallTimer];
         
-        [_callConteollerLock lock];
         NSString *connectStr = aSession.connectType == EMCallConnectTypeRelay ? @"Relay" : @"Direct";
         _callController.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         _callController.timeLabel.hidden = NO;
@@ -622,7 +602,6 @@ static ChatDemoHelper *helper = nil;
         _callController.cancelButton.hidden = NO;
         _callController.rejectButton.hidden = YES;
         _callController.answerButton.hidden = YES;
-        [_callConteollerLock unlock];
     }
 }
 
@@ -630,14 +609,13 @@ static ChatDemoHelper *helper = nil;
                           reason:(EMCallEndReason)aReason
                            error:(EMError *)aError
 {
-    if (_callController && [aSession.callId isEqualToString:_callController.callSession.callId]) {
+    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
         [self _stopCallTimer];
         
-        [_callConteollerLock lock];
-        CallViewController *tmpController = self.callController;
+        _callSession = nil;
+        
+        [_callController close];
         _callController = nil;
-        [tmpController close];
-        [_callConteollerLock unlock];
         
         if (aReason != EMCallEndReasonHangup) {
             NSString *reasonStr = @"";
@@ -662,11 +640,6 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.connectFailed", @"Connect failed");
                 }
                     break;
-                case EMCallEndReasonRemoteOffline:
-                {
-                    reasonStr = NSLocalizedString(@"call.remoteOffline", @"Remote offline");
-                }
-                    break;
                 default:
                     break;
             }
@@ -685,7 +658,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveCallNetworkChanged:(EMCallSession *)aSession status:(EMCallNetworkStatus)aStatus
 {
-    if (_callController && [aSession.callId isEqualToString:_callController.callSession.callId]) {
+    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
         [_callController setNetwork:aStatus];
     }
 }
@@ -700,38 +673,27 @@ static ChatDemoHelper *helper = nil;
 {
     if (notify.object) {
         [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] isVideo:[[notify.object objectForKey:@"type"] boolValue]];
-        
-//        //TODO: test case
-//        int index = 0;
-//        NSString *chatter = [notify.object valueForKey:@"chatter"];
-//        BOOL isVideo = [[notify.object objectForKey:@"type"] boolValue];
-//        while (index < 10) {
-//            NSString *callId = [self makeCallWithUsername:chatter isVideo:isVideo];
-//            
-//            [self hangupCallWithId:callId reason:EMCallEndReasonHangup];
-//            ++index;
-//        }
     }
 }
 
 - (void)_startCallTimer
 {
-//    _callTimer = [NSTimer scheduledTimerWithTimeInterval:50 target:self selector:@selector(_cancelCall) userInfo:nil repeats:NO];
+    _callTimer = [NSTimer scheduledTimerWithTimeInterval:50 target:self selector:@selector(_cancelCall) userInfo:nil repeats:NO];
 }
 
 - (void)_stopCallTimer
 {
-//    if (_callTimer == nil) {
-//        return;
-//    }
-//    
-//    [_callTimer invalidate];
-//    _callTimer = nil;
+    if (_callTimer == nil) {
+        return;
+    }
+    
+    [_callTimer invalidate];
+    _callTimer = nil;
 }
 
 - (void)_cancelCall
 {
-    [self hangupCallWithId:_callController.callSession.callId reason:EMCallEndReasonNoResponse];
+    [self hangupCallWithReason:EMCallEndReasonNoResponse];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
@@ -740,99 +702,64 @@ static ChatDemoHelper *helper = nil;
 - (void)makeCallWithUsername:(NSString *)aUsername
                      isVideo:(BOOL)aIsVideo
 {
-    if (_callController) {
-        [_callConteollerLock lock];
-        CallViewController *tmpController = self.callController;
-        _callController = nil;
-        [tmpController close];
-        [_callConteollerLock unlock];
-    }
-    
     if ([aUsername length] == 0) {
-        return ;
-    }
-    
-    EMCallType type = aIsVideo ? EMCallTypeVideo : EMCallTypeVoice;
-    [[EMClient sharedClient].callManager asyncMakeCallWithType:type remoteName:aUsername success:^(EMCallSession *aCallSession) {
-        
-        NSLog(@"push call controller---- make %@", aCallSession.callId);
-        [_callConteollerLock lock];
-        self.callController = [[CallViewController alloc] initWithSession:aCallSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
-        [_mainVC presentViewController:_callController animated:NO completion:nil];
-        [_callConteollerLock unlock];
-        
-        [self _startCallTimer];
-    } failure:^(EMError *aError) {
-        [_callConteollerLock lock];
-        CallViewController *tmpController = self.callController;
-        _callController = nil;
-        [tmpController close];
-        [_callConteollerLock unlock];
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-        [alertView show];
-    }];
-}
-
-- (void)hangupCallWithId:(NSString *)aCallId
-                  reason:(EMCallEndReason)aReason
-{
-    if ([aCallId length] == 0) {
         return;
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[EMClient sharedClient].callManager asyncEndCallWithId:aCallId reason:aReason];
-    });
+    if (aIsVideo) {
+        _callSession = [[EMClient sharedClient].callManager makeVideoCall:aUsername error:nil];
+    }
+    else{
+        _callSession = [[EMClient sharedClient].callManager makeVoiceCall:aUsername error:nil];
+    }
     
+    if(_callSession){
+        [self _startCallTimer];
+        
+        _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
+//        _callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+//        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+//        [delegate.navigationController presentViewController:_callController animated:NO completion:nil];
+        [_mainVC presentViewController:_callController animated:NO completion:nil];
+    }
+    else{
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+    
+}
+
+- (void)hangupCallWithReason:(EMCallEndReason)aReason
+{
     [self _stopCallTimer];
     
-    [_callConteollerLock lock];
-    CallViewController *tmpController = self.callController;
-    _callController = nil;
-    [tmpController close];
-    [_callConteollerLock unlock];
-}
-
-- (void)answerCallWithId:(NSString *)aCallId
-{
-    if ([aCallId length] == 0) {
-        return;
+    if (_callSession) {
+        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:aReason];
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient].callManager asyncAnswerCallWithId:aCallId];
-        if (error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error.code == EMErrorNetworkUnavailable || error.code == EMErrorServerNotReachable) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"network.disconnection", @"Network disconnection") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                    [alertView show];
-                }
-                else{
-                    [self hangupCallWithId:aCallId reason:EMCallEndReasonFailed];
-                }
-            });
-        }
-    });
+    _callSession = nil;
+    [_callController close];
+    _callController = nil;
 }
 
-#pragma mark - Conference
-
-- (void)makeConference:(NSNotification*)notify
+- (void)answerCall
 {
-    ConferenceViewController *confController = [[ConferenceViewController alloc] init];
-    [_mainVC.navigationController pushViewController:confController animated:NO];
-}
-
-- (void)recvToJoinConference:(NSString *)aConfId
-                        from:(NSString *)aFrom
-{
-    NSString *str = [NSString stringWithFormat:@"%@ 邀请你加入会议", aFrom];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    [alertView show];
-    
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId from:aFrom];
-    [_mainVC.navigationController pushViewController:confController animated:NO];
+    if (_callSession) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = [[EMClient sharedClient].callManager answerCall:_callSession.sessionId];
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error.code == EMErrorNetworkUnavailable) {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"network.disconnection", @"Network disconnection") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                        [alertView show];
+                    }
+                    else{
+                        [self hangupCallWithReason:EMCallEndReasonFailed];
+                    }
+                });
+            }
+        });
+    }
 }
 
 #endif
@@ -876,7 +803,7 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient] logout:NO];
     
 #if DEMO_CALL == 1
-    [self hangupCallWithId:_callController.callSession.callId reason:EMCallEndReasonFailed];
+    [self hangupCallWithReason:EMCallEndReasonFailed];
 #endif
 }
 

@@ -210,7 +210,6 @@
 "call.autoHangup"="没有响应，自动挂断";
 "call.noResponse"="对方没有回应";
 "call.connectFailed"="建立连接失败";
-"call.remoteOffline"="对方不在线";
 "call.failed"="通话失败";
 "call.suspended"="通话已挂断";
 "call.over"="通话结束";
