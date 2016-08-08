@@ -225,6 +225,7 @@
     [_answerButton setTitle:NSLocalizedString(@"call.answer", @"Answer") forState:UIControlStateNormal];
     [_answerButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
     [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
+
     [_actionView addSubview:_answerButton];
     
     _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200) / 2, _rejectButton.frame.origin.y, 200, 40)];
@@ -265,14 +266,14 @@
 - (void)_initializeVideoView
 {
     //1.对方窗口
-    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:_callSession.remoteVideoView];
+    _callSession.remoteView = [[RemoteVideoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:_callSession.remoteView];
     
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
-    [self.view addSubview:_callSession.localVideoView];
+    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    [self.view addSubview:_callSession.localView];
     
     //3、属性显示层
     _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
@@ -395,9 +396,9 @@
                            attributes:nil
                                 error:nil];
         }
-        [_callSession startVideoRecord:recordPath];
+        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
     } else {
-        NSString *tempPath = [_callSession stopVideoRecord];
+        NSString *tempPath = [_callSession stopVideoRecording:nil];
         if (tempPath.length > 0) {
 //            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
 //            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
@@ -555,7 +556,7 @@
 
 - (void)close
 {
-    _callSession.remoteVideoView.hidden = YES;
+    _callSession.remoteView.hidden = YES;
     _callSession = nil;
     _propertyView = nil;
     
