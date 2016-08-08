@@ -1,19 +1,19 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 
 #import "RobotManager.h"
 
-#import "EMRobot.h"
+//#import "EMRobot.h"
 
 @interface RobotManager ()
 
@@ -43,7 +43,7 @@ static RobotManager *sharedInstance = nil;
 - (BOOL)isRobotWithUsername:(NSString*)username
 {
     if ([[_robotSource allKeys] count] == 0) {
-        [self addRobotsToMemory:[[EaseMob sharedInstance].chatManager robotList]];
+//        [self addRobotsToMemory:[[EMClient sharedClient].chatManager robotList]];
     }
     if ([_robotSource objectForKey:[username lowercaseString]]) {
         return YES;
@@ -54,8 +54,8 @@ static RobotManager *sharedInstance = nil;
 - (NSString*)getRobotNickWithUsername:(NSString*)username
 {
     if ([_robotSource objectForKey:[username lowercaseString]]) {
-        EMRobot *robot = [_robotSource objectForKey:[username lowercaseString]];
-        return robot.nickname;
+//        EMRobot *robot = [_robotSource objectForKey:[username lowercaseString]];
+//        return robot.nickname;
     }
     return username;
 }
@@ -64,11 +64,11 @@ static RobotManager *sharedInstance = nil;
 {
     if (robots && [robots count] > 0) {
         [_robotSource removeAllObjects];
-        for (EMRobot *robot in robots) {
-            if ([robot isKindOfClass:[EMRobot class]]) {
-                [_robotSource setObject:robot forKey:[robot.username lowercaseString]];
-            }
-        }
+//        for (EMRobot *robot in robots) {
+//            if ([robot isKindOfClass:[EMRobot class]]) {
+//                [_robotSource setObject:robot forKey:[robot.username lowercaseString]];
+//            }
+//        }
     }
 }
 

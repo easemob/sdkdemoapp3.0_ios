@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "AppDelegate.h"
@@ -17,18 +17,31 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+UMeng.h"
 #import "AppDelegate+Parse.h"
+#import "RedPacketUserConfig.h"
+#import "AlipaySDK.h"
+#import "RedpacketOpenConst.h"
 
 
 @interface AppDelegate ()
 
 @end
 
+#define EaseMobAppKey @"easemob-demo#chatdemoui"
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    _connectionState = eEMConnectionConnected;
+#ifdef REDPACKET_AVALABLE
+    /**
+     *  TODO: 通过环信的AppKey注册红包
+     */
+    [[RedPacketUserConfig sharedConfig] configWithAppKey:EaseMobAppKey];
+#endif
+
+    
+    _connectionState = EMConnectionConnected;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -53,9 +66,17 @@
 #else
     apnsCertName = @"chatdemoui";
 #endif
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *appkey = [ud stringForKey:@"identifier_appkey"];
+    if (!appkey) {
+        appkey = EaseMobAppKey;
+        [ud setObject:appkey forKey:@"identifier_appkey"];
+    }
+
     [self easemobApplication:application
 didFinishLaunchingWithOptions:launchOptions
-                      appkey:@"easemob-demo#chatdemoui"
+                      appkey:appkey
                 apnsCertName:apnsCertName
                  otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
 
@@ -76,4 +97,46 @@ didFinishLaunchingWithOptions:launchOptions
         [_mainController didReceiveLocalNotification:notification];
     }
 }
+
+#ifdef REDPACKET_AVALABLE
+
+#pragma mark - Alipay
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:nil];
+}
+
+// NOTE: iOS9.0之前使用的API接口
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
+        }];
+    }
+    return YES;
+}
+
+// NOTE: iOS9.0之后使用新的API接口
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
+        }];
+    }
+    return YES;
+}
+
+#endif
+
+
 @end

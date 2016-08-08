@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "UserProfileViewController.h"
@@ -83,7 +83,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,10 +94,12 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     if (indexPath.row == 0) {
-        //cell.textLabel.text = NSLocalizedString(@"setting.personalInfoUpload", @"Upload HeadImage");
+        cell.detailTextLabel.text = NSLocalizedString(@"setting.personalInfoUpload", @"Upload HeadImage");
         [cell.contentView addSubview:self.headImageView];
-        [cell.contentView addSubview:self.usernameLabel];
     } else if (indexPath.row == 1) {
+        cell.textLabel.text = NSLocalizedString(@"username", @"username");
+        cell.detailTextLabel.text = self.usernameLabel.text;
+    } else if (indexPath.row == 2) {
         cell.textLabel.text = NSLocalizedString(@"setting.profileNickname", @"Nickname");
         UserProfileEntity *entity = [[UserProfileManager sharedInstance] getUserProfileByUsername:_username];
         if (entity && entity.nickname.length>0) {

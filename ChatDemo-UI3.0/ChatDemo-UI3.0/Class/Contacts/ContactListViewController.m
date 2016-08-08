@@ -1,10 +1,14 @@
-//
-//  ContactListViewController.m
-//  ChatDemo-UI3.0
-//
-//  Created by dhc on 15/6/24.
-//  Copyright (c) 2015年 easemob.com. All rights reserved.
-//
+/************************************************************
+ *  * Hyphenate CONFIDENTIAL
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Hyphenate Inc.
+ */
 
 #import "ContactListViewController.h"
 
@@ -19,13 +23,15 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
+#import "RedPacketChatViewController.h"
 
-@implementation EMBuddy (search)
+
+@implementation NSString (search)
 
 //根据用户昵称进行搜索
 - (NSString*)showName
 {
-    return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.username];
+    return [[UserProfileManager sharedInstance] getNickNameWithUsername:self];
 }
 
 @end
@@ -55,15 +61,12 @@
     _contactsSource = [NSMutableArray array];
     _sectionTitles = [NSMutableArray array];
     
-//    [self tableViewDidTriggerHeaderRefresh];
-    
     [self searchController];
     self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
     [self.view addSubview:self.searchBar];
     
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
     
-    [self reloadDataSource];
     // 环信UIdemo中有用到Parse, 加载用户好友个人信息
     [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
 }
@@ -124,10 +127,10 @@
                 cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
-            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            NSString *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buddy.username;
-            cell.username = buddy.username;
+            cell.textLabel.text = buddy;
+            cell.username = buddy;
             
             return cell;
         }];
@@ -139,11 +142,10 @@
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+            NSString *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
             if (loginUsername && loginUsername.length > 0) {
-                if ([loginUsername isEqualToString:buddy.username]) {
+                if ([loginUsername isEqualToString:buddy]) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                     [alertView show];
                     
@@ -152,9 +154,15 @@
             }
             
             [weakSelf.searchController.searchBar endEditing:YES];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy.username
-                                                                                conversationType:eConversationTypeChat];
-            chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy.username];
+
+#ifdef REDPACKET_AVALABLE
+            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+#else
+            ChatViewController *chatVC = [[ChatViewController alloc]
+#endif
+                                          initWithConversationChatter:buddy
+                                                                                conversationType:EMConversationTypeChat];
+            chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
@@ -173,7 +181,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 4;
+        return 3;
     }
     
     return [[self.dataArray objectAtIndex:(section - 1)] count];
@@ -181,16 +189,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = [EaseUserCell cellIdentifierWithModel:nil];
-    EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    // Configure the cell...
-    if (cell == nil) {
-        cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
     if (indexPath.section == 0) {
-        cell.model = nil;
         if (indexPath.row == 0) {
             NSString *CellIdentifier = @"addFriend";
             EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -202,7 +201,14 @@
             cell.avatarView.badge = self.unapplyCount;
             return cell;
         }
-        else if (indexPath.row == 1) {
+        
+        NSString *CellIdentifier = @"commonCell";
+        EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        if (indexPath.row == 1) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.group", @"Group");
         }
@@ -214,11 +220,20 @@
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
         }
+        return cell;
     }
     else{
+        NSString *CellIdentifier = [EaseUserCell cellIdentifierWithModel:nil];
+        EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
         NSArray *userSection = [self.dataArray objectAtIndex:(indexPath.section - 1)];
         EaseUserModel *model = [userSection objectAtIndex:indexPath.row];
-        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy.username];
+        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
         if (profileEntity) {
             model.avatarURLPath = profileEntity.imageUrl;
             model.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
@@ -226,10 +241,9 @@
         cell.indexPath = indexPath;
         cell.delegate = self;
         cell.model = model;
-    }
-    
-    return cell;
-}
+        
+        return cell;
+    }}
 
 #pragma mark - Table view delegate
 
@@ -282,13 +296,14 @@
         }
         else if (row == 1)
         {
-            if (_groupController == nil) {
-                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-            }
-            else{
-                [_groupController reloadDataSource];
-            }
-            [self.navigationController pushViewController:_groupController animated:YES];
+//            if (_groupController == nil) {
+//                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+//            }
+//            else{
+//                [_groupController reloadDataSource];
+//            }
+            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:groupController animated:YES];
         }
         else if (row == 2)
         {
@@ -302,18 +317,22 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         if (loginUsername && loginUsername.length > 0) {
-            if ([loginUsername isEqualToString:model.buddy.username]) {
+            if ([loginUsername isEqualToString:model.buddy]) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
                 
                 return;
             }
         }
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy.username conversationType:eConversationTypeChat];
-        chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy.username;
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+#else
+        ChatViewController *chatController = [[ChatViewController alloc]
+#endif
+                                              initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
+        chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
 }
@@ -330,29 +349,27 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
         EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-        if ([model.buddy.username isEqualToString:loginUsername]) {
+        if ([model.buddy isEqualToString:loginUsername]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
             
             return;
         }
         
-        EMError *error = nil;
-        [[EaseMob sharedInstance].chatManager removeBuddy:model.buddy.username removeFromRemote:YES error:&error];
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
         if (!error) {
-            [[EaseMob sharedInstance].chatManager removeConversationByChatter:model.buddy.username deleteMessages:YES append2Chat:YES];
+            [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
             
             [tableView beginUpdates];
             [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
             [self.contactsSource removeObject:model.buddy];
             [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView  endUpdates];
+            [tableView endUpdates];
         }
         else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.description]];
+            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
             [tableView reloadData];
         }
     }
@@ -407,10 +424,9 @@
         // 群组，聊天室
         return;
     }
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy.username isEqualToString:loginUsername])
+    if ([model.buddy isEqualToString:loginUsername])
     {
         return;
     }
@@ -437,9 +453,9 @@
     NSMutableArray *contactsSource = [NSMutableArray array];
     
     //从获取的数据中剔除黑名单中的好友
-    NSArray *blockList = [[EaseMob sharedInstance].chatManager blockedList];
-    for (EMBuddy *buddy in buddyList) {
-        if (![blockList containsObject:buddy.username]) {
+    NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
+    for (NSString *buddy in buddyList) {
+        if (![blockList containsObject:buddy]) {
             [contactsSource addObject:buddy];
         }
     }
@@ -456,13 +472,13 @@
     }
     
     //按首字母分组
-    for (EMBuddy *buddy in contactsSource) {
+    for (NSString *buddy in contactsSource) {
         EaseUserModel *model = [[EaseUserModel alloc] initWithBuddy:buddy];
         if (model) {
             model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-            model.nickname = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy.username];
+            model.nickname = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             
-            NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:[[UserProfileManager sharedInstance] getNickNameWithUsername:buddy.username]];
+            NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:[[UserProfileManager sharedInstance] getNickNameWithUsername:buddy]];
             NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
             
             NSMutableArray *array = [sortedArray objectAtIndex:section];
@@ -473,10 +489,10 @@
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EaseUserModel *obj1, EaseUserModel *obj2) {
-            NSString *firstLetter1 = [EaseChineseToPinyin pinyinFromChineseString:obj1.buddy.username];
+            NSString *firstLetter1 = [EaseChineseToPinyin pinyinFromChineseString:obj1.buddy];
             firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
             
-            NSString *firstLetter2 = [EaseChineseToPinyin pinyinFromChineseString:obj2.buddy.username];
+            NSString *firstLetter2 = [EaseChineseToPinyin pinyinFromChineseString:obj2.buddy];
             firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
@@ -507,10 +523,9 @@
         // 群组，聊天室
         return;
     }
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy.username isEqualToString:loginUsername])
+    if ([model.buddy isEqualToString:loginUsername])
     {
         return;
     }
@@ -526,22 +541,17 @@
 {
     if (buttonIndex != actionSheet.cancelButtonIndex && _currentLongPressIndex) {
         EaseUserModel *model = [[self.dataArray objectAtIndex:(_currentLongPressIndex.section - 1)] objectAtIndex:_currentLongPressIndex.row];
-        [self hideHud];
         [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
         
-        __weak typeof(self) weakSelf = self;
-        [[EaseMob sharedInstance].chatManager asyncBlockBuddy:model.buddy.username relationship:eRelationshipFrom withCompletion:^(NSString *username, EMError *error){
-            typeof(weakSelf) strongSelf = weakSelf;
-            [strongSelf hideHud];
-            if (!error)
-            {
-                //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
-            }
-            else
-            {
-                [strongSelf showHint:error.description];
-            }
-        } onQueue:nil];
+        EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
+        if (!error) {
+            //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
+            [self reloadDataSource];
+        }
+        else {
+            [self showHint:error.errorDescription];
+        }
+        [self hideHud];
     }
     _currentLongPressIndex = nil;
 }
@@ -551,29 +561,37 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
 //    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    __weak ContactListViewController *weakSelf = self;
-    [[[EaseMob sharedInstance] chatManager] asyncFetchBuddyListWithCompletion:^(NSArray *buddyList, EMError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-            if (error == nil) {
-                [self.contactsSource removeAllObjects];
-                [self.contactsSource addObjectsFromArray:buddyList];
-                NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-                NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-                if (loginUsername && loginUsername.length > 0) {
-                    EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-                    [self.contactsSource addObject:loginBuddy];
-                }
-                
-                [weakSelf _sortDataArray:self.contactsSource];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
+        if (!error) {
+            [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself.contactsSource removeAllObjects];
+                    
+                    for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
+                        NSString *username = [buddyList objectAtIndex:i];
+                        [weakself.contactsSource addObject:username];
+                    }
+                    
+                    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
+                    if (loginUsername && loginUsername.length > 0) {
+                        [weakself.contactsSource addObject:loginUsername];
+                    }
+                    [weakself _sortDataArray:self.contactsSource];
+                });
             }
-            else{
-                [weakSelf showHint:NSLocalizedString(@"loadDataFailed", @"Load data failed.")];
-            }
-            
-            [weakSelf tableViewDidFinishTriggerHeader:YES reload:YES];
-        });
-    } onQueue:nil];
+        }
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself showHint:NSLocalizedString(@"loadDataFailed", @"Load data failed.")];
+                [weakself reloadDataSource];
+            });
+        }
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+    });
 }
 
 #pragma mark - public
@@ -583,19 +601,15 @@
     [self.dataArray removeAllObjects];
     [self.contactsSource removeAllObjects];
     
-    NSArray *buddyList = [[EaseMob sharedInstance].chatManager buddyList];
-    NSArray *blockList = [[EaseMob sharedInstance].chatManager blockedList];
-    for (EMBuddy *buddy in buddyList) {
-        if (![blockList containsObject:buddy.username]) {
-            [self.contactsSource addObject:buddy];
-        }
+    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
+    
+    for (NSString *buddy in buddyList) {
+        [self.contactsSource addObject:buddy];
     }
     
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
     if (loginUsername && loginUsername.length > 0) {
-        EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-        [self.contactsSource addObject:loginBuddy];
+        [self.contactsSource addObject:loginUsername];
     }
     
     [self _sortDataArray:self.contactsSource];
@@ -623,12 +637,6 @@
 {
     AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
     [self.navigationController pushViewController:addController animated:YES];
-}
-
-#pragma mark - EMChatManagerBuddyDelegate
-- (void)didUpdateBlockedList:(NSArray *)blockedList
-{
-    [self reloadDataSource];
 }
 
 @end

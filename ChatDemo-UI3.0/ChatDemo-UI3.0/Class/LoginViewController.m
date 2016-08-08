@@ -1,19 +1,22 @@
 /************************************************************
-  *  * EaseMob CONFIDENTIAL 
+  *  * Hyphenate CONFIDENTIAL 
   * __________________ 
-  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
+  * Copyright (C) 2016 Hyphenate Inc. All rights reserved. 
   *  
   * NOTICE: All information contained herein is, and remains 
-  * the property of EaseMob Technologies.
+  * the property of Hyphenate Inc.
   * Dissemination of this information or reproduction of this material 
   * is strictly forbidden unless prior written permission is obtained
-  * from EaseMob Technologies.
+  * from Hyphenate Inc.
   */
 
 #import "LoginViewController.h"
 #import "EMError.h"
+#import "ChatDemoHelper.h"
+#import "MBProgressHUD.h"
+#import "RedPacketUserConfig.h"
 
-@interface LoginViewController ()<IChatManagerDelegate,UITextFieldDelegate>
+@interface LoginViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -56,7 +59,7 @@
         _usernameTextField.text = username;
     }
     
-    [_useIpSwitch setOn:[[EaseMob sharedInstance].chatManager isUseIp] animated:YES];
+//    [_useIpSwitch setOn:[[EMClient sharedClient].options enableDnsConfig] animated:YES];
     
     self.title = NSLocalizedString(@"AppName", @"EaseMobDemo");
 }
@@ -74,6 +77,7 @@
 }
 
 //注册账号
+//Registered account
 - (IBAction)doRegister:(id)sender {
     if (![self isEmpty]) {
         //隐藏键盘
@@ -91,35 +95,34 @@
             return;
         }
         [self showHudInView:self.view hint:NSLocalizedString(@"register.ongoing", @"Is to register...")];
-        //异步注册账号
-        [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:_usernameTextField.text
-                                                             password:_passwordTextField.text
-                                                       withCompletion:
-         ^(NSString *username, NSString *password, EMError *error) {
-             [self hideHud];
-             
-             if (!error) {
-                 TTAlertNoTitle(NSLocalizedString(@"register.success", @"Registered successfully, please log in"));
-             }else{
-                 switch (error.errorCode) {
-                     case EMErrorServerNotReachable:
-                         TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
-                         break;
-                     case EMErrorServerDuplicatedAccount:
-                         TTAlertNoTitle(NSLocalizedString(@"register.repeat", @"You registered user already exists!"));
-                         break;
-                     case EMErrorNetworkNotConnected:
-                         TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
-                         break;
-                     case EMErrorServerTimeout:
-                         TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
-                         break;
-                     default:
-                         TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));
-                         break;
-                 }
-             }
-         } onQueue:nil];
+        __weak typeof(self) weakself = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = [[EMClient sharedClient] registerWithUsername:weakself.usernameTextField.text password:weakself.passwordTextField.text];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself hideHud];
+                if (!error) {
+                    TTAlertNoTitle(NSLocalizedString(@"register.success", @"Registered successfully, please log in"));
+                }else{
+                    switch (error.code) {
+                        case EMErrorServerNotReachable:
+                            TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
+                            break;
+                        case EMErrorUserAlreadyExist:
+                            TTAlertNoTitle(NSLocalizedString(@"register.repeat", @"You registered user already exists!"));
+                            break;
+                        case EMErrorNetworkUnavailable:
+                            TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
+                            break;
+                        case EMErrorServerTimeout:
+                            TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
+                            break;
+                        default:
+                            TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));
+                            break;
+                    }
+                }
+            });
+        });
     }
 }
 
@@ -128,54 +131,56 @@
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     //异步登陆账号
-    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username
-                                                        password:password
-                                                      completion:
-     ^(NSDictionary *loginInfo, EMError *error) {
-         [self hideHud];
-         if (loginInfo && !error) {
-             //设置是否自动登录
-             [[EaseMob sharedInstance].chatManager setIsAutoLoginEnabled:YES];
-             
-             // 旧数据转换 (如果您的sdk是由2.1.2版本升级过来的，需要家这句话)
-             [[EaseMob sharedInstance].chatManager importDataToNewDatabase];
-             //获取数据库中数据
-             [[EaseMob sharedInstance].chatManager loadDataFromDatabase];
-             
-             //获取群组列表
-             [[EaseMob sharedInstance].chatManager asyncFetchMyGroupsList];
-             
-             //发送自动登陆状态通知
-             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-             
-             //保存最近一次登录用户名
-             [self saveLastLoginUsername];
-         }
-         else
-         {
-             switch (error.errorCode)
-             {
-                 case EMErrorNotFound:
-                     TTAlertNoTitle(error.description);
-                     break;
-                 case EMErrorNetworkNotConnected:
-                     TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
-                     break;
-                 case EMErrorServerNotReachable:
-                     TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
-                     break;
-                 case EMErrorServerAuthenticationFailure:
-                     TTAlertNoTitle(error.description);
-                     break;
-                 case EMErrorServerTimeout:
-                     TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
-                     break;
-                 default:
-                     TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
-                     break;
-             }
-         }
-     } onQueue:nil];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient] loginWithUsername:username password:password];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself hideHud];
+            if (!error) {
+                //设置是否自动登录
+                [[EMClient sharedClient].options setIsAutoLogin:YES];
+                
+                //获取数据库中数据
+                [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [[EMClient sharedClient] dataMigrationTo3];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
+                        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
+                        [[ChatDemoHelper shareHelper] asyncPushOptions];
+                        [MBProgressHUD hideAllHUDsForView:weakself.view animated:YES];
+                        //发送自动登陆状态通知
+                        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@([[EMClient sharedClient] isLoggedIn])];
+                        
+                        //保存最近一次登录用户名
+                        [weakself saveLastLoginUsername];
+                    });
+                });
+            } else {
+                switch (error.code)
+                {
+//                    case EMErrorNotFound:
+//                        TTAlertNoTitle(error.errorDescription);
+//                        break;
+                    case EMErrorNetworkUnavailable:
+                        TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
+                        break;
+                    case EMErrorServerNotReachable:
+                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
+                        break;
+                    case EMErrorUserAuthenticationFailed:
+                        TTAlertNoTitle(error.errorDescription);
+                        break;
+                    case EMErrorServerTimeout:
+                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
+                        break;
+                    default:
+                        TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
+                        break;
+                }
+            }
+        });
+    });
 }
 
 //弹出提示的代理方法
@@ -186,7 +191,7 @@
         if(nameTextField.text.length > 0)
         {
             //设置推送设置
-            [[EaseMob sharedInstance].chatManager setApnsNickname:nameTextField.text];
+            [[EMClient sharedClient] setApnsNickname:nameTextField.text];
         }
     }
     //登陆
@@ -229,8 +234,8 @@
 //是否使用ip
 - (IBAction)useIpAction:(id)sender
 {
-    UISwitch *ipSwitch = (UISwitch *)sender;
-    [[EaseMob sharedInstance].chatManager setIsUseIp:ipSwitch.isOn];
+//    UISwitch *ipSwitch = (UISwitch *)sender;
+//    [[EMClient sharedClient].options setEnableDnsConfig:ipSwitch.isOn];
 }
 
 //判断账号和密码是否为空
@@ -275,10 +280,10 @@
 #pragma  mark - private
 - (void)saveLastLoginUsername
 {
-    NSString *username = [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:kSDKUsername];
+    NSString *username = [[EMClient sharedClient] currentUsername];
     if (username && username.length > 0) {
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        [ud setObject:username forKey:[NSString stringWithFormat:@"em_lastLogin_%@",kSDKUsername]];
+        [ud setObject:username forKey:[NSString stringWithFormat:@"em_lastLogin_username"]];
         [ud synchronize];
     }
 }
@@ -286,7 +291,7 @@
 - (NSString*)lastLoginUsername
 {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *username = [ud objectForKey:[NSString stringWithFormat:@"em_lastLogin_%@",kSDKUsername]];
+    NSString *username = [ud objectForKey:[NSString stringWithFormat:@"em_lastLogin_username"]];
     if (username && username.length > 0) {
         return username;
     }

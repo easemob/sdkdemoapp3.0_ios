@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 //general
@@ -82,7 +82,7 @@
 "login.endAutoLogin" = "自动登录结束...";
 "login.errorAutoLogin" = "自动登录失败.";
 "login.nameNotSupportZh" = "用户名不支持中文";
-"login.ongoing" = "正在登陆...";
+"login.ongoing" = "正在登录...";
 "login.fail" = "登录失败";
 "login.inputNameAndPswd" = "请输入账号和密码";
 "login.inputApnsNickname" = "填写推送消息时使用的昵称";
@@ -134,6 +134,9 @@
 "group.sendingApply" = "发送加群申请...";
 "group.sendApplyRepeat" = "申请已发送";
 "group.maxUserCount" = "群成员个数超了最大值了";
+"group.atMe" = "[有人@我]";
+"group.atAll" = "[有全体消息]";
+"group.atPushTitle" = "在群中@了我";
 
 //Create Group
 "group.create.addOccupant" = "添加成员";
@@ -195,7 +198,7 @@
 "chatroom.remove" = "被踢出聊天室\'%@\'";
 
 //call
-"call.initFailed"="通话建立失败";
+"call.initFailed"="创建实时通话失败，请稍后重试";
 "call.waiting"="等待接听...";
 "call.connecting"="正在建立连接...";
 "call.silence"="静音";
@@ -203,6 +206,9 @@
 "call.reject"="拒接";
 "call.answer"="接听";
 "call.hangup"="挂断";
+"call.finished"="连接建立完成";
+"call.autoHangup"="没有响应，自动挂断";
+"call.noResponse"="对方没有回应";
 "call.connectFailed"="建立连接失败";
 "call.failed"="通话失败";
 "call.suspended"="通话已挂断";
@@ -221,6 +227,7 @@
 "call.videoLostcnt"="丢包数: ";
 "call.videoLocalBitrate"="本地比特率: ";
 "call.videoRemoteBitrate"="对方比特率: ";
+"call.switchCamera"="切换摄像头";
 
 //message
 "message.image" = "图片";
@@ -287,6 +294,7 @@
 "title.apply" = "申请与通知";
 "title.groupApply" = "群组通知";
 "title.groupSubjectChanging" = "修改群名称";
+"title.groupSearchMessage" = "查找聊天记录";
 "title.chatroomlist" = "聊天室列表";
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";
@@ -296,6 +304,7 @@
 "setting.autoLogin" = "自动登录";
 "setting.loginUser" = "退出登录(%@)";
 "setting.logoutOngoing" = "正在退出...";
+"setting.sortbyservertime" = "消息根据服务器时间排序";
 
 "setting.notDisturb" = "功能消息免打扰";
 "setting.showDetail" = "通知显示消息详情";
@@ -305,7 +314,7 @@
 "setting.sureNotDisturb" = "此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?";
 
 "setting.uploadLog" = "上传运行日志";
-"setting.sdkVersion" = "SDK 版本";
+"setting.sdkVersion" = "ONE SDK 版本";
 "setting.uploading" = "正在上传...";
 "setting.uploadSuccess" = "上传成功";
 "setting.uploadFail" = "上传失败";

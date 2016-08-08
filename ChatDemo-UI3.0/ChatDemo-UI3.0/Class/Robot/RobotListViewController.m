@@ -1,22 +1,21 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
-
 
 #import "RobotListViewController.h"
 
 #import "BaseTableViewCell.h"
 #import "ChatViewController.h"
 #import "EMCursorResult.h"
-#import "EMRobot.h"
+//#import "EMRobot.h"
 #import "RobotManager.h"
 #import "SRRefreshView.h"
 #import "RobotChatViewController.h"
@@ -47,7 +46,7 @@
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
-    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
 
     self.title = NSLocalizedString(@"title.robotlist",@"robot list");
     
@@ -108,14 +107,14 @@
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    EMRobot *robot = [self.dataSource objectAtIndex:indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:@"chatListCellHead"];
-    if ([robot.nickname length]) {
-        cell.textLabel.text = robot.nickname;
-    }
-    else {
-        cell.textLabel.text = robot.username;
-    }
+//    EMRobot *robot = [self.dataSource objectAtIndex:indexPath.row];
+//    cell.imageView.image = [UIImage imageNamed:@"chatListCellHead"];
+//    if ([robot.nickname length]) {
+//        cell.textLabel.text = robot.nickname;
+//    }
+//    else {
+//        cell.textLabel.text = robot.username;
+//    }
     
     return cell;
 }
@@ -131,17 +130,17 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    EMRobot *robot = [self.dataSource objectAtIndex:indexPath.row];
-    ChatViewController *chatVC = [[RobotChatViewController alloc]
-                                  initWithConversationChatter:robot.username
-                                  conversationType:eConversationTypeChat];
-    if ([robot.nickname length]) {
-        chatVC.title = robot.nickname;
-    }
-    else {
-        chatVC.title = robot.username;
-    }
-    [self.navigationController pushViewController:chatVC animated:YES];
+//    EMRobot *robot = [self.dataSource objectAtIndex:indexPath.row];
+//    ChatViewController *chatVC = [[RobotChatViewController alloc]
+//                                  initWithConversationChatter:robot.username
+//                                  conversationType:eConversationTypeChat];
+//    if ([robot.nickname length]) {
+//        chatVC.title = robot.nickname;
+//    }
+//    else {
+//        chatVC.title = robot.username;
+//    }
+//    [self.navigationController pushViewController:chatVC animated:YES];
 }
 
 
@@ -167,30 +166,30 @@
 
 - (void)reloadDataSource
 {
-    [self hideHud];
-    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    
-    __weak typeof(self) weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncFetchRobotsFromServerWithCompletion:^(NSArray *robots, EMError *error) {
-        [weakSelf hideHud];
-        if (!error) {
-            [weakSelf.dataSource removeAllObjects];
-            [weakSelf.dataSource addObjectsFromArray:robots];
-            [weakSelf.tableView reloadData];
-            [[RobotManager sharedInstance] addRobotsToMemory:robots];
-        } else {
-            NSArray *robots = [[EaseMob sharedInstance].chatManager robotList];
-            if (robots) {
-                [weakSelf.dataSource removeAllObjects];
-                for (EMRobot *robot in robots) {
-                    if (robot && robot.activated) {
-                        [weakSelf.dataSource addObject:robot];
-                    }
-                }
-                [weakSelf.tableView reloadData];
-            }
-        }
-    }];
+//    [self hideHud];
+//    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+//    
+//    __weak typeof(self) weakSelf = self;
+//    [[EMClient sharedClient].chatManager asyncFetchRobotsFromServerWithCompletion:^(NSArray *robots, EMError *error) {
+//        [weakSelf hideHud];
+//        if (!error) {
+//            [weakSelf.dataSource removeAllObjects];
+//            [weakSelf.dataSource addObjectsFromArray:robots];
+//            [weakSelf.tableView reloadData];
+//            [[RobotManager sharedInstance] addRobotsToMemory:robots];
+//        } else {
+//            NSArray *robots = [[EMClient sharedClient].chatManager robotList];
+//            if (robots) {
+//                [weakSelf.dataSource removeAllObjects];
+//                for (EMRobot *robot in robots) {
+//                    if (robot && robot.activated) {
+//                        [weakSelf.dataSource addObject:robot];
+//                    }
+//                }
+//                [weakSelf.tableView reloadData];
+//            }
+//        }
+//    }];
 }
 
 - (void)dealloc
@@ -204,7 +203,7 @@
             [robots removeAllObjects];
         });
     }
-    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
 }
 
 @end

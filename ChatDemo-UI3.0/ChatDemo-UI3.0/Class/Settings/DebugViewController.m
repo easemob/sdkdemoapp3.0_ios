@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "DebugViewController.h"
@@ -88,7 +88,7 @@
     if (indexPath.row == 0)
     {
         cell.textLabel.text = NSLocalizedString(@"setting.sdkVersion", @"SDK version");
-        NSString *ver = [[EaseMob sharedInstance] sdkVersion];
+        NSString *ver = [[EMClient sharedClient] version];
         cell.detailTextLabel.text = ver;
     }
     
@@ -104,17 +104,9 @@
 
 - (void)uploadLogAction
 {
-//    __weak typeof(self) weakSelf = self;
-//    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
-//    [[EaseMob sharedInstance] asyncUploadLogToServerWithCompletion:^(EMError *error) {
-//        [weakSelf hideHud];
-//        if (error) {
-//            [weakSelf showHint:error.description];
-//        }
-//        else{
-//            [weakSelf showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
-//        }
-//    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[EMClient sharedClient] uploadLogToServer];
+    });
 }
 
 @end

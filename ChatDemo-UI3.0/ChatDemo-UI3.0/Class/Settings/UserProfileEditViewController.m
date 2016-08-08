@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 #import "UserProfileEditViewController.h"
@@ -38,7 +38,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"setting.personalInfo", @"Personal Information");
+    self.title = NSLocalizedString(@"setting.personalInfo", @"Profile");
     self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -92,7 +92,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,16 +103,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     if (indexPath.row == 0) {
-        //cell.textLabel.text = NSLocalizedString(@"setting.personalInfoUpload", @"Upload HeadImage");
+        cell.detailTextLabel.text = NSLocalizedString(@"setting.personalInfoUpload", @"Upload HeadImage");
         [cell.contentView addSubview:self.headImageView];
-        [cell.contentView addSubview:self.usernameLabel];
     } else if (indexPath.row == 1) {
+        cell.textLabel.text = NSLocalizedString(@"username", @"username");
+        cell.detailTextLabel.text = self.usernameLabel.text;
+    } else if (indexPath.row == 2) {
         cell.textLabel.text = NSLocalizedString(@"setting.profileNickname", @"Nickname");
         UserProfileEntity *entity = [[UserProfileManager sharedInstance] getCurUserProfile];
         if (entity && entity.nickname.length>0) {
             cell.detailTextLabel.text = entity.nickname;
         } else {
-            cell.detailTextLabel.text = [[[EaseMob sharedInstance].chatManager loginInfo] objectForKey:kSDKUsername];
+            cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -136,6 +138,8 @@
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"setting.cameraUpload", @"Take photo"),NSLocalizedString(@"setting.localUpload", @"Photos"), nil];
         [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     } else if (indexPath.row == 1) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else if (indexPath.row == 2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.editName", @"Edit NickName") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
         [alert show];
@@ -151,14 +155,19 @@
             //设置推送设置
             [self showHint:NSLocalizedString(@"setting.saving", "saving...")];
             __weak typeof(self) weakSelf = self;
-            [[EaseMob sharedInstance].chatManager setApnsNickname:nameTextField.text];
+            [[EMClient sharedClient] setApnsNickname:nameTextField.text];
             [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:nameTextField.text} completion:^(BOOL success, NSError *error) {
-                [self hideHud];
-                if (success) {
-                    [weakSelf.tableView reloadData];
-                } else {
-                    [self showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (weakSelf) {
+                        UserProfileEditViewController *strongSelf = weakSelf;
+                        [strongSelf hideHud];
+                        if (success) {
+                            [strongSelf.tableView reloadData];
+                        } else {
+                            [strongSelf showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
+                        }
+                    }
+                });
             }];
         }
     }

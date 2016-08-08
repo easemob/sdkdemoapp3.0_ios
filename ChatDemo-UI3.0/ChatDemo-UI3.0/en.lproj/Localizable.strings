@@ -1,13 +1,13 @@
 /************************************************************
- *  * EaseMob CONFIDENTIAL
+ *  * Hyphenate CONFIDENTIAL
  * __________________
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
  *
  * NOTICE: All information contained herein is, and remains
- * the property of EaseMob Technologies.
+ * the property of Hyphenate Inc.
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
- * from EaseMob Technologies.
+ * from Hyphenate Inc.
  */
 
 //general
@@ -133,6 +133,9 @@
 "group.join.fail" = "again failed to join the group, please";
 "group.sendingApply" = "send group of application...";
 "group.sendApplyRepeat" = "application has been sent";
+"group.atMe" = "[Somebody @ me]";
+"group.atAll" = "[Everyone's message]";
+"group.atPushTitle" = " @ me in the group";
 
 //Create Group
 "group.create.addOccupant" = "add members";
@@ -203,6 +206,9 @@
 "call.reject"="Reject";
 "call.answer"="Answer";
 "call.hangup"="Hangup";
+"call.finished"="Establish call finished";
+"call.autoHangup"="No response and Hang up";
+"call.noResponse"="NO response";
 "call.connectFailed"="Connect failed";
 "call.failed"="Call failed";
 "call.suspended"="Call has been suspended";
@@ -221,6 +227,7 @@
 "call.videoLostcnt"="Lostcnt: ";
 "call.videoLocalBitrate"="Local Bitrate: ";
 "call.videoRemoteBitrate"="Remote Bitrate: ";
+"call.switchCamera"="Switch Camera";
 
 //message
 "message.image" = "image";
@@ -289,6 +296,7 @@
 "title.apply" = "Application and notification";
 "title.groupApply" = "Group Notification";
 "title.groupSubjectChanging" = "Change group name";
+"title.groupSearchMessage" = "Search Message from History";
 "title.chatroomlist" = "Chatroom List";
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
@@ -297,12 +305,13 @@
 "setting.autoLogin" = "automatic login";
 "setting.loginUser" = "log out(%@)";
 "setting.logoutOngoing" = "loging out...";
+"setting.sortbyservertime" = "Sort message by server time";
 
-"setting.notDisturb" = "No disturbing";
-"setting.showDetail" = "display message details in apns";
-"setting.open" = "open";
-"setting.nightOpen" = "only open at night (22:00 - 7:00)";
-"setting.close" = "close";
+"setting.notDisturb" = "Do Not Disturb";
+"setting.showDetail" = "Show Message Details on Lock Screen";
+"setting.open" = "On";
+"setting.nightOpen" = "On only from 10pm to 7am.";
+"setting.close" = "Off";
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 
 "setting.uploadLog" = "upload run log";
@@ -314,10 +323,10 @@
 "setting.inputName" = "Please input nickname";
 "setting.saveName" = "Save Nickname";
 "setting.namenotempty" = "Name cannot be empty";
-"setting.personalInfo" = "Personal Information";
+"setting.personalInfo" = "Profile";
 "setting.setBitrate" = "Set Bitrate";
 "setting.setBitrateTips" = "Set Bitrate should be 150-1000";
-"setting.personalInfoUpload" = "HeadImage";
+"setting.personalInfoUpload" = "Profile Image";
 "setting.edittips" = "After setting this nickname, chat with the iOS client demo project, iOS will display this nickname is not a EaseMob ID, if the other party to use the Android client this setting is not effective";
 "setting.iospushname" = "iOS push nickname";
 "setting.useIp" = "Use IP";
