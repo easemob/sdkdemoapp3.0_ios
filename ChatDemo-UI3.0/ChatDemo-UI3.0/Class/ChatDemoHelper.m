@@ -490,106 +490,42 @@ static ChatDemoHelper *helper = nil;
 
 #if DEMO_CALL == 1
 
-//- (void)didReceiveCallIncoming:(EMCallSession *)aSession
-//{
-//    if (!aSession) {
-//        return;
-//    }
-//    
-//    if(_callController && _callController.callSession.status != EMCallSessionStatusDisconnected){
-//        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonBusy];
-//        return;
-//    }
-//    
-//    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-//        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-//        
-//        return;
-//    }
-//    
-//    [self _startCallTimer];
-//    
-//    NSLog(@"push call controller---- recv %@", aSession.callId);
-//    [_callConteollerLock lock];
-//    self.callController = [[CallViewController alloc] initWithSession:aSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Connecting...")];
-//    _callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-//    [_mainVC presentViewController:_callController animated:NO completion:nil];
-//    [_callConteollerLock unlock];
-//}
-
-- (void)didReceiveCallConnected:(EMCallSession *)aSession
+- (void)didReceiveCallIncoming:(EMCallSession *)aSession
 {
     if(_callSession && _callSession.status != EMCallSessionStatusDisconnected){
         [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonBusy];
     }
     
-    if (aSession.isCaller) {
-        if (_callController && [aSession.callId isEqualToString:_callController.callSession.callId]) {
-            [_callConteollerLock lock];
-            _callController.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
-            _callController.answerButton.enabled = YES;
-            [_callConteollerLock unlock];
-        }
+    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonFailed];
     }
-    else {
-        if(_callController && _callController.callSession.status != EMCallSessionStatusDisconnected){
-            [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonBusy];
-            return;
-        }
-        
-        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-            [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-            
-            return;
-        }
-        
+    
+    _callSession = aSession;
+    if(_callSession){
         [self _startCallTimer];
         
-        NSLog(@"push call controller---- recv %@", aSession.callId);
-        [_callConteollerLock lock];
-        self.callController = [[CallViewController alloc] initWithSession:aSession isCaller:NO status:NSLocalizedString(@"call.finished", "Establish call finished")];
-        //    self.callController.answerButton.enabled = YES;
+        _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:NO status:NSLocalizedString(@"call.finished", "Establish call finished")];
         _callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [_mainVC presentViewController:_callController animated:NO completion:nil];
-        [_callConteollerLock unlock];
     }
-    
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    [audioSession setActive:YES error:nil];
-    
-//    if (_callController && [aSession.callId isEqualToString:_callController.callSession.callId]) {
-//        [_callConteollerLock lock];
-//        _callController.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
-//        _callController.answerButton.enabled = YES;
-//        [_callConteollerLock unlock];
-//        
-//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-//        [audioSession setActive:YES error:nil];
-//    }
+}
+
+- (void)didReceiveCallConnected:(EMCallSession *)aSession
+{
+    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+        _callController.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
+        
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [audioSession setActive:YES error:nil];
+    }
 }
 
 - (void)didReceiveCallAccepted:(EMCallSession *)aSession
 {
-//    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-//        
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//            [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-//        });
-//        
-//        if ([aSession.callId isEqualToString:_callController.callSession.callId]) {
-//            [self _stopCallTimer];
-//            
-//            [_callConteollerLock lock];
-//            CallViewController *tmpController = self.callController;
-//            _callController = nil;
-//            [tmpController close];
-//            [_callConteollerLock unlock];
-//        }
-//        
-//        return;
-//    }
+    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonFailed];
+    }
     
     if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
         [self _stopCallTimer];
@@ -746,7 +682,7 @@ static ChatDemoHelper *helper = nil;
 {
     if (_callSession) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = [[EMClient sharedClient].callManager answerCall:_callSession.sessionId];
+            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:_callSession.sessionId];
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.code == EMErrorNetworkUnavailable) {
