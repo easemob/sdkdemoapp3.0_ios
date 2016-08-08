@@ -266,14 +266,14 @@
 - (void)_initializeVideoView
 {
     //1.对方窗口
-    _callSession.remoteView = [[RemoteVideoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:_callSession.remoteView];
+    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:_callSession.remoteVideoView];
     
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
-    [self.view addSubview:_callSession.localView];
+    _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    [self.view addSubview:_callSession.localVideoView];
     
     //3、属性显示层
     _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
@@ -396,7 +396,7 @@
                            attributes:nil
                                 error:nil];
         }
-        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
+        [_callSession startVideoRecordingToFilePath:recordPath error:nil];
     } else {
         NSString *tempPath = [_callSession stopVideoRecording:nil];
         if (tempPath.length > 0) {
@@ -556,7 +556,7 @@
 
 - (void)close
 {
-    _callSession.remoteView.hidden = YES;
+    _callSession.remoteVideoView.hidden = YES;
     _callSession = nil;
     _propertyView = nil;
     
