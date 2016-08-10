@@ -262,10 +262,12 @@
 
 - (void)reloadDataSource
 {
+    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     [_dataSource removeAllObjects];
     NSArray *blocked = [[EaseMob sharedInstance].chatManager fetchBlockedList:nil];
     [_dataSource addObjectsFromArray:[self sortDataArray:blocked]];
     [self.tableView reloadData];
+    [self hideHud];
 }
 
 @end

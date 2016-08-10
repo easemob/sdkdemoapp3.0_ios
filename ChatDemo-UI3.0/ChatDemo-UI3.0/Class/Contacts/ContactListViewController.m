@@ -550,7 +550,7 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-//    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak ContactListViewController *weakSelf = self;
     [[[EaseMob sharedInstance] chatManager] asyncFetchBuddyListWithCompletion:^(NSArray *buddyList, EMError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
