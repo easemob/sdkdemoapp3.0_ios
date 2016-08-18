@@ -276,11 +276,6 @@
     return contentView;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -334,46 +329,6 @@
 #endif
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy.username;
         [self.navigationController pushViewController:chatController animated:YES];
-    }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    if (indexPath.section == 0) {
-        return NO;
-    }
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-        if ([model.buddy.username isEqualToString:loginUsername]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
-            
-            return;
-        }
-        
-        EMError *error = nil;
-        [[EaseMob sharedInstance].chatManager removeBuddy:model.buddy.username removeFromRemote:YES error:&error];
-        if (!error) {
-            [[EaseMob sharedInstance].chatManager removeConversationByChatter:model.buddy.username deleteMessages:YES append2Chat:YES];
-            
-            [tableView beginUpdates];
-            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
-            [self.contactsSource removeObject:model.buddy];
-            [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView  endUpdates];
-        }
-        else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.description]];
-            [tableView reloadData];
-        }
     }
 }
 
@@ -443,7 +398,7 @@
 
 - (void)addContactAction
 {
-    AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+    AddFriendViewController *addController = [[AddFriendViewController alloc] init];
     [self.navigationController pushViewController:addController animated:YES];
 }
 
@@ -529,13 +484,12 @@
     NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
     NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
     EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy.username isEqualToString:loginUsername])
-    {
+    if ([model.buddy.username isEqualToString:loginUsername]){
         return;
     }
     
     _currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:@"Delete", NSLocalizedString(@"friend.block", @"join the blacklist"), nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
@@ -543,26 +497,47 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex != actionSheet.cancelButtonIndex && _currentLongPressIndex) {
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(_currentLongPressIndex.section - 1)] objectAtIndex:_currentLongPressIndex.row];
-        [self hideHud];
-        [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-        
-        __weak typeof(self) weakSelf = self;
+    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
+        return;
+    }
+    
+    NSIndexPath *indexPath = _currentLongPressIndex;
+    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+    _currentLongPressIndex = nil;
+    
+    [self hideHud];
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
+    
+    __weak typeof(self) weakSelf = self;
+    if (buttonIndex == 0) {
+        EMError *error = nil;
+        [[EaseMob sharedInstance].chatManager removeBuddy:model.buddy.username removeFromRemote:YES error:&error];
+        if (!error) {
+            [[EaseMob sharedInstance].chatManager removeConversationByChatter:model.buddy.username deleteMessages:YES append2Chat:YES];
+            
+            [self.tableView beginUpdates];
+            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
+            [self.contactsSource removeObject:model.buddy];
+            [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView  endUpdates];
+        }
+        else{
+            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.description]];
+            [self.tableView reloadData];
+        }
+    }
+    else if (buttonIndex == 1) {
         [[EaseMob sharedInstance].chatManager asyncBlockBuddy:model.buddy.username relationship:eRelationshipFrom withCompletion:^(NSString *username, EMError *error){
             typeof(weakSelf) strongSelf = weakSelf;
             [strongSelf hideHud];
-            if (!error)
-            {
+            if (!error) {
                 //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
             }
-            else
-            {
+            else {
                 [strongSelf showHint:error.description];
             }
         } onQueue:nil];
     }
-    _currentLongPressIndex = nil;
 }
 
 #pragma mark - data
@@ -640,7 +615,7 @@
 
 - (void)addFriendAction
 {
-    AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+    AddFriendViewController *addController = [[AddFriendViewController alloc] init];
     [self.navigationController pushViewController:addController animated:YES];
 }
 
