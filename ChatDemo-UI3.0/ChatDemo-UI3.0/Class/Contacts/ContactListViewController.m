@@ -19,7 +19,6 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
-#import "RedPacketChatViewController.h"
 
 @implementation EMBuddy (search)
 
@@ -141,30 +140,20 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             EMBuddy *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-            if (loginUsername && loginUsername.length > 0) {
-                if ([loginUsername isEqualToString:buddy.username]) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                    [alertView show];
-                    
-                    return;
-                }
-            }
+//            NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//            NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+//            if (loginUsername && loginUsername.length > 0) {
+//                if ([loginUsername isEqualToString:buddy.username]) {
+//                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+//                    [alertView show];
+//                    
+//                    return;
+//                }
+//            }
             
             [weakSelf.searchController.searchBar endEditing:YES];
-#ifdef REDPACKET_AVALABLE
-            /**
-             *  TODO: 联系人列表-红包聊天窗口
-             */
-            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy.username
-                                                                                                  conversationType:eConversationTypeChat];
-#else
             ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy.username
-                                                                                                  conversationType:eConversationTypeChat];
-#endif
-
-
+                                                                                conversationType:eConversationTypeChat];
             chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy.username];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
@@ -308,25 +297,17 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
-        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-        if (loginUsername && loginUsername.length > 0) {
-            if ([loginUsername isEqualToString:model.buddy.username]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
-                
-                return;
-            }
-        }
-        
-#ifdef REDPACKET_AVALABLE
-        /**
-         *  TODO: 联系人列表-红包聊天窗口
-         */
-        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy.username conversationType:eConversationTypeChat];
-#else
+//        NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//        NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+//        if (loginUsername && loginUsername.length > 0) {
+//            if ([loginUsername isEqualToString:model.buddy.username]) {
+//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+//                [alertView show];
+//                
+//                return;
+//            }
+//        }
         ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy.username conversationType:eConversationTypeChat];
-#endif
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy.username;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -381,13 +362,14 @@
         // 群组，聊天室
         return;
     }
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy.username isEqualToString:loginUsername])
-    {
-        return;
-    }
+    
+//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+//    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+//    if ([model.buddy.username isEqualToString:loginUsername])
+//    {
+//        return;
+//    }
     
     _currentLongPressIndex = indexPath;
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
@@ -481,12 +463,12 @@
         // 群组，聊天室
         return;
     }
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy.username isEqualToString:loginUsername]){
-        return;
-    }
+//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+//    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+//    if ([model.buddy.username isEqualToString:loginUsername]){
+//        return;
+//    }
     
     _currentLongPressIndex = indexPath;
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:@"Delete", NSLocalizedString(@"friend.block", @"join the blacklist"), nil];
@@ -525,6 +507,8 @@
             [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.description]];
             [self.tableView reloadData];
         }
+        
+        [weakSelf hideHud];
     }
     else if (buttonIndex == 1) {
         [[EaseMob sharedInstance].chatManager asyncBlockBuddy:model.buddy.username relationship:eRelationshipFrom withCompletion:^(NSString *username, EMError *error){
@@ -552,12 +536,12 @@
             if (error == nil) {
                 [self.contactsSource removeAllObjects];
                 [self.contactsSource addObjectsFromArray:buddyList];
-                NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-                NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-                if (loginUsername && loginUsername.length > 0) {
-                    EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-                    [self.contactsSource addObject:loginBuddy];
-                }
+//                NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//                NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+//                if (loginUsername && loginUsername.length > 0) {
+//                    EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
+//                    [self.contactsSource addObject:loginBuddy];
+//                }
                 
                 [weakSelf _sortDataArray:self.contactsSource];
             }
@@ -585,12 +569,12 @@
         }
     }
     
-    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-    if (loginUsername && loginUsername.length > 0) {
-        EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-        [self.contactsSource addObject:loginBuddy];
-    }
+//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
+//    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
+//    if (loginUsername && loginUsername.length > 0) {
+//        EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
+//        [self.contactsSource addObject:loginBuddy];
+//    }
     
     [self _sortDataArray:self.contactsSource];
     
