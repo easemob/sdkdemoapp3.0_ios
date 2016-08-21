@@ -66,9 +66,6 @@
     [self.view addSubview:self.searchBar];
     
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
-    
-    // 环信UIdemo中有用到Parse, 加载用户好友个人信息
-    [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -581,10 +578,15 @@
                         [weakself.contactsSource addObject:loginUsername];
                     }
                     [weakself _sortDataArray:self.contactsSource];
+                    // 环信UIdemo中有用到Parse, 加载用户好友个人信息
+                    [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:^(BOOL success, NSError *error) {
+                        if (success) {
+                            [weakself.tableView reloadData];
+                        }
+                    }];
                 });
             }
-        }
-        if (error) {
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself showHint:NSLocalizedString(@"loadDataFailed", @"Load data failed.")];
                 [weakself reloadDataSource];

@@ -281,16 +281,20 @@
 {
     NSString *buddyName = [self.dataSource objectAtIndex:indexPath.row];
     if (buddyName && buddyName.length > 0) {
-        [self showHudInView:self.view hint:NSLocalizedString(@"friend.sendApply", @"sending application...")];
-        EMError *error = [[EMClient sharedClient].contactManager addContact:buddyName message:message];
-        [self hideHud];
-        if (error) {
-            [self showHint:NSLocalizedString(@"friend.sendApplyFail", @"send application fails, please operate again")];
-        }
-        else{
-            [self showHint:NSLocalizedString(@"friend.sendApplySuccess", @"send successfully")];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = [[EMClient sharedClient].contactManager addContact:buddyName message:message];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hideHud];
+                if (error) {
+                    [weakSelf showHint:NSLocalizedString(@"friend.sendApplyFail", @"send application fails, please operate again")];
+                }
+                else{
+                    [weakSelf showHint:NSLocalizedString(@"friend.sendApplySuccess", @"send successfully")];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }
+            });
+        });
     }
 }
 
