@@ -276,17 +276,13 @@
 - (void)loadPushOptions
 {
     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error == nil) {
-                [weakself refreshPushOptions];
-            } else {
-                
-            }
-        });
-    });
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Please wait...")];
+    [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            [weakself refreshPushOptions];
+        }
+    }];
 }
 
 - (void)refreshPushOptions

@@ -159,12 +159,12 @@
 
 #pragma mark - private
 
-- (void)isIgnoreGroup:(BOOL)isIgnore
+- (void)enablePush:(BOOL)isEnable
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"group.setting.save", @"set properties")];
     
     __weak GroupSettingViewController *weakSelf = self;
-    [[EMClient sharedClient].groupManager updatePushServiceForGroup:_group.groupId isPushEnabled:isIgnore completion:^(EMGroup *aGroup, EMError *aError) {
+    [[EMClient sharedClient].groupManager updatePushServiceForGroup:_group.groupId isPushEnabled:isEnable completion:^(EMGroup *aGroup, EMError *aError) {
         [weakSelf hideHud];
         if (!aError) {
             [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
@@ -184,7 +184,7 @@
 
 - (void)pushSwitchChanged:(id)sender
 {
-    [self isIgnoreGroup:![_pushSwitch isOn]];
+    [self enablePush:[_pushSwitch isOn]];
     [self.tableView reloadData];
 }
 
@@ -221,7 +221,7 @@
     }
     
     if (_pushSwitch.isOn != _group.isPushNotificationEnabled) {
-        [self isIgnoreGroup:!_pushSwitch.isOn];
+        [self enablePush:_pushSwitch.isOn];
     }
 }
 
