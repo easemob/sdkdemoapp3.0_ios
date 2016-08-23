@@ -198,22 +198,19 @@
                 SearchChatViewController *chatView = [[SearchChatViewController alloc] initWithConversationChatter:weakSelf.conversation.conversationId conversationType:weakSelf.conversation.type fromMessageId:message.messageId];
                 [weakSelf.navigationController pushViewController:chatView animated:YES];
             } else {
-                dispatch_block_t block = ^{ @autoreleasepool {
-                    EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:[weakSelf.searchController.resultsSource count]-1];
-                    NSArray *results = [weakSelf.conversation loadMoreMessagesContain:weakSelf.searchBar.text before:message.timestamp limit:SEARCHMESSAGE_PAGE_SIZE from:weakSelf.textField.text direction:EMMessageSearchDirectionUp];
-//                    
-//                    NSArray *results = [weakSelf.conversation loadMoreMessagesFrom:[[weakSelf.datePicker.date dateByAddingTimeInterval:-86400] timeIntervalSince1970]*1000 to:message.timestamp maxCount:SEARCHMESSAGE_PAGE_SIZE];
-                    if([results count]<SEARCHMESSAGE_PAGE_SIZE) {
-                        weakSelf.hasMore = NO;
-                    } else {
-                        weakSelf.hasMore = YES;
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakSelf.searchController.resultsSource addObjectsFromArray:[[results reverseObjectEnumerator] allObjects]];
+                EMMessage *message = [weakSelf.searchController.resultsSource objectAtIndex:[weakSelf.searchController.resultsSource count] - 1];
+                [weakSelf.conversation loadMessagesWithKeyword:weakSelf.searchBar.text timestamp:message.timestamp count:SEARCHMESSAGE_PAGE_SIZE fromUser:weakSelf.textField.text searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+                    if (!aError) {
+                        if ([aMessages count] < SEARCHMESSAGE_PAGE_SIZE) {
+                            weakSelf.hasMore = NO;
+                        }
+                        else {
+                            weakSelf.hasMore = YES;
+                        }
+                        [weakSelf.searchController.resultsSource addObjectsFromArray:[[aMessages reverseObjectEnumerator] allObjects]];
                         [weakSelf.searchController.searchResultsTableView reloadData];
-                    });
-                }};
-                dispatch_async(_searchQueue, block);
+                    }
+                }];
             }
         }];
         
@@ -249,23 +246,19 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     __weak typeof(self) weakSelf = self;
-    dispatch_block_t block = ^{ @autoreleasepool {
-        NSArray *results = [weakSelf.conversation loadMoreMessagesContain:searchBar.text before:[self.datePicker.date timeIntervalSince1970]*1000 limit:SEARCHMESSAGE_PAGE_SIZE from:weakSelf.textField.text direction:EMMessageSearchDirectionUp];
-        
-//        NSArray *results = [weakSelf.conversation loadMoreMessagesFrom:[[self.datePicker.date dateByAddingTimeInterval:-86400] timeIntervalSince1970]*1000 to:[self.datePicker.date timeIntervalSince1970]*1000 maxCount:SEARCHMESSAGE_PAGE_SIZE];
-        if([results count]<SEARCHMESSAGE_PAGE_SIZE) {
-            weakSelf.hasMore = NO;
-        } else {
-            weakSelf.hasMore = YES;
+    [self.conversation loadMessagesWithKeyword:searchBar.text timestamp:[self.datePicker.date timeIntervalSince1970]*1000 count:SEARCHMESSAGE_PAGE_SIZE fromUser:self.textField.text searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        SearchMessageViewController *strongSelf = weakSelf;
+        if (strongSelf) {
+            if([aMessages count]<SEARCHMESSAGE_PAGE_SIZE) {
+                strongSelf.hasMore = NO;
+            } else {
+                strongSelf.hasMore = YES;
+            }
+            [strongSelf.searchController.resultsSource removeAllObjects];
+            [strongSelf.searchController.resultsSource addObjectsFromArray:[[aMessages reverseObjectEnumerator] allObjects]];
+            [strongSelf.searchController.searchResultsTableView reloadData];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.searchController.resultsSource removeAllObjects];
-            [weakSelf.searchController.resultsSource addObjectsFromArray:[[results reverseObjectEnumerator] allObjects]];
-            [weakSelf.searchController.searchResultsTableView reloadData];
-        });
-    }};
-    
-    dispatch_async(_searchQueue, block);
+    }];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar

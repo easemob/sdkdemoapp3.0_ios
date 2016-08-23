@@ -47,7 +47,7 @@
         if (self.messageModel.bodyType == EMMessageBodyTypeText) {
             EMMessage *message = [EaseSDKHelper sendTextMessage:self.messageModel.text to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
             __weak typeof(self) weakself = self;
-            [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *aMessage, EMError *aError) {
+            [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *aMessage, EMError *aError) {
                 if (!aError) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
 #ifdef REDPACKET_AVALABLE
@@ -85,7 +85,7 @@
             
             EMMessage *message= [EaseSDKHelper sendImageMessageWithImage:image to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
             
-            [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+            [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
                 if (!error) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
 #ifdef REDPACKET_AVALABLE

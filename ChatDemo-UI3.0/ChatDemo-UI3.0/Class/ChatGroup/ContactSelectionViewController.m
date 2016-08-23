@@ -409,7 +409,7 @@
         [_dataSource removeAllObjects];
         [_contactsSource removeAllObjects];
         
-        NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
+        NSArray *buddyList = [[EMClient sharedClient].contactManager getContacts];
         for (NSString *username in buddyList) {
             [self.contactsSource addObject:username];
         }

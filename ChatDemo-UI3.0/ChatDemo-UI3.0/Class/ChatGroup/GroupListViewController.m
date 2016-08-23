@@ -393,7 +393,7 @@
 {
     [self.dataSource removeAllObjects];
     
-    NSArray *rooms = [[EMClient sharedClient].groupManager getAllGroups];
+    NSArray *rooms = [[EMClient sharedClient].groupManager getJoinedGroups];
     [self.dataSource addObjectsFromArray:rooms];
     
     [self.tableView reloadData];

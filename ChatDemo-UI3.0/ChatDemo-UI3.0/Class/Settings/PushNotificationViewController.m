@@ -234,9 +234,9 @@
         isUpdate = YES;
     }
     
-    if (_nickName && _nickName.length > 0 && ![_nickName isEqualToString:options.nickname])
+    if (_nickName && _nickName.length > 0 && ![_nickName isEqualToString:options.displayName])
     {
-        options.nickname = _nickName;
+        options.displayName = _nickName;
         isUpdate = YES;
     }
     if (options.noDisturbingStartH != _noDisturbingStart || options.noDisturbingEndH != _noDisturbingEnd){
@@ -292,7 +292,7 @@
 - (void)refreshPushOptions
 {
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    _nickName = options.nickname;
+    _nickName = options.displayName;
     _pushDisplayStyle = options.displayStyle;
     _noDisturbingStatus = options.noDisturbStatus;
     if (_noDisturbingStatus != EMPushNoDisturbStatusClose) {

@@ -143,7 +143,7 @@
                 //获取数据库中数据
                 [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[EMClient sharedClient] dataMigrationTo3];
+                    [[EMClient sharedClient] migrateDatabaseToLatestSDK];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
                         [[ChatDemoHelper shareHelper] asyncConversationFromDB];

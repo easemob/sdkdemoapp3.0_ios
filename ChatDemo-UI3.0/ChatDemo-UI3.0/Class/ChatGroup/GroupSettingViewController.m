@@ -164,18 +164,15 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"group.setting.save", @"set properties")];
     
     __weak GroupSettingViewController *weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient].groupManager ignoreGroupPush:_group.groupId ignore:isIgnore];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-            if (!error) {
-                [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
-            }
-            else{
-                [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
-            }
-        });
-    });
+    [[EMClient sharedClient].groupManager updatePushServiceForGroup:_group.groupId isPushEnabled:isIgnore completion:^(EMGroup *aGroup, EMError *aError) {
+        [weakSelf hideHud];
+        if (!aError) {
+            [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
+        }
+        else{
+            [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
+        }
+    }];
 }
 
 #pragma mark - action
@@ -202,34 +199,24 @@
         __weak typeof(self) weakSelf = self;
         [self showHudInView:self.view hint:NSLocalizedString(@"group.setting.save", @"set properties")];
         if (_blockSwitch.isOn) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                EMError *error;
-                [[EMClient sharedClient].groupManager blockGroup:_group.groupId error:&error];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error) {
-                        [weakSelf hideHud];
-                        [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
-                    } else {
-                        [weakSelf hideHud];
-                        [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
-                    }
-                });
-            });
+            [[EMClient sharedClient].groupManager blockGroup:_group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+                [weakSelf hideHud];
+                if (aError) {
+                    [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
+                } else {
+                    [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
+                }
+            }];
         }
         else{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                EMError *error;
-                [[EMClient sharedClient].groupManager unblockGroup:_group.groupId error:&error];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error) {
-                        [weakSelf hideHud];
-                        [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
-                    } else {
-                        [weakSelf hideHud];
-                        [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
-                    }
-                });
-            });
+            [[EMClient sharedClient].groupManager unblockGroup:_group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+                [weakSelf hideHud];
+                if (aError) {
+                    [weakSelf showHint:NSLocalizedString(@"group.setting.fail", @"set failure")];
+                } else {
+                    [weakSelf showHint:NSLocalizedString(@"group.setting.success", @"set success")];
+                }
+            }];
         }
     }
     
