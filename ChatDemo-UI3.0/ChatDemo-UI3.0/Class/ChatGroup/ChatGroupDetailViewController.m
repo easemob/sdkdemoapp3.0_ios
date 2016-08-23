@@ -108,6 +108,7 @@
     // Do any additional setup after loading the view.
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -144,6 +145,7 @@
         _scrollView.tag = 0;
         
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kContactSize - 10, kContactSize - 10)];
+        _addButton.accessibilityIdentifier = @"add_member";
         [_addButton setImage:[UIImage imageNamed:@"group_participant_add"] forState:UIControlStateNormal];
         [_addButton setImage:[UIImage imageNamed:@"group_participant_addHL"] forState:UIControlStateHighlighted];
         [_addButton addTarget:self action:@selector(addContact:) forControlEvents:UIControlEventTouchUpInside];
@@ -159,6 +161,7 @@
 {
     if (_clearButton == nil) {
         _clearButton = [[UIButton alloc] init];
+        _clearButton.accessibilityIdentifier = @"clear_message";
         [_clearButton setTitle:NSLocalizedString(@"group.removeAllMessages", @"remove all messages") forState:UIControlStateNormal];
         [_clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_clearButton addTarget:self action:@selector(clearAction) forControlEvents:UIControlEventTouchUpInside];
@@ -172,6 +175,7 @@
 {
     if (_dissolveButton == nil) {
         _dissolveButton = [[UIButton alloc] init];
+        _dissolveButton.accessibilityIdentifier = @"leave";
         [_dissolveButton setTitle:NSLocalizedString(@"group.destroy", @"dissolution of the group") forState:UIControlStateNormal];
         [_dissolveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_dissolveButton addTarget:self action:@selector(dissolveAction) forControlEvents:UIControlEventTouchUpInside];
@@ -185,6 +189,7 @@
 {
     if (_exitButton == nil) {
         _exitButton = [[UIButton alloc] init];
+        _exitButton.accessibilityIdentifier = @"leave";
         [_exitButton setTitle:NSLocalizedString(@"group.leave", @"quit the group") forState:UIControlStateNormal];
         [_exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];

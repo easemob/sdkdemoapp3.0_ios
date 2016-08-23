@@ -75,6 +75,7 @@
     self.title = NSLocalizedString(@"title.chooseContact", @"select the contact");
     self.navigationItem.rightBarButtonItem = nil;
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -218,6 +219,7 @@
         [_footerView addSubview:_footerScrollView];
         
         _doneButton = [[UIButton alloc] initWithFrame:CGRectMake(_footerView.frame.size.width - 80, 8, 70, _footerView.frame.size.height - 16)];
+        _doneButton.accessibilityIdentifier = @"done_button";
         [_doneButton setBackgroundColor:[UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0]];
         [_doneButton setTitle:NSLocalizedString(@"accept", @"Accept") forState:UIControlStateNormal];
         [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

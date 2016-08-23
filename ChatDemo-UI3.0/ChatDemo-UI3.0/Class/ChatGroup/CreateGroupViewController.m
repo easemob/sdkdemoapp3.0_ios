@@ -67,6 +67,7 @@
     [self.navigationItem setRightBarButtonItem:_rightItem];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -120,7 +121,6 @@
         _textView.placeholder = NSLocalizedString(@"group.create.inputDescribe", @"please enter a group description");
         _textView.returnKeyType = UIReturnKeyDone;
         _textView.delegate = self;
-        _textView.accessibilityIdentifier = @"GreateGroupVC_textview";
     }
     
     return _textView;

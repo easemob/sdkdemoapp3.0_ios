@@ -55,8 +55,6 @@
     _contactsSource = [NSMutableArray array];
     _sectionTitles = [NSMutableArray array];
     
-//    [self tableViewDidTriggerHeaderRefresh];
-    
     [self searchController];
     self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
     [self.view addSubview:self.searchBar];
@@ -372,7 +370,7 @@
 //    }
     
     _currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:@"Delete", NSLocalizedString(@"friend.block", @"join the blacklist"), nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
@@ -568,13 +566,6 @@
             [self.contactsSource addObject:buddy];
         }
     }
-    
-//    NSDictionary *loginInfo = [[[EaseMob sharedInstance] chatManager] loginInfo];
-//    NSString *loginUsername = [loginInfo objectForKey:kSDKUsername];
-//    if (loginUsername && loginUsername.length > 0) {
-//        EMBuddy *loginBuddy = [EMBuddy buddyWithUsername:loginUsername];
-//        [self.contactsSource addObject:loginBuddy];
-//    }
     
     [self _sortDataArray:self.contactsSource];
     

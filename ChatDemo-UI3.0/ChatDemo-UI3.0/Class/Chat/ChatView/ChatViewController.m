@@ -94,6 +94,7 @@
 - (void)_setupBarButtonItem
 {
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -102,12 +103,14 @@
     //单聊
     if (self.conversation.conversationType == eConversationTypeChat) {
         UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        clearButton.accessibilityIdentifier = @"clear_message"
         [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(deleteAllMessages:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
     }
     else{//群聊
         UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+        detailButton.accessibilityIdentifier = @"detail";
         [detailButton setImage:[UIImage imageNamed:@"group_detail"] forState:UIControlStateNormal];
         [detailButton addTarget:self action:@selector(showGroupDetailAction) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
