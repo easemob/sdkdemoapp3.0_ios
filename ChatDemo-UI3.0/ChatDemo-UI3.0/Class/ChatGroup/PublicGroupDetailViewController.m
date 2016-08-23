@@ -107,6 +107,7 @@
         [_footerView addSubview:line];
         
         _footerButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, _footerView.frame.size.width - 80, 40)];
+        _footerButton.accessibilityIdentifier = @"join";
         [_footerButton setTitle:NSLocalizedString(@"group.join", @"join the group") forState:UIControlStateNormal];
         [_footerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_footerButton addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];

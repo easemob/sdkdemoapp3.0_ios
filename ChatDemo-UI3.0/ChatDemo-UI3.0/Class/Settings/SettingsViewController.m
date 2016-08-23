@@ -304,6 +304,7 @@
         [_footerView addSubview:line];
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, _footerView.frame.size.width - 20, 45)];
+        logoutButton.accessibilityIdentifier = @"logoff";
         [logoutButton setBackgroundColor:RGBACOLOR(0xfe, 0x64, 0x50, 1)];
         NSDictionary *loginInfo = [[EaseMob sharedInstance].chatManager loginInfo];
         NSString *username = [loginInfo objectForKey:kSDKUsername];

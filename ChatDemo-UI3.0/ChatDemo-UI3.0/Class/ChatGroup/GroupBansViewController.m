@@ -81,6 +81,7 @@
 {
     if (_scrollView == nil) {
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, kContactSize)];
+        _scrollView.accessibilityIdentifier = @"scroll_view";
         _scrollView.tag = 0;
         _scrollView.backgroundColor = [UIColor clearColor];
         
