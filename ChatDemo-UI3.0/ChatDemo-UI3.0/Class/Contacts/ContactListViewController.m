@@ -560,7 +560,7 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-//    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
@@ -584,12 +584,13 @@
                 });
             }
         }
-        if (error) {
+        else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself showHint:NSLocalizedString(@"loadDataFailed", @"Load data failed.")];
                 [weakself reloadDataSource];
             });
         }
+        [self hideHud];
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     });
 }

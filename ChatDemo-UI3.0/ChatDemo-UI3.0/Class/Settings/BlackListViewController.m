@@ -265,6 +265,7 @@
 
 - (void)reloadDataSource
 {
+    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [weakself.dataSource removeAllObjects];
@@ -272,6 +273,7 @@
         NSArray *blocked = [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
         [weakself.dataSource addObjectsFromArray:[weakself sortDataArray:blocked]];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
             [weakself.tableView reloadData];
         });
     });
