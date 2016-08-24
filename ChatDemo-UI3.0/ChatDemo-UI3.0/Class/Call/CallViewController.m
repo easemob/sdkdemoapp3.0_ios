@@ -58,7 +58,8 @@
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
-            [session setVideoBitrate:[[ud valueForKey:kLocalCallBitrate] intValue]];
+            int bitrate = [[ud valueForKey:kLocalCallBitrate] intValue];
+            [[EMClient sharedClient].callManager callOptions].videoKbps = bitrate;
         }
     }
     
@@ -73,7 +74,7 @@
     
     [self _setupSubviews];
     
-    _nameLabel.text = _callSession.remoteUsername;
+    _nameLabel.text = _callSession.remoteName;
     _statusLabel.text = _status;
     if (_isCaller) {
         self.rejectButton.hidden = YES;
@@ -161,7 +162,7 @@
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.textColor = [UIColor whiteColor];
     _nameLabel.textAlignment = NSTextAlignmentCenter;
-    _nameLabel.text = _callSession.remoteUsername;
+    _nameLabel.text = _callSession.remoteName;
     [_topView addSubview:_nameLabel];
     
     _networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_nameLabel.frame) + 5, _topView.frame.size.width, 20)];
@@ -172,15 +173,15 @@
     _networkLabel.hidden = YES;
     [_topView addSubview:_networkLabel];
     
-    if (_callSession.type == EMCallTypeVideo) {
-        _switchCameraButton = [[UIButton alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_statusLabel.frame) + 20, 60, 30)];
-        [_switchCameraButton setBackgroundColor:[UIColor grayColor]];
-        [_switchCameraButton setTitle:NSLocalizedString(@"call.switchCamera", @"Switch Camera") forState:UIControlStateNormal];
-        [_switchCameraButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
-        [_switchCameraButton addTarget:self action:@selector(switchCameraAction) forControlEvents:UIControlEventTouchUpInside];
-        _switchCameraButton.userInteractionEnabled = YES;
-        [_topView addSubview:_switchCameraButton];
-    }
+//    if (_callSession.type == EMCallTypeVideo) {
+//        _switchCameraButton = [[UIButton alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_statusLabel.frame) + 20, 60, 30)];
+//        [_switchCameraButton setBackgroundColor:[UIColor grayColor]];
+//        [_switchCameraButton setTitle:NSLocalizedString(@"call.switchCamera", @"Switch Camera") forState:UIControlStateNormal];
+//        [_switchCameraButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+//        [_switchCameraButton addTarget:self action:@selector(switchCameraAction) forControlEvents:UIControlEventTouchUpInside];
+//        _switchCameraButton.userInteractionEnabled = YES;
+//        [_topView addSubview:_switchCameraButton];
+//    }
     
     _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 260, self.view.frame.size.width, 260)];
     _actionView.backgroundColor = [UIColor clearColor];
@@ -236,14 +237,15 @@
     
     if (_callSession.type == EMCallTypeVideo) {
         CGFloat tmpWidth = _actionView.frame.size.width / 3;
-        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
-        _recordButton.layer.cornerRadius = 20.f;
-        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
-        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
-        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
-        [_recordButton setBackgroundColor:[UIColor grayColor]];
-        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
-        [_actionView addSubview:_recordButton];
+//        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
+//        _recordButton.layer.cornerRadius = 20.f;
+//        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
+//        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
+//        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+//        [_recordButton setBackgroundColor:[UIColor grayColor]];
+//        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
+//        [_actionView addSubview:_recordButton];
+        
         _videoButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2, 20, 40, 40)];
         _videoButton.layer.cornerRadius = 20.f;
         [_videoButton setTitle:@"视频开启" forState:UIControlStateNormal];
@@ -252,6 +254,7 @@
         [_videoButton setBackgroundColor:[UIColor grayColor]];
         [_videoButton addTarget:self action:@selector(videoPauseAction) forControlEvents:UIControlEventTouchUpInside];
         [_actionView addSubview:_videoButton];
+        
         _voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth * 2 + (tmpWidth - 40) / 2, 20, 40, 40)];
         _voiceButton.layer.cornerRadius = 20.f;
         [_voiceButton setTitle:@"音视开启" forState:UIControlStateNormal];
@@ -273,7 +276,7 @@
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    _callSession.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
     [self.view addSubview:_callSession.localView];
     
     //3、属性显示层
@@ -320,12 +323,12 @@
 - (void)_reloadPropertyData
 {
     if (_callSession) {
-        _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getVideoWidth], [_callSession getVideoHeight]];
-        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getVideoTimedelay]];
-        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getVideoFramerate]];
-        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getVideoLostcnt]];
-        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), [_callSession getVideoLocalBitrate]];
-        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), [_callSession getVideoRemoteBitrate]];
+        _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getRemoteVideoWidth], [_callSession getRemoteVideoHeight]];
+        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getLocalVideoTimeDelay]];
+        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getRemoteVideoFrameRate]];
+        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getLocalVideoLostRateInPercent]];
+        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), [_callSession getLocalVideoBitrate]];
+        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), [_callSession getRemoteVideoBitrate]];
     }
 }
 
@@ -378,45 +381,45 @@
 
 #pragma mark - action
 
-- (void)switchCameraAction
-{
-    [_callSession setCameraBackOrFront:_switchCameraButton.selected];
-    _switchCameraButton.selected = !_switchCameraButton.selected;
-}
-
-- (void)recordAction
-{
-    _recordButton.selected = !_recordButton.selected;
-    if (_recordButton.selected) {
-        NSString *recordPath = NSHomeDirectory();
-        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
-        NSFileManager *fm = [NSFileManager defaultManager];
-        if(![fm fileExistsAtPath:recordPath]){
-            [fm createDirectoryAtPath:recordPath
-          withIntermediateDirectories:YES
-                           attributes:nil
-                                error:nil];
-        }
-        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
-    } else {
-        NSString *tempPath = [_callSession stopVideoRecording:nil];
-        if (tempPath.length > 0) {
-//            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
-//            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-//            [moviePlayerController.moviePlayer prepareToPlay];
-//            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-//            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
-        }
-    }
-}
+//- (void)switchCameraAction
+//{
+//    [_callSession setCameraBackOrFront:_switchCameraButton.selected];
+//    _switchCameraButton.selected = !_switchCameraButton.selected;
+//}
+//
+//- (void)recordAction
+//{
+//    _recordButton.selected = !_recordButton.selected;
+//    if (_recordButton.selected) {
+//        NSString *recordPath = NSHomeDirectory();
+//        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+//        NSFileManager *fm = [NSFileManager defaultManager];
+//        if(![fm fileExistsAtPath:recordPath]){
+//            [fm createDirectoryAtPath:recordPath
+//          withIntermediateDirectories:YES
+//                           attributes:nil
+//                                error:nil];
+//        }
+//        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
+//    } else {
+//        NSString *tempPath = [_callSession stopVideoRecording:nil];
+//        if (tempPath.length > 0) {
+////            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
+////            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+////            [moviePlayerController.moviePlayer prepareToPlay];
+////            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+////            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+//        }
+//    }
+//}
 
 - (void)videoPauseAction
 {
     _videoButton.selected = !_videoButton.selected;
     if (_videoButton.selected) {
-        [[EMClient sharedClient].callManager pauseVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager pauseVideoWithCallId:_callSession.callId];
     } else {
-        [[EMClient sharedClient].callManager resumeVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager resumeVideoWithCallId:_callSession.callId];
     }
 }
 
@@ -424,16 +427,20 @@
 {
     _voiceButton.selected = !_voiceButton.selected;
     if (_voiceButton.selected) {
-        [[EMClient sharedClient].callManager pauseVoiceAndVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager pauseVoiceAndVideoWithCallId:_callSession.callId];
     } else {
-        [[EMClient sharedClient].callManager resumeVoiceAndVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager resumeVoiceAndVideoWithCallId:_callSession.callId];
     }
 }
 
 - (void)silenceAction
 {
     _silenceButton.selected = !_silenceButton.selected;
-    [[EMClient sharedClient].callManager markCallSession:_callSession.sessionId isSilence:_silenceButton.selected];
+    if (_silenceButton.selected) {
+        [[EMClient sharedClient].callManager pauseVoiceWithCallId:_callSession.callId];
+    } else {
+        [[EMClient sharedClient].callManager resumeVoiceWithCallId:_callSession.callId];
+    }
 }
 
 - (void)speakerOutAction
