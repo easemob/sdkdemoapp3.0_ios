@@ -482,15 +482,15 @@
         if (!error) {
             [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
             
-            [tableView beginUpdates];
+            [self.tableView beginUpdates];
             [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
             [self.contactsSource removeObject:model.buddy];
-            [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView endUpdates];
+            [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
         }
         else{
             [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
-            [tableView reloadData];
+            [self.tableView reloadData];
         }
     }
     else if (buttonIndex == 1) {
