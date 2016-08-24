@@ -57,6 +57,7 @@
     self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    addButton.accessibilityIdentifier = @"add_member";
     addButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
     [addButton setTitle:NSLocalizedString(@"group.create.addOccupant", @"add members") forState:UIControlStateNormal];
     [addButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
@@ -66,6 +67,7 @@
     [self.navigationItem setRightBarButtonItem:_rightItem];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -88,6 +90,7 @@
 {
     if (_textField == nil) {
         _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, 40)];
+        _textField.accessibilityIdentifier = @"group_name";
         _textField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         _textField.layer.borderWidth = 0.5;
         _textField.layer.cornerRadius = 3;
@@ -109,6 +112,7 @@
 {
     if (_textView == nil) {
         _textView = [[EMTextView alloc] initWithFrame:CGRectMake(10, 70, 300, 80)];
+        _textView.accessibilityIdentifier = @"group_subject";
         _textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         _textView.layer.borderWidth = 0.5;
         _textView.layer.cornerRadius = 3;
@@ -137,6 +141,7 @@
         [_switchView addSubview:label];
         
         UISwitch *switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(100, oY, 50, _switchView.frame.size.height)];
+        switchControl.accessibilityIdentifier = @"group_type";
         [switchControl addTarget:self action:@selector(groupTypeChange:) forControlEvents:UIControlEventValueChanged];
         [_switchView addSubview:switchControl];
         
@@ -157,6 +162,7 @@
         [_switchView addSubview:_groupMemberTitleLabel];
         
         _groupMemberSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, oY, 50, 35)];
+        _groupMemberSwitch.accessibilityIdentifier = @"member_permission";
         [_groupMemberSwitch addTarget:self action:@selector(groupMemberChange:) forControlEvents:UIControlEventValueChanged];
         [_switchView addSubview:_groupMemberSwitch];
         

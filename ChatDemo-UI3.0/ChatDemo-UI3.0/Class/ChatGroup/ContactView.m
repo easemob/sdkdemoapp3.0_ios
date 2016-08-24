@@ -18,7 +18,10 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.accessibilityIdentifier = @"contact_view";
+
         _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_imageView.frame) - 20, 3, 30, 30)];
+        _deleteButton.accessibilityIdentifier = @"delete";
         [_deleteButton addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
         [_deleteButton setImage:[UIImage imageNamed:@"group_invitee_delete"] forState:UIControlStateNormal];
         _deleteButton.hidden = YES;

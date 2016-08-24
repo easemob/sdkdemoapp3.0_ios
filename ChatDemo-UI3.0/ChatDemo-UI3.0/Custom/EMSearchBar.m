@@ -18,6 +18,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.accessibilityIdentifier = @"searchbar";
+
         for (UIView *subView in self.subviews) {
             if ([subView isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
                 [subView removeFromSuperview];
