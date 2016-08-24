@@ -143,16 +143,6 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             NSString *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-            if (loginUsername && loginUsername.length > 0) {
-                if ([loginUsername isEqualToString:buddy]) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                    [alertView show];
-                    
-                    return;
-                }
-            }
-            
             [weakSelf.searchController.searchBar endEditing:YES];
 
 #ifdef REDPACKET_AVALABLE
@@ -279,11 +269,6 @@
     return contentView;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -317,15 +302,6 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
-        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-        if (loginUsername && loginUsername.length > 0) {
-            if ([loginUsername isEqualToString:model.buddy]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notChatSelf", @"can't talk to yourself") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
-                
-                return;
-            }
-        }
 #ifdef REDPACKET_AVALABLE
         RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
 #else
@@ -334,44 +310,6 @@
                                               initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
-    }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    if (indexPath.section == 0) {
-        return NO;
-    }
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-        if ([model.buddy isEqualToString:loginUsername]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
-            
-            return;
-        }
-        
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
-        if (!error) {
-            [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
-            
-            [tableView beginUpdates];
-            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
-            [self.contactsSource removeObject:model.buddy];
-            [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView endUpdates];
-        }
-        else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
-            [tableView reloadData];
-        }
     }
 }
 
@@ -424,15 +362,9 @@
         // 群组，聊天室
         return;
     }
-    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy isEqualToString:loginUsername])
-    {
-        return;
-    }
     
     _currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:@"Delete", NSLocalizedString(@"friend.block", @"join the blacklist"), nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
@@ -440,7 +372,7 @@
 
 - (void)addContactAction
 {
-    AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+    AddFriendViewController *addController = [[AddFriendViewController alloc] init];
     [self.navigationController pushViewController:addController animated:YES];
 }
 
@@ -523,15 +455,9 @@
         // 群组，聊天室
         return;
     }
-    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    if ([model.buddy isEqualToString:loginUsername])
-    {
-        return;
-    }
     
     _currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:@"Delete", NSLocalizedString(@"friend.block", @"join the blacklist"), nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
@@ -539,11 +465,37 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex != actionSheet.cancelButtonIndex && _currentLongPressIndex) {
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(_currentLongPressIndex.section - 1)] objectAtIndex:_currentLongPressIndex.row];
-        [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-        
+    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
+        return;
+    }
+    
+    NSIndexPath *indexPath = _currentLongPressIndex;
+    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+    _currentLongPressIndex = nil;
+    
+    [self hideHud];
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
+    __weak typeof(self) weakSelf = self;
+    if (buttonIndex == 0) {
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
+        [self hideHud];
+        if (!error) {
+            [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
+            
+            [tableView beginUpdates];
+            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
+            [self.contactsSource removeObject:model.buddy];
+            [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView endUpdates];
+        }
+        else{
+            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
+            [tableView reloadData];
+        }
+    }
+    else if (buttonIndex == 1) {
         EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
+        [self hideHud];
         if (!error) {
             //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
             [self reloadDataSource];
@@ -551,9 +503,7 @@
         else {
             [self showHint:error.errorDescription];
         }
-        [self hideHud];
     }
-    _currentLongPressIndex = nil;
 }
 
 #pragma mark - data
@@ -574,11 +524,6 @@
                     for (NSInteger i = (buddyList.count - 1); i >= 0; i--) {
                         NSString *username = [buddyList objectAtIndex:i];
                         [weakself.contactsSource addObject:username];
-                    }
-                    
-                    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-                    if (loginUsername && loginUsername.length > 0) {
-                        [weakself.contactsSource addObject:loginUsername];
                     }
                     [weakself _sortDataArray:self.contactsSource];
                 });
@@ -607,12 +552,6 @@
     for (NSString *buddy in buddyList) {
         [self.contactsSource addObject:buddy];
     }
-    
-    NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-    if (loginUsername && loginUsername.length > 0) {
-        [self.contactsSource addObject:loginUsername];
-    }
-    
     [self _sortDataArray:self.contactsSource];
     
     [self.tableView reloadData];
@@ -636,7 +575,7 @@
 
 - (void)addFriendAction
 {
-    AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+    AddFriendViewController *addController = [[AddFriendViewController alloc] init];
     [self.navigationController pushViewController:addController animated:YES];
 }
 
