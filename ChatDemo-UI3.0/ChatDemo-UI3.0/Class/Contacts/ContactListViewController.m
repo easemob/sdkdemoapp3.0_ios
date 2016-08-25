@@ -515,6 +515,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
         NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+        });
         if (!error) {
             [[EMClient sharedClient].contactManager getBlackListFromServerWithError:&error];
             if (!error) {
@@ -535,7 +538,6 @@
                 [weakself reloadDataSource];
             });
         }
-        [self hideHud];
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     });
 }
