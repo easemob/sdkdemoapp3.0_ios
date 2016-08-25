@@ -148,14 +148,15 @@
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 //    [self.scrollView removeGestureRecognizer:_longPress];
     
-    int tmp = (int)([_group.bans count] + 1) % kColOfRow;
-    int row = (int)([_group.bans count] + 1) / kColOfRow;
+    NSArray *blackList = _group.blackList;
+    int tmp = (int)([blackList count] + 1) % kColOfRow;
+    int row = (int)([blackList count] + 1) / kColOfRow;
     row += tmp == 0 ? 0 : 1;
     self.scrollView.tag = row;
     self.scrollView.frame = CGRectMake(10, 20, self.view.frame.size.width - 20, row * kContactSize);
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, row * kContactSize);
     
-    if ([_group.bans count] == 0) {
+    if ([blackList count] == 0) {
         return;
     }
     
@@ -166,8 +167,8 @@
     for (i = 0; i < row; i++) {
         for (j = 0; j < kColOfRow; j++) {
             NSInteger index = i * kColOfRow + j;
-            if (index < [_group.bans count]) {
-                NSString *username = [_group.bans objectAtIndex:index];
+            if (index < [blackList count]) {
+                NSString *username = [blackList objectAtIndex:index];
                 ContactView *contactView = [[ContactView alloc] initWithFrame:CGRectMake(j * kContactSize, i * kContactSize, kContactSize, kContactSize)];
                 contactView.index = i * kColOfRow + j;
                 contactView.image = [UIImage imageNamed:@"chatListCellHead.png"];
@@ -180,7 +181,7 @@
                 [contactView setDeleteContact:^(NSInteger index) {
                     weakSelf.isUpdate = YES;
                     [weakSelf showHudInView:weakSelf.view hint:NSLocalizedString(@"group.ban.removing", @"members are removing from the blacklist...")];
-                    NSArray *occupants = [NSArray arrayWithObject:[weakSelf.group.bans objectAtIndex:index]];
+                    NSArray *occupants = [NSArray arrayWithObject:[blackList objectAtIndex:index]];
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                         EMError *error = nil;
                         EMGroup *group = [[EMClient sharedClient].groupManager unblockOccupants:occupants forGroup:weakSelf.group.groupId error:&error];

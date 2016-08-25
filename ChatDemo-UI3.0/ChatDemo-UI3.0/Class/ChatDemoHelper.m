@@ -86,11 +86,6 @@ static ChatDemoHelper *helper = nil;
 #if DEMO_CALL == 1
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
-//    EMCallOptions *callOptions = [[EMCallOptions alloc] init];
-//    callOptions.videoResolution = EMCallVideoResolution640_480;
-//    callOptions.videoFps = 500;
-//    [[EMClient sharedClient].callManager setCallOptions:callOptions];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
 #endif
 }
@@ -107,7 +102,7 @@ static ChatDemoHelper *helper = nil;
 {
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[EMClient sharedClient].groupManager loadAllMyGroupsFromDB];
+        [[EMClient sharedClient].groupManager getJoinedGroups];
         EMError *error = nil;
         [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
         if (!error) {
@@ -124,10 +119,10 @@ static ChatDemoHelper *helper = nil;
 {
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSArray *array = [[EMClient sharedClient].chatManager loadAllConversationsFromDB];
+        NSArray *array = [[EMClient sharedClient].chatManager getAllConversations];
         [array enumerateObjectsUsingBlock:^(EMConversation *conversation, NSUInteger idx, BOOL *stop){
             if(conversation.latestMessage == nil){
-                [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId deleteMessages:NO];
+                [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:NO completion:nil];
             }
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -160,7 +155,7 @@ static ChatDemoHelper *helper = nil;
         UIView *view = self.mainVC.view;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL flag = [[EMClient sharedClient] dataMigrationTo3];
+            BOOL flag = [[EMClient sharedClient] migrateDatabaseToLatestSDK];
             if (flag) {
                 [self asyncGroupFromServer];
                 [self asyncConversationFromDB];
@@ -647,27 +642,35 @@ static ChatDemoHelper *helper = nil;
         return;
     }
     
+    __weak typeof(self) weakSelf = self;
+    void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError){
+        ChatDemoHelper *strongSelf = weakSelf;
+        if (strongSelf) {
+            if (!aError && aCallSession) {
+                strongSelf.callSession = aCallSession;
+                [strongSelf _startCallTimer];
+                strongSelf.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
+                [strongSelf.mainVC presentViewController:self.callController animated:NO completion:nil];
+            }
+            else {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Failed to establish the call") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
+            }
+        }
+        else {
+            [[EMClient sharedClient].callManager endCall:aCallSession.sessionId reason:EMCallEndReasonNoResponse];
+        }
+    };
     if (aIsVideo) {
-        _callSession = [[EMClient sharedClient].callManager makeVideoCall:aUsername error:nil];
+        [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
+            completionBlock(aCallSession, aError);
+        }];
     }
-    else{
-        _callSession = [[EMClient sharedClient].callManager makeVoiceCall:aUsername error:nil];
+    else {
+        [[EMClient sharedClient].callManager startVoiceCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
+            completionBlock(aCallSession, aError);
+        }];
     }
-    
-    if(_callSession){
-        [self _startCallTimer];
-        
-        _callController = [[CallViewController alloc] initWithSession:_callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
-//        _callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-//        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
-//        [delegate.navigationController presentViewController:_callController animated:NO completion:nil];
-        [_mainVC presentViewController:_callController animated:NO completion:nil];
-    }
-    else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-        [alertView show];
-    }
-    
 }
 
 - (void)hangupCallWithReason:(EMCallEndReason)aReason
@@ -687,7 +690,7 @@ static ChatDemoHelper *helper = nil;
 {
     if (_callSession) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:_callSession.sessionId];
+            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.sessionId];
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.code == EMErrorNetworkUnavailable) {
@@ -709,7 +712,7 @@ static ChatDemoHelper *helper = nil;
 - (BOOL)_needShowNotification:(NSString *)fromChatter
 {
     BOOL ret = YES;
-    NSArray *igGroupIds = [[EMClient sharedClient].groupManager getAllIgnoredGroupIds];
+    NSArray *igGroupIds = [[EMClient sharedClient].groupManager getGroupsWithoutPushNotification:nil];
     for (NSString *str in igGroupIds) {
         if ([str isEqualToString:fromChatter]) {
             ret = NO;

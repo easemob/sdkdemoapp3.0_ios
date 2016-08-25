@@ -83,7 +83,7 @@
 - (instancetype)initWithGroupId:(NSString *)chatGroupId
 {
     EMGroup *chatGroup = nil;
-    NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+    NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
     for (EMGroup *group in groupArray) {
         if ([group.groupId isEqualToString:chatGroupId]) {
             chatGroup = group;
@@ -323,7 +323,7 @@
 - (BOOL)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
 {
     NSInteger maxUsersCount = _chatGroup.setting.maxUsersCount;
-    if (([selectedSources count] + _chatGroup.occupantsCount) > maxUsersCount) {
+    if (([selectedSources count] + _chatGroup.membersCount) > maxUsersCount) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.maxUserCount", nil) message:nil delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
         [alertView show];
         

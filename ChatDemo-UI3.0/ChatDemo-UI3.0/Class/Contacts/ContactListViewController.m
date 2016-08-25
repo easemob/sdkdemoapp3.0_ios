@@ -360,7 +360,7 @@
         
         EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
         if (!error) {
-            [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
+            [[EMClient sharedClient].chatManager deleteConversation:model.buddy isDeleteMessages:YES completion:nil];
             
             [tableView beginUpdates];
             [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
@@ -453,7 +453,7 @@
     NSMutableArray *contactsSource = [NSMutableArray array];
     
     //从获取的数据中剔除黑名单中的好友
-    NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
+    NSArray *blockList = [[EMClient sharedClient].contactManager getBlackList];
     for (NSString *buddy in buddyList) {
         if (![blockList containsObject:buddy]) {
             [contactsSource addObject:buddy];
@@ -601,7 +601,7 @@
     [self.dataArray removeAllObjects];
     [self.contactsSource removeAllObjects];
     
-    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
+    NSArray *buddyList = [[EMClient sharedClient].contactManager getContacts];
     
     for (NSString *buddy in buddyList) {
         [self.contactsSource addObject:buddy];

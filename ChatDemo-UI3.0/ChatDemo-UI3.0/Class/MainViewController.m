@@ -282,7 +282,7 @@ static NSString *kGroupName = @"GroupName";
                         }
                     }
                 }
-                NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+                NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
                 for (EMGroup *group in groupArray) {
                     if ([group.groupId isEqualToString:message.conversationId]) {
                         title = [NSString stringWithFormat:@"%@(%@)", message.from, group.subject];
@@ -426,7 +426,7 @@ static NSString *kGroupName = @"GroupName";
                         switch (messageType) {
                             case EMChatTypeChat:
                                 {
-                                    NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+                                    NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
                                     for (EMGroup *group in groupArray) {
                                         if ([group.groupId isEqualToString:conversationChatter]) {
                                             chatViewController.title = group.subject;
@@ -458,7 +458,7 @@ static NSString *kGroupName = @"GroupName";
                 switch (messageType) {
                     case EMChatTypeGroupChat:
                     {
-                        NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+                        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
                         for (EMGroup *group in groupArray) {
                             if ([group.groupId isEqualToString:conversationChatter]) {
                                 chatViewController.title = group.subject;

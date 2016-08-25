@@ -266,15 +266,14 @@
 - (void)_initializeVideoView
 {
     //1.对方窗口
-    _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-    [self.view addSubview:_callSession.remoteView];
+    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:_callSession.remoteVideoView];
     
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
-    [self.view addSubview:_callSession.localView];
+    _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    [self.view addSubview:_callSession.localVideoView];
     
     //3、属性显示层
     _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
@@ -321,9 +320,9 @@
 {
     if (_callSession) {
         _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getVideoWidth], [_callSession getVideoHeight]];
-        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getVideoTimedelay]];
-        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getVideoFramerate]];
-        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getVideoLostcnt]];
+        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getVideoLatency]];
+        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getVideoFrameRate]];
+        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getVideoLostRateInPercent]];
         _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), [_callSession getVideoLocalBitrate]];
         _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), [_callSession getVideoRemoteBitrate]];
     }
@@ -380,7 +379,7 @@
 
 - (void)switchCameraAction
 {
-    [_callSession setCameraBackOrFront:_switchCameraButton.selected];
+    [_callSession switchCameraPosition:_switchCameraButton.selected];
     _switchCameraButton.selected = !_switchCameraButton.selected;
 }
 
@@ -397,7 +396,7 @@
                            attributes:nil
                                 error:nil];
         }
-        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
+        [_callSession startVideoRecordingToFilePath:recordPath error:nil];
     } else {
         NSString *tempPath = [_callSession stopVideoRecording:nil];
         if (tempPath.length > 0) {
@@ -414,9 +413,9 @@
 {
     _videoButton.selected = !_videoButton.selected;
     if (_videoButton.selected) {
-        [[EMClient sharedClient].callManager pauseVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager pauseVideoWithSession:_callSession.sessionId error:nil];
     } else {
-        [[EMClient sharedClient].callManager resumeVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager resumeVideoWithSession:_callSession.sessionId error:nil];
     }
 }
 
@@ -424,16 +423,20 @@
 {
     _voiceButton.selected = !_voiceButton.selected;
     if (_voiceButton.selected) {
-        [[EMClient sharedClient].callManager pauseVoiceAndVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager pauseVoiceWithSession:_callSession.sessionId error:nil];
     } else {
-        [[EMClient sharedClient].callManager resumeVoiceAndVideoTransfer:_callSession.sessionId];
+        [[EMClient sharedClient].callManager resumeVoiceWithSession:_callSession.sessionId error:nil];
     }
 }
 
 - (void)silenceAction
 {
     _silenceButton.selected = !_silenceButton.selected;
-    [[EMClient sharedClient].callManager markCallSession:_callSession.sessionId isSilence:_silenceButton.selected];
+    if (_silenceButton.selected) {
+        [[EMClient sharedClient].callManager pauseVoiceWithSession:_callSession.sessionId error:nil];
+    } else {
+        [[EMClient sharedClient].callManager resumeVoiceWithSession:_callSession.sessionId error:nil];
+    }
 }
 
 - (void)speakerOutAction
@@ -557,7 +560,7 @@
 
 - (void)close
 {
-    _callSession.remoteView.hidden = YES;
+    _callSession.remoteVideoView.hidden = YES;
     _callSession = nil;
     _propertyView = nil;
     

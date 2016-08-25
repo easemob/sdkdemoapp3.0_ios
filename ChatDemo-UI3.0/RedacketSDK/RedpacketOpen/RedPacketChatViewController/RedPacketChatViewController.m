@@ -270,7 +270,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
              如果不是自己发的红包，则发送抢红包消息给对方
              */
             
-            [[EMClient sharedClient].chatManager asyncSendMessage:[self createCmdMessageWithModel:messageModel] progress:nil completion:nil];
+            [[EMClient sharedClient].chatManager sendMessage:[self createCmdMessageWithModel:messageModel] progress:nil completion:nil];
         }
         
         /*
@@ -288,7 +288,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         /**
          *  存入当前会话并存入数据库
          */
-        [self.conversation appendMessage:textMessage];
+        [self.conversation appendMessage:textMessage error:nil];
     }
 }
 

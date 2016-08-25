@@ -76,7 +76,7 @@
             });
         }
         else {
-            [[EMClient sharedClient].chatManager deleteConversation:self.conversation.conversationId deleteMessages:YES];
+            [[EMClient sharedClient].chatManager deleteConversation:self.conversation.conversationId isDeleteMessages:YES completion:nil];
         }
     }
     
@@ -135,7 +135,7 @@
 {
     if (alertView.cancelButtonIndex != buttonIndex) {
         self.messageTimeIntervalTag = -1;
-        [self.conversation deleteAllMessages];
+        [self.conversation deleteAllMessages:nil];
         [self.dataArray removeAllObjects];
         [self.messsagesSource removeAllObjects];
         
@@ -176,7 +176,7 @@
 {
     _selectedCallback = selectedCallback;
     EMGroup *chatGroup = nil;
-    NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
+    NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
     for (EMGroup *group in groupArray) {
         if ([group.groupId isEqualToString:self.conversation.conversationId]) {
             chatGroup = group;
@@ -343,7 +343,7 @@
         //判断当前会话是否为空，若符合则删除该会话
         EMMessage *message = [self.conversation latestMessage];
         if (message == nil) {
-            [[EMClient sharedClient].chatManager deleteConversation:self.conversation.conversationId deleteMessages:NO];
+            [[EMClient sharedClient].chatManager deleteConversation:self.conversation.conversationId isDeleteMessages:NO completion:nil];
         }
     }
     
@@ -376,7 +376,7 @@
         BOOL isDelete = [groupId isEqualToString:self.conversation.conversationId];
         if (self.conversation.type != EMConversationTypeChat && isDelete) {
             self.messageTimeIntervalTag = -1;
-            [self.conversation deleteAllMessages];
+            [self.conversation deleteAllMessages:nil];
             [self.messsagesSource removeAllObjects];
             [self.dataArray removeAllObjects];
             
@@ -420,7 +420,7 @@
         NSMutableIndexSet *indexs = [NSMutableIndexSet indexSetWithIndex:self.menuIndexPath.row];
         NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:self.menuIndexPath, nil];
         
-        [self.conversation deleteMessageWithId:model.message.messageId];
+        [self.conversation deleteMessageWithId:model.message.messageId error:nil];
         [self.messsagesSource removeObject:model.message];
         
         if (self.menuIndexPath.row - 1 >= 0) {
@@ -461,7 +461,7 @@
     if (object) {
         EMMessage *message = (EMMessage *)object;
         [self addMessageToDataSource:message progress:nil];
-        [[EMClient sharedClient].chatManager importMessages:@[message]];
+        [[EMClient sharedClient].chatManager importMessages:@[message] completion:nil];
     }
 }
 
