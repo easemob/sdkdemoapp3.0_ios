@@ -1430,7 +1430,6 @@
 				EBD2ABA01A7CDAC000D16528 /* add@2x.png in Resources */,
 				D2A910851C83E7890025AD0A /* 80.png in Resources */,
 				EBD2ABB41A7CDAC000D16528 /* tabbar_contactsHL@2x.png in Resources */,
-				3C372B5F19FE60DC005925B6 /* (null) in Resources */,
 				EBD2AB8F1A7CDAC000D16528 /* chat_receiver_bg@2x.png in Resources */,
 				EBD2ABA91A7CDAC000D16528 /* groupPrivateHeader@2x.png in Resources */,
 				EBD2AB8E1A7CDAC000D16528 /* chat_receiver_bg.png in Resources */,
