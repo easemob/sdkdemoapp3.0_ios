@@ -18,10 +18,11 @@
 #import "DebugViewController.h"
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
-#import "CallViewController.h"
 #import "RedpacketViewControl.h"
 
-//#import "BackupViewController.h"
+#if DEMO_CALL == 1
+#import "CallViewController.h"
+#endif
 
 @interface SettingsViewController ()
 
@@ -136,6 +137,10 @@
         return 1;
     }
 #endif
+    
+#if DEMO_CALL == 1
+    return 10;
+#endif
 
     return 10;
 }
@@ -180,13 +185,7 @@
         {
             cell.textLabel.text = NSLocalizedString(@"title.debug", @"Debug");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }/*
-        else if (indexPath.row == 4){
-            cell.textLabel.text = NSLocalizedString(@"setting.useIp", @"Use IP");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.ipSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.ipSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.ipSwitch.frame.size.height) / 2, self.ipSwitch.frame.size.width, self.ipSwitch.frame.size.height);
-            [cell.contentView addSubview:self.ipSwitch];
-        }*/
+        }
         else if (indexPath.row == 4){
             cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -203,19 +202,15 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
             [cell.contentView addSubview:self.showCallInfoSwitch];
-        } else if (indexPath.row == 8){
-            cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 9) {
+        } else if (indexPath.row == 8) {
             cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
             [cell.contentView addSubview:self.sortMethodSwitch];
+        } else if (indexPath.row == 9){
+            cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-//        else if (indexPath.row == 8){
-//            cell.textLabel.text = @"聊天记录备份和恢复";
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//        }
     }
     
     return cell;
@@ -260,19 +255,16 @@
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         
-    } else if (indexPath.row == 8) {
+    } else if (indexPath.row == 9) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
         [alert show];
     }
-//    else if(indexPath.row == 8){
-//        BackupViewController *backupController = [[BackupViewController alloc] initWithNibName:nil bundle:nil];
-//        [self.navigationController pushViewController:backupController animated:YES];
-//    }
 }
 
 //弹出提示的代理方法
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+#if DEMO_CALL == 1
     if ([alertView cancelButtonIndex] != buttonIndex) {
         //获取文本输入框
         UITextField *nameTextField = [alertView textFieldAtIndex:0];
@@ -282,7 +274,7 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
-                    [CallViewController saveBitrate:nameTextField.text];
+//                    [CallViewController saveBitrate:nameTextField.text];
                     flag = NO;
                 }
             }
@@ -291,6 +283,7 @@
             [self showHint:NSLocalizedString(@"setting.setBitrateTips", @"Set Bitrate should be 150-1000")];
         }
     }
+#endif
 }
 
 #pragma mark - getter
