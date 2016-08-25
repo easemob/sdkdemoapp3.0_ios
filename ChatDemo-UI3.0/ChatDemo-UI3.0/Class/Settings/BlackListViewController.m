@@ -18,7 +18,7 @@
 #import "ChatDemoHelper.h"
 //#import "EaseChineseToPinyin.h"
 
-@interface BlackListViewController ()<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, SRRefreshDelegate>
+@interface BlackListViewController ()<UITableViewDataSource, UITableViewDelegate, SRRefreshDelegate>
 {
     NSMutableArray *_dataSource;
 }
@@ -28,7 +28,6 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) SRRefreshView *slimeView;
-@property (strong, nonatomic) NSIndexPath *indexPath;
 
 @end
 
@@ -110,8 +109,6 @@
     
     if (cell == nil) {
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
-        [cell addGestureRecognizer:longPress];
     }
     
     NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -120,6 +117,29 @@
     cell.username = username;
     
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
+        if (!error)
+        {
+            [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
+            [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
+            [tableView reloadData];
+        } else {
+            [self showHint:error.errorDescription];
+        }
+    }
 }
 
 #pragma mark - Table view delegate
@@ -168,6 +188,11 @@
     return existTitles;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
 #pragma mark - scrollView delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -186,41 +211,6 @@
 {
     [self reloadDataSource];
     [_slimeView endRefresh];
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.cancelButtonIndex || self.indexPath == nil) {
-        return;
-    }
-    
-    NSIndexPath *index = self.indexPath;
-    self.indexPath = nil;
-    NSString *username = [[self.dataSource objectAtIndex:index.section] objectAtIndex:index.row];
-    EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
-    if (!error) {
-        [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
-        [[self.dataSource objectAtIndex:index.section] removeObjectAtIndex:index.row];
-        [self.tableView reloadData];
-    }
-    else {
-        [self showHint:error.errorDescription];
-    }
-}
-
-#pragma mark - Action
-
-- (void)longPressAction:(UILongPressGestureRecognizer *)longPress {
-    if (longPress.state == UIGestureRecognizerStateEnded) {
-        
-        CGPoint pointTouch = [longPress locationInView:self.tableView];
-        self.indexPath = [self.tableView indexPathForRowAtPoint:pointTouch];
-        
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:@"Delete" otherButtonTitles:nil, nil];
-        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-    }
 }
 
 #pragma mark - data
