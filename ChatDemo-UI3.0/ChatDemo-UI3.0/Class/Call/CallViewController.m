@@ -432,7 +432,11 @@
 - (void)silenceAction
 {
     _silenceButton.selected = !_silenceButton.selected;
-    [[EMClient sharedClient].callManager pauseVoiceWithSession:_callSession.sessionId error:nil];
+    if (_silenceButton.selected) {
+        [[EMClient sharedClient].callManager pauseVoiceWithSession:_callSession.sessionId error:nil];
+    } else {
+        [[EMClient sharedClient].callManager resumeVoiceWithSession:_callSession.sessionId error:nil];
+    }
 }
 
 - (void)speakerOutAction
