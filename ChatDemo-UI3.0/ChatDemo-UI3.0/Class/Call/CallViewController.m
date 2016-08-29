@@ -59,7 +59,7 @@
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
             int bitrate = [[ud valueForKey:kLocalCallBitrate] intValue];
-            [[EMClient sharedClient].callManager callOptions].videoKbps = bitrate;
+            [[EMClient sharedClient].callManager callManagerOptions].videoKbps = bitrate;
         }
     }
     
@@ -270,7 +270,7 @@
 {
     //1.对方窗口
     _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+    _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
     [self.view addSubview:_callSession.remoteView];
     
     //2.自己窗口
