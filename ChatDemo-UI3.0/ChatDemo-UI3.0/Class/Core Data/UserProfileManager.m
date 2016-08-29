@@ -127,7 +127,6 @@ static UserProfileManager *sharedInstance = nil;
 {
     [self.users removeAllObjects];
     PFQuery *query = [PFQuery queryWithClassName:kPARSE_HXUSER];
-    [query fromPinWithName:kCURRENT_USERNAME];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
         if (objects && [objects count] > 0) {
             for (id user in objects) {
