@@ -12,6 +12,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddFriendViewController : UITableViewController
+@interface AddFriendViewController : UIViewController
 
 @end

@@ -128,6 +128,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         [navigationController.navigationBar.layer setMasksToBounds:YES];
     }
     
+    avigationController.navigationBar.accessibilityIdentifier = @"navigationbar";
     self.window.rootViewController = navigationController;
 }
 

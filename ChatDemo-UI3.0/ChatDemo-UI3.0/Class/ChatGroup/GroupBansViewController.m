@@ -56,6 +56,7 @@
     self.title = NSLocalizedString(@"title.groupBlackList", @"Group black list");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -80,6 +81,7 @@
 {
     if (_scrollView == nil) {
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, kContactSize)];
+        _scrollView.accessibilityIdentifier = @"scroll_view";
         _scrollView.tag = 0;
         _scrollView.backgroundColor = [UIColor clearColor];
         

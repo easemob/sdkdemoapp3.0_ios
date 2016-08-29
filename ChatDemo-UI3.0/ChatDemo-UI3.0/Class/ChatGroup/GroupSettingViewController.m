@@ -54,6 +54,7 @@
     self.title = NSLocalizedString(@"title.groupSetting", @"Group Setting");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -61,14 +62,17 @@
     
     if (!_isOwner) {
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(saveAction:)];
+        saveItem.accessibilityIdentifier = @"save";
         [self.navigationItem setRightBarButtonItem:saveItem];
     }
     
     _pushSwitch = [[UISwitch alloc] init];
+    _pushSwitch.accessibilityIdentifier = @"push_switch";
     [_pushSwitch addTarget:self action:@selector(pushSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     [_pushSwitch setOn:_group.isPushNotificationEnabled animated:YES];
     
     _blockSwitch = [[UISwitch alloc] init];
+    _blockSwitch.accessibilityIdentifier = @"block_switch";
     [_blockSwitch addTarget:self action:@selector(blockSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     [_blockSwitch setOn:_group.isBlocked animated:YES];
     
