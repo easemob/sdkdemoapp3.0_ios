@@ -87,7 +87,7 @@ EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
 }
 
 //定向红包
-- (NSArray *)groupMemberList
+- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> *))completionHandle
 {
     EMGroup *group = [[[EMClient sharedClient] groupManager] fetchGroupInfo:self.conversation.conversationId includeMembersList:YES error:nil];
     
@@ -99,7 +99,10 @@ EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
         [mArray addObject:userInfo];
     }
     
-    return mArray;
+    if (completionHandle) {
+        completionHandle(mArray);
+    }
+
 }
 
 // 要在此处根据userID获得用户昵称,和头像地址
@@ -222,13 +225,13 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     if (self.conversation.type == EMConversationTypeChat) {
         // 点对点红包
-        [self.viewControl presentRedPacketViewController];
+        [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
         
     }else{
         //群内指向红包
         NSArray *groupArray = [EMGroup groupWithId:self.conversation.conversationId].occupants;
         //群聊红包发送界面
-        [self.viewControl presentRedPacketMoreViewControllerWithGroupMembers:groupArray];
+        [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:groupArray.count];
     }
 }
 
@@ -321,7 +324,6 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
     BOOL isGroup = self.conversation.type == EMConversationTypeGroupChat;
-    messageModel.redpacketReceiver.isGroup = isGroup;
     if (isGroup) {
         messageModel.redpacketSender = [self profileEntityWith:model.message.from];
         messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
