@@ -91,11 +91,6 @@ static ChatDemoHelper *helper = nil;
 //    self.callLock = [[NSObject alloc] init];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager callManagerOptions];
-    options.videoKbps = 600;
-    options.videoResolution = EMCallVideoResolution640_480;
-    [[EMClient sharedClient].callManager setCallManagerOptions:options];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
 #endif
 }
@@ -525,9 +520,9 @@ static ChatDemoHelper *helper = nil;
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         self.callController.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
         
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [audioSession setActive:YES error:nil];
+//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+//        [audioSession setActive:YES error:nil];
     }
 }
 
