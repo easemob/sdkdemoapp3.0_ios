@@ -92,7 +92,13 @@ static ChatDemoHelper *helper = nil;
 //    self.callLock = [[NSObject alloc] init];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
+    EMCallManagerOptions *options = [[EMClient sharedClient].callManager callManagerOptions];
+    options.videoKbps = 600;
+    options.videoResolution = EMCallVideoResolution640_480;
+    [[EMClient sharedClient].callManager setCallManagerOptions:options];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONFERENCE object:nil];
 #endif
 }
 

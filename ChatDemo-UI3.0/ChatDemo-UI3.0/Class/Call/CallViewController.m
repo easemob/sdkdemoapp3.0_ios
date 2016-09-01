@@ -59,11 +59,8 @@
 //        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 //        if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
 //            int bitrate = [[ud valueForKey:kLocalCallBitrate] intValue];
-//            [[EMClient sharedClient].callManager callManagerOptions].videoKbps = bitrate;
+//            [EMClient sharedClient].callManager.callManagerOptions.videoKbps = bitrate;
 //        }
-        
-        [_callSession setVideoResolution:EMCallVideoResolution1280_720];
-        [_callSession setVideoKbps:1000];
     }
     
     return self;
@@ -420,9 +417,9 @@
 {
     _videoButton.selected = !_videoButton.selected;
     if (_videoButton.selected) {
-        [[EMClient sharedClient].callManager pauseVideoWithCallId:_callSession.callId];
+        [_callSession pauseVideo];
     } else {
-        [[EMClient sharedClient].callManager resumeVideoWithCallId:_callSession.callId];
+        [_callSession resumeVideo];
     }
 }
 
