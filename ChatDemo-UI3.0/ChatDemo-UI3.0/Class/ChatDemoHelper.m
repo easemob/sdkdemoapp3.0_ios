@@ -26,6 +26,7 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
+#import "ConferenceViewController.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -278,6 +279,16 @@ static ChatDemoHelper *helper = nil;
         
         if (self.mainVC) {
             [_mainVC setupUnreadMessageCount];
+        }
+    }
+}
+
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    for (EMMessage *message in aCmdMessages) {
+        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
+        if ([cmdBody.action isEqualToString:@"inviteToJoinConference"]) {
+            NSString *callId = [message.ext objectForKey:@"callId"];
         }
     }
 }
@@ -692,6 +703,12 @@ static ChatDemoHelper *helper = nil;
             }
         });
     }
+}
+
+- (void)makeConference:(NSNotification *)notification
+{
+    ConferenceViewController *conference = [[ConferenceViewController alloc] init];
+    [self.mainVC presentViewController:conference animated:NO completion:nil];
 }
 
 #endif
