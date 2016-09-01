@@ -75,7 +75,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     if (self) {
         [self beginObserve];
-        [YZHRedpacketBridge sharedBridge].redacketURLScheme = @"com.easemob.enterprise.demo.ui";
     }
     
     return self;

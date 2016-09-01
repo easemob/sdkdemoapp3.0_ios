@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "RedpacketOpenConst.h"
 
-
 typedef NS_ENUM(NSInteger, RedpacketMessageType) {
     
     /**
@@ -69,9 +68,10 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userNickname;
 @property (nonatomic, copy) NSString *userAvatar;
-@property (nonatomic, assign) BOOL isGroup;
+//@property (nonatomic, assign) BOOL isGroup;
 
 @end
+
 
 @interface RedpacketViewModel : NSObject <NSCopying>
 
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 @property (nonatomic, copy) NSString *redpacketGreeting;
 @property (nonatomic, copy) NSString *redpacketOrgName;
 
-//????:未来定制化留存
+//未来定制化留存
 @property (nonatomic, copy) NSString *redpacketIcon;
 @property (nonatomic, copy) NSString *redpacketOrgIcon;
 

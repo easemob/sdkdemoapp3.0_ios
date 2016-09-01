@@ -198,12 +198,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     if (index == _redpacket_send_index || index == 3) {
         if (self.conversation.conversationType == eConversationTypeChat) {
             //单聊发送界面
-            [self.viewControl presentRedPacketViewController];
+//            [self.viewControl presentRedPacketViewController];
+            [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
         }else{
             //群内指向红包
             NSArray *groupArray = [EMGroup groupWithId:self.conversation.chatter].occupants;
             //群聊红包发送界面
-            [self.viewControl presentRedPacketMoreViewControllerWithGroupMembers:groupArray];
+//            [self.viewControl presentRedPacketMoreViewControllerWithGroupMembers:groupArray];
+            [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:groupArray.count];
         }
         
     } else if (index == _redpacket_change_index) {
@@ -306,7 +308,6 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
     BOOL isGroup = self.conversation.conversationType == eConversationTypeGroupChat;
-    messageModel.redpacketReceiver.isGroup = isGroup;
     if (isGroup) {
         messageModel.redpacketSender = [self profileEntityWith:model.message.groupSenderName];
         messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
