@@ -56,11 +56,11 @@
         _timeLength = 0;
         _status = statusString;
         
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
-            int bitrate = [[ud valueForKey:kLocalCallBitrate] intValue];
-            [[EMClient sharedClient].callManager callManagerOptions].videoKbps = bitrate;
-        }
+//        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//        if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
+//            int bitrate = [[ud valueForKey:kLocalCallBitrate] intValue];
+//            [EMClient sharedClient].callManager.callManagerOptions.videoKbps = bitrate;
+//        }
     }
     
     return self;
@@ -417,9 +417,9 @@
 {
     _videoButton.selected = !_videoButton.selected;
     if (_videoButton.selected) {
-        [[EMClient sharedClient].callManager pauseVideoWithCallId:_callSession.callId];
+        [_callSession pauseVideo];
     } else {
-        [[EMClient sharedClient].callManager resumeVideoWithCallId:_callSession.callId];
+        [_callSession resumeVideo];
     }
 }
 
@@ -427,9 +427,11 @@
 {
     _voiceButton.selected = !_voiceButton.selected;
     if (_voiceButton.selected) {
-        [[EMClient sharedClient].callManager pauseVoiceAndVideoWithCallId:_callSession.callId];
+        [_callSession pauseVoice];
+        [_callSession pauseVideo];
     } else {
-        [[EMClient sharedClient].callManager resumeVoiceAndVideoWithCallId:_callSession.callId];
+        [_callSession resumeVoice];
+        [_callSession resumeVideo];
     }
 }
 
@@ -437,9 +439,9 @@
 {
     _silenceButton.selected = !_silenceButton.selected;
     if (_silenceButton.selected) {
-        [[EMClient sharedClient].callManager pauseVoiceWithCallId:_callSession.callId];
+        [_callSession pauseVoice];
     } else {
-        [[EMClient sharedClient].callManager resumeVoiceWithCallId:_callSession.callId];
+        [_callSession resumeVoice];
     }
 }
 

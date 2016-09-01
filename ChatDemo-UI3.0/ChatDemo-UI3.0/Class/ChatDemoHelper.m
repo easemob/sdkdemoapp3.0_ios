@@ -26,6 +26,7 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
+#import "ConferenceViewController.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -97,6 +98,7 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONFERENCE object:nil];
 #endif
 }
 
@@ -283,6 +285,16 @@ static ChatDemoHelper *helper = nil;
         
         if (self.mainVC) {
             [_mainVC setupUnreadMessageCount];
+        }
+    }
+}
+
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    for (EMMessage *message in aCmdMessages) {
+        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
+        if ([cmdBody.action isEqualToString:@"inviteToJoinConference"]) {
+            NSString *callId = [message.ext objectForKey:@"callId"];
         }
     }
 }
@@ -525,9 +537,9 @@ static ChatDemoHelper *helper = nil;
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         self.callController.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
         
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [audioSession setActive:YES error:nil];
+//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+//        [audioSession setActive:YES error:nil];
     }
 }
 
@@ -697,6 +709,12 @@ static ChatDemoHelper *helper = nil;
             }
         });
     }
+}
+
+- (void)makeConference:(NSNotification *)notification
+{
+    ConferenceViewController *conference = [[ConferenceViewController alloc] init];
+    [self.mainVC presentViewController:conference animated:NO completion:nil];
 }
 
 #endif

@@ -11,6 +11,9 @@
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
 		28BFD6381B01D40500D0ADEC /* MyChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */; };
+		3A3B46A81D73D45800AC1FB6 /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B46A71D73D45800AC1FB6 /* EMNavigationController.m */; };
+		3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */; };
+		3A595FA81D6D9FF900504DB3 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C117121197D243B00E2DBEC /* PushNotificationViewController.m */; };
@@ -246,6 +249,10 @@
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
 		28BFD6341B01D40500D0ADEC /* MyChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChatroomListViewController.m; sourceTree = "<group>"; };
+		3A3B46A61D73D45800AC1FB6 /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
+		3A3B46A71D73D45800AC1FB6 /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
+		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
+		3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../other_sdk/test_sdk/EaseUI/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3C117120197D243B00E2DBEC /* PushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationViewController.h; sourceTree = "<group>"; };
@@ -555,6 +562,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
 				921C6A911D2A83AD00D8257F /* AlipaySDK.a in Frameworks */,
@@ -670,6 +678,8 @@
 		3CBF90BD19302F5000AD68AE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3A3B46A61D73D45800AC1FB6 /* EMNavigationController.h */,
+				3A3B46A71D73D45800AC1FB6 /* EMNavigationController.m */,
 				3C5EB36119407CAF005C7704 /* EMChooseViewController.h */,
 				3C5EB36219407CAF005C7704 /* EMChooseViewController.m */,
 				3CBF90BE19302F5000AD68AE /* BaseViewController.h */,
@@ -766,6 +776,7 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
+				3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */,
 				9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -783,6 +794,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */,
 				921C6A9D1D2A841600D8257F /* CoreMotion.framework */,
 				D2A9106F1C7FEE350025AD0A /* libHyphenateFullSDK.a */,
 				D26658581C4F41B9008EEFBF /* libEaseUI.a */,
@@ -1329,7 +1341,6 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
-						DevelopmentTeam = PUEB48NTQQ;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1362,6 +1373,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A595FA81D6D9FF900504DB3 /* EaseUIResource.bundle in Resources */,
 				EBD2ABA81A7CDAC000D16528 /* group_participant_addHL@2x.png in Resources */,
 				D2B3DAD91BF1D7B700913BD5 /* icon_024_cover.png in Resources */,
 				EBD2AB8B1A7CDAC000D16528 /* chat_receiver_audio_playing003@2x.png in Resources */,
@@ -1430,7 +1442,6 @@
 				EBD2ABA01A7CDAC000D16528 /* add@2x.png in Resources */,
 				D2A910851C83E7890025AD0A /* 80.png in Resources */,
 				EBD2ABB41A7CDAC000D16528 /* tabbar_contactsHL@2x.png in Resources */,
-				3C372B5F19FE60DC005925B6 /* (null) in Resources */,
 				EBD2AB8F1A7CDAC000D16528 /* chat_receiver_bg@2x.png in Resources */,
 				EBD2ABA91A7CDAC000D16528 /* groupPrivateHeader@2x.png in Resources */,
 				EBD2AB8E1A7CDAC000D16528 /* chat_receiver_bg.png in Resources */,
@@ -1549,6 +1560,7 @@
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
+				3A3B46A81D73D45800AC1FB6 /* EMNavigationController.m in Sources */,
 				3C13D94B1A12095D00903622 /* GroupBansViewController.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
@@ -1698,6 +1710,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
+					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
+					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -1707,9 +1721,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
-					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
+					"\"$(SRCROOT)/RedacketSDK/RedpacketStaticLib/lib\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -1752,6 +1765,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
+					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
+					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -1761,9 +1776,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
-					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
+					"\"$(SRCROOT)/RedacketSDK/RedpacketStaticLib/lib\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
