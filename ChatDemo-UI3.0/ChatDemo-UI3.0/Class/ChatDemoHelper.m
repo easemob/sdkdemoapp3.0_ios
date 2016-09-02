@@ -28,6 +28,8 @@
 #import "CallViewController.h"
 #import "ConferenceViewController.h"
 
+#import "EMAVPluginBeauty.h"
+
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
     NSTimer *_callTimer;
@@ -96,6 +98,9 @@ static ChatDemoHelper *helper = nil;
     options.videoKbps = 600;
     options.videoResolution = EMCallVideoResolution640_480;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
+    
+    [EMAVPluginBeauty initGlobal];
+    [EMAVPluginBeauty setBeautyIntensity:1.0];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONFERENCE object:nil];
