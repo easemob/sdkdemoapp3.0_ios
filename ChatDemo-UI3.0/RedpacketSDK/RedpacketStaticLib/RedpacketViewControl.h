@@ -13,7 +13,7 @@
 typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
     RPSendRedPacketViewControllerSingle, //点对点红包
     RPSendRedPacketViewControllerGroup,  //普通群红包
-    RPSendRedPacketViewControllerMember, //专属红包
+    RPSendRedPacketViewControllerMember, //包含专属红包的群红包
 };
 
 @protocol RedpacketViewControlDelegate <NSObject>
