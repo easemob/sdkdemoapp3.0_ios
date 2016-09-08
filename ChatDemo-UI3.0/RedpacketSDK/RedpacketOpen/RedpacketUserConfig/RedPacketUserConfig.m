@@ -75,7 +75,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     if (self) {
         [self beginObserve];
-        [YZHRedpacketBridge sharedBridge].redpacketOrgName = @"环信";
     }
     
     return self;
@@ -159,9 +158,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     if(isLoginSuccess) {
         [self configRedpacketService];
-        
-    }else {
-        [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
     }
 }
 
