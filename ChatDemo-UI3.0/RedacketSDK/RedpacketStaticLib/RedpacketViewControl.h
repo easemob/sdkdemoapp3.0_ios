@@ -13,14 +13,15 @@
 typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
     RPSendRedPacketViewControllerSingle, //点对点红包
     RPSendRedPacketViewControllerGroup,  //普通群红包
-    RPSendRedPacketViewControllerMember, //专属红包
+    RPSendRedPacketViewControllerMember, //包含专属红包的群红包
 };
 
 @protocol RedpacketViewControlDelegate <NSObject>
 
 @optional
-- (NSArray<RedpacketUserInfo *> *)groupMemberList __attribute__((deprecated("停用")));
+- (NSArray<RedpacketUserInfo *> *)groupMemberList __attribute__((deprecated("请用getGroupMemberListCompletionHandle：方法替换")));
 - (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle;
+
 @end
 
 //  抢红包成功回调
