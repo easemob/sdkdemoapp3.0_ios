@@ -94,7 +94,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     self = [super init];
     
     if (self) {
-        [YZHRedpacketBridge sharedBridge].redpacketOrgName = @"环信";
+        [YZHRedpacketBridge sharedBridge].redacketURLScheme = @"com.easemob.enterprise.demo.ui";
     }
     
     return self;
@@ -143,9 +143,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     if (isLoginSuccess) {
         [self configUserToken:NO];
         
-    }else  {
-        //  用户退出，清除数据
-        [self clearUserInfo];
     }
 }
 
@@ -182,17 +179,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                                                   appUserId:userId
                                                     imToken:userToken];
     }
-}
-
-- (void)didLoginFromOtherDevice
-{
-    [self clearUserInfo];
-}
-
-- (void)clearUserInfo
-{
-    [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
-    _imUserId = nil;
 }
 
 #pragma mark -
@@ -258,8 +244,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                 /**
                  *  当前用户是红包发送者。
                  */
-                
-                
                 NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
                 /*
                  NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
