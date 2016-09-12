@@ -320,15 +320,15 @@
     [_propertyView addSubview:_remoteBitrateLabel];
     
     //初始化美颜相关控件
-    _slider = [[UISlider alloc] initWithFrame:CGRectMake((_topView.frame.size.width - 150) / 2, CGRectGetMaxY(_statusLabel.frame) + 20, 150, 50)];
-    _slider.minimumValue = 0;
-    _slider.maximumValue = 1;
-    _slider.value = 1;
-    [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [_topView addSubview:_slider];
-    
-    //本地视频启动美颜
-    _callSession.localView.previewDirectly = NO;
+//    _slider = [[UISlider alloc] initWithFrame:CGRectMake((_topView.frame.size.width - 150) / 2, CGRectGetMaxY(_statusLabel.frame) + 20, 150, 50)];
+//    _slider.minimumValue = 0;
+//    _slider.maximumValue = 1;
+//    _slider.value = 1;
+//    [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+//    [_topView addSubview:_slider];
+//    
+//    //本地视频启动美颜
+//    _callSession.localView.previewDirectly = NO;
     
 }
 

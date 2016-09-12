@@ -99,8 +99,8 @@ static ChatDemoHelper *helper = nil;
     options.videoResolution = EMCallVideoResolution640_480;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
     
-    [EMAVPluginBeauty initGlobal];
-    [EMAVPluginBeauty setBeautyIntensity:1.0];
+//    [EMAVPluginBeauty initGlobal];
+//    [EMAVPluginBeauty setBeautyIntensity:1.0];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONFERENCE object:nil];
