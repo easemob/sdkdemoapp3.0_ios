@@ -603,7 +603,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:NO completion:nil];
     });
 }
 
