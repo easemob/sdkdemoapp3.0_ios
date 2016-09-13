@@ -557,7 +557,12 @@ static ChatDemoHelper *helper = nil;
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         [self _stopCallTimer];
         
-        NSString *connectStr = aSession.connectType == EMCallConnectTypeRelay ? @"Relay" : @"Direct";
+        NSString *connectStr = @"None";
+        if (aSession.connectType == EMCallConnectTypeRelay) {
+            connectStr = @"Relay";
+        } else if (aSession.connectType == EMCallConnectTypeDirect) {
+            connectStr = @"Direct";
+        }
         self.callController.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         self.callController.timeLabel.hidden = NO;
         [self.callController startTimer];

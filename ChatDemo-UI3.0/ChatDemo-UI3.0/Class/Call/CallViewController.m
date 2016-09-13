@@ -337,6 +337,14 @@
 - (void)_reloadPropertyData
 {
     if (_callSession) {
+        NSString *connectStr = @"None";
+        if (_callSession.connectType == EMCallConnectTypeRelay) {
+            connectStr = @"Relay";
+        } else if (_callSession.connectType == EMCallConnectTypeDirect) {
+            connectStr = @"Direct";
+        }
+        self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
+        
         _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getRemoteVideoWidth], [_callSession getRemoteVideoHeight]];
         _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getLocalVideoTimeDelay]];
         _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getRemoteVideoFrameRate]];
