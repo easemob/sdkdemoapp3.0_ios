@@ -94,7 +94,7 @@ static ChatDemoHelper *helper = nil;
 //    self.callLock = [[NSObject alloc] init];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager callManagerOptions];
+    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
     options.videoKbps = 600;
     options.videoResolution = EMCallVideoResolution640_480;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
