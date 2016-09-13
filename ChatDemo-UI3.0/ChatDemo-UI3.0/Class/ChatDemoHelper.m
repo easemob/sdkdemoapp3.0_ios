@@ -607,6 +607,11 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.connectFailed", @"Connect failed");
                 }
                     break;
+                case EMCallEndReasonRemoteOffline:
+                {
+                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
+                }
+                    break;
                 default:
                     break;
             }
