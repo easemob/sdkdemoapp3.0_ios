@@ -107,6 +107,10 @@
 - (BOOL)isShowCallInfo
 {
     id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"];
+    if (object == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"showCallInfo"];
+        return YES;
+    }
     return [object boolValue];
 }
 
