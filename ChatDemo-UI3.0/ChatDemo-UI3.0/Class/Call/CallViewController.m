@@ -272,13 +272,19 @@
     }
 }
 
-- (void)_initializeVideoView
+- (void)_setupRemoteView
 {
     //1.对方窗口
-    _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-    [self.view addSubview:_callSession.remoteView];
-    
+    if (_callSession.type == EMCallTypeVideo)
+    {
+        _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+        [self.view addSubview:_callSession.remoteView];
+    }
+}
+
+- (void)_initializeVideoView
+{
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
@@ -493,6 +499,7 @@
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [audioSession setActive:YES error:nil];
     }
+    [self _setupRemoteView];
     
     [[ChatDemoHelper shareHelper] answerCall];
 #endif
@@ -555,7 +562,7 @@
     }
 }
 
-- (void)startTimer
+- (void)startTimeTimer
 {
     _timeLength = 0;
     _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
@@ -593,6 +600,26 @@
         default:
             break;
     }
+}
+
+- (void)stateToAnswered
+{
+    NSString *connectStr = @"None";
+    if (_callSession.connectType == EMCallConnectTypeRelay) {
+        connectStr = @"Relay";
+    } else if (_callSession.connectType == EMCallConnectTypeDirect) {
+        connectStr = @"Direct";
+    }
+    
+    self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
+    self.timeLabel.hidden = NO;
+    [self startTimeTimer];
+    [self startShowInfo];
+    self.cancelButton.hidden = NO;
+    self.rejectButton.hidden = YES;
+    self.answerButton.hidden = YES;
+    
+    [self _setupRemoteView];
 }
 
 - (void)close
