@@ -28,7 +28,7 @@
 #import "CallViewController.h"
 #import "ConferenceViewController.h"
 
-#import "EMAVPluginBeauty.h"
+//#import "EMAVPluginBeauty.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {

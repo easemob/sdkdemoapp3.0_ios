@@ -15,7 +15,7 @@
 #import "CallViewController.h"
 
 #import "ChatDemoHelper.h"
-#import "EMAVPluginBeauty.h"
+// #import "EMAVPluginBeauty.h"
 
 @interface CallViewController ()
 {
@@ -533,7 +533,7 @@
 
 - (void)sliderValueChanged:(UISlider *)slider
 {
-    [EMAVPluginBeauty setBeautyIntensity:slider.value];
+    // [EMAVPluginBeauty setBeautyIntensity:slider.value];
 }
 
 #pragma mark - public
