@@ -43,7 +43,6 @@
 - (void)userListViewController:(EaseUsersListViewController *)userListViewController
             didSelectUserModel:(id<IUserModel>)userModel
 {
-    BOOL flag = YES;
     if (self.messageModel) {
         if (self.messageModel.bodyType == EMMessageBodyTypeText) {
             EMMessage *message = [EaseSDKHelper sendTextMessage:self.messageModel.text to:userModel.buddy messageType:EMChatTypeChat messageExt:self.messageModel.message.ext];
@@ -69,7 +68,6 @@
                 }
             }];
         } else if (self.messageModel.bodyType == EMMessageBodyTypeImage) {
-            flag = NO;
             [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transpondFailing...")];
             
             UIImage *image = self.messageModel.image;
