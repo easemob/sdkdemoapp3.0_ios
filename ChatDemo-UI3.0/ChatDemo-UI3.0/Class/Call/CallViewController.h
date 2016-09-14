@@ -61,9 +61,7 @@
 
 + (void)saveBitrate:(NSString*)value;
 
-- (void)startTimer;
-
-- (void)startShowInfo;
+- (void)stateToAnswered;
 
 - (void)close;
 

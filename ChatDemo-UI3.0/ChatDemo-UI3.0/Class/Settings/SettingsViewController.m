@@ -34,6 +34,7 @@
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
 @property (strong, nonatomic) UISwitch *showCallInfoSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
+@property (strong, nonatomic) UISwitch *callPushSwitch;
 
 @end
 
@@ -110,6 +111,19 @@
     return _sortMethodSwitch;
 }
 
+- (UISwitch *)callPushSwitch
+{
+    if (_callPushSwitch == nil) {
+        _callPushSwitch = [[UISwitch alloc] init];
+        [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        [_callPushSwitch setOn:options.isSendPushIfOffline animated:NO];
+    }
+    
+    return _callPushSwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -129,7 +143,7 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 10;
+    return 11;
 #endif
 
     return 9;
@@ -196,6 +210,11 @@
         } else if (indexPath.row == 9) {
             cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (indexPath.row == 10) {
+            cell.textLabel.text = NSLocalizedString(@"setting.callPush", nil);
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.callPushSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.callPushSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.callPushSwitch.frame.size.height) / 2, self.callPushSwitch.frame.size.width, self.callPushSwitch.frame.size.height);
+            [cell.contentView addSubview:self.callPushSwitch];
         }
     }
     
@@ -320,6 +339,12 @@
 - (void)sortMethodChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setSortMessageByServerTime:control.on];
+}
+    
+- (void)callPushChanged:(UISwitch *)control
+{
+    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+    options.isSendPushIfOffline = control.on;
 }
 
 - (void)refreshConfig

@@ -15,6 +15,7 @@
 #import "CallViewController.h"
 
 #import "ChatDemoHelper.h"
+// #import "EMAVPluginBeauty.h"
 
 @interface CallViewController ()
 {
@@ -25,6 +26,7 @@
     
     NSString * _audioCategory;
     
+    UISlider *_slider;
     //视频属性显示区域
     UIView *_propertyView;
     UILabel *_sizeLabel;
@@ -105,6 +107,10 @@
 - (BOOL)isShowCallInfo
 {
     id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"];
+    if (object == nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"showCallInfo"];
+        return YES;
+    }
     return [object boolValue];
 }
 
@@ -266,13 +272,19 @@
     }
 }
 
-- (void)_initializeVideoView
+- (void)_setupRemoteView
 {
     //1.对方窗口
-    _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-    [self.view addSubview:_callSession.remoteView];
-    
+    if (_callSession.type == EMCallTypeVideo)
+    {
+        _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+        [self.view addSubview:_callSession.remoteView];
+    }
+}
+
+- (void)_initializeVideoView
+{
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
@@ -316,6 +328,18 @@
     _remoteBitrateLabel.backgroundColor = [UIColor clearColor];
     _remoteBitrateLabel.textColor = [UIColor redColor];
     [_propertyView addSubview:_remoteBitrateLabel];
+    
+    //初始化美颜相关控件
+//    _slider = [[UISlider alloc] initWithFrame:CGRectMake((_topView.frame.size.width - 150) / 2, CGRectGetMaxY(_statusLabel.frame) + 20, 150, 50)];
+//    _slider.minimumValue = 0;
+//    _slider.maximumValue = 1;
+//    _slider.value = 1;
+//    [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+//    [_topView addSubview:_slider];
+//    
+//    //本地视频启动美颜
+//    _callSession.localView.previewDirectly = NO;
+    
 }
 
 #pragma mark - private
@@ -323,6 +347,14 @@
 - (void)_reloadPropertyData
 {
     if (_callSession) {
+        NSString *connectStr = @"None";
+        if (_callSession.connectType == EMCallConnectTypeRelay) {
+            connectStr = @"Relay";
+        } else if (_callSession.connectType == EMCallConnectTypeDirect) {
+            connectStr = @"Direct";
+        }
+        self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
+        
         _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getRemoteVideoWidth], [_callSession getRemoteVideoHeight]];
         _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getLocalVideoTimeDelay]];
         _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getRemoteVideoFrameRate]];
@@ -467,6 +499,7 @@
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [audioSession setActive:YES error:nil];
     }
+    [self _setupRemoteView];
     
     [[ChatDemoHelper shareHelper] answerCall];
 #endif
@@ -498,6 +531,11 @@
 #endif
 }
 
+- (void)sliderValueChanged:(UISlider *)slider
+{
+    // [EMAVPluginBeauty setBeautyIntensity:slider.value];
+}
+
 #pragma mark - public
 
 + (BOOL)canVideo
@@ -524,7 +562,7 @@
     }
 }
 
-- (void)startTimer
+- (void)startTimeTimer
 {
     _timeLength = 0;
     _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
@@ -564,6 +602,26 @@
     }
 }
 
+- (void)stateToAnswered
+{
+    NSString *connectStr = @"None";
+    if (_callSession.connectType == EMCallConnectTypeRelay) {
+        connectStr = @"Relay";
+    } else if (_callSession.connectType == EMCallConnectTypeDirect) {
+        connectStr = @"Direct";
+    }
+    
+    self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
+    self.timeLabel.hidden = NO;
+    [self startTimeTimer];
+    [self startShowInfo];
+    self.cancelButton.hidden = NO;
+    self.rejectButton.hidden = YES;
+    self.answerButton.hidden = YES;
+    
+    [self _setupRemoteView];
+}
+
 - (void)close
 {
     _callSession.remoteView.hidden = YES;
@@ -584,7 +642,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AVAudioSession sharedInstance] setActive:NO error:nil];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:NO completion:nil];
     });
 }
 

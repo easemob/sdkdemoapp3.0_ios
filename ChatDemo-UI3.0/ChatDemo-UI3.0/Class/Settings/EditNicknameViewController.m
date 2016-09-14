@@ -101,7 +101,7 @@
                                lineBreakMode:NSLineBreakByCharWrapping];
     }
     
-    height = CGRectGetHeight(rect);
+    height = rect.size.height;
     CGRect frame = _tipLabel.frame;
     frame.size.height = height;
     _tipLabel.frame = frame;

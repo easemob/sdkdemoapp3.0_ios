@@ -211,6 +211,7 @@
 "call.noResponse"="NO response";
 "call.connectFailed"="Connect failed";
 "call.failed"="Call failed";
+"call.offline"="Remote offline";
 "call.suspended"="Call has been suspended";
 "call.over"="Call end";
 "call.cancel"="Cancel the call";
@@ -313,6 +314,7 @@
 "setting.nightOpen" = "On only from 10pm to 7am.";
 "setting.close" = "Off";
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
+"setting.callPush" = "If the offline send call push";
 
 "setting.uploadLog" = "upload run log";
 "setting.sdkVersion" = "SDK version";

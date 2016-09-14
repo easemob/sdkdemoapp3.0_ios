@@ -28,6 +28,8 @@
 #import "CallViewController.h"
 #import "ConferenceViewController.h"
 
+//#import "EMAVPluginBeauty.h"
+
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
     NSTimer *_callTimer;
@@ -92,10 +94,13 @@ static ChatDemoHelper *helper = nil;
 //    self.callLock = [[NSObject alloc] init];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager callManagerOptions];
+    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
     options.videoKbps = 600;
     options.videoResolution = EMCallVideoResolution640_480;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
+    
+//    [EMAVPluginBeauty initGlobal];
+//    [EMAVPluginBeauty setBeautyIntensity:1.0];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONFERENCE object:nil];
@@ -551,15 +556,7 @@ static ChatDemoHelper *helper = nil;
     
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         [self _stopCallTimer];
-        
-        NSString *connectStr = aSession.connectType == EMCallConnectTypeRelay ? @"Relay" : @"Direct";
-        self.callController.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
-        self.callController.timeLabel.hidden = NO;
-        [self.callController startTimer];
-        [self.callController startShowInfo];
-        self.callController.cancelButton.hidden = NO;
-        self.callController.rejectButton.hidden = YES;
-        self.callController.answerButton.hidden = YES;
+        [self.callController stateToAnswered];
     }
 }
 
@@ -595,6 +592,11 @@ static ChatDemoHelper *helper = nil;
                 case EMCallEndReasonFailed:
                 {
                     reasonStr = NSLocalizedString(@"call.connectFailed", @"Connect failed");
+                }
+                    break;
+                case EMCallEndReasonRemoteOffline:
+                {
+                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
                 }
                     break;
                 default:
