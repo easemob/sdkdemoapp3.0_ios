@@ -15,7 +15,6 @@
 #import "CallViewController.h"
 
 #import "ChatDemoHelper.h"
-// #import "EMAVPluginBeauty.h"
 
 @interface CallViewController ()
 {
@@ -26,7 +25,7 @@
     
     NSString * _audioCategory;
     
-    UISlider *_slider;
+    UIImageView *_bgImageView;
     //视频属性显示区域
     UIView *_propertyView;
     UILabel *_sizeLabel;
@@ -328,18 +327,6 @@
     _remoteBitrateLabel.backgroundColor = [UIColor clearColor];
     _remoteBitrateLabel.textColor = [UIColor redColor];
     [_propertyView addSubview:_remoteBitrateLabel];
-    
-    //初始化美颜相关控件
-//    _slider = [[UISlider alloc] initWithFrame:CGRectMake((_topView.frame.size.width - 150) / 2, CGRectGetMaxY(_statusLabel.frame) + 20, 150, 50)];
-//    _slider.minimumValue = 0;
-//    _slider.maximumValue = 1;
-//    _slider.value = 1;
-//    [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-//    [_topView addSubview:_slider];
-//    
-//    //本地视频启动美颜
-//    _callSession.localView.previewDirectly = NO;
-    
 }
 
 #pragma mark - private
@@ -529,11 +516,6 @@
     
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonDecline];
 #endif
-}
-
-- (void)sliderValueChanged:(UISlider *)slider
-{
-    // [EMAVPluginBeauty setBeautyIntensity:slider.value];
 }
 
 #pragma mark - public
