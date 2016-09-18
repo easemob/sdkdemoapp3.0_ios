@@ -98,7 +98,13 @@ static ChatDemoHelper *helper = nil;
         isPush = [object boolValue];
     }
     options.isSendPushIfOffline = isPush;
-    options.videoKbps = 600;
+    
+    int kbps = 600;
+    id kbpsObject = [[NSUserDefaults standardUserDefaults] objectForKey:kLocalCallBitrate];
+    if (kbpsObject) {
+        kbps = [kbpsObject intValue];
+    }
+    options.videoKbps = kbps;
     options.videoResolution = EMCallVideoResolution352_288;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
     

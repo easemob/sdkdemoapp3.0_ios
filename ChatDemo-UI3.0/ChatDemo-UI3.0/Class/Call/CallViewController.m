@@ -56,12 +56,6 @@
         _timeLabel.text = @"";
         _timeLength = 0;
         _status = statusString;
-        
-//        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-//        if ([ud valueForKey:kLocalCallBitrate] && _callSession.type == EMCallTypeVideo) {
-//            int bitrate = [[ud valueForKey:kLocalCallBitrate] intValue];
-//            [EMClient sharedClient].callManager.callManagerOptions.videoKbps = bitrate;
-//        }
     }
     
     return self;

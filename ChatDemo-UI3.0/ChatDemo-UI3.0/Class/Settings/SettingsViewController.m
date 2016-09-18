@@ -283,6 +283,8 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
+                    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+                    options.videoKbps = [nameTextField.text intValue];
                     [CallViewController saveBitrate:nameTextField.text];
                     flag = NO;
                 }
