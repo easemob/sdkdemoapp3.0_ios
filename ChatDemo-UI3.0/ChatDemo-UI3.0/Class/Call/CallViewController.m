@@ -135,10 +135,10 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    bgImageView.contentMode = UIViewContentModeScaleToFill;
-    bgImageView.image = [UIImage imageNamed:@"callBg.png"];
-    [self.view addSubview:bgImageView];
+    _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _bgImageView.contentMode = UIViewContentModeScaleToFill;
+    _bgImageView.image = [UIImage imageNamed:@"callBg.png"];
+    [self.view addSubview:_bgImageView];
     
     _topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 150)];
     _topView.backgroundColor = [UIColor clearColor];
@@ -278,7 +278,8 @@
     {
         _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-        [self.view addSubview:_callSession.remoteView];
+        [_bgImageView addSubview:_callSession.remoteView];
+        [_bgImageView sendSubviewToBack:_callSession.remoteView];
     }
 }
 

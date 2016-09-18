@@ -99,7 +99,7 @@ static ChatDemoHelper *helper = nil;
     }
     options.isSendPushIfOffline = isPush;
     options.videoKbps = 600;
-    options.videoResolution = EMCallVideoResolution640_480;
+    options.videoResolution = EMCallVideoResolution352_288;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
@@ -512,10 +512,6 @@ static ChatDemoHelper *helper = nil;
         [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonBusy];
     }
     
-//    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-//        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-//    }
-    
     self.callSession = aSession;
     if(self.callSession){
         [self _startCallTimer];
@@ -539,10 +535,6 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveCallAccepted:(EMCallSession *)aSession
 {
-//    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-//        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-//    }
-    
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         [self _stopCallTimer];
         [self.callController stateToAnswered];
