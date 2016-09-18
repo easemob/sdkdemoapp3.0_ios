@@ -117,8 +117,12 @@
         _callPushSwitch = [[UISwitch alloc] init];
         [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
         
-        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
-        [_callPushSwitch setOn:options.isSendPushIfOffline animated:NO];
+        BOOL isPush = NO;
+        id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"isSendPushIfOffline"];
+        if (object) {
+            isPush = [object boolValue];
+        }
+        [_callPushSwitch setOn:isPush animated:NO];
     }
     
     return _callPushSwitch;
@@ -345,6 +349,7 @@
 {
     EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
     options.isSendPushIfOffline = control.on;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:options.isSendPushIfOffline] forKey:@"isSendPushIfOffline"];
 }
 
 - (void)refreshConfig

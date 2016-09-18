@@ -95,6 +95,12 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+    BOOL isPush = NO;
+    id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"isSendPushIfOffline"];
+    if (object) {
+        isPush = [object boolValue];
+    }
+    options.isSendPushIfOffline = isPush;
     options.videoKbps = 600;
     options.videoResolution = EMCallVideoResolution640_480;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
