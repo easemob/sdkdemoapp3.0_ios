@@ -117,8 +117,12 @@
         _callPushSwitch = [[UISwitch alloc] init];
         [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
         
-        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
-        [_callPushSwitch setOn:options.isSendPushIfOffline animated:NO];
+        BOOL isPush = NO;
+        id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"isSendPushIfOffline"];
+        if (object) {
+            isPush = [object boolValue];
+        }
+        [_callPushSwitch setOn:isPush animated:NO];
     }
     
     return _callPushSwitch;
@@ -279,6 +283,8 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
+                    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+                    options.videoKbps = [nameTextField.text intValue];
                     [CallViewController saveBitrate:nameTextField.text];
                     flag = NO;
                 }
@@ -345,6 +351,7 @@
 {
     EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
     options.isSendPushIfOffline = control.on;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:options.isSendPushIfOffline] forKey:@"isSendPushIfOffline"];
 }
 
 - (void)refreshConfig

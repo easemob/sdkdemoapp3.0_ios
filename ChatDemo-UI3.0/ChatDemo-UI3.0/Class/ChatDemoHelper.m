@@ -26,9 +26,6 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
-#import "ConferenceViewController.h"
-
-//#import "EMAVPluginBeauty.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -95,15 +92,23 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
-    options.videoKbps = 600;
-    options.videoResolution = EMCallVideoResolution640_480;
+    BOOL isPush = NO;
+    id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"isSendPushIfOffline"];
+    if (object) {
+        isPush = [object boolValue];
+    }
+    options.isSendPushIfOffline = isPush;
+    
+    int kbps = 600;
+    id kbpsObject = [[NSUserDefaults standardUserDefaults] objectForKey:kLocalCallBitrate];
+    if (kbpsObject) {
+        kbps = [kbpsObject intValue];
+    }
+    options.videoKbps = kbps;
+    options.videoResolution = EMCallVideoResolution352_288;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
     
-//    [EMAVPluginBeauty initGlobal];
-//    [EMAVPluginBeauty setBeautyIntensity:1.0];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeConference:) name:KNOTIFICATION_CONFERENCE object:nil];
 #endif
 }
 
@@ -290,16 +295,6 @@ static ChatDemoHelper *helper = nil;
         
         if (self.mainVC) {
             [_mainVC setupUnreadMessageCount];
-        }
-    }
-}
-
-- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
-{
-    for (EMMessage *message in aCmdMessages) {
-        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
-        if ([cmdBody.action isEqualToString:@"inviteToJoinConference"]) {
-            NSString *callId = [message.ext objectForKey:@"callId"];
         }
     }
 }
@@ -523,10 +518,6 @@ static ChatDemoHelper *helper = nil;
         [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonBusy];
     }
     
-//    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-//        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-//    }
-    
     self.callSession = aSession;
     if(self.callSession){
         [self _startCallTimer];
@@ -550,10 +541,6 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveCallAccepted:(EMCallSession *)aSession
 {
-//    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-//        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonFailed];
-//    }
-    
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         [self _stopCallTimer];
         [self.callController stateToAnswered];
@@ -711,12 +698,6 @@ static ChatDemoHelper *helper = nil;
             }
         });
     }
-}
-
-- (void)makeConference:(NSNotification *)notification
-{
-    ConferenceViewController *conference = [[ConferenceViewController alloc] init];
-    [self.mainVC presentViewController:conference animated:NO completion:nil];
 }
 
 #endif
