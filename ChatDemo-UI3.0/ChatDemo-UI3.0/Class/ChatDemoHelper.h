@@ -64,7 +64,7 @@
 
 - (void)hangupCallWithReason:(EMCallEndReason)aReason;
 
-- (void)answerCall;
+- (void)answerCall:(NSString *)aCallId;
 
 #endif
 
