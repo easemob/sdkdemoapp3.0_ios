@@ -18,7 +18,6 @@
 
 @interface CallViewController ()
 {
-    __weak EMCallSession *_callSession;
     BOOL _isCaller;
     NSString *_status;
     int _timeLength;
@@ -39,6 +38,7 @@
     UILabel *_networkLabel;
 }
 
+@property (weak, nonatomic) EMCallSession *callSession;
 @property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 @end
@@ -268,12 +268,20 @@
 - (void)_setupRemoteView
 {
     //1.对方窗口
-    if (_callSession.type == EMCallTypeVideo)
-    {
+    if (_callSession.type == EMCallTypeVideo && _callSession.remoteView == nil) {
+        NSLog(@"\n########################_setupRemoteView");
         _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _callSession.remoteView.hidden = YES;
+        _callSession.remoteView.backgroundColor = [UIColor clearColor];
         _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
         [_bgImageView addSubview:_callSession.remoteView];
         [_bgImageView sendSubviewToBack:_callSession.remoteView];
+        
+        __weak CallViewController *weakSelf = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.callSession.remoteView.hidden = NO;
+        });
     }
 }
 
@@ -481,9 +489,9 @@
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [audioSession setActive:YES error:nil];
     }
-    [self _setupRemoteView];
+//    [self _setupRemoteView];
     
-    [[ChatDemoHelper shareHelper] answerCall];
+    [[ChatDemoHelper shareHelper] answerCall:_callSession.callId];
 #endif
 }
 

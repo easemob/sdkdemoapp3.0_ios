@@ -522,7 +522,7 @@ static ChatDemoHelper *helper = nil;
     if(self.callSession){
         [self _startCallTimer];
         
-        self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.finished", "Establish call finished")];
+        self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
         self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
         [_mainVC presentViewController:self.callController animated:NO completion:nil];
     }
@@ -680,9 +680,9 @@ static ChatDemoHelper *helper = nil;
     self.callController = nil;
 }
 
-- (void)answerCall
+- (void)answerCall:(NSString *)aCallId
 {
-    if (_callSession) {
+    if (_callSession && [_callSession.callId isEqualToString:aCallId]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = [[EMClient sharedClient].callManager asyncAnswerCallWithId:self.callSession.callId];
             if (error) {
@@ -697,6 +697,9 @@ static ChatDemoHelper *helper = nil;
                 });
             }
         });
+    }
+    else {
+        NSLog(@"\n################# no call session");
     }
 }
 
