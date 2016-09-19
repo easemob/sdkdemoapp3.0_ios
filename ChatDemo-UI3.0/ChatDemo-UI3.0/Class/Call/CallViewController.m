@@ -266,7 +266,7 @@
 - (void)_initializeVideoView
 {
     //1.对方窗口
-    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - self.view.frame.size.height * 288 / 352)/2, 0, self.view.frame.size.height * 288 / 352, self.view.frame.size.height)];
     [self.view addSubview:_callSession.remoteVideoView];
     
     //2.自己窗口
