@@ -57,8 +57,6 @@
 
 + (BOOL)canVideo;
 
-+ (void)saveBitrate:(NSString*)value;
-
 - (void)stateToAnswered;
 
 - (void)close;
