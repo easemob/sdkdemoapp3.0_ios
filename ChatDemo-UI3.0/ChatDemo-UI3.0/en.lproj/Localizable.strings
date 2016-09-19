@@ -315,6 +315,7 @@
 "setting.close" = "Off";
 "setting.sureNotDisturb" = "this setting will cause all day in the don't disturb mode, will no longer receive push messages. Whether or not to continue?";
 "setting.callPush" = "If the offline send call push";
+"setting.callResolution" = "Video call resolution";
 
 "setting.uploadLog" = "upload run log";
 "setting.sdkVersion" = "SDK version";

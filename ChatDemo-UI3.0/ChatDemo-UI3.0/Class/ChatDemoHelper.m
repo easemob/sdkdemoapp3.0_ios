@@ -88,24 +88,18 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     
 #if DEMO_CALL == 1
-//    self.callLock = [[NSObject alloc] init];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
-    BOOL isPush = NO;
-    id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"isSendPushIfOffline"];
-    if (object) {
-        isPush = [object boolValue];
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
+    EMCallManagerOptions *options = nil;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
+        options = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
+    } else {
+        options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        options.isSendPushIfOffline = NO;
+        options.videoKbps = 600;
     }
-    options.isSendPushIfOffline = isPush;
     
-    int kbps = 600;
-    id kbpsObject = [[NSUserDefaults standardUserDefaults] objectForKey:kLocalCallBitrate];
-    if (kbpsObject) {
-        kbps = [kbpsObject intValue];
-    }
-    options.videoKbps = kbps;
-    options.videoResolution = EMCallVideoResolution352_288;
     [[EMClient sharedClient].callManager setCallManagerOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
@@ -644,6 +638,13 @@ static ChatDemoHelper *helper = nil;
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+}
+
++ (void)updateCallOptions
+{
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
+    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+    [NSKeyedArchiver archiveRootObject:options toFile:file];
 }
 
 - (void)makeCallWithUsername:(NSString *)aUsername

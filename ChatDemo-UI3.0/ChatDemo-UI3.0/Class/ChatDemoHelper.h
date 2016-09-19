@@ -59,6 +59,8 @@
 
 #if DEMO_CALL == 1
 
++ (void)updateCallOptions;
+
 - (void)makeCallWithUsername:(NSString *)aUsername
                         type:(EMCallType)aType;
 

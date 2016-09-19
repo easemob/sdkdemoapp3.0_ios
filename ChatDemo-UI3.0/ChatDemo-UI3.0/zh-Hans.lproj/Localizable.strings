@@ -314,6 +314,7 @@
 "setting.close" = "关闭";
 "setting.sureNotDisturb" = "此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?";
 "setting.callPush" = "实时通话是否发送离线推送";
+"setting.callResolution" = "实时视频通话分辨率";
 
 "setting.uploadLog" = "上传运行日志";
 "setting.sdkVersion" = "ONE SDK 版本";

@@ -24,6 +24,8 @@
 
 #if DEMO_CALL == 1
 #import "CallViewController.h"
+#import "ChatDemoHelper.h"
+#import "CallResolutionViewController.h"
 #endif
 
 @interface SettingsViewController ()
@@ -117,12 +119,8 @@
         _callPushSwitch = [[UISwitch alloc] init];
         [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
         
-        BOOL isPush = NO;
-        id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"isSendPushIfOffline"];
-        if (object) {
-            isPush = [object boolValue];
-        }
-        [_callPushSwitch setOn:isPush animated:NO];
+        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        [_callPushSwitch setOn:options.isSendPushIfOffline animated:NO];
     }
     
     return _callPushSwitch;
@@ -147,7 +145,7 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 11;
+    return 12;
 #endif
 
     return 9;
@@ -219,6 +217,9 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.callPushSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.callPushSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.callPushSwitch.frame.size.height) / 2, self.callPushSwitch.frame.size.width, self.callPushSwitch.frame.size.height);
             [cell.contentView addSubview:self.callPushSwitch];
+        } else if (indexPath.row == 11) {
+            cell.textLabel.text = NSLocalizedString(@"setting.callResolution", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
     
@@ -267,7 +268,15 @@
     } else if (indexPath.row == 9) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        
+        UITextField *textField = [alert textFieldAtIndex:0];
+        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        textField.text = [NSString stringWithFormat:@"%ld", options.videoKbps];
+        
         [alert show];
+    } else if (indexPath.row == 11) {
+        CallResolutionViewController *resoulutionController = [[CallResolutionViewController alloc] init];
+        [self.navigationController pushViewController:resoulutionController animated:YES];
     }
 }
 
@@ -285,7 +294,7 @@
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
                     EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
                     options.videoKbps = [nameTextField.text intValue];
-                    [CallViewController saveBitrate:nameTextField.text];
+                    [ChatDemoHelper updateCallOptions];
                     flag = NO;
                 }
             }
@@ -351,7 +360,7 @@
 {
     EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
     options.isSendPushIfOffline = control.on;
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:options.isSendPushIfOffline] forKey:@"isSendPushIfOffline"];
+    [ChatDemoHelper updateCallOptions];
 }
 
 - (void)refreshConfig
