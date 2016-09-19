@@ -536,17 +536,6 @@
     return YES;
 }
 
-+ (void)saveBitrate:(NSString*)value
-{
-    NSScanner* scan = [NSScanner scannerWithString:value];
-    int val;
-    if ([scan scanInt:&val] && [scan isAtEnd]) {
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        [ud setObject:value forKey:kLocalCallBitrate];
-        [ud synchronize];
-    }
-}
-
 - (void)startTimeTimer
 {
     _timeLength = 0;

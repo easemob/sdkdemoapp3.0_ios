@@ -13,8 +13,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
-#define kLocalCallBitrate @"EaseMobLocalCallBitrate"
-
 @class EMCallSession;
 @interface CallViewController : UIViewController
 {
