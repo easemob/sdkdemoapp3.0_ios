@@ -43,7 +43,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #if DEMO_CALL == 1
-    return 5;
+    return 4;
 #endif
     
     return 0;

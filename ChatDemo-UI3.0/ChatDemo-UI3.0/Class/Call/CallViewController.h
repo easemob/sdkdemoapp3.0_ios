@@ -38,7 +38,7 @@
     UIButton *_videoButton;
     UIButton *_voiceButton;
 //    UIButton *_recordButton;
-//    UIButton *_switchCameraButton;
+    UIButton *_switchCameraButton;
 }
 
 @property (strong, nonatomic) UILabel *statusLabel;
@@ -56,8 +56,6 @@
                          status:(NSString *)statusString;
 
 + (BOOL)canVideo;
-
-+ (void)saveBitrate:(NSString*)value;
 
 - (void)stateToAnswered;
 
