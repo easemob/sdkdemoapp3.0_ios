@@ -268,19 +268,19 @@
 - (void)_setupRemoteView
 {
     //1.对方窗口
-    if (_callSession.type == EMCallTypeVideo && _callSession.remoteView == nil) {
+    if (_callSession.type == EMCallTypeVideo && _callSession.remoteVideoView == nil) {
         NSLog(@"\n########################_setupRemoteView");
-        _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        _callSession.remoteView.hidden = YES;
-        _callSession.remoteView.backgroundColor = [UIColor clearColor];
-        _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-        [_bgImageView addSubview:_callSession.remoteView];
-        [_bgImageView sendSubviewToBack:_callSession.remoteView];
+        _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _callSession.remoteVideoView.hidden = YES;
+        _callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
+        _callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
+        [_bgImageView addSubview:_callSession.remoteVideoView];
+        [_bgImageView sendSubviewToBack:_callSession.remoteVideoView];
         
         __weak CallViewController *weakSelf = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            weakSelf.callSession.remoteView.hidden = NO;
+            weakSelf.callSession.remoteVideoView.hidden = NO;
         });
     }
 }
@@ -290,8 +290,8 @@
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
-    [self.view addSubview:_callSession.localView];
+    _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    [self.view addSubview:_callSession.localVideoView];
     
     //3、属性显示层
     _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
@@ -345,12 +345,12 @@
         }
         self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         
-        _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getRemoteVideoWidth], [_callSession getRemoteVideoHeight]];
-        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getLocalVideoTimeDelay]];
-        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getRemoteVideoFrameRate]];
-        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getLocalVideoLostRateInPercent]];
-        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), [_callSession getLocalVideoBitrate]];
-        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), [_callSession getRemoteVideoBitrate]];
+        _sizeLabel.text = [NSString stringWithFormat:@"%@%.0f/%.0f", NSLocalizedString(@"call.videoSize", @"Width/Height: "), _callSession.remoteVideoResolution.width, _callSession.remoteVideoResolution.height];
+        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), _callSession.videoLatency];
+        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), _callSession.remoteVideoFrameRate];
+        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), _callSession.remoteVideoLostRateInPercent];
+        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), _callSession.localVideoBitrate];
+        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), _callSession.remoteVideoBitrate];
     }
 }
 
@@ -405,7 +405,7 @@
 
 - (void)switchCameraAction
 {
-    [_callSession switchCamera];
+    [_callSession switchCameraPosition:_switchCameraButton.selected];
     _switchCameraButton.selected = !_switchCameraButton.selected;
 }
 
@@ -604,7 +604,7 @@
 
 - (void)close
 {
-    _callSession.remoteView.hidden = YES;
+    _callSession.remoteVideoView.hidden = YES;
     _callSession = nil;
     _propertyView = nil;
     

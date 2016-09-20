@@ -91,16 +91,15 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
-    EMCallManagerOptions *options = nil;
+    EMCallOptions *options = nil;
     if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
         options = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
     } else {
-        options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        options = [[EMClient sharedClient].callManager getCallOptions];
         options.isSendPushIfOffline = NO;
-        options.videoKbps = 600;
     }
     
-    [[EMClient sharedClient].callManager setCallManagerOptions:options];
+    [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
 #endif
@@ -523,7 +522,7 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallIncoming:(EMCallSession *)aSession
 {
     if(self.callSession && self.callSession.status != EMCallSessionStatusDisconnected){
-        [[EMClient sharedClient].callManager asyncEndCallWithId:aSession.callId reason:EMCallEndReasonBusy];
+        [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
     }
     
     self.callSession = aSession;
@@ -658,7 +657,7 @@ static ChatDemoHelper *helper = nil;
 + (void)updateCallOptions
 {
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     [NSKeyedArchiver archiveRootObject:options toFile:file];
 }
 
@@ -669,17 +668,33 @@ static ChatDemoHelper *helper = nil;
         return;
     }
     
-    [[EMClient sharedClient].callManager asyncMakeCallWithType:aType remoteName:aUsername success:^(EMCallSession *aCall) {
-        self.callSession = aCall;
-        [self _startCallTimer];
-        
-        self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
-        [self.mainVC presentViewController:self.callController animated:NO completion:nil];
-        
-    } failure:^(EMError *aError) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-        [alertView show];
-    }];
+    if (aType == EMCallTypeVoice) {
+        [[EMClient sharedClient].callManager startVoiceCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
+            if (aError) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
+            } else {
+                self.callSession = aCallSession;
+                [self _startCallTimer];
+                
+                self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
+                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            }
+        }];
+    } else {
+        [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
+            if (aError) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
+            } else {
+                self.callSession = aCallSession;
+                [self _startCallTimer];
+                
+                self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
+                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            }
+        }];
+    }
 }
 
 - (void)hangupCallWithReason:(EMCallEndReason)aReason
@@ -688,7 +703,7 @@ static ChatDemoHelper *helper = nil;
     
     EMCallSession *tmpSession = self.callSession;
     if (tmpSession) {
-        [[EMClient sharedClient].callManager asyncEndCallWithId:tmpSession.callId reason:aReason];
+        [[EMClient sharedClient].callManager endCall:tmpSession.callId reason:aReason];
     }
     
     self.callSession = nil;
@@ -700,7 +715,7 @@ static ChatDemoHelper *helper = nil;
 {
     if (_callSession && [_callSession.callId isEqualToString:aCallId]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = [[EMClient sharedClient].callManager asyncAnswerCallWithId:self.callSession.callId];
+            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.callId];
             if (error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.code == EMErrorNetworkUnavailable) {
