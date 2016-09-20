@@ -1,0 +1,23 @@
+//
+//  ChatDemo-UI3.0.pch
+//  ChatDemo-UI3.0
+//
+//  Created by EaseMob on 16/9/19.
+//  Copyright © 2016年 easemob. All rights reserved.
+//
+
+#ifndef ChatDemo_UI3_0_pch
+#define ChatDemo_UI3_0_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* ChatDemo_UI3_0_pch */
+
+#ifdef __OBJC__
+
+#import <HyphenateFullSDK/EMSDKFull.h>
+
+#import "EMChatDemoUIDefine.h"
+
+#endif

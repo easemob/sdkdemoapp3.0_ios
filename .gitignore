@@ -1,0 +1,7 @@
+.DS_Store
+*.xcscheme
+UserInterfaceState.xcuserstate
+xcschememanagement.plist
+ChatDemo-UI3.0/ChatDemo-UI3.0.xcworkspace
+ChatDemo-UI3.0/Podfile.lock
+ChatDemo-UI3.0/Pods
