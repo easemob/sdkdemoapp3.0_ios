@@ -57,6 +57,8 @@
 
 + (BOOL)canVideo;
 
+- (void)stateToConnected;
+
 - (void)stateToAnswered;
 
 - (void)close;

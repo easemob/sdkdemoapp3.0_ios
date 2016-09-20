@@ -539,7 +539,8 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallConnected:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
-        self.callController.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
+        NSLog(@"\nxxxxxxxxxxxxxxxxxxx didReceiveCallConnected");
+        [self.callController stateToConnected];
         
 //        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 //        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];

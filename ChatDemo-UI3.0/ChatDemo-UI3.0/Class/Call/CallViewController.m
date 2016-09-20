@@ -225,7 +225,7 @@
     [_answerButton setTitle:NSLocalizedString(@"call.answer", @"Answer") forState:UIControlStateNormal];
     [_answerButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
     [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
-
+//    _answerButton.enabled = NO;
     [_actionView addSubview:_answerButton];
     
     _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200) / 2, _rejectButton.frame.origin.y, 200, 40)];
@@ -489,8 +489,8 @@
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [audioSession setActive:YES error:nil];
     }
-//    [self _setupRemoteView];
     
+//    self.answerButton.enabled = NO;
     [[ChatDemoHelper shareHelper] answerCall:_callSession.callId];
 #endif
 }
@@ -574,6 +574,12 @@
         default:
             break;
     }
+}
+
+- (void)stateToConnected
+{
+    self.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
+//    self.answerButton.enabled = YES;
 }
 
 - (void)stateToAnswered
