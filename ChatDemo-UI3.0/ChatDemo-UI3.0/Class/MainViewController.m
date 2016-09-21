@@ -126,6 +126,7 @@ static NSString *kGroupName = @"GroupName";
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.conversation", @"Conversations")
                                                            image:[UIImage imageNamed:@"tabbar_chats"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]];
+    _chatListVC.tabBarItem.tag = 0;
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     
@@ -133,6 +134,7 @@ static NSString *kGroupName = @"GroupName";
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.addressbook", @"AddressBook")
                                                            image:[UIImage imageNamed:@"tabbar_contacts"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]];
+    _contactsVC.tabBarItem.tag = 1;
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
@@ -140,6 +142,7 @@ static NSString *kGroupName = @"GroupName";
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];
+    _settingsVC.tabBarItem.tag = 2;
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
@@ -578,7 +581,7 @@ static NSString *kGroupName = @"GroupName";
     else if (_chatListVC)
     {
         [self.navigationController popToViewController:self animated:NO];
-    [self setSelectedViewController:_chatListVC];
+        [self setSelectedViewController:_chatListVC];
     }
 }
 
