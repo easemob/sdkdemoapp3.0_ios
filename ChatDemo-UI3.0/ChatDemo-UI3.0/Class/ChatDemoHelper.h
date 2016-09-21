@@ -68,6 +68,8 @@
 
 - (void)answerCall:(NSString *)aCallId;
 
+- (void)dismissCallController:(CallViewController *)controller;
+
 #endif
 
 @end

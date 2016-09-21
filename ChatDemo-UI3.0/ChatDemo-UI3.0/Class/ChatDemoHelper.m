@@ -563,8 +563,9 @@ static ChatDemoHelper *helper = nil;
         [self _stopCallTimer];
         
         self.callSession = nil;
-        [self.callController close];
+        CallViewController *tmpController = self.callController;
         self.callController = nil;
+        [self dismissCallController:tmpController];
         
         if (aReason != EMCallEndReasonHangup) {
             NSString *reasonStr = @"";
@@ -702,13 +703,14 @@ static ChatDemoHelper *helper = nil;
     [self _stopCallTimer];
     
     EMCallSession *tmpSession = self.callSession;
+    self.callSession = nil;
     if (tmpSession) {
         [[EMClient sharedClient].callManager endCall:tmpSession.callId reason:aReason];
     }
     
-    self.callSession = nil;
-    [self.callController close];
+    CallViewController *tmpController = self.callController;
     self.callController = nil;
+    [self dismissCallController:tmpController];
 }
 
 - (void)answerCall:(NSString *)aCallId
@@ -732,6 +734,13 @@ static ChatDemoHelper *helper = nil;
     else {
         NSLog(@"\n################# no call session");
     }
+}
+
+- (void)dismissCallController:(CallViewController *)controller
+{
+    [controller dismissViewControllerAnimated:NO completion:nil];
+    [controller clear];
+    controller = nil;
 }
 
 #endif

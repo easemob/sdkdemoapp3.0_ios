@@ -61,9 +61,8 @@
 
 - (void)stateToAnswered;
 
-- (void)close;
-
 - (void)setNetwork:(EMCallNetworkStatus)status;
 
+- (void)clear;
 
 @end

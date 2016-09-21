@@ -22,7 +22,7 @@
     NSString *_status;
     int _timeLength;
     
-    NSString * _audioCategory;
+    NSString * _audioCategory;  //记录接听之前的Category,在挂断以后还原回去
     
     UIImageView *_bgImageView;
     //视频属性显示区域
@@ -483,12 +483,9 @@
 {
 #if DEMO_CALL == 1
     [self _stopRing];
+
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     _audioCategory = audioSession.category;
-    if(![_audioCategory isEqualToString:AVAudioSessionCategoryPlayAndRecord]){
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [audioSession setActive:YES error:nil];
-    }
     
 //    self.answerButton.enabled = NO;
     [[ChatDemoHelper shareHelper] answerCall:_callSession.callId];
@@ -500,9 +497,10 @@
 #if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setCategory:_audioCategory error:nil];
-    [audioSession setActive:YES error:nil];
+    
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    [audioSession setCategory:_audioCategory error:nil];
+//    [audioSession setActive:YES error:nil];
     
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
 #endif
@@ -513,9 +511,10 @@
 #if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setCategory:_audioCategory error:nil];
-    [audioSession setActive:YES error:nil];
+    
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    [audioSession setCategory:_audioCategory error:nil];
+//    [audioSession setActive:YES error:nil];
     
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonDecline];
 #endif
@@ -602,7 +601,7 @@
     [self _setupRemoteView];
 }
 
-- (void)close
+- (void)clear
 {
     _callSession.remoteVideoView.hidden = YES;
     _callSession = nil;
@@ -617,13 +616,6 @@
         [_propertyTimer invalidate];
         _propertyTimer = nil;
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:nil];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[AVAudioSession sharedInstance] setActive:NO error:nil];
-        [self dismissViewControllerAnimated:NO completion:nil];
-    });
 }
 
 @end
