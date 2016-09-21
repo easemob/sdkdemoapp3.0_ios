@@ -22,8 +22,6 @@
     NSString *_status;
     int _timeLength;
     
-    NSString * _audioCategory;  //记录接听之前的Category,在挂断以后还原回去
-    
     UIImageView *_bgImageView;
     //视频属性显示区域
     UIView *_propertyView;
@@ -483,9 +481,6 @@
 {
 #if DEMO_CALL == 1
     [self _stopRing];
-
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    _audioCategory = audioSession.category;
     
 //    self.answerButton.enabled = NO;
     [[ChatDemoHelper shareHelper] answerCall:_callSession.callId];
@@ -498,10 +493,6 @@
     [_timeTimer invalidate];
     [self _stopRing];
     
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    [audioSession setCategory:_audioCategory error:nil];
-//    [audioSession setActive:YES error:nil];
-    
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
 #endif
 }
@@ -511,10 +502,6 @@
 #if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
-    
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    [audioSession setCategory:_audioCategory error:nil];
-//    [audioSession setActive:YES error:nil];
     
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonDecline];
 #endif
