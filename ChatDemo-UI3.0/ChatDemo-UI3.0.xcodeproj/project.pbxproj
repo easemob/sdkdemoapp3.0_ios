@@ -21,6 +21,7 @@
 		D28345461D90082700FD48A9 /* EMSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28345441D90082700FD48A9 /* EMSettingsViewController.xib */; };
 		D283454A1D900B2700FD48A9 /* EMChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345481D900B2700FD48A9 /* EMChatsViewController.m */; };
 		D283454B1D900B2700FD48A9 /* EMChatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28345491D900B2700FD48A9 /* EMChatsViewController.xib */; };
+		D2AA4DD01D9227A400967E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DCE1D9227A400967E0E /* Main.storyboard */; };
 		D2BF7CB81D90EE160090AA66 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BF7CB61D90EE160090AA66 /* EMLoginViewController.m */; };
 		D2BF7CB91D90EE160090AA66 /* EMLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7CB71D90EE160090AA66 /* EMLoginViewController.xib */; };
 		D2BF7CC31D9111EC0090AA66 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BF7CC21D9111EC0090AA66 /* UIViewController+DismissKeyboard.m */; };
@@ -206,9 +207,6 @@
 		D2BF7ED41D914DB30090AA66 /* Icon_Search.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DC31D914DB20090AA66 /* Icon_Search.png */; };
 		D2BF7ED51D914DB30090AA66 /* Icon_Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DC41D914DB20090AA66 /* Icon_Search@2x.png */; };
 		D2BF7ED61D914DB30090AA66 /* Icon_Search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DC51D914DB20090AA66 /* Icon_Search@3x.png */; };
-		D2BF7ED71D914DB30090AA66 /* logo11.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DC71D914DB20090AA66 /* logo11.png */; };
-		D2BF7ED81D914DB30090AA66 /* logo11@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DC81D914DB20090AA66 /* logo11@2x.png */; };
-		D2BF7ED91D914DB30090AA66 /* logo11@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DC91D914DB20090AA66 /* logo11@3x.png */; };
 		D2BF7EDA1D914DB30090AA66 /* Logo_green.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DCB1D914DB20090AA66 /* Logo_green.png */; };
 		D2BF7EDB1D914DB30090AA66 /* Logo_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DCC1D914DB20090AA66 /* Logo_green@2x.png */; };
 		D2BF7EDC1D914DB30090AA66 /* Logo_green@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7DCD1D914DB20090AA66 /* Logo_green@3x.png */; };
@@ -322,6 +320,7 @@
 		D28345481D900B2700FD48A9 /* EMChatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatsViewController.m; sourceTree = "<group>"; };
 		D28345491D900B2700FD48A9 /* EMChatsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMChatsViewController.xib; sourceTree = "<group>"; };
 		D28345721D900E1600FD48A9 /* ChatDemo-UI3.0.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0.pch"; sourceTree = "<group>"; };
+		D2AA4DCF1D9227A400967E0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2BF7CB41D90EA530090AA66 /* EMChatDemoUIDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatDemoUIDefine.h; sourceTree = "<group>"; };
 		D2BF7CB51D90EE160090AA66 /* EMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		D2BF7CB61D90EE160090AA66 /* EMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
@@ -511,9 +510,6 @@
 		D2BF7DC31D914DB20090AA66 /* Icon_Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Search.png; sourceTree = "<group>"; };
 		D2BF7DC41D914DB20090AA66 /* Icon_Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Search@2x.png"; sourceTree = "<group>"; };
 		D2BF7DC51D914DB20090AA66 /* Icon_Search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Search@3x.png"; sourceTree = "<group>"; };
-		D2BF7DC71D914DB20090AA66 /* logo11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo11.png; sourceTree = "<group>"; };
-		D2BF7DC81D914DB20090AA66 /* logo11@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo11@2x.png"; sourceTree = "<group>"; };
-		D2BF7DC91D914DB20090AA66 /* logo11@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo11@3x.png"; sourceTree = "<group>"; };
 		D2BF7DCB1D914DB20090AA66 /* Logo_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo_green.png; sourceTree = "<group>"; };
 		D2BF7DCC1D914DB20090AA66 /* Logo_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo_green@2x.png"; sourceTree = "<group>"; };
 		D2BF7DCD1D914DB20090AA66 /* Logo_green@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo_green@3x.png"; sourceTree = "<group>"; };
@@ -656,6 +652,7 @@
 				D28345061D8FD1D400FD48A9 /* AppDelegate.m */,
 				D283450E1D8FD1D400FD48A9 /* Assets.xcassets */,
 				D28345101D8FD1D400FD48A9 /* LaunchScreen.storyboard */,
+				D2AA4DCE1D9227A400967E0E /* Main.storyboard */,
 				D28345131D8FD1D400FD48A9 /* Info.plist */,
 				D28345021D8FD1D400FD48A9 /* Supporting Files */,
 			);
@@ -691,7 +688,6 @@
 				D2BF7D841D914DB20090AA66 /* Footer Type Bar */,
 				D2BF7DA91D914DB20090AA66 /* Header */,
 				D2BF7DB61D914DB20090AA66 /* Header Search Bar */,
-				D2BF7DC61D914DB20090AA66 /* LaunchImages */,
 				D2BF7DCA1D914DB20090AA66 /* Logo */,
 				D2BF7DCE1D914DB20090AA66 /* Nav Bar */,
 				D2BF7DF31D914DB20090AA66 /* Popup */,
@@ -981,16 +977,6 @@
 			path = "Header Search Bar";
 			sourceTree = "<group>";
 		};
-		D2BF7DC61D914DB20090AA66 /* LaunchImages */ = {
-			isa = PBXGroup;
-			children = (
-				D2BF7DC71D914DB20090AA66 /* logo11.png */,
-				D2BF7DC81D914DB20090AA66 /* logo11@2x.png */,
-				D2BF7DC91D914DB20090AA66 /* logo11@3x.png */,
-			);
-			path = LaunchImages;
-			sourceTree = "<group>";
-		};
 		D2BF7DCA1D914DB20090AA66 /* Logo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1177,7 +1163,6 @@
 				D2BF7F191D914DB30090AA66 /* logo3.png in Resources */,
 				D2BF7ECD1D914DB30090AA66 /* Icon_Back@3x.png in Resources */,
 				D2BF7E2A1D914DB30090AA66 /* Button_Join@2x.png in Resources */,
-				D2BF7ED91D914DB30090AA66 /* logo11@3x.png in Resources */,
 				D2BF7F281D914DB30090AA66 /* logo8.png in Resources */,
 				D2BF7E7C1D914DB30090AA66 /* Button_Speaker disabled@3x.png in Resources */,
 				D2BF7EBF1D914DB30090AA66 /* Icon_Call.png in Resources */,
@@ -1350,7 +1335,6 @@
 				D2BF7E921D914DB30090AA66 /* Icon_Play.png in Resources */,
 				D2BF7EFC1D914DB30090AA66 /* Settings_active@2x.png in Resources */,
 				D2BF7ECC1D914DB30090AA66 /* Icon_Back@2x.png in Resources */,
-				D2BF7ED81D914DB30090AA66 /* logo11@2x.png in Resources */,
 				D2BF7F2B1D914DB30090AA66 /* logo9.png in Resources */,
 				D2BF7EEC1D914DB30090AA66 /* Contacts_active notification.png in Resources */,
 				D283450F1D8FD1D400FD48A9 /* Assets.xcassets in Resources */,
@@ -1386,6 +1370,7 @@
 				D2BF7E871D914DB30090AA66 /* Icon_Call@2x.png in Resources */,
 				D2BF7F041D914DB30090AA66 /* Button_Call.png in Resources */,
 				D2BF7E291D914DB30090AA66 /* Button_Join.png in Resources */,
+				D2AA4DD01D9227A400967E0E /* Main.storyboard in Resources */,
 				D2BF7E3B1D914DB30090AA66 /* Swipe_Exit.png in Resources */,
 				D2BF7E981D914DB30090AA66 /* Button_Record active.png in Resources */,
 				D2BF7E6F1D914DB30090AA66 /* Button_Mute active@2x.png in Resources */,
@@ -1432,7 +1417,6 @@
 				D2BF7E701D914DB30090AA66 /* Button_Mute active@3x.png in Resources */,
 				D2BF7E641D914DB30090AA66 /* Button_Current Location@3x.png in Resources */,
 				D2BF7E961D914DB30090AA66 /* Icon_Video@2x.png in Resources */,
-				D2BF7ED71D914DB30090AA66 /* logo11.png in Resources */,
 				D2BF7E791D914DB30090AA66 /* Button_Speaker active@3x.png in Resources */,
 				D2BF7F071D914DB30090AA66 /* Button_Chat.png in Resources */,
 				D2BF7EDE1D914DB30090AA66 /* Chats@2x.png in Resources */,
@@ -1538,6 +1522,14 @@
 				D28345201D8FDC9900FD48A9 /* zh-Hans */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D2AA4DCE1D9227A400967E0E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2AA4DCF1D9227A400967E0E /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
