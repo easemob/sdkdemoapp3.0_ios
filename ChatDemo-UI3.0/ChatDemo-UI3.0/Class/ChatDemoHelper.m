@@ -26,6 +26,7 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
+#import <UserNotifications/UserNotifications.h>
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -236,10 +237,10 @@ static ChatDemoHelper *helper = nil;
         NSDictionary *dict = message.ext;
         needShowNotification = (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) ? NO : needShowNotification;
 #endif
-        
+
+        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
         if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
-            UIApplicationState state = [[UIApplication sharedApplication] applicationState];
             switch (state) {
                 case UIApplicationStateActive:
                     [self.mainVC playSoundAndVibration];
@@ -263,7 +264,7 @@ static ChatDemoHelper *helper = nil;
         if (_chatVC) {
             isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
         }
-        if (_chatVC == nil || !isChatting) {
+        if (_chatVC == nil || !isChatting || state == UIApplicationStateBackground) {
             [self _handleReceivedAtMessage:message];
             
             if (self.conversationListVC) {
@@ -484,11 +485,21 @@ static ChatDemoHelper *helper = nil;
         BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
         if (!isAppActivity) {
             //发送本地推送
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            notification.fireDate = [NSDate date]; //触发通知的时间
-            notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
-            notification.alertAction = NSLocalizedString(@"open", @"Open");
-            notification.timeZone = [NSTimeZone defaultTimeZone];
+            if (NSClassFromString(@"UNUserNotificationCenter")) {
+                UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                content.sound = [UNNotificationSound defaultSound];
+                content.body =[NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+                UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[[NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate] * 1000] stringValue] content:content trigger:trigger];
+                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+            }
+            else {
+                UILocalNotification *notification = [[UILocalNotification alloc] init];
+                notification.fireDate = [NSDate date]; //触发通知的时间
+                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+                notification.alertAction = NSLocalizedString(@"open", @"Open");
+                notification.timeZone = [NSTimeZone defaultTimeZone];
+            }
         }
 #endif
     }
