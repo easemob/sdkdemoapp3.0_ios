@@ -23,7 +23,7 @@
 
 #import "RedpacketOpenConst.h"
 #import "RedPacketChatViewController.h"
-
+#import <UserNotifications/UserNotifications.h>
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -156,31 +156,28 @@ static NSString *kGroupName = @"GroupName";
     _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
     [_chatListVC networkChanged:_connectionState];
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.conversation", @"Conversations")
-                                                           image:nil
-                                                             tag:0];
+                                                           image:[UIImage imageNamed:@"tabbar_chats"]
+                                                   selectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]];
+    _chatListVC.tabBarItem.tag = 0;
     _chatListVC.tabBarItem.accessibilityIdentifier = @"conversation";
-    [_chatListVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     
     _contactsVC = [[ContactListViewController alloc] initWithNibName:nil bundle:nil];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.addressbook", @"AddressBook")
-                                                           image:nil
-                                                             tag:1];
+                                                           image:[UIImage imageNamed:@"tabbar_contacts"]
+                                                   selectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]];
+    _contactsVC.tabBarItem.tag = 1;
     _contactsVC.tabBarItem.accessibilityIdentifier = @"contact";
-    [_contactsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
     _settingsVC = [[SettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
-                                                           image:nil
-                                                             tag:2];
+                                                           image:[UIImage imageNamed:@"tabbar_setting"]
+                                                   selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];
+    _settingsVC.tabBarItem.tag = 2;
     _settingsVC.tabBarItem.accessibilityIdentifier = @"setting";
-    [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
@@ -192,15 +189,16 @@ static NSString *kGroupName = @"GroupName";
 -(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {
     [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                        [UIFont systemFontOfSize:14], UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor,
+                                        [UIFont systemFontOfSize:14], NSFontAttributeName,
+                                        [UIColor whiteColor],NSForegroundColorAttributeName,
                                         nil] forState:UIControlStateNormal];
 }
 
 -(void)selectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {
     [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                        [UIFont systemFontOfSize:14],
-                                        UITextAttributeFont,RGBACOLOR(0x00, 0xac, 0xff, 1),UITextAttributeTextColor,
+                                        [UIFont systemFontOfSize:14],NSFontAttributeName,
+                                        RGBACOLOR(0x00, 0xac, 0xff, 1),NSForegroundColorAttributeName,
                                         nil] forState:UIControlStateSelected];
 }
 
@@ -410,10 +408,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)showNotificationWithMessage:(EMMessage *)message
 {
     EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
-    //发送本地推送
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.fireDate = [NSDate date]; //触发通知的时间
-    
+    NSString *alertBody = nil;
     if (options.displayStyle == ePushNotificationDisplayStyle_messageSummary) {
         id<IEMMessageBody> messageBody = [message.messageBodies firstObject];
         NSString *messageStr = nil;
@@ -445,7 +440,7 @@ static NSString *kGroupName = @"GroupName";
             default:
                 break;
         }
-        
+
         NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
         if (message.messageType == eMessageTypeGroupChat) {
             NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
@@ -467,35 +462,50 @@ static NSString *kGroupName = @"GroupName";
                 title = [NSString stringWithFormat:@"%@(%@)", message.groupSenderName, chatroomName];
             }
         }
-        
-        notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+
+        alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
     }
     else{
-        notification.alertBody = NSLocalizedString(@"receiveMessage", @"you have a new message");
+        alertBody = NSLocalizedString(@"receiveMessage", @"you have a new message");
     }
-    
-#warning 去掉注释会显示[本地]开头, 方便在开发中区分是否为本地推送
-    //notification.alertBody = [[NSString alloc] initWithFormat:@"[本地]%@", notification.alertBody];
-    
-    notification.alertAction = NSLocalizedString(@"open", @"Open");
-    notification.timeZone = [NSTimeZone defaultTimeZone];
+
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
-    if (timeInterval < kDefaultPlaySoundInterval) {
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
-    } else {
-        notification.soundName = UILocalNotificationDefaultSoundName;
+    BOOL playSound = NO;
+    if (!self.lastPlaySoundDate || timeInterval >= kDefaultPlaySoundInterval) {
         self.lastPlaySoundDate = [NSDate date];
+        playSound = YES;
     }
-    
+
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     [userInfo setObject:[NSNumber numberWithInt:message.messageType] forKey:kMessageType];
     [userInfo setObject:message.conversationChatter forKey:kConversationChatter];
-    notification.userInfo = userInfo;
-    
-    //发送通知
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-//    UIApplication *application = [UIApplication sharedApplication];
-//    application.applicationIconBadgeNumber += 1;
+
+    //发送本地推送
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+        if (playSound) {
+            content.sound = [UNNotificationSound defaultSound];
+        }
+        content.body = alertBody;
+        content.userInfo = userInfo;
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:message.messageId content:content trigger:trigger];
+        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+    }
+    else {
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.fireDate = [NSDate date]; //触发通知的时间
+        notification.alertBody = alertBody;
+        notification.alertAction = NSLocalizedString(@"open", @"Open");
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        if (playSound) {
+            notification.soundName = UILocalNotificationDefaultSoundName;
+        }
+        notification.userInfo = userInfo;
+
+        //发送通知
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
 }
 
 #pragma mark - IChatManagerDelegate 登陆回调（主要用于监听自动登录是否成功）
@@ -527,11 +537,21 @@ static NSString *kGroupName = @"GroupName";
     BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
     if (!isAppActivity) {
         //发送本地推送
-        UILocalNotification *notification = [[UILocalNotification alloc] init];
-        notification.fireDate = [NSDate date]; //触发通知的时间
-        notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), username];
-        notification.alertAction = NSLocalizedString(@"open", @"Open");
-        notification.timeZone = [NSTimeZone defaultTimeZone];
+        if (NSClassFromString(@"UNUserNotificationCenter")) {
+            UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+            UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+            content.sound = [UNNotificationSound defaultSound];
+            content.body =[NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), username];
+            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[[NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate] * 1000] stringValue] content:content trigger:trigger];
+            [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+        }
+        else {
+            UILocalNotification *notification = [[UILocalNotification alloc] init];
+            notification.fireDate = [NSDate date]; //触发通知的时间
+            notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), username];
+            notification.alertAction = NSLocalizedString(@"open", @"Open");
+            notification.timeZone = [NSTimeZone defaultTimeZone];
+        }
     }
 #endif
     
@@ -771,7 +791,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)jumpToChatList
 {
     if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
-        ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+//        ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
 //        [chatController hideImagePicker];
     }
     else if(_chatListVC)
@@ -806,7 +826,7 @@ static NSString *kGroupName = @"GroupName";
     if (userInfo)
     {
         if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
-            ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+//            ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
 //            [chatController hideImagePicker];
         }
         
@@ -864,6 +884,97 @@ static NSString *kGroupName = @"GroupName";
                 chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
                 
+                switch (messageType) {
+                    case eMessageTypeGroupChat:
+                    {
+                        NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+                        for (EMGroup *group in groupArray) {
+                            if ([group.groupId isEqualToString:conversationChatter]) {
+                                chatViewController.title = group.groupSubject;
+                                break;
+                            }
+                        }
+                    }
+                        break;
+                    default:
+                        chatViewController.title = conversationChatter;
+                        break;
+                }
+                [self.navigationController pushViewController:chatViewController animated:NO];
+            }
+        }];
+    }
+    else if (_chatListVC)
+    {
+        [self.navigationController popToViewController:self animated:NO];
+        [self setSelectedViewController:_chatListVC];
+    }
+}
+
+- (void)didReceiveUserNotification:(UNNotification *)notification
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if (userInfo)
+    {
+        if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
+            //            ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+            //            [chatController hideImagePicker];
+        }
+
+        NSArray *viewControllers = self.navigationController.viewControllers;
+        [viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+            if (obj != self)
+            {
+                if (![obj isKindOfClass:[ChatViewController class]])
+                {
+                    [self.navigationController popViewControllerAnimated:NO];
+                }
+                else
+                {
+                    NSString *conversationChatter = userInfo[kConversationChatter];
+                    ChatViewController *chatViewController = (ChatViewController *)obj;
+                    if (![chatViewController.conversation.chatter isEqualToString:conversationChatter])
+                    {
+                        [self.navigationController popViewControllerAnimated:NO];
+                        EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
+
+                        chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
+                        switch (messageType) {
+                            case eMessageTypeGroupChat:
+                            {
+                                NSArray *groupArray = [[EaseMob sharedInstance].chatManager groupList];
+                                for (EMGroup *group in groupArray) {
+                                    if ([group.groupId isEqualToString:conversationChatter]) {
+                                        chatViewController.title = group.groupSubject;
+                                        break;
+                                    }
+                                }
+                            }
+                                break;
+                            default:
+                                chatViewController.title = conversationChatter;
+                                break;
+                        }
+                        [self.navigationController pushViewController:chatViewController animated:NO];
+                    }
+                    *stop= YES;
+                }
+            }
+            else
+            {
+                ChatViewController *chatViewController = nil;
+                NSString *conversationChatter = userInfo[kConversationChatter];
+                EMMessageType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#else
+                chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+#endif
+
                 switch (messageType) {
                     case eMessageTypeGroupChat:
                     {

@@ -20,8 +20,9 @@
 #import "RedPacketUserConfig.h"
 #import "RedpacketOpenConst.h"
 #import "AlipaySDK.h"
+#import <UserNotifications/UserNotifications.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @end
 
@@ -32,6 +33,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    }
+
 #ifdef REDPACKET_AVALABLE
     /**
      *  TODO: 通过环信的AppKey注册红包
@@ -94,6 +99,15 @@ didFinishLaunchingWithOptions:launchOptions
     if (_mainController) {
         [_mainController didReceiveLocalNotification:notification];
     }
+}
+
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
+{
+    if (_mainController) {
+        [_mainController didReceiveUserNotification:response.notification];
+    }
+    completionHandler();
 }
 
 #ifdef REDPACKET_AVALABLE
