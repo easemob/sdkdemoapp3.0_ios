@@ -20,6 +20,7 @@
 #import "ContactListViewController.h"
 #import "ChatDemoHelper.h"
 #import "RedPacketChatViewController.h"
+#import <UserNotifications/UserNotifications.h>
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -122,28 +123,22 @@ static NSString *kGroupName = @"GroupName";
     _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
     [_chatListVC networkChanged:_connectionState];
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.conversation", @"Conversations")
-                                                           image:nil
-                                                             tag:0];
-    [_chatListVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
+                                                           image:[UIImage imageNamed:@"tabbar_chats"]
+                                                   selectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]];
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     
     _contactsVC = [[ContactListViewController alloc] initWithNibName:nil bundle:nil];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.addressbook", @"AddressBook")
-                                                           image:nil
-                                                             tag:1];
-    [_contactsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
+                                                           image:[UIImage imageNamed:@"tabbar_contacts"]
+                                                   selectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
     _settingsVC = [[SettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
-                                                           image:nil
-                                                             tag:2];
-    [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
-                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
+                                                           image:[UIImage imageNamed:@"tabbar_setting"]
+                                                   selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
@@ -155,15 +150,16 @@ static NSString *kGroupName = @"GroupName";
 -(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {
     [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                        [UIFont systemFontOfSize:14], UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor,
+                                        [UIFont systemFontOfSize:14], NSFontAttributeName,
+                                        [UIColor whiteColor],NSForegroundColorAttributeName,
                                         nil] forState:UIControlStateNormal];
 }
 
 -(void)selectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {
     [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                        [UIFont systemFontOfSize:14],
-                                        UITextAttributeFont,RGBACOLOR(0x00, 0xac, 0xff, 1),UITextAttributeTextColor,
+                                        [UIFont systemFontOfSize:14],NSFontAttributeName,
+                                        RGBACOLOR(0x00, 0xac, 0xff, 1),NSForegroundColorAttributeName,
                                         nil] forState:UIControlStateSelected];
 }
 
@@ -226,10 +222,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)showNotificationWithMessage:(EMMessage *)message
 {
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    //发送本地推送
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.fireDate = [NSDate date]; //触发通知的时间
-    
+    NSString *alertBody = nil;
     if (options.displayStyle == EMPushDisplayStyleMessageSummary) {
         EMMessageBody *messageBody = message.body;
         NSString *messageStr = nil;
@@ -261,7 +254,7 @@ static NSString *kGroupName = @"GroupName";
             default:
                 break;
         }
-        
+
         do {
             NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
             if (message.chatType == EMChatTypeGroupChat) {
@@ -270,14 +263,14 @@ static NSString *kGroupName = @"GroupName";
                     id target = ext[kGroupMessageAtList];
                     if ([target isKindOfClass:[NSString class]]) {
                         if ([kGroupMessageAtAll compare:target options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-                            notification.alertBody = [NSString stringWithFormat:@"%@%@", title, NSLocalizedString(@"group.atPushTitle", @" @ me in the group")];
+                            alertBody = [NSString stringWithFormat:@"%@%@", title, NSLocalizedString(@"group.atPushTitle", @" @ me in the group")];
                             break;
                         }
                     }
                     else if ([target isKindOfClass:[NSArray class]]) {
                         NSArray *atTargets = (NSArray*)target;
                         if ([atTargets containsObject:[EMClient sharedClient].currentUsername]) {
-                            notification.alertBody = [NSString stringWithFormat:@"%@%@", title, NSLocalizedString(@"group.atPushTitle", @" @ me in the group")];
+                            alertBody = [NSString stringWithFormat:@"%@%@", title, NSLocalizedString(@"group.atPushTitle", @" @ me in the group")];
                             break;
                         }
                     }
@@ -301,36 +294,51 @@ static NSString *kGroupName = @"GroupName";
                     title = [NSString stringWithFormat:@"%@(%@)", message.from, chatroomName];
                 }
             }
-            
-            notification.alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
+
+            alertBody = [NSString stringWithFormat:@"%@:%@", title, messageStr];
         } while (0);
     }
     else{
-        notification.alertBody = NSLocalizedString(@"receiveMessage", @"you have a new message");
+        alertBody = NSLocalizedString(@"receiveMessage", @"you have a new message");
     }
-    
-#warning 去掉注释会显示[本地]开头, 方便在开发中区分是否为本地推送
-    //notification.alertBody = [[NSString alloc] initWithFormat:@"[本地]%@", notification.alertBody];
-    
-    notification.alertAction = NSLocalizedString(@"open", @"Open");
-    notification.timeZone = [NSTimeZone defaultTimeZone];
+
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSinceDate:self.lastPlaySoundDate];
-    if (timeInterval < kDefaultPlaySoundInterval) {
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
-    } else {
-        notification.soundName = UILocalNotificationDefaultSoundName;
+    BOOL playSound = NO;
+    if (!self.lastPlaySoundDate || timeInterval >= kDefaultPlaySoundInterval) {
         self.lastPlaySoundDate = [NSDate date];
+        playSound = YES;
     }
-    
+
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     [userInfo setObject:[NSNumber numberWithInt:message.chatType] forKey:kMessageType];
     [userInfo setObject:message.conversationId forKey:kConversationChatter];
-    notification.userInfo = userInfo;
-    
-    //发送通知
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-//    UIApplication *application = [UIApplication sharedApplication];
-//    application.applicationIconBadgeNumber += 1;
+
+    //发送本地推送
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+        if (playSound) {
+            content.sound = [UNNotificationSound defaultSound];
+        }
+        content.body =alertBody;
+        content.userInfo = userInfo;
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:message.messageId content:content trigger:trigger];
+        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+    }
+    else {
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.fireDate = [NSDate date]; //触发通知的时间
+        notification.alertBody = alertBody;
+        notification.alertAction = NSLocalizedString(@"open", @"Open");
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        if (playSound) {
+            notification.soundName = UILocalNotificationDefaultSoundName;
+        }
+        notification.userInfo = userInfo;
+        
+        //发送通知
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
 }
 
 #pragma mark - 自动登录回调
@@ -479,6 +487,97 @@ static NSString *kGroupName = @"GroupName";
     {
         [self.navigationController popToViewController:self animated:NO];
         [self setSelectedViewController:_chatListVC];
+    }
+}
+
+- (void)didReceiveUserNotification:(UNNotification *)notification
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if (userInfo)
+    {
+        if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
+            //            ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+            //            [chatController hideImagePicker];
+        }
+
+        NSArray *viewControllers = self.navigationController.viewControllers;
+        [viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+            if (obj != self)
+            {
+                if (![obj isKindOfClass:[ChatViewController class]])
+                {
+                    [self.navigationController popViewControllerAnimated:NO];
+                }
+                else
+                {
+                    NSString *conversationChatter = userInfo[kConversationChatter];
+                    ChatViewController *chatViewController = (ChatViewController *)obj;
+                    if (![chatViewController.conversation.conversationId isEqualToString:conversationChatter])
+                    {
+                        [self.navigationController popViewControllerAnimated:NO];
+                        EMChatType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                        chatViewController = [[RedPacketChatViewController alloc]
+#else
+                        chatViewController = [[ChatViewController alloc]
+#endif
+                                            initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+                        switch (messageType) {
+                            case EMChatTypeChat:
+                            {
+                                NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
+                                for (EMGroup *group in groupArray) {
+                                    if ([group.groupId isEqualToString:conversationChatter]) {
+                                        chatViewController.title = group.subject;
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                            default:
+                                chatViewController.title = conversationChatter;
+                                break;
+                        }
+                        [self.navigationController pushViewController:chatViewController animated:NO];
+                    }
+                    *stop= YES;
+                }
+            }
+            else
+            {
+                ChatViewController *chatViewController = nil;
+                NSString *conversationChatter = userInfo[kConversationChatter];
+                EMChatType messageType = [userInfo[kMessageType] intValue];
+#ifdef REDPACKET_AVALABLE
+                chatViewController = [[RedPacketChatViewController alloc]
+#else
+                chatViewController = [[ChatViewController alloc]
+#endif
+                                  initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+                switch (messageType) {
+                case EMChatTypeGroupChat:
+                    {
+                        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
+                        for (EMGroup *group in groupArray) {
+                            if ([group.groupId isEqualToString:conversationChatter]) {
+                                chatViewController.title = group.subject;
+                                break;
+                            }
+                        }
+                    }
+                        break;
+                    default:
+                        chatViewController.title = conversationChatter;
+                        break;
+                }
+                [self.navigationController pushViewController:chatViewController animated:NO];
+            }
+        }];
+    }
+    else if (_chatListVC)
+    {
+        [self.navigationController popToViewController:self animated:NO];
+    [self setSelectedViewController:_chatListVC];
     }
 }
 

@@ -20,10 +20,11 @@
 #import "RedPacketUserConfig.h"
 #import "AlipaySDK.h"
 #import "RedpacketOpenConst.h"
+#import <UserNotifications/UserNotifications.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @end
 
@@ -34,6 +35,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    }
+
     [Fabric with:@[[Crashlytics class]]];
 
 #ifdef REDPACKET_AVALABLE
@@ -98,6 +103,14 @@ didFinishLaunchingWithOptions:launchOptions
     if (_mainController) {
         [_mainController didReceiveLocalNotification:notification];
     }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
+{
+    if (_mainController) {
+        [_mainController didReceiveUserNotification:response.notification];
+    }
+    completionHandler();
 }
 
 #ifdef REDPACKET_AVALABLE
