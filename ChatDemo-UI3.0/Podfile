@@ -1,4 +1,4 @@
-platform :ios, '7.0'
+platform :ios, '6.0'
 
 # Import CocoaPods sources
 source 'https://github.com/CocoaPods/Specs.git'
@@ -6,7 +6,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'ChatDemo-UI3.0' do
 
 pod 'HyphenateFullSDK'
-
-pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
+#pod 'Fabric'
+#pod 'Crashlytics'
 
 end
