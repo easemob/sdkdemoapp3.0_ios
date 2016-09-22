@@ -1,18 +1,18 @@
 //
-//  EMSettingsViewController.m
+//  EMAboutViewController.m
 //  ChatDemo-UI3.0
 //
-//  Created by EaseMob on 16/9/21.
+//  Created by EaseMob on 16/9/22.
 //  Copyright © 2016年 easemob. All rights reserved.
 //
 
-#import "EMSettingsViewController.h"
+#import "EMAboutViewController.h"
 
-@interface EMSettingsViewController ()
+@interface EMAboutViewController ()
 
 @end
 
-@implementation EMSettingsViewController
+@implementation EMAboutViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
