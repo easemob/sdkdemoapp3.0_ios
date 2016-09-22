@@ -343,12 +343,14 @@
         }
         self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         
-        _sizeLabel.text = [NSString stringWithFormat:@"%@%.0f/%.0f", NSLocalizedString(@"call.videoSize", @"Width/Height: "), _callSession.remoteVideoResolution.width, _callSession.remoteVideoResolution.height];
-        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), _callSession.videoLatency];
-        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), _callSession.remoteVideoFrameRate];
-        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), _callSession.remoteVideoLostRateInPercent];
-        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), _callSession.localVideoBitrate];
-        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), _callSession.remoteVideoBitrate];
+        if (_callSession.type == EMCallTypeVideo) {
+            _sizeLabel.text = [NSString stringWithFormat:@"%@%.0f/%.0f", NSLocalizedString(@"call.videoSize", @"Width/Height: "), _callSession.remoteVideoResolution.width, _callSession.remoteVideoResolution.height];
+            _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), _callSession.videoLatency];
+            _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), _callSession.remoteVideoFrameRate];
+            _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), _callSession.remoteVideoLostRateInPercent];
+            _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), _callSession.localVideoBitrate];
+            _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), _callSession.remoteVideoBitrate];
+        }
     }
 }
 
@@ -530,7 +532,7 @@
 
 - (void)startShowInfo
 {
-    if (_callSession.type == EMCallTypeVideo && [self isShowCallInfo]) {
+    if ([self isShowCallInfo] || _callSession.type == EMCallTypeVoice) {
         [self _reloadPropertyData];
         _propertyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(_reloadPropertyData) userInfo:nil repeats:YES];
     }
