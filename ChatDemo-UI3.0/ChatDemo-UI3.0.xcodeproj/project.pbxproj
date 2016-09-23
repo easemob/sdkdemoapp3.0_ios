@@ -14,7 +14,10 @@
 		3A3B46A81D73D45800AC1FB6 /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B46A71D73D45800AC1FB6 /* EMNavigationController.m */; };
 		3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */; };
 		3A595FA81D6D9FF900504DB3 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */; };
+		3A807A5B1D94D9EE004D18CB /* libHyphenatePluginRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE59D861D94CFB8006D3C9C /* libHyphenatePluginRecorder.a */; };
+		3A807A5D1D94DA23004D18CB /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A807A5C1D94DA23004D18CB /* libffmpeg-ios-full.a */; };
 		3A87CD4D1D8FBE2200016402 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */; };
+		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C117121197D243B00E2DBEC /* PushNotificationViewController.m */; };
@@ -53,7 +56,7 @@
 		90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */; };
 		90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */; };
 		905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 905325CE1932ED8B00F064D7 /* EMSearchBar.m */; };
-		905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 905326B419333E8E00F064D7 /* TTGlobalUICommon.m */; };
+		905326B519333E8E00F064D7 /* TTGlobalUICommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 905326B419333E8E00F064D7 /* TTGlobalUICommon.mm */; };
 		906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */; };
 		906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
@@ -152,7 +155,7 @@
 		D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CB225B1B60CB08001BC741 /* UserProfileViewController.m */; };
 		D2F7691C1CBF3F26009778FB /* SearchMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F7691B1CBF3F26009778FB /* SearchMessageViewController.m */; };
 		D2F7691F1CBF42DB009778FB /* SearchChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F7691E1CBF42DB009778FB /* SearchChatViewController.m */; };
-		D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FFDB911C1687A30031425A /* ChatDemoHelper.m */; };
+		D2FFDB921C1687A30031425A /* ChatDemoHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FFDB911C1687A30031425A /* ChatDemoHelper.mm */; };
 		EB1975B21ADE0C77002E7E27 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB1975B11ADE0C77002E7E27 /* libc++.dylib */; };
 		EBD2AB071A7CDAC000D16528 /* chatListCellHead.png in Resources */ = {isa = PBXBuildFile; fileRef = EBD2AA3D1A7CDABF00D16528 /* chatListCellHead.png */; };
 		EBD2AB081A7CDAC000D16528 /* chatListCellHead@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBD2AA3E1A7CDABF00D16528 /* chatListCellHead@2x.png */; };
@@ -250,12 +253,22 @@
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
 		28BFD6341B01D40500D0ADEC /* MyChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChatroomListViewController.m; sourceTree = "<group>"; };
+		3A0FEB331D8E8C2F005C6B8F /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3A3B46A61D73D45800AC1FB6 /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
 		3A3B46A71D73D45800AC1FB6 /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
+		3A590E7E1D8ED3330047172A /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../other_sdk/test_sdk/EaseUI/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
+		3A807A591D94D9BA004D18CB /* EMPluginVideoRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMPluginVideoRecorder.h; path = ../../../plugin/EMPluginVideoRecorder.h; sourceTree = "<group>"; };
+		3A807A5C1D94DA23004D18CB /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../../plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3A87CD4B1D8FBE2200016402 /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
 		3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallResolutionViewController.m; sourceTree = "<group>"; };
+		3AB62A0A1D9262F6000776F0 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/Record/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		3AB62A0B1D9262F6000776F0 /* libHyphenateAVRecorder-universal.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libHyphenateAVRecorder-universal.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/Record/libHyphenateAVRecorder-universal.a"; sourceTree = "<group>"; };
+		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		3AB62A121D926375000776F0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		3AE59D861D94CFB8006D3C9C /* libHyphenatePluginRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenatePluginRecorder.a; path = ../../../plugin/libHyphenatePluginRecorder.a; sourceTree = "<group>"; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3C117120197D243B00E2DBEC /* PushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationViewController.h; sourceTree = "<group>"; };
@@ -332,7 +345,7 @@
 		905325CD1932ED8B00F064D7 /* EMSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchBar.h; sourceTree = "<group>"; };
 		905325CE1932ED8B00F064D7 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
-		905326B419333E8E00F064D7 /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
+		905326B419333E8E00F064D7 /* TTGlobalUICommon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TTGlobalUICommon.mm; sourceTree = "<group>"; };
 		906083D51B71F894008574B4 /* EMRobotChatTextBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRobotChatTextBubbleView.h; sourceTree = "<group>"; };
 		906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRobotChatTextBubbleView.m; sourceTree = "<group>"; };
 		906083D71B71F894008574B4 /* EMRotbotChatViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRotbotChatViewCell.h; sourceTree = "<group>"; };
@@ -483,7 +496,7 @@
 		D2F7691D1CBF42DB009778FB /* SearchChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchChatViewController.h; sourceTree = "<group>"; };
 		D2F7691E1CBF42DB009778FB /* SearchChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchChatViewController.m; sourceTree = "<group>"; };
 		D2FFDB901C1687A30031425A /* ChatDemoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatDemoHelper.h; sourceTree = "<group>"; };
-		D2FFDB911C1687A30031425A /* ChatDemoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatDemoHelper.m; sourceTree = "<group>"; };
+		D2FFDB911C1687A30031425A /* ChatDemoHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ChatDemoHelper.mm; sourceTree = "<group>"; };
 		EB1975B11ADE0C77002E7E27 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		EBD2AA3D1A7CDABF00D16528 /* chatListCellHead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chatListCellHead.png; sourceTree = "<group>"; };
 		EBD2AA3E1A7CDABF00D16528 /* chatListCellHead@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatListCellHead@2x.png"; sourceTree = "<group>"; };
@@ -565,6 +578,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A807A5D1D94DA23004D18CB /* libffmpeg-ios-full.a in Frameworks */,
+				3A807A5B1D94D9EE004D18CB /* libHyphenatePluginRecorder.a in Frameworks */,
+				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
@@ -771,7 +787,7 @@
 			isa = PBXGroup;
 			children = (
 				905326B319333E8E00F064D7 /* TTGlobalUICommon.h */,
-				905326B419333E8E00F064D7 /* TTGlobalUICommon.m */,
+				905326B419333E8E00F064D7 /* TTGlobalUICommon.mm */,
 			);
 			path = TTGlobalUICommon;
 			sourceTree = "<group>";
@@ -797,6 +813,15 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A807A5C1D94DA23004D18CB /* libffmpeg-ios-full.a */,
+				3A807A591D94D9BA004D18CB /* EMPluginVideoRecorder.h */,
+				3AE59D861D94CFB8006D3C9C /* libHyphenatePluginRecorder.a */,
+				3AB62A121D926375000776F0 /* libbz2.tbd */,
+				3AB62A101D92636E000776F0 /* libiconv.tbd */,
+				3AB62A0E1D926341000776F0 /* libz.tbd */,
+				3AB62A0A1D9262F6000776F0 /* libffmpeg-ios-full.a */,
+				3AB62A0B1D9262F6000776F0 /* libHyphenateAVRecorder-universal.a */,
+				3A0FEB331D8E8C2F005C6B8F /* libffmpeg-ios-full.a */,
 				3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */,
 				921C6A9D1D2A841600D8257F /* CoreMotion.framework */,
 				D2A9106F1C7FEE350025AD0A /* libHyphenateFullSDK.a */,
@@ -835,6 +860,7 @@
 		9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */ = {
 			isa = PBXGroup;
 			children = (
+				3A590E7E1D8ED3330047172A /* ChatDemo-UI3.0.entitlements */,
 				921C6A6D1D2A83AD00D8257F /* RedacketSDK */,
 				3CBF90BC19302F5000AD68AE /* Custom */,
 				90911120192EEBB8008A48AA /* Class */,
@@ -912,7 +938,7 @@
 				90CE5C101B43C8E500810187 /* AppDelegate+EaseMobDebug.h */,
 				90CE5C111B43C8E500810187 /* AppDelegate+EaseMobDebug.m */,
 				D2FFDB901C1687A30031425A /* ChatDemoHelper.h */,
-				D2FFDB911C1687A30031425A /* ChatDemoHelper.m */,
+				D2FFDB911C1687A30031425A /* ChatDemoHelper.mm */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -1524,7 +1550,7 @@
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
-				905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */,
+				905326B519333E8E00F064D7 /* TTGlobalUICommon.mm in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,
 				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
 				D2B61E331BC7BEA6007CB53E /* ConversationListController.m in Sources */,
@@ -1577,7 +1603,7 @@
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,
 				3C13D94E1A120BA200903622 /* ContactView.m in Sources */,
-				D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */,
+				D2FFDB921C1687A30031425A /* ChatDemoHelper.mm in Sources */,
 				921C6A961D2A83AD00D8257F /* RedpacketMessageCell.m in Sources */,
 				921C6A991D2A83AD00D8257F /* RedPacketUserConfig.m in Sources */,
 				D2BF98B31AEDD780009E0D5C /* EditNicknameViewController.m in Sources */,
@@ -1705,6 +1731,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
@@ -1726,6 +1753,7 @@
 					"$(PROJECT_DIR)/../RedpacketSDK/",
 					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
 					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
+					"\"$(SRCROOT)/../../../plugin\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -1737,16 +1765,17 @@
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
 					"\"$(SRCROOT)/RedacketSDK/RedpacketStaticLib/lib\"",
-					"\"$(SRCROOT)/../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin\"",
+					"\"$(SRCROOT)/../../../plugin\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.rtc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -1763,7 +1792,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
@@ -1784,6 +1813,7 @@
 					"$(PROJECT_DIR)/../RedpacketSDK/",
 					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
 					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
+					"\"$(SRCROOT)/../../../plugin\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -1795,14 +1825,14 @@
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
 					"\"$(SRCROOT)/RedacketSDK/RedpacketStaticLib/lib\"",
-					"\"$(SRCROOT)/../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin\"",
+					"\"$(SRCROOT)/../../../plugin\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.rtc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = NO;

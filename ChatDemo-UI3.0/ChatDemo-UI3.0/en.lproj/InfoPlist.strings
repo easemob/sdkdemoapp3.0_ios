@@ -1,3 +1,6 @@
 /* Localized versions of Info.plist keys */
 
-"CFBundleDisplayName" = "HyphenateDemo";
+//"CFBundleDisplayName" = "convert0923";
+//"CFBundleDisplayName" = "normal0923";
+"CFBundleDisplayName" = "rtc0923";
+
