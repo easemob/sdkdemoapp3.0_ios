@@ -26,7 +26,6 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
-//#include "utils/emlog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -99,9 +98,7 @@ static ChatDemoHelper *helper = nil;
     } else {
         options = [[EMClient sharedClient].callManager getCallOptions];
         options.isSendPushIfOffline = NO;
-        options.enableVideoRecoder = YES;
     }
-    
     [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
