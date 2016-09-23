@@ -15,6 +15,7 @@
 #import "CallViewController.h"
 
 #import "ChatDemoHelper.h"
+//#import "EMPluginVideoRecorder.h"
 
 @interface CallViewController ()
 {
@@ -234,14 +235,14 @@
     
     if (_callSession.type == EMCallTypeVideo) {
         CGFloat tmpWidth = _actionView.frame.size.width / 3;
-//        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
-//        _recordButton.layer.cornerRadius = 20.f;
-//        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
-//        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
-//        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
-//        [_recordButton setBackgroundColor:[UIColor grayColor]];
-//        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
-//        [_actionView addSubview:_recordButton];
+        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
+        _recordButton.layer.cornerRadius = 20.f;
+        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
+        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
+        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [_recordButton setBackgroundColor:[UIColor grayColor]];
+        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
+        [_actionView addSubview:_recordButton];
         
         _videoButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2, 20, 40, 40)];
         _videoButton.layer.cornerRadius = 20.f;
@@ -409,31 +410,32 @@
     _switchCameraButton.selected = !_switchCameraButton.selected;
 }
 
-//- (void)recordAction
-//{
-//    _recordButton.selected = !_recordButton.selected;
-//    if (_recordButton.selected) {
-//        NSString *recordPath = NSHomeDirectory();
-//        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
-//        NSFileManager *fm = [NSFileManager defaultManager];
-//        if(![fm fileExistsAtPath:recordPath]){
-//            [fm createDirectoryAtPath:recordPath
-//          withIntermediateDirectories:YES
-//                           attributes:nil
-//                                error:nil];
-//        }
-//        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
-//    } else {
-//        NSString *tempPath = [_callSession stopVideoRecording:nil];
-//        if (tempPath.length > 0) {
-////            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
-////            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-////            [moviePlayerController.moviePlayer prepareToPlay];
-////            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-////            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
-//        }
-//    }
-//}
+- (void)recordAction
+{
+    _recordButton.selected = !_recordButton.selected;
+    if (_recordButton.selected) {
+        NSString *recordPath = NSHomeDirectory();
+        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if(![fm fileExistsAtPath:recordPath]){
+            [fm createDirectoryAtPath:recordPath
+          withIntermediateDirectories:YES
+                           attributes:nil
+                                error:nil];
+        }
+        
+        [[EMPluginVideoRecorder sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
+    } else {
+        NSString *tempPath = [[EMPluginVideoRecorder sharedInstance] stopVideoRecording:nil];
+        if (tempPath.length > 0) {
+            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
+            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+            [moviePlayerController.moviePlayer prepareToPlay];
+            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+        }
+    }
+}
 
 - (void)videoPauseAction
 {
