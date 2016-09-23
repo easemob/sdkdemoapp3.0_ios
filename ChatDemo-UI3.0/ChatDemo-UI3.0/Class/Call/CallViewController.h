@@ -57,11 +57,12 @@
 
 + (BOOL)canVideo;
 
-- (void)stateToAnswered;
+- (void)stateToConnected;
 
-- (void)close;
+- (void)stateToAnswered;
 
 - (void)setNetwork:(EMCallNetworkStatus)status;
 
+- (void)clear;
 
 @end

@@ -15,14 +15,13 @@
 #import "CallViewController.h"
 
 #import "ChatDemoHelper.h"
+//#import "EMPluginVideoRecorder.h"
 
 @interface CallViewController ()
 {
     BOOL _isCaller;
     NSString *_status;
     int _timeLength;
-    
-    NSString * _audioCategory;
     
     UIImageView *_bgImageView;
     //视频属性显示区域
@@ -225,7 +224,7 @@
     [_answerButton setTitle:NSLocalizedString(@"call.answer", @"Answer") forState:UIControlStateNormal];
     [_answerButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];;
     [_answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
-
+//    _answerButton.enabled = NO;
     [_actionView addSubview:_answerButton];
     
     _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200) / 2, _rejectButton.frame.origin.y, 200, 40)];
@@ -268,19 +267,19 @@
 - (void)_setupRemoteView
 {
     //1.对方窗口
-    if (_callSession.type == EMCallTypeVideo && _callSession.remoteView == nil) {
+    if (_callSession.type == EMCallTypeVideo && _callSession.remoteVideoView == nil) {
         NSLog(@"\n########################_setupRemoteView");
-        _callSession.remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        _callSession.remoteView.hidden = YES;
-        _callSession.remoteView.backgroundColor = [UIColor clearColor];
-        _callSession.remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-        [_bgImageView addSubview:_callSession.remoteView];
-        [_bgImageView sendSubviewToBack:_callSession.remoteView];
+        _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _callSession.remoteVideoView.hidden = YES;
+        _callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
+        _callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
+        [_bgImageView addSubview:_callSession.remoteVideoView];
+        [_bgImageView sendSubviewToBack:_callSession.remoteVideoView];
         
         __weak CallViewController *weakSelf = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            weakSelf.callSession.remoteView.hidden = NO;
+            weakSelf.callSession.remoteVideoView.hidden = NO;
         });
     }
 }
@@ -290,8 +289,8 @@
     //2.自己窗口
     CGFloat width = 80;
     CGFloat height = self.view.frame.size.height / self.view.frame.size.width * width;
-    _callSession.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
-    [self.view addSubview:_callSession.localView];
+    _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    [self.view addSubview:_callSession.localVideoView];
     
     //3、属性显示层
     _propertyView = [[UIView alloc] initWithFrame:CGRectMake(10, CGRectGetMinY(_actionView.frame) - 90, self.view.frame.size.width - 20, 90)];
@@ -345,12 +344,14 @@
         }
         self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"call.speak", @"Can speak..."), connectStr];
         
-        _sizeLabel.text = [NSString stringWithFormat:@"%@%i/%i", NSLocalizedString(@"call.videoSize", @"Width/Height: "), [_callSession getRemoteVideoWidth], [_callSession getRemoteVideoHeight]];
-        _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), [_callSession getLocalVideoTimeDelay]];
-        _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), [_callSession getRemoteVideoFrameRate]];
-        _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), [_callSession getLocalVideoLostRateInPercent]];
-        _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), [_callSession getLocalVideoBitrate]];
-        _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), [_callSession getRemoteVideoBitrate]];
+        if (_callSession.type == EMCallTypeVideo) {
+            _sizeLabel.text = [NSString stringWithFormat:@"%@%.0f/%.0f", NSLocalizedString(@"call.videoSize", @"Width/Height: "), _callSession.remoteVideoResolution.width, _callSession.remoteVideoResolution.height];
+            _timedelayLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoTimedelay", @"Timedelay: "), _callSession.videoLatency];
+            _framerateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoFramerate", @"Framerate: "), _callSession.remoteVideoFrameRate];
+            _lostcntLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLostcnt", @"Lostcnt: "), _callSession.remoteVideoLostRateInPercent];
+            _localBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoLocalBitrate", @"Local Bitrate: "), _callSession.localVideoBitrate];
+            _remoteBitrateLabel.text = [NSString stringWithFormat:@"%@%i", NSLocalizedString(@"call.videoRemoteBitrate", @"Remote Bitrate: "), _callSession.remoteVideoBitrate];
+        }
     }
 }
 
@@ -405,12 +406,12 @@
 
 - (void)switchCameraAction
 {
-    [_callSession switchCamera];
+    [_callSession switchCameraPosition:_switchCameraButton.selected];
     _switchCameraButton.selected = !_switchCameraButton.selected;
 }
 
-//- (void)recordAction
-//{
+- (void)recordAction
+{
 //    _recordButton.selected = !_recordButton.selected;
 //    if (_recordButton.selected) {
 //        NSString *recordPath = NSHomeDirectory();
@@ -422,18 +423,19 @@
 //                           attributes:nil
 //                                error:nil];
 //        }
-//        [_callSession startRemoteVideoRecordingToFilePath:recordPath error:nil];
+//        
+//        [[EMPluginVideoRecorder sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
 //    } else {
-//        NSString *tempPath = [_callSession stopVideoRecording:nil];
+//        NSString *tempPath = [[EMPluginVideoRecorder sharedInstance] stopVideoRecording:nil];
 //        if (tempPath.length > 0) {
-////            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
-////            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-////            [moviePlayerController.moviePlayer prepareToPlay];
-////            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-////            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+//            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
+//            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+//            [moviePlayerController.moviePlayer prepareToPlay];
+//            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+//            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
 //        }
 //    }
-//}
+}
 
 - (void)videoPauseAction
 {
@@ -483,14 +485,8 @@
 {
 #if DEMO_CALL == 1
     [self _stopRing];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    _audioCategory = audioSession.category;
-    if(![_audioCategory isEqualToString:AVAudioSessionCategoryPlayAndRecord]){
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [audioSession setActive:YES error:nil];
-    }
-//    [self _setupRemoteView];
     
+//    self.answerButton.enabled = NO;
     [[ChatDemoHelper shareHelper] answerCall:_callSession.callId];
 #endif
 }
@@ -500,9 +496,6 @@
 #if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setCategory:_audioCategory error:nil];
-    [audioSession setActive:YES error:nil];
     
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
 #endif
@@ -513,9 +506,6 @@
 #if DEMO_CALL == 1
     [_timeTimer invalidate];
     [self _stopRing];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setCategory:_audioCategory error:nil];
-    [audioSession setActive:YES error:nil];
     
     [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonDecline];
 #endif
@@ -544,7 +534,7 @@
 
 - (void)startShowInfo
 {
-    if (_callSession.type == EMCallTypeVideo && [self isShowCallInfo]) {
+    if ([self isShowCallInfo] || _callSession.type == EMCallTypeVoice) {
         [self _reloadPropertyData];
         _propertyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(_reloadPropertyData) userInfo:nil repeats:YES];
     }
@@ -576,6 +566,12 @@
     }
 }
 
+- (void)stateToConnected
+{
+    self.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
+//    self.answerButton.enabled = YES;
+}
+
 - (void)stateToAnswered
 {
     NSString *connectStr = @"None";
@@ -596,9 +592,9 @@
     [self _setupRemoteView];
 }
 
-- (void)close
+- (void)clear
 {
-    _callSession.remoteView.hidden = YES;
+    _callSession.remoteVideoView.hidden = YES;
     _callSession = nil;
     _propertyView = nil;
     
@@ -611,13 +607,6 @@
         [_propertyTimer invalidate];
         _propertyTimer = nil;
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:nil];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[AVAudioSession sharedInstance] setActive:NO error:nil];
-        [self dismissViewControllerAnimated:NO completion:nil];
-    });
 }
 
 @end

@@ -24,7 +24,7 @@
     self.title = @"Video Resolution";
     
 #if DEMO_CALL == 1
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     int row = options.videoResolution;
     self.selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
 #endif
@@ -98,7 +98,7 @@
         newCell.accessoryType = UITableViewCellAccessoryCheckmark;
         
         EMCallVideoResolution resolution = (EMCallVideoResolution)indexPath.row;
-        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.videoResolution = resolution;
         [ChatDemoHelper updateCallOptions];
     }

@@ -43,9 +43,9 @@
 
 #if DEMO_CALL == 1
 
-@property (assign, nonatomic) NSObject *callLock;
-@property (strong, atomic) EMCallSession *callSession;
-@property (strong, atomic) CallViewController *callController;
+@property (strong, nonatomic) NSObject *callLock;
+@property (strong, nonatomic) EMCallSession *callSession;
+@property (strong, nonatomic) CallViewController *callController;
 
 #endif
 
@@ -67,6 +67,8 @@
 - (void)hangupCallWithReason:(EMCallEndReason)aReason;
 
 - (void)answerCall:(NSString *)aCallId;
+
+- (void)dismissCurrentCallController;
 
 #endif
 

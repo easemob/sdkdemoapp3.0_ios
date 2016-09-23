@@ -119,7 +119,7 @@
         _callPushSwitch = [[UISwitch alloc] init];
         [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
         
-        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         [_callPushSwitch setOn:options.isSendPushIfOffline animated:NO];
     }
     
@@ -270,7 +270,7 @@
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
         
         UITextField *textField = [alert textFieldAtIndex:0];
-        EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         textField.text = [NSString stringWithFormat:@"%ld", options.videoKbps];
         
         [alert show];
@@ -292,7 +292,7 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
-                    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+                    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
                     options.videoKbps = [nameTextField.text intValue];
                     [ChatDemoHelper updateCallOptions];
                     flag = NO;
@@ -358,7 +358,7 @@
     
 - (void)callPushChanged:(UISwitch *)control
 {
-    EMCallManagerOptions *options = [[EMClient sharedClient].callManager getCallManagerOptions];
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.isSendPushIfOffline = control.on;
     [ChatDemoHelper updateCallOptions];
 }
