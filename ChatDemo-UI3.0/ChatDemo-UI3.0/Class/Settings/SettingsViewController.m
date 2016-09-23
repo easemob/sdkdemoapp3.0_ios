@@ -24,22 +24,27 @@
 #import "CallViewController.h"
 #endif
 
+#if DEMO_CALL == 1
+#import "CallViewController.h"
+#import "ChatDemoHelper.h"
+#import "CallResolutionViewController.h"
+#endif
+
 @interface SettingsViewController ()
 
 @property (strong, nonatomic) UIView *footerView;
 
 @property (strong, nonatomic) UISwitch *autoLoginSwitch;
-@property (strong, nonatomic) UISwitch *ipSwitch;
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
 @property (strong, nonatomic) UISwitch *showCallInfoSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
+@property (strong, nonatomic) UISwitch *callPushSwitch;
 
 @end
 
 @implementation SettingsViewController
 
 @synthesize autoLoginSwitch = _autoLoginSwitch;
-@synthesize ipSwitch = _ipSwitch;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -78,16 +83,6 @@
     return _autoLoginSwitch;
 }
 
-- (UISwitch *)ipSwitch
-{
-    if (_ipSwitch == nil) {
-        _ipSwitch = [[UISwitch alloc] init];
-        [_ipSwitch addTarget:self action:@selector(useIpChanged:) forControlEvents:UIControlEventValueChanged];
-    }
-    
-    return _ipSwitch;
-}
-
 - (UISwitch *)delConversationSwitch
 {
     if (!_delConversationSwitch)
@@ -120,6 +115,19 @@
     return _sortMethodSwitch;
 }
 
+- (UISwitch *)callPushSwitch
+{
+    if (_callPushSwitch == nil) {
+        _callPushSwitch = [[UISwitch alloc] init];
+        [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+        [_callPushSwitch setOn:options.isSendPushIfOffline animated:NO];
+    }
+    
+    return _callPushSwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -139,10 +147,10 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 10;
+    return 12;
 #endif
 
-    return 10;
+    return 9;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,34 +178,30 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
             [cell.contentView addSubview:self.autoLoginSwitch];
-        }
-        else if (indexPath.row == 1)
+        } else if (indexPath.row == 1)
         {
             cell.textLabel.text = NSLocalizedString(@"title.apnsSetting", @"Apns Settings");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        else if (indexPath.row == 2)
+        } else if (indexPath.row == 2)
         {
             cell.textLabel.text = NSLocalizedString(@"title.buddyBlock", @"Black List");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        else if (indexPath.row == 3)
+        } else if (indexPath.row == 3)
         {
             cell.textLabel.text = NSLocalizedString(@"title.debug", @"Debug");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        else if (indexPath.row == 4){
+        } else if (indexPath.row == 4){
             cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
             [cell.contentView addSubview:self.delConversationSwitch];
-        } else if (indexPath.row == 5){
+        } else if (indexPath.row == 5) {
             cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 6){
+        } else if (indexPath.row == 6) {
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 7){
+        } else if (indexPath.row == 7) {
             cell.textLabel.text = NSLocalizedString(@"setting.showCallInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.showCallInfoSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.showCallInfoSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.showCallInfoSwitch.frame.size.height) / 2, self.showCallInfoSwitch.frame.size.width, self.showCallInfoSwitch.frame.size.height);
@@ -207,8 +211,16 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
             [cell.contentView addSubview:self.sortMethodSwitch];
-        } else if (indexPath.row == 9){
+        } else if (indexPath.row == 9) {
             cell.textLabel.text = NSLocalizedString(@"setting.setBitrate", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (indexPath.row == 10) {
+            cell.textLabel.text = NSLocalizedString(@"setting.callPush", nil);
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.callPushSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.callPushSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.callPushSwitch.frame.size.height) / 2, self.callPushSwitch.frame.size.width, self.callPushSwitch.frame.size.height);
+            [cell.contentView addSubview:self.callPushSwitch];
+        } else if (indexPath.row == 11) {
+            cell.textLabel.text = NSLocalizedString(@"setting.callResolution", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
@@ -258,7 +270,15 @@
     } else if (indexPath.row == 9) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        
+        UITextField *textField = [alert textFieldAtIndex:0];
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+        textField.text = [NSString stringWithFormat:@"%ld", options.videoKbps];
+        
         [alert show];
+    } else if (indexPath.row == 11) {
+        CallResolutionViewController *resoulutionController = [[CallResolutionViewController alloc] init];
+        [self.navigationController pushViewController:resoulutionController animated:YES];
     }
 }
 
@@ -274,7 +294,9 @@
             int val;
             if ([scan scanInt:&val] && [scan isAtEnd]) {
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
-//                    [CallViewController saveBitrate:nameTextField.text];
+                    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+                    options.videoKbps = [nameTextField.text intValue];
+                    [ChatDemoHelper updateCallOptions];
                     flag = NO;
                 }
             }
@@ -319,14 +341,6 @@
     [[EMClient sharedClient].options setIsAutoLogin:autoSwitch.isOn];
 }
 
-- (void)useIpChanged:(UISwitch *)ipSwitch
-{
-//    [[EMClient sharedClient].options performSelectorInBackground:@selector(setEnableDnsConfig) withObject:@(ipSwitch.on)];
-//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-//    [ud setObject:[NSNumber numberWithBool:ipSwitch.isOn] forKey:@"identifier_userip_enable"];
-//    [ud synchronize];
-}
-
 - (void)delConversationChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setIsDeleteMessagesWhenExitGroup:control.on];
@@ -342,6 +356,13 @@
 - (void)sortMethodChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setSortMessageByServerTime:control.on];
+}
+    
+- (void)callPushChanged:(UISwitch *)control
+{
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    options.isSendPushIfOffline = control.on;
+    [ChatDemoHelper updateCallOptions];
 }
 
 - (void)refreshConfig

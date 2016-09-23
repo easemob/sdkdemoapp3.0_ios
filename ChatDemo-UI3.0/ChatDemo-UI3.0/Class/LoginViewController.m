@@ -101,23 +101,23 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself hideHud];
                 if (!error) {
-                    TTAlertNoTitle(NSLocalizedString(@"register.success", @"Registered successfully, please log in"));
+//                    TTAlertNoTitle(NSLocalizedString(@"register.success", @"Registered successfully, please log in"));
                 }else{
                     switch (error.code) {
                         case EMErrorServerNotReachable:
-                            TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
+//                            TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
                             break;
                         case EMErrorUserAlreadyExist:
-                            TTAlertNoTitle(NSLocalizedString(@"register.repeat", @"You registered user already exists!"));
+//                            TTAlertNoTitle(NSLocalizedString(@"register.repeat", @"You registered user already exists!"));
                             break;
                         case EMErrorNetworkUnavailable:
-                            TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
+//                            TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
                             break;
                         case EMErrorServerTimeout:
-                            TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
+//                            TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
                             break;
                         default:
-                            TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));
+//                            TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));
                             break;
                     }
                 }
@@ -163,19 +163,19 @@
 //                        TTAlertNoTitle(error.errorDescription);
 //                        break;
                     case EMErrorNetworkUnavailable:
-                        TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
+//                        TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
                         break;
                     case EMErrorServerNotReachable:
-                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
+//                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
                         break;
                     case EMErrorUserAuthenticationFailed:
-                        TTAlertNoTitle(error.errorDescription);
+//                        TTAlertNoTitle(error.errorDescription);
                         break;
                     case EMErrorServerTimeout:
-                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
+//                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
                         break;
                     default:
-                        TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
+//                        TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
                         break;
                 }
             }
