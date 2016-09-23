@@ -313,6 +313,44 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    if (indexPath.section == 0) {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
+        EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+        if ([model.buddy isEqualToString:loginUsername]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
+            
+            return;
+        }
+        
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
+        if (!error) {
+            [[EMClient sharedClient].chatManager deleteConversation:model.buddy isDeleteMessages:YES completion:nil];
+            
+            [tableView beginUpdates];
+            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
+            [self.contactsSource removeObject:model.buddy];
+            [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView endUpdates];
+        }
+        else{
+            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
+            [tableView reloadData];
+        }
+    }
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -385,7 +423,7 @@
     NSMutableArray *contactsSource = [NSMutableArray array];
     
     //从获取的数据中剔除黑名单中的好友
-    NSArray *blockList = [[EMClient sharedClient].contactManager getBlackListFromDB];
+    NSArray *blockList = [[EMClient sharedClient].contactManager getBlackList];
     for (NSString *buddy in buddyList) {
         if (![blockList containsObject:buddy]) {
             [contactsSource addObject:buddy];
@@ -445,20 +483,6 @@
     
     [self.dataArray addObjectsFromArray:sortedArray];
     [self.tableView reloadData];
-}
-
-#pragma mark - EaseUserCellDelegate
-
-- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
-        return;
-    }
-    
-    _currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:@"Delete", NSLocalizedString(@"friend.block", @"join the blacklist"), nil];
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -549,7 +573,7 @@
     [self.dataArray removeAllObjects];
     [self.contactsSource removeAllObjects];
     
-    NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
+    NSArray *buddyList = [[EMClient sharedClient].contactManager getContacts];
     
     for (NSString *buddy in buddyList) {
         [self.contactsSource addObject:buddy];

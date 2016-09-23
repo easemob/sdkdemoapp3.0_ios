@@ -234,7 +234,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                 /**
                  *  把相应数据更新到数据库
                  */
-                [[EMClient sharedClient].chatManager updateMessage:message];
+                [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
             }
         }
     }
@@ -282,7 +282,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                     /**
                      *  存入当前会话并存入数据库
                      */
-                    [self.chatVC.conversation appendMessage:textMessage];
+                    [self.chatVC.conversation appendMessage:textMessage error:nil];
                     
                 }else {
                     /**
@@ -293,7 +293,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                         for (id <IConversationModel> model in [listVc.dataArray copy]) {
                             EMConversation *conversation = model.conversation;
                             if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
-                                [conversation appendMessage:textMessage];
+                                [conversation appendMessage:textMessage error:nil];
                                 break;
                             }
                         }
@@ -301,7 +301,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                         [listVc refresh];
                         
                     }else {
-                        [[EMClient sharedClient].chatManager importMessages:@[textMessage]];
+                        [[EMClient sharedClient].chatManager importMessages:@[textMessage] completion:nil];
                     }
                 }
             }

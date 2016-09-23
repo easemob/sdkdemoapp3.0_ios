@@ -187,7 +187,7 @@
 - (BOOL)isJoined:(EMGroup *)group
 {
     if (group) {
-        NSArray *groupList = [[EMClient sharedClient].groupManager getAllGroups];
+        NSArray *groupList = [[EMClient sharedClient].groupManager getJoinedGroups];
         for (EMGroup *tmpGroup in groupList) {
             if (tmpGroup.isPublic == group.isPublic && [group.groupId isEqualToString:tmpGroup.groupId]) {
                 return YES;

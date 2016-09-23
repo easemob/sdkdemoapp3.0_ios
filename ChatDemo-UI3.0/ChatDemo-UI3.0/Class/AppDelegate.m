@@ -20,7 +20,8 @@
 #import "RedPacketUserConfig.h"
 #import "AlipaySDK.h"
 #import "RedpacketOpenConst.h"
-
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface AppDelegate ()
 
@@ -33,6 +34,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Fabric with:@[[Crashlytics class]]];
+
 #ifdef REDPACKET_AVALABLE
     /**
      *  TODO: 通过环信的AppKey注册红包
@@ -40,7 +43,6 @@
     [[RedPacketUserConfig sharedConfig] configWithAppKey:EaseMobAppKey];
 #endif
 
-    
     _connectionState = EMConnectionConnected;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

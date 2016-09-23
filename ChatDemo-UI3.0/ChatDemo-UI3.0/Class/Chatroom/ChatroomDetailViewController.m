@@ -113,7 +113,7 @@
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.occupantCount", @"members count");
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.occupantsCount, (int)_chatroom.maxOccupantsCount];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.membersCount, (int)_chatroom.maxMembersCount];
     }
     
     return cell;
@@ -143,18 +143,17 @@
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager asyncFetchChatroomInfo:_chatroom.chatroomId includeMembersList:YES success:^(EMChatroom *aChatroom) {
+    [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerByID:_chatroom.chatroomId includeMembersList:YES completion:^(EMChatroom *aChatroom, EMError *aError) {
         __strong ChatroomDetailViewController *strongSelf = weakSelf;
         if (strongSelf) {
             [strongSelf hideHud];
-            strongSelf.chatroom = aChatroom;
-            [strongSelf reloadDataSource];
-        }
-    } failure:^(EMError *aError) {
-        __strong ChatroomDetailViewController *strongSelf = weakSelf;
-        if (strongSelf) {
-            [strongSelf hideHud];
-            [strongSelf showHint:NSLocalizedString(@"chatroom.fetchInfoFail", @"failed to get the chatroom details, please try again later")];
+            if (!aError) {
+                strongSelf.chatroom = aChatroom;
+                [strongSelf reloadDataSource];
+            }
+            else {
+                [strongSelf showHint:NSLocalizedString(@"chatroom.fetchInfoFail", @"failed to get the chatroom details, please try again later")];
+            }
         }
     }];
 }
@@ -162,7 +161,7 @@
 - (void)reloadDataSource
 {
     [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:self.chatroom.occupants];
+    [self.dataSource addObjectsFromArray:self.chatroom.members];
     [self refreshScrollView];
     [self hideHud];
 }

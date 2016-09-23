@@ -235,14 +235,14 @@
     
     if (_callSession.type == EMCallTypeVideo) {
         CGFloat tmpWidth = _actionView.frame.size.width / 3;
-        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
-        _recordButton.layer.cornerRadius = 20.f;
-        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
-        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
-        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
-        [_recordButton setBackgroundColor:[UIColor grayColor]];
-        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
-        [_actionView addSubview:_recordButton];
+//        _recordButton = [[UIButton alloc] initWithFrame:CGRectMake((tmpWidth-40)/2, 20, 40, 40)];
+//        _recordButton.layer.cornerRadius = 20.f;
+//        [_recordButton setTitle:@"录制" forState:UIControlStateNormal];
+//        [_recordButton setTitle:@"停止播放" forState:UIControlStateSelected];
+//        [_recordButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+//        [_recordButton setBackgroundColor:[UIColor grayColor]];
+//        [_recordButton addTarget:self action:@selector(recordAction) forControlEvents:UIControlEventTouchUpInside];
+//        [_actionView addSubview:_recordButton];
         
         _videoButton = [[UIButton alloc] initWithFrame:CGRectMake(tmpWidth + (tmpWidth - 40) / 2, 20, 40, 40)];
         _videoButton.layer.cornerRadius = 20.f;

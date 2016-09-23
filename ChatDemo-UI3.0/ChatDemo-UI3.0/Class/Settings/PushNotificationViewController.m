@@ -234,9 +234,9 @@
         isUpdate = YES;
     }
     
-    if (_nickName && _nickName.length > 0 && ![_nickName isEqualToString:options.nickname])
+    if (_nickName && _nickName.length > 0 && ![_nickName isEqualToString:options.displayName])
     {
-        options.nickname = _nickName;
+        options.displayName = _nickName;
         isUpdate = YES;
     }
     if (options.noDisturbingStartH != _noDisturbingStart || options.noDisturbingEndH != _noDisturbingEnd){
@@ -276,23 +276,19 @@
 - (void)loadPushOptions
 {
     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        [[EMClient sharedClient] getPushOptionsFromServerWithError:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error == nil) {
-                [weakself refreshPushOptions];
-            } else {
-                
-            }
-        });
-    });
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Please wait...")];
+    [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            [weakself refreshPushOptions];
+        }
+    }];
 }
 
 - (void)refreshPushOptions
 {
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    _nickName = options.nickname;
+    _nickName = options.displayName;
     _pushDisplayStyle = options.displayStyle;
     _noDisturbingStatus = options.noDisturbStatus;
     if (_noDisturbingStatus != EMPushNoDisturbStatusClose) {
