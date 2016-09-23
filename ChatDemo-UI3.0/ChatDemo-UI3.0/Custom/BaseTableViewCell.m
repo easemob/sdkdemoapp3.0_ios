@@ -21,6 +21,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.accessibilityIdentifier = @"table_cell";
+
         _bottomLineView = [[UIView alloc] init];
         _bottomLineView.backgroundColor = [UIColor colorWithRed:207 / 255.0 green:210 /255.0 blue:213 / 255.0 alpha:0.7];
         [self.contentView addSubview:_bottomLineView];

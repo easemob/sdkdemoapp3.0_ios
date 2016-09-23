@@ -30,7 +30,7 @@
                     <frame key="frameInset" minX="35" minY="232" width="50" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iqB-n0-4iR" userLabel="mainview">
@@ -42,6 +42,7 @@
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="个人账号/手机" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AP7-GL-7yZ" userLabel="username - 个人账号/手机">
                             <frame key="frameInset" minX="82" minY="49" width="193" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <accessibility key="accessibilityConfiguration" identifier="username"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" returnKeyType="next"/>
                         </textField>
@@ -58,6 +59,7 @@
                             <frame key="frameInset" minX="82" minY="89" width="193" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="0.74977948588709675" green="0.18706713233925057" blue="0.19164996080266938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="password"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
                         </textField>
@@ -70,6 +72,7 @@
                             <frame key="frameInset" minX="35" minY="148" width="80" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.3411764705882353" green="0.72941176470588232" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="register"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                             <state key="normal" title="注册">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -86,6 +89,7 @@
                             <frame key="frameInset" minX="125" minY="148" width="160" height="43"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.396078431372549" blue="0.4823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="login"/>
                             <fontDescription key="fontDescription" type="boldSystem" size="button"/>
                             <state key="normal" title="登录">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -100,16 +104,14 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="480" id="9rz-9f-bxA"/>
-                        <constraint firstAttribute="width" constant="320" id="z8l-QU-hN8"/>
-                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="iqB-n0-4iR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="0bp-tN-Jam"/>
-                <constraint firstItem="iqB-n0-4iR" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Kx2-c7-st5"/>
+                <constraint firstItem="iqB-n0-4iR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fhu-37-5eT"/>
+                <constraint firstAttribute="bottom" secondItem="iqB-n0-4iR" secondAttribute="bottom" constant="187" id="pyH-Ck-HdV"/>
+                <constraint firstItem="iqB-n0-4iR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="uGn-YK-Jim"/>
+                <constraint firstItem="iqB-n0-4iR" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="wmG-qh-kq0"/>
             </constraints>
         </view>
     </objects>
