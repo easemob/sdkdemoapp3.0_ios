@@ -525,20 +525,11 @@ static ChatDemoHelper *helper = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
     
-//    NSString *callId = @"";
-//    if (aSession && aSession.callId) {
-//        callId = [aSession callId];
-//    }
-//    const char *cId = [callId UTF8String];
-    
     if(self.callSession && self.callSession.status != EMCallSessionStatusDisconnected){
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx didReceiveCallIncoming busy" << cId;
         
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
-    
-//    easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx didReceiveCallIncoming" << cId;
     
     self.callSession = aSession;
     if(self.callSession){
@@ -548,7 +539,6 @@ static ChatDemoHelper *helper = nil;
             self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
             [_mainVC presentViewController:self.callController animated:NO completion:nil];
-//            easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx present call view controller" << cId;
         }
     }
 }
@@ -556,13 +546,6 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallConnected:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
-//        NSString *callId = @"";
-//        if (aSession && aSession.callId) {
-//            callId = [aSession callId];
-//        }
-//        const char *cId = [callId UTF8String];
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx didReceiveCallConnected" << cId;
-        
         [self.callController stateToConnected];
     }
 }
@@ -570,13 +553,6 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallAccepted:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
-//        NSString *callId = @"";
-//        if (aSession && aSession.callId) {
-//            callId = [aSession callId];
-//        }
-//        const char *cId = [callId UTF8String];
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx didReceiveCallAccepted" << cId;
-        
         [self _stopCallTimer];
         [self.callController stateToAnswered];
     }
@@ -586,14 +562,7 @@ static ChatDemoHelper *helper = nil;
                           reason:(EMCallEndReason)aReason
                            error:(EMError *)aError
 {
-//    NSString *callId = @"";
-//    if (aSession && aSession.callId) {
-//        callId = [aSession callId];
-//    }
-//    const char *cId = [callId UTF8String];
-    
     if ([aSession.callId isEqualToString:_callSession.callId]) {
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx didReceiveCallTerminated" << cId;
         
         [self _stopCallTimer];
         
@@ -601,7 +570,6 @@ static ChatDemoHelper *helper = nil;
             self.callSession = nil;
             [self dismissCurrentCallController];
         }
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx dismiss call view controller" << cId;
         
         if (aReason != EMCallEndReasonHangup) {
             NSString *reasonStr = @"";
@@ -719,23 +687,16 @@ static ChatDemoHelper *helper = nil;
                 self.callSession = aCallSession;
                 self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
                 [self.mainVC presentViewController:self.callController animated:NO completion:nil];
-                
-                //                    NSString *callId = @"";
-                //                    if (aCallSession && aCallSession.callId) {
-                //                        callId = [aCallSession callId];
-                //                    }
-                //                    const char *cId = [callId UTF8String];
-                //                    easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx present call view controller" << cId;
             }
             
             [self _startCallTimer];
-            
+        }
         else {
-            [[EMClient sharedClient].callManager endCall:aCallSession.sessionId reason:EMCallEndReasonNoResponse];
+            [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
         
-    if (aIsVideo) {
+    if (aType == EMCallTypeVideo) {
         [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
         }];
@@ -756,18 +717,11 @@ static ChatDemoHelper *helper = nil;
         [[EMClient sharedClient].callManager endCall:tmpSession.callId reason:aReason];
     }
     
-//    NSString *callId = @"";
-//    if (tmpSession && tmpSession.callId) {
-//        callId = [tmpSession callId];
-//    }
-//    const char *cId = [callId UTF8String];
-    
     @synchronized (_callLock) {
         self.callSession = nil;
         
         [self dismissCurrentCallController];
     }
-//    easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx dismiss call view controller" << cId;
 }
 
 - (void)answerCall:(NSString *)aCallId
@@ -788,9 +742,6 @@ static ChatDemoHelper *helper = nil;
             }
         });
     }
-    else {
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx no call session";
-    }
 }
 
 - (void)dismissCurrentCallController
@@ -799,14 +750,13 @@ static ChatDemoHelper *helper = nil;
         [self.callController dismissViewControllerAnimated:NO completion:nil];
         [self.callController clear];
         self.callController = nil;
-        
-//        easemob::EMLog::getInstance().getLogStream()<<"\nxxxxxxxxxxxxxxxxxxx dismiss call view controller";
     }
 }
 
 #endif
 
 #pragma mark - private
+    
 - (BOOL)_needShowNotification:(NSString *)fromChatter
 {
     BOOL ret = YES;

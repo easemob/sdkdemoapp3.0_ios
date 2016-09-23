@@ -412,29 +412,29 @@
 
 - (void)recordAction
 {
-    _recordButton.selected = !_recordButton.selected;
-    if (_recordButton.selected) {
-        NSString *recordPath = NSHomeDirectory();
-        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
-        NSFileManager *fm = [NSFileManager defaultManager];
-        if(![fm fileExistsAtPath:recordPath]){
-            [fm createDirectoryAtPath:recordPath
-          withIntermediateDirectories:YES
-                           attributes:nil
-                                error:nil];
-        }
-        
-        [[EMPluginVideoRecorder sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
-    } else {
-        NSString *tempPath = [[EMPluginVideoRecorder sharedInstance] stopVideoRecording:nil];
-        if (tempPath.length > 0) {
-            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
-            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
-            [moviePlayerController.moviePlayer prepareToPlay];
-            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
-        }
-    }
+//    _recordButton.selected = !_recordButton.selected;
+//    if (_recordButton.selected) {
+//        NSString *recordPath = NSHomeDirectory();
+//        recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+//        NSFileManager *fm = [NSFileManager defaultManager];
+//        if(![fm fileExistsAtPath:recordPath]){
+//            [fm createDirectoryAtPath:recordPath
+//          withIntermediateDirectories:YES
+//                           attributes:nil
+//                                error:nil];
+//        }
+//        
+//        [[EMPluginVideoRecorder sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
+//    } else {
+//        NSString *tempPath = [[EMPluginVideoRecorder sharedInstance] stopVideoRecording:nil];
+//        if (tempPath.length > 0) {
+//            NSURL *videoURL = [NSURL fileURLWithPath:tempPath];
+//            MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
+//            [moviePlayerController.moviePlayer prepareToPlay];
+//            moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+//            [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
+//        }
+//    }
 }
 
 - (void)videoPauseAction
