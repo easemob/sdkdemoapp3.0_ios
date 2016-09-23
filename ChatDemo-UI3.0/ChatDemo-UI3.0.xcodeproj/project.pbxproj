@@ -19,6 +19,9 @@
 		3A807AFB1D950C54004D18CB /* ChatDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807AFA1D950C54004D18CB /* ChatDemoHelper.m */; };
 		3A807AFE1D950C6F004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807AFD1D950C6F004D18CB /* EMNavigationController.m */; };
 		3A807B011D950E2B004D18CB /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B001D950E2B004D18CB /* CallResolutionViewController.m */; };
+		3A807B141D951929004D18CB /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A807B121D951929004D18CB /* libffmpeg-ios-full.a */; };
+		3A807B151D951929004D18CB /* libHyphenatePluginRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A807B131D951929004D18CB /* libHyphenatePluginRecorder.a */; };
+		3A807B171D9519E3004D18CB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A807B161D9519E3004D18CB /* libbz2.tbd */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C117121197D243B00E2DBEC /* PushNotificationViewController.m */; };
@@ -395,6 +398,10 @@
 		3A807AFD1D950C6F004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
 		3A807AFF1D950E2B004D18CB /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
 		3A807B001D950E2B004D18CB /* CallResolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallResolutionViewController.m; sourceTree = "<group>"; };
+		3A807B111D951929004D18CB /* EMAVPluginRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAVPluginRecorder.h; sourceTree = "<group>"; };
+		3A807B121D951929004D18CB /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		3A807B131D951929004D18CB /* libHyphenatePluginRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenatePluginRecorder.a; sourceTree = "<group>"; };
+		3A807B161D9519E3004D18CB /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3C117120197D243B00E2DBEC /* PushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationViewController.h; sourceTree = "<group>"; };
@@ -703,11 +710,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A807B171D9519E3004D18CB /* libbz2.tbd in Frameworks */,
 				3A807A621D950BA0004D18CB /* libEaseUI.a in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
 				28B223A21D5495B6006FA0C6 /* Crashlytics.framework in Frameworks */,
 				921C6A911D2A83AD00D8257F /* AlipaySDK.a in Frameworks */,
+				3A807B151D951929004D18CB /* libHyphenatePluginRecorder.a in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
 				28B223A31D5495B6006FA0C6 /* Fabric.framework in Frameworks */,
 				D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */,
@@ -716,6 +725,7 @@
 				EBF9556C1ADD0F0C0087E035 /* libstdc++.6.0.9.dylib in Frameworks */,
 				3CBB931C1A14B227007FED9E /* libsqlite3.dylib in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
+				3A807B141D951929004D18CB /* libffmpeg-ios-full.a in Frameworks */,
 				3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */,
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
@@ -1011,6 +1021,16 @@
 			path = conversationList;
 			sourceTree = "<group>";
 		};
+		3A807B101D951929004D18CB /* plugin */ = {
+			isa = PBXGroup;
+			children = (
+				3A807B111D951929004D18CB /* EMAVPluginRecorder.h */,
+				3A807B121D951929004D18CB /* libffmpeg-ios-full.a */,
+				3A807B131D951929004D18CB /* libHyphenatePluginRecorder.a */,
+			);
+			path = plugin;
+			sourceTree = "<group>";
+		};
 		3C16149C1973D1A600564BF5 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1198,6 +1218,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A807B161D9519E3004D18CB /* libbz2.tbd */,
 				3A807A611D950BA0004D18CB /* libEaseUI.a */,
 				28B223A01D5495B6006FA0C6 /* Crashlytics.framework */,
 				28B223A11D5495B6006FA0C6 /* Fabric.framework */,
@@ -1488,6 +1509,7 @@
 		D2A910711C7FEEC20025AD0A /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				3A807B101D951929004D18CB /* plugin */,
 				D2A910721C7FEEC20025AD0A /* CallViewController.h */,
 				D2A910731C7FEEC20025AD0A /* CallViewController.m */,
 			);
@@ -2155,6 +2177,7 @@
 					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
 					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
+					"$(PROJECT_DIR)/ChatDemo-UI3.0/Class/Call/plugin",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -2213,6 +2236,7 @@
 					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
 					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
+					"$(PROJECT_DIR)/ChatDemo-UI3.0/Class/Call/plugin",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
