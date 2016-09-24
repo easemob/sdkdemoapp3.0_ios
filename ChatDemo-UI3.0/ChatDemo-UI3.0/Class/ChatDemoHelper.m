@@ -532,13 +532,9 @@ static ChatDemoHelper *helper = nil;
     }
     
     if(self.callSession && self.callSession.status != EMCallSessionStatusDisconnected){
-        [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx didReceiveCallIncoming busy %@", callId]];
-        
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
-    
-    [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx didReceiveCallIncoming %@", callId]];
     
     self.callSession = aSession;
     if(self.callSession){
@@ -548,8 +544,6 @@ static ChatDemoHelper *helper = nil;
             self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
             [_mainVC presentViewController:self.callController animated:NO completion:nil];
-            
-            [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx present call view controller %@", callId]];
         }
     }
 }
@@ -561,8 +555,6 @@ static ChatDemoHelper *helper = nil;
         if (aSession && aSession.callId) {
             callId = [aSession callId];
         }
-        [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx didReceiveCallConnected %@", callId]];
-        
         [self.callController stateToConnected];
     }
 }
@@ -574,7 +566,6 @@ static ChatDemoHelper *helper = nil;
         if (aSession && aSession.callId) {
             callId = [aSession callId];
         }
-        [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx didReceiveCallAccepted %@", callId]];
         
         [self _stopCallTimer];
         [self.callController stateToAnswered];
@@ -592,16 +583,12 @@ static ChatDemoHelper *helper = nil;
     
     if ([aSession.callId isEqualToString:_callSession.callId]) {
         
-        [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx didReceiveCallTerminated %@", callId]];
-        
         [self _stopCallTimer];
         
         @synchronized (_callLock) {
             self.callSession = nil;
             [self dismissCurrentCallController];
         }
-        
-        [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx dismiss call view controller %@", callId]];
         
         if (aReason != EMCallEndReasonHangup) {
             NSString *reasonStr = @"";
@@ -636,12 +623,12 @@ static ChatDemoHelper *helper = nil;
             }
             
             if (aError) {
-//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDesc ription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-//                [alertView show];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
             }
             else{
-//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-//                [alertView show];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
             }
         }
     }
@@ -719,7 +706,6 @@ static ChatDemoHelper *helper = nil;
                     if (aCallSession && aCallSession.callId) {
                         callId = [aCallSession callId];
                     }
-                    [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx present call view controller %@", callId]];
                 }
                 
                 [self _startCallTimer];
@@ -730,7 +716,7 @@ static ChatDemoHelper *helper = nil;
             }
         }
         else {
-            [[EMClient sharedClient].callManager endCall:aCallSession.sessionId reason:EMCallEndReasonNoResponse];
+            [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
     if (aType == EMCallTypeVideo) {
@@ -754,18 +740,11 @@ static ChatDemoHelper *helper = nil;
         [[EMClient sharedClient].callManager endCall:tmpSession.callId reason:aReason];
     }
     
-    NSString *callId = @"";
-    if (tmpSession && tmpSession.callId) {
-        callId = [tmpSession callId];
-    }
-    const char *cId = [callId UTF8String];
-    
     @synchronized (_callLock) {
         self.callSession = nil;
         
         [self dismissCurrentCallController];
     }
-    [EMLog log:[NSString stringWithFormat:@"\nxxxxxxxxxxxxxxxxxxx dismiss call view controller %@", callId]];
 }
 
 - (void)answerCall:(NSString *)aCallId
@@ -786,9 +765,6 @@ static ChatDemoHelper *helper = nil;
             }
         });
     }
-    else {
-        [EMLog log:@"\nxxxxxxxxxxxxxxxxxxx no call session"];
-    }
 }
 
 - (void)dismissCurrentCallController
@@ -797,8 +773,6 @@ static ChatDemoHelper *helper = nil;
         [self.callController dismissViewControllerAnimated:NO completion:nil];
         [self.callController clear];
         self.callController = nil;
-        
-        [EMLog log:@"\nxxxxxxxxxxxxxxxxxxx dismiss call view controller"];
     }
 }
 
