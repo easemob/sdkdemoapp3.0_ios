@@ -1,9 +1,20 @@
+/************************************************************
+  *  * EaseMob CONFIDENTIAL 
+  * __________________ 
+  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
+  *  
+  * NOTICE: All information contained herein is, and remains 
+  * the property of EaseMob Technologies.
+  * Dissemination of this information or reproduction of this material 
+  * is strictly forbidden unless prior written permission is obtained
+  * from EaseMob Technologies.
+  */
 //
 //  EMNavigationController.m
-//  ChatDemo-UI3.0
+//  ChatDemo-UI2.0
 //
-//  Created by XieYajie on 7/19/16.
-//  Copyright © 2016 XieYajie. All rights reserved.
+//  Created by dhcdht on 14-6-4.
+//  Copyright (c) 2014年 dhcdht. All rights reserved.
 //
 
 #import "EMNavigationController.h"
@@ -14,29 +25,36 @@
 
 @implementation EMNavigationController
 
-- (void)viewDidLoad {
+- (id)initWithRootViewController:(UIViewController *)rootViewController
+{
+    self = [super initWithRootViewController:rootViewController];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotate
-{
-    return [self.viewControllers.lastObject shouldAutorotate];
-}
+/*
+#pragma mark - Navigation
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    return [self.viewControllers.lastObject supportedInterfaceOrientations];
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return [self.viewControllers.lastObject preferredInterfaceOrientationForPresentation];
-}
+*/
 
 @end

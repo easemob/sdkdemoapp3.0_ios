@@ -116,6 +116,7 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)setupSubviews
 {
+    self.tabBar.accessibilityIdentifier = @"tabbar";
     self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     
@@ -124,6 +125,7 @@ static NSString *kGroupName = @"GroupName";
     _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.conversation", @"Conversations")
                                                            image:nil
                                                              tag:0];
+    _chatListVC.tabBarItem.accessibilityIdentifier = @"conversation";
     [_chatListVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
@@ -133,6 +135,7 @@ static NSString *kGroupName = @"GroupName";
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.addressbook", @"AddressBook")
                                                            image:nil
                                                              tag:1];
+    _contactsVC.tabBarItem.accessibilityIdentifier = @"contact";
     [_contactsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
@@ -142,6 +145,7 @@ static NSString *kGroupName = @"GroupName";
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:nil
                                                              tag:2];
+    _settingsVC.tabBarItem.accessibilityIdentifier = @"setting";
     [_settingsVC.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabbar_settingHL"]
                          withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_setting"]];
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;

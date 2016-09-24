@@ -14,6 +14,7 @@
 #import "AppDelegate+EaseMobDebug.h"
 #import "AppDelegate+Parse.h"
 
+#import "EMNavigationController.h"
 #import "LoginViewController.h"
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
@@ -80,15 +81,15 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 - (void)loginStateChange:(NSNotification *)notification
 {
     BOOL loginSuccess = [notification.object boolValue];
-    UINavigationController *navigationController = nil;
+    EMNavigationController *navigationController = nil;
     if (loginSuccess) {//登陆成功加载主窗口控制器
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
         if (self.mainController == nil) {
             self.mainController = [[MainViewController alloc] init];
-            navigationController = [[UINavigationController alloc] initWithRootViewController:self.mainController];
+            navigationController = [[EMNavigationController alloc] initWithRootViewController:self.mainController];
         }else{
-            navigationController  = self.mainController.navigationController;
+            navigationController  = (EMNavigationController *)self.mainController.navigationController;
         }
         // 环信UIdemo中有用到Parse，您的项目中不需要添加，可忽略此处
         [self initParse];
@@ -107,7 +108,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         [ChatDemoHelper shareHelper].mainVC = nil;
         
         LoginViewController *loginController = [[LoginViewController alloc] init];
-        navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+        navigationController = [[EMNavigationController alloc] initWithRootViewController:loginController];
         [self clearParse];
     }
     
@@ -119,6 +120,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
         [navigationController.navigationBar.layer setMasksToBounds:YES];
     }
     
+    navigationController.navigationBar.accessibilityIdentifier = @"navigationbar";
     self.window.rootViewController = navigationController;
 }
 

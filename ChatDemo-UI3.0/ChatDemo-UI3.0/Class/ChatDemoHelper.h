@@ -43,6 +43,7 @@
 
 #if DEMO_CALL == 1
 
+@property (strong, nonatomic) NSObject *callLock;
 @property (strong, nonatomic) EMCallSession *callSession;
 @property (strong, nonatomic) CallViewController *callController;
 
@@ -58,12 +59,16 @@
 
 #if DEMO_CALL == 1
 
++ (void)updateCallOptions;
+
 - (void)makeCallWithUsername:(NSString *)aUsername
-                     isVideo:(BOOL)aIsVideo;
+                        type:(EMCallType)aType;
 
 - (void)hangupCallWithReason:(EMCallEndReason)aReason;
 
-- (void)answerCall;
+- (void)answerCall:(NSString *)aCallId;
+
+- (void)dismissCurrentCallController;
 
 #endif
 

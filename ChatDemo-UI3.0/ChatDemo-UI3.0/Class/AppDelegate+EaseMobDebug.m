@@ -18,7 +18,6 @@
 
 @implementation AppDelegate (EaseMobDebug)
 
-
 -(BOOL)isSpecifyServer{
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     

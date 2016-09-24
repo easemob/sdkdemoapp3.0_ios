@@ -13,6 +13,15 @@
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
 		28BFD6381B01D40500D0ADEC /* MyChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */; };
+		3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */; };
+		3A595FA81D6D9FF900504DB3 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */; };
+		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
+		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
+		3A807B0B1D9511EF004D18CB /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A807B091D9511EF004D18CB /* libffmpeg-ios-full.a */; };
+		3A807B0C1D9511EF004D18CB /* libHyphenatePluginRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A807B0A1D9511EF004D18CB /* libHyphenatePluginRecorder.a */; };
+		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
+		3A87CD4D1D8FBE2200016402 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */; };
+		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C117121197D243B00E2DBEC /* PushNotificationViewController.m */; };
@@ -23,7 +32,6 @@
 		3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3527351931D1BE00385240 /* BaseTableViewCell.m */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3C35365C19A22164003EF79E /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C35365B19A22164003EF79E /* GroupSettingViewController.m */; };
-		3C372B5F19FE60DC005925B6 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		3C3D2D1C1A6E5A760099EF88 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3C3D2D1E1A6E5A760099EF88 /* Localizable.strings */; };
 		3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3EB2FB19545FFD00E1AE9E /* PublicGroupListViewController.m */; };
 		3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3EB2FE195465D100E1AE9E /* PublicGroupDetailViewController.m */; };
@@ -52,7 +60,6 @@
 		90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */; };
 		90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */; };
 		905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 905325CE1932ED8B00F064D7 /* EMSearchBar.m */; };
-		905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 905326B419333E8E00F064D7 /* TTGlobalUICommon.m */; };
 		906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */; };
 		906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
@@ -251,6 +258,27 @@
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
 		28BFD6341B01D40500D0ADEC /* MyChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChatroomListViewController.m; sourceTree = "<group>"; };
+		3A0FEB331D8E8C2F005C6B8F /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		3A590E7E1D8ED3330047172A /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
+		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
+		3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../other_sdk/test_sdk/EaseUI/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
+		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		3A807A591D94D9BA004D18CB /* EMPluginVideoRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EMPluginVideoRecorder.h; path = ../../../plugin/EMPluginVideoRecorder.h; sourceTree = "<group>"; };
+		3A807A5C1D94DA23004D18CB /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../../plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
+		3A807B081D9511EF004D18CB /* EMPluginVideoRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMPluginVideoRecorder.h; sourceTree = "<group>"; };
+		3A807B091D9511EF004D18CB /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		3A807B0A1D9511EF004D18CB /* libHyphenatePluginRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenatePluginRecorder.a; sourceTree = "<group>"; };
+		3A807B0D1D951301004D18CB /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
+		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
+		3A87CD4B1D8FBE2200016402 /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
+		3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallResolutionViewController.m; sourceTree = "<group>"; };
+		3AB62A0A1D9262F6000776F0 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/Record/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		3AB62A0B1D9262F6000776F0 /* libHyphenateAVRecorder-universal.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libHyphenateAVRecorder-universal.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/Record/libHyphenateAVRecorder-universal.a"; sourceTree = "<group>"; };
+		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		3AB62A121D926375000776F0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		3AE59D861D94CFB8006D3C9C /* libHyphenatePluginRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenatePluginRecorder.a; path = ../../../plugin/libHyphenatePluginRecorder.a; sourceTree = "<group>"; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3C117120197D243B00E2DBEC /* PushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationViewController.h; sourceTree = "<group>"; };
@@ -327,7 +355,6 @@
 		905325CD1932ED8B00F064D7 /* EMSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchBar.h; sourceTree = "<group>"; };
 		905325CE1932ED8B00F064D7 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
-		905326B419333E8E00F064D7 /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
 		906083D51B71F894008574B4 /* EMRobotChatTextBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRobotChatTextBubbleView.h; sourceTree = "<group>"; };
 		906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRobotChatTextBubbleView.m; sourceTree = "<group>"; };
 		906083D71B71F894008574B4 /* EMRotbotChatViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRotbotChatViewCell.h; sourceTree = "<group>"; };
@@ -560,6 +587,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				921C6A9A1D2A83AD00D8257F /* libRedpacketLib.a in Frameworks */,
+				3A807B0B1D9511EF004D18CB /* libffmpeg-ios-full.a in Frameworks */,
+				3A807B0C1D9511EF004D18CB /* libHyphenatePluginRecorder.a in Frameworks */,
+				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
+				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
+				3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
 				28B223A21D5495B6006FA0C6 /* Crashlytics.framework in Frameworks */,
@@ -576,7 +609,6 @@
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */,
-				921C6A9A1D2A83AD00D8257F /* libRedpacketLib.a in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				D29A6BB21B72098D002324BB /* Bolts.framework in Frameworks */,
@@ -604,6 +636,16 @@
 				28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */,
 			);
 			path = Chatroom;
+			sourceTree = "<group>";
+		};
+		3A807B071D9511EF004D18CB /* plugin */ = {
+			isa = PBXGroup;
+			children = (
+				3A807B081D9511EF004D18CB /* EMPluginVideoRecorder.h */,
+				3A807B091D9511EF004D18CB /* libffmpeg-ios-full.a */,
+				3A807B0A1D9511EF004D18CB /* libHyphenatePluginRecorder.a */,
+			);
+			path = plugin;
 			sourceTree = "<group>";
 		};
 		3C16149C1973D1A600564BF5 /* Core Data */ = {
@@ -677,6 +719,8 @@
 		3CBF90BD19302F5000AD68AE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3A807B0D1D951301004D18CB /* EMNavigationController.h */,
+				3A807B0E1D951301004D18CB /* EMNavigationController.m */,
 				3C5EB36119407CAF005C7704 /* EMChooseViewController.h */,
 				3C5EB36219407CAF005C7704 /* EMChooseViewController.m */,
 				3CBF90BE19302F5000AD68AE /* BaseViewController.h */,
@@ -764,8 +808,8 @@
 		905326B219333E8E00F064D7 /* TTGlobalUICommon */ = {
 			isa = PBXGroup;
 			children = (
+				3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */,
 				905326B319333E8E00F064D7 /* TTGlobalUICommon.h */,
-				905326B419333E8E00F064D7 /* TTGlobalUICommon.m */,
 			);
 			path = TTGlobalUICommon;
 			sourceTree = "<group>";
@@ -773,6 +817,7 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
+				3A595FA71D6D9FF900504DB3 /* EaseUIResource.bundle */,
 				9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -792,6 +837,17 @@
 			children = (
 				28B223A01D5495B6006FA0C6 /* Crashlytics.framework */,
 				28B223A11D5495B6006FA0C6 /* Fabric.framework */,
+				3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */,
+				3A807A5C1D94DA23004D18CB /* libffmpeg-ios-full.a */,
+				3A807A591D94D9BA004D18CB /* EMPluginVideoRecorder.h */,
+				3AE59D861D94CFB8006D3C9C /* libHyphenatePluginRecorder.a */,
+				3AB62A121D926375000776F0 /* libbz2.tbd */,
+				3AB62A101D92636E000776F0 /* libiconv.tbd */,
+				3AB62A0E1D926341000776F0 /* libz.tbd */,
+				3AB62A0A1D9262F6000776F0 /* libffmpeg-ios-full.a */,
+				3AB62A0B1D9262F6000776F0 /* libHyphenateAVRecorder-universal.a */,
+				3A0FEB331D8E8C2F005C6B8F /* libffmpeg-ios-full.a */,
+				3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */,
 				921C6A9D1D2A841600D8257F /* CoreMotion.framework */,
 				D2A9106F1C7FEE350025AD0A /* libHyphenateFullSDK.a */,
 				D26658581C4F41B9008EEFBF /* libEaseUI.a */,
@@ -829,6 +885,7 @@
 		9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */ = {
 			isa = PBXGroup;
 			children = (
+				3A590E7E1D8ED3330047172A /* ChatDemo-UI3.0.entitlements */,
 				921C6A6D1D2A83AD00D8257F /* RedacketSDK */,
 				3CBF90BC19302F5000AD68AE /* Custom */,
 				90911120192EEBB8008A48AA /* Class */,
@@ -926,6 +983,8 @@
 				3C2923B01988E13300DCCD40 /* BlackListViewController.m */,
 				3C6FFA2219A2F5560003EB25 /* DebugViewController.h */,
 				3C6FFA2319A2F5560003EB25 /* DebugViewController.m */,
+				3A87CD4B1D8FBE2200016402 /* CallResolutionViewController.h */,
+				3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1077,6 +1136,7 @@
 		D2A910711C7FEEC20025AD0A /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				3A807B071D9511EF004D18CB /* plugin */,
 				D2A910721C7FEEC20025AD0A /* CallViewController.h */,
 				D2A910731C7FEEC20025AD0A /* CallViewController.m */,
 			);
@@ -1339,9 +1399,13 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
-						DevelopmentTeam = PUEB48NTQQ;
+						DevelopmentTeam = 499WYUV8Q2;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -1372,6 +1436,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A595FA81D6D9FF900504DB3 /* EaseUIResource.bundle in Resources */,
 				EBD2ABA81A7CDAC000D16528 /* group_participant_addHL@2x.png in Resources */,
 				D2B3DAD91BF1D7B700913BD5 /* icon_024_cover.png in Resources */,
 				EBD2AB8B1A7CDAC000D16528 /* chat_receiver_audio_playing003@2x.png in Resources */,
@@ -1440,7 +1505,6 @@
 				EBD2ABA01A7CDAC000D16528 /* add@2x.png in Resources */,
 				D2A910851C83E7890025AD0A /* 80.png in Resources */,
 				EBD2ABB41A7CDAC000D16528 /* tabbar_contactsHL@2x.png in Resources */,
-				3C372B5F19FE60DC005925B6 /* (null) in Resources */,
 				EBD2AB8F1A7CDAC000D16528 /* chat_receiver_bg@2x.png in Resources */,
 				EBD2ABA91A7CDAC000D16528 /* groupPrivateHeader@2x.png in Resources */,
 				EBD2AB8E1A7CDAC000D16528 /* chat_receiver_bg.png in Resources */,
@@ -1529,10 +1593,10 @@
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
-				905326B519333E8E00F064D7 /* TTGlobalUICommon.m in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,
 				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
 				D2B61E331BC7BEA6007CB53E /* ConversationListController.m in Sources */,
+				3A87CD4D1D8FBE2200016402 /* CallResolutionViewController.m in Sources */,
 				D2F7691F1CBF42DB009778FB /* SearchChatViewController.m in Sources */,
 				3C6BBA0619419EBD00A64684 /* EMRemarkImageView.m in Sources */,
 				D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */,
@@ -1575,6 +1639,7 @@
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
+				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				3C13D94B1A12095D00903622 /* GroupBansViewController.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
@@ -1585,6 +1650,7 @@
 				921C6A991D2A83AD00D8257F /* RedPacketUserConfig.m in Sources */,
 				D2BF98B31AEDD780009E0D5C /* EditNicknameViewController.m in Sources */,
 				90911145192EEE6E008A48AA /* MainViewController.m in Sources */,
+				3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */,
 				921C6A941D2A83AD00D8257F /* EaseRedBagCell.m in Sources */,
 				3C6BBA0C1941A7CF00A64684 /* EMTextView.m in Sources */,
 				9091111B192EEAED008A48AA /* UIResponder+Router.m in Sources */,
@@ -1642,6 +1708,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
@@ -1681,7 +1748,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1706,8 +1774,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
 				EASEMOB_LIBNAME = "";
@@ -1725,6 +1795,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
+					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
+					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -1734,8 +1806,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
+					"\"$(SRCROOT)/RedacketSDK/RedpacketStaticLib/lib\"",
+					"$(PROJECT_DIR)/ChatDemo-UI3.0/Class/Call/plugin",
 					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -1746,6 +1819,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -1761,8 +1835,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
 				EASEMOB_LIBNAME = "";
@@ -1780,6 +1856,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
+					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
+					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -1789,8 +1867,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
-					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
+					"\"$(SRCROOT)/RedacketSDK/RedpacketStaticLib/lib\"",
+					"$(PROJECT_DIR)/ChatDemo-UI3.0/Class/Call/plugin",
 					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
