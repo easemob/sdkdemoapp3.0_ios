@@ -6,8 +6,8 @@
 //  Copyright © 2016年 easemob. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "EMBaseSettingController.h"
 
-@interface EMAboutViewController : UITableViewController
+@interface EMAboutViewController : EMBaseSettingController
 
 @end

@@ -8,6 +8,13 @@
 
 #import "EMBaseSettingController.h"
 
+typedef void(^UpdatedDisplayName)(NSString *newDisplayName);
+
 @interface PushDisplaynameViewController : EMBaseSettingController
 
+@property (nonatomic, copy) NSString *currentDisplayName;
+
+@property (nonatomic, copy)UpdatedDisplayName callBack;
+
+- (void)getUpdatedDisplayName:(UpdatedDisplayName)callBack;
 @end

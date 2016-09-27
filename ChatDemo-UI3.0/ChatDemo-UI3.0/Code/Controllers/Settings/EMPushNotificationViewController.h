@@ -6,8 +6,13 @@
 //  Copyright © 2016年 easemob. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "EMBaseSettingController.h"
+typedef void (^PushStatus)(EMPushNoDisturbStatus disturbStatus);
 
-@interface EMPushNotificationViewController : UITableViewController
+@interface EMPushNotificationViewController : EMBaseSettingController
+
+@property (nonatomic, copy) PushStatus callBack;
+
+- (void)getPushStatus:(PushStatus)callBack;
 
 @end

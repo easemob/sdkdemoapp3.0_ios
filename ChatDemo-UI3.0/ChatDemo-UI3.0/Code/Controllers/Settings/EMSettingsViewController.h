@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EMBaseSettingController.h"
 
-@interface EMSettingsViewController : UITableViewController
+@interface EMSettingsViewController :EMBaseSettingController
 
 @end

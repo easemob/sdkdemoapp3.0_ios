@@ -10,4 +10,6 @@
 
 @interface EMBaseSettingController : UITableViewController
 
+- (void)configBackButton;
+
 @end
