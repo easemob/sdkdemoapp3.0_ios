@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) UIButton *signOutButton;
 
+//@property (nonatomic, strong) UIView *footer;
+
 @end
 
 @implementation EMAccountViewController
@@ -50,7 +52,7 @@
 {
     if (!_signOutButton) {
         _signOutButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_signOutButton setFrame:CGRectMake(0, self.view.frame.size.height - 45 - 44 , KScreenWidth, 45)];
+        [_signOutButton setFrame:CGRectMake(0, self.view.frame.size.height - 44 - 45, KScreenWidth, 45)];
         [_signOutButton setBackgroundColor:RGBACOLOR(255, 59, 48, 1.0)];
         [_signOutButton setTitle:@"Sign Out" forState:UIControlStateNormal];
         [_signOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -61,11 +63,17 @@
     return _signOutButton;
 }
 
-- (void)viewDidLoad {
+
+- (void)viewDidLoad
+{
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]){
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
     
     [super viewDidLoad];
     [self configBackButton];
-    [self.tableView addSubview:self.signOutButton];
+    [self.view addSubview:self.signOutButton];
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -119,7 +127,11 @@
 }
 
 - (void)signOut {
-    
+    [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
+        if (!aError) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+        }
+    }];
 }
 
 

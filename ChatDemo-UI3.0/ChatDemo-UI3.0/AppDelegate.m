@@ -53,17 +53,16 @@
 
 - (void)loginStateChange:(NSNotification *)notification
 {
-//    BOOL loginSuccess = [notification.object boolValue];
-//    if (loginSuccess) {
-    
-    [[EMClient sharedClient] loginWithUsername:@"lat3" password:@"12"];
+    BOOL loginSuccess = [notification.object boolValue];
+    if (loginSuccess) {
+
         EMMainViewController *main = [[EMMainViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
         self.window.rootViewController = navigationController;
-//    } else {
-//        EMLoginViewController *login = [[EMLoginViewController alloc] init];
-//        self.window.rootViewController = login;
-//    }
+    } else {
+        EMLoginViewController *login = [[EMLoginViewController alloc] init];
+        self.window.rootViewController = login;
+    }
 }
 
 
