@@ -169,9 +169,9 @@ EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
 {
     NSDictionary *ext = messageModel.message.ext;
     
-    if (![RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
-        return [super messageViewController:tableView cellForMessageModel:messageModel];
-    }
+//    if (![RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
+//        return [super messageViewController:tableView cellForMessageModel:messageModel];
+//    }
     
     if ([RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
         /**
@@ -224,7 +224,7 @@ EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
         return 36;
     }
     
-    return [super messageViewController:viewController heightForMessageModel:messageModel withCellWidth:cellWidth];
+    return 0.0f;
 }
 
 #pragma mark - DataSource
