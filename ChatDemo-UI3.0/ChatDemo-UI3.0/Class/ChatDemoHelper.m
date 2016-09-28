@@ -26,7 +26,6 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
-#import "EMLog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
