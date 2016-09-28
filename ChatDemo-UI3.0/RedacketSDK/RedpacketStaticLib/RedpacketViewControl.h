@@ -90,6 +90,24 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 - (UIViewController *)redPacketViewControllerWithType:(RPSendRedPacketViewControllerType)rpType memberCount:(NSInteger)count;
 
 /**
+ *  生成转账Controller
+ *  
+ *  @param userInfo 用户相关属性
+ *
+ *  @return 转账Controller
+ */
+- (void)presentTransferViewControllerWithReceiver:(RedpacketUserInfo *)userInfo;
+
+/**
+ *  生成转账DetailController
+ *
+ *
+ *
+ *  @return 转账Controller
+ */
+- (void)presentTransferDetailViewController:(RedpacketMessageModel *)model;
+
+/**
  *  零钱页面
  *
  *  @return 零钱页面，App可以放在需要的位置

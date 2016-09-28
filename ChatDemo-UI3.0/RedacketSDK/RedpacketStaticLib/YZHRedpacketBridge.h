@@ -87,12 +87,12 @@
 /**
  *  商户名称
  */
-@property (nonatomic, copy)  NSString *redpacketOrgName __attribute__((deprecated("方法已经停用，请通过云账户后端进行配置")));
+@property (nonatomic, copy)  NSString *redpacketOrgName __deprecated_msg("方法已经停用，请通过云账户后端进行配置");
 
 /**
  *  用户退出需要清空Token
  */
-- (void)redpacketUserLoginOut __attribute__((deprecated("方法已经不需要调用, SDK根据用户变更和Token过期自动切换")));
+- (void)redpacketUserLoginOut __deprecated_msg("方法已经不需要调用, SDK根据用户变更和Token过期自动切换");
 
 /**
  *  签名注册Token
@@ -100,6 +100,6 @@
 - (void)configWithSign:(NSString *)sign
                      partner:(NSString *)partner
                    appUserId:(NSString *)appUserid
-                   timeStamp:(long)timeStamp __attribute__((deprecated("方法命名不规范，已经停用, 请使用上边的方法")));
+                   timeStamp:(long)timeStamp __deprecated_msg("方法命名不规范，已经停用, 请使用上边的方法");
 
 @end

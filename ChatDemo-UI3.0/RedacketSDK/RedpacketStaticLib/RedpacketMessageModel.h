@@ -19,6 +19,10 @@ typedef NS_ENUM(NSInteger, RedpacketMessageType) {
      *  红包被抢的消息
      */
     RedpacketMessageTypeTedpacketTakenMessage,
+    /**
+     *  转账消息
+     */
+    RedpacketMessageTypeTransfer
 };
 
 typedef NS_ENUM(NSInteger, RedpacketType) {
@@ -45,7 +49,11 @@ typedef NS_ENUM(NSInteger, RedpacketType) {
     /**
      *  定向红包 （专属红包，目前支持一人）
      */
-    RedpacketTypeMember
+    RedpacketTypeMember,
+    /**
+     *  转账
+     */
+    RedpacketTransfer
 };
 
 typedef NS_ENUM(NSInteger, RedpacketStatusType) {
@@ -67,6 +75,10 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userNickname;
+/**
+ *  用户名过长会发生截断,此处获取的是用户的原昵称
+ */
+@property (nonatomic, copy, readonly) NSString *userNicknameOrigin;
 @property (nonatomic, copy) NSString *userAvatar;
 //@property (nonatomic, assign) BOOL isGroup;
 
@@ -94,6 +106,7 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
 
 @property (nonatomic, copy) NSString *redpacketGreeting;
 @property (nonatomic, copy) NSString *redpacketOrgName;
+@property (nonatomic, copy) NSString *tranferTime;
 
 //未来定制化留存
 @property (nonatomic, copy) NSString *redpacketIcon;
@@ -197,6 +210,11 @@ typedef NS_ENUM(NSInteger, RedpacketStatusType) {
  *  @return
  */
 + (BOOL)isRedpacketTakenMessage:(NSDictionary *)redpacketDic;
+
+/**
+ *  是否是转账消息
+ */
++ (BOOL)isRedpacketTransferMessage:(NSDictionary *)redpacketDic;
 
 /**
  *  字典转换成红包消息Model
