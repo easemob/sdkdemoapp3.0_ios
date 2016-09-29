@@ -10,9 +10,32 @@
 "title.contacts" = "Contacts";
 "title.chats" = "Chats";
 "title.settings" = "Settings";
+"title.addContact" = "Add Contact";
 
 //login
 "signup.tips" = "Have an account?";
 "login.tips" = "Yay! New to Hyphenate?";
 "login.changebutton.signup" = "Sign up";
 "login.changebutton.login" = "Log in";
+
+//loading
+"loading.loadContacts" = "Load contacts...";
+"loading.loadCompleted" = "Loading completed";
+
+//add contact
+"contact.enterHyphenateID" = "Enter Hyphenate ID";
+"contact.sendApplySuccess" = "Requested";
+"contact.sendApplyFail" = "send application fails, please operate again";
+"contact.repeatContact" = "This contact has been added";
+"contact.addOwner" = "Not allowed to send their own friends to apply for";
+
+"contact.name" = "Name";
+"contact.hyphenateId" = "Hyphenate ID";
+"contact.apnsnickname" = "iOS APNS";
+"contact.block" = "Block Contact";
+"contact.delete" = "Delete Contact";
+
+//common
+"common.delete" = "Delete";
+"common.cancel" = "Cancel";
+"common.groups" = "Groups";

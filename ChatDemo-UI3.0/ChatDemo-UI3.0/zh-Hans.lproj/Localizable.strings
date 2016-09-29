@@ -5,3 +5,29 @@
   Created by EaseMob on 16/9/19.
   Copyright © 2016年 easemob. All rights reserved.
 */
+
+//title
+"title.contacts" = "联系人";
+"title.addContact" = "添加联系人";
+
+//loading
+"loading.loadContacts" = "加载联系人中...";
+"loading.loadFinished" = "加载完成";
+
+//add contact
+"contact.enterHyphenateID" = "输入环信ID";
+"contact.stateofsuccess" = "请求成功";
+"contact.sendApplyFail" = "发送申请失败，请重新操作";
+"contact.repeat" = "已经添加此联系人";
+"contact.addOwner" = "不允许向自己发出好友申请";
+
+"contact.name" = "姓名";
+"contact.hyphenateId" = "Hyphenate ID";
+"contact.apnsnickname" = "iOS推送昵称";
+"contact.block" = "联系人加入黑名单";
+"contact.delete" = "删除联系人";
+
+//common
+"common.delete" = "删除";
+"common.cancel" = "取消";
+"common.groups" = "群组列表";
