@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EMContactListSectionHeader">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="requestIcon" translatesAutoresizingMaskIntoConstraints="NO" id="kWc-37-PKu">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="Fc3-mc-uer"/>
+                        <constraint firstAttribute="width" constant="15" id="Q30-Yg-JC3"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Requests" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2v-Yt-sUa">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="eOE-OU-TTt"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="(1)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Am-YM-PmF">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="A41-vR-a8X"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.25098039220000001" green="0.36862745099999999" blue="0.47843137250000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="kWc-37-PKu" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="1Xw-OR-uSW"/>
+                <constraint firstItem="1Am-YM-PmF" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="2sc-ph-gsg"/>
+                <constraint firstItem="e2v-Yt-sUa" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="9lf-9N-S0M"/>
+                <constraint firstItem="e2v-Yt-sUa" firstAttribute="leading" secondItem="kWc-37-PKu" secondAttribute="trailing" constant="11" id="ZsI-XV-7s3"/>
+                <constraint firstItem="kWc-37-PKu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="gfX-Y7-emU"/>
+                <constraint firstItem="1Am-YM-PmF" firstAttribute="leading" secondItem="e2v-Yt-sUa" secondAttribute="trailing" constant="15" id="nBX-Bt-VTh"/>
+                <constraint firstAttribute="trailing" secondItem="1Am-YM-PmF" secondAttribute="trailing" constant="15" id="rA5-7x-1aT"/>
+            </constraints>
+            <connections>
+                <outlet property="icon" destination="kWc-37-PKu" id="Ly3-Gh-dvy"/>
+                <outlet property="title" destination="e2v-Yt-sUa" id="pmc-Ru-wdM"/>
+                <outlet property="unhandledCount" destination="1Am-YM-PmF" id="Fu6-i1-wJg"/>
+            </connections>
+            <point key="canvasLocation" x="395" y="448"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="requestIcon" width="15" height="15"/>
+    </resources>
+</document>
