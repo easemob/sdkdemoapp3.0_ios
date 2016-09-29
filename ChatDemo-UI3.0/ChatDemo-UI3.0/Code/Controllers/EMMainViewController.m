@@ -42,6 +42,7 @@
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.contacts", @"Contacts")
                                                            image:nil
                                                              tag:0];
+    [_contactsVC setupNavigationItem:self.navigationItem];
     
     _chatsVC = [[EMChatsViewController alloc] init];
     _chatsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.chats", @"Chats")
@@ -63,16 +64,22 @@
 {
     if (item.tag == 0) {
         self.title = NSLocalizedString(@"title.contacts", @"Contacts");
-        self.navigationItem.rightBarButtonItem = nil;
+//        self.navigationItem.rightBarButtonItem = nil;
+        [_contactsVC setupNavigationItem:self.navigationItem];
     }else if (item.tag == 1){
         self.title = NSLocalizedString(@"title.chats", @"Chats");
-        self.navigationItem.rightBarButtonItem = nil;
+        [self clearNavigationItem];
     }else if (item.tag == 2){
         self.title = NSLocalizedString(@"title.settings", @"Settings");
-        self.navigationItem.rightBarButtonItem = nil;
+        [self clearNavigationItem];
     }
 }
 
+- (void)clearNavigationItem {
+    self.navigationItem.titleView = nil;
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = nil;
+}
 
 /*
 #pragma mark - Navigation

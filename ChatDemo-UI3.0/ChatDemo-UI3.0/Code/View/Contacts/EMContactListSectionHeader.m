@@ -9,9 +9,8 @@
 #import "EMContactListSectionHeader.h"
 #import "EMColorUtils.h"
 
-#define KEM_REQUESTS_TITLE            @"Requests"
-#define KEM_GROUPREQUESTS_TITLE       @"Group Requests"
-#define KEM_GROUPINVITATIONS_TITLE    @"Group Invitations"
+#define KEM_CONTACTREQUESTS_TITLE            @"Contact Requests"
+#define KEM_GROUPNOTIFICATIONS_TITLE         @"Group Notifications"
 
 @interface EMContactListSectionHeader()
 
@@ -28,25 +27,25 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     self.backgroundColor = DenimColor;
-    _icon.image = [UIImage imageNamed:@"requestIcon"];
-    _title.text = KEM_REQUESTS_TITLE;
+    _icon.image = [UIImage imageNamed:@"Icon_Invitations"];
+    _title.text = KEM_GROUPNOTIFICATIONS_TITLE;
     _unhandledCount.text = @"";
 }
 
 - (void)updateInfo:(NSInteger)unhandleCount section:(NSInteger)section {
     switch (section) {
         case 0:
+            _title.text = KEM_GROUPNOTIFICATIONS_TITLE;
+            _icon.image = [UIImage imageNamed:@"Icon_Invitations"];
             break;
         case 1:
-            _title.text = KEM_GROUPREQUESTS_TITLE;
-            break;
-        case 2:
-            _title.text = KEM_GROUPINVITATIONS_TITLE;
-            _icon.image = [UIImage imageNamed:@"invitationsIcon"];
+            _title.text = KEM_CONTACTREQUESTS_TITLE;
+            _icon.image = [UIImage imageNamed:@"Icon_Requests"];
             break;
         default:
             _icon.hidden = _title.hidden = _unhandledCount.hidden = YES;
             self.backgroundColor = PaleGrayColor;
+            _unhandledCount.hidden = YES;
             break;
     }
     _unhandledCount.text = [NSString stringWithFormat:@"(%d)",(int)unhandleCount];

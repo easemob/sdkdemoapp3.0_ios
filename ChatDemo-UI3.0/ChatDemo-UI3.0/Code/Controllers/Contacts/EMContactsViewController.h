@@ -10,4 +10,6 @@
 
 @interface EMContactsViewController : UITableViewController
 
+- (void)setupNavigationItem:(UINavigationItem *)navigationItem;
+
 @end

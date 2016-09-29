@@ -14,6 +14,17 @@
 		71D4A1DF1D9C9284006FACB7 /* EMContactListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1DA1D9C9284006FACB7 /* EMContactListSectionHeader.m */; };
 		71D4A1E01D9C9284006FACB7 /* EMContactListSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1DB1D9C9284006FACB7 /* EMContactListSectionHeader.xib */; };
 		71D4A1E11D9C9284006FACB7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1DE1D9C9284006FACB7 /* EMSearchBar.m */; };
+		71D4A1E81D9C934C006FACB7 /* EMAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1E31D9C934C006FACB7 /* EMAddContactViewController.m */; };
+		71D4A1E91D9C934C006FACB7 /* EMAddContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1E41D9C934C006FACB7 /* EMAddContactViewController.xib */; };
+		71D4A1EA1D9C934C006FACB7 /* EMContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1E61D9C934C006FACB7 /* EMContactInfoViewController.m */; };
+		71D4A1EB1D9C934C006FACB7 /* EMContactInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1E71D9C934C006FACB7 /* EMContactInfoViewController.xib */; };
+		71D4A1F71D9C9359006FACB7 /* EMContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1EE1D9C9359006FACB7 /* EMContactCell.m */; };
+		71D4A1F81D9C9359006FACB7 /* EMContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1EF1D9C9359006FACB7 /* EMContactCell.xib */; };
+		71D4A1F91D9C9359006FACB7 /* EMContactInfo_funcCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1F01D9C9359006FACB7 /* EMContactInfo_funcCell.xib */; };
+		71D4A1FA1D9C9359006FACB7 /* EMContactInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1F21D9C9359006FACB7 /* EMContactInfoCell.m */; };
+		71D4A1FB1D9C9359006FACB7 /* EMContactInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1F31D9C9359006FACB7 /* EMContactInfoCell.xib */; };
+		71D4A1FC1D9C9359006FACB7 /* EMGroupTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1F51D9C9359006FACB7 /* EMGroupTitleCell.m */; };
+		71D4A1FD1D9C9359006FACB7 /* EMGroupTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1F61D9C9359006FACB7 /* EMGroupTitleCell.xib */; };
 		D28345041D8FD1D400FD48A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345031D8FD1D400FD48A9 /* main.m */; };
 		D28345071D8FD1D400FD48A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345061D8FD1D400FD48A9 /* AppDelegate.m */; };
 		D283450F1D8FD1D400FD48A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D283450E1D8FD1D400FD48A9 /* Assets.xcassets */; };
@@ -314,6 +325,22 @@
 		71D4A1DB1D9C9284006FACB7 /* EMContactListSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMContactListSectionHeader.xib; sourceTree = "<group>"; };
 		71D4A1DD1D9C9284006FACB7 /* EMSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchBar.h; sourceTree = "<group>"; };
 		71D4A1DE1D9C9284006FACB7 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
+		71D4A1E21D9C934C006FACB7 /* EMAddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAddContactViewController.h; sourceTree = "<group>"; };
+		71D4A1E31D9C934C006FACB7 /* EMAddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAddContactViewController.m; sourceTree = "<group>"; };
+		71D4A1E41D9C934C006FACB7 /* EMAddContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMAddContactViewController.xib; sourceTree = "<group>"; };
+		71D4A1E51D9C934C006FACB7 /* EMContactInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMContactInfoViewController.h; sourceTree = "<group>"; };
+		71D4A1E61D9C934C006FACB7 /* EMContactInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMContactInfoViewController.m; sourceTree = "<group>"; };
+		71D4A1E71D9C934C006FACB7 /* EMContactInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMContactInfoViewController.xib; sourceTree = "<group>"; };
+		71D4A1ED1D9C9359006FACB7 /* EMContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMContactCell.h; sourceTree = "<group>"; };
+		71D4A1EE1D9C9359006FACB7 /* EMContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMContactCell.m; sourceTree = "<group>"; };
+		71D4A1EF1D9C9359006FACB7 /* EMContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMContactCell.xib; sourceTree = "<group>"; };
+		71D4A1F01D9C9359006FACB7 /* EMContactInfo_funcCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMContactInfo_funcCell.xib; sourceTree = "<group>"; };
+		71D4A1F11D9C9359006FACB7 /* EMContactInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMContactInfoCell.h; sourceTree = "<group>"; };
+		71D4A1F21D9C9359006FACB7 /* EMContactInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMContactInfoCell.m; sourceTree = "<group>"; };
+		71D4A1F31D9C9359006FACB7 /* EMContactInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMContactInfoCell.xib; sourceTree = "<group>"; };
+		71D4A1F41D9C9359006FACB7 /* EMGroupTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupTitleCell.h; sourceTree = "<group>"; };
+		71D4A1F51D9C9359006FACB7 /* EMGroupTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupTitleCell.m; sourceTree = "<group>"; };
+		71D4A1F61D9C9359006FACB7 /* EMGroupTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMGroupTitleCell.xib; sourceTree = "<group>"; };
 		D16326FFC6F317D24E92E388 /* Pods-ChatDemo-UI3.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.release.xcconfig"; sourceTree = "<group>"; };
 		D28344FF1D8FD1D400FD48A9 /* ChatDemo-UI3.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI3.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28345031D8FD1D400FD48A9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -672,6 +699,23 @@
 			path = CustomView;
 			sourceTree = "<group>";
 		};
+		71D4A1EC1D9C9359006FACB7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				71D4A1ED1D9C9359006FACB7 /* EMContactCell.h */,
+				71D4A1EE1D9C9359006FACB7 /* EMContactCell.m */,
+				71D4A1EF1D9C9359006FACB7 /* EMContactCell.xib */,
+				71D4A1F01D9C9359006FACB7 /* EMContactInfo_funcCell.xib */,
+				71D4A1F11D9C9359006FACB7 /* EMContactInfoCell.h */,
+				71D4A1F21D9C9359006FACB7 /* EMContactInfoCell.m */,
+				71D4A1F31D9C9359006FACB7 /* EMContactInfoCell.xib */,
+				71D4A1F41D9C9359006FACB7 /* EMGroupTitleCell.h */,
+				71D4A1F51D9C9359006FACB7 /* EMGroupTitleCell.m */,
+				71D4A1F61D9C9359006FACB7 /* EMGroupTitleCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		99DF95DCA2AC5B81AFA5B910 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,9 +831,16 @@
 		D28345321D90048600FD48A9 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				71D4A1EC1D9C9359006FACB7 /* Cell */,
 				D283453D1D90081200FD48A9 /* EMContactsViewController.h */,
 				D283453E1D90081200FD48A9 /* EMContactsViewController.m */,
 				D283453F1D90081200FD48A9 /* EMContactsViewController.xib */,
+				71D4A1E21D9C934C006FACB7 /* EMAddContactViewController.h */,
+				71D4A1E31D9C934C006FACB7 /* EMAddContactViewController.m */,
+				71D4A1E41D9C934C006FACB7 /* EMAddContactViewController.xib */,
+				71D4A1E51D9C934C006FACB7 /* EMContactInfoViewController.h */,
+				71D4A1E61D9C934C006FACB7 /* EMContactInfoViewController.m */,
+				71D4A1E71D9C934C006FACB7 /* EMContactInfoViewController.xib */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1230,6 +1281,7 @@
 				D2BF7EBF1D914DB30090AA66 /* Icon_Call.png in Resources */,
 				D2BF7EE11D914DB30090AA66 /* Chats_active notification@2x.png in Resources */,
 				D2BF7EA81D914DB30090AA66 /* Icon_Camera active@2x.png in Resources */,
+				71D4A1EB1D9C934C006FACB7 /* EMContactInfoViewController.xib in Resources */,
 				D2BF7E2F1D914DB30090AA66 /* Icon_New chat.png in Resources */,
 				D2BF7E6E1D914DB30090AA66 /* Button_Mute active.png in Resources */,
 				D2BF7E551D914DB30090AA66 /* Button_Answer@3x.png in Resources */,
@@ -1260,6 +1312,7 @@
 				D2BF7E4C1D914DB30090AA66 /* Button_Radio Active@3x.png in Resources */,
 				D2BF7E2E1D914DB30090AA66 /* Icon_Invitations@3x.png in Resources */,
 				D2BF7E941D914DB30090AA66 /* Icon_Play@3x.png in Resources */,
+				71D4A1F91D9C9359006FACB7 /* EMContactInfo_funcCell.xib in Resources */,
 				D2BF7EA61D914DB30090AA66 /* Icon_Audio@3x.png in Resources */,
 				D2BF7E341D914DB30090AA66 /* Icon_New group@3x.png in Resources */,
 				D2BF7E281D914DB30090AA66 /* Button_Decline@3x.png in Resources */,
@@ -1332,6 +1385,8 @@
 				D2BF7E931D914DB30090AA66 /* Icon_Play@2x.png in Resources */,
 				D2BF7E971D914DB30090AA66 /* Icon_Video@3x.png in Resources */,
 				D2BF7EEE1D914DB30090AA66 /* Contacts_active notification@3x.png in Resources */,
+				71D4A1E91D9C934C006FACB7 /* EMAddContactViewController.xib in Resources */,
+				71D4A1F81D9C9359006FACB7 /* EMContactCell.xib in Resources */,
 				D2BF7E441D914DB30090AA66 /* Button_Add Member.png in Resources */,
 				D2BF7E561D914DB30090AA66 /* Button_Camera switch active.png in Resources */,
 				D2BF7E601D914DB30090AA66 /* Button_Cancel Call@2x.png in Resources */,
@@ -1339,6 +1394,7 @@
 				D2BF7E8F1D914DB30090AA66 /* Icon_Pause.png in Resources */,
 				D2BF7E421D914DB30090AA66 /* Toggle on@2x.png in Resources */,
 				D2BF7E4A1D914DB30090AA66 /* Button_Radio Active.png in Resources */,
+				71D4A1FD1D9C9359006FACB7 /* EMGroupTitleCell.xib in Resources */,
 				D2BF7ECE1D914DB30090AA66 /* Icon_Clear.png in Resources */,
 				D2BF7ED41D914DB30090AA66 /* Icon_Search.png in Resources */,
 				D2BF7EA51D914DB30090AA66 /* Icon_Audio@2x.png in Resources */,
@@ -1432,6 +1488,7 @@
 				D2BF7E871D914DB30090AA66 /* Icon_Call@2x.png in Resources */,
 				D2BF7F041D914DB30090AA66 /* Button_Call.png in Resources */,
 				D2BF7E291D914DB30090AA66 /* Button_Join.png in Resources */,
+				71D4A1FB1D9C9359006FACB7 /* EMContactInfoCell.xib in Resources */,
 				D2AA4DD01D9227A400967E0E /* Main.storyboard in Resources */,
 				D2BF7E3B1D914DB30090AA66 /* Swipe_Exit.png in Resources */,
 				D2BF7E981D914DB30090AA66 /* Button_Record active.png in Resources */,
@@ -1558,16 +1615,21 @@
 				71D4A1D11D9C9229006FACB7 /* UIImage+ImageEffect.m in Sources */,
 				D2BF7CC31D9111EC0090AA66 /* UIViewController+DismissKeyboard.m in Sources */,
 				D2BF7CC71D91306A0090AA66 /* EMLaunchViewController.m in Sources */,
+				71D4A1EA1D9C934C006FACB7 /* EMContactInfoViewController.m in Sources */,
+				71D4A1FA1D9C9359006FACB7 /* EMContactInfoCell.m in Sources */,
 				D28345401D90081200FD48A9 /* EMContactsViewController.m in Sources */,
 				71D4A1D61D9C923D006FACB7 /* EMUserModel.m in Sources */,
 				D28345071D8FD1D400FD48A9 /* AppDelegate.m in Sources */,
+				71D4A1FC1D9C9359006FACB7 /* EMGroupTitleCell.m in Sources */,
 				71D4A1E11D9C9284006FACB7 /* EMSearchBar.m in Sources */,
+				71D4A1F71D9C9359006FACB7 /* EMContactCell.m in Sources */,
 				D28345041D8FD1D400FD48A9 /* main.m in Sources */,
 				D2BF7CB81D90EE160090AA66 /* EMLoginViewController.m in Sources */,
 				D283452F1D90042F00FD48A9 /* EMMainViewController.m in Sources */,
 				D28345451D90082700FD48A9 /* EMSettingsViewController.m in Sources */,
 				D283454A1D900B2700FD48A9 /* EMChatsViewController.m in Sources */,
 				71D4A1DF1D9C9284006FACB7 /* EMContactListSectionHeader.m in Sources */,
+				71D4A1E81D9C934C006FACB7 /* EMAddContactViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
