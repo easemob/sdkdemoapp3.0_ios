@@ -228,9 +228,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                 /**
                  *  把相应数据更新到数据库
                  */
-                [[EMClient sharedClient].chatManager updateMessage:message completion:^(EMMessage *aMessage, EMError *aError) {
-                    
-                }];
+                [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
             }
         }
     }

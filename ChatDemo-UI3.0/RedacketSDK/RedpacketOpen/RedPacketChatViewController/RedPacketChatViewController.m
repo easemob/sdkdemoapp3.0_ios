@@ -8,7 +8,6 @@
 
 #import "RedPacketChatViewController.h"
 #import "EaseRedBagCell.h"
-#import "UIImageView+WebCache.h"
 #import "RedpacketMessageCell.h"
 #import "RedpacketViewControl.h"
 #import "RedpacketMessageModel.h"
@@ -18,6 +17,7 @@
 #import "ChatDemoHelper.h"
 #import "UserProfileManager.h"
 #import "TransferCell.h"
+#import <UIImageView+WebCache.h>
 
 /**
  *  红包聊天窗口
