@@ -12,6 +12,11 @@
 #import "RedpacketMessageModel.h"
 #import "ChatDemoHelper.h"
 
+/**
+ *  环信IMToken过期
+ */
+#define RedpacketEaseMobTokenOutDate  20304
+
 
 static RedPacketUserConfig *__sharedConfig__ = nil;
 
@@ -24,10 +29,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     NSString *_imUserId;
     NSString *_imUserPass;
-    /**
-     *  环信登陆用户名
-     */
-    NSString *_imUserName;
     /**
      *  是否已经注册了消息代理
      */
@@ -79,6 +80,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
         
         [YZHRedpacketBridge sharedBridge].dataSource = __sharedConfig__;
         [YZHRedpacketBridge sharedBridge].delegate = __sharedConfig__;
+        [YZHRedpacketBridge sharedBridge].isDebug = YES;
         
         [__sharedConfig__ beginObserve];
     });
@@ -91,27 +93,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)configWithAppKey:(NSString *)appKey
 {
     _dealerAppKey = appKey;
-}
-
-- (void)configWithImUserId:(NSString *)imUserId andImUserPass:(NSString *)imUserPass
-{
-    [self beginObserve];
-    
-    NSAssert(imUserId.length > 0, @"IM平台：用户登录id为空");
-    NSAssert(imUserPass.length > 0, @"IM平台：用户密码为空");
-    
-    _imUserId = imUserId;
-    _imUserPass = imUserPass;
-    
-    NSString *userId = self.redpacketUserInfo.userId;
-    
-    
-    /*
-    [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
-                                              appUserId:userId
-                                               imUserId:userId
-                                          andImUserpass:_imUserPass];
-     */
 }
 
 #pragma mark - YZHRedpacketBridgeDataSource
@@ -134,12 +115,12 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 #pragma mark - YZHRedpacketBridgeDelegate
 
-/**
- *  环信Token过期后的回调
- */
-- (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method
+- (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code
 {
-    [self configUserToken:YES];
+    if (code == RedpacketEaseMobTokenOutDate) {
+        //  环信IMToken 过期
+        [self configUserToken:YES];
+    }
 }
 
 #pragma mark - 
@@ -151,10 +132,13 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     BOOL isLoginSuccess = [[notifaction object] boolValue];
     if (isLoginSuccess) {
         [self configUserToken:NO];
-        
-    }else  {
-        //  用户退出，清除数据
-        [self clearUserInfo];
+    }
+}
+
+- (void)didAutoLoginWithError:(EMError *)aError
+{
+    if (!aError) {
+        [self configUserToken:NO];
     }
 }
 
@@ -165,39 +149,25 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     }
     
     NSString *userToken = nil;
+    EMClient *client = [EMClient sharedClient];
+    SEL selector = NSSelectorFromString(@"getUserToken:");
+    if ([client respondsToSelector:selector]) {
+        IMP imp = [client methodForSelector:selector];
+        NSString *(*func)(id, SEL, NSNumber *) = (void *)imp;
+        userToken = func(client, selector, @(isRefresh));
+    }
+    /*
     if ([[EMClient sharedClient] respondsToSelector:@selector(getUserToken:)]) {
         userToken = [[EMClient sharedClient] performSelector:@selector(getUserToken:) withObject:@(isRefresh)];
     }
+    */
     
     NSString *userId = self.redpacketUserInfo.userId;
     if (userToken.length) {
         [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
                                                   appUserId:userId
                                                     imToken:userToken];
-    }else {
-        [[YZHRedpacketBridge sharedBridge] configWithAppKey:_dealerAppKey
-                                                  appUserId:userId
-                                                   imUserId:userId
-                                              andImUserpass:_imUserPass];
     }
-}
-
-- (void)didLoginFromOtherDevice
-{
-    [self clearUserInfo];
-}
-
-- (void)didAutoLoginWithError:(EMError *)aError
-{
-    if (!aError) {
-        [self configUserToken:NO];
-    }
-}
-
-- (void)clearUserInfo
-{
-    [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
-    _imUserId = nil;
 }
 
 #pragma mark -
@@ -225,20 +195,40 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 {
     for (EMMessage *message in aMessages) {
         NSDictionary *dict = message.ext;
-        if (dict && [RedpacketMessageModel isRedpacketTakenMessage:dict]) {
+        if (dict) {
             NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-            NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
             NSString *currentUserID = [EMClient sharedClient].currentUsername;
-            //  标记为已读
-            if ([senderID isEqualToString:currentUserID]){
+            BOOL isSender = [senderID isEqualToString:currentUserID];
+            
+            NSString *text;
+            
+            /**
+             *  当前用户是红包发送者。
+             */
+            if ([RedpacketMessageModel isRedpacketTakenMessage:dict] && isSender) {
+                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+                if (receiver.length == 0) {
+                    receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+                }
+                
+                text = [NSString stringWithFormat:@"%@领取了你的红包",receiver];
+                
+            }else if ([RedpacketMessageModel isRedpacketTransferMessage:message.ext]) {
                 /**
-                 *  当前用户是红包发送者。
+                 *  转账且不是转账发送方，则需要修改文案
                  */
-                NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
+                if (!isSender) {
+                    text = [NSString stringWithFormat:@"[转账]向你转账%@元", [dict valueForKey:RedpacketKeyRedpacketTransferAmout]];
+                }
+            }
+            
+            if (text && text.length > 0) {
                 EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
                 message.body = body;
-                
-                [[EMClient sharedClient].chatManager updateMessage:message];
+                /**
+                 *  把相应数据更新到数据库
+                 */
+                [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
             }
         }
     }
@@ -256,25 +246,25 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
             NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
             NSString *receiverID = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
             NSString *currentUserID = [EMClient sharedClient].currentUsername;
+            NSString *conversationId = [message.ext valueForKey:RedpacketKeyRedpacketCmdToGroup];
             
             if ([senderID isEqualToString:currentUserID]){
                 /**
-                 *  当前用户是红包发送者。
+                 *  当前用户是红包发送者
                  */
                 NSString *text = [NSString stringWithFormat:@"%@领取了你的红包",receiverID];
                 /*
                  NSString *willSendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:text];
                  */
                 EMTextMessageBody *body1 = [[EMTextMessageBody alloc] initWithText:text];
-                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:message.conversationId from:message.from to:message.to body:body1 ext:message.ext];
-                textMessage.chatType = message.chatType;
+                EMMessage *textMessage = [[EMMessage alloc] initWithConversationID:conversationId from:message.from to:conversationId body:body1 ext:message.ext];
+                textMessage.chatType = EMChatTypeGroupChat;
                 textMessage.isRead = YES;
-                textMessage.timestamp = message.timestamp;
 
                 /**
                  *  更新界面
                  */
-                BOOL isCurrentConversation = [self.chatVC.conversation.conversationId isEqualToString:message.conversationId];
+                BOOL isCurrentConversation = [self.chatVC.conversation.conversationId isEqualToString:conversationId];
                 
                 if (self.chatVC && isCurrentConversation){
                     /**
@@ -284,7 +274,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                     /**
                      *  存入当前会话并存入数据库
                      */
-                    [self.chatVC.conversation insertMessage:textMessage];
+                    [self.chatVC.conversation insertMessage:textMessage error:nil];
                     
                 }else {
                     /**
@@ -295,15 +285,14 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                         for (id <IConversationModel> model in [listVc.dataArray copy]) {
                             EMConversation *conversation = model.conversation;
                             if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
-                                [conversation insertMessage:textMessage];
-                                break;
+                                [conversation insertMessage:textMessage error:nil];
                             }
                         }
                         
                         [listVc refresh];
                         
                     }else {
-                        [[EMClient sharedClient].chatManager importMessages:@[textMessage]];
+                        [[EMClient sharedClient].chatManager importMessages:@[textMessage] completion:nil];
                     }
                 }
             }

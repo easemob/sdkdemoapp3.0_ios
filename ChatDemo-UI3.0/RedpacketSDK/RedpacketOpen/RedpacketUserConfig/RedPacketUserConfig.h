@@ -22,15 +22,12 @@
 
 @property (nonatomic, weak)ChatViewController *chatVC;
 
-
 /**
  *  配置环信IM分配的AppKey
  *
  *  @param appKey 环信IM分配的AppKey
  */
 - (void)configWithAppKey:(NSString *)appKey;
-
-- (void)configWithImUserId:(NSString *)imUserId andImUserPass:(NSString *)imUserPass;
 
 /**
  *  监控信息收发

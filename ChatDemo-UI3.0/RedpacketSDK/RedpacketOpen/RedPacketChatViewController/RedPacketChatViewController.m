@@ -15,12 +15,15 @@
 #import "RedpacketOpenConst.h"
 #import "YZHRedpacketBridge.h"
 #import "ChatDemoHelper.h"
+#import "UserProfileManager.h"
+#import "TransferCell.h"
+#import <UIImageView+WebCache.h>
 
 /**
  *  红包聊天窗口
  */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
-EaseMessageViewControllerDataSource>
+EaseMessageViewControllerDataSource, RedpacketViewControlDelegate>
 /**
  *  发红包的控制器
  */
@@ -43,6 +46,10 @@ EaseMessageViewControllerDataSource>
      红包功能的控制器， 产生用户单击红包后的各种动作
      */
     _viewControl = [[RedpacketViewControl alloc] init];
+    /**
+     *  获取群组用户代理
+     */
+    _viewControl.delegate = self;
     //  需要当前的聊天窗口
     _viewControl.conversationController = self;
     //  需要当前聊天窗口的会话ID
@@ -63,13 +70,13 @@ EaseMessageViewControllerDataSource>
         
     }];
     
-    //  同步Token
-    [[YZHRedpacketBridge sharedBridge] reRequestRedpacketUserToken];
-    
     //  设置用户头像
     [[EaseRedBagCell appearance] setAvatarSize:40.f];
     //  设置头像圆角
     [[EaseRedBagCell appearance] setAvatarCornerRadius:20.f];
+    
+    [[TransferCell appearance] setAvatarSize:40.0f];
+    [[TransferCell appearance] setAvatarCornerRadius:20.0f];
     
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],NSFontAttributeName : [UIFont systemFontOfSize:18]};
     
@@ -77,15 +84,56 @@ EaseMessageViewControllerDataSource>
         //  MARK: __redbag  红包
         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket_high"] title:@"红包"];
         
-        //  MARK: __redbag 零钱
-        /*
-         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_changeMoney_high"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_changeMoney"] title:@"零钱"];
-         */
+        //  MARK: __redbag 转账
+        [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedPacketResource.bundle/redpacket_transfer_high"] highlightedImage:[UIImage imageNamed:@"RedPacketResource.bundle/redpacket_transfer_high"] title:@"转账"];
     }
     
     //  显示红包的Cell视图
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([RedpacketMessageCell class]) bundle:nil]forCellReuseIdentifier:NSStringFromClass([RedpacketMessageCell class])];
 }
+
+//定向红包
+- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> *))completionHandle
+{
+    EMGroup *group = [[[EMClient sharedClient] groupManager] fetchGroupInfo:self.conversation.conversationId includeMembersList:YES error:nil];
+    
+    NSMutableArray *mArray = [[NSMutableArray alloc]init];
+    
+    for (NSString *username in group.occupants) {
+        //创建一个用户模型 并赋值
+        RedpacketUserInfo *userInfo = [self profileEntityWith:username];
+        [mArray addObject:userInfo];
+    }
+    
+    if (completionHandle) {
+        completionHandle(mArray);
+    }
+
+}
+
+// 要在此处根据userID获得用户昵称,和头像地址
+- (RedpacketUserInfo *)profileEntityWith:(NSString *)userId
+{
+    RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
+
+    UserProfileEntity *profile = [[UserProfileManager sharedInstance] getUserProfileByUsername:userId];
+    if (profile) {
+        if (profile.nickname && profile.nickname.length > 0) {
+            
+            userInfo.userNickname = profile.nickname;
+            
+        } else {
+            userInfo.userNickname = userId;
+        }
+    } else {
+        userInfo.userNickname = userId;
+    }
+    
+    userInfo.userAvatar = profile.imageUrl;
+    userInfo.userId = userId;
+    return userInfo;
+}
+
 
 //  长时间按在某条Cell上的动作
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController canLongPressRowAtIndexPath:(NSIndexPath *)indexPath
@@ -120,6 +168,11 @@ EaseMessageViewControllerDataSource>
                        cellForMessageModel:(id<IMessageModel>)messageModel
 {
     NSDictionary *ext = messageModel.message.ext;
+    
+//    if (![RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
+//        return [super messageViewController:tableView cellForMessageModel:messageModel];
+//    }
+    
     if ([RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
         /**
          *  红包相关的展示
@@ -135,13 +188,22 @@ EaseMessageViewControllerDataSource>
             cell.model = messageModel;
             
             return cell;
-        }else {
+            
+        }else if ([RedpacketMessageModel isRedpacketTransferMessage:ext]) {
+            TransferCell *cell = [tableView dequeueReusableCellWithIdentifier:[TransferCell cellIdentifierWithModel:messageModel]];
+            if (!cell) {
+                cell = [[TransferCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[TransferCell cellIdentifierWithModel:messageModel] model:messageModel];
+                cell.delegate = self;
+            }
+            cell.model = messageModel;
+            return cell;
+            
+        } else {
             RedpacketMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RedpacketMessageCell class])];
             cell.model = messageModel;
             
             return cell;
         }
-        
     }
     
     return nil;
@@ -152,15 +214,17 @@ EaseMessageViewControllerDataSource>
                    withCellWidth:(CGFloat)cellWidth
 {
     NSDictionary *ext = messageModel.message.ext;
-    if ([RedpacketMessageModel isRedpacketRelatedMessage:ext]) {
-        if ([RedpacketMessageModel isRedpacket:ext])    {
-            return [EaseRedBagCell cellHeightWithModel:messageModel];
-        }else{
-            return 36;
-        }
+    
+    if ([RedpacketMessageModel isRedpacket:ext])    {
+        return [EaseRedBagCell cellHeightWithModel:messageModel];
+    }else if([RedpacketMessageModel isRedpacketTransferMessage:ext])
+    {
+        return [TransferCell cellHeightWithModel:messageModel];
+    }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
+        return 36;
     }
     
-    return 0;
+    return 0.0f;
 }
 
 #pragma mark - DataSource
@@ -183,11 +247,21 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     if (self.conversation.type == EMConversationTypeChat) {
         // 点对点红包
-        [self.viewControl presentRedPacketViewController];
+        if (index == 5) {
+            [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
+        }else {
+            //  转账页面
+            RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
+            userInfo = [self profileEntityWith:self.conversation.conversationId];
+            [self.viewControl presentTransferViewControllerWithReceiver:userInfo];
+        }
+        
         
     }else{
-        // 群聊红包发送界面
-        [self.viewControl presentRedPacketMoreViewControllerWithCount:(int)[EMGroup groupWithId:self.conversation.conversationId].occupants.count];
+        //群内指向红包
+        NSArray *groupArray = [EMGroup groupWithId:self.conversation.conversationId].occupants;
+        //群聊红包发送界面
+        [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:groupArray.count];
     }
 }
 
@@ -196,7 +270,12 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     NSDictionary *dic = [model redpacketMessageModelToDic];
     
-    NSString *message = [NSString stringWithFormat:@"[%@]%@", model.redpacket.redpacketOrgName, model.redpacket.redpacketGreeting];
+    NSString *message;
+    if ([RedpacketMessageModel isRedpacketTransferMessage:dic]) {
+        message = [NSString stringWithFormat:@"[转账]转账%@元",model.redpacket.redpacketMoney];
+    }else {
+        message = [NSString stringWithFormat:@"[%@]%@", model.redpacket.redpacketOrgName, model.redpacket.redpacketGreeting];
+    }
     
     [self sendTextMessage:message withExt:dic];
 }
@@ -209,23 +288,13 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     NSString *conversationId = self.conversation.conversationId;
     
     NSMutableDictionary *dic = [messageModel.redpacketMessageModelToDic mutableCopy];
-    /**
-     *  不推送
-     */
+    //  领取通知消息不推送
     [dic setValue:@(YES) forKey:@"em_ignore_notification"];
     
     NSString *text = [NSString stringWithFormat:@"你领取了%@发的红包", messageModel.redpacketSender.userNickname];
     
     if (self.conversation.type == EMConversationTypeChat) {
         [self sendTextMessage:text withExt:dic];
-        /*
-        EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-        EMMessage *message = [[EMMessage alloc] initWithConversationID:conversationId from:currentUser to:conversationId body:body ext:dic];
-        message.chatType = (EMChatType)self.conversation.type;
-        message.isRead = YES;
-        
-        [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:nil];
-        */
         
     }else{
         if ([senderId isEqualToString:currentUser]) {
@@ -235,11 +304,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
             /**
              如果不是自己发的红包，则发送抢红包消息给对方
              */
-            EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:RedpacketKeyRedapcketCmd];
-            EMMessage *message = [[EMMessage alloc] initWithConversationID:conversationId from:currentUser to:conversationId body:body ext:dic];
-            message.chatType = (EMChatType)self.conversation.type;
-            
-            [[EMClient sharedClient].chatManager asyncSendMessage:message progress:nil completion:nil];
+            [[EMClient sharedClient].chatManager sendMessage:[self createCmdMessageWithModel:messageModel] progress:nil completion:nil];
         }
         
         /*
@@ -257,8 +322,21 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         /**
          *  存入当前会话并存入数据库
          */
-        [self.conversation insertMessage:textMessage];
+        [self.conversation insertMessage:textMessage error:nil];
     }
+}
+
+- (EMMessage *)createCmdMessageWithModel:(RedpacketMessageModel *)model
+{
+    NSMutableDictionary *dict = [model.redpacketMessageModelToDic mutableCopy];
+    
+    NSString *currentUser = [EMClient sharedClient].currentUsername;
+    NSString *toUser = model.redpacketSender.userId;
+    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:RedpacketKeyRedapcketCmd];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:self.conversation.conversationId from:currentUser to:toUser body:cmdChat ext:dict];
+    message.chatType = EMChatTypeChat;
+    
+    return message;
 }
 
 #pragma mark - EaseMessageCellDelegate 单击了Cell 事件
@@ -270,7 +348,11 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     if ([RedpacketMessageModel isRedpacket:dict]) {
         [self.viewControl redpacketCellTouchedWithMessageModel:[self toRedpacketMessageModel:model]];
         
-    }else {
+    }else if([RedpacketMessageModel isRedpacketTransferMessage:dict])
+    {
+        [self.viewControl presentTransferDetailViewController:[RedpacketMessageModel redpacketMessageModelWithDic:dict]];
+    }
+    else {
         [super messageCellSelected:model];
     }
 }
@@ -278,20 +360,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (RedpacketMessageModel *)toRedpacketMessageModel:(id <IMessageModel>)model
 {
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
-    BOOL isGroup = self.conversation.type == EMConversationTypeChat;
-    messageModel.redpacketReceiver.isGroup = isGroup;
-    
-    messageModel.redpacketSender.userAvatar = model.avatarURLPath;
-
-    NSString *nickName = model.nickname;
-    if (nickName.length == 0) {
-        nickName = model.message.from;
+    BOOL isGroup = self.conversation.type == EMConversationTypeGroupChat;
+    if (isGroup) {
+        messageModel.redpacketSender = [self profileEntityWith:model.message.from];
+        messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
+    }else
+    {
+        messageModel.redpacketSender = [self profileEntityWith:model.message.from];
     }
-    messageModel.redpacketSender.userNickname = nickName;
-    if (messageModel.redpacketSender.userId.length == 0) {
-        messageModel.redpacketSender.userId = model.message.from;
-    }
-    
     return messageModel;
 }
 
