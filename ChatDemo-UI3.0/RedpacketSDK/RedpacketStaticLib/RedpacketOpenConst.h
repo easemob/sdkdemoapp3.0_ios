@@ -9,72 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-/*---------------------------------------
- *  Defines
- ---------------------------------------*/
 
-#define rpWeakSelf __weak typeof(self) weakSelf = self
-
-#ifdef DEBUG
-#define RPLog(...) NSLog(__VA_ARGS__)
-#else
-#define RPLog(...)
-#endif
-
-
-#define rpURL(...) [NSURL URLWithString:__VA_ARGS__]
-#define rpString(...) [NSString stringWithFormat:__VA_ARGS__]
-#define rpRedpacketBundleResource(__resource__) rpString(@"RedPacketResource.bundle/%@", __resource__)
-
-#define rpImageNamed(__image__)  [UIImage imageNamed:__image__]
-#define rpRedpacketBundleImage(__image__) rpImageNamed(rpRedpacketBundleResource(__image__))
-
-#define rpResourceAtBundle(__bundle__, __resource__) rpString(__bundle__ stringByAppendingPathComponent:__resource__)
-
-
-/*---------------------------------------
- *  Const
- ---------------------------------------*/
+#pragma mark - RedpacketNotifaction
 
 /**
- *  红包名称
+ *  支付宝支付完成通知
  */
-static NSString *const rp_redpacketName = @"环信红包";
-/**
- *  红包归属
- */
-static NSString *const rp_redpacketCompay = @"环信";
+UIKIT_EXTERN NSString *const RedpacketAlipayNotifaction;
 
-/**
- *  红包字体颜色
- */
-static uint const rp_textColorGray = 0x9e9e9e;
-
-/**
- *  背景颜色
- */
-static uint const rp_backGroundColorGray = 0xe3e3e3;
-
-
-
-UIKIT_STATIC_INLINE UIColor * rp_hexColor(uint color)
-{
-    float r = (color&0xFF0000) >> 16;
-    float g = (color&0xFF00) >> 8;
-    float b = (color&0xFF);
-    
-    return [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1.0f];
-}
-
-UIKIT_STATIC_INLINE BOOL rp_isEmpty(id thing) {
-    return thing == nil || [thing isEqual:[NSNull null]]
-    || ([thing respondsToSelector:@selector(length)]
-        && [(NSData *)thing length] == 0)
-    || ([thing respondsToSelector:@selector(count)]
-        && [(NSArray *)thing count] == 0);
-}
-
-#pragma mark - Extern
+#pragma mark - RedpacketView
 
 /**
  * 红包的名字（例如：云红包）
@@ -126,6 +69,33 @@ UIKIT_EXTERN NSString *const RedpacketKeyRedpacketID;
  */
 UIKIT_EXTERN NSString *const RedpacketKeyRedapcketCmd;
 
+/**
+ *  定向红包的Type类型
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToAnyone;
 
+/**
+ *  转账
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTransfer;
 
+/**
+ *  转账时间
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTransferTime;
+
+/**
+ *  转账金额
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketTransferAmout;
+
+/**
+ *  定向红包的接收者id
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedapcketToReceiver;
+
+/**
+ *  红包抢完后的透传消息是通过点对点Cmd消息发送，所以需要带上红包所在的群组ID
+ */
+UIKIT_EXTERN NSString *const RedpacketKeyRedpacketCmdToGroup;
 

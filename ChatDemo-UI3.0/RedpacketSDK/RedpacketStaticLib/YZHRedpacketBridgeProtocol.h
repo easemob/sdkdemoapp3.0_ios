@@ -9,20 +9,8 @@
 #ifndef YZHRedpacketBridgeProtocol_h
 #define YZHRedpacketBridgeProtocol_h
 
- /// 用通知减少耦合
 
 @class RedpacketUserInfo;
-
-typedef NS_ENUM(NSInteger, RequestTokenMethod) {
-    /**
-     *  通过ImToken验证
-     */
-    RequestTokenMethodByImToken,
-    /**
-     *  通过签名验证
-     */
-    RequestTokenMethodBySign
-};
 
 @protocol YZHRedpacketBridgeDataSource <NSObject>
 
@@ -37,13 +25,19 @@ typedef NS_ENUM(NSInteger, RequestTokenMethod) {
 
 
 @protocol YZHRedpacketBridgeDelegate <NSObject>
-
+@required
 /**
- *  环信Token过期会回调这个方法
+ *  SDK错误处理代理
  *
- *  @param method 用到的获取Token的方法
+ *  @param error 错误内容
+ *  @param code  错误码
+ *  @discussion
+    1.通过ImToken获取红包Token, 红包Token过期后，请求红包Token时，ImToken过期触发回调，刷新ImToken后，重新注册红包Token。
+    2.通过Sign获取红包Token， 红包Token过期后，直接触发。
+    错误码： 20304  环信IMToken验证错误
+    错误码： 1001 Token相关错误
  */
-- (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method;
+- (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code;
 
 @end
 
