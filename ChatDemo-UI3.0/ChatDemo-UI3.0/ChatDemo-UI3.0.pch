@@ -20,4 +20,8 @@
 
 #import "EMChatDemoUIDefine.h"
 
+#import <AVFoundation/AVFoundation.h>
+
+#import "EaseCallManager.h"
+
 #endif

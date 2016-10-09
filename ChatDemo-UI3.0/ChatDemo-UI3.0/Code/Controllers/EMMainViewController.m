@@ -52,6 +52,7 @@
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.settings", @"Settings")
                                                            image:nil
                                                              tag:2];
+    [EaseCallManager sharedManager].settingVC = _settingsVC;
     
     self.viewControllers = @[_contactsVC,_chatsVC,_settingsVC];
     self.selectedIndex = 0;

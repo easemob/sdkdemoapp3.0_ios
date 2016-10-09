@@ -7,7 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "EaseCallViewController.h"
+#import "EMSettingsViewController.h"
 @interface EaseCallManager : NSObject
+
++ (instancetype) sharedManager;
+
+@property (strong, nonatomic) EMCallSession *callSession;
+
+@property (strong, nonatomic) EaseCallViewController *callController;
+
+@property (strong, nonatomic) EMSettingsViewController *settingVC;
+
+- (void)makeCallWithUsername:(NSString *)aUsername
+                     isVideo:(BOOL)aIsVideo;
+
+- (void)hangupCallWithReason:(EMCallEndReason)aReason;
+
+- (void)answerCall;
+
+
 
 @end

@@ -136,11 +136,14 @@
         
         if (indexPath.row == 0) {
             
+//                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":@"lat15", @"type":[NSNumber numberWithInt:0]}];
+            
             EMAboutViewController *about = [[EMAboutViewController alloc] init];
             about.title = @"About";
             [self.navigationController pushViewController:about animated:YES];
         } else if (indexPath.row == 2) {
             
+//                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":@"lat15", @"type":[NSNumber numberWithInt:1]}];
             EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
             pushController.title = @"Push Notifications";
             [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
