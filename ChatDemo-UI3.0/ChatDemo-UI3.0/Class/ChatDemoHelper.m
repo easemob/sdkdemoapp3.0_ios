@@ -524,11 +524,6 @@ static ChatDemoHelper *helper = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
     
-    NSString *callId = @"";
-    if (aSession && aSession.callId) {
-        callId = [aSession callId];
-    }
-    
     if(self.callSession && self.callSession.status != EMCallSessionStatusDisconnected){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
@@ -549,10 +544,6 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallConnected:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
-        NSString *callId = @"";
-        if (aSession && aSession.callId) {
-            callId = [aSession callId];
-        }
         [self.callController stateToConnected];
     }
 }
@@ -560,11 +551,6 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveCallAccepted:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
-        NSString *callId = @"";
-        if (aSession && aSession.callId) {
-            callId = [aSession callId];
-        }
-        
         [self _stopCallTimer];
         [self.callController stateToAnswered];
     }
@@ -574,11 +560,6 @@ static ChatDemoHelper *helper = nil;
                           reason:(EMCallEndReason)aReason
                            error:(EMError *)aError
 {
-    NSString *callId = @"";
-    if (aSession && aSession.callId) {
-        callId = [aSession callId];
-    }
-    
     if ([aSession.callId isEqualToString:_callSession.callId]) {
         
         [self _stopCallTimer];
@@ -694,29 +675,25 @@ static ChatDemoHelper *helper = nil;
     void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError){
         ChatDemoHelper *strongSelf = weakSelf;
         if (strongSelf) {
-            if (!aError && aCallSession) {
-                @synchronized (self.callLock) {
-                    self.callSession = aCallSession;
-                    self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
-                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
-                    
-                    NSString *callId = @"";
-                    if (aCallSession && aCallSession.callId) {
-                        callId = [aCallSession callId];
-                    }
-                }
-                
-                [self _startCallTimer];
-            }
-            else {
+            if (aError) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
+                return;
             }
+            
+            @synchronized (self.callLock) {
+                self.callSession = aCallSession;
+                self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
+                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            }
+            
+            [self _startCallTimer];
         }
         else {
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
+
     if (aType == EMCallTypeVideo) {
         [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
@@ -777,6 +754,7 @@ static ChatDemoHelper *helper = nil;
 #endif
 
 #pragma mark - private
+    
 - (BOOL)_needShowNotification:(NSString *)fromChatter
 {
     BOOL ret = YES;
