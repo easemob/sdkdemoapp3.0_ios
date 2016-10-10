@@ -322,7 +322,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         /**
          *  存入当前会话并存入数据库
          */
-        [self.conversation insertMessage:textMessage error:nil];
+        [self.conversation appendMessage:textMessage error:nil];
     }
 }
 
