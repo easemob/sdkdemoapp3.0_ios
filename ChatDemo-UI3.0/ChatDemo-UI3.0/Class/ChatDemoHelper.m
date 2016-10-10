@@ -300,8 +300,7 @@ static ChatDemoHelper *helper = nil;
         if ([action isEqualToString:@"inviteToJoinConference"]) {
 //            NSString *callId = [message.ext objectForKey:@"callId"];
         } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"已转为会议模式" delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
+            [self.callController showHint:@"已转为会议模式"];
         }
     }
 }
