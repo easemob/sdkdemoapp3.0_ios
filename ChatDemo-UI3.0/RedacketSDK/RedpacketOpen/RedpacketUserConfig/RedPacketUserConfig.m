@@ -286,6 +286,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                             EMConversation *conversation = model.conversation;
                             if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
                                 [conversation appendMessage:textMessage error:nil];
+                                break;
                             }
                         }
                         
