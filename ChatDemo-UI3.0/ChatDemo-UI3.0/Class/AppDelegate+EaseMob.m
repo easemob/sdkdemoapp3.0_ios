@@ -54,6 +54,12 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     }
 }
 
+- (void)easemobApplication:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [[EaseSDKHelper shareHelper] hyphenateApplication:application didReceiveRemoteNotification:userInfo];
+}
+
 #pragma mark - App Delegate
 
 // 将得到的deviceToken传给SDK
