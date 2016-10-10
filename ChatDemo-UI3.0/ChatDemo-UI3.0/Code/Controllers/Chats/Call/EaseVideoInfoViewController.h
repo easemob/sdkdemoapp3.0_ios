@@ -10,4 +10,13 @@
 
 @interface EaseVideoInfoViewController : UIViewController
 
+@property (nonatomic, weak) EMCallSession *callSession;
+
+@property (nonatomic, copy) NSString *currentTime;
+
+@property (nonatomic, assign) int timeLength;
+
+
+- (void)startTimer:(int)currentTimeLength;
+
 @end

@@ -26,6 +26,7 @@
 - (UIImageView *)avatarView
 {
     if (!_avatarView) {
+        
         _avatarView = [[UIImageView alloc] init];
         _avatarView.layer.cornerRadius = 45/2;
         _avatarView.image = [UIImage imageNamed:@"123.jpg"];
@@ -36,6 +37,7 @@
 - (UIButton *)editButton
 {
     if (!_editButton) {
+        
         _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_editButton setTitle:@"Edit" forState:UIControlStateNormal];
         [_editButton setTitleColor:RGBACOLOR(72, 184, 0, 1.0) forState:UIControlStateNormal];
@@ -51,6 +53,7 @@
 - (UIButton *)signOutButton
 {
     if (!_signOutButton) {
+        
         _signOutButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_signOutButton setFrame:CGRectMake(0, self.view.frame.size.height - 44 - 45, KScreenWidth, 45)];
         [_signOutButton setBackgroundColor:RGBACOLOR(255, 59, 48, 1.0)];
@@ -86,6 +89,7 @@
     static NSString *cellIdentifier = @"AccountCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
+        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     
@@ -124,9 +128,12 @@
 
 - (void)editAvatar {
     
+    
+    
 }
 
-- (void)signOut {
+- (void)signOut
+{
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
         if (!aError) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];

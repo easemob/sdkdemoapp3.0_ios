@@ -15,7 +15,6 @@
 		D246721D1D9CC543003FF9E9 /* header.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D246721C1D9CC543003FF9E9 /* header.jpg */; };
 		D24672201D9CC8D0003FF9E9 /* EaseCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D246721F1D9CC8D0003FF9E9 /* EaseCallManager.m */; };
 		D26F1DE31D98CACE00A05FEB /* EaseCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26F1DE11D98CACE00A05FEB /* EaseCallViewController.m */; };
-		D28262541DAA2FFC00498C69 /* EaseVideoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28262531DAA2FFC00498C69 /* EaseVideoInfoViewController.m */; };
 		D28345041D8FD1D400FD48A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345031D8FD1D400FD48A9 /* main.m */; };
 		D28345071D8FD1D400FD48A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345061D8FD1D400FD48A9 /* AppDelegate.m */; };
 		D283450F1D8FD1D400FD48A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D283450E1D8FD1D400FD48A9 /* Assets.xcassets */; };
@@ -305,6 +304,8 @@
 		D2BF7F2B1D914DB30090AA66 /* logo9.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7E201D914DB30090AA66 /* logo9.png */; };
 		D2BF7F2C1D914DB30090AA66 /* logo9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7E211D914DB30090AA66 /* logo9@2x.png */; };
 		D2BF7F2D1D914DB30090AA66 /* logo9@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7E221D914DB30090AA66 /* logo9@3x.png */; };
+		D2C2F6361DAB341100A2AE93 /* EaseVideoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C2F6341DAB341100A2AE93 /* EaseVideoInfoViewController.m */; };
+		D2C2F6371DAB341100A2AE93 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C2F6351DAB341100A2AE93 /* EaseVideoInfoViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -321,8 +322,6 @@
 		D246721F1D9CC8D0003FF9E9 /* EaseCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCallManager.m; sourceTree = "<group>"; };
 		D26F1DE01D98CACE00A05FEB /* EaseCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseCallViewController.h; sourceTree = "<group>"; };
 		D26F1DE11D98CACE00A05FEB /* EaseCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCallViewController.m; sourceTree = "<group>"; };
-		D28262521DAA2FFC00498C69 /* EaseVideoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseVideoInfoViewController.h; sourceTree = "<group>"; };
-		D28262531DAA2FFC00498C69 /* EaseVideoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseVideoInfoViewController.m; sourceTree = "<group>"; };
 		D28344FF1D8FD1D400FD48A9 /* ChatDemo-UI3.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI3.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28345031D8FD1D400FD48A9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D28345051D8FD1D400FD48A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -631,6 +630,9 @@
 		D2BF7E201D914DB30090AA66 /* logo9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo9.png; sourceTree = "<group>"; };
 		D2BF7E211D914DB30090AA66 /* logo9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo9@2x.png"; sourceTree = "<group>"; };
 		D2BF7E221D914DB30090AA66 /* logo9@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo9@3x.png"; sourceTree = "<group>"; };
+		D2C2F6331DAB341100A2AE93 /* EaseVideoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseVideoInfoViewController.h; sourceTree = "<group>"; };
+		D2C2F6341DAB341100A2AE93 /* EaseVideoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseVideoInfoViewController.m; sourceTree = "<group>"; };
+		D2C2F6351DAB341100A2AE93 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -671,8 +673,9 @@
 				D246721A1D9CC36E003FF9E9 /* EaseCallView_Video.xib */,
 				D246721E1D9CC8D0003FF9E9 /* EaseCallManager.h */,
 				D246721F1D9CC8D0003FF9E9 /* EaseCallManager.m */,
-				D28262521DAA2FFC00498C69 /* EaseVideoInfoViewController.h */,
-				D28262531DAA2FFC00498C69 /* EaseVideoInfoViewController.m */,
+				D2C2F6331DAB341100A2AE93 /* EaseVideoInfoViewController.h */,
+				D2C2F6341DAB341100A2AE93 /* EaseVideoInfoViewController.m */,
+				D2C2F6351DAB341100A2AE93 /* EaseVideoInfoViewController.xib */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1286,6 +1289,7 @@
 				D2BF7F1E1D914DB30090AA66 /* logo4@3x.png in Resources */,
 				D2BF7EDD1D914DB30090AA66 /* Chats.png in Resources */,
 				D2BF7E591D914DB30090AA66 /* Button_Camera switch disabled.png in Resources */,
+				D2C2F6371DAB341100A2AE93 /* EaseVideoInfoViewController.xib in Resources */,
 				D28345411D90081200FD48A9 /* EMContactsViewController.xib in Resources */,
 				D2BF7EEB1D914DB30090AA66 /* Contacts@3x.png in Resources */,
 				D2BF7E311D914DB30090AA66 /* Icon_New chat@3x.png in Resources */,
@@ -1612,7 +1616,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D28262541DAA2FFC00498C69 /* EaseVideoInfoViewController.m in Sources */,
+				D2C2F6361DAB341100A2AE93 /* EaseVideoInfoViewController.m in Sources */,
 				D24672201D9CC8D0003FF9E9 /* EaseCallManager.m in Sources */,
 				D2B6A1D21D93B53800674CDB /* EMBaseSettingController.m in Sources */,
 				D2BF7CC31D9111EC0090AA66 /* UIViewController+DismissKeyboard.m in Sources */,

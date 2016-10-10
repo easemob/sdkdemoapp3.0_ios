@@ -8,6 +8,7 @@
 
 #import "EaseCallViewController.h"
 #import "EaseCallManager.h"
+#import "EaseVideoInfoViewController.h"
 @interface EaseCallViewController ()
 {
 
@@ -18,6 +19,7 @@
     NSString * _audioCategory;
 }
 @property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
+
 
 @end
 
@@ -48,7 +50,15 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setupSubViews];
+    
+}
 
+
+#pragma mark - Tap hide video actions
 - (UITapGestureRecognizer *)tapRecognizer
 {
     if (!_tapRecognizer) {
@@ -66,58 +76,109 @@
     
 }
 
+
+
+#pragma mark - reload UI
+
 - (void)setupSubViews
 {
     self.timeLabel.hidden = YES;
     self.nameLabel.text = _callSession.remoteUsername;
     if (_isCaller) {
         
-        self.statusLabel.text = @"Calling";
-        self.statusLabel.hidden = NO;
-        [self.cancelCallButton setHidden:YES];
-        [self.answerCallButton setHidden:YES];
-        [self.rejectCallButton setHidden:NO];
-        self.silenceButton.enabled = YES;
-        self.speakerOutButton.enabled = YES;
-        self.switchCameraButton.enabled = YES;
-        self.minimizeButton.enabled = YES;
-        if (_callSession.type == EMCallTypeVideo) {
-            _avatarView.hidden = YES;
-        }
+        [self reloadCallingUI];
     } else {
         
-        self.statusLabel.text = @"Incoming Call";
-        [self.rejectCallButton setHidden:YES];
-        [self.cancelCallButton setImage:[UIImage imageNamed:@"Button_End"] forState:UIControlStateNormal];
+        [self reloadCalledUI];
     }
     
     if (_callSession.type == EMCallTypeVideo) {
         
         [self.view addGestureRecognizer:self.tapRecognizer];
-        
         [self _initializeVideoView];
-        
         _showVideoInfoButton.enabled = NO;
-        _avatarView.hidden = YES;
-        
+
         [self.view bringSubviewToFront:_topView];
         [self.view bringSubviewToFront:_actionView];
     }
 }
 
-- (void)viewDidLoad
-{
-    
-    [super viewDidLoad];
-    
-    [self setupSubViews];
 
+
+- (void)reloadCallingUI
+{
+    self.statusLabel.text = @"Calling";
+    self.statusLabel.hidden = NO;
+    [self.cancelCallButton setHidden:YES];
+    [self.answerCallButton setHidden:YES];
+    [self.rejectCallButton setHidden:NO];
+    self.silenceButton.enabled = YES;
+    self.speakerOutButton.enabled = YES;
+    self.switchCameraButton.enabled = YES;
+    self.minimizeButton.enabled = YES;
+    if (_callSession.type == EMCallTypeVideo) {
+        _avatarView.hidden = YES;
+    }
 }
 
-- (void)hideLocalView:(BOOL)hidden
+- (void)reloadCalledUI
 {
-    _callSession.localVideoView.hidden = hidden;
+    if (_callSession.type == EMCallTypeVideo) {
+        self.statusLabel.text = @"Incoming video call";
+    } else {
+        self.statusLabel.text = @"Incoming call";
+    }
+    
+    self.avatarView.hidden = NO;
+    
+    self.speakerOutButton.hidden = YES;
+    self.switchCameraButton.hidden = YES;
+    self.silenceButton.hidden = YES;
+    self.minimizeButton.hidden = YES;
+    self.showVideoInfoButton.hidden = YES;
+    
+    [self.rejectCallButton setHidden:YES];
+    [self.cancelCallButton setImage:[UIImage imageNamed:@"Button_End"] forState:UIControlStateNormal];
 }
+
+- (void)reloadConnectedUI
+{
+    self.statusLabel.hidden = YES;
+    self.timeLabel.hidden = NO;
+    [self startTimer];
+    self.cancelCallButton.hidden = YES;
+    self.answerCallButton.hidden = YES;
+    self.rejectCallButton.hidden = NO;
+    self.showVideoInfoButton.enabled = [self isShowVideoInfo];
+    
+    self.speakerOutButton.hidden = NO;
+    self.switchCameraButton.hidden = NO;
+    self.silenceButton.hidden = NO;
+    self.minimizeButton.hidden = NO;
+    self.showVideoInfoButton.hidden = NO;
+    
+}
+
+- (void)reloadCallDisconnectedUI
+{
+    self.statusLabel.hidden = NO;
+    self.speakerOutButton.enabled = NO;
+    self.silenceButton.enabled = NO;
+    self.minimizeButton.enabled = NO;
+    self.switchCameraButton.enabled = NO;
+    self.rejectCallButton.hidden = YES;
+    self.cancelCallButton.hidden = NO;
+    self.answerCallButton.hidden = NO;
+    self.timeLabel.hidden = YES;
+    self.showVideoInfoButton.enabled = NO;
+}
+
+- (BOOL)isShowVideoInfo
+{
+    id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"];
+    return [object boolValue];
+}
+
 
 - (void)_initializeVideoView
 {
@@ -204,7 +265,7 @@
     if (_isCaller) {
         
 #warning - call again
-//        [self close];
+
         NSString *username = [_callSession.remoteUsername copy];
         BOOL isVideo = [self isVideo:_callSession.type];
         _callSession = nil;
@@ -245,6 +306,7 @@
     
 }
 
+#pragma mark - Timer reload time
 - (void)startTimer
 {
     _timeLength = 0;
@@ -282,7 +344,11 @@
 
 - (IBAction)showVideoData:(UIButton *)sender
 {
-    
+    EaseVideoInfoViewController *videoInfo = [[EaseVideoInfoViewController alloc] initWithNibName:@"EaseVideoInfoViewController" bundle:nil];
+    videoInfo.callSession = _callSession;
+    videoInfo.currentTime = _timeLabel.text;
+    [videoInfo startTimer:_timeLength];
+    [self presentViewController:videoInfo animated:YES completion:nil];
 }
 
 - (IBAction)switchCamera:(UIButton *)sender

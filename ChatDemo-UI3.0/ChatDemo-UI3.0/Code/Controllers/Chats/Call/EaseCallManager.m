@@ -113,8 +113,7 @@ static EaseCallManager *callManager = nil;
 {
     [self hangupCallWithReason:EMCallEndReasonNoResponse];
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+
 }
 
 #pragma mark -  Hang up
@@ -158,7 +157,6 @@ static EaseCallManager *callManager = nil;
 
 #pragma mark - EMCallManagerDelegate
 
-//自己发起的通话 被别人接受
 - (void)callDidAccept:(EMCallSession *)aSession
 {
     if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
@@ -168,16 +166,12 @@ static EaseCallManager *callManager = nil;
     if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
         
         [self _stopCallTimer];
-        _callController.statusLabel.hidden = YES;
-        _callController.timeLabel.hidden = NO;
-        [_callController startTimer];
-        _callController.cancelCallButton.hidden = YES;
-        _callController.answerCallButton.hidden = YES;
-        _callController.rejectCallButton.hidden = NO;
-        _callController.showVideoInfoButton.enabled = YES;
+        [_callController reloadConnectedUI];
         
     }
 }
+
+
 
 - (void)callDidConnect:(EMCallSession *)aSession
 {
@@ -187,6 +181,8 @@ static EaseCallManager *callManager = nil;
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [audioSession setActive:YES error:nil];
     }
+
+    
 }
 
 - (void)callDidEnd:(EMCallSession *)aSession reason:(EMCallEndReason)aReason error:(EMError *)aError
@@ -242,18 +238,8 @@ static EaseCallManager *callManager = nil;
                 
                 _callController.statusLabel.text = reasonStr;
             }
-        
-            _callController.statusLabel.hidden = NO;
-            _callController.speakerOutButton.enabled = NO;
-            _callController.silenceButton.enabled = NO;
-            _callController.minimizeButton.enabled = NO;
-            _callController.switchCameraButton.enabled = NO;
-            _callController.rejectCallButton.hidden = YES;
-            _callController.cancelCallButton.hidden = NO;
-            _callController.answerCallButton.hidden = NO;
-            _callController.timeLabel.hidden = YES;
-            _callController.showVideoInfoButton.enabled = NO;
             
+            [_callController reloadCallDisconnectedUI];
         } else {
             
             [_callController close];
@@ -267,7 +253,7 @@ static EaseCallManager *callManager = nil;
 //收到通话请求
 - (void)callDidReceive:(EMCallSession *)aSession
 {
-    if(_callSession && _callSession.status != EMCallSessionStatusDisconnected){
+    if (_callSession && _callSession.status != EMCallSessionStatusDisconnected) {
         [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonBusy];
     }
     
@@ -276,14 +262,13 @@ static EaseCallManager *callManager = nil;
     }
     
     _callSession = aSession;
-    if(_callSession){
-        [self _startCallTimer];
+    if (_callSession) {
         
+        [self _startCallTimer];
         _callController = [[EaseCallViewController alloc] initWithCallSession:aSession isCaller:NO status:NSLocalizedString(@"call.finished", "Establish call finished")];
         _callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
         
         [self.settingVC presentViewController:_callController animated:YES completion:nil];
-
     }
 }
 

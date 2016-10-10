@@ -31,7 +31,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *switchCameraButton;
 @property (weak, nonatomic) IBOutlet UIButton *showVideoInfoButton;
 
-
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIView *actionView;
 
@@ -43,8 +42,10 @@
 
 - (void)close;
 
-- (void)hideLocalView:(BOOL)hidden;
-
 - (void)setupSubViews;
+
+- (void)reloadConnectedUI;
+
+- (void)reloadCallDisconnectedUI;
 
 @end

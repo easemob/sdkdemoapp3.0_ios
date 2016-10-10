@@ -59,11 +59,11 @@
         
         _videoBitrateSwitch = [[UISwitch alloc] init];
         [_videoBitrateSwitch addTarget:self action:@selector(switchVideoBitrate:) forControlEvents:UIControlEventValueChanged];
+        [_videoBitrateSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"] boolValue]];
     }
     
     return _videoBitrateSwitch;
 }
-
 
 #pragma mark - Table view data source
 
@@ -136,14 +136,11 @@
         
         if (indexPath.row == 0) {
             
-//                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":@"lat15", @"type":[NSNumber numberWithInt:0]}];
-            
             EMAboutViewController *about = [[EMAboutViewController alloc] init];
             about.title = @"About";
             [self.navigationController pushViewController:about animated:YES];
         } else if (indexPath.row == 2) {
-            
-//                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":@"lat15", @"type":[NSNumber numberWithInt:1]}];
+
             EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
             pushController.title = @"Push Notifications";
             [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
@@ -195,6 +192,22 @@
 - (void)switchVideoBitrate:(UISwitch *)sender
 {
     NSLog(@"switchVideoBitrate --- %d",(int)sender.on);
+    
+    if (sender.isOn) {
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        if (![ud objectForKey:@"showCallInfo"]) {
+            [ud setBool:YES forKey:@"showCallInfo"];
+            [ud synchronize];
+        }
+    } else {
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        if ([ud objectForKey:@"showCallInfo"]) {
+            [ud removeObjectForKey:@"showCallInfo"];
+            [ud synchronize];
+        }
+    }
 }
 
 
