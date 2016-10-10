@@ -27,7 +27,7 @@
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    self.titleLabel.textColor = rp_hexColor(rp_textColorGray);
+    self.titleLabel.textColor = [self rp_hexColor:0x9e9e9e];
     
     self.backView.layer.cornerRadius = 3.0f;
     self.backView.layer.masksToBounds = YES;
@@ -37,7 +37,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backViewTaped)];
     [self.backView addGestureRecognizer:tap];
     
-    self.backView.backgroundColor = rp_hexColor(rp_backGroundColorGray);
+    self.backView.backgroundColor = [self rp_hexColor:0xe3e3e3];
 }
 
 - (void)setModel:(id<IMessageModel>)model
@@ -83,5 +83,16 @@
         _redpacketMesageCellTaped(_model);
     }
 }
+
+- (UIColor *)rp_hexColor:(uint)color
+{
+    float r = (color&0xFF0000) >> 16;
+    float g = (color&0xFF00) >> 8;
+    float b = (color&0xFF);
+    
+    return [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1.0f];
+}
+
+
 
 @end
