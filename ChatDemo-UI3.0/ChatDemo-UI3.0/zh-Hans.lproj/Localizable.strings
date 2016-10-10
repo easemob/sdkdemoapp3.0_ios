@@ -212,6 +212,7 @@
 "call.noResponse"="对方没有回应";
 "call.connectFailed"="建立连接失败";
 "call.failed"="通话失败";
+"call.offline"="对方不在线";
 "call.suspended"="通话已挂断";
 "call.over"="通话结束";
 "call.cancel"="取消通话";
@@ -313,6 +314,8 @@
 "setting.nightOpen" = "只在夜间开启 (22:00 - 7:00)";
 "setting.close" = "关闭";
 "setting.sureNotDisturb" = "此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?";
+"setting.callPush" = "实时通话是否发送离线推送";
+"setting.callResolution" = "实时视频通话分辨率";
 
 "setting.uploadLog" = "上传运行日志";
 "setting.sdkVersion" = "ONE SDK 版本";

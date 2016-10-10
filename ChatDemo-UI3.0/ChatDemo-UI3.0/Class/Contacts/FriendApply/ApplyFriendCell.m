@@ -19,6 +19,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.accessibilityIdentifier = @"table_cell";
+
         _headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         _headerImageView.backgroundColor = [UIColor clearColor];
         _headerImageView.clipsToBounds = YES;
@@ -26,12 +28,14 @@
         [self.contentView addSubview:_headerImageView];
         
         _titleLabel = [[UILabel alloc] init];
+        _titleLabel.accessibilityIdentifier = @"title";
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textColor = [UIColor blackColor];
         _titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         [self.contentView addSubview:_titleLabel];
         
         _contentLabel = [[UILabel alloc] init];
+        _contentLabel.accessibilityIdentifier = @"content";
         _contentLabel.numberOfLines = 0;
         _contentLabel.backgroundColor = [UIColor clearColor];
         _contentLabel.textColor = [UIColor grayColor];
@@ -39,6 +43,7 @@
         [self.contentView addSubview:_contentLabel];
         
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, 0, 50, 30)];
+        _addButton.accessibilityIdentifier = @"accept";
         [_addButton setBackgroundColor:[UIColor colorWithRed:10 / 255.0 green:82 / 255.0 blue:104 / 255.0 alpha:1.0]];
         [_addButton setTitle:NSLocalizedString(@"accept", @"Accept") forState:UIControlStateNormal];
         _addButton.clipsToBounds = YES;
@@ -48,6 +53,7 @@
         [self.contentView addSubview:_addButton];
         
         _refuseButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 120, 0, 50, 30)];
+        _refuseButton.accessibilityIdentifier = @"decline";
         [_refuseButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
         [_refuseButton setTitle:NSLocalizedString(@"reject", @"Reject") forState:UIControlStateNormal];
         _refuseButton.clipsToBounds = YES;

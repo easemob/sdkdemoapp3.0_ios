@@ -9,7 +9,6 @@
 #ifndef YZHRedpacketBridgeProtocol_h
 #define YZHRedpacketBridgeProtocol_h
 
- /// 用通知减少耦合
 
 @class RedpacketUserInfo;
 
@@ -26,15 +25,19 @@
 
 
 @protocol YZHRedpacketBridgeDelegate <NSObject>
-
+@required
 /**
- *  SDK错误处理代理，目前只有环信Token过期才会触发
+ *  SDK错误处理代理
  *
  *  @param error 错误内容
  *  @param code  错误码
+ *  @discussion
+    1.通过ImToken获取红包Token, 红包Token过期后，请求红包Token时，ImToken过期触发回调，刷新ImToken后，重新注册红包Token。
+    2.通过Sign获取红包Token， 红包Token过期后，直接触发。
+    错误码： 20304  环信IMToken验证错误
+    错误码： 1001 Token相关错误
  */
 - (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code;
-
 
 @end
 

@@ -16,8 +16,9 @@
 #import "AddFriendCell.h"
 #import "InvitationManager.h"
 
-@interface AddFriendViewController ()<UITextFieldDelegate, UIAlertViewDelegate>
+@interface AddFriendViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate>
 
+@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @property (strong, nonatomic) UIView *headerView;
@@ -28,34 +29,33 @@
 
 @implementation AddFriendViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-        _dataSource = [NSMutableArray array];
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     self.title = NSLocalizedString(@"friend.add", @"Add friend");
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
+    
+    [self.view addSubview:self.headerView];
+    
+    self.dataSource = [NSMutableArray array];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerView.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.headerView.frame)) style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.tableHeaderView = self.headerView;
+    [self.view addSubview:self.tableView];
     
     UIView *footerView = [[UIView alloc] init];
     footerView.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     self.tableView.tableFooterView = footerView;
     
     UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    searchButton.accessibilityIdentifier = @"search_contact";
     [searchButton setTitle:NSLocalizedString(@"search", @"Search") forState:UIControlStateNormal];
     [searchButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [searchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
@@ -80,10 +80,14 @@
 
 #pragma mark - getter
 
-- (UITextField *)textField
+- (UIView *)headerView
 {
-    if (_textField == nil) {
+    if (_headerView == nil) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
+        _headerView.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
+        
         _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 40)];
+        _textField.accessibilityIdentifier = @"contact_name";
         _textField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         _textField.layer.borderWidth = 0.5;
         _textField.layer.cornerRadius = 3;
@@ -96,17 +100,6 @@
         _textField.placeholder = NSLocalizedString(@"friend.inputNameToSearch", @"input to find friends");
         _textField.returnKeyType = UIReturnKeyDone;
         _textField.delegate = self;
-    }
-    
-    return _textField;
-}
-
-- (UIView *)headerView
-{
-    if (_headerView == nil) {
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60)];
-        _headerView.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
-        
         [_headerView addSubview:_textField];
     }
     

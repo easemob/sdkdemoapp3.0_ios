@@ -10,9 +10,17 @@
 #import <UIKit/UIKit.h>
 #import "RedpacketMessageModel.h"
 
+typedef NS_ENUM(NSInteger,RPSendRedPacketViewControllerType){
+    RPSendRedPacketViewControllerSingle, //点对点红包
+    RPSendRedPacketViewControllerGroup,  //普通群红包
+    RPSendRedPacketViewControllerMember, //包含专属红包的群红包
+};
+
 @protocol RedpacketViewControlDelegate <NSObject>
 
-- (NSArray<RedpacketUserInfo *> *)groupMemberList;
+@optional
+- (NSArray<RedpacketUserInfo *> *)groupMemberList __attribute__((deprecated("请用getGroupMemberListCompletionHandle：方法替换")));
+- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle;
 
 @end
 
@@ -59,21 +67,45 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 
 #pragma mark - Controllers
 
-/**
- *  点对点红包Controller
- *
- *  @return 返回点对点红包Controller
- */
-- (UIViewController *)redpacketViewController;
+- (UIViewController *)redpacketViewController __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
+- (UIViewController *)redPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
+- (void)presentRedPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
+- (void)presentRedPacketViewController __attribute__((deprecated("请用presentRedPacketViewControllerWithType: memberCount:替换")));
 
 /**
- *  返回群红包Controller
+ *  弹出红包控制器
  *
- *  @param 群成员列表
- *
- *  @return 返回多人红包页面
+ *  @param rpType 红包页面类型
+ *  @param count  群红包群人数
  */
-- (UIViewController *)redPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray;
+- (void)presentRedPacketViewControllerWithType:(RPSendRedPacketViewControllerType)rpType memberCount:(NSInteger)count;
+/**
+ *  生成红包Controller
+ *
+ *  @param rpType 红包页面类型
+ *  @param count  群红包群人数
+ *
+ *  @return 红包Controller
+ */
+- (UIViewController *)redPacketViewControllerWithType:(RPSendRedPacketViewControllerType)rpType memberCount:(NSInteger)count;
+
+/**
+ *  生成转账Controller
+ *  
+ *  @param userInfo 用户相关属性
+ *
+ *  @return 转账Controller
+ */
+- (void)presentTransferViewControllerWithReceiver:(RedpacketUserInfo *)userInfo;
+
+/**
+ *  生成转账DetailController
+ *
+ *
+ *
+ *  @return 转账Controller
+ */
+- (void)presentTransferDetailViewController:(RedpacketMessageModel *)model;
 
 /**
  *  零钱页面
@@ -92,21 +124,15 @@ typedef void(^RedpacketSendBlock)(RedpacketMessageModel *model);
 #pragma mark - ShowViewControllers
 
 /**
- *  Present的方式显示群红包页面
- *
- *  @param groupMemberArray 定向红包成员数组
- */
-- (void)presentRedPacketMoreViewControllerWithGroupMembers:(NSArray *)groupMemberArray;
-
-/**
- *  Present的方式显示点对点红包页面
- */
-- (void)presentRedPacketViewController;
-
-/**
  *  Present的方式显示零钱页面
  */
 - (void)presentChangeMoneyViewController;
 
+/**
+ *  零钱接口返回零钱
+ *
+ *  @param amount 零钱金额
+ */
++ (void)getChangeMoney:(void (^)(NSString *amount))amount;
 
 @end
