@@ -17,7 +17,6 @@
 #import "ChatDemoHelper.h"
 #import "UserProfileManager.h"
 #import "TransferCell.h"
-#import <UIImageView+WebCache.h>
 
 /**
  *  红包聊天窗口
