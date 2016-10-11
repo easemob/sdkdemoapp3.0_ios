@@ -8,18 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */; };
-		2870944B1DAB95B100BCB3CD /* AlipaySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287094271DAB95B100BCB3CD /* AlipaySDK.a */; };
-		2870944C1DAB95B100BCB3CD /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2870942A1DAB95B100BCB3CD /* AlipaySDK.bundle */; };
 		2870944D1DAB95B100BCB3CD /* EaseBubbleView+RedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2870942F1DAB95B100BCB3CD /* EaseBubbleView+RedPacket.m */; };
 		2870944E1DAB95B100BCB3CD /* EaseRedBagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 287094311DAB95B100BCB3CD /* EaseRedBagCell.m */; };
-		2870944F1DAB95B100BCB3CD /* RedpacketCellResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 287094321DAB95B100BCB3CD /* RedpacketCellResource.bundle */; };
 		287094501DAB95B100BCB3CD /* RedpacketMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 287094341DAB95B100BCB3CD /* RedpacketMessageCell.m */; };
-		287094511DAB95B100BCB3CD /* RedpacketMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287094351DAB95B100BCB3CD /* RedpacketMessageCell.xib */; };
 		287094521DAB95B100BCB3CD /* TransferCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 287094371DAB95B100BCB3CD /* TransferCell.m */; };
 		287094531DAB95B100BCB3CD /* RedPacketChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2870943A1DAB95B100BCB3CD /* RedPacketChatViewController.m */; };
 		287094541DAB95B100BCB3CD /* RedPacketUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 2870943D1DAB95B100BCB3CD /* RedPacketUserConfig.m */; };
-		287094551DAB95B100BCB3CD /* libRedpacketLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287094401DAB95B100BCB3CD /* libRedpacketLib.a */; };
-		287094561DAB95B100BCB3CD /* RedPacketResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 287094471DAB95B100BCB3CD /* RedPacketResource.bundle */; };
 		287094571DAB95B100BCB3CD /* 环信红包3.x接入文档(iOS).md in Sources */ = {isa = PBXBuildFile; fileRef = 2870944A1DAB95B100BCB3CD /* 环信红包3.x接入文档(iOS).md */; };
 		287094801DAC6EA000BCB3CD /* AlipaySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2870945C1DAC6EA000BCB3CD /* AlipaySDK.a */; };
 		287094811DAC6EA000BCB3CD /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2870945F1DAC6EA000BCB3CD /* AlipaySDK.bundle */; };
@@ -263,18 +257,12 @@
 /* Begin PBXFileReference section */
 		283403071A9EBB8200B7DE9B /* GroupSubjectChangingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSubjectChangingViewController.h; sourceTree = "<group>"; };
 		283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSubjectChangingViewController.m; sourceTree = "<group>"; };
-		287094271DAB95B100BCB3CD /* AlipaySDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AlipaySDK.a; sourceTree = "<group>"; };
-		2870942A1DAB95B100BCB3CD /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		2870942F1DAB95B100BCB3CD /* EaseBubbleView+RedPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EaseBubbleView+RedPacket.m"; sourceTree = "<group>"; };
 		287094311DAB95B100BCB3CD /* EaseRedBagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseRedBagCell.m; sourceTree = "<group>"; };
-		287094321DAB95B100BCB3CD /* RedpacketCellResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RedpacketCellResource.bundle; sourceTree = "<group>"; };
 		287094341DAB95B100BCB3CD /* RedpacketMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedpacketMessageCell.m; sourceTree = "<group>"; };
-		287094351DAB95B100BCB3CD /* RedpacketMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RedpacketMessageCell.xib; sourceTree = "<group>"; };
 		287094371DAB95B100BCB3CD /* TransferCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferCell.m; sourceTree = "<group>"; };
 		2870943A1DAB95B100BCB3CD /* RedPacketChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketChatViewController.m; sourceTree = "<group>"; };
 		2870943D1DAB95B100BCB3CD /* RedPacketUserConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketUserConfig.m; sourceTree = "<group>"; };
-		287094401DAB95B100BCB3CD /* libRedpacketLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRedpacketLib.a; sourceTree = "<group>"; };
-		287094471DAB95B100BCB3CD /* RedPacketResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RedPacketResource.bundle; sourceTree = "<group>"; };
 		2870944A1DAB95B100BCB3CD /* 环信红包3.x接入文档(iOS).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "环信红包3.x接入文档(iOS).md"; sourceTree = "<group>"; };
 		287094581DAC6E2900BCB3CD /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
 		2870945C1DAC6EA000BCB3CD /* AlipaySDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AlipaySDK.a; sourceTree = "<group>"; };
@@ -617,9 +605,7 @@
 			files = (
 				3A807B0B1D9511EF004D18CB /* libffmpeg-ios-full.a in Frameworks */,
 				2870948A1DAC6EA000BCB3CD /* libRedpacketLib.a in Frameworks */,
-				287094551DAB95B100BCB3CD /* libRedpacketLib.a in Frameworks */,
 				3A807B0C1D9511EF004D18CB /* libHyphenatePluginRecorder.a in Frameworks */,
-				2870944B1DAB95B100BCB3CD /* AlipaySDK.a in Frameworks */,
 				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
 				287094801DAC6EA000BCB3CD /* AlipaySDK.a in Frameworks */,
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
@@ -1501,7 +1487,6 @@
 				EBD2AB581A7CDAC000D16528 /* messageSendFail@2x.png in Resources */,
 				EBD2ABB21A7CDAC000D16528 /* tabbar_contacts@2x.png in Resources */,
 				EBD2AB9E1A7CDAC000D16528 /* password.png in Resources */,
-				287094561DAB95B100BCB3CD /* RedPacketResource.bundle in Resources */,
 				D2B3DACA1BF1D7B700913BD5 /* icon_010.gif in Resources */,
 				D2B3DACF1BF1D7B700913BD5 /* icon_018_cover.png in Resources */,
 				EBD2AB511A7CDAC000D16528 /* chat_location_detail_disclosureHL.png in Resources */,
@@ -1547,13 +1532,11 @@
 				D2B3DAC71BF1D7B700913BD5 /* icon_007_cover.png in Resources */,
 				287094841DAC6EA000BCB3CD /* RedpacketCellResource.bundle in Resources */,
 				EBD2ABA31A7CDAC000D16528 /* group_detail@2x.png in Resources */,
-				2870944F1DAB95B100BCB3CD /* RedpacketCellResource.bundle in Resources */,
 				287094811DAC6EA000BCB3CD /* AlipaySDK.bundle in Resources */,
 				EBD2ABA21A7CDAC000D16528 /* delete@2x.png in Resources */,
 				EBD2AB851A7CDAC000D16528 /* chat_receiver_audio_playing000@2x.png in Resources */,
 				EBD2ABA41A7CDAC000D16528 /* titleBar.png in Resources */,
 				D2B3DAC91BF1D7B700913BD5 /* icon_010_cover.png in Resources */,
-				287094511DAB95B100BCB3CD /* RedpacketMessageCell.xib in Resources */,
 				EBD2ABB61A7CDAC000D16528 /* tabbar_setting@2x.png in Resources */,
 				D2A910811C83E7890025AD0A /* 120.png in Resources */,
 				D2B3DAE41BF1D7B700913BD5 /* icon_040.gif in Resources */,
@@ -1564,7 +1547,6 @@
 				D2B3DAE11BF1D7B700913BD5 /* icon_035_cover.png in Resources */,
 				D2B3DAD21BF1D7B700913BD5 /* icon_019.gif in Resources */,
 				EBD2AB391A7CDAC000D16528 /* call_out.png in Resources */,
-				2870944C1DAB95B100BCB3CD /* AlipaySDK.bundle in Resources */,
 				D2B3DADE1BF1D7B700913BD5 /* icon_029.gif in Resources */,
 				EBD2AB991A7CDAC000D16528 /* chat_sender_audio_playing_full@2x.png in Resources */,
 				EBD2ABA61A7CDAC000D16528 /* group_invitee_delete@2x.png in Resources */,
