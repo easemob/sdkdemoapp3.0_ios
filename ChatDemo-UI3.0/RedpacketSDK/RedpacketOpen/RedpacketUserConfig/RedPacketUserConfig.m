@@ -74,7 +74,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     if (self) {
         [self beginObserve];
-        [YZHRedpacketBridge sharedBridge].redacketURLScheme = @"com.redpacket.ease.demo";
     }
     
     return self;
@@ -263,16 +262,18 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
         }
     }
     
-    for (id body in message.messageBodies) {
-        if ([body isKindOfClass:[EMTextMessageBody class]]) {
-            EMTextMessageBody *textBody = (EMTextMessageBody *)body;
-            textBody.text = text;
-            [message updateMessageBodiesToDB];
-            
-            ConversationListController *listVC = [((AppDelegate *)[UIApplication sharedApplication].delegate).mainController.viewControllers objectAtIndex:0];
-            [listVC refreshDataSource];
-            
-            return;
+    if (text.length) {
+        for (id body in message.messageBodies) {
+            if ([body isKindOfClass:[EMTextMessageBody class]]) {
+                EMTextMessageBody *textBody = (EMTextMessageBody *)body;
+                textBody.text = text;
+                [message updateMessageBodiesToDB];
+                
+                ConversationListController *listVC = [((AppDelegate *)[UIApplication sharedApplication].delegate).mainController.viewControllers objectAtIndex:0];
+                [listVC refreshDataSource];
+                
+                break;
+            }
         }
     }
 }
