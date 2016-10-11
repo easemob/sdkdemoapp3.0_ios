@@ -274,7 +274,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                     /**
                      *  存入当前会话并存入数据库
                      */
-                    [self.chatVC.conversation insertMessage:textMessage error:nil];
+                    [self.chatVC.conversation appendMessage:textMessage error:nil];
                     
                 }else {
                     /**
@@ -285,7 +285,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                         for (id <IConversationModel> model in [listVc.dataArray copy]) {
                             EMConversation *conversation = model.conversation;
                             if ([conversation.conversationId isEqualToString:textMessage.conversationId]) {
-                                [conversation insertMessage:textMessage error:nil];
+                                [conversation appendMessage:textMessage error:nil];
                             }
                         }
                         
