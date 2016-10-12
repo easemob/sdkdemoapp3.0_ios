@@ -315,6 +315,11 @@
     return @{MESSAGE_ATTR_EXPRESSION_ID:easeEmotion.emotionId,MESSAGE_ATTR_IS_BIG_EXPRESSION:@(YES)};
 }
 
+- (void)messageViewControllerMarkAllMessagesAsRead:(EaseMessageViewController *)viewController
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
+}
+
 #pragma mark - EaseMob
 
 #pragma mark - EMClientDelegate
