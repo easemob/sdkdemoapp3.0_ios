@@ -11,6 +11,7 @@
   */
 
 #import <UIKit/UIKit.h>
+#import <UserNotifications/UserNotifications.h>
 
 @interface MainViewController : UITabBarController
 {
@@ -24,5 +25,7 @@
 - (void)networkChanged:(EMConnectionState)connectionState;
 
 - (void)didReceiveLocalNotification:(UILocalNotification *)notification;
+
+- (void)didReceiveUserNotification:(UNNotification *)notification;
 
 @end
