@@ -96,6 +96,7 @@ didFinishLaunchingWithOptions:launchOptions
     if (_mainController) {
         [_mainController jumpToChatList];
     }
+    [self easemobApplication:application didReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -103,6 +104,12 @@ didFinishLaunchingWithOptions:launchOptions
     if (_mainController) {
         [_mainController didReceiveLocalNotification:notification];
     }
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    [self easemobApplication:[UIApplication sharedApplication] didReceiveRemoteNotification:userInfo];
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler

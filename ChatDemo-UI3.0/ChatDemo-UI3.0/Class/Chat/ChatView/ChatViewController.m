@@ -324,14 +324,21 @@
 
 #pragma mark - EMClientDelegate
 
-- (void)didLoginFromOtherDevice
+- (void)userAccountDidLoginFromOtherDevice
 {
     if ([self.imagePicker.mediaTypes count] > 0 && [[self.imagePicker.mediaTypes objectAtIndex:0] isEqualToString:(NSString *)kUTTypeMovie]) {
         [self.imagePicker stopVideoCapture];
     }
 }
 
-- (void)didRemovedFromServer
+- (void)userAccountDidRemoveFromServer
+{
+    if ([self.imagePicker.mediaTypes count] > 0 && [[self.imagePicker.mediaTypes objectAtIndex:0] isEqualToString:(NSString *)kUTTypeMovie]) {
+        [self.imagePicker stopVideoCapture];
+    }
+}
+
+- (void)servingDidBanByServer
 {
     if ([self.imagePicker.mediaTypes count] > 0 && [[self.imagePicker.mediaTypes objectAtIndex:0] isEqualToString:(NSString *)kUTTypeMovie]) {
         [self.imagePicker stopVideoCapture];
