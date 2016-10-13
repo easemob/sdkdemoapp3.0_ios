@@ -338,7 +338,7 @@
     }
 }
 
-- (void)servingDidBanByServer
+- (void)userDidForbidByServer
 {
     if ([self.imagePicker.mediaTypes count] > 0 && [[self.imagePicker.mediaTypes objectAtIndex:0] isEqualToString:(NSString *)kUTTypeMovie]) {
         [self.imagePicker stopVideoCapture];

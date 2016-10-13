@@ -199,7 +199,7 @@ static ChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
-- (void)servingDidBanByServer
+- (void)userDidForbidByServer
 {
     [self _clearHelper];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"servingIsBanned", @"Serving is banned") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
