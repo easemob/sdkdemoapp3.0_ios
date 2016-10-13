@@ -127,6 +127,7 @@ static NSString *kGroupName = @"GroupName";
                                                            image:[UIImage imageNamed:@"tabbar_chats"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_chatsHL"]];
     _chatListVC.tabBarItem.tag = 0;
+    _chatListVC.tabBarItem.accessibilityIdentifier = @"conversation";
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     
@@ -135,6 +136,7 @@ static NSString *kGroupName = @"GroupName";
                                                            image:[UIImage imageNamed:@"tabbar_contacts"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]];
     _contactsVC.tabBarItem.tag = 1;
+    _contactsVC.tabBarItem.accessibilityIdentifier = @"contact";
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
@@ -143,6 +145,7 @@ static NSString *kGroupName = @"GroupName";
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];
     _settingsVC.tabBarItem.tag = 2;
+    _settingsVC.tabBarItem.accessibilityIdentifier = @"setting";
     _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
