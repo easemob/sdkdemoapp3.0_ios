@@ -26,6 +26,7 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
+#import "EMLog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -518,8 +519,10 @@ static ChatDemoHelper *helper = nil;
 
 #if DEMO_CALL == 1
 
-- (void)didReceiveCallIncoming:(EMCallSession *)aSession
+- (void)callDidReceive:(EMCallSession *)aSession
 {
+    [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::callDidReceive %@", aSession.callId]];
+    
     if ([EaseSDKHelper shareHelper].isShowingimagePicker) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
@@ -529,26 +532,27 @@ static ChatDemoHelper *helper = nil;
         return;
     }
     
-    self.callSession = aSession;
-    if(self.callSession){
+    if(aSession){
         [self _startCallTimer];
         
         @synchronized (_callLock) {
+            self.callSession = aSession;
             self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-            [_mainVC presentViewController:self.callController animated:NO completion:nil];
+            [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
         }
     }
 }
 
-- (void)didReceiveCallConnected:(EMCallSession *)aSession
+- (void)callDidConnect:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         [self.callController stateToConnected];
     }
 }
 
-- (void)didReceiveCallAccepted:(EMCallSession *)aSession
+- (void)callDidAccept:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         [self _stopCallTimer];
@@ -556,17 +560,19 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveCallTerminated:(EMCallSession *)aSession
-                          reason:(EMCallEndReason)aReason
-                           error:(EMError *)aError
+- (void)callDidEnd:(EMCallSession *)aSession
+            reason:(EMCallEndReason)aReason
+             error:(EMError *)aError
 {
     if ([aSession.callId isEqualToString:_callSession.callId]) {
+        [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::callDidEnd %@", aSession.callId]];
         
         [self _stopCallTimer];
         
         @synchronized (_callLock) {
             self.callSession = nil;
             [self dismissCurrentCallController];
+            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::dismissCurrentCallController %@", aSession.callId]];
         }
         
         if (aReason != EMCallEndReasonHangup) {
@@ -685,6 +691,7 @@ static ChatDemoHelper *helper = nil;
                 self.callSession = aCallSession;
                 self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
                 [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
             }
             
             [self _startCallTimer];
@@ -744,10 +751,12 @@ static ChatDemoHelper *helper = nil;
 
 - (void)dismissCurrentCallController
 {
-    if (self.callController) {
-        [self.callController dismissViewControllerAnimated:NO completion:nil];
-        [self.callController clear];
-        self.callController = nil;
+    CallViewController *tmpController = self.callController;
+    self.callController = nil;
+    if (tmpController) {
+        [tmpController dismissViewControllerAnimated:NO completion:nil];
+        [tmpController clear];
+        tmpController = nil;
     }
 }
 
