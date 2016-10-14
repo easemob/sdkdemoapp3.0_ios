@@ -539,7 +539,10 @@ static ChatDemoHelper *helper = nil;
             self.callSession = aSession;
             self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-            [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            });
+        
             [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
         }
     }
@@ -596,6 +599,11 @@ static ChatDemoHelper *helper = nil;
                 case EMCallEndReasonFailed:
                 {
                     reasonStr = NSLocalizedString(@"call.connectFailed", @"Connect failed");
+                }
+                    break;
+                case EMCallEndReasonUnsupported:
+                {
+                    reasonStr = NSLocalizedString(@"call.Unsupported", @"Unsupported");
                 }
                     break;
                 case EMCallEndReasonRemoteOffline:
@@ -690,7 +698,10 @@ static ChatDemoHelper *helper = nil;
             @synchronized (self.callLock) {
                 self.callSession = aCallSession;
                 self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
-                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                });
+
                 [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
             }
             
@@ -751,10 +762,14 @@ static ChatDemoHelper *helper = nil;
 
 - (void)dismissCurrentCallController
 {
+    self.callController.isDismissing = YES;
     CallViewController *tmpController = self.callController;
     self.callController = nil;
     if (tmpController) {
-        [tmpController dismissViewControllerAnimated:NO completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [tmpController dismissViewControllerAnimated:NO completion:nil];
+        });
+        
         [tmpController clear];
         tmpController = nil;
     }
