@@ -47,13 +47,17 @@
     if (_hyphenateId.length == 0) {
         return;
     }
-    EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:_hyphenateId relationshipBoth:NO];
-    if (!error) {
-        //向UI通知
-    }
-    else {
-        //向UI通知
-    }
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient].contactManager addUserToBlackList:_hyphenateId
+                                                    completion:^(NSString *aUsername, EMError *aError) {
+                                                        if (!aError) {
+                                                            if (weakSelf.delegate &&
+                                                                [weakSelf.delegate respondsToSelector:@selector(needRefreshContactsFromServer:)])
+                                                            {
+                                                                [weakSelf.delegate needRefreshContactsFromServer:YES];
+                                                            }
+                                                        }
+    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

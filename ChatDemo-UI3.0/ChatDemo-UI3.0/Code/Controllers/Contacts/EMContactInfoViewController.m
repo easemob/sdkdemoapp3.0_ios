@@ -9,8 +9,8 @@
 #import "EMContactInfoViewController.h"
 #import "UIImage+ImageEffect.h"
 #import "EMUserModel.h"
-#import "EMColorUtils.h"
 #import "EMContactInfoCell.h"
+#import "EMChatDemoHelper.h"
 
 #define NAME                NSLocalizedString(@"contact.name", @"Name")
 #define HYPHENATE_ID        NSLocalizedString(@"contact.hyphenateId", @"Hyphenate ID")
@@ -20,12 +20,10 @@
 
 
 
-@interface EMContactInfoViewController ()<UIActionSheetDelegate>
+@interface EMContactInfoViewController ()<UIActionSheetDelegate, EMContactsUIProtocol>
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
-//头像
 @property (strong, nonatomic) IBOutlet UIImageView *avatarImage;
-//昵称
 @property (strong, nonatomic) IBOutlet UILabel *nicknameLabel;
 
 @property (strong, nonatomic) EMUserModel *model;
@@ -34,9 +32,6 @@
 
 @implementation EMContactInfoViewController
 {
-    //用于保存nav一些属性
-    UIImage *_navShadowImage;
-    UIImage *_navBarBgImage;
     NSArray *_contactInfo;
     NSArray *_contactFunc;
 }
@@ -57,8 +52,15 @@
     _nicknameLabel.text = _model.nickname;
     _avatarImage.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
-        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:_model.avatarURLPath]];
-        _avatarImage.image = [UIImage imageWithData:data];
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:weakSelf.model.avatarURLPath]];
+            if (data.length > 0) {
+                dispatch_async(dispatch_get_main_queue(), ^(){
+                    weakSelf.avatarImage.image = [UIImage imageWithData:data];
+                });
+            }
+        });
     }
     
     [self loadContactInfo];
@@ -81,8 +83,7 @@
     }
     _contactInfo = [NSArray arrayWithArray:info];
     
-    _contactFunc = @[@{BLOCK_CONTACT:[UIColor colorWithRed:12.0/255.0 green:18.0/255.0 blue:24.0/255.0 alpha:1.0]},@{DELETE_CONTACT:[UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0]}];
-    
+    _contactFunc = @[@{BLOCK_CONTACT:RGBACOLOR(12.0/255.0, 18.0/255.0, 24.0/255.0, 1.0)}, @{DELETE_CONTACT:RGBACOLOR(255.0/255.0, 59.0/255.0, 48.0/255.0, 1.0)}];
 }
 
 - (void)makeCallWithContact:(NSString *)contact callTyfpe:(EMCallType)callType {
@@ -91,12 +92,12 @@
     }
     if (callType == EMCallTypeVoice) {
         [[EMClient sharedClient].callManager startVoiceCall:contact completion:^(EMCallSession *aCallSession, EMError *aError) {
-            //页面跳转
+            
         }];
     }
     else {
         [[EMClient sharedClient].callManager startVideoCall:contact completion:^(EMCallSession *aCallSession, EMError *aError) {
-            //页面跳转
+        
         }];
     }
 }
@@ -108,29 +109,24 @@
 
 #pragma mark - Action
 
-//返回
 - (IBAction)backAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 
-//点击开始聊天
 - (IBAction)chatAction:(id)sender {
     
 }
 
-//点击开始实时语音
 - (IBAction)callVoiceAction:(id)sender {
     [self makeCallWithContact:@"" callTyfpe:EMCallTypeVoice];
 }
 
-//点击开始实时视频
 - (IBAction)callVideoAction:(id)sender {
     [self makeCallWithContact:@"" callTyfpe:EMCallTypeVideo];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    //table滑到顶端，不能再下拉
     if (scrollView.contentOffset.y < 0) {
         CGPoint contentOffset = scrollView.contentOffset;
         contentOffset.y = 0;
@@ -172,6 +168,7 @@
         }
         cell.hyphenateId = _model.hyphenateId;
         cell.infoDic = _contactFunc[indexPath.row];
+        cell.delegate = self;
     }
     return cell;
 }
@@ -182,7 +179,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1 && indexPath.row == 1) {
-        //删除联系人
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"common.delete", @"Delete") otherButtonTitles:nil, nil];
         [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     }
@@ -213,14 +209,26 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:_model.hyphenateId];
-        if (!error) {
-            [[EMClient sharedClient].chatManager deleteConversation:_model.hyphenateId isDeleteMessages:YES completion:nil];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else{
-            //删除联系人失败
-        }
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+            EMError *error = [[EMClient sharedClient].contactManager deleteContact:_model.hyphenateId];
+            if (!error) {
+                [[EMChatDemoHelper shareHelper].contactsVC reloadContacts];
+                [[EMClient sharedClient].chatManager deleteConversation:_model.hyphenateId isDeleteMessages:YES completion:nil];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+            else{
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"contact.deleteFailure", @"Delete contacts failed") delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
+            }
+        });
+    }
+}
+
+#pragma mark - EMContactsUIProtocol
+- (void)needRefreshContactsFromServer:(BOOL)isNeedRefresh {
+    if (isNeedRefresh) {
+        [[EMChatDemoHelper shareHelper].contactsVC loadContactsFromServer];
     }
 }
 

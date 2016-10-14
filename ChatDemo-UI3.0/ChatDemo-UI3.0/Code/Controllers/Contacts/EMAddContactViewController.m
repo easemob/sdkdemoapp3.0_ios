@@ -7,13 +7,13 @@
 //
 
 #import "EMAddContactViewController.h"
-#import "EMColorUtils.h"
 
 @interface EMAddContactViewController ()<UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *textField;
 
 @property (strong, nonatomic) IBOutlet UILabel *addStatusLabel;
+@property (strong, nonatomic) IBOutlet UIButton *addButton;
 
 @end
 
@@ -32,14 +32,13 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.hidesBottomBarWhenPushed = NO;
 }
 
 - (void)setupNavBar {
     self.title = NSLocalizedString(@"title.addContact", @"Add Contact");
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, 0, 50, 44);
+    cancelBtn.frame = CGRectMake(0, 0, 44, 44);
     [cancelBtn setTitleColor:KermitGreenTwoColor forState:UIControlStateNormal];
     [cancelBtn setTitleColor:KermitGreenTwoColor forState:UIControlStateHighlighted];
     [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
@@ -59,22 +58,19 @@
     _textField.leftView = leftImage;
     _textField.leftViewMode = UITextFieldViewModeUnlessEditing;
     
-    //设置placeholder
     _textField.placeholder = NSLocalizedString(@"contact.enterHyphenateID", @"Enter Hyphenate ID");
-    //只有placeholder有值且非空字符串，才能设置生效
     [_textField setValue:CoolGrayColor  forKeyPath:@"_placeholderLabel.textColor"];
     [_textField setValue:[UIFont systemFontOfSize:15]  forKeyPath:@"_placeholderLabel.font"];
     
-//    _textField.background = nil;
     _textField.clipsToBounds = YES;
     _textField.layer.borderColor = CoolGrayColor.CGColor;
     
-    _textField.returnKeyType = UIReturnKeyGo;
+    _textField.returnKeyType = UIReturnKeySearch;
 
 }
 
 - (void)cancelAddContact {
-    [self setEditing:NO];
+    [_textField resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -100,6 +96,11 @@
 
 - (void)addContact {
     NSString *contactName = _textField.text;
+    if (contactName.length == 0) {
+        _addStatusLabel.hidden = NO;
+        _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.noinput", @"No input contact name") attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
+        return;
+    }
     if ([self isContainInMyContacts:contactName]) {
         _addStatusLabel.hidden = NO;
         _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.repeatContact", @"This contact has been added") attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
@@ -114,7 +115,7 @@
 }
 
 - (void)sendAddContactRequest:(NSString *)contactName {
-    NSString *requestMessage = [NSString stringWithFormat:@"%@申请加您为好友!",contactName];
+    NSString *requestMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"),contactName];
     EMError *error = [[EMClient sharedClient].contactManager addContact:contactName
                                                                 message:requestMessage];
     _addStatusLabel.hidden = NO;
@@ -124,6 +125,12 @@
     else {
         _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:error.errorDescription attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
     }
+}
+
+#pragma mark - Action Method
+
+- (IBAction)addContactAction:(id)sender {
+    [self addContact];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -144,6 +151,23 @@
     [self addContact];
     return YES;
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *imageName = @"addContact_disable.png";
+    _addButton.userInteractionEnabled = NO;
+    if (textField.text.length > 1 ||
+        ((textField.text.length == 1 || textField.text.length == 0) && ![string isEqualToString:@""])) {
+        imageName = @"addContact_enable.png";
+        _addButton.userInteractionEnabled = YES;
+    }
+    [_addButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [_addButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
+    
+    
+    return YES;
+}
+
+
 
 
 @end

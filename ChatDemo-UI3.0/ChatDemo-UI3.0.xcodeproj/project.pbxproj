@@ -27,6 +27,8 @@
 		7166340F1DB0E17C00C92E27 /* EMGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7166340B1DB0E17C00C92E27 /* EMGroupModel.m */; };
 		716634161DB0E1AB00C92E27 /* EMBaseRefreshTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 716634121DB0E1AB00C92E27 /* EMBaseRefreshTableController.m */; };
 		716634171DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 716634131DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib */; };
+		7166341E1DB0E45700C92E27 /* EMApplyRequestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7166341C1DB0E45700C92E27 /* EMApplyRequestCell.m */; };
+		7166341F1DB0E45700C92E27 /* EMApplyRequestCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7166341D1DB0E45700C92E27 /* EMApplyRequestCell.xib */; };
 		71D4A1CD1D9C91B8006FACB7 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */; };
 		71D4A1D11D9C9229006FACB7 /* UIImage+ImageEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */; };
 		71D4A1D61D9C923D006FACB7 /* EMUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D41D9C923D006FACB7 /* EMUserModel.m */; };
@@ -361,6 +363,10 @@
 		716634111DB0E1AB00C92E27 /* EMBaseRefreshTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBaseRefreshTableController.h; sourceTree = "<group>"; };
 		716634121DB0E1AB00C92E27 /* EMBaseRefreshTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBaseRefreshTableController.m; sourceTree = "<group>"; };
 		716634131DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMBaseRefreshTableController.xib; sourceTree = "<group>"; };
+		7166341A1DB0E41A00C92E27 /* EMContactsUIProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMContactsUIProtocol.h; sourceTree = "<group>"; };
+		7166341B1DB0E45700C92E27 /* EMApplyRequestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMApplyRequestCell.h; sourceTree = "<group>"; };
+		7166341C1DB0E45700C92E27 /* EMApplyRequestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMApplyRequestCell.m; sourceTree = "<group>"; };
+		7166341D1DB0E45700C92E27 /* EMApplyRequestCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMApplyRequestCell.xib; sourceTree = "<group>"; };
 		71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		71D4A1CE1D9C9229006FACB7 /* EMColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMColorUtils.h; sourceTree = "<group>"; };
 		71D4A1CF1D9C9229006FACB7 /* UIImage+ImageEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffect.h"; sourceTree = "<group>"; };
@@ -742,6 +748,14 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		716634191DB0E41A00C92E27 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				7166341A1DB0E41A00C92E27 /* EMContactsUIProtocol.h */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		71D4A1D21D9C923D006FACB7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,6 +813,9 @@
 				71D4A1F41D9C9359006FACB7 /* EMGroupTitleCell.h */,
 				71D4A1F51D9C9359006FACB7 /* EMGroupTitleCell.m */,
 				71D4A1F61D9C9359006FACB7 /* EMGroupTitleCell.xib */,
+				7166341B1DB0E45700C92E27 /* EMApplyRequestCell.h */,
+				7166341C1DB0E45700C92E27 /* EMApplyRequestCell.m */,
+				7166341D1DB0E45700C92E27 /* EMApplyRequestCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -920,6 +937,7 @@
 		D28345321D90048600FD48A9 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				716634191DB0E41A00C92E27 /* Protocol */,
 				71D4A1EC1D9C9359006FACB7 /* Cell */,
 				D283453D1D90081200FD48A9 /* EMContactsViewController.h */,
 				D283453E1D90081200FD48A9 /* EMContactsViewController.m */,
@@ -1573,6 +1591,7 @@
 				D2BF7ED21D914DB30090AA66 /* Icon_New@2x.png in Resources */,
 				D2BF7F1B1D914DB30090AA66 /* logo3@3x.png in Resources */,
 				D2BF7E9D1D914DB30090AA66 /* Button_Record cancel@3x.png in Resources */,
+				7166341F1DB0E45700C92E27 /* EMApplyRequestCell.xib in Resources */,
 				D2BF7E6B1D914DB30090AA66 /* Button_Minimize.png in Resources */,
 				D2BF7F261D914DB30090AA66 /* logo7@2x.png in Resources */,
 				D2BF7E6D1D914DB30090AA66 /* Button_Minimize@3x.png in Resources */,
@@ -1750,6 +1769,7 @@
 				D283454A1D900B2700FD48A9 /* EMChatsViewController.m in Sources */,
 				71D4A1DF1D9C9284006FACB7 /* EMContactListSectionHeader.m in Sources */,
 				71D4A1E81D9C934C006FACB7 /* EMAddContactViewController.m in Sources */,
+				7166341E1DB0E45700C92E27 /* EMApplyRequestCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EMContactsUIProtocol.h"
+
 
 @interface EMContactInfoCell : UITableViewCell
 
@@ -14,5 +16,7 @@
 
 //为了执行加黑名单用
 @property (nonatomic, strong) NSString *hyphenateId;
+
+@property (nonatomic, assign) id<EMContactsUIProtocol> delegate;
 
 @end
