@@ -9,16 +9,25 @@
 //title
 "title.contacts" = "联系人";
 "title.addContact" = "添加联系人";
+"title.newGroup" = "新建群组";
+"title.addParticipants" = "添加成员";
+"title.inviteContacts" = "邀请联系人";
+"title.groupInfo" = "群组详情";
+"title.members" = "成员列表";
+"title.create" = "创建";
+
 
 //loading
-"loading.loadContacts" = "加载联系人中...";
-"loading.loadFinished" = "加载完成";
+"loading.dropdown" = "下拉加载...";
+"loading.start" = "开始加载...";
+"loading.end" = "加载完成...";
 
 //add contact
 "contact.enterHyphenateID" = "输入环信ID";
-"contact.stateofsuccess" = "请求成功";
+"contact.sendApplySuccess" = "请求成功";
 "contact.sendApplyFail" = "发送申请失败，请重新操作";
-"contact.repeat" = "已经添加此联系人";
+"contact.noinput" = "没有输入联系人名";
+"contact.repeatContact" = "已经添加此联系人";
 "contact.addOwner" = "不允许向自己发出好友申请";
 
 "contact.name" = "姓名";
@@ -26,8 +35,65 @@
 "contact.apnsnickname" = "iOS推送昵称";
 "contact.block" = "联系人加入黑名单";
 "contact.delete" = "删除联系人";
+"contact.deleteFailure" = "删除联系人失败";
+"contact.somebodyAddWithName" = "%@申请加您为好友!";
+"contact.refusedFailure" = "拒绝好友申请失败";
+"contact.agreeFailure" = "同意好友申请失败";
+
+
+//Group
+"group.participants" = "成员";
+"group.groupSubject" = "群组主题";
+"group.create" = "创建";
+"group.isPublic" = "是否为公开群";
+"group.allowedOccupantInvite" = "允许成员邀请";
+"group.openJoin" = "用户可自由加入";
+"group.groupType" = "群组类型";
+"group.isOpenJoin" = "需要群主同意";
+"group.pushNotification" = "群消息提醒";
+"group.mute" = "屏蔽群消息";
+"group.public" = "公开";
+"group.private" = "私有";
+"group.enabled" = "启用";
+"group.disabled" = "关闭";
+"group.deleteGroup" = "解散群组";
+"group.leaveGroup" = "离开群组";
+"group.seeAll" = "查看全部成员";
+"group.requested" = "已申请";
+"group.destroyFailure" = "解散群组失败";
+"group.leaveFailure" = "退出群组失败";
+"group.blockGroupFailure" = "屏蔽群组消息失败";
+"group.blockGroupSuccess" = "屏蔽群组消息成功";
+"group.unblockGroupFailure" = "解除群消息屏蔽失败";
+"group.unblockGroupSuccess" = "解除群消息屏蔽成功";
+"group.setFailure" = "设置失败";
+"group.setSuccess" = "设置成功";
+"group.removeSuccess" = "移除群成员成功";
+"group.removeFailure" = "移除群成员失败";
+"group.applyJoin" = "%@ 申请加入群组\'%@\'";
+"group.applyJoinWithName" = "%@ 申请加入群组\'%@\'：%@";
+"group.invite" = "%@邀请您加入群组: %@ [%@]";
+"group.beRefusedToJoin" = "被拒绝加入群组\'%@\'";
+"group.agreedAndJoined" = "同意并已加入群组\'%@\'";
+"group.creategroup" = "%@创建了群组[%@]";
+"group.inviteToJoin" = "%@邀请您加入群组[%@]";
 
 //common
 "common.delete" = "删除";
 "common.cancel" = "取消";
+"common.ok" = "确定";
 "common.groups" = "群组列表";
+"common.next" = "下一步";
+"common.done" = "完成";
+"common.cameraPhoto" = "拍照";
+"common.localPhoto" = "从相册选取图片";
+"common.edit" = "编辑";
+"common.remove" = "移除";
+"common.search" = "搜索";
+"common.open" = "打开";
+
+
+//message
+"message.friendapply.agree" = "%@同意了加好友申请";
+"message.friendapply.refuse" = "%@拒绝了加好友申请";
+"message.inputGroupSubject" = "请输入群组主题";

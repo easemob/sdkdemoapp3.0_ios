@@ -11,6 +11,12 @@
 "title.chats" = "Chats";
 "title.settings" = "Settings";
 "title.addContact" = "Add Contact";
+"title.newGroup" = "New Group";
+"title.addParticipants" = "Add Participants";
+"title.inviteContacts" = "Invite Contacts";
+"title.groupInfo" = "Group Info";
+"title.members" = "Members";
+"title.create" = "Create";
 
 //login
 "signup.tips" = "Have an account?";
@@ -19,13 +25,15 @@
 "login.changebutton.login" = "Log in";
 
 //loading
-"loading.loadContacts" = "Load contacts...";
-"loading.loadCompleted" = "Loading completed";
+"loading.dropdown" = "Drop down loading...";
+"loading.start" = "Start loading...";
+"loading.end" = "Loading completed...";
 
 //add contact
 "contact.enterHyphenateID" = "Enter Hyphenate ID";
 "contact.sendApplySuccess" = "Requested";
 "contact.sendApplyFail" = "send application fails, please operate again";
+"contact.noinput" = "No input contact name";
 "contact.repeatContact" = "This contact has been added";
 "contact.addOwner" = "Not allowed to send their own friends to apply for";
 
@@ -34,8 +42,63 @@
 "contact.apnsnickname" = "iOS APNS";
 "contact.block" = "Block Contact";
 "contact.delete" = "Delete Contact";
+"contact.deleteFailure" = "Delete contacts failed";
+"contact.somebodyAddWithName" = "%@ add you as a friend";
+"contact.refusedFailure" = "Refused to apply for failure";
+"contact.agreeFailure" = "Failed to agree to apply";
+
+//group
+"group.participants" = "Participants";
+"group.groupSubject" = "Group Subject";
+"group.isPublic" = "Appear in group search";
+"group.allowedOccupantInvite" = "Allow members to invite";
+"group.openJoin" = "Join the group freely";
+"group.groupType" = "Group Type";
+"group.isOpenJoin" = "need to agree to apply for owner";
+"group.pushNotification" = "Push Notification";
+"group.mute" = "Mute";
+"group.public" = "Public";
+"group.private" = "Private";
+"group.enabled" = "Enabled";
+"group.disabled" = "Disabled";
+"group.create" = "Create";
+"group.deleteGroup" = "Delete Group";
+"group.leaveGroup" = "Leave Group";
+"group.seeAll" = "See all";
+"group.requested" = "Requested";
+"group.destroyFailure" = "Destroy group failure";
+"group.leaveFailure" = "Leave group failure";
+"group.blockGroupFailure" = "Block group failure";
+"group.blockGroupSuccess" = "Block group success";
+"group.unblockGroupFailure" = "Unblock group failure";
+"group.unblockGroupSuccess" = "Unblock group success";
+"group.setFailure" = "Set failure";
+"group.setSuccess" = "Set success";
+"group.removeSuccess" = "Remove group members successfully";
+"group.removeFailure" = "Remove group members failure";
+"group.applyJoin" = "%@ apply to join groups\'%@\'";
+"group.applyJoinWithName" = "%@ apply to join groups\'%@\'：%@";
+"group.invite" = "%@ invite you to group: %@ [%@]";
+"group.beRefusedToJoin" = "be refused to join the group\'%@\'";
+"group.agreedAndJoined" = "agreed and joined the group of \'%@\'";
+"group.creategroup" = "%@ create a group[%@];
+"group.inviteToJoin" = "%@ invite you to join the group [%@]";
 
 //common
 "common.delete" = "Delete";
 "common.cancel" = "Cancel";
+"common.ok" = "OK";
 "common.groups" = "Groups";
+"common.next" = "Next";
+"common.done" = "Done";
+"common.cameraPhoto" = "Take Photo";
+"common.localPhoto" = "Choose Photo";
+"common.edit" = "Edit";
+"common.remove" = "Remove";
+"common.search" = "Search";
+"common.open" = "Open";
+
+//message
+"message.friendapply.agree" = "%@ agreed to add friends to apply";
+"message.friendapply.refuse" = "%@ refuse to add friends to apply";
+"message.inputGroupSubject" = "Please input a group theme";

@@ -19,5 +19,5 @@
 #import <HyphenateFullSDK/EMSDKFull.h>
 
 #import "EMChatDemoUIDefine.h"
-
+#import "EMColorUtils.h"
 #endif

@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		30E5DE31A68CB65C97673D9B /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */; };
+		716633EA1DB0DE1F00C92E27 /* addContact_disable.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E41DB0DE1F00C92E27 /* addContact_disable.png */; };
+		716633EB1DB0DE1F00C92E27 /* addContact_disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E51DB0DE1F00C92E27 /* addContact_disable@2x.png */; };
+		716633EC1DB0DE1F00C92E27 /* addContact_disable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E61DB0DE1F00C92E27 /* addContact_disable@3x.png */; };
+		716633ED1DB0DE1F00C92E27 /* addContact_enable.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E71DB0DE1F00C92E27 /* addContact_enable.png */; };
+		716633EE1DB0DE1F00C92E27 /* addContact_enable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E81DB0DE1F00C92E27 /* addContact_enable@2x.png */; };
+		716633EF1DB0DE1F00C92E27 /* addContact_enable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E91DB0DE1F00C92E27 /* addContact_enable@3x.png */; };
+		716633F61DB0DE5600C92E27 /* feedback.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F01DB0DE5600C92E27 /* feedback.png */; };
+		716633F71DB0DE5600C92E27 /* feedback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F11DB0DE5600C92E27 /* feedback@2x.png */; };
+		716633F81DB0DE5600C92E27 /* feedback@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F21DB0DE5600C92E27 /* feedback@3x.png */; };
+		716633F91DB0DE5600C92E27 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F31DB0DE5600C92E27 /* message.png */; };
+		716633FA1DB0DE5600C92E27 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F41DB0DE5600C92E27 /* message@2x.png */; };
+		716633FB1DB0DE5600C92E27 /* message@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F51DB0DE5600C92E27 /* message@3x.png */; };
 		71D4A1CD1D9C91B8006FACB7 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */; };
 		71D4A1D11D9C9229006FACB7 /* UIImage+ImageEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */; };
 		71D4A1D61D9C923D006FACB7 /* EMUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D41D9C923D006FACB7 /* EMUserModel.m */; };
@@ -313,6 +325,18 @@
 /* Begin PBXFileReference section */
 		1633BADC43B42D35B0A0969D /* Pods-ChatDemo-UI3.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.debug.xcconfig"; sourceTree = "<group>"; };
 		6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		716633E41DB0DE1F00C92E27 /* addContact_disable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addContact_disable.png; sourceTree = "<group>"; };
+		716633E51DB0DE1F00C92E27 /* addContact_disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addContact_disable@2x.png"; sourceTree = "<group>"; };
+		716633E61DB0DE1F00C92E27 /* addContact_disable@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addContact_disable@3x.png"; sourceTree = "<group>"; };
+		716633E71DB0DE1F00C92E27 /* addContact_enable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addContact_enable.png; sourceTree = "<group>"; };
+		716633E81DB0DE1F00C92E27 /* addContact_enable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addContact_enable@2x.png"; sourceTree = "<group>"; };
+		716633E91DB0DE1F00C92E27 /* addContact_enable@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addContact_enable@3x.png"; sourceTree = "<group>"; };
+		716633F01DB0DE5600C92E27 /* feedback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = feedback.png; sourceTree = "<group>"; };
+		716633F11DB0DE5600C92E27 /* feedback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feedback@2x.png"; sourceTree = "<group>"; };
+		716633F21DB0DE5600C92E27 /* feedback@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feedback@3x.png"; sourceTree = "<group>"; };
+		716633F31DB0DE5600C92E27 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
+		716633F41DB0DE5600C92E27 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
+		716633F51DB0DE5600C92E27 /* message@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@3x.png"; sourceTree = "<group>"; };
 		71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		71D4A1CE1D9C9229006FACB7 /* EMColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMColorUtils.h; sourceTree = "<group>"; };
 		71D4A1CF1D9C9229006FACB7 /* UIImage+ImageEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffect.h"; sourceTree = "<group>"; };
@@ -661,6 +685,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		716633E31DB0DE1F00C92E27 /* AddContact */ = {
+			isa = PBXGroup;
+			children = (
+				716633E41DB0DE1F00C92E27 /* addContact_disable.png */,
+				716633E51DB0DE1F00C92E27 /* addContact_disable@2x.png */,
+				716633E61DB0DE1F00C92E27 /* addContact_disable@3x.png */,
+				716633E71DB0DE1F00C92E27 /* addContact_enable.png */,
+				716633E81DB0DE1F00C92E27 /* addContact_enable@2x.png */,
+				716633E91DB0DE1F00C92E27 /* addContact_enable@3x.png */,
+			);
+			path = AddContact;
+			sourceTree = "<group>";
+		};
 		71D4A1D21D9C923D006FACB7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -784,6 +821,7 @@
 		D28345251D8FEE3F00FD48A9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				716633E31DB0DE1F00C92E27 /* AddContact */,
 				D2BF7D0C1D914DB20090AA66 /* Cell Tab */,
 				D2BF7D2E1D914DB20090AA66 /* Chat Details */,
 				D2BF7D3E1D914DB20090AA66 /* Chatting */,
@@ -910,6 +948,12 @@
 		D2BF7D2E1D914DB20090AA66 /* Chat Details */ = {
 			isa = PBXGroup;
 			children = (
+				716633F01DB0DE5600C92E27 /* feedback.png */,
+				716633F11DB0DE5600C92E27 /* feedback@2x.png */,
+				716633F21DB0DE5600C92E27 /* feedback@3x.png */,
+				716633F31DB0DE5600C92E27 /* message.png */,
+				716633F41DB0DE5600C92E27 /* message@2x.png */,
+				716633F51DB0DE5600C92E27 /* message@3x.png */,
 				D2BF7D2F1D914DB20090AA66 /* Button_Add Member.png */,
 				D2BF7D301D914DB20090AA66 /* Button_Add Member@2x.png */,
 				D2BF7D311D914DB20090AA66 /* Button_Add Member@3x.png */,
@@ -1297,6 +1341,7 @@
 				D2BF7E501D914DB30090AA66 /* Button_Upload Photo.png in Resources */,
 				D2BF7E611D914DB30090AA66 /* Button_Cancel Call@3x.png in Resources */,
 				D2BF7E8A1D914DB30090AA66 /* Icon_Check@2x.png in Resources */,
+				716633EC1DB0DE1F00C92E27 /* addContact_disable@3x.png in Resources */,
 				D2BF7F101D914DB30090AA66 /* logo10@3x.png in Resources */,
 				D28345121D8FD1D400FD48A9 /* LaunchScreen.storyboard in Resources */,
 				D2BF7EAD1D914DB30090AA66 /* Icon_Emoji.png in Resources */,
@@ -1320,7 +1365,9 @@
 				D2BF7EF91D914DB30090AA66 /* Settings_active notification@2x.png in Resources */,
 				D2BF7EB11D914DB30090AA66 /* Icon_File@2x.png in Resources */,
 				D2BF7E541D914DB30090AA66 /* Button_Answer@2x.png in Resources */,
+				716633EF1DB0DE1F00C92E27 /* addContact_enable@3x.png in Resources */,
 				D2BF7E471D914DB30090AA66 /* Button_Delete.png in Resources */,
+				716633EA1DB0DE1F00C92E27 /* addContact_disable.png in Resources */,
 				D2BF7E511D914DB30090AA66 /* Button_Upload Photo@2x.png in Resources */,
 				D2BF7E5F1D914DB30090AA66 /* Button_Cancel Call.png in Resources */,
 				D2BF7EE51D914DB30090AA66 /* Chats_active@3x.png in Resources */,
@@ -1329,17 +1376,22 @@
 				D2BF7EDD1D914DB30090AA66 /* Chats.png in Resources */,
 				D2BF7E591D914DB30090AA66 /* Button_Camera switch disabled.png in Resources */,
 				D28345411D90081200FD48A9 /* EMContactsViewController.xib in Resources */,
+				716633EB1DB0DE1F00C92E27 /* addContact_disable@2x.png in Resources */,
 				D2BF7EEB1D914DB30090AA66 /* Contacts@3x.png in Resources */,
+				716633EE1DB0DE1F00C92E27 /* addContact_enable@2x.png in Resources */,
 				D2BF7E311D914DB30090AA66 /* Icon_New chat@3x.png in Resources */,
 				D28345301D90042F00FD48A9 /* EMMainViewController.xib in Resources */,
 				D2BF7CB91D90EE160090AA66 /* EMLoginViewController.xib in Resources */,
 				D2BF7F151D914DB30090AA66 /* logo1@3x.png in Resources */,
+				716633F71DB0DE5600C92E27 /* feedback@2x.png in Resources */,
 				D2BF7EC71D914DB30090AA66 /* Icon_Video@3x.png in Resources */,
 				D2BF7EFA1D914DB30090AA66 /* Settings_active notification@3x.png in Resources */,
+				716633ED1DB0DE1F00C92E27 /* addContact_enable.png in Resources */,
 				D2BF7E9A1D914DB30090AA66 /* Button_Record active@3x.png in Resources */,
 				D2BF7E721D914DB30090AA66 /* Button_Mute disabled@2x.png in Resources */,
 				D2BF7EF21D914DB30090AA66 /* Contacts_notification.png in Resources */,
 				D2BF7EAA1D914DB30090AA66 /* Icon_Camera.png in Resources */,
+				716633F91DB0DE5600C92E27 /* message.png in Resources */,
 				D2BF7E781D914DB30090AA66 /* Button_Speaker active@2x.png in Resources */,
 				D2BF7EAE1D914DB30090AA66 /* Icon_Emoji@2x.png in Resources */,
 				D2BF7E481D914DB30090AA66 /* Button_Delete@2x.png in Resources */,
@@ -1359,6 +1411,7 @@
 				D2BF7E2B1D914DB30090AA66 /* Button_Join@3x.png in Resources */,
 				D2BF7F181D914DB30090AA66 /* logo2@3x.png in Resources */,
 				D2BF7E8C1D914DB30090AA66 /* Icon_Current Location pin.png in Resources */,
+				716633FB1DB0DE5600C92E27 /* message@3x.png in Resources */,
 				D2BF7E391D914DB30090AA66 /* Swipe_Delete@2x.png in Resources */,
 				D2BF7EC61D914DB30090AA66 /* Icon_Video@2x.png in Resources */,
 				D2BF7EA01D914DB30090AA66 /* Button_Record@3x.png in Resources */,
@@ -1518,17 +1571,20 @@
 				D2BF7E7E1D914DB30090AA66 /* Button_Speaker@2x.png in Resources */,
 				D2BF7E581D914DB30090AA66 /* Button_Camera switch active@3x.png in Resources */,
 				D2BF7ED51D914DB30090AA66 /* Icon_Search@2x.png in Resources */,
+				716633F61DB0DE5600C92E27 /* feedback.png in Resources */,
 				D2BF7F241D914DB30090AA66 /* logo6@3x.png in Resources */,
 				D2BF7EF51D914DB30090AA66 /* Settings.png in Resources */,
 				D2BF7E381D914DB30090AA66 /* Swipe_Delete.png in Resources */,
 				D2BF7E7B1D914DB30090AA66 /* Button_Speaker disabled@2x.png in Resources */,
 				D2BF7F0A1D914DB30090AA66 /* Button_Video.png in Resources */,
 				D2BF7EA71D914DB30090AA66 /* Icon_Camera active.png in Resources */,
+				716633F81DB0DE5600C92E27 /* feedback@3x.png in Resources */,
 				D2BF7EBD1D914DB30090AA66 /* Icon_Call disabled@2x.png in Resources */,
 				D2BF7E521D914DB30090AA66 /* Button_Upload Photo@3x.png in Resources */,
 				D2BF7E821D914DB30090AA66 /* Button_Stats disabled@3x.png in Resources */,
 				D2BF7EED1D914DB30090AA66 /* Contacts_active notification@2x.png in Resources */,
 				D2BF7EEA1D914DB30090AA66 /* Contacts@2x.png in Resources */,
+				716633FA1DB0DE5600C92E27 /* message@2x.png in Resources */,
 				D2BF7EA31D914DB30090AA66 /* Disabled@3x.png in Resources */,
 				D2BF7F0D1D914DB30090AA66 /* logo1.png in Resources */,
 				D2BF7ECB1D914DB30090AA66 /* Icon_Back.png in Resources */,
