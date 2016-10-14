@@ -66,7 +66,7 @@
         
         _frameRateLabel.text = [NSString stringWithFormat:@"%i fps", [_callSession getVideoFrameRate]];
         
-        _lostRateLabel.text = [NSString stringWithFormat:@"%i",[_callSession getVideoLostRateInPercent]];
+        _lostRateLabel.text = [NSString stringWithFormat:@"%i%%",[_callSession getVideoLostRateInPercent]];
         
         _localBitrateLabel.text = [NSString stringWithFormat:@"%i KB", [_callSession getVideoLocalBitrate]];
         

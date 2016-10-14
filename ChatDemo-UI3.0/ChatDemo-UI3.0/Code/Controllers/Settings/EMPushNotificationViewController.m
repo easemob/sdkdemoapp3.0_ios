@@ -7,7 +7,7 @@
 //
 
 #import "EMPushNotificationViewController.h"
-#import "PushDisplaynameViewController.h"
+#import "EMPushDisplaynameViewController.h"
 @interface EMPushNotificationViewController()
 
 @property (nonatomic, strong) UISwitch *displaySwitch;
@@ -56,7 +56,7 @@
         _footerTip.textAlignment = NSTextAlignmentLeft;
         _footerTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
         _footerTip.font = [UIFont systemFontOfSize:11];
-        _footerTip.text = @"The display name will appear in Apple's push notification system.";
+        _footerTip.text = NSLocalizedString(@"setting.push.tip", @"The display name will appear in Apple's push notification system.");
      }
     return _footerTip;
 }
@@ -75,7 +75,6 @@
 {
     self.callBack = callBack;
 }
-
 
 
 - (void)refreshPushOptions
@@ -108,17 +107,17 @@
     
     if (indexPath.row == 0) {
         
-        cell.textLabel.text = @"Display on lockscreen";
-        self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 15 - 50, 8, 50, 30);
+        cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display on lickscreen");
+        self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
         [cell.contentView addSubview:self.displaySwitch];
     } else if (indexPath.row == 1) {
         
-        cell.textLabel.text = @"Push Notifications";
-        self.pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 15 - 50, 8, 50, 30);
+        cell.textLabel.text = NSLocalizedString(@"setting.push.enable", @"Push Notifications");
+        self.pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
         [cell.contentView addSubview:self.pushSwitch];
     } else {
         
-        cell.textLabel.text = @"Push notification display name";
+        cell.textLabel.text = NSLocalizedString(@"setting.push.displayname", @"Push notification display name");
         cell.detailTextLabel.text = _pushNickname;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -130,7 +129,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 2) {
-        PushDisplaynameViewController *display = [[PushDisplaynameViewController alloc] init];
+        
+        EMPushDisplaynameViewController *display = [[EMPushDisplaynameViewController alloc] init];
         display.currentDisplayName = _pushNickname;
         [display getUpdatedDisplayName:^(NSString *newDisplayName) {
             _pushNickname = newDisplayName;
@@ -206,8 +206,5 @@
         }];
     }
 }
-
-
-
 
 @end

@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) UIButton *signOutButton;
 
-//@property (nonatomic, strong) UIView *footer;
 
 @end
 
@@ -39,10 +38,9 @@
     if (!_editButton) {
         
         _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_editButton setTitle:@"Edit" forState:UIControlStateNormal];
+        [_editButton setTitle:NSLocalizedString(@"setting.account.edit", @"Edit")   forState:UIControlStateNormal];
         [_editButton setTitleColor:RGBACOLOR(72, 184, 0, 1.0) forState:UIControlStateNormal];
         _editButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        /** 没有存储入口，先不允许编辑 */
         _editButton.enabled = NO;
         [_editButton addTarget:self action:@selector(editAvatar) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -60,7 +58,6 @@
         [_signOutButton setTitle:@"Sign Out" forState:UIControlStateNormal];
         [_signOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _signOutButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-        
         [_signOutButton addTarget:self action:@selector(signOut) forControlEvents:UIControlEventTouchUpInside];
     }
     return _signOutButton;
@@ -72,16 +69,14 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]){
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
-    
     [super viewDidLoad];
     [self configBackButton];
     [self.view addSubview:self.signOutButton];
-
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -99,15 +94,10 @@
         self.editButton.frame = CGRectMake(75, 29, 24, 13);
         [cell.contentView addSubview:self.avatarView];
         [cell.contentView addSubview:self.editButton];
-    } else if (indexPath.row == 1) {
-        
-        cell.textLabel.text = @"Hyphenate ID";
-        cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
     } else {
         
-        EMPushOptions *pushOptions = [[EMClient sharedClient] pushOptions];
-        cell.textLabel.text = @"Name";
-        cell.detailTextLabel.text = pushOptions.displayName;
+        cell.textLabel.text = NSLocalizedString(@"setting.account.id", @"Hyphenate ID");
+        cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
     }
     
     return cell;
@@ -128,8 +118,6 @@
 
 - (void)editAvatar {
     
-    
-    
 }
 
 - (void)signOut
@@ -137,6 +125,9 @@
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
         if (!aError) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+        } else {
+            
+#warning log out
         }
     }];
 }

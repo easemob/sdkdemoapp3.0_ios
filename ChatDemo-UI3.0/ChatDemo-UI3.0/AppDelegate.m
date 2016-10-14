@@ -43,7 +43,7 @@
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
     
-    
+    [EaseCallManager sharedManager];
     EMLaunchViewController *launch = [[EMLaunchViewController alloc] init];
     self.window.rootViewController = launch;
     [self.window makeKeyAndVisible];

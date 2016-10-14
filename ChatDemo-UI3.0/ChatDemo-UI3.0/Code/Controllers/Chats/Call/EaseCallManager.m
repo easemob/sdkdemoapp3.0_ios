@@ -112,8 +112,6 @@ static EaseCallManager *callManager = nil;
 - (void)_cancelCall
 {
     [self hangupCallWithReason:EMCallEndReasonNoResponse];
-    
-
 }
 
 #pragma mark -  Hang up
@@ -135,17 +133,20 @@ static EaseCallManager *callManager = nil;
 
 - (void)answerCall
 {
-    if (_callSession) {
+    if (_callSession)
+    {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.sessionId];
             if (error)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (error.code == EMErrorNetworkUnavailable) {
+                    if (error.code == EMErrorNetworkUnavailable)
+                    {
                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"network.disconnection", @"Network disconnection") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                         [alertView show];
                     }
-                    else{
+                    else
+                    {
                         [self hangupCallWithReason:EMCallEndReasonFailed];
                     }
                 });
@@ -167,11 +168,8 @@ static EaseCallManager *callManager = nil;
         
         [self _stopCallTimer];
         [_callController reloadConnectedUI];
-        
     }
 }
-
-
 
 - (void)callDidConnect:(EMCallSession *)aSession
 {
@@ -181,8 +179,6 @@ static EaseCallManager *callManager = nil;
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         [audioSession setActive:YES error:nil];
     }
-
-    
 }
 
 - (void)callDidEnd:(EMCallSession *)aSession reason:(EMCallEndReason)aReason error:(EMError *)aError
@@ -246,7 +242,6 @@ static EaseCallManager *callManager = nil;
             _callSession = nil;
             _callController = nil;
         }
-        
     }
 }
 

@@ -54,10 +54,10 @@
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
-    cell.textLabel.text = @"Accept group invites automatically";
-    self.autoAcceptSitch.frame = CGRectMake(tableView.frame.size.width - 50 - 16, 8, 50, 30);
+    cell.textLabel.text = NSLocalizedString(@"setting.chats.acceptInvitation", @"Accept group invites automatically");
+    self.autoAcceptSitch.frame = CGRectMake(tableView.frame.size.width - 65, 8, 50, 30);
     [cell.contentView addSubview:self.autoAcceptSitch];
-    
+
     return cell;
 }
 

@@ -59,6 +59,8 @@
                     <state key="normal" image="Button_Speaker.png"/>
                     <state key="disabled" image="Button_Speaker disabled.png"/>
                     <state key="selected" image="Button_Speaker active.png"/>
+                    <state key="highlighted" image="Button_Speaker.png"/>
+                    <state key="focused" image="Button_Speaker.png"/>
                     <connections>
                         <action selector="speakerOutAction:" destination="-1" eventType="touchUpInside" id="BGW-dK-4Zu"/>
                     </connections>

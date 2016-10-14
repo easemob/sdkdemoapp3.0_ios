@@ -10,7 +10,7 @@
 
 typedef void(^UpdatedDisplayName)(NSString *newDisplayName);
 
-@interface PushDisplaynameViewController : EMBaseSettingController
+@interface EMPushDisplaynameViewController : EMBaseSettingController
 
 @property (nonatomic, copy) NSString *currentDisplayName;
 

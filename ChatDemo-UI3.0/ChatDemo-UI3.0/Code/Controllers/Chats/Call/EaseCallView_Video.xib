@@ -100,6 +100,7 @@
                             <state key="normal" image="Button_Camera switch.png"/>
                             <state key="disabled" image="Button_Camera switch disabled.png"/>
                             <state key="selected" image="Button_Camera switch active.png"/>
+                            <state key="highlighted" image="Button_Camera switch.png"/>
                             <connections>
                                 <action selector="switchCamera:" destination="-1" eventType="touchUpInside" id="tLb-e5-XWd"/>
                             </connections>

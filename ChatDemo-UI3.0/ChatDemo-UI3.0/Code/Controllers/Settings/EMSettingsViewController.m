@@ -49,8 +49,6 @@
     }
 }
 
-
-
 #pragma mark - getters
 
 - (UISwitch *)videoBitrateSwitch
@@ -69,12 +67,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 5;
 }
 
 
@@ -87,41 +85,32 @@
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ident];
     }
-
-    if (indexPath.section == 0) {
+    
+    if (indexPath.row == 0) {
         
-        if (indexPath.row == 0) {
-            
-            cell.textLabel.text = @"About";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 1) {
-            
-            cell.textLabel.text = @"API Key";
-            cell.detailTextLabel.text = @"HyphenateDemo";
-        } else if (indexPath.row == 2) {
-            
-            BOOL isPushOn = _pushStatus == EMPushNoDisturbStatusClose ? YES : NO;
-            cell.textLabel.text = @"Push Notifications";
-            cell.detailTextLabel.text = isPushOn ? @"On" : @"Off";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
+        cell.textLabel.text = NSLocalizedString(@"setting.about", @"About");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 1) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.push", @"Push Notifications");
+        BOOL isPushOn = _pushStatus == EMPushNoDisturbStatusClose ? YES : NO;
+        cell.detailTextLabel.text = isPushOn ? NSLocalizedString(@"setting.push.on", @"On") : NSLocalizedString(@"setting.push.off", @"Off");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 2) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.account", @"Account");
+        cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 3) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.chats", @"Chats");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     } else {
         
-        if (indexPath.row == 0) {
-            
-            cell.textLabel.text = @"Account";
-            cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 1) {
-            
-            cell.textLabel.text = @"Chats";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else {
-            
-            cell.textLabel.text = @"Adaptive Video Bitrate";
-            self.videoBitrateSwitch.frame = CGRectMake(self.tableView.frame.size.width - self.videoBitrateSwitch.frame.size.width - 15, 8, 50, 30);
-            [cell.contentView addSubview:self.videoBitrateSwitch];
-        }
+        cell.textLabel.text = NSLocalizedString(@"setting.videoBitrate", @"Adaptive Video Bitrate");
+        self.videoBitrateSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
+        [cell.contentView addSubview:self.videoBitrateSwitch];
     }
     
     return cell;
@@ -132,36 +121,32 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 0) {
         
-        if (indexPath.row == 0) {
+    if (indexPath.row == 0) {
             
-            EMAboutViewController *about = [[EMAboutViewController alloc] init];
-            about.title = @"About";
-            [self.navigationController pushViewController:about animated:YES];
-        } else if (indexPath.row == 2) {
+        EMAboutViewController *about = [[EMAboutViewController alloc] init];
+        about.title = NSLocalizedString(@"title.setting.about", @"About");
+        [self.navigationController pushViewController:about animated:YES];
+    } else if (indexPath.row == 1) {
 
-            EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
-            pushController.title = @"Push Notifications";
-            [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
-                _pushStatus = disturbStatus;
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            }];
-            [self.navigationController pushViewController:pushController animated:YES];
-        }
-    } else {
-        
-        if (indexPath.row == 0) {
+        EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
+        pushController.title = NSLocalizedString(@"title.setting.push", @"Push Notifications");
+        [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
             
-            EMAccountViewController *accout = [[EMAccountViewController alloc] init];
-            accout.title = @"Account";
-            [self.navigationController pushViewController:accout animated:YES];
-        } else if (indexPath.row == 1) {
+            _pushStatus = disturbStatus;
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }];
+        [self.navigationController pushViewController:pushController animated:YES];
+    } else if (indexPath.row == 2) {
             
-            EMChatsSettingViewController *chatSetting = [[EMChatsSettingViewController alloc] init];
-            chatSetting.title = @"Chats";
-            [self.navigationController pushViewController:chatSetting animated:YES];
-        }
+        EMAccountViewController *accout = [[EMAccountViewController alloc] init];
+            accout.title = NSLocalizedString(@"title.setting.account", @"Account");
+        [self.navigationController pushViewController:accout animated:YES];
+    } else if (indexPath.row == 3) {
+            
+        EMChatsSettingViewController *chatSetting = [[EMChatsSettingViewController alloc] init];
+        chatSetting.title = NSLocalizedString(@"title.setting.Chats", @"Chats");
+        [self.navigationController pushViewController:chatSetting animated:YES];
     }
 }
 

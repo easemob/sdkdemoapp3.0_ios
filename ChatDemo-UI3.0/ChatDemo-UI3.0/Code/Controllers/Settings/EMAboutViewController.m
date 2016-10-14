@@ -39,15 +39,15 @@
     }
     if (indexPath.row == 0) {
         
-        cell.textLabel.text = @"App Version";
-        cell.detailTextLabel.text = @"1.0.1";
+        cell.textLabel.text = NSLocalizedString(@"setting.about.appversion", @"App Version");
+        cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
     } else if (indexPath.row == 1) {
         
-        cell.textLabel.text = @"SDK Version";
+        cell.textLabel.text = NSLocalizedString(@"setting.about.sdkversion", @"SDK Version");
         cell.detailTextLabel.text = [[EMClient sharedClient] version];
     } else {
         
-        cell.textLabel.text = @"EaseUI Library Version";
+        cell.textLabel.text = NSLocalizedString(@"setting.about.uiversion", @"EaseUI Library Version");
         cell.detailTextLabel.text = [[EMClient sharedClient] version];
     }
     

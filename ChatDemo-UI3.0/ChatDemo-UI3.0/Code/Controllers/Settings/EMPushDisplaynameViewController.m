@@ -6,14 +6,14 @@
 //  Copyright © 2016年 easemob. All rights reserved.
 //
 
-#import "PushDisplaynameViewController.h"
+#import "EMPushDisplaynameViewController.h"
 
-@interface PushDisplaynameViewController ()<UITextFieldDelegate>
+@interface EMPushDisplaynameViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *displayTextField;
 @end
 
-@implementation PushDisplaynameViewController
+@implementation EMPushDisplaynameViewController
 
 
 
@@ -47,7 +47,6 @@
     self.callBack = callBack;
 }
 
-
 - (void)back
 {
     [self updatePushDisplayName:self.displayTextField.text];
@@ -67,7 +66,7 @@
     
         [[EMClient sharedClient] updatePushNotifiationDisplayName:_currentDisplayName completion:^(NSString *aDisplayName, EMError *aError) {
             if (aError) {
-                NSLog(@"更新推送昵称失败:%u",aError.code);
+                NSLog(@"uodate nickname failed:%u",aError.code);
             } else {
                 if (self.callBack) {
                     self.callBack(aDisplayName);

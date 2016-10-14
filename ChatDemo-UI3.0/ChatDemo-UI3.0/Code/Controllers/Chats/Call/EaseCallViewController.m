@@ -84,6 +84,9 @@
 {
     self.timeLabel.hidden = YES;
     self.nameLabel.text = _callSession.remoteUsername;
+    
+    [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker active"] forState:UIControlStateSelected | UIControlStateHighlighted];
+    [self.switchCameraButton setImage:[UIImage imageNamed:@"Button_Camera switch active"] forState:UIControlStateSelected | UIControlStateHighlighted];
     if (_isCaller) {
         
         [self reloadCallingUI];
@@ -182,11 +185,11 @@
 
 - (void)_initializeVideoView
 {
-    //1.对方窗口
-    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
     [self.view addSubview:_callSession.remoteVideoView];
     
-    //2.自己窗口
+    
     CGFloat width = 80;
     CGFloat height = KScreenHeight / KScreenWidth * width;
     _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(KScreenWidth - 90, CGRectGetMinY(_showVideoInfoButton.frame), width, height)];
@@ -338,7 +341,6 @@
         _timeLabel.text = [NSString stringWithFormat:@"00:%i", s];
     }
 }
-
 
 #pragma mark - Video
 
