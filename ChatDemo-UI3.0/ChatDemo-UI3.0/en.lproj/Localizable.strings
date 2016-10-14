@@ -81,7 +81,7 @@
 "group.invite" = "%@ invite you to group: %@ [%@]";
 "group.beRefusedToJoin" = "be refused to join the group\'%@\'";
 "group.agreedAndJoined" = "agreed and joined the group of \'%@\'";
-"group.creategroup" = "%@ create a group[%@];
+"group.creategroup" = "%@ create a group[%@]";
 "group.inviteToJoin" = "%@ invite you to join the group [%@]";
 
 //common

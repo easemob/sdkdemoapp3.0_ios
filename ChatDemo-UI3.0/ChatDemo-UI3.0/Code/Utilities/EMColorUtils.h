@@ -21,3 +21,4 @@
 
 #define AlmostBlackColor       [UIColor colorWithRed:12.0/255.0 green:18.0/255.0 blue:24.0/255.0 alpha:1.0]
 
+#define BrightBlue             [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0]

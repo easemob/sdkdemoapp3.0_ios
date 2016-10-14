@@ -1,21 +1,20 @@
 //
-//  EMUserModel.h
+//  EMGroupModel.h
 //  ChatDemo-UI3.0
 //
-//  Created by EaseMob on 16/9/29.
+//  Created by EaseMob on 16/10/6.
 //  Copyright © 2016年 easemob. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "IEMUserModel.h"
+#import "IEMConferenceModel.h"
 #import "IEMRealtimeSearch.h"
-@interface EMUserModel : NSObject<IEMUserModel, IEMRealtimeSearch>
-
+@interface EMGroupModel : NSObject<IEMConferenceModel, IEMRealtimeSearch>
 @property (nonatomic, strong, readonly) NSString *hyphenateId;
-@property (nonatomic, strong) NSString *nickname;
+@property (nonatomic, strong) NSString *subject;
 @property (nonatomic, strong) NSString *avatarURLPath;
 @property (nonatomic, strong, readonly) UIImage *defaultAvatarImage;
+@property (nonatomic, strong) EMGroup *group;
 
-- (instancetype)initWithHyphenateId:(NSString *)hyphenateId;
-
+- (instancetype)initWithObject:(NSObject *)obj;
 @end

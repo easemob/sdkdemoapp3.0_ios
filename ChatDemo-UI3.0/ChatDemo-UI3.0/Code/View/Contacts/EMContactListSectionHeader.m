@@ -7,7 +7,6 @@
 //
 
 #import "EMContactListSectionHeader.h"
-#import "EMColorUtils.h"
 
 #define KEM_CONTACTREQUESTS_TITLE            @"Contact Requests"
 #define KEM_GROUPNOTIFICATIONS_TITLE         @"Group Notifications"
@@ -36,11 +35,11 @@
     switch (section) {
         case 0:
             _title.text = KEM_GROUPNOTIFICATIONS_TITLE;
-            _icon.image = [UIImage imageNamed:@"Icon_Invitations"];
+            _icon.image = [UIImage imageNamed:@"Icon_Invitations.png"];
             break;
         case 1:
             _title.text = KEM_CONTACTREQUESTS_TITLE;
-            _icon.image = [UIImage imageNamed:@"Icon_Requests"];
+            _icon.image = [UIImage imageNamed:@"Icon_Requests.png"];
             break;
         default:
             _icon.hidden = _title.hidden = _unhandledCount.hidden = YES;

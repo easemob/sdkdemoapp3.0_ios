@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="requestIcon" translatesAutoresizingMaskIntoConstraints="NO" id="kWc-37-PKu">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon_Invitations.png" translatesAutoresizingMaskIntoConstraints="NO" id="kWc-37-PKu">
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="Fc3-mc-uer"/>
                         <constraint firstAttribute="width" constant="15" id="Q30-Yg-JC3"/>
@@ -54,6 +54,6 @@
         </view>
     </objects>
     <resources>
-        <image name="requestIcon" width="15" height="15"/>
+        <image name="Icon_Invitations.png" width="14" height="15"/>
     </resources>
 </document>

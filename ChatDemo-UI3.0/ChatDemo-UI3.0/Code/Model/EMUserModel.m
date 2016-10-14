@@ -27,4 +27,11 @@
     return _nickname;
 }
 
+- (NSString *)searchKey {
+    if (_nickname.length > 0) {
+        return _nickname;
+    }
+    return _hyphenateId;
+}
+
 @end

@@ -10,10 +10,8 @@
 
 @interface UIImage (ImageEffect)
 
-//为图片设置透明度
 - (UIImage *)imageByApplingAlpha:(CGFloat)alpha;
 
-//带有颜色的图片
 + (UIImage *)imageWIthColor:(UIColor *)color;
 
 @end

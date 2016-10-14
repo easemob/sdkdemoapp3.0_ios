@@ -20,6 +20,14 @@
 		716633F91DB0DE5600C92E27 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F31DB0DE5600C92E27 /* message.png */; };
 		716633FA1DB0DE5600C92E27 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F41DB0DE5600C92E27 /* message@2x.png */; };
 		716633FB1DB0DE5600C92E27 /* message@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633F51DB0DE5600C92E27 /* message@3x.png */; };
+		716634051DB0E03F00C92E27 /* EMApplyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 716633FD1DB0E03F00C92E27 /* EMApplyManager.m */; };
+		716634061DB0E03F00C92E27 /* EMChatDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 716633FF1DB0E03F00C92E27 /* EMChatDemoHelper.m */; };
+		716634071DB0E03F00C92E27 /* EMRealtimeSearchUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 716634031DB0E03F00C92E27 /* EMRealtimeSearchUtils.m */; };
+		7166340E1DB0E17C00C92E27 /* EMApplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 716634091DB0E17C00C92E27 /* EMApplyModel.m */; };
+		7166340F1DB0E17C00C92E27 /* EMGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7166340B1DB0E17C00C92E27 /* EMGroupModel.m */; };
+		716634161DB0E1AB00C92E27 /* EMBaseRefreshTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 716634121DB0E1AB00C92E27 /* EMBaseRefreshTableController.m */; };
+		716634171DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 716634131DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib */; };
+		716634181DB0E1AB00C92E27 /* EMBaseSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 716634151DB0E1AB00C92E27 /* EMBaseSearchController.m */; };
 		71D4A1CD1D9C91B8006FACB7 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */; };
 		71D4A1D11D9C9229006FACB7 /* UIImage+ImageEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */; };
 		71D4A1D61D9C923D006FACB7 /* EMUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D41D9C923D006FACB7 /* EMUserModel.m */; };
@@ -337,6 +345,25 @@
 		716633F31DB0DE5600C92E27 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
 		716633F41DB0DE5600C92E27 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
 		716633F51DB0DE5600C92E27 /* message@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@3x.png"; sourceTree = "<group>"; };
+		716633FC1DB0E03F00C92E27 /* EMApplyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMApplyManager.h; sourceTree = "<group>"; };
+		716633FD1DB0E03F00C92E27 /* EMApplyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMApplyManager.m; sourceTree = "<group>"; };
+		716633FE1DB0E03F00C92E27 /* EMChatDemoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatDemoHelper.h; sourceTree = "<group>"; };
+		716633FF1DB0E03F00C92E27 /* EMChatDemoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatDemoHelper.m; sourceTree = "<group>"; };
+		716634001DB0E03F00C92E27 /* EMNotificationNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNotificationNames.h; sourceTree = "<group>"; };
+		716634021DB0E03F00C92E27 /* EMRealtimeSearchUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRealtimeSearchUtils.h; sourceTree = "<group>"; };
+		716634031DB0E03F00C92E27 /* EMRealtimeSearchUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRealtimeSearchUtils.m; sourceTree = "<group>"; };
+		716634041DB0E03F00C92E27 /* IEMRealtimeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMRealtimeSearch.h; sourceTree = "<group>"; };
+		716634081DB0E17C00C92E27 /* EMApplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMApplyModel.h; sourceTree = "<group>"; };
+		716634091DB0E17C00C92E27 /* EMApplyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMApplyModel.m; sourceTree = "<group>"; };
+		7166340A1DB0E17C00C92E27 /* EMGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupModel.h; sourceTree = "<group>"; };
+		7166340B1DB0E17C00C92E27 /* EMGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupModel.m; sourceTree = "<group>"; };
+		7166340C1DB0E17C00C92E27 /* IEMApplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMApplyModel.h; sourceTree = "<group>"; };
+		7166340D1DB0E17C00C92E27 /* IEMConferenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEMConferenceModel.h; sourceTree = "<group>"; };
+		716634111DB0E1AB00C92E27 /* EMBaseRefreshTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBaseRefreshTableController.h; sourceTree = "<group>"; };
+		716634121DB0E1AB00C92E27 /* EMBaseRefreshTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBaseRefreshTableController.m; sourceTree = "<group>"; };
+		716634131DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMBaseRefreshTableController.xib; sourceTree = "<group>"; };
+		716634141DB0E1AB00C92E27 /* EMBaseSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBaseSearchController.h; sourceTree = "<group>"; };
+		716634151DB0E1AB00C92E27 /* EMBaseSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBaseSearchController.m; sourceTree = "<group>"; };
 		71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		71D4A1CE1D9C9229006FACB7 /* EMColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMColorUtils.h; sourceTree = "<group>"; };
 		71D4A1CF1D9C9229006FACB7 /* UIImage+ImageEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffect.h"; sourceTree = "<group>"; };
@@ -698,12 +725,40 @@
 			path = AddContact;
 			sourceTree = "<group>";
 		};
+		716634011DB0E03F00C92E27 /* EMRealtimeSearchUtils */ = {
+			isa = PBXGroup;
+			children = (
+				716634021DB0E03F00C92E27 /* EMRealtimeSearchUtils.h */,
+				716634031DB0E03F00C92E27 /* EMRealtimeSearchUtils.m */,
+				716634041DB0E03F00C92E27 /* IEMRealtimeSearch.h */,
+			);
+			path = EMRealtimeSearchUtils;
+			sourceTree = "<group>";
+		};
+		716634101DB0E1AB00C92E27 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				716634111DB0E1AB00C92E27 /* EMBaseRefreshTableController.h */,
+				716634121DB0E1AB00C92E27 /* EMBaseRefreshTableController.m */,
+				716634131DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib */,
+				716634141DB0E1AB00C92E27 /* EMBaseSearchController.h */,
+				716634151DB0E1AB00C92E27 /* EMBaseSearchController.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		71D4A1D21D9C923D006FACB7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				71D4A1D31D9C923D006FACB7 /* EMUserModel.h */,
 				71D4A1D41D9C923D006FACB7 /* EMUserModel.m */,
 				71D4A1D51D9C923D006FACB7 /* IEMUserModel.h */,
+				716634081DB0E17C00C92E27 /* EMApplyModel.h */,
+				716634091DB0E17C00C92E27 /* EMApplyModel.m */,
+				7166340A1DB0E17C00C92E27 /* EMGroupModel.h */,
+				7166340B1DB0E17C00C92E27 /* EMGroupModel.m */,
+				7166340C1DB0E17C00C92E27 /* IEMApplyModel.h */,
+				7166340D1DB0E17C00C92E27 /* IEMConferenceModel.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -840,6 +895,7 @@
 		D28345261D90029600FD48A9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				716634101DB0E1AB00C92E27 /* Base */,
 				D28345311D90048600FD48A9 /* Chats */,
 				D28345321D90048600FD48A9 /* Contacts */,
 				D28345331D90048600FD48A9 /* Settings */,
@@ -896,6 +952,12 @@
 		D2BF7CC01D9111DA0090AA66 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				716633FC1DB0E03F00C92E27 /* EMApplyManager.h */,
+				716633FD1DB0E03F00C92E27 /* EMApplyManager.m */,
+				716633FE1DB0E03F00C92E27 /* EMChatDemoHelper.h */,
+				716633FF1DB0E03F00C92E27 /* EMChatDemoHelper.m */,
+				716634001DB0E03F00C92E27 /* EMNotificationNames.h */,
+				716634011DB0E03F00C92E27 /* EMRealtimeSearchUtils */,
 				71D4A1CE1D9C9229006FACB7 /* EMColorUtils.h */,
 				71D4A1CF1D9C9229006FACB7 /* UIImage+ImageEffect.h */,
 				71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */,
@@ -1596,6 +1658,7 @@
 				D2BF7E791D914DB30090AA66 /* Button_Speaker active@3x.png in Resources */,
 				D2BF7F071D914DB30090AA66 /* Button_Chat.png in Resources */,
 				D2BF7EDE1D914DB30090AA66 /* Chats@2x.png in Resources */,
+				716634171DB0E1AB00C92E27 /* EMBaseRefreshTableController.xib in Resources */,
 				D2BF7E251D914DB30090AA66 /* Button_Accept@3x.png in Resources */,
 				71D4A1CD1D9C91B8006FACB7 /* default_avatar@2x.png in Resources */,
 				D2BF7ED01D914DB30090AA66 /* Icon_Clear@3x.png in Resources */,
@@ -1672,16 +1735,23 @@
 				D2BF7CC31D9111EC0090AA66 /* UIViewController+DismissKeyboard.m in Sources */,
 				D2BF7CC71D91306A0090AA66 /* EMLaunchViewController.m in Sources */,
 				71D4A1EA1D9C934C006FACB7 /* EMContactInfoViewController.m in Sources */,
+				716634061DB0E03F00C92E27 /* EMChatDemoHelper.m in Sources */,
+				716634071DB0E03F00C92E27 /* EMRealtimeSearchUtils.m in Sources */,
 				71D4A1FA1D9C9359006FACB7 /* EMContactInfoCell.m in Sources */,
 				D28345401D90081200FD48A9 /* EMContactsViewController.m in Sources */,
 				71D4A1D61D9C923D006FACB7 /* EMUserModel.m in Sources */,
 				D28345071D8FD1D400FD48A9 /* AppDelegate.m in Sources */,
 				71D4A1FC1D9C9359006FACB7 /* EMGroupTitleCell.m in Sources */,
 				71D4A1E11D9C9284006FACB7 /* EMSearchBar.m in Sources */,
+				7166340E1DB0E17C00C92E27 /* EMApplyModel.m in Sources */,
 				71D4A1F71D9C9359006FACB7 /* EMContactCell.m in Sources */,
 				D28345041D8FD1D400FD48A9 /* main.m in Sources */,
+				716634181DB0E1AB00C92E27 /* EMBaseSearchController.m in Sources */,
 				D2BF7CB81D90EE160090AA66 /* EMLoginViewController.m in Sources */,
 				D283452F1D90042F00FD48A9 /* EMMainViewController.m in Sources */,
+				716634161DB0E1AB00C92E27 /* EMBaseRefreshTableController.m in Sources */,
+				716634051DB0E03F00C92E27 /* EMApplyManager.m in Sources */,
+				7166340F1DB0E17C00C92E27 /* EMGroupModel.m in Sources */,
 				D28345451D90082700FD48A9 /* EMSettingsViewController.m in Sources */,
 				D283454A1D900B2700FD48A9 /* EMChatsViewController.m in Sources */,
 				71D4A1DF1D9C9284006FACB7 /* EMContactListSectionHeader.m in Sources */,
