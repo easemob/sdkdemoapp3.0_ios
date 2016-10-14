@@ -540,7 +540,7 @@ static ChatDemoHelper *helper = nil;
 
 #if DEMO_CALL == 1
 
-- (void)didReceiveCallIncoming:(EMCallSession *)aSession
+- (void)callDidReceive:(EMCallSession *)aSession
 {
     if ([EaseSDKHelper shareHelper].isShowingimagePicker) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
@@ -565,7 +565,9 @@ static ChatDemoHelper *helper = nil;
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                if (self.callController) {
+                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                }
             });
         
             [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
@@ -573,7 +575,7 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveCallConnected:(EMCallSession *)aSession
+- (void)callDidConnect:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         NSString *callId = @"";
@@ -584,7 +586,7 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveCallAccepted:(EMCallSession *)aSession
+- (void)callDidAccept:(EMCallSession *)aSession
 {
     if ([aSession.callId isEqualToString:self.callSession.callId]) {
         NSString *callId = @"";
@@ -597,9 +599,9 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveCallTerminated:(EMCallSession *)aSession
-                          reason:(EMCallEndReason)aReason
-                           error:(EMError *)aError
+- (void)callDidEnd:(EMCallSession *)aSession
+            reason:(EMCallEndReason)aReason
+             error:(EMError *)aError
 {
     NSString *callId = @"";
     if (aSession && aSession.callId) {
@@ -640,7 +642,7 @@ static ChatDemoHelper *helper = nil;
                     break;
                 case EMCallEndReasonUnsupported:
                 {
-                    reasonStr = NSLocalizedString(@"call.Unsupported", @"Unsupported");
+                    reasonStr = NSLocalizedString(@"call.connectUnsupported", @"Unsupported");
                 }
                     break;
                 case EMCallEndReasonRemoteOffline:
@@ -736,7 +738,9 @@ static ChatDemoHelper *helper = nil;
                 self.callSession = aCallSession;
                 self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                    if (self.callController) {
+                        [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                    }
                 });
 
                 [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
