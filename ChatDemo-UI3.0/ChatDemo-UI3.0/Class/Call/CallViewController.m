@@ -55,12 +55,17 @@
         _timeLabel.text = @"";
         _timeLength = 0;
         _status = statusString;
+        _isDismissing = NO;
     }
     
     return self;
 }
 
 - (void)viewDidLoad {
+    if (_isDismissing) {
+        return;
+    }
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
@@ -92,6 +97,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (_isDismissing) {
+        return;
+    }
+    
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (_isDismissing) {
+        return;
+    }
+    
+    [super viewDidAppear:animated];
 }
 
 #pragma mark - getter

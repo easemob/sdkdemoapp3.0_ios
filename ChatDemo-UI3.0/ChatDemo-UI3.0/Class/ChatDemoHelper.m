@@ -26,6 +26,7 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
+#include "EMLog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -542,7 +543,12 @@ static ChatDemoHelper *helper = nil;
         @synchronized (_callLock) {
             self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-            [_mainVC presentViewController:self.callController animated:NO completion:nil];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+            });
+        
+            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
         }
     }
 }
@@ -610,6 +616,11 @@ static ChatDemoHelper *helper = nil;
                 case EMCallEndReasonFailed:
                 {
                     reasonStr = NSLocalizedString(@"call.connectFailed", @"Connect failed");
+                }
+                    break;
+                case EMCallEndReasonUnsupported:
+                {
+                    reasonStr = NSLocalizedString(@"call.Unsupported", @"Unsupported");
                 }
                     break;
                 case EMCallEndReasonRemoteOffline:
@@ -695,29 +706,29 @@ static ChatDemoHelper *helper = nil;
     void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError){
         ChatDemoHelper *strongSelf = weakSelf;
         if (strongSelf) {
-            if (!aError && aCallSession) {
-                @synchronized (self.callLock) {
-                    self.callSession = aCallSession;
-                    self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
-                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
-                    
-                    NSString *callId = @"";
-                    if (aCallSession && aCallSession.callId) {
-                        callId = [aCallSession callId];
-                    }
-                }
-                
-                [self _startCallTimer];
-            }
-            else {
+            if (aError || aCallSession == nil) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
+                return;
             }
+            
+            @synchronized (self.callLock) {
+                self.callSession = aCallSession;
+                self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                });
+
+                [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
+            }
+            
+            [self _startCallTimer];
         }
         else {
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
+    
     if (aType == EMCallTypeVideo) {
         [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
@@ -768,10 +779,16 @@ static ChatDemoHelper *helper = nil;
 
 - (void)dismissCurrentCallController
 {
-    if (self.callController) {
-        [self.callController dismissViewControllerAnimated:NO completion:nil];
-        [self.callController clear];
-        self.callController = nil;
+    self.callController.isDismissing = YES;
+    CallViewController *tmpController = self.callController;
+    self.callController = nil;
+    if (tmpController) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [tmpController dismissViewControllerAnimated:NO completion:nil];
+        });
+        
+        [tmpController clear];
+        tmpController = nil;
     }
 }
 
