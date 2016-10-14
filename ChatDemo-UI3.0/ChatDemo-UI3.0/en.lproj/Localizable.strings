@@ -60,6 +60,7 @@
 "notFound" = "Can't found";
 "noMore" = "No more data";
 "hasRead" = "Read";
+"servingIsBanned" = "User is forbidden";
 
 //app
 "AppName" = "EaseMobDemo";
