@@ -1,0 +1,12 @@
+
+/* Class = "UILabel"; text = "Group Subject"; ObjectID = "AbB-FI-3rW"; */
+"AbB-FI-3rW.text" = "群组主题";
+
+/* Class = "UILabel"; text = "Participants"; ObjectID = "FUY-hd-Igt"; */
+"FUY-hd-Igt.text" = "成员";
+
+/* Class = "UIButton"; normalTitle = "Leave Group"; ObjectID = "a9u-Et-XrR"; */
+"a9u-Et-XrR.normalTitle" = "离开群组";
+
+/* Class = "UIButton"; normalTitle = "See all"; ObjectID = "tJJ-jA-bDi"; */
+"tJJ-jA-bDi.normalTitle" = "查看全部成员";
