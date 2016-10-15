@@ -24,6 +24,7 @@
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
+#import "EMCallOptions+NSCoding.h"
 
 @interface ChatDemoHelper : NSObject <EMClientDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate,EMCallManagerDelegate>
 
