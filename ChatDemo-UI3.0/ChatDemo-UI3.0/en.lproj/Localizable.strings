@@ -211,6 +211,7 @@
 "call.autoHangup"="No response and Hang up";
 "call.noResponse"="NO response";
 "call.connectFailed"="Connect failed";
+"call.connectUnsupported"="Unsupported";
 "call.failed"="Call failed";
 "call.offline"="Remote offline";
 "call.suspended"="Call has been suspended";

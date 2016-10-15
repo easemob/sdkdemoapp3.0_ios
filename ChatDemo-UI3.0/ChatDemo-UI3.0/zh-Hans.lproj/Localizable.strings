@@ -211,6 +211,7 @@
 "call.autoHangup"="没有响应，自动挂断";
 "call.noResponse"="对方没有回应";
 "call.connectFailed"="建立连接失败";
+"call.connectUnsupported"="功能不支持";
 "call.failed"="通话失败";
 "call.offline"="对方不在线";
 "call.suspended"="通话已挂断";

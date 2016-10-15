@@ -51,6 +51,8 @@
 
 @property (strong, nonatomic) UIButton *cancelButton;
 
+@property (nonatomic) BOOL isDismissing;
+
 - (instancetype)initWithSession:(EMCallSession *)session
                        isCaller:(BOOL)isCaller
                          status:(NSString *)statusString;
