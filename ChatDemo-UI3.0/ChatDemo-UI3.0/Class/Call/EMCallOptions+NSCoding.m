@@ -19,6 +19,7 @@
         self.isSendPushIfOffline = [aDecoder decodeBoolForKey:@"emIsSendPushIfOffline"];
         self.videoResolution = (EMCallVideoResolution)[aDecoder decodeIntegerForKey:@"emVideoResolution"];
         self.videoKbps = [aDecoder decodeIntForKey:@"emVideoKbps"];
+        self.offlineMessageText = @"You have incoming call...";
     }
 
     return self;
