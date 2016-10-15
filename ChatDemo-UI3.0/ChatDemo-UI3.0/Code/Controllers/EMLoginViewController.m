@@ -37,8 +37,6 @@
     
     _usernameTextField.delegate = self;
     _passwordTextField.delegate = self;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)setBackgroundColor
@@ -65,29 +63,39 @@
                                       password:_passwordTextField.text
                                     completion:^(NSString *aUsername, EMError *aError) {
                                         if (!aError) {
+                                            [[EMClient sharedClient].options setIsAutoLogin:YES];
                                             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
                                         } else {
+                                            NSString *alertStr = NSLocalizedString(@"login.failure", @"Login failure");
                                             switch (aError.code)
                                             {
                                                 case EMErrorUserNotFound:
-                                                    weakSelf.tipLabel.text = aError.errorDescription;
+                                                    alertStr = aError.errorDescription;
+                                                    weakSelf.errorLabel.text = aError.errorDescription;
                                                     break;
                                                 case EMErrorNetworkUnavailable:
-                                                    weakSelf.tipLabel.text = aError.errorDescription;
+                                                    alertStr = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
+                                                    weakSelf.errorLabel.text = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
                                                     break;
                                                 case EMErrorServerNotReachable:
-                                                    weakSelf.tipLabel.text = aError.errorDescription;
+                                                    alertStr = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
+                                                    weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
                                                     break;
                                                 case EMErrorUserAuthenticationFailed:
-                                                    weakSelf.errorLabel.text = @"Password does not match username";
+                                                    alertStr = NSLocalizedString(@"login.failure.password.notmatch", @"Password does not match username");
+                                                    weakSelf.errorLabel.text = NSLocalizedString(@"login.failure.password.notmatch", @"Password does not match username");
                                                     break;
                                                 case EMErrorServerTimeout:
-                                                    weakSelf.tipLabel.text = aError.errorDescription;
+                                                    alertStr = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
+                                                    weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
                                                     break;
                                                 default:
-                                                    weakSelf.errorLabel.text = @"Login failure";
+                                                    alertStr = NSLocalizedString(@"login.failure", @"Login failure");
+                                                    weakSelf.errorLabel.text = NSLocalizedString(@"login.failure", @"Login failure");
                                                     break;
                                             }
+                                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
+                                            [alert show];
                                         }
                                     }];
 }
@@ -103,15 +111,32 @@
                                        completion:^(NSString *aUsername, EMError *aError) {
                                            if (!aError) {
                                            } else {
+                                               NSString *alertStr = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
                                                switch (aError.code)
                                                {
+                                                   case EMErrorServerNotReachable:
+                                                       alertStr = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
+                                                       weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
+                                                       break;
+                                                   case EMErrorNetworkUnavailable:
+                                                       alertStr = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
+                                                       weakSelf.errorLabel.text = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
+                                                       break;
+                                                   case EMErrorServerTimeout:
+                                                       alertStr = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
+                                                       weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
+                                                       break;
                                                    case EMErrorUserAlreadyExist:
-                                                       weakSelf.errorLabel.text = @"Username taken";
+                                                       alertStr = NSLocalizedString(@"login.taken", @"Username taken");
+                                                       weakSelf.errorLabel.text = NSLocalizedString(@"login.taken", @"Username taken");
                                                        break;
                                                    default:
-                                                       weakSelf.errorLabel.text = @"Sign up failure";
+                                                       alertStr = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
+                                                       weakSelf.errorLabel.text = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
                                                        break;
                                                }
+                                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
+                                               [alert show];
                                            }
                                        }];
 }
@@ -123,7 +148,7 @@
         _loginButton.hidden = YES;
         _signupButton.hidden = NO;
         [_changeButton setTitle:NSLocalizedString(@"login.changebutton.login", @"Log in") forState:UIControlStateNormal];
-        _tipLabel.text = NSLocalizedString(@"signup.tips", @"Have an account?");
+        _tipLabel.text = NSLocalizedString(@"login.signup.tips", @"Have an account?");
     } else {
         _loginButton.hidden = NO;
         _signupButton.hidden = YES;
@@ -155,41 +180,6 @@
     }
     return YES;
 }
-
-#pragma mark - notification
-
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    NSValue *beginValue = [userInfo objectForKey:@"UIKeyboardFrameBeginUserInfoKey"];
-    NSValue *endValue = [userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"];
-    CGRect beginRect;
-    [beginValue getValue:&beginRect];
-    CGRect endRect;
-    [endValue getValue:&endRect];
-    
-    CGRect buttonFrame;
-    if (_signupButton.hidden) {
-        buttonFrame = _loginButton.frame;
-    } else {
-        buttonFrame = _signupButton.frame;
-    }
-    if (endRect.origin.y == self.view.frame.size.height) {
-        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame);
-    } else if(beginRect.origin.y == self.view.frame.size.height){
-        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
-    } else {
-        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
-    }
-    [UIView animateWithDuration:0.3 animations:^{
-        if (_signupButton.hidden) {
-            _loginButton.frame = buttonFrame;
-        } else {
-            _signupButton.frame = buttonFrame;
-        }
-    }];
-}
-
 /*
 #pragma mark - Navigation
 

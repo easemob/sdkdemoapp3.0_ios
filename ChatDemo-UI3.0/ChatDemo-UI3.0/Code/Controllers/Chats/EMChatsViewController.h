@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMChatsViewController : UITableViewController
+@interface EMChatsViewController : UIViewController
+
+- (void)setupNavigationItem:(UINavigationItem *)navigationItem;
 
 @end

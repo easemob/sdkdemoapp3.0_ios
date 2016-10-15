@@ -55,7 +55,7 @@
                     </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="join" secureTextEntry="YES"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="3"/>
                     </userDefinedRuntimeAttributes>
@@ -70,7 +70,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ex1-Ar-Dxs">
-                    <color key="backgroundColor" red="0.25098039215686274" green="0.36862745098039218" blue="0.47843137254901957" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.0" green="0.72941176470588232" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="5Ma-xo-xdf"/>
                     </constraints>
@@ -83,7 +83,7 @@
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poU-kr-smL">
-                    <color key="backgroundColor" red="0.25098039220000001" green="0.36862745099999999" blue="0.47843137250000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.0" green="0.72941176470000002" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="Dgp-Qw-369"/>
                     </constraints>
@@ -101,7 +101,7 @@
                         <constraint firstAttribute="width" constant="100" id="WXS-SM-uOX"/>
                     </constraints>
                     <state key="normal" title="Sign up">
-                        <color key="titleColor" red="0.30196078430000001" green="0.76470588240000004" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="doChangeState:" destination="-1" eventType="touchUpInside" id="COU-hF-Oz5"/>

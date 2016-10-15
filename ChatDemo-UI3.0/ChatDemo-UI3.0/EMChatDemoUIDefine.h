@@ -17,5 +17,6 @@
 #define KScreenWidth  [[UIScreen mainScreen] bounds].size.width
 
 #define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
+#define KNOTIFICATION_UPDATEUNREADCOUNT @"setupUnreadMessageCount"
 
 #endif /* EMChatDemoUIDefine_h */
