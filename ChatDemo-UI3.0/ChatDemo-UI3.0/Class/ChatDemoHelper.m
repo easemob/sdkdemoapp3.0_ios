@@ -645,11 +645,11 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.connectUnsupported", @"Unsupported");
                 }
                     break;
-                case EMCallEndReasonRemoteOffline:
-                {
-                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
-                }
-                    break;
+//                case EMCallEndReasonRemoteOffline:
+//                {
+//                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
+//                }
+//                    break;
                 default:
                     break;
             }
