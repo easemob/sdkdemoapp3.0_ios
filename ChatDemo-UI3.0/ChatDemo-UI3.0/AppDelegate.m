@@ -11,6 +11,7 @@
 #import "EMMainViewController.h"
 #import "EMLoginViewController.h"
 #import "EMLaunchViewController.h"
+#import "EMChatDemoHelper.h"
 
 @interface AppDelegate ()
 
@@ -44,6 +45,8 @@
                                                object:nil];
     
     [EaseCallManager sharedManager];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
     EMLaunchViewController *launch = [[EMLaunchViewController alloc] init];
     self.window.rootViewController = launch;
     [self.window makeKeyAndVisible];
@@ -59,9 +62,12 @@
         EMMainViewController *main = [[EMMainViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
         self.window.rootViewController = navigationController;
+        [EMChatDemoHelper shareHelper].mainVC = main;
+        
     } else {
         EMLoginViewController *login = [[EMLoginViewController alloc] init];
         self.window.rootViewController = login;
+        [EMChatDemoHelper shareHelper].mainVC = nil;
     }
 }
 

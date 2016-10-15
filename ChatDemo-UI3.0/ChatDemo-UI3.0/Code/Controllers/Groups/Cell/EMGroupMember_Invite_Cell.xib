@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EMGroupMember_Invite_Cell" id="bni-75-Tao" customClass="EMGroupMemberCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bni-75-Tao" id="cso-3c-m5V">
+                <frame key="frameInset" width="375" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="keo-CQ-wa2">
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="5f0-PI-FLg"/>
+                            <constraint firstAttribute="height" constant="30" id="NtA-Tp-HvM"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="15"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRa-l1-X3T">
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="kgE-zo-uSC"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.047058823530000002" green="0.070588235289999995" blue="0.094117647060000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gHA-Ni-bDa">
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="g9m-hO-F1n"/>
+                            <constraint firstAttribute="height" constant="20" id="xwu-Ko-JCK"/>
+                        </constraints>
+                        <state key="normal" image="Button_Radio.png"/>
+                        <state key="selected" image="Button_Radio Active.png"/>
+                        <connections>
+                            <action selector="selectMemberAction:" destination="bni-75-Tao" eventType="touchUpInside" id="58L-Kc-ESs"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5u-7c-lPv">
+                        <color key="backgroundColor" red="0.69803921570000005" green="0.72549019609999998" blue="0.75686274509999996" alpha="0.50483349119999998" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="3hW-H5-NqT"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="rRa-l1-X3T" firstAttribute="leading" secondItem="keo-CQ-wa2" secondAttribute="trailing" constant="7" id="328-VK-tZI"/>
+                    <constraint firstItem="gHA-Ni-bDa" firstAttribute="leading" secondItem="rRa-l1-X3T" secondAttribute="trailing" constant="10" id="JKI-Wz-nPU"/>
+                    <constraint firstAttribute="bottom" secondItem="M5u-7c-lPv" secondAttribute="bottom" id="RXQ-GV-kZK"/>
+                    <constraint firstItem="keo-CQ-wa2" firstAttribute="leading" secondItem="cso-3c-m5V" secondAttribute="leading" constant="15" id="Wac-qj-UDv"/>
+                    <constraint firstItem="rRa-l1-X3T" firstAttribute="centerY" secondItem="cso-3c-m5V" secondAttribute="centerY" id="bq8-8Y-MRk"/>
+                    <constraint firstItem="keo-CQ-wa2" firstAttribute="centerY" secondItem="cso-3c-m5V" secondAttribute="centerY" id="i4J-xK-IWY"/>
+                    <constraint firstItem="gHA-Ni-bDa" firstAttribute="centerY" secondItem="cso-3c-m5V" secondAttribute="centerY" id="jaN-ZS-1W3"/>
+                    <constraint firstAttribute="trailing" secondItem="gHA-Ni-bDa" secondAttribute="trailing" constant="5" id="rf8-pv-bo6"/>
+                    <constraint firstItem="M5u-7c-lPv" firstAttribute="leading" secondItem="cso-3c-m5V" secondAttribute="leading" constant="15" id="tfw-ek-FQK"/>
+                    <constraint firstAttribute="trailing" secondItem="M5u-7c-lPv" secondAttribute="trailing" id="tvD-qh-Vyv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="avatarImageView" destination="keo-CQ-wa2" id="etx-aL-Kmp"/>
+                <outlet property="nicknameLabel" destination="rRa-l1-X3T" id="cDL-Tc-dOR"/>
+                <outlet property="selectButton" destination="gHA-Ni-bDa" id="MOq-f0-pcf"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Button_Radio Active.png" width="20" height="20"/>
+        <image name="Button_Radio.png" width="20" height="20"/>
+        <image name="default_avatar.png" width="50" height="50"/>
+    </resources>
+</document>
