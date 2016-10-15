@@ -2,114 +2,199 @@
 //  EMSettingsViewController.m
 //  ChatDemo-UI3.0
 //
-//  Created by EaseMob on 16/9/19.
+//  Created by EaseMob on 16/9/21.
 //  Copyright © 2016年 easemob. All rights reserved.
 //
 
 #import "EMSettingsViewController.h"
+#import "EMAboutViewController.h"
+#import "EMPushNotificationViewController.h"
+#import "EMAccountViewController.h"
+#import "EMChatsSettingViewController.h"
 
 @interface EMSettingsViewController ()
 
+@property (nonatomic, strong) UISwitch *videoBitrateSwitch;
+
+@property (nonatomic) EMPushNoDisturbStatus pushStatus;
 @end
 
 @implementation EMSettingsViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
+    [self loadPushOptions];
     
-    self.title = NSLocalizedString(@"title.settings", @"Settings");
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)loadPushOptions
+{
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {
+        
+        if (!aError) {
+            [weakSelf refreshPushOptions];
+        }
+    }];
+}
+
+- (void)refreshPushOptions
+{
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+    if (_pushStatus != options.noDisturbStatus) {
+        
+        _pushStatus = options.noDisturbStatus;
+        [self.tableView reloadData];
+    }
+}
+
+#pragma mark - getters
+
+- (UISwitch *)videoBitrateSwitch
+{
+    if (_videoBitrateSwitch == nil) {
+        
+        _videoBitrateSwitch = [[UISwitch alloc] init];
+        [_videoBitrateSwitch addTarget:self action:@selector(switchVideoBitrate:) forControlEvents:UIControlEventValueChanged];
+        [_videoBitrateSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"] boolValue]];
+    }
+    
+    return _videoBitrateSwitch;
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 5;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
-    // Configure the cell...
+    static NSString *ident = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ident];
+    if (!cell) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ident];
+    }
+    
+    if (indexPath.row == 0) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.about", @"About");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 1) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.push", @"Push Notifications");
+        BOOL isPushOn = _pushStatus == EMPushNoDisturbStatusClose ? YES : NO;
+        cell.detailTextLabel.text = isPushOn ? NSLocalizedString(@"setting.push.on", @"On") : NSLocalizedString(@"setting.push.off", @"Off");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 2) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.account", @"Account");
+        cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 3) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.chats", @"Chats");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    } else {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.videoBitrate", @"Adaptive Video Bitrate");
+        self.videoBitrateSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
+        [cell.contentView addSubview:self.videoBitrateSwitch];
+    }
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
 #pragma mark - Table view delegate
 
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-}
-*/
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+    if (indexPath.row == 0) {
+            
+        EMAboutViewController *about = [[EMAboutViewController alloc] init];
+        about.title = NSLocalizedString(@"title.setting.about", @"About");
+        [self.navigationController pushViewController:about animated:YES];
+    } else if (indexPath.row == 1) {
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+        EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
+        pushController.title = NSLocalizedString(@"title.setting.push", @"Push Notifications");
+        [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
+            
+            _pushStatus = disturbStatus;
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }];
+        [self.navigationController pushViewController:pushController animated:YES];
+    } else if (indexPath.row == 2) {
+            
+        EMAccountViewController *accout = [[EMAccountViewController alloc] init];
+            accout.title = NSLocalizedString(@"title.setting.account", @"Account");
+        [self.navigationController pushViewController:accout animated:YES];
+    } else if (indexPath.row == 3) {
+            
+        EMChatsSettingViewController *chatSetting = [[EMChatsSettingViewController alloc] init];
+        chatSetting.title = NSLocalizedString(@"title.setting.Chats", @"Chats");
+        [self.navigationController pushViewController:chatSetting animated:YES];
+    }
 }
-*/
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        
+        UIView *header = [[UIView alloc] init];
+        header.backgroundColor = RGBACOLOR(228, 233, 236, 1.0);
+        return header;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0;
+    } else {
+        
+        return 20;
+    }
+}
+
+#pragma mark - Actions
+
+- (void)switchVideoBitrate:(UISwitch *)sender
+{
+    NSLog(@"switchVideoBitrate --- %d",(int)sender.on);
+    
+    if (sender.isOn) {
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        if (![ud objectForKey:@"showCallInfo"]) {
+            [ud setBool:YES forKey:@"showCallInfo"];
+            [ud synchronize];
+        }
+    } else {
+        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        if ([ud objectForKey:@"showCallInfo"]) {
+            [ud removeObjectForKey:@"showCallInfo"];
+            [ud synchronize];
+        }
+    }
+}
+
+
 
 @end

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EaseCallViewController">
+            <connections>
+                <outlet property="answerCallButton" destination="AYj-cd-f2H" id="l6C-Sn-O5U"/>
+                <outlet property="avatarView" destination="hJs-XY-CIn" id="2gN-Qm-3Pm"/>
+                <outlet property="cancelCallButton" destination="VEm-oM-Sbo" id="6xH-zM-N4h"/>
+                <outlet property="minimizeButton" destination="1Rx-Ab-5mX" id="p3b-HB-jMN"/>
+                <outlet property="nameLabel" destination="yd5-wS-NN3" id="VcN-Ki-mq7"/>
+                <outlet property="rejectCallButton" destination="z7u-Zw-iSV" id="81V-ku-ovX"/>
+                <outlet property="silenceButton" destination="sjR-7e-TQK" id="OCu-o6-p2M"/>
+                <outlet property="speakerOutButton" destination="bB6-I0-Cla" id="Usx-FD-EbO"/>
+                <outlet property="statusLabel" destination="xXP-uL-8qo" id="7iF-35-cht"/>
+                <outlet property="timeLabel" destination="sAS-Fe-w1Z" id="qk3-vg-r5q"/>
+                <outlet property="view" destination="gjR-sp-DoO" id="g3j-81-C9V"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="gjR-sp-DoO">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yd5-wS-NN3">
+                    <rect key="frame" x="147" y="105" width="81" height="21"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calling" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXP-uL-8qo">
+                    <rect key="frame" x="165" y="146" width="46" height="18"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="header.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="hJs-XY-CIn">
+                    <rect key="frame" x="112" y="259" width="150" height="150"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="mK4-vc-Yua"/>
+                        <constraint firstAttribute="width" constant="150" id="o6F-W1-01B"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="75"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bB6-I0-Cla">
+                    <rect key="frame" x="95" y="493" width="25" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="kKg-cv-zCF"/>
+                        <constraint firstAttribute="width" constant="25" id="yzb-jz-7WI"/>
+                    </constraints>
+                    <state key="normal" image="Button_Speaker.png"/>
+                    <state key="disabled" image="Button_Speaker disabled.png"/>
+                    <state key="selected" image="Button_Speaker active.png"/>
+                    <state key="highlighted" image="Button_Speaker.png"/>
+                    <state key="focused" image="Button_Speaker.png"/>
+                    <connections>
+                        <action selector="speakerOutAction:" destination="-1" eventType="touchUpInside" id="BGW-dK-4Zu"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sjR-7e-TQK">
+                    <rect key="frame" x="180" y="491" width="16" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="ujK-kT-AXq"/>
+                        <constraint firstAttribute="height" constant="25" id="whe-Yv-6lo"/>
+                    </constraints>
+                    <state key="normal" image="Button_Mute.png"/>
+                    <state key="disabled" image="Button_Mute disabled.png"/>
+                    <state key="selected" image="Button_Mute active.png"/>
+                    <connections>
+                        <action selector="silenceAction:" destination="-1" eventType="touchUpInside" id="7Yn-p1-Y3f"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Rx-Ab-5mX">
+                    <rect key="frame" x="256" y="491" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="NEM-6e-GuD"/>
+                        <constraint firstAttribute="width" constant="25" id="v3a-mJ-NzD"/>
+                    </constraints>
+                    <state key="normal" image="Button_Minimize.png"/>
+                    <state key="disabled" image="Button_Minimize disabled.png"/>
+                    <connections>
+                        <action selector="minimizeAction:" destination="-1" eventType="touchUpInside" id="eje-mM-IsF"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z7u-Zw-iSV">
+                    <rect key="frame" x="155" y="570" width="65" height="65"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="65" id="ces-qT-Kex"/>
+                        <constraint firstAttribute="width" constant="65" id="ghh-OG-DoT"/>
+                    </constraints>
+                    <state key="normal" image="Button_End.png"/>
+                    <connections>
+                        <action selector="rejectCallAction:" destination="-1" eventType="touchUpInside" id="ROZ-P7-f6G"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAS-Fe-w1Z">
+                    <rect key="frame" x="158" y="146" width="59" height="35"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-oM-Sbo">
+                    <rect key="frame" x="73" y="570" width="65" height="65"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="65" id="AZJ-zy-o6B"/>
+                        <constraint firstAttribute="height" constant="65" id="a9S-hz-i1b"/>
+                    </constraints>
+                    <state key="normal" image="Button_Cancel Call.png"/>
+                    <connections>
+                        <action selector="cancelCallAction:" destination="-1" eventType="touchUpInside" id="6zB-y2-PUF"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AYj-cd-f2H">
+                    <rect key="frame" x="238" y="570" width="65" height="65"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="65" id="8UA-io-wmy"/>
+                        <constraint firstAttribute="width" constant="65" id="x2a-BP-FD6"/>
+                    </constraints>
+                    <state key="normal" image="Button_Answer.png"/>
+                    <connections>
+                        <action selector="answerCallAction:" destination="-1" eventType="touchUpInside" id="1IO-Zx-NM4"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.24313725489999999" green="0.36078431370000003" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="z7u-Zw-iSV" firstAttribute="top" secondItem="sjR-7e-TQK" secondAttribute="bottom" constant="54" id="Avh-bI-ITc"/>
+                <constraint firstItem="VEm-oM-Sbo" firstAttribute="centerY" secondItem="z7u-Zw-iSV" secondAttribute="centerY" id="BCI-ik-HUx"/>
+                <constraint firstItem="yd5-wS-NN3" firstAttribute="centerX" secondItem="gjR-sp-DoO" secondAttribute="centerX" id="CrX-R2-tF7"/>
+                <constraint firstItem="z7u-Zw-iSV" firstAttribute="leading" secondItem="VEm-oM-Sbo" secondAttribute="trailing" constant="17" id="HH7-7J-FTe"/>
+                <constraint firstItem="hJs-XY-CIn" firstAttribute="centerX" secondItem="gjR-sp-DoO" secondAttribute="centerX" id="Jhr-8t-798"/>
+                <constraint firstItem="xXP-uL-8qo" firstAttribute="centerX" secondItem="gjR-sp-DoO" secondAttribute="centerX" id="MfJ-Nh-4ZS"/>
+                <constraint firstItem="sjR-7e-TQK" firstAttribute="centerX" secondItem="gjR-sp-DoO" secondAttribute="centerX" id="Mo6-Cg-TtD"/>
+                <constraint firstItem="sAS-Fe-w1Z" firstAttribute="top" secondItem="yd5-wS-NN3" secondAttribute="bottom" constant="20" id="S8n-b0-VYj"/>
+                <constraint firstItem="AYj-cd-f2H" firstAttribute="leading" secondItem="z7u-Zw-iSV" secondAttribute="trailing" constant="18" id="T0s-eM-YrW"/>
+                <constraint firstItem="1Rx-Ab-5mX" firstAttribute="centerY" secondItem="sjR-7e-TQK" secondAttribute="centerY" id="VHv-lb-RTm"/>
+                <constraint firstItem="z7u-Zw-iSV" firstAttribute="centerX" secondItem="gjR-sp-DoO" secondAttribute="centerX" id="X9Q-oj-VNo"/>
+                <constraint firstAttribute="bottom" secondItem="z7u-Zw-iSV" secondAttribute="bottom" constant="32" id="XKl-ng-PPf"/>
+                <constraint firstItem="bB6-I0-Cla" firstAttribute="centerY" secondItem="sjR-7e-TQK" secondAttribute="centerY" id="YzB-TN-WgY"/>
+                <constraint firstItem="sjR-7e-TQK" firstAttribute="leading" secondItem="bB6-I0-Cla" secondAttribute="trailing" constant="60" id="db4-uf-AaN"/>
+                <constraint firstItem="xXP-uL-8qo" firstAttribute="top" secondItem="yd5-wS-NN3" secondAttribute="bottom" constant="20" id="eEH-3F-9PG"/>
+                <constraint firstItem="1Rx-Ab-5mX" firstAttribute="leading" secondItem="sjR-7e-TQK" secondAttribute="trailing" constant="60" id="eM7-e1-S04"/>
+                <constraint firstItem="hJs-XY-CIn" firstAttribute="centerY" secondItem="gjR-sp-DoO" secondAttribute="centerY" id="gQx-mO-oni"/>
+                <constraint firstItem="yd5-wS-NN3" firstAttribute="top" secondItem="gjR-sp-DoO" secondAttribute="top" constant="105" id="l3I-WP-jBm"/>
+                <constraint firstItem="AYj-cd-f2H" firstAttribute="centerY" secondItem="z7u-Zw-iSV" secondAttribute="centerY" id="o6i-Pm-9pa"/>
+                <constraint firstItem="sAS-Fe-w1Z" firstAttribute="centerX" secondItem="gjR-sp-DoO" secondAttribute="centerX" id="u66-hN-Lhl"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <point key="canvasLocation" x="241.5" y="338.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Button_Answer.png" width="65" height="65"/>
+        <image name="Button_Cancel Call.png" width="65" height="65"/>
+        <image name="Button_End.png" width="65" height="65"/>
+        <image name="Button_Minimize disabled.png" width="25" height="25"/>
+        <image name="Button_Minimize.png" width="25" height="25"/>
+        <image name="Button_Mute active.png" width="16" height="25"/>
+        <image name="Button_Mute disabled.png" width="16" height="25"/>
+        <image name="Button_Mute.png" width="16" height="25"/>
+        <image name="Button_Speaker active.png" width="25" height="20"/>
+        <image name="Button_Speaker disabled.png" width="25" height="20"/>
+        <image name="Button_Speaker.png" width="25" height="20"/>
+        <image name="header.jpg" width="640" height="640"/>
+    </resources>
+</document>

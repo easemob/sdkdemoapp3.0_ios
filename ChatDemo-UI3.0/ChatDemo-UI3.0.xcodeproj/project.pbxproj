@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		30E5DE31A68CB65C97673D9B /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */; };
+		D218F1071D9298B600F6792D /* EMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D218F1051D9298B600F6792D /* EMSettingsViewController.m */; };
+		D218F1081D9298B600F6792D /* EMSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D218F1061D9298B600F6792D /* EMSettingsViewController.xib */; };
+		D24672191D9CC359003FF9E9 /* EaseCallView_Voice.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24672181D9CC359003FF9E9 /* EaseCallView_Voice.xib */; };
+		D246721B1D9CC36E003FF9E9 /* EaseCallView_Video.xib in Resources */ = {isa = PBXBuildFile; fileRef = D246721A1D9CC36E003FF9E9 /* EaseCallView_Video.xib */; };
+		D246721D1D9CC543003FF9E9 /* header.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D246721C1D9CC543003FF9E9 /* header.jpg */; };
+		D24672201D9CC8D0003FF9E9 /* EaseCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D246721F1D9CC8D0003FF9E9 /* EaseCallManager.m */; };
+		D26F1DE31D98CACE00A05FEB /* EaseCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26F1DE11D98CACE00A05FEB /* EaseCallViewController.m */; };
 		D28345041D8FD1D400FD48A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345031D8FD1D400FD48A9 /* main.m */; };
 		D28345071D8FD1D400FD48A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345061D8FD1D400FD48A9 /* AppDelegate.m */; };
 		D283450F1D8FD1D400FD48A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D283450E1D8FD1D400FD48A9 /* Assets.xcassets */; };
@@ -17,11 +24,17 @@
 		D28345301D90042F00FD48A9 /* EMMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D283452E1D90042F00FD48A9 /* EMMainViewController.xib */; };
 		D28345401D90081200FD48A9 /* EMContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D283453E1D90081200FD48A9 /* EMContactsViewController.m */; };
 		D28345411D90081200FD48A9 /* EMContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D283453F1D90081200FD48A9 /* EMContactsViewController.xib */; };
-		D28345451D90082700FD48A9 /* EMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345431D90082700FD48A9 /* EMSettingsViewController.m */; };
-		D28345461D90082700FD48A9 /* EMSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28345441D90082700FD48A9 /* EMSettingsViewController.xib */; };
 		D283454A1D900B2700FD48A9 /* EMChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345481D900B2700FD48A9 /* EMChatsViewController.m */; };
 		D283454B1D900B2700FD48A9 /* EMChatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28345491D900B2700FD48A9 /* EMChatsViewController.xib */; };
 		D2AA4DD01D9227A400967E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DCE1D9227A400967E0E /* Main.storyboard */; };
+		D2B6A1C11D9392FF00674CDB /* EMAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B6A1BF1D9392FF00674CDB /* EMAboutViewController.m */; };
+		D2B6A1C21D9392FF00674CDB /* EMAboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B6A1C01D9392FF00674CDB /* EMAboutViewController.xib */; };
+		D2B6A1CE1D93B09700674CDB /* EMPushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B6A1CD1D93B09700674CDB /* EMPushNotificationViewController.m */; };
+		D2B6A1D21D93B53800674CDB /* EMBaseSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B6A1D01D93B53800674CDB /* EMBaseSettingController.m */; };
+		D2B6A1D31D93B53800674CDB /* EMBaseSettingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B6A1D11D93B53800674CDB /* EMBaseSettingController.xib */; };
+		D2B6A1D61D93C7A800674CDB /* PushDisplaynameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B6A1D51D93C7A800674CDB /* PushDisplaynameViewController.m */; };
+		D2B6A1D91D93E46900674CDB /* EMAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B6A1D81D93E46900674CDB /* EMAccountViewController.m */; };
+		D2B6A1E01D93F73500674CDB /* EMChatsSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B6A1DF1D93F73500674CDB /* EMChatsSettingViewController.m */; };
 		D2BF7CB81D90EE160090AA66 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BF7CB61D90EE160090AA66 /* EMLoginViewController.m */; };
 		D2BF7CB91D90EE160090AA66 /* EMLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7CB71D90EE160090AA66 /* EMLoginViewController.xib */; };
 		D2BF7CC31D9111EC0090AA66 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BF7CC21D9111EC0090AA66 /* UIViewController+DismissKeyboard.m */; };
@@ -291,12 +304,24 @@
 		D2BF7F2B1D914DB30090AA66 /* logo9.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7E201D914DB30090AA66 /* logo9.png */; };
 		D2BF7F2C1D914DB30090AA66 /* logo9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7E211D914DB30090AA66 /* logo9@2x.png */; };
 		D2BF7F2D1D914DB30090AA66 /* logo9@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7E221D914DB30090AA66 /* logo9@3x.png */; };
+		D2C2F6361DAB341100A2AE93 /* EaseVideoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C2F6341DAB341100A2AE93 /* EaseVideoInfoViewController.m */; };
+		D2C2F6371DAB341100A2AE93 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C2F6351DAB341100A2AE93 /* EaseVideoInfoViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1633BADC43B42D35B0A0969D /* Pods-ChatDemo-UI3.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.debug.xcconfig"; sourceTree = "<group>"; };
 		6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D16326FFC6F317D24E92E388 /* Pods-ChatDemo-UI3.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.release.xcconfig"; sourceTree = "<group>"; };
+		D218F1041D9298B600F6792D /* EMSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSettingsViewController.h; sourceTree = "<group>"; };
+		D218F1051D9298B600F6792D /* EMSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSettingsViewController.m; sourceTree = "<group>"; };
+		D218F1061D9298B600F6792D /* EMSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMSettingsViewController.xib; sourceTree = "<group>"; };
+		D24672181D9CC359003FF9E9 /* EaseCallView_Voice.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseCallView_Voice.xib; sourceTree = "<group>"; };
+		D246721A1D9CC36E003FF9E9 /* EaseCallView_Video.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseCallView_Video.xib; sourceTree = "<group>"; };
+		D246721C1D9CC543003FF9E9 /* header.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = header.jpg; sourceTree = "<group>"; };
+		D246721E1D9CC8D0003FF9E9 /* EaseCallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseCallManager.h; sourceTree = "<group>"; };
+		D246721F1D9CC8D0003FF9E9 /* EaseCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCallManager.m; sourceTree = "<group>"; };
+		D26F1DE01D98CACE00A05FEB /* EaseCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseCallViewController.h; sourceTree = "<group>"; };
+		D26F1DE11D98CACE00A05FEB /* EaseCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCallViewController.m; sourceTree = "<group>"; };
 		D28344FF1D8FD1D400FD48A9 /* ChatDemo-UI3.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI3.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D28345031D8FD1D400FD48A9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D28345051D8FD1D400FD48A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -313,14 +338,25 @@
 		D283453D1D90081200FD48A9 /* EMContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMContactsViewController.h; sourceTree = "<group>"; };
 		D283453E1D90081200FD48A9 /* EMContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMContactsViewController.m; sourceTree = "<group>"; };
 		D283453F1D90081200FD48A9 /* EMContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMContactsViewController.xib; sourceTree = "<group>"; };
-		D28345421D90082700FD48A9 /* EMSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSettingsViewController.h; sourceTree = "<group>"; };
-		D28345431D90082700FD48A9 /* EMSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSettingsViewController.m; sourceTree = "<group>"; };
-		D28345441D90082700FD48A9 /* EMSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMSettingsViewController.xib; sourceTree = "<group>"; };
 		D28345471D900B2700FD48A9 /* EMChatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatsViewController.h; sourceTree = "<group>"; };
 		D28345481D900B2700FD48A9 /* EMChatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatsViewController.m; sourceTree = "<group>"; };
 		D28345491D900B2700FD48A9 /* EMChatsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMChatsViewController.xib; sourceTree = "<group>"; };
 		D28345721D900E1600FD48A9 /* ChatDemo-UI3.0.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0.pch"; sourceTree = "<group>"; };
 		D2AA4DCF1D9227A400967E0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D2B6A1BE1D9392FF00674CDB /* EMAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAboutViewController.h; sourceTree = "<group>"; };
+		D2B6A1BF1D9392FF00674CDB /* EMAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAboutViewController.m; sourceTree = "<group>"; };
+		D2B6A1C01D9392FF00674CDB /* EMAboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMAboutViewController.xib; sourceTree = "<group>"; };
+		D2B6A1CC1D93B09700674CDB /* EMPushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMPushNotificationViewController.h; sourceTree = "<group>"; };
+		D2B6A1CD1D93B09700674CDB /* EMPushNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMPushNotificationViewController.m; sourceTree = "<group>"; };
+		D2B6A1CF1D93B53800674CDB /* EMBaseSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBaseSettingController.h; sourceTree = "<group>"; };
+		D2B6A1D01D93B53800674CDB /* EMBaseSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBaseSettingController.m; sourceTree = "<group>"; };
+		D2B6A1D11D93B53800674CDB /* EMBaseSettingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMBaseSettingController.xib; sourceTree = "<group>"; };
+		D2B6A1D41D93C7A800674CDB /* PushDisplaynameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushDisplaynameViewController.h; sourceTree = "<group>"; };
+		D2B6A1D51D93C7A800674CDB /* PushDisplaynameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushDisplaynameViewController.m; sourceTree = "<group>"; };
+		D2B6A1D71D93E46900674CDB /* EMAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAccountViewController.h; sourceTree = "<group>"; };
+		D2B6A1D81D93E46900674CDB /* EMAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAccountViewController.m; sourceTree = "<group>"; };
+		D2B6A1DE1D93F73500674CDB /* EMChatsSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatsSettingViewController.h; sourceTree = "<group>"; };
+		D2B6A1DF1D93F73500674CDB /* EMChatsSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatsSettingViewController.m; sourceTree = "<group>"; };
 		D2BF7CB41D90EA530090AA66 /* EMChatDemoUIDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatDemoUIDefine.h; sourceTree = "<group>"; };
 		D2BF7CB51D90EE160090AA66 /* EMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		D2BF7CB61D90EE160090AA66 /* EMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
@@ -594,6 +630,9 @@
 		D2BF7E201D914DB30090AA66 /* logo9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo9.png; sourceTree = "<group>"; };
 		D2BF7E211D914DB30090AA66 /* logo9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo9@2x.png"; sourceTree = "<group>"; };
 		D2BF7E221D914DB30090AA66 /* logo9@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo9@3x.png"; sourceTree = "<group>"; };
+		D2C2F6331DAB341100A2AE93 /* EaseVideoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseVideoInfoViewController.h; sourceTree = "<group>"; };
+		D2C2F6341DAB341100A2AE93 /* EaseVideoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseVideoInfoViewController.m; sourceTree = "<group>"; };
+		D2C2F6351DAB341100A2AE93 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -623,6 +662,22 @@
 				D16326FFC6F317D24E92E388 /* Pods-ChatDemo-UI3.0.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D26F1DDF1D98CA9C00A05FEB /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				D26F1DE01D98CACE00A05FEB /* EaseCallViewController.h */,
+				D26F1DE11D98CACE00A05FEB /* EaseCallViewController.m */,
+				D24672181D9CC359003FF9E9 /* EaseCallView_Voice.xib */,
+				D246721A1D9CC36E003FF9E9 /* EaseCallView_Video.xib */,
+				D246721E1D9CC8D0003FF9E9 /* EaseCallManager.h */,
+				D246721F1D9CC8D0003FF9E9 /* EaseCallManager.m */,
+				D2C2F6331DAB341100A2AE93 /* EaseVideoInfoViewController.h */,
+				D2C2F6341DAB341100A2AE93 /* EaseVideoInfoViewController.m */,
+				D2C2F6351DAB341100A2AE93 /* EaseVideoInfoViewController.xib */,
+			);
+			path = Call;
 			sourceTree = "<group>";
 		};
 		D28344F61D8FD1D400FD48A9 = {
@@ -682,6 +737,7 @@
 		D28345251D8FEE3F00FD48A9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D246721C1D9CC543003FF9E9 /* header.jpg */,
 				D2BF7D0C1D914DB20090AA66 /* Cell Tab */,
 				D2BF7D2E1D914DB20090AA66 /* Chat Details */,
 				D2BF7D3E1D914DB20090AA66 /* Chatting */,
@@ -719,6 +775,7 @@
 		D28345311D90048600FD48A9 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				D26F1DDF1D98CA9C00A05FEB /* Call */,
 				D28345471D900B2700FD48A9 /* EMChatsViewController.h */,
 				D28345481D900B2700FD48A9 /* EMChatsViewController.m */,
 				D28345491D900B2700FD48A9 /* EMChatsViewController.xib */,
@@ -739,9 +796,23 @@
 		D28345331D90048600FD48A9 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				D28345421D90082700FD48A9 /* EMSettingsViewController.h */,
-				D28345431D90082700FD48A9 /* EMSettingsViewController.m */,
-				D28345441D90082700FD48A9 /* EMSettingsViewController.xib */,
+				D218F1041D9298B600F6792D /* EMSettingsViewController.h */,
+				D218F1051D9298B600F6792D /* EMSettingsViewController.m */,
+				D218F1061D9298B600F6792D /* EMSettingsViewController.xib */,
+				D2B6A1BE1D9392FF00674CDB /* EMAboutViewController.h */,
+				D2B6A1BF1D9392FF00674CDB /* EMAboutViewController.m */,
+				D2B6A1C01D9392FF00674CDB /* EMAboutViewController.xib */,
+				D2B6A1CC1D93B09700674CDB /* EMPushNotificationViewController.h */,
+				D2B6A1CD1D93B09700674CDB /* EMPushNotificationViewController.m */,
+				D2B6A1D41D93C7A800674CDB /* PushDisplaynameViewController.h */,
+				D2B6A1D51D93C7A800674CDB /* PushDisplaynameViewController.m */,
+				D2B6A1D71D93E46900674CDB /* EMAccountViewController.h */,
+				D2B6A1D81D93E46900674CDB /* EMAccountViewController.m */,
+				D2B6A1DE1D93F73500674CDB /* EMChatsSettingViewController.h */,
+				D2B6A1DF1D93F73500674CDB /* EMChatsSettingViewController.m */,
+				D2B6A1CF1D93B53800674CDB /* EMBaseSettingController.h */,
+				D2B6A1D01D93B53800674CDB /* EMBaseSettingController.m */,
+				D2B6A1D11D93B53800674CDB /* EMBaseSettingController.xib */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1103,12 +1174,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D28345161D8FD1D400FD48A9 /* Build configuration list for PBXNativeTarget "ChatDemo-UI3.0" */;
 			buildPhases = (
+				2AA2E8C3B701D370E9643297 /* 📦 Check Pods Manifest.lock */,
 				118A55670AE2CC8F59AC21AC /* [CP] Check Pods Manifest.lock */,
 				D28344FB1D8FD1D400FD48A9 /* Sources */,
 				D28344FC1D8FD1D400FD48A9 /* Frameworks */,
 				D28344FD1D8FD1D400FD48A9 /* Resources */,
 				55F5D39191F1F5FF9BD4640B /* [CP] Embed Pods Frameworks */,
 				8F507D0BE0F752ED869E3A49 /* [CP] Copy Pods Resources */,
+				E5CB998AE57BB6C8D3E9FFE3 /* 📦 Embed Pods Frameworks */,
+				B173AC92125D49D306704AD9 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1130,7 +1204,7 @@
 				TargetAttributes = {
 					D28344FE1D8FD1D400FD48A9 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 499WYUV8Q2;
+						DevelopmentTeam = H2CBY8LCME;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1199,11 +1273,13 @@
 				D2BF7E2E1D914DB30090AA66 /* Icon_Invitations@3x.png in Resources */,
 				D2BF7E941D914DB30090AA66 /* Icon_Play@3x.png in Resources */,
 				D2BF7EA61D914DB30090AA66 /* Icon_Audio@3x.png in Resources */,
+				D218F1081D9298B600F6792D /* EMSettingsViewController.xib in Resources */,
 				D2BF7E341D914DB30090AA66 /* Icon_New group@3x.png in Resources */,
 				D2BF7E281D914DB30090AA66 /* Button_Decline@3x.png in Resources */,
 				D2BF7E331D914DB30090AA66 /* Icon_New group@2x.png in Resources */,
 				D2BF7EF91D914DB30090AA66 /* Settings_active notification@2x.png in Resources */,
 				D2BF7EB11D914DB30090AA66 /* Icon_File@2x.png in Resources */,
+				D246721B1D9CC36E003FF9E9 /* EaseCallView_Video.xib in Resources */,
 				D2BF7E541D914DB30090AA66 /* Button_Answer@2x.png in Resources */,
 				D2BF7E471D914DB30090AA66 /* Button_Delete.png in Resources */,
 				D2BF7E511D914DB30090AA66 /* Button_Upload Photo@2x.png in Resources */,
@@ -1213,9 +1289,11 @@
 				D2BF7F1E1D914DB30090AA66 /* logo4@3x.png in Resources */,
 				D2BF7EDD1D914DB30090AA66 /* Chats.png in Resources */,
 				D2BF7E591D914DB30090AA66 /* Button_Camera switch disabled.png in Resources */,
+				D2C2F6371DAB341100A2AE93 /* EaseVideoInfoViewController.xib in Resources */,
 				D28345411D90081200FD48A9 /* EMContactsViewController.xib in Resources */,
 				D2BF7EEB1D914DB30090AA66 /* Contacts@3x.png in Resources */,
 				D2BF7E311D914DB30090AA66 /* Icon_New chat@3x.png in Resources */,
+				D2B6A1C21D9392FF00674CDB /* EMAboutViewController.xib in Resources */,
 				D28345301D90042F00FD48A9 /* EMMainViewController.xib in Resources */,
 				D2BF7CB91D90EE160090AA66 /* EMLoginViewController.xib in Resources */,
 				D2BF7F151D914DB30090AA66 /* logo1@3x.png in Resources */,
@@ -1298,7 +1376,6 @@
 				D2BF7EBB1D914DB30090AA66 /* Icon_Location@3x.png in Resources */,
 				D2BF7E901D914DB30090AA66 /* Icon_Pause@2x.png in Resources */,
 				D2BF7F051D914DB30090AA66 /* Button_Call@2x.png in Resources */,
-				D28345461D90082700FD48A9 /* EMSettingsViewController.xib in Resources */,
 				D2BF7E911D914DB30090AA66 /* Icon_Pause@3x.png in Resources */,
 				D2BF7F0F1D914DB30090AA66 /* logo10@2x.png in Resources */,
 				D2BF7F2A1D914DB30090AA66 /* logo8@3x.png in Resources */,
@@ -1362,6 +1439,7 @@
 				D2BF7E631D914DB30090AA66 /* Button_Current Location@2x.png in Resources */,
 				D2BF7F121D914DB30090AA66 /* logo11@2x.png in Resources */,
 				D2BF7E4B1D914DB30090AA66 /* Button_Radio Active@2x.png in Resources */,
+				D24672191D9CC359003FF9E9 /* EaseCallView_Voice.xib in Resources */,
 				D2BF7EFE1D914DB30090AA66 /* Settings_notification.png in Resources */,
 				D2BF7E8B1D914DB30090AA66 /* Icon_Check@3x.png in Resources */,
 				D283454B1D900B2700FD48A9 /* EMChatsViewController.xib in Resources */,
@@ -1374,6 +1452,7 @@
 				D2BF7E3B1D914DB30090AA66 /* Swipe_Exit.png in Resources */,
 				D2BF7E981D914DB30090AA66 /* Button_Record active.png in Resources */,
 				D2BF7E6F1D914DB30090AA66 /* Button_Mute active@2x.png in Resources */,
+				D246721D1D9CC543003FF9E9 /* header.jpg in Resources */,
 				D2BF7E841D914DB30090AA66 /* Button_Stats@2x.png in Resources */,
 				D2BF7EF61D914DB30090AA66 /* Settings@2x.png in Resources */,
 				D2BF7E5C1D914DB30090AA66 /* Button_Camera switch.png in Resources */,
@@ -1401,6 +1480,7 @@
 				D2BF7F241D914DB30090AA66 /* logo6@3x.png in Resources */,
 				D2BF7EF51D914DB30090AA66 /* Settings.png in Resources */,
 				D2BF7E381D914DB30090AA66 /* Swipe_Delete.png in Resources */,
+				D2B6A1D31D93B53800674CDB /* EMBaseSettingController.xib in Resources */,
 				D2BF7E7B1D914DB30090AA66 /* Button_Speaker disabled@2x.png in Resources */,
 				D2BF7F0A1D914DB30090AA66 /* Button_Video.png in Resources */,
 				D2BF7EA71D914DB30090AA66 /* Icon_Camera active.png in Resources */,
@@ -1454,6 +1534,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		2AA2E8C3B701D370E9643297 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		55F5D39191F1F5FF9BD4640B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1484,6 +1579,36 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B173AC92125D49D306704AD9 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E5CB998AE57BB6C8D3E9FFE3 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1491,14 +1616,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2C2F6361DAB341100A2AE93 /* EaseVideoInfoViewController.m in Sources */,
+				D24672201D9CC8D0003FF9E9 /* EaseCallManager.m in Sources */,
+				D2B6A1D21D93B53800674CDB /* EMBaseSettingController.m in Sources */,
 				D2BF7CC31D9111EC0090AA66 /* UIViewController+DismissKeyboard.m in Sources */,
 				D2BF7CC71D91306A0090AA66 /* EMLaunchViewController.m in Sources */,
 				D28345401D90081200FD48A9 /* EMContactsViewController.m in Sources */,
+				D2B6A1D91D93E46900674CDB /* EMAccountViewController.m in Sources */,
 				D28345071D8FD1D400FD48A9 /* AppDelegate.m in Sources */,
 				D28345041D8FD1D400FD48A9 /* main.m in Sources */,
+				D2B6A1CE1D93B09700674CDB /* EMPushNotificationViewController.m in Sources */,
 				D2BF7CB81D90EE160090AA66 /* EMLoginViewController.m in Sources */,
 				D283452F1D90042F00FD48A9 /* EMMainViewController.m in Sources */,
-				D28345451D90082700FD48A9 /* EMSettingsViewController.m in Sources */,
+				D2B6A1D61D93C7A800674CDB /* PushDisplaynameViewController.m in Sources */,
+				D218F1071D9298B600F6792D /* EMSettingsViewController.m in Sources */,
+				D26F1DE31D98CACE00A05FEB /* EaseCallViewController.m in Sources */,
+				D2B6A1E01D93F73500674CDB /* EMChatsSettingViewController.m in Sources */,
+				D2B6A1C11D9392FF00674CDB /* EMAboutViewController.m in Sources */,
 				D283454A1D900B2700FD48A9 /* EMChatsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1631,14 +1765,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/ChatDemo-UI3.0/ChatDemo-UI3.0.pch";
 				INFOPLIST_FILE = "ChatDemo-UI3.0/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.dmo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1648,14 +1785,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/ChatDemo-UI3.0/ChatDemo-UI3.0.pch";
 				INFOPLIST_FILE = "ChatDemo-UI3.0/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.dmo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
