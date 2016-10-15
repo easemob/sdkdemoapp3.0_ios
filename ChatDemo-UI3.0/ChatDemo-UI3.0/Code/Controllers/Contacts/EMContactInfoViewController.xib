@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EMContactInfoViewController">
+            <connections>
+                <outlet property="avatarImage" destination="0oq-3b-OCF" id="KLo-pi-v84"/>
+                <outlet property="headerView" destination="ett-BI-cHx" id="0An-PU-amf"/>
+                <outlet property="nicknameLabel" destination="sjQ-jZ-naf" id="Lkf-qB-jU3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <color key="backgroundColor" red="0.89411764705882346" green="0.9137254901960784" blue="0.92549019607843142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <connections>
+                <outlet property="dataSource" destination="-1" id="Tng-2m-Rnh"/>
+                <outlet property="delegate" destination="-1" id="9aC-8N-iBw"/>
+            </connections>
+        </tableView>
+        <view contentMode="scaleToFill" id="ett-BI-cHx">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="225"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ted-mP-NaQ">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="0Zp-co-TQG"/>
+                        <constraint firstAttribute="width" constant="38" id="9N5-SH-tsk"/>
+                    </constraints>
+                    <state key="normal" image="Icon_Back.png"/>
+                    <connections>
+                        <action selector="backAction:" destination="-1" eventType="touchUpInside" id="cx7-xq-4mF"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="0oq-3b-OCF">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="H74-1m-qrm"/>
+                        <constraint firstAttribute="height" constant="60" id="moW-zs-r4f"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="30"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjQ-jZ-naf">
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="eFB-AO-Q5l"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgT-5u-Hz1">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="98n-5e-lra"/>
+                        <constraint firstAttribute="width" constant="45" id="Rbj-gY-dyt"/>
+                    </constraints>
+                    <state key="normal" image="Button_Call.png"/>
+                    <connections>
+                        <action selector="callVoiceAction:" destination="-1" eventType="touchUpInside" id="IAy-0Z-hXE"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gbi-xE-gVj">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="45" id="Mma-aX-5sf"/>
+                        <constraint firstAttribute="height" constant="56" id="Qos-hi-FdQ"/>
+                    </constraints>
+                    <state key="normal" image="Button_Chat.png"/>
+                    <connections>
+                        <action selector="chatAction:" destination="-1" eventType="touchUpInside" id="dd4-sD-Lef"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJb-pF-whY">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="45" id="JKz-Ah-xps"/>
+                        <constraint firstAttribute="height" constant="56" id="ZNO-h4-1a3"/>
+                    </constraints>
+                    <state key="normal" image="Button_Video.png"/>
+                    <connections>
+                        <action selector="callVideoAction:" destination="-1" eventType="touchUpInside" id="vk6-hI-d1p"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="sjQ-jZ-naf" secondAttribute="trailing" id="9CK-WK-6vi"/>
+                <constraint firstItem="dgT-5u-Hz1" firstAttribute="centerX" secondItem="ett-BI-cHx" secondAttribute="centerX" id="9v2-OI-0IN"/>
+                <constraint firstItem="dgT-5u-Hz1" firstAttribute="top" secondItem="ett-BI-cHx" secondAttribute="top" constant="148" id="BTa-xA-eXB"/>
+                <constraint firstItem="0oq-3b-OCF" firstAttribute="top" secondItem="ett-BI-cHx" secondAttribute="top" constant="33" id="HuP-5m-7lC"/>
+                <constraint firstItem="sjQ-jZ-naf" firstAttribute="top" secondItem="ett-BI-cHx" secondAttribute="top" constant="105" id="IIj-kK-hne"/>
+                <constraint firstItem="Ted-mP-NaQ" firstAttribute="top" secondItem="ett-BI-cHx" secondAttribute="top" constant="20" id="OHE-ti-R5l"/>
+                <constraint firstItem="Ted-mP-NaQ" firstAttribute="leading" secondItem="ett-BI-cHx" secondAttribute="leading" id="VSW-85-9Kj"/>
+                <constraint firstItem="dgT-5u-Hz1" firstAttribute="leading" secondItem="Gbi-xE-gVj" secondAttribute="trailing" constant="44" id="aOq-PP-3d9"/>
+                <constraint firstItem="sjQ-jZ-naf" firstAttribute="leading" secondItem="ett-BI-cHx" secondAttribute="leading" id="bjw-Mb-Z5j"/>
+                <constraint firstItem="TJb-pF-whY" firstAttribute="top" secondItem="ett-BI-cHx" secondAttribute="top" constant="148" id="dnw-f6-WOW"/>
+                <constraint firstItem="Gbi-xE-gVj" firstAttribute="top" secondItem="ett-BI-cHx" secondAttribute="top" constant="148" id="gI2-hP-psb"/>
+                <constraint firstItem="TJb-pF-whY" firstAttribute="leading" secondItem="dgT-5u-Hz1" secondAttribute="trailing" constant="44" id="leu-tJ-gGp"/>
+                <constraint firstItem="0oq-3b-OCF" firstAttribute="centerX" secondItem="ett-BI-cHx" secondAttribute="centerX" id="n5Y-SR-AFN"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Button_Call.png" width="35" height="54"/>
+        <image name="Button_Chat.png" width="35" height="54"/>
+        <image name="Button_Video.png" width="35" height="54"/>
+        <image name="Icon_Back.png" width="10" height="17"/>
+        <image name="default_avatar.png" width="50" height="50"/>
+    </resources>
+</document>
