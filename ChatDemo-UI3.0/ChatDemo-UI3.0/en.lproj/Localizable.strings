@@ -11,6 +11,13 @@
 "title.chats" = "Chats";
 "title.settings" = "Settings";
 
+//setting title
+"title.setting.about" = "About";
+"title.setting.push" = "Push Notifications";
+"title.setting.pushdisplayname" = "Push Notification Display";
+"title.setting.account" = "Account";
+"title.setting.chats" = "Chats";
+
 //login
 "login.signup.tips" = "Have an account?";
 "login.tips" = "Yay! New to Hyphenate?";
@@ -42,3 +49,31 @@
 "error.connectNetworkFail" = "No network connection!";
 "error.connectServerFail" = "Connect to the server failed!";
 "error.connectServerTimeout" = "Connect to the server timed out!";
+
+//setting
+"setting.about" = "About";
+"setting.push" = "Push Notifications";
+"setting.account" = "Account";
+"setting.chats" = "Chats";
+"setting.videoBitrate" = "Adaptive Video Bitrate";
+
+//setting.about
+"setting.about.appversion" = "App Version";
+"setting.about.sdkversion" = "SDK Version";
+"setting.about.uiversion" = "EaseUI Library Version";
+
+//setting.push
+"setting.push.display" = "Display on lockscreen";
+"setting.push.enable" = "Push Notifications";
+"setting.push.on" = "On";
+"setting.push.off" = "Off";
+"setting.push.displayname" = "Push notification display name";
+"setting.push.tip" = "The display name will appear in Apple's push notification system.";
+
+//setting.account
+"setting.account.edit" = "Edit";
+"setting.account.id" = "Hyphenate ID";
+"setting.account.signout" = "Sign Out";
+
+//setting.chats
+"setting.chats.acceptInvitation" = "Accept group invites automatically";

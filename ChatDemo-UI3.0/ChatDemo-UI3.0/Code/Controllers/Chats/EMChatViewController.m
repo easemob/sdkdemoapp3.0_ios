@@ -18,6 +18,7 @@
 #import "EMMessageReadManager.h"
 #import "EMCDDeviceManager.h"
 #import "EMSDKHelper.h"
+#import "EaseCallManager.h"
 
 @interface EMChatViewController () <EMChatToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,EMLocationViewDelegate,EMChatManagerDelegate,EMChatBaseCellDelegate,UIActionSheetDelegate>
 
@@ -109,6 +110,7 @@
         _camButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _camButton.frame = CGRectMake(0, 0, 44, 44);
         [_camButton setImage:[UIImage imageNamed:@"IconVideo"] forState:UIControlStateNormal];
+        [_camButton addTarget:self action:@selector(makeVideoCall) forControlEvents:UIControlEventTouchUpInside];
     }
     return _camButton;
 }
@@ -119,6 +121,7 @@
         _photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _photoButton.frame = CGRectMake(0, 0, 44, 44);
         [_photoButton setImage:[UIImage imageNamed:@"IconCall"] forState:UIControlStateNormal];
+        [_photoButton addTarget:self action:@selector(makeAudioCall) forControlEvents:UIControlEventTouchUpInside];
     }
     return _photoButton;
 }
@@ -555,6 +558,16 @@
                                         }
                                     }];
     });
+}
+
+- (void)makeVideoCall
+{
+    [[EaseCallManager sharedManager] makeCallWithUsername:_conversation.conversationId isVideo:YES];
+}
+
+- (void)makeAudioCall
+{
+    [[EaseCallManager sharedManager] makeCallWithUsername:_conversation.conversationId isVideo:NO];
 }
 
 #pragma mark - GestureRecognizer

@@ -22,4 +22,8 @@
 #import "UIView+HyphenateView.h"
 #import "UIImageView+WebCache.h"
 
+#import <AVFoundation/AVFoundation.h>
+
+#import "EaseCallManager.h"
+
 #endif

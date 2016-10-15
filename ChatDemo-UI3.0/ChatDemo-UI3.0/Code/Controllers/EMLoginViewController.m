@@ -180,14 +180,39 @@
     }
     return YES;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - notification
+
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    NSValue *beginValue = [userInfo objectForKey:@"UIKeyboardFrameBeginUserInfoKey"];
+    NSValue *endValue = [userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"];
+    CGRect beginRect;
+    [beginValue getValue:&beginRect];
+    CGRect endRect;
+    [endValue getValue:&endRect];
+    
+    CGRect buttonFrame;
+    if (_signupButton.hidden) {
+        buttonFrame = _loginButton.frame;
+    } else {
+        buttonFrame = _signupButton.frame;
+    }
+    if (endRect.origin.y == self.view.frame.size.height) {
+        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame);
+    } else if(beginRect.origin.y == self.view.frame.size.height){
+        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
+    } else {
+        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        if (_signupButton.hidden) {
+            _loginButton.frame = buttonFrame;
+        } else {
+            _signupButton.frame = buttonFrame;
+        }
+    }];
 }
-*/
 
 @end

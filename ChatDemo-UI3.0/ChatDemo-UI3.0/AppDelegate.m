@@ -47,7 +47,7 @@
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
     
-    
+    [EaseCallManager sharedManager];
     EMLaunchViewController *launch = [[EMLaunchViewController alloc] init];
     self.window.rootViewController = launch;
     [self.window makeKeyAndVisible];
@@ -59,6 +59,7 @@
 {
     BOOL loginSuccess = [notification.object boolValue];
     if (loginSuccess) {
+
         EMMainViewController *main = [[EMMainViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
         self.window.rootViewController = navigationController;
