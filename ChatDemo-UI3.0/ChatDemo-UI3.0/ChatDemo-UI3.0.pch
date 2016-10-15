@@ -26,4 +26,5 @@
 
 #import "EaseCallManager.h"
 
+#import "EMColorUtils.h"
 #endif

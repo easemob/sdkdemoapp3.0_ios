@@ -11,6 +11,7 @@
 #import "EMContactsViewController.h"
 #import "EMChatsViewController.h"
 #import "EMSettingsViewController.h"
+#import "EMChatDemoHelper.h"
 
 @interface EMMainViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,EMClientDelegate>
 {
@@ -68,6 +69,7 @@
                                                              tag:0];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
+    [_contactsVC setupNavigationItem:self.navigationItem];
     
     _chatsVC = [[EMChatsViewController alloc] init];
     _chatsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.chats", @"Chats")
@@ -85,6 +87,8 @@
     
     self.viewControllers = @[_contactsVC,_chatsVC,_settingsVC];
     self.selectedIndex = 0;
+    
+    [EMChatDemoHelper shareHelper].contactsVC = _contactsVC;
 }
 
 -(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
@@ -126,16 +130,14 @@
 {
     if (item.tag == 0) {
         self.title = NSLocalizedString(@"title.contacts", @"Contacts");
-        self.navigationItem.rightBarButtonItem = nil;
-        self.navigationItem.titleView = nil;
+        [_contactsVC setupNavigationItem:self.navigationItem];
     }else if (item.tag == 1){
         self.title = NSLocalizedString(@"title.chats", @"Chats");
         self.navigationItem.rightBarButtonItem = nil;
         [_chatsVC setupNavigationItem:self.navigationItem];
     }else if (item.tag == 2){
         self.title = NSLocalizedString(@"title.settings", @"Settings");
-        self.navigationItem.rightBarButtonItem = nil;
-        self.navigationItem.titleView = nil;
+        [self clearNavigationItem];
     }
 }
 
@@ -163,14 +165,20 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)clearNavigationItem {
+    self.navigationItem.titleView = nil;
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = nil;
 }
-*/
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

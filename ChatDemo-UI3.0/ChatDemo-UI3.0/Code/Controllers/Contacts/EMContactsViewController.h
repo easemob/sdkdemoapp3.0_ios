@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EMBaseRefreshTableController.h"
 
-@interface EMContactsViewController : UITableViewController
+@interface EMContactsViewController : EMBaseRefreshTableController
+
+- (void)setupNavigationItem:(UINavigationItem *)navigationItem;
+
+- (void)loadContactsFromServer;
+
+- (void)reloadContacts;
+
+- (void)reloadContactRequests;
+
+- (void)reloadGroupNotifications;
 
 @end
