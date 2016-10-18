@@ -8,9 +8,7 @@
 
 #import "EaseRedBagCell.h"
 #import "EaseBubbleView+RedPacket.h"
-#import "UIImageView+EMWebCache.h"
 #import "RedpacketOpenConst.h"
-
 
 @implementation EaseRedBagCell
 
@@ -64,14 +62,14 @@
         _bubbleView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 273.5, 2, 213, 94);
         self.bubbleView.redpacketIcon.frame = CGRectMake(13, 19, 26, 34);
         self.bubbleView.redpacketTitleLabel.frame = CGRectMake(48, 19, 156, 15);
-        self.bubbleView.redpacketSubLabel.frame = CGRectMake(48, 41, 49, 12);
+        self.bubbleView.redpacketSubLabel.frame = CGRectMake(48, 41, 60, 12);
         self.bubbleView.redpacketNameLabel.frame = CGRectMake(13, 73, 200, 20);
         self.bubbleView.redpacketMemberLable.frame = CGRectMake(145, 73, 80, 20);
     }else{
         _bubbleView.frame = CGRectMake(55, 2, 213, 94);
         self.bubbleView.redpacketIcon.frame = CGRectMake(20, 19, 26, 34);
         self.bubbleView.redpacketTitleLabel.frame = CGRectMake(55, 19, 156, 15);
-        self.bubbleView.redpacketSubLabel.frame = CGRectMake(55, 41, 49, 12);
+        self.bubbleView.redpacketSubLabel.frame = CGRectMake(55, 41, 60, 12);
         self.bubbleView.redpacketNameLabel.frame = CGRectMake(20, 73, 200, 20);
         self.bubbleView.redpacketMemberLable.frame = CGRectMake(152, 73, 80, 20);
 
@@ -115,7 +113,6 @@
     }
     _hasRead.hidden = YES;//红包消息不显示已读
     _nameLabel = nil;// 不显示姓名
-    
 }
 
 - (void)layoutSubviews
@@ -128,6 +125,7 @@
     
     self.bubbleView.backgroundImageView.image = image;
 }
+
 
 
 @end

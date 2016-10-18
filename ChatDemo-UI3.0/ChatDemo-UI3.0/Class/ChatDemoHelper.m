@@ -25,6 +25,8 @@
 
 #if DEMO_CALL == 1
 
+#import <UserNotifications/UserNotifications.h>
+
 #import "CallViewController.h"
 #import "EMLog.h"
 
@@ -161,7 +163,7 @@ static ChatDemoHelper *helper = nil;
     [self.mainVC networkChanged:connectionState];
 }
 
-- (void)didAutoLoginWithError:(EMError *)error
+- (void)autoLoginDidCompleteWithError:(EMError *)error
 {
     if (error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"自动登录失败，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -183,7 +185,7 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didLoginFromOtherDevice
+- (void)userAccountDidLoginFromOtherDevice
 {
     [self _clearHelper];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"loginAtOtherDevice", @"your login account has been in other places") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
@@ -191,10 +193,18 @@ static ChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
-- (void)didRemovedFromServer
+- (void)userAccountDidRemoveFromServer
 {
     [self _clearHelper];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"loginUserRemoveFromServer", @"your account has been removed from the server side") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    [alertView show];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+}
+
+- (void)userDidForbidByServer
+{
+    [self _clearHelper];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"servingIsBanned", @"Serving is banned") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
@@ -237,10 +247,10 @@ static ChatDemoHelper *helper = nil;
         NSDictionary *dict = message.ext;
         needShowNotification = (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) ? NO : needShowNotification;
 #endif
-        
+
+        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
         if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
-            UIApplicationState state = [[UIApplication sharedApplication] applicationState];
             switch (state) {
                 case UIApplicationStateActive:
                     [self.mainVC playSoundAndVibration];
@@ -264,7 +274,7 @@ static ChatDemoHelper *helper = nil;
         if (_chatVC) {
             isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
         }
-        if (_chatVC == nil || !isChatting) {
+        if (_chatVC == nil || !isChatting || state == UIApplicationStateBackground) {
             [self _handleReceivedAtMessage:message];
             
             if (self.conversationListVC) {
@@ -484,11 +494,21 @@ static ChatDemoHelper *helper = nil;
         BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
         if (!isAppActivity) {
             //发送本地推送
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            notification.fireDate = [NSDate date]; //触发通知的时间
-            notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
-            notification.alertAction = NSLocalizedString(@"open", @"Open");
-            notification.timeZone = [NSTimeZone defaultTimeZone];
+            if (NSClassFromString(@"UNUserNotificationCenter")) {
+                UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                content.sound = [UNNotificationSound defaultSound];
+                content.body =[NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+                UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[[NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate] * 1000] stringValue] content:content trigger:trigger];
+                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+            }
+            else {
+                UILocalNotification *notification = [[UILocalNotification alloc] init];
+                notification.fireDate = [NSDate date]; //触发通知的时间
+                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+                notification.alertAction = NSLocalizedString(@"open", @"Open");
+                notification.timeZone = [NSTimeZone defaultTimeZone];
+            }
         }
 #endif
     }
@@ -539,8 +559,11 @@ static ChatDemoHelper *helper = nil;
             self.callSession = aSession;
             self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:NO status:NSLocalizedString(@"call.connecting", "Incoimg call")];
             self.callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                if (self.callController) {
+                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                }
             });
         
             [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
@@ -606,11 +629,11 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.Unsupported", @"Unsupported");
                 }
                     break;
-                case EMCallEndReasonRemoteOffline:
-                {
-                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
-                }
-                    break;
+//                case EMCallEndReasonRemoteOffline:
+//                {
+//                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
+//                }
+//                    break;
                 default:
                     break;
             }
@@ -689,7 +712,7 @@ static ChatDemoHelper *helper = nil;
     void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError){
         ChatDemoHelper *strongSelf = weakSelf;
         if (strongSelf) {
-            if (aError) {
+            if (aError || aCallSession == nil) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
                 return;
@@ -699,7 +722,9 @@ static ChatDemoHelper *helper = nil;
                 self.callSession = aCallSession;
                 self.callController = [[CallViewController alloc] initWithSession:self.callSession isCaller:YES status:NSLocalizedString(@"call.connecting", @"Connecting...")];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                    if (self.callController) {
+                        [self.mainVC presentViewController:self.callController animated:NO completion:nil];
+                    }
                 });
 
                 [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
@@ -711,7 +736,7 @@ static ChatDemoHelper *helper = nil;
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
-
+        
     if (aType == EMCallTypeVideo) {
         [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
