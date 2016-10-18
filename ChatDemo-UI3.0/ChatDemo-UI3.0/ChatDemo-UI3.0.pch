@@ -19,6 +19,8 @@
 #import <HyphenateFullSDK/EMSDKFull.h>
 
 #import "EMChatDemoUIDefine.h"
+#import "UIView+HyphenateView.h"
+#import "UIImageView+WebCache.h"
 
 #import <AVFoundation/AVFoundation.h>
 

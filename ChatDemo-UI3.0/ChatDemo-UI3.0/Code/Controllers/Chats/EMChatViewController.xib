@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EMChatViewController">
+            <connections>
+                <outlet property="chatToolBar" destination="Lh5-oT-mc5" id="Fht-WA-Wgm"/>
+                <outlet property="tableView" destination="pr1-TU-Mm9" id="DwT-0L-yWP"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lh5-oT-mc5" customClass="EMChatToolBar">
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JLV-Ip-5Ce" userLabel="Line">
+                            <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="RPn-p2-fTT"/>
+                            </constraints>
+                        </view>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH">
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="dGX-rF-JvR"/>
+                            </constraints>
+                            <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="delegate" destination="Lh5-oT-mc5" id="mFU-yp-Swg"/>
+                            </connections>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S1W-J3-Mbn">
+                            <frame key="frameInset" minX="20" minY="54" width="22" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Icon_Camera.png"/>
+                            <state key="selected" image="Icon_Camera active.png"/>
+                            <connections>
+                                <action selector="cameraAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="f5Y-BN-oZq"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HaN-qg-NOO">
+                            <frame key="frameInset" minX="91" minY="54" width="18" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Icon_Image.png"/>
+                            <state key="selected" image="Icon_Image active.png"/>
+                            <connections>
+                                <action selector="photoAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="HS7-E2-0Io"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSC-wW-s56">
+                            <frame key="frameInset" minX="157" minY="54" width="17" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="icon_emoji_disable.png"/>
+                            <state key="selected" image="Icon_Emoji.png"/>
+                            <connections>
+                                <action selector="emotionAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="VOz-0d-GjZ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LK-Pc-Gvd">
+                            <frame key="frameInset" minX="223" minY="54" width="9" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Icon_Audio_disable.png"/>
+                            <state key="selected" image="Icon_Audio.png"/>
+                            <connections>
+                                <action selector="recordAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="elT-Uj-hAC"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6a8-X0-Lxe">
+                            <frame key="frameInset" minX="280" minY="53" width="13" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Icon_Location_disable.png"/>
+                            <state key="selected" image="Icon_Location.png"/>
+                            <connections>
+                                <action selector="locationAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="N7j-Sk-DwR"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbQ-UG-S2E">
+                            <frame key="frameInset" minX="342" minY="54" width="13" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Icon_File_disable.png"/>
+                            <state key="selected" image="Icon_File.png"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="0.5" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="JLV-Ip-5Ce" secondAttribute="trailing" id="FZO-jK-XGM"/>
+                        <constraint firstItem="34G-oT-3NH" firstAttribute="top" secondItem="JLV-Ip-5Ce" secondAttribute="bottom" constant="9.5" id="VTO-xn-r39"/>
+                        <constraint firstItem="JLV-Ip-5Ce" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" id="boJ-rT-cQZ"/>
+                        <constraint firstAttribute="trailing" secondItem="34G-oT-3NH" secondAttribute="trailing" constant="15" id="cox-GZ-Xxr"/>
+                        <constraint firstAttribute="height" constant="83" id="mLs-Ih-x2u"/>
+                        <constraint firstItem="JLV-Ip-5Ce" firstAttribute="top" secondItem="Lh5-oT-mc5" secondAttribute="top" id="sn6-ZS-2vI"/>
+                        <constraint firstItem="34G-oT-3NH" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" constant="15" id="uad-od-MGq"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="cameraButton" destination="S1W-J3-Mbn" id="vDO-r4-tHx"/>
+                        <outlet property="emotionButton" destination="OSC-wW-s56" id="lfb-ag-IKg"/>
+                        <outlet property="fileButton" destination="kbQ-UG-S2E" id="eKK-xA-4E4"/>
+                        <outlet property="inputTextView" destination="34G-oT-3NH" id="qyU-Gm-enW"/>
+                        <outlet property="locationButton" destination="6a8-X0-Lxe" id="CEU-hr-NIF"/>
+                        <outlet property="photoButton" destination="HaN-qg-NOO" id="L4t-o0-Cwg"/>
+                        <outlet property="recordButton" destination="5LK-Pc-Gvd" id="DcR-rn-rwh"/>
+                    </connections>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pr1-TU-Mm9">
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="p9u-zr-0PC"/>
+                        <outlet property="delegate" destination="-1" id="Ulg-Ut-hRa"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Lh5-oT-mc5" secondAttribute="bottom" id="85o-H9-vcF"/>
+                <constraint firstItem="pr1-TU-Mm9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CLE-1Y-sbm"/>
+                <constraint firstItem="Lh5-oT-mc5" firstAttribute="top" secondItem="pr1-TU-Mm9" secondAttribute="bottom" constant="8" id="Jex-jf-Yrv"/>
+                <constraint firstAttribute="trailing" secondItem="Lh5-oT-mc5" secondAttribute="trailing" id="ONp-hH-WS1"/>
+                <constraint firstItem="Lh5-oT-mc5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WNC-Gn-2MA"/>
+                <constraint firstItem="pr1-TU-Mm9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bes-7R-v4L"/>
+                <constraint firstAttribute="trailing" secondItem="pr1-TU-Mm9" secondAttribute="trailing" id="xFT-Uf-peJ"/>
+            </constraints>
+            <point key="canvasLocation" x="46" y="-53"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Icon_Audio.png" width="9" height="18"/>
+        <image name="Icon_Audio_disable.png" width="9" height="18"/>
+        <image name="Icon_Camera active.png" width="20" height="15"/>
+        <image name="Icon_Camera.png" width="22" height="17"/>
+        <image name="Icon_Emoji.png" width="17" height="17"/>
+        <image name="Icon_File.png" width="13" height="15"/>
+        <image name="Icon_File_disable.png" width="13" height="15"/>
+        <image name="Icon_Image active.png" width="18" height="15"/>
+        <image name="Icon_Image.png" width="18" height="15"/>
+        <image name="Icon_Location.png" width="13" height="16"/>
+        <image name="Icon_Location_disable.png" width="13" height="16"/>
+        <image name="icon_emoji_disable.png" width="17" height="17"/>
+    </resources>
+</document>

@@ -12,6 +12,7 @@
 #import "EMNotificationNames.h"
 #import "EMGroupInfoViewController.h"
 #import "EMCreateViewController.h"
+#import "EMChatViewController.h"
 
 @interface EMGroupsViewController ()
 
@@ -154,8 +155,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     EMGroupModel *model = _groups[indexPath.row];
-    EMGroupInfoViewController *groupInfoVc = [[EMGroupInfoViewController alloc] initWithGroup:model.group];
-    [self.navigationController pushViewController:groupInfoVc animated:YES];
+    EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.hyphenateId conversationType:EMConversationTypeGroupChat];
+//    EMGroupInfoViewController *groupInfoVc = [[EMGroupInfoViewController alloc] initWithGroup:model.group];
+    [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -67,7 +67,7 @@ static EaseCallManager *callManager = nil;
                 if (strongSelf.callController == nil) {
                     
                     strongSelf.callController = [[EaseCallViewController alloc] initWithCallSession:self.callSession isCaller:YES status:@"Calling"];
-                    [strongSelf.settingVC presentViewController:self.callController animated:YES completion:nil];
+                    [strongSelf.mainVC presentViewController:self.callController animated:YES completion:nil];
                 } else {
                     strongSelf.callController.callSession = aCallSession;
                     [strongSelf.callController setupSubViews];
@@ -83,9 +83,13 @@ static EaseCallManager *callManager = nil;
         }
     };
     if (aIsVideo) {
+#if TARGET_IPHONE_SIMULATOR
+        
+#elif TARGET_OS_IPHONE
         [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
         }];
+#endif
     }
     else {
         [[EMClient sharedClient].callManager startVoiceCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
@@ -263,7 +267,7 @@ static EaseCallManager *callManager = nil;
         _callController = [[EaseCallViewController alloc] initWithCallSession:aSession isCaller:NO status:NSLocalizedString(@"call.finished", "Establish call finished")];
         _callController.modalPresentationStyle = UIModalPresentationOverFullScreen;
         
-        [self.settingVC presentViewController:_callController animated:YES completion:nil];
+        [self.mainVC presentViewController:_callController animated:YES completion:nil];
     }
 }
 

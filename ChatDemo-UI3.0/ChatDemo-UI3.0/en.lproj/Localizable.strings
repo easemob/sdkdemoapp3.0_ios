@@ -26,11 +26,36 @@
 "title.setting.chats" = "Chats";
 
 //login
-"signup.tips" = "Have an account?";
+"login.signup.tips" = "Have an account?";
 "login.tips" = "Yay! New to Hyphenate?";
 "login.changebutton.signup" = "Sign up";
 "login.changebutton.login" = "Log in";
+"login.taken" = "Username taken";
+"login.signup.failure" = "Sign up failure";
+"login.failure" = "Login failure";
+"login.failure.password.notmatch" = "Password does not match username";
+"login.ok" = "Ok";
 
+//chat
+"chat.not.delivered" = "Not Delivered";
+"chat.read" = "Read";
+"chat.sent" = "Sent";
+"chat.hold.record" = "Hold to record";
+"chat.release.send" = "Release to send";
+"chat.release.cancel" = "Release to cancel";
+"chat.image1" = "[image]";
+"chat.voice1" = "[voice]";
+"chat.location1" = "[location]";
+"chat.video1" = "[video]";
+"chat.file1" = "[file]";
+"chat.delete" = "Delete";
+"chat.copy" = "Copy";
+"chat.cancel" = "Cancel";
+
+//error
+"error.connectNetworkFail" = "No network connection!";
+"error.connectServerFail" = "Connect to the server failed!";
+"error.connectServerTimeout" = "Connect to the server timed out!";
 
 //setting
 "setting.about" = "About";

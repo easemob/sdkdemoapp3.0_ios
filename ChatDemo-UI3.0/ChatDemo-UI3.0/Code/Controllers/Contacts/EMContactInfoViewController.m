@@ -11,6 +11,9 @@
 #import "EMUserModel.h"
 #import "EMContactInfoCell.h"
 #import "EMChatDemoHelper.h"
+#import "EMChatViewController.h"
+#import "EaseCallManager.h"
+
 
 #define NAME                NSLocalizedString(@"contact.name", @"Name")
 #define HYPHENATE_ID        NSLocalizedString(@"contact.hyphenateId", @"Hyphenate ID")
@@ -48,7 +51,6 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.tableHeaderView = _headerView;
-    [self.navigationController.navigationBar setHidden:YES];
     _nicknameLabel.text = _model.nickname;
     _avatarImage.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
@@ -72,6 +74,12 @@
     [self.navigationController.navigationBar setHidden:NO];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setHidden:YES];
+}
+
 - (void)loadContactInfo {
     NSMutableArray *info = [NSMutableArray array];
     [info addObjectsFromArray:@[@{NAME:_model.nickname}, @{HYPHENATE_ID:_model.hyphenateId}]];
@@ -91,14 +99,10 @@
         return;
     }
     if (callType == EMCallTypeVoice) {
-        [[EMClient sharedClient].callManager startVoiceCall:contact completion:^(EMCallSession *aCallSession, EMError *aError) {
-            
-        }];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":contact, @"type":[NSNumber numberWithInt:0]}];
     }
     else {
-        [[EMClient sharedClient].callManager startVideoCall:contact completion:^(EMCallSession *aCallSession, EMError *aError) {
-        
-        }];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":contact, @"type":[NSNumber numberWithInt:1]}];
     }
 }
 
@@ -115,15 +119,16 @@
 
 
 - (IBAction)chatAction:(id)sender {
-    
+    EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:_model.hyphenateId conversationType:EMConversationTypeChat];
+    [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
 - (IBAction)callVoiceAction:(id)sender {
-    [self makeCallWithContact:@"" callTyfpe:EMCallTypeVoice];
+    [self makeCallWithContact:_model.hyphenateId callTyfpe:EMCallTypeVoice];
 }
 
 - (IBAction)callVideoAction:(id)sender {
-    [self makeCallWithContact:@"" callTyfpe:EMCallTypeVideo];
+    [self makeCallWithContact:_model.hyphenateId callTyfpe:EMCallTypeVideo];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

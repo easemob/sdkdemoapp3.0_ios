@@ -25,6 +25,10 @@
     
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
         [[UITabBar appearance] setBarTintColor:RGBACOLOR(250, 251, 252, 1.0)];
+        [[UITabBar appearance] setTintColor:RGBACOLOR(135, 152, 164, 1)];
+        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(255, 255, 255, 1)];
+        [[UINavigationBar appearance] setTintColor:RGBACOLOR(12, 18, 24, 1)];
+        [[UINavigationBar appearance] setTranslucent:NO];
     }
     
     // init HyphenateSDK

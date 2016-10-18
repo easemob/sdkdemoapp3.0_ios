@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMChatsViewController : UITableViewController
+#import "EMBaseRefreshTableController.h"
+
+@interface EMChatsViewController : EMBaseRefreshTableController
+
+- (void)setupNavigationItem:(UINavigationItem *)navigationItem;
 
 @end

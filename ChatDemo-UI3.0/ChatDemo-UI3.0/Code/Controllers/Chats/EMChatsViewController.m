@@ -8,7 +8,19 @@
 
 #import "EMChatsViewController.h"
 
-@interface EMChatsViewController ()
+#import "UIViewController+DismissKeyboard.h"
+#import "EMChatsCell.h"
+#import "EMRealtimeSearchUtil.h"
+#import "EMChatViewController.h"
+#import "EMSearchDisplayController.h"
+#import "EMSearchBar.h"
+#import "EMConversationModel.h"
+
+@interface EMChatsViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate>
+
+@property (strong, nonatomic) UISearchBar *searchBar;
+@property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
 
@@ -17,13 +29,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"title.chats", @"Chats");
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    [self setupForDismissKeyboard];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleHeight;
+    
+    WEAK_SELF
+    self.headerRefresh = ^(BOOL isRefreshing){
+        [weakSelf tableViewDidTriggerHeaderRefresh];
+    };
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self registerNotifications];
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self unregisterNotifications];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,86 +63,246 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)registerNotifications{
+    [self unregisterNotifications];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+}
+
+-(void)unregisterNotifications{
+    [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
+}
+
+#pragma mark - getter
+
+- (UISearchBar*)searchBar
+{
+    if (_searchBar == nil) {
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
+        _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
+        _searchBar.delegate = self;
+        _searchBar.showsCancelButton = NO;
+        _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
+        [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
+        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
+        _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
+    }
+    return _searchBar;
+}
+
+- (NSMutableArray*)dataSource
+{
+    if (_dataSource == nil) {
+        _dataSource = [NSMutableArray array];
+    }
+    return _dataSource;
+}
+
+- (EMSearchDisplayController*)searchController
+{
+    if (_searchController == nil) {
+        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        _searchController.delegate = self;
+        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _searchController.searchResultsTableView.tableFooterView = [[UIView alloc] init];
+        _searchController.displaysSearchBarInNavigationBar = YES;
+        
+        __weak EMChatsViewController *weakSelf = self;
+        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
+            NSString *CellIdentifier = @"EMChatsSearchCell";
+            EMChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil) {
+                cell = (EMChatsCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatsCell" owner:nil options:nil] firstObject];
+            }
+            EMConversationModel *model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            [(EMChatsCell*)cell setConversationModel:model];
+            
+            return cell;
+        }];
+        
+        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
+            return 90;
+        }];
+        
+        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [weakSelf.searchController.searchBar endEditing:YES];
+            EMConversationModel *model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.conversation.conversationId conversationType:model.conversation.type];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
+            [weakSelf.navigationController pushViewController:chatViewController animated:YES];
+        }];
+    }
+    return _searchController;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return [self.dataSource count];
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+    NSString *CellIdentifier = @"EMChatsCell";
+    EMChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = (EMChatsCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatsCell" owner:nil options:nil] firstObject];
+    }
+    EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    [(EMChatsCell*)cell setConversationModel:model];
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
+        WEAK_SELF
+        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
+            [weakSelf.dataSource removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }];
+    }
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
 #pragma mark - Table view delegate
 
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.conversation.conversationId conversationType:model.conversation.type];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
+    [self.navigationController pushViewController:chatViewController animated:YES];
 }
-*/
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 90.f;
 }
-*/
+
+#pragma marl - UISearchBarDelegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    [self.searchController setActive:YES animated:YES];
+    return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    WEAK_SELF
+    [[EMRealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
+        if (results) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.searchController.resultsSource removeAllObjects];
+                [weakSelf.searchController.resultsSource addObjectsFromArray:results];
+                [weakSelf.searchController.searchResultsTableView reloadData];
+            });
+        }
+    }];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.text = @"";
+    [[EMRealtimeSearchUtil currentUtil] realtimeSearchStop];
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+
+#pragma mark - action
+
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    WEAK_SELF
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
+        NSArray* sorted = [weakSelf _sortConversationList:conversations];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.dataSource removeAllObjects];
+            for (EMConversation *conversation in sorted) {
+                EMConversationModel *model = [[EMConversationModel alloc] initWithConversation:conversation];
+                [weakSelf.dataSource addObject:model];
+            }
+            [self endHeaderRefresh];
+            [weakSelf.tableView reloadData];
+        });
+    });
+}
+
+#pragma mark - EMChatManagerDelegate
+
+- (void)messagesDidReceive:(NSArray *)aMessages
+{
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+- (void)conversationListDidUpdate:(NSArray *)aConversationList
+{
+    WEAK_SELF
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray* sorted = [self _sortConversationList:aConversationList];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.dataSource removeAllObjects];
+            for (EMConversation *conversation in sorted) {
+                EMConversationModel *model = [[EMConversationModel alloc] initWithConversation:conversation];
+                [weakSelf.dataSource addObject:model];
+            }
+            [self endHeaderRefresh];
+            [weakSelf.tableView reloadData];
+        });
+    });
+}
+
+#pragma mark - EMGroupManagerDelegate
+
+- (void)groupListDidUpdate:(NSArray *)aGroupList
+{
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+#pragma mark - public 
+
+- (void)setupNavigationItem:(UINavigationItem *)navigationItem
+{
+    navigationItem.titleView = self.searchBar;
+}
+
+#pragma mark - private
+
+- (NSArray*)_sortConversationList:(NSArray *)aConversationList
+{
+    NSArray* sorted = [aConversationList sortedArrayUsingComparator:
+                       ^(EMConversation *obj1, EMConversation* obj2){
+                           EMMessage *message1 = [obj1 latestMessage];
+                           EMMessage *message2 = [obj2 latestMessage];
+                           if(message1.timestamp > message2.timestamp) {
+                               return(NSComparisonResult)NSOrderedAscending;
+                           }else {
+                               return(NSComparisonResult)NSOrderedDescending;
+                           }
+                       }];
+    return  sorted;
+}
 
 @end
