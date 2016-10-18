@@ -58,7 +58,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 - (void)easemobApplication:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    [[EaseSDKHelper shareHelper] hyphenateApplication:application didReceiveRemoteNotification:userInfo];
+//    [[EaseSDKHelper shareHelper] hyphenateApplication:application didReceiveRemoteNotification:userInfo];
 }
 
 #pragma mark - App Delegate

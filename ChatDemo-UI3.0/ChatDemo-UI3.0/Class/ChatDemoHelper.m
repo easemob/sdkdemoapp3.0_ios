@@ -28,7 +28,7 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "CallViewController.h"
-#import "EMLog.h"
+//#import "EMLog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -541,7 +541,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)callDidReceive:(EMCallSession *)aSession
 {
-    [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::callDidReceive %@", aSession.callId]];
+//    [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::callDidReceive %@", aSession.callId]];
     
     if ([EaseSDKHelper shareHelper].isShowingimagePicker) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
@@ -566,7 +566,7 @@ static ChatDemoHelper *helper = nil;
                 }
             });
         
-            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
+//            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
         }
     }
 }
@@ -591,14 +591,14 @@ static ChatDemoHelper *helper = nil;
              error:(EMError *)aError
 {
     if ([aSession.callId isEqualToString:_callSession.callId]) {
-        [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::callDidEnd %@", aSession.callId]];
+//        [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::callDidEnd %@", aSession.callId]];
         
         [self _stopCallTimer];
         
         @synchronized (_callLock) {
             self.callSession = nil;
             [self dismissCurrentCallController];
-            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::dismissCurrentCallController %@", aSession.callId]];
+//            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::dismissCurrentCallController %@", aSession.callId]];
         }
         
         if (aReason != EMCallEndReasonHangup) {
@@ -629,11 +629,11 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.Unsupported", @"Unsupported");
                 }
                     break;
-//                case EMCallEndReasonRemoteOffline:
-//                {
-//                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
-//                }
-//                    break;
+                case EMCallEndReasonRemoteOffline:
+                {
+                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
+                }
+                    break;
                 default:
                     break;
             }
@@ -727,7 +727,7 @@ static ChatDemoHelper *helper = nil;
                     }
                 });
 
-                [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
+//                [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
             }
             
             [self _startCallTimer];

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "EMCallConference.h"
+
 @interface ConferenceViewController : UIViewController
 
 @end
