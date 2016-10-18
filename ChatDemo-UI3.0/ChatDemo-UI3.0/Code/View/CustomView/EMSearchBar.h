@@ -20,4 +20,8 @@
 
 - (void)setCancelButtonTitle:(NSString *)title;
 
+- (void)setCancelEnable:(BOOL)isEnable;
+
+- (BOOL)isCancelEnable;
+
 @end

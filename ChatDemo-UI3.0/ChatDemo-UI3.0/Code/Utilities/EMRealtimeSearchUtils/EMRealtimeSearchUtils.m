@@ -16,7 +16,7 @@ static EMRealtimeSearchUtils *defaultUtils = nil;
 
 @property (nonatomic, weak) id source;
 
-@property (nonatomic, weak) NSString *searchString;
+@property (nonatomic, strong) NSString *searchString;
 
 @property (nonatomic, copy) EMRealtimeSearchResultsBlock resultBlock;
 
@@ -67,6 +67,9 @@ static EMRealtimeSearchUtils *defaultUtils = nil;
         }
         else {
             continue;
+        }
+        if (_searchString.length == 0) {
+            break;
         }
         if ([searchKey rangeOfString:_searchString].length > 0) {
             [results addObject:obj];
