@@ -19,6 +19,8 @@
 #import "EMCDDeviceManager.h"
 #import "EMSDKHelper.h"
 #import "EaseCallManager.h"
+#import "EMGroupInfoViewController.h"
+#import "EMConversationModel.h"
 
 @interface EMChatViewController () <EMChatToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,EMLocationViewDelegate,EMChatManagerDelegate,EMChatBaseCellDelegate,UIActionSheetDelegate>
 
@@ -32,6 +34,7 @@
 @property (strong, nonatomic) UIButton *backButton;
 @property (strong, nonatomic) UIButton *camButton;
 @property (strong, nonatomic) UIButton *photoButton;
+@property (strong, nonatomic) UIButton *detailButton;
 @property (strong, nonatomic) NSIndexPath *longPressIndexPath;
 
 @property (strong, nonatomic) EMConversation *conversation;
@@ -64,8 +67,6 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     [self.tableView addSubview:self.refresh];
     
-    self.title = self.conversation.conversationId;
-    
     self.chatToolBar.delegate = self;
     [self tableViewDidTriggerHeaderRefresh];
     
@@ -74,8 +75,11 @@
     if (_conversation.type == EMConversationTypeChat) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
         self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.photoButton],[[UIBarButtonItem alloc] initWithCustomView:self.camButton]];
+         self.title = self.conversation.conversationId;
     } else if (_conversation.type == EMConversationTypeGroupChat){
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.detailButton];
+        self.title = [[EMConversationModel alloc] initWithConversation:self.conversation].title;
     } else if (_conversation.type == EMConversationTypeChatRoom){
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
     }
@@ -98,7 +102,7 @@
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _backButton.frame = CGRectMake(0, 0, 44, 44);
-        [_backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+        [_backButton addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
         [_backButton setImage:[UIImage imageNamed:@"Icon_Back"] forState:UIControlStateNormal];
     }
     return _backButton;
@@ -124,6 +128,16 @@
         [_photoButton addTarget:self action:@selector(makeAudioCall) forControlEvents:UIControlEventTouchUpInside];
     }
     return _photoButton;
+}
+
+- (UIButton*)detailButton
+{
+    if (_detailButton == nil) {
+        _detailButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _detailButton.frame = CGRectMake(0, 0, 44, 44);
+        [_detailButton addTarget:self action:@selector(enterDetailView) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _detailButton;
 }
 
 - (UIImagePickerController *)imagePickerController
@@ -562,12 +576,28 @@
 
 - (void)makeVideoCall
 {
-    [[EaseCallManager sharedManager] makeCallWithUsername:_conversation.conversationId isVideo:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":self.conversation.conversationId, @"type":[NSNumber numberWithInt:1]}];
 }
 
 - (void)makeAudioCall
 {
-    [[EaseCallManager sharedManager] makeCallWithUsername:_conversation.conversationId isVideo:NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CALL object:@{@"chatter":self.conversation.conversationId, @"type":[NSNumber numberWithInt:0]}];
+}
+
+- (void)enterDetailView
+{
+    EMGroup *group = [EMGroup groupWithId:_conversation.conversationId];
+    EMGroupInfoViewController *groupInfoViewController = [[EMGroupInfoViewController alloc] initWithGroup:group];
+    [self.navigationController pushViewController:groupInfoViewController animated:YES];
+    
+}
+
+- (void)backAction
+{
+    if (_conversation.latestMessage == nil) {
+        [[EMClient sharedClient].chatManager deleteConversation:_conversation.conversationId isDeleteMessages:YES completion:nil];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - GestureRecognizer

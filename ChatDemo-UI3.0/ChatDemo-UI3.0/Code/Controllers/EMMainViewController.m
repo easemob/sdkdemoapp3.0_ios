@@ -12,6 +12,7 @@
 #import "EMChatsViewController.h"
 #import "EMSettingsViewController.h"
 #import "EMChatDemoHelper.h"
+#import "EaseCallManager.h"
 
 @interface EMMainViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,EMClientDelegate>
 {
@@ -34,6 +35,8 @@
     [self setupUnreadMessageCount];
     
     [self registerNotifications];
+    
+    [EaseCallManager sharedManager].mainVC = self;
 }
 
 - (void)dealloc

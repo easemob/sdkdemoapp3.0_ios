@@ -87,7 +87,9 @@
     _bubbleView.left = _message.direction == EMMessageDirectionSend ? (self.width - _bubbleView.width - TIME_PADDING) : TIME_PADDING;
     _bubbleView.top = 5;
     
+    _readLabel.left = KScreenWidth - 125;
     _readLabel.top = self.height - BOTTOM_PADDING;
+    _checkView.left = KScreenWidth - 141;
     _checkView.top = self.height - BOTTOM_PADDING;
     _resendButton.top = _bubbleView.top + (_bubbleView.height - _resendButton.height)/2;
     _resendButton.left = _bubbleView.left - 25.f;
@@ -255,7 +257,7 @@
     [_bubbleView setMessage:message];
     [_bubbleView sizeToFit];
     
-    _headImageView.image = [UIImage imageNamed:@"Button_Join"];
+    _headImageView.image = [UIImage imageNamed:@"default_avatar"];
     _timeLabel.text = [self _getMessageTime:message];
 }
 

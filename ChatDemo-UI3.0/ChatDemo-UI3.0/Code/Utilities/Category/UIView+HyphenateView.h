@@ -19,3 +19,9 @@
 @property (nonatomic) CGFloat height;
 
 @end
+
+@interface UIImage (HyphenateImage)
+
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
+
+@end

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMChatsViewController : UIViewController
+#import "EMBaseRefreshTableController.h"
+
+@interface EMChatsViewController : EMBaseRefreshTableController
 
 - (void)setupNavigationItem:(UINavigationItem *)navigationItem;
 

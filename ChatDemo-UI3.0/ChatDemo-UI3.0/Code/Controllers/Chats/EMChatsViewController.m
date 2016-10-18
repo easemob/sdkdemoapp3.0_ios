@@ -13,14 +13,13 @@
 #import "EMRealtimeSearchUtil.h"
 #import "EMChatViewController.h"
 #import "EMSearchDisplayController.h"
+#import "EMSearchBar.h"
+#import "EMConversationModel.h"
 
 @interface EMChatsViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) UIRefreshControl *refresh;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
@@ -31,7 +30,6 @@
     [super viewDidLoad];
     
     self.tableView.tableFooterView = [[UIView alloc] init];
-    [self.tableView addSubview:self.refresh];
     
     [self setupForDismissKeyboard];
     
@@ -40,6 +38,11 @@
     }
     
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleHeight;
+    
+    WEAK_SELF
+    self.headerRefresh = ^(BOOL isRefreshing){
+        [weakSelf tableViewDidTriggerHeaderRefresh];
+    };
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -76,11 +79,14 @@
 - (UISearchBar*)searchBar
 {
     if (_searchBar == nil) {
-        _searchBar = [[UISearchBar alloc] init];
-        _searchBar.placeholder = @"Search";
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
+        _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
         _searchBar.delegate = self;
         _searchBar.showsCancelButton = NO;
-        _searchBar.tintColor = RGBACOLOR(0, 186, 110, 1);
+        _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
+        [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
+        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
+        _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
     }
     return _searchBar;
 }
@@ -91,16 +97,6 @@
         _dataSource = [NSMutableArray array];
     }
     return _dataSource;
-}
-
-- (UIRefreshControl*)refresh
-{
-    if (_refresh == nil) {
-        _refresh = [[UIRefreshControl alloc] init];
-        _refresh.tintColor = [UIColor lightGrayColor];
-        [_refresh addTarget:self action:@selector(tableViewDidTriggerHeaderRefresh) forControlEvents:UIControlEventValueChanged];
-    }
-    return _refresh;
 }
 
 - (EMSearchDisplayController*)searchController
@@ -119,8 +115,8 @@
             if (cell == nil) {
                 cell = (EMChatsCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatsCell" owner:nil options:nil] firstObject];
             }
-            EMConversation *conversation = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            [(EMChatsCell*)cell setConversation:conversation];
+            EMConversationModel *model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            [(EMChatsCell*)cell setConversationModel:model];
             
             return cell;
         }];
@@ -132,8 +128,8 @@
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [weakSelf.searchController.searchBar endEditing:YES];
-            EMConversation *conversation = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:conversation.conversationId conversationType:conversation.type];
+            EMConversationModel *model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
+            EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.conversation.conversationId conversationType:model.conversation.type];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
             [weakSelf.navigationController pushViewController:chatViewController animated:YES];
         }];
@@ -157,8 +153,8 @@
     if (cell == nil) {
         cell = (EMChatsCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatsCell" owner:nil options:nil] firstObject];
     }
-    EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
-    [(EMChatsCell*)cell setConversation:conversation];
+    EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    [(EMChatsCell*)cell setConversationModel:model];
     return cell;
 }
 
@@ -168,9 +164,9 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
+        EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
         WEAK_SELF
-        [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
+        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
             [weakSelf.dataSource removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }];
@@ -181,8 +177,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    EMConversation *conversation = [self.dataSource objectAtIndex:indexPath.row];
-    EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:conversation.conversationId conversationType:conversation.type];
+    EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.conversation.conversationId conversationType:model.conversation.type];
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
     [self.navigationController pushViewController:chatViewController animated:YES];
 }
@@ -197,14 +193,14 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    [self.searchController setActive:YES animated:NO];
+    [self.searchController setActive:YES animated:YES];
     return YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     WEAK_SELF
-    [[EMRealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(conversationId) resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.searchController.resultsSource removeAllObjects];
@@ -244,8 +240,11 @@
         NSArray* sorted = [weakSelf _sortConversationList:conversations];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.dataSource removeAllObjects];
-            [weakSelf.dataSource addObjectsFromArray:sorted];
-            [weakSelf.refresh endRefreshing];
+            for (EMConversation *conversation in sorted) {
+                EMConversationModel *model = [[EMConversationModel alloc] initWithConversation:conversation];
+                [weakSelf.dataSource addObject:model];
+            }
+            [self endHeaderRefresh];
             [weakSelf.tableView reloadData];
         });
     });
@@ -265,8 +264,11 @@
         NSArray* sorted = [self _sortConversationList:aConversationList];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.dataSource removeAllObjects];
-            [weakSelf.dataSource addObjectsFromArray:sorted];
-            [weakSelf.refresh endRefreshing];
+            for (EMConversation *conversation in sorted) {
+                EMConversationModel *model = [[EMConversationModel alloc] initWithConversation:conversation];
+                [weakSelf.dataSource addObject:model];
+            }
+            [self endHeaderRefresh];
             [weakSelf.tableView reloadData];
         });
     });

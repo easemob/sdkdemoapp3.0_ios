@@ -156,9 +156,10 @@
 		D2AA4DD01D9227A400967E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DCE1D9227A400967E0E /* Main.storyboard */; };
 		D2AA4DEA1D9271A600967E0E /* EMChatsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DE91D9271A600967E0E /* EMChatsCell.xib */; };
 		D2AA4DED1D92746800967E0E /* EMChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AA4DEC1D92746800967E0E /* EMChatsCell.m */; };
-		D2AA4DF51D9391CF00967E0E /* EMRealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AA4DF41D9391CF00967E0E /* EMRealtimeSearchUtil.m */; };
 		D2AA4DF91D9398FF00967E0E /* EMChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AA4DF71D9398FF00967E0E /* EMChatViewController.m */; };
 		D2AA4DFA1D9398FF00967E0E /* EMChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DF81D9398FF00967E0E /* EMChatViewController.xib */; };
+		D2AD8EB11DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AD8EB01DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m */; };
+		D2AD8EB41DB4CEF100A0DD3C /* EMConversationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AD8EB31DB4CEF100A0DD3C /* EMConversationModel.m */; };
 		D2BF7CB91D90EE160090AA66 /* EMLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7CB71D90EE160090AA66 /* EMLoginViewController.xib */; };
 		D2BF7CC81D91306A0090AA66 /* EMLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7CC61D91306A0090AA66 /* EMLaunchViewController.xib */; };
 		D2BF7E231D914DB30090AA66 /* Button_Accept.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7D0D1D914DB20090AA66 /* Button_Accept.png */; };
@@ -678,11 +679,13 @@
 		D2AA4DE91D9271A600967E0E /* EMChatsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMChatsCell.xib; sourceTree = "<group>"; };
 		D2AA4DEB1D92746800967E0E /* EMChatsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatsCell.h; sourceTree = "<group>"; };
 		D2AA4DEC1D92746800967E0E /* EMChatsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatsCell.m; sourceTree = "<group>"; };
-		D2AA4DF31D9391CF00967E0E /* EMRealtimeSearchUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRealtimeSearchUtil.h; sourceTree = "<group>"; };
-		D2AA4DF41D9391CF00967E0E /* EMRealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRealtimeSearchUtil.m; sourceTree = "<group>"; };
 		D2AA4DF61D9398FF00967E0E /* EMChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatViewController.h; sourceTree = "<group>"; };
 		D2AA4DF71D9398FF00967E0E /* EMChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatViewController.m; sourceTree = "<group>"; };
 		D2AA4DF81D9398FF00967E0E /* EMChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMChatViewController.xib; sourceTree = "<group>"; };
+		D2AD8EAF1DB4BDA800A0DD3C /* EMRealtimeSearchUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRealtimeSearchUtil.h; sourceTree = "<group>"; };
+		D2AD8EB01DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRealtimeSearchUtil.m; sourceTree = "<group>"; };
+		D2AD8EB21DB4CEF100A0DD3C /* EMConversationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationModel.h; sourceTree = "<group>"; };
+		D2AD8EB31DB4CEF100A0DD3C /* EMConversationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationModel.m; sourceTree = "<group>"; };
 		D2BF7CB41D90EA530090AA66 /* EMChatDemoUIDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatDemoUIDefine.h; sourceTree = "<group>"; };
 		D2BF7CB51D90EE160090AA66 /* EMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		D2BF7CB61D90EE160090AA66 /* EMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
@@ -1113,6 +1116,8 @@
 				7166340B1DB0E17C00C92E27 /* EMGroupModel.m */,
 				7166340C1DB0E17C00C92E27 /* IEMApplyModel.h */,
 				7166340D1DB0E17C00C92E27 /* IEMConferenceModel.h */,
+				D2AD8EB21DB4CEF100A0DD3C /* EMConversationModel.h */,
+				D2AD8EB31DB4CEF100A0DD3C /* EMConversationModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1477,13 +1482,13 @@
 		D2BF7CC01D9111DA0090AA66 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				D2AD8EAF1DB4BDA800A0DD3C /* EMRealtimeSearchUtil.h */,
+				D2AD8EB01DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m */,
 				D243280A1DAE19F900EDCDAB /* Emoji */,
 				D24327EB1DAA444C00EDCDAB /* Category */,
 				D24327BA1DAA395F00EDCDAB /* DeviceHelper */,
 				D24327B41DA8D33000EDCDAB /* EMSearchDisplayController.h */,
 				D24327B51DA8D33000EDCDAB /* EMSearchDisplayController.m */,
-				D2AA4DF31D9391CF00967E0E /* EMRealtimeSearchUtil.h */,
-				D2AA4DF41D9391CF00967E0E /* EMRealtimeSearchUtil.m */,
 				D24327B71DAA024A00EDCDAB /* EMMessageReadManager.h */,
 				D24327B81DAA024A00EDCDAB /* EMMessageReadManager.m */,
 				D24327F21DAA44AC00EDCDAB /* EMSDKHelper.h */,
@@ -2357,13 +2362,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2AD8EB11DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m in Sources */,
 				D28538921DB20C770027D4E1 /* EMLoginViewController.m in Sources */,
 				D28538911DB20C4D0027D4E1 /* EMContactsViewController.m in Sources */,
 				D28538901DB20C120027D4E1 /* EMSettingsViewController.m in Sources */,
 				D285388F1DB20BD90027D4E1 /* EMChatsViewController.m in Sources */,
 				D285388E1DB20BC60027D4E1 /* EMLaunchViewController.m in Sources */,
 				D285388D1DB20BBE0027D4E1 /* EMMainViewController.m in Sources */,
-				D2AA4DF51D9391CF00967E0E /* EMRealtimeSearchUtil.m in Sources */,
 				D28538781DB1EBB50027D4E1 /* EMBaseSettingController.m in Sources */,
 				D28538751DB1EBB50027D4E1 /* EMAboutViewController.m in Sources */,
 				D285388B1DB1EBD80027D4E1 /* EaseVideoInfoViewController.m in Sources */,
@@ -2433,6 +2438,7 @@
 				71D4A1DF1D9C9284006FACB7 /* EMContactListSectionHeader.m in Sources */,
 				71D4A1E81D9C934C006FACB7 /* EMAddContactViewController.m in Sources */,
 				716634501DB0EE5800C92E27 /* EMPublicGroupsViewController.m in Sources */,
+				D2AD8EB41DB4CEF100A0DD3C /* EMConversationModel.m in Sources */,
 				7166341E1DB0E45700C92E27 /* EMApplyRequestCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

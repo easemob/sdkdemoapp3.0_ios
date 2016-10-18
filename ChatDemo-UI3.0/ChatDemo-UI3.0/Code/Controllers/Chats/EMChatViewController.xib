@@ -20,15 +20,17 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lh5-oT-mc5" customClass="EMChatToolBar">
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JLV-Ip-5Ce" userLabel="Line">
-                            <frame key="frameInset" width="375" height="0.5"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JLV-Ip-5Ce" userLabel="Line">
                             <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="RPn-p2-fTT"/>
+                            </constraints>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH">
-                            <frame key="frameInset" minX="15" minY="10" width="345" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH">
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="dGX-rF-JvR"/>
+                            </constraints>
                             <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
@@ -96,7 +98,13 @@
                     </subviews>
                     <color key="backgroundColor" red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="0.5" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="JLV-Ip-5Ce" secondAttribute="trailing" id="FZO-jK-XGM"/>
+                        <constraint firstItem="34G-oT-3NH" firstAttribute="top" secondItem="JLV-Ip-5Ce" secondAttribute="bottom" constant="9.5" id="VTO-xn-r39"/>
+                        <constraint firstItem="JLV-Ip-5Ce" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" id="boJ-rT-cQZ"/>
+                        <constraint firstAttribute="trailing" secondItem="34G-oT-3NH" secondAttribute="trailing" constant="15" id="cox-GZ-Xxr"/>
                         <constraint firstAttribute="height" constant="83" id="mLs-Ih-x2u"/>
+                        <constraint firstItem="JLV-Ip-5Ce" firstAttribute="top" secondItem="Lh5-oT-mc5" secondAttribute="top" id="sn6-ZS-2vI"/>
+                        <constraint firstItem="34G-oT-3NH" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" constant="15" id="uad-od-MGq"/>
                     </constraints>
                     <connections>
                         <outlet property="cameraButton" destination="S1W-J3-Mbn" id="vDO-r4-tHx"/>

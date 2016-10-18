@@ -9,6 +9,7 @@
 #import "EMChatsCell.h"
 
 #import "EMConvertToCommonEmoticonsHelper.h"
+#import "EMConversationModel.h"
 
 @interface EMChatsCell ()
 
@@ -18,24 +19,32 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *unreadLabel;
 
+@property (strong, nonatomic) EMConversationModel *model;
+
 @end
 
 @implementation EMChatsCell
 
-- (void)setConversation:(EMConversation *)conversation
+- (void)layoutSubviews
 {
-    _headImageView.image = [UIImage imageNamed:@"Button_Join"];
-    _nameLabel.text = conversation.conversationId;
-    if (conversation.unreadMessagesCount == 0) {
+    [super layoutSubviews];
+    if (_model.conversation.unreadMessagesCount == 0) {
         _unreadLabel.hidden = YES;
         _nameLabel.left = 75.f;
     } else {
         _unreadLabel.hidden = NO;
         _nameLabel.left = 95.f;
-        _unreadLabel.text = [NSString stringWithFormat:@"%d",conversation.unreadMessagesCount];
+        _unreadLabel.text = [NSString stringWithFormat:@"%d",_model.conversation.unreadMessagesCount];
     }
-    _contentLabel.text = [self _latestMessageTitleWithConversation:conversation];
-    _timeLabel.text = [self _latestMessageTimeWithConversation:conversation];
+}
+
+- (void)setConversationModel:(EMConversationModel *)model
+{
+    _model = model;
+    _headImageView.image = [UIImage imageNamed:@"default_avatar"];
+    _nameLabel.text = model.title;
+    _contentLabel.text = [self _latestMessageTitleWithConversation:model.conversation];
+    _timeLabel.text = [self _latestMessageTimeWithConversation:model.conversation];
 }
 
 #pragma mark - private

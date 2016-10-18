@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class EMConversationModel;
 @interface EMChatsCell : UITableViewCell
 
-- (void)setConversation:(EMConversation*)conversation;
+- (void)setConversationModel:(EMConversationModel*)model;
 
 @end
