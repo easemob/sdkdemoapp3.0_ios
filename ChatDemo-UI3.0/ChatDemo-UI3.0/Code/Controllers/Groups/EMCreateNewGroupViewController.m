@@ -48,6 +48,11 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_groupSubjectTextField resignFirstResponder];
+}
+
 - (void)setupNavbar {
     self.title = NSLocalizedString(@"title.newGroup", @"New Group");
     
@@ -147,6 +152,7 @@
 }
 
 - (IBAction)setGroupAvatar:(id)sender {
+    [_groupSubjectTextField resignFirstResponder];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")

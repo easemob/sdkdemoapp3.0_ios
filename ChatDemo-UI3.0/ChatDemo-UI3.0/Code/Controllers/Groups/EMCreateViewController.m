@@ -111,15 +111,23 @@
     [searchBar setShowsCancelButton:YES animated:YES];
     [self updateSearchBarFrame];
     [_publicGroupsVc setSearchState:YES];
+    _publicGroupsVc.tableView.scrollEnabled = NO;
     return YES;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    [_publicGroupsVc setSearchState:NO];
-    [_publicGroupsVc.tableView reloadData];
+    _publicGroupsVc.tableView.scrollEnabled = YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (searchBar.text.length == 0) {
+        [_publicGroupsVc setSearchState:NO];
+        _publicGroupsVc.tableView.scrollEnabled = NO;
+        [_publicGroupsVc.searchResults removeAllObjects];
+        [_publicGroupsVc.tableView reloadData];
+        return;
+    }
+    [_publicGroupsVc setSearchState:YES];
     __weak typeof(_publicGroupsVc) weakVc = _publicGroupsVc;
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchWithSource:_publicGroupsVc.publicGroups searchString:searchText resultBlock:^(NSArray *results) {
         if (results) {
@@ -135,6 +143,7 @@
     [searchBar setShowsCancelButton:NO animated:NO];
     [searchBar resignFirstResponder];
     [self updateSearchBarFrame];
+    _publicGroupsVc.tableView.scrollEnabled = YES;
     
     if (_publicGroupsVc.searchResults.count > 0) {
         
@@ -161,8 +170,11 @@
     searchBar.text = @"";
     [searchBar setShowsCancelButton:NO animated:NO];
     [searchBar resignFirstResponder];
+    [[EMRealtimeSearchUtils defaultUtil] realtimeSearchDidFinish];
+    [_publicGroupsVc setSearchState:NO];
+    _publicGroupsVc.tableView.scrollEnabled = YES;
+    [_publicGroupsVc.tableView reloadData];
     [self updateSearchBarFrame];
 }
-
 
 @end

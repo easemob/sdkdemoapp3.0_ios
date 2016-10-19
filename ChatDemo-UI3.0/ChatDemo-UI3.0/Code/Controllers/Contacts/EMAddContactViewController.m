@@ -130,6 +130,7 @@
 #pragma mark - Action Method
 
 - (IBAction)addContactAction:(id)sender {
+    [_textField resignFirstResponder];
     [self addContact];
 }
 

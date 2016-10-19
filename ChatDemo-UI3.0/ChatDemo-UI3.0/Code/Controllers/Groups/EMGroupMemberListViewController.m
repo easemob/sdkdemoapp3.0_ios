@@ -10,6 +10,7 @@
 #import "EMContactCell.h"
 #import "EMUserModel.h"
 #import "EMGroupMemberCell.h"
+#import "EMNotificationNames.h"
 
 @interface EMGroupMemberListViewController ()<EMGroupUIProtocol>
 
@@ -169,6 +170,7 @@
                 if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(removeSelectOccupants:)]) {
                     [weakSelf.delegate removeSelectOccupants:removeModels];
                 }
+                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }
             else {

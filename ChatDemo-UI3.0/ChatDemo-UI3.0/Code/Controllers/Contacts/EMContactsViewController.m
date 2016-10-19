@@ -20,6 +20,8 @@
 #import "EMChatDemoHelper.h"
 #import "EMRealtimeSearchUtils.h"
 
+#import "NSArray+EMSortContacts.h"
+
 #define KEM_CONTACT_BASICSECTION_NUM  3
 
 @interface EMContactsViewController ()<UISearchBarDelegate>
@@ -42,10 +44,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.edgesForExtendedLayout = UIRectEdgeNone;
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     self.tableView.sectionIndexColor = BrightBlue;
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+    [self setupNavigationItem:self.navigationItem];
     [self reloadGroupNotifications];
     [self reloadContactRequests];
     [self loadContactsFromServer];
@@ -54,7 +58,6 @@
     self.headerRefresh = ^(BOOL isRefreshing){
         [weakSelf loadContactsFromServer];
     };
-    
 }
 
 - (void)setupNavigationItem:(UINavigationItem *)navigationItem {
@@ -75,13 +78,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
         NSArray *bubbyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
-        if (!error && bubbyList.count > 0) {
-            [weakSelf updateContacts:bubbyList];
-            dispatch_async(dispatch_get_main_queue(), ^(){
-                [weakSelf endHeaderRefresh];
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            if (!error) {
+                [weakSelf updateContacts:bubbyList];
                 [weakSelf.tableView reloadData];
-            });
-        }
+            }
+            [weakSelf endHeaderRefresh];
+        });
     });
 }
 
@@ -115,7 +118,15 @@
         [contacts removeObject:blockId];
     }
     [self.contacts removeAllObjects];
-    [self sortContacts:contacts];
+    NSMutableArray *sectionTitles = nil;
+    NSMutableArray *searchSource = nil;
+    NSArray *sortArray = [NSArray sortContacts:contacts
+                                 sectionTitles:&sectionTitles
+                                  searchSource:&searchSource];
+    [self.contacts addObjectsFromArray:sortArray];
+    _sectionTitls = [NSMutableArray arrayWithArray:sectionTitles];
+    _searchSource = [NSMutableArray arrayWithArray:searchSource];
+    
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^(){
         [weakSelf.tableView reloadData];
@@ -123,47 +134,8 @@
     });
 }
 
-- (void)sortContacts:(NSArray *)contacts {
-    UILocalizedIndexedCollation *indexCollation = [UILocalizedIndexedCollation currentCollation];
-    if (!_sectionTitls) {
-        _sectionTitls = [NSMutableArray arrayWithArray:indexCollation.sectionTitles];
-    }
-    else {
-        [_sectionTitls removeAllObjects];
-        [_sectionTitls addObjectsFromArray:indexCollation.sectionTitles];
-    }
-    _contacts = [NSMutableArray arrayWithCapacity:_sectionTitls.count];
-    for (int i = 0; i < _sectionTitls.count; i++) {
-        NSMutableArray *array = [NSMutableArray array];
-        [_contacts addObject:array];
-    }
-    _searchSource = [NSMutableArray array];
-    for (NSString *hyphenateId in contacts) {
-        EMUserModel *model = [[EMUserModel alloc] initWithHyphenateId:hyphenateId];
-        if (model) {
-            NSString *firstLetter = [model.nickname substringToIndex:1];
-            NSUInteger sectionIndex = [indexCollation sectionForObject:firstLetter collationStringSelector:@selector(uppercaseString)];
-            NSMutableArray *array = _contacts[sectionIndex];
-            [array addObject:model];
-            [_searchSource addObject:model];
-        }
-    }
-    __block NSMutableIndexSet *indexSet = nil;
-    [_contacts enumerateObjectsUsingBlock:^(NSMutableArray * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (obj.count == 0) {
-            if (!indexSet) {
-                indexSet = [NSMutableIndexSet indexSet];
-            }
-            [indexSet addIndex:idx];
-        }
-    }];
-    if (indexSet) {
-        [_contacts removeObjectsAtIndexes:indexSet];
-        [_sectionTitls removeObjectsAtIndexes:indexSet];
-    }
-}
 
-#pragma mark - Lazy Method 
+#pragma mark - Lazy Method
 - (NSMutableArray *)contacts {
     if (!_contacts) {
         _contacts = [NSMutableArray array];
@@ -187,10 +159,13 @@
 
 - (EMSearchBar *)searchBar {
     if (!_searchBar) {
-        _searchBar = [[EMSearchBar alloc] initWithFrame:CGRectMake(0, 0, 313, 30)];
-        _searchBar.searchFieldWidth = 313.0f;
+        CGFloat rate = 313.0 / 375.0;
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        _searchBar = [[EMSearchBar alloc] initWithFrame:CGRectMake(0, 0, screenWidth * rate, 30)];
+        _searchBar.searchFieldWidth = screenWidth * rate;
         _searchBar.searchFieldHeight = 30.0f;
         _searchBar.delegate = self;
+        [_searchBar setCancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")];
     }
     return _searchBar;
 }
@@ -199,10 +174,12 @@
 #pragma mark - Action Method
 
 - (void)addContactAction {
+    if (_isSearchState) {
+        [_searchBar setShowsCancelButton:NO];
+    }
     EMAddContactViewController *addContactVc = [[EMAddContactViewController alloc] initWithNibName:@"EMAddContactViewController" bundle:nil];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:addContactVc];
     [self presentViewController:nav animated:YES completion:nil];
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -311,6 +288,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (_isSearchState) {
+        [_searchBar resignFirstResponder];
+        [_searchBar setShowsCancelButton:NO];
+    }
     if (indexPath.section == 2 && !_isSearchState) {
         EMGroupsViewController *groupsVc = [[EMGroupsViewController alloc] initWithNibName:@"EMGroupsViewController" bundle:nil];
         [self.navigationController pushViewController:groupsVc animated:YES];
@@ -369,8 +350,8 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     EMContactListSectionHeader *sectionHeader = [[[NSBundle mainBundle] loadNibNamed:@"EMContactListSectionHeader"
-                                                                             owner:self
-                                                                           options:nil] firstObject];
+                                                                               owner:self
+                                                                             options:nil] firstObject];
     NSUInteger unhandelCount = 0;
     switch (section) {
         case 0:
@@ -391,15 +372,23 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
     _isSearchState = YES;
+    self.tableView.scrollEnabled = !_isSearchState;
     return YES;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    _isSearchState = NO;
-    [self.tableView reloadData];
+    self.tableView.scrollEnabled = YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (searchBar.text.length == 0) {
+        _isSearchState = NO;
+        self.tableView.scrollEnabled = NO;
+        [_searchResults removeAllObjects];
+        [self.tableView reloadData];
+        return;
+    }
+    _isSearchState = YES;
     __weak typeof(self) weakSelf = self;
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchWithSource:_searchSource searchString:searchText resultBlock:^(NSArray *results) {
         if (results) {
@@ -413,6 +402,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:NO];
+    self.tableView.scrollEnabled = YES;
     [searchBar resignFirstResponder];
 }
 
@@ -422,8 +412,10 @@
     [searchBar resignFirstResponder];
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchDidFinish];
     _isSearchState = NO;
+    self.tableView.scrollEnabled = !_isSearchState;
     [self.tableView reloadData];
 }
+
 
 
 

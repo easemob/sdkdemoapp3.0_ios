@@ -71,33 +71,28 @@ static EMChatDemoHelper *helper = nil;
 }
 
 #pragma mark - EMContactManagerDelegate
-- (void)didReceiveAgreedFromUsername:(NSString *)aUsername
-{
+
+- (void)friendRequestDidApproveByUser:(NSString *)aUsername {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"message.friendapply.agree", @"%@ agreed to add friends to apply"), aUsername];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)didReceiveDeclinedFromUsername:(NSString *)aUsername
-{
+- (void)friendRequestDidDeclineByUser:(NSString *)aUsername {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"message.friendapply.refuse", @"%@ refuse to add friends to apply"), aUsername];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)didReceiveDeletedFromUsername:(NSString *)aUsername
-{
+- (void)friendshipDidRemoveByUser:(NSString *)aUsername {
     [_contactsVC reloadContacts];
 }
 
-- (void)didReceiveAddedFromUsername:(NSString *)aUsername
-{
+- (void)friendshipDidAddByUser:(NSString *)aUsername {
     [_contactsVC reloadContacts];
 }
 
-- (void)didReceiveFriendInvitationFromUsername:(NSString *)aUsername
-                                       message:(NSString *)aMessage
-{
+- (void)friendRequestDidReceiveFromUser:(NSString *)aUsername message:(NSString *)aMessage {
     if (!aUsername) {
         return;
     }
@@ -111,7 +106,7 @@ static EMChatDemoHelper *helper = nil;
     model.applyNickName = aUsername;
     model.reason = aMessage;
     [[EMApplyManager defaultManager] addApplyRequest:model];
-
+    
     if (self.mainVC && helper) {
         [helper setupUntreatedApplyCount];
 #if !TARGET_IPHONE_SIMULATOR
@@ -132,36 +127,45 @@ static EMChatDemoHelper *helper = nil;
 
 #pragma mark - EMGroupManagerDelegate
 
-- (void)didReceiveLeavedGroup:(EMGroup *)aGroup
-                       reason:(EMGroupLeaveReason)aReason
-{
+- (void)didLeaveGroup:(EMGroup *)aGroup
+               reason:(EMGroupLeaveReason)aReason {
+    NSString *str = nil;
+    if (aReason == EMGroupLeaveReasonBeRemoved) {
+        str = [NSString stringWithFormat:@"Your are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
+    } else if (aReason == EMGroupLeaveReasonDestroyed) {
+        str = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.subject, aGroup.groupId];
+    }
+    
+    if (str.length > 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:str delegate:nil cancelButtonTitle:NSLocalizedString(@"", @"") otherButtonTitles:nil, nil];
+        [alertView show];
+    }
 }
 
-- (void)didReceiveJoinGroupApplication:(EMGroup *)aGroup
-                             applicant:(NSString *)aApplicant
-                                reason:(NSString *)aReason
-{
-    if (!aGroup || !aApplicant) {
+- (void)joinGroupRequestDidReceive:(EMGroup *)aGroup
+                              user:(NSString *)aUsername
+                            reason:(NSString *)aReason {
+    if (!aGroup || !aUsername) {
         return;
     }
     
     if (!aReason || aReason.length == 0) {
-        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aApplicant, aGroup.subject];
+        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aUsername, aGroup.subject];
     }
     else{
-        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aApplicant, aGroup.subject, aReason];
+        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.subject, aReason];
     }
     
     EMApplyModel *model = [[EMApplyModel alloc] init];
-    model.applyHyphenateId = aApplicant;
-    model.applyNickName = aApplicant;
+    model.applyHyphenateId = aUsername;
+    model.applyNickName = aUsername;
     model.groupId = aGroup.groupId;
     model.groupSubject = aGroup.subject;
     model.groupMemberCount = aGroup.membersCount;
     model.reason = aReason;
     model.style = EMApplyStyle_joinGroup;
     [[EMApplyManager defaultManager] addApplyRequest:model];
-
+    
     if (self.mainVC && helper) {
         [helper setupUntreatedApplyCount];
 #if !TARGET_IPHONE_SIMULATOR
@@ -173,32 +177,32 @@ static EMChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didJoinedGroup:(EMGroup *)aGroup
-               inviter:(NSString *)aInviter
-               message:(NSString *)aMessage
+- (void)didJoinGroup:(EMGroup *)aGroup
+             inviter:(NSString *)aInviter
+             message:(NSString *)aMessage
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)didReceiveDeclinedJoinGroup:(NSString *)aGroupId
-                             reason:(NSString *)aReason
+- (void)joinGroupRequestDidDecline:(NSString *)aGroupId
+                            reason:(NSString *)aReason
 {
     if (!aReason || aReason.length == 0) {
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.beRefusedToJoin", @"be refused to join the group\'%@\'"), aGroupId];
     }
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:aReason delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+    
 }
 
-- (void)didReceiveAcceptedJoinGroup:(EMGroup *)aGroup
-{
+- (void)joinGroupRequestDidApprove:(EMGroup *)aGroup {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)didReceiveGroupInvitation:(NSString *)aGroupId
+- (void)groupInvitationDidReceive:(NSString *)aGroupId
                           inviter:(NSString *)aInviter
                           message:(NSString *)aMessage
 {
@@ -223,6 +227,5 @@ static EMChatDemoHelper *helper = nil;
         [self.contactsVC reloadGroupNotifications];
     }
 }
-
 
 @end

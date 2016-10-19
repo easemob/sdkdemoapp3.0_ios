@@ -46,6 +46,7 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self applyedDataSource];
     [self fetchPublicGroups];
 }
 
@@ -66,6 +67,10 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
 - (NSMutableArray<NSString *> *)applyedDataSource {
     if (!_applyedDataSource) {
         _applyedDataSource = [NSMutableArray array];
+        NSArray *joinedGroups = [[EMClient sharedClient].groupManager getJoinedGroups];
+        for (EMGroup *group in joinedGroups) {
+            [_applyedDataSource addObject:group.groupId];
+        }
     }
     return _applyedDataSource;
 }
@@ -78,6 +83,7 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
 }
 
 #pragma mark - Load Data
+
 - (void)fetchPublicGroups {
     _loadState = EMFetchPublicGroupState_Loading;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1]
@@ -226,7 +232,7 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

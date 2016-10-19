@@ -148,26 +148,30 @@
     model.title = isOwner ? NSLocalizedString(@"group.isPublic", @"Appear in group search") : NSLocalizedString(@"group.groupType", @"Group Type");
     model.isEdit = NO;
     model.permissionDescription = isPublic ? NSLocalizedString(@"group.public", @"Public") : NSLocalizedString(@"group.private", @"Private");
+    model.type = EMGroupPermissionType_groupType;
     [sectionData1 addObject:model];
     
     model = [[EMGroupPermissionModel alloc] init];
     if (isOwner) {
         model.title = isPublic ? NSLocalizedString(@"group.openJoin", @"Join the group freely") : NSLocalizedString(@"group.allowedOccupantInvite", @"Allow members to invite");
         model.isEdit = NO;
-        model.permissionDescription = isPublic ? NSLocalizedString(@"group.public", @"Public") : NSLocalizedString(@"group.private", @"Private");
+        model.type = isPublic ? EMGroupPermissionType_openJoin : EMGroupPermissionType_canAllInvite;
+        model.permissionDescription = _currentGroup.setting.style == EMGroupStylePrivateMemberCanInvite ? NSLocalizedString(@"group.enabled", @"Enabled") : NSLocalizedString(@"group.disabled", @"Disabled");
     }
     else {
         model.title = NSLocalizedString(@"group.mute", @"Mute");
         model.isEdit = YES;
+        model.type = EMGroupPermissionType_mute;
         model.switchState = _currentGroup.isBlocked;
     }
     [sectionData1 addObject:model];
     
-    if (!isOwner) {
+    if (!isOwner && !_currentGroup.isBlocked) {
         model = [[EMGroupPermissionModel alloc] init];
         model.title = NSLocalizedString(@"group.pushNotification", @"Push Notification");
         model.isEdit = YES;
-        model.switchState = _currentGroup.isPublic;
+        model.type = EMGroupPermissionType_pushSetting;
+        model.switchState = _currentGroup.isPushNotificationEnabled;
         [sectionData1 addObject:model];
     }
     [_groupPermissions addObject:sectionData1];
@@ -177,12 +181,13 @@
         model = [[EMGroupPermissionModel alloc] init];
         model.title = NSLocalizedString(@"group.pushNotification", @"Push Notification");
         model.isEdit = YES;
+        model.type = EMGroupPermissionType_pushSetting;
+        model.switchState = _currentGroup.isPushNotificationEnabled;
         [sectionData2 addObject:model];
         [_groupPermissions addObject:sectionData2];
     }
 }
 
-//判断当前登陆账号是否为群组
 - (BOOL)isGroupOwner {
     NSString *currentUser = [EMClient sharedClient].currentUsername;
     if (_currentGroup.owner.length > 0 && [currentUser isEqualToString:_currentGroup.owner]) {
@@ -191,12 +196,16 @@
     return NO;
 }
 
+- (BOOL)isCanInvite {
+    return ([self isGroupOwner] || _currentGroup.setting.style == EMGroupStylePrivateMemberCanInvite);
+}
+
 - (void)showPromptAlert:(NSString *)message {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                         message:message
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")
-                                              otherButtonTitles:NSLocalizedString(@"common.ok", @"OK"), nil];
+                                              cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK")
+                                              otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -216,7 +225,7 @@
                 }
                 else{
                     [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }
             });
         });
@@ -231,6 +240,7 @@
                 }
                 else{
                     [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }
             });
         });
@@ -275,7 +285,7 @@
                                                                  message = NSLocalizedString(@"group.setFailure", @"Set failure");
                                                              }
                                                              [weakSelf showPromptAlert:message];
-    }];
+                                                         }];
 }
 
 
@@ -289,10 +299,12 @@
                                               }
                                               else {
                                                   message = NSLocalizedString(@"group.blockGroupSuccess", @"Block group success");
+                                                  [weakSelf reloadPermissionData];
+                                                  [weakSelf.tableView reloadData];
                                               }
                                               [weakSelf showPromptAlert:message];
                                               
-    }];
+                                          }];
 }
 
 - (void)unblockGroupMessages {
@@ -307,7 +319,7 @@
                                                     message = NSLocalizedString(@"group.unblockGroupSuccess", @"Unblock group success");
                                                 }
                                                 [weakSelf showPromptAlert:message];
-    }];
+                                            }];
 }
 
 
@@ -362,14 +374,14 @@
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if ([self isGroupOwner] || _currentGroup.setting.style == EMGroupStylePrivateMemberCanInvite) {
+    if ([self isCanInvite]) {
         return 2;
     }
     return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if ([self isGroupOwner] && section == 0) {
+    if ([self isCanInvite] && section == 0) {
         return 1;
     }
     return _occupants.count;
@@ -377,7 +389,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     EMMemberCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EMMemberCollectionCell" forIndexPath:indexPath];
-    if ([self isGroupOwner] && indexPath.section == 0) {
+    if ([self isCanInvite] &&
+        indexPath.section == 0) {
         cell.model = nil;
     }
     else {
@@ -390,10 +403,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    if ([self isGroupOwner] && indexPath.section == 0) {
-        //添加群组成员
-        EMMemberSelectViewController *selectVc = [[EMMemberSelectViewController alloc] initWithInvitees:_currentGroup.members];
+    if ([self isCanInvite] && indexPath.section == 0) {
+        EMMemberSelectViewController *selectVc = [[EMMemberSelectViewController alloc] initWithInvitees:_currentGroup.occupants];
         selectVc.style = EMContactSelectStyle_Invite;
+        selectVc.delegate = self;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:selectVc];
         selectVc.title = NSLocalizedString(@"title.inviteContacts", @"Invite Contacts");
         [self presentViewController:nav animated:YES completion:nil];
@@ -403,7 +416,6 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-//布局确定每个Item 的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -443,6 +455,7 @@
                                                          error:&error];
             if (!error) {
                 [weakSelf reloadOccupants];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
             }
         });
     }

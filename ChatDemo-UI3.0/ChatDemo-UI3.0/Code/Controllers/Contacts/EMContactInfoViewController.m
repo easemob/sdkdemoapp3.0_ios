@@ -12,8 +12,6 @@
 #import "EMContactInfoCell.h"
 #import "EMChatDemoHelper.h"
 #import "EMChatViewController.h"
-#import "EaseCallManager.h"
-
 
 #define NAME                NSLocalizedString(@"contact.name", @"Name")
 #define HYPHENATE_ID        NSLocalizedString(@"contact.hyphenateId", @"Hyphenate ID")
@@ -69,15 +67,13 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.navigationController.navigationBar setHidden:NO];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setHidden:YES];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)loadContactInfo {
@@ -91,7 +87,7 @@
     }
     _contactInfo = [NSArray arrayWithArray:info];
     
-    _contactFunc = @[@{BLOCK_CONTACT:RGBACOLOR(12.0/255.0, 18.0/255.0, 24.0/255.0, 1.0)}, @{DELETE_CONTACT:RGBACOLOR(255.0/255.0, 59.0/255.0, 48.0/255.0, 1.0)}];
+    _contactFunc = @[@{BLOCK_CONTACT:RGBACOLOR(12.0, 18.0, 24.0, 1.0)}, @{DELETE_CONTACT:RGBACOLOR(255.0, 59.0, 48.0, 1.0)}];
 }
 
 - (void)makeCallWithContact:(NSString *)contact callTyfpe:(EMCallType)callType {
