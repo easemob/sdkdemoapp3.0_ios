@@ -8,8 +8,8 @@
 
 #import "EMContactListSectionHeader.h"
 
-#define KEM_CONTACTREQUESTS_TITLE            @"Contact Requests"
-#define KEM_GROUPNOTIFICATIONS_TITLE         @"Group Notifications"
+#define KEM_CONTACTREQUESTS_TITLE            NSLocalizedString(@"contact.requests", @"Contact Requests")
+#define KEM_GROUPNOTIFICATIONS_TITLE         NSLocalizedString(@"group.notifications", @"Group Notifications")
 
 @interface EMContactListSectionHeader()
 

@@ -9,12 +9,10 @@
 #import "EMMemberSelectViewController.h"
 #import "EMSearchBar.h"
 #import "EMUserModel.h"
-
 #import "EMGroupMemberCell.h"
 #import "EMMemberCollectionCell.h"
-
 #import "EMRealtimeSearchUtils.h"
-#import "EMSearchBar.h"
+#import "NSArray+EMSortContacts.h"
 
 
 #define NEXT_TITLE   NSLocalizedString(@"common.next", @"Next")
@@ -48,7 +46,7 @@
 {
     UIButton *_doneBtn;
     NSMutableArray *_hasInvitees;
-    NSMutableArray *_sectionTitls;
+    NSMutableArray *_sectionTitles;
     NSMutableArray *_searchSource;
     NSMutableArray *_searchResults;
     BOOL _isSearchState;
@@ -160,48 +158,15 @@
     [contacts removeObjectsInArray:blockList];
     [contacts removeObjectsInArray:_hasInvitees];
     [_hasInvitees removeAllObjects];
-    [self sortContacts:contacts];
-}
-
-- (void)sortContacts:(NSArray *)contacts {
-    UILocalizedIndexedCollation *indexCollation = [UILocalizedIndexedCollation currentCollation];
-    if (!_sectionTitls) {
-        _sectionTitls = [NSMutableArray arrayWithArray:indexCollation.sectionTitles];
-    }
-    else {
-        [_sectionTitls removeAllObjects];
-        [_sectionTitls addObjectsFromArray:indexCollation.sectionTitles];
-    }
-    _unselectedContacts = [NSMutableArray arrayWithCapacity:_sectionTitls.count];
-    for (int i = 0; i < _sectionTitls.count; i++) {
-        NSMutableArray *array = [NSMutableArray array];
-        [_unselectedContacts addObject:array];
-    }
-    _searchSource = [NSMutableArray array];
-    for (NSString *hyphenateId in contacts) {
-        EMUserModel *model = [[EMUserModel alloc] initWithHyphenateId:hyphenateId];
-        if (model) {
-            NSString *firstLetter = [model.nickname substringToIndex:1];
-            NSUInteger sectionIndex = [indexCollation sectionForObject:firstLetter collationStringSelector:@selector(uppercaseString)];
-            NSMutableArray *array = _unselectedContacts[sectionIndex];
-            [array addObject:model];
-            [_searchSource addObject:model];
-        }
-    }
     
-    __block NSMutableIndexSet *indexSet = nil;
-    [_unselectedContacts enumerateObjectsUsingBlock:^(NSMutableArray * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (obj.count == 0) {
-            if (!indexSet) {
-                indexSet = [NSMutableIndexSet indexSet];
-            }
-            [indexSet addIndex:idx];
-        }
-    }];
-    if (indexSet) {
-        [_unselectedContacts removeObjectsAtIndexes:indexSet];
-        [_sectionTitls removeObjectsAtIndexes:indexSet];
-    }
+    NSMutableArray *sectionTitles = nil;
+    NSMutableArray *searchSource = nil;
+    NSArray *sortArray = [NSArray sortContacts:contacts
+                                 sectionTitles:&sectionTitles
+                                  searchSource:&searchSource];
+    [self.unselectedContacts addObjectsFromArray:sortArray];
+    _sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
+    _searchSource = [NSMutableArray arrayWithArray:searchSource];
 }
 
 - (void)removeOccupantsFromDataSource:(NSArray<EMUserModel *> *)modelArray {
@@ -252,7 +217,7 @@
     if (_isSearchState) {
         return 1;
     }
-    return _sectionTitls.count;
+    return _sectionTitles.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -266,7 +231,7 @@
     if (_isSearchState) {
         return @[];
     }
-    return _sectionTitls;
+    return _sectionTitles;
 }
 
 
@@ -307,7 +272,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     EMSectionTitleHeader *headerView = [[EMSectionTitleHeader alloc] init];
-    headerView.title = _sectionTitls[section];
+    headerView.title = _sectionTitles[section];
     return headerView;
 }
 
@@ -360,15 +325,23 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
     _isSearchState = YES;
+    self.tableView.scrollEnabled = !_isSearchState;
     return YES;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    _isSearchState = NO;
-    [self.tableView reloadData];
+    self.tableView.scrollEnabled = YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (searchBar.text.length == 0) {
+        _isSearchState = NO;
+        self.tableView.scrollEnabled = NO;
+        [_searchResults removeAllObjects];
+        [self.tableView reloadData];
+        return;
+    }
+    _isSearchState = YES;
     __weak typeof(self) weakSelf = self;
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchWithSource:_searchSource searchString:searchText resultBlock:^(NSArray *results) {
         if (results) {
@@ -382,6 +355,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:NO];
+    self.tableView.scrollEnabled = YES;
     [searchBar resignFirstResponder];
 }
 
@@ -391,6 +365,7 @@
     [searchBar resignFirstResponder];
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchDidFinish];
     _isSearchState = NO;
+    self.tableView.scrollEnabled = !_isSearchState;
     [self.tableView reloadData];
 }
 
