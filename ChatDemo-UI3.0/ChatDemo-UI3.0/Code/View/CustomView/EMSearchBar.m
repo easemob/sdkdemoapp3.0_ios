@@ -96,10 +96,6 @@
             currentFrame.size.height = _searchFieldHeight;
             currentFrame.origin.y = (self.bounds.size.height - _searchFieldHeight) / 2;
         }
-        
-        if (self.showsCancelButton) {
-            currentFrame.size.width -= _cancelWidth;
-        }
         _searchTextField.frame = currentFrame;
     }
 }
