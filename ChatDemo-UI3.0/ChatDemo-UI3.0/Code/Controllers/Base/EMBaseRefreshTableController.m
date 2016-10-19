@@ -8,7 +8,7 @@
 
 #import "EMBaseRefreshTableController.h"
 
-#define KEM_BASE_REFRESH_TINTCOLOR   [UIColor colorWithRed:82.0/255.0 green:210.0/255.0 blue:0.0/255.0 alpha:1.0]
+#define KEM_BASE_REFRESH_TINTCOLOR   CoolGrayColor
 #define KEM_BASE_REFRESH_ATTRIBUTES  @{NSForegroundColorAttributeName:KEM_BASE_REFRESH_TINTCOLOR}
 
 #define KEM_BASE_REFRESH_DROPDOWN    NSLocalizedString(@"loading.dropdown", @"Drop down loading...")
@@ -30,9 +30,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _defaultOffset = self.tableView.contentOffset;
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)] && self.edgesForExtendedLayout == UIRectEdgeAll) {
-        _defaultOffset.y = -64;
-    }
     [self setupRefreshControl];
 
 }

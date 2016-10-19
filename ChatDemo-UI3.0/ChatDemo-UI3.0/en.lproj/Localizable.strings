@@ -107,6 +107,7 @@
 "contact.somebodyAddWithName" = "%@ add you as a friend";
 "contact.refusedFailure" = "Refused to apply for failure";
 "contact.agreeFailure" = "Failed to agree to apply";
+"contact.requests" = "Contact Requests";
 
 //group
 "group.participants" = "Participants";
@@ -144,6 +145,7 @@
 "group.agreedAndJoined" = "agreed and joined the group of \'%@\'";
 "group.creategroup" = "%@ create a group[%@]";
 "group.inviteToJoin" = "%@ invite you to join the group [%@]";
+"group.notifications" = "Group Notifications";
 
 //common
 "common.delete" = "Delete";

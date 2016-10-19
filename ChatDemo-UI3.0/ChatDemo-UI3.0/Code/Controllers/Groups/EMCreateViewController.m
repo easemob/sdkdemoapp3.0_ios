@@ -68,16 +68,15 @@
     [self.navigationItem setRightBarButtonItem:rightBar];
 }
 
-- (void)updateSearchBarFrame {
+- (void)updateSearchBarFrame:(BOOL)isPromptHiden {
     CGRect searchBarFrame = _searchBar.frame;
     CGFloat interval = _promptLabel.frame.size.width + 15;
-    if (_searchBar.showsCancelButton) {
-        _promptLabel.hidden = YES;
+    _promptLabel.hidden = isPromptHiden;
+    if (isPromptHiden) {
         searchBarFrame.origin.x -= interval;
         searchBarFrame.size.width += interval;
     }
     else {
-        _promptLabel.hidden = NO;
         searchBarFrame.origin.x += interval;
         searchBarFrame.size.width -= interval;
     }
@@ -108,18 +107,26 @@
 #pragma mark - UISearchBarDelegate
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    [self updateSearchBarFrame:YES];
     [searchBar setShowsCancelButton:YES animated:YES];
-    [self updateSearchBarFrame];
     [_publicGroupsVc setSearchState:YES];
+    _publicGroupsVc.tableView.scrollEnabled = NO;
     return YES;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    [_publicGroupsVc setSearchState:NO];
-    [_publicGroupsVc.tableView reloadData];
+    _publicGroupsVc.tableView.scrollEnabled = YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (searchBar.text.length == 0) {
+        [_publicGroupsVc setSearchState:NO];
+        _publicGroupsVc.tableView.scrollEnabled = NO;
+        [_publicGroupsVc.searchResults removeAllObjects];
+        [_publicGroupsVc.tableView reloadData];
+        return;
+    }
+    [_publicGroupsVc setSearchState:YES];
     __weak typeof(_publicGroupsVc) weakVc = _publicGroupsVc;
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchWithSource:_publicGroupsVc.publicGroups searchString:searchText resultBlock:^(NSArray *results) {
         if (results) {
@@ -132,9 +139,10 @@
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self updateSearchBarFrame:NO];
     [searchBar setShowsCancelButton:NO animated:NO];
     [searchBar resignFirstResponder];
-    [self updateSearchBarFrame];
+    _publicGroupsVc.tableView.scrollEnabled = YES;
     
     if (_publicGroupsVc.searchResults.count > 0) {
         
@@ -159,10 +167,13 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     searchBar.text = @"";
+    [self updateSearchBarFrame:NO];
     [searchBar setShowsCancelButton:NO animated:NO];
     [searchBar resignFirstResponder];
-    [self updateSearchBarFrame];
+    [[EMRealtimeSearchUtils defaultUtil] realtimeSearchDidFinish];
+    [_publicGroupsVc setSearchState:NO];
+    _publicGroupsVc.tableView.scrollEnabled = YES;
+    [_publicGroupsVc.tableView reloadData];
 }
-
 
 @end

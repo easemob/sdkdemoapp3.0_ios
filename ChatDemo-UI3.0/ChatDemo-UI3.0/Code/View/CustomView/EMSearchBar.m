@@ -19,7 +19,8 @@
 @implementation EMSearchBar {
     UITextField *_searchTextField;
     NSString *_cancelTitle;
-    NSArray<__kindof UIView *> *_subViewArray;
+    CGFloat _cancelWidth;
+    BOOL _isEnable;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -46,6 +47,15 @@
     else {
         _searchTextField.frame = self.bounds;
     }
+}
+
+#pragma mark - setter
+- (void)setCancelEnable:(BOOL)isEnable {
+    _isEnable = isEnable;
+}
+
+- (BOOL)isCancelEnable {
+    return _isEnable;
 }
 
 - (void)setSearchFieldWidth:(CGFloat)searchFieldWidth {
@@ -91,15 +101,17 @@
 }
 
 - (void)initSearchBarStyle {
+    _isEnable = YES;
     _searchFieldWidth = 0;
     _searchFieldHeight = 0;
+    _cancelTitle = NSLocalizedString(@"common.cancel", @"Cancel");
     self.barTintColor = [UIColor clearColor];
-    _subViewArray = self.subviews;
+    NSArray *subViewArray = self.subviews;
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
         NSArray *subviews = [[self.subviews firstObject] subviews];
-        _subViewArray = subviews;
+        subViewArray = subviews;
     }
-    for (UIView *subView in _subViewArray) {
+    for (UIView *subView in subViewArray) {
         if ([subView isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
             [subView removeFromSuperview];
         }
@@ -128,23 +140,45 @@
 
 - (void)setCancelButtonTitle:(NSString *)title
 {
+    if (!_isEnable) {
+        return;
+    }
     if (![_cancelTitle isEqualToString:title]) {
         _cancelTitle = title;
     }
     if (!self.showsCancelButton) {
         return;
     }
-    for (UIView *searchbuttons in _searchTextField.subviews)
+    
+    NSArray *subArray = self.subviews;
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
+        NSArray *subviews = [[self.subviews firstObject] subviews];
+        subArray = subviews;
+    }
+    UIButton *_cancelButton;
+    for (UIView *subView in subArray)
     {
-        if ([searchbuttons isKindOfClass:[UIButton class]])
+        if ([subView isKindOfClass:NSClassFromString(@"UINavigationButton")])
         {
-            UIButton *cancelButton = (UIButton*)searchbuttons;
-            [cancelButton setTitleColor:KermitGreenTwoColor forState:UIControlStateNormal];
-            [cancelButton setTitle:title forState:UIControlStateNormal];
+            _cancelButton = (UIButton*)subView;
             break;
         }
     }
+    [_cancelButton setTitleColor:CoolGrayColor forState:UIControlStateNormal];
+    [_cancelButton setTitleColor:CoolGrayColor forState:UIControlStateHighlighted];
+    [_cancelButton setTitleColor:CoolGrayColor forState:UIControlStateSelected];
+    [_cancelButton setTitle:_cancelTitle forState:UIControlStateNormal];
+    [_cancelButton setTintColor:CoolGrayColor];
+    _cancelButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _cancelButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    CGRect frame = _cancelButton.frame;
+    frame.size.width += 2 * 15;
+    frame.origin.x -= 2 * 15;
+    _cancelButton.frame = frame;
+    _cancelWidth = _cancelButton.bounds.size.width;
 }
+
+#pragma mark - rideover
 
 - (void)setShowsCancelButton:(BOOL)showsCancelButton {
     [self setShowsCancelButton:showsCancelButton animated:NO];
@@ -152,15 +186,16 @@
 
 - (void)setShowsCancelButton:(BOOL)showsCancelButton animated:(BOOL)animated {
     [super setShowsCancelButton:showsCancelButton animated:animated];
+
     if (showsCancelButton) {
         [self setCancelButtonTitle:_cancelTitle];
         CGRect frame = _searchTextField.frame;
-        frame.size.width -= kCancelBtn_Width;
+        frame.size.width -= _cancelWidth;
         _searchTextField.frame = frame;
     }
     else {
         CGRect frame = _searchTextField.frame;
-        frame.size.width += kCancelBtn_Width;
+        frame.size.width += _cancelWidth;
         _searchTextField.frame = frame;
     }
 }
