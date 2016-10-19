@@ -74,6 +74,10 @@
 }
 
 - (void)loadContactsFromServer {
+    if (_isSearchState) {
+        [self endHeaderRefresh];
+        return;
+    }
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
