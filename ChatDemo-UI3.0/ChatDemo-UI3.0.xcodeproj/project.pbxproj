@@ -555,6 +555,7 @@
 		D22B7A2D1DB0F93300C8DD40 /* iconVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconVideo.png; sourceTree = "<group>"; };
 		D22B7A2E1DB0F93300C8DD40 /* iconVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconVideo@2x.png"; sourceTree = "<group>"; };
 		D22B7A2F1DB0F93300C8DD40 /* iconVideo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconVideo@3x.png"; sourceTree = "<group>"; };
+		D2334E1C1DB6487400925ACE /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
 		D24327B41DA8D33000EDCDAB /* EMSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchDisplayController.h; sourceTree = "<group>"; };
 		D24327B51DA8D33000EDCDAB /* EMSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchDisplayController.m; sourceTree = "<group>"; };
 		D24327B71DAA024A00EDCDAB /* EMMessageReadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageReadManager.h; sourceTree = "<group>"; };
@@ -1309,6 +1310,7 @@
 		D28345011D8FD1D400FD48A9 /* ChatDemo-UI3.0 */ = {
 			isa = PBXGroup;
 			children = (
+				D2334E1C1DB6487400925ACE /* ChatDemo-UI3.0.entitlements */,
 				D28345241D8FEE3F00FD48A9 /* Code */,
 				D28345251D8FEE3F00FD48A9 /* Resources */,
 				D28345051D8FD1D400FD48A9 /* AppDelegate.h */,
@@ -1933,6 +1935,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 499WYUV8Q2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -2611,7 +2618,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/ChatDemo-UI3.0/ChatDemo-UI3.0.pch";
 				INFOPLIST_FILE = "ChatDemo-UI3.0/Info.plist";
@@ -2633,7 +2642,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/ChatDemo-UI3.0/ChatDemo-UI3.0.pch";
 				INFOPLIST_FILE = "ChatDemo-UI3.0/Info.plist";

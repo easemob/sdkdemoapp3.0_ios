@@ -8,6 +8,8 @@
 
 //title
 "title.contacts" = "联系人";
+"title.chats" = "会话";
+"title.settings" = "设置";
 "title.addContact" = "添加联系人";
 "title.newGroup" = "新建群组";
 "title.addParticipants" = "添加成员";
@@ -16,6 +18,72 @@
 "title.members" = "成员列表";
 "title.create" = "创建";
 
+//setting title
+"title.setting.about" = "About";
+"title.setting.push" = "Push Notifications";
+"title.setting.pushdisplayname" = "Push Notification Display";
+"title.setting.account" = "Account";
+"title.setting.chats" = "Chats";
+
+//login
+"login.signup.tips" = "Have an account?";
+"login.tips" = "Yay! New to Hyphenate?";
+"login.changebutton.signup" = "Sign up";
+"login.changebutton.login" = "Log in";
+"login.taken" = "Username taken";
+"login.signup.failure" = "Sign up failure";
+"login.failure" = "Login failure";
+"login.failure.password.notmatch" = "Password does not match username";
+"login.ok" = "Ok";
+
+//chat
+"chat.not.delivered" = "Not Delivered";
+"chat.read" = "Read";
+"chat.sent" = "Sent";
+"chat.hold.record" = "Hold to record";
+"chat.release.send" = "Release to send";
+"chat.release.cancel" = "Release to cancel";
+"chat.image1" = "[image]";
+"chat.voice1" = "[voice]";
+"chat.location1" = "[location]";
+"chat.video1" = "[video]";
+"chat.file1" = "[file]";
+"chat.delete" = "Delete";
+"chat.copy" = "Copy";
+"chat.cancel" = "Cancel";
+
+//error
+"error.connectNetworkFail" = "No network connection!";
+"error.connectServerFail" = "Connect to the server failed!";
+"error.connectServerTimeout" = "Connect to the server timed out!";
+
+//setting
+"setting.about" = "About";
+"setting.push" = "Push Notifications";
+"setting.account" = "Account";
+"setting.chats" = "Chats";
+"setting.videoBitrate" = "Adaptive Video Bitrate";
+
+//setting.about
+"setting.about.appversion" = "App Version";
+"setting.about.sdkversion" = "SDK Version";
+"setting.about.uiversion" = "EaseUI Library Version";
+
+//setting.push
+"setting.push.display" = "Display on lockscreen";
+"setting.push.enable" = "Push Notifications";
+"setting.push.on" = "On";
+"setting.push.off" = "Off";
+"setting.push.displayname" = "Push notification display name";
+"setting.push.tip" = "The display name will appear in Apple's push notification system.";
+
+//setting.account
+"setting.account.edit" = "Edit";
+"setting.account.id" = "Hyphenate ID";
+"setting.account.signout" = "Sign Out";
+
+//setting.chats
+"setting.chats.acceptInvitation" = "Accept group invites automatically";
 
 //loading
 "loading.dropdown" = "下拉加载...";

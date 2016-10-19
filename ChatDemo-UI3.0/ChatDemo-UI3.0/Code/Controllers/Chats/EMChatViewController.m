@@ -475,6 +475,7 @@
     WEAK_SELF
     [self.tableView reloadData];
     [[EMClient sharedClient].chatManager resendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        NSLog(@"%@",error.errorDescription);
         [weakSelf.tableView reloadData];
     }];
 }
