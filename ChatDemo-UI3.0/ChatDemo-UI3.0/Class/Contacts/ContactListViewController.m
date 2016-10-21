@@ -171,7 +171,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 3;
+        return 4;
     }
     
     return [[self.dataArray objectAtIndex:(section - 1)] count];
@@ -206,9 +206,13 @@
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
         }
+//        else if (indexPath.row == 3) {
+//            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
+//            cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
+//        }
         else if (indexPath.row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
-            cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
+            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
+            cell.titleLabel.text = NSLocalizedString(@"title.conference",@"mutil conference");
         }
         return cell;
     }
@@ -300,9 +304,12 @@
             ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         }
+//        else if (row == 3) {
+//            RobotListViewController *robot = [[RobotListViewController alloc] init];
+//            [self.navigationController pushViewController:robot animated:YES];
+//        }
         else if (row == 3) {
-            RobotListViewController *robot = [[RobotListViewController alloc] init];
-            [self.navigationController pushViewController:robot animated:YES];
+             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CONFERENCE object:nil];
         }
     }
     else{

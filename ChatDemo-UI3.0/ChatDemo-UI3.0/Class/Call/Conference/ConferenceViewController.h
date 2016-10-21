@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "EMCallConference.h"
-
 @interface ConferenceViewController : UIViewController
+
+- (instancetype)initWithCallId:(NSString *)aCallId;
 
 @end

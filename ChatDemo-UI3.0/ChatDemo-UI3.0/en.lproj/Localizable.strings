@@ -302,6 +302,7 @@
 "title.groupSearchMessage" = "Search Message from History";
 "title.chatroomlist" = "Chatroom List";
 "title.robotlist" = "Robot List";
+"title.conference" = "Mutil Conference";
 "title.profile" = "Profile";
 
 //setting

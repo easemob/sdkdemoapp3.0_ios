@@ -12,12 +12,14 @@
 #import "StreamTableViewController.h"
 #import "UserTableViewController.h"
 
-@interface ConferenceViewController ()<EMCallManagerDelegate, StreamTableViewControllerDelegate>
+@interface ConferenceViewController ()<EMConferenceManagerDelegate, StreamTableViewControllerDelegate>
 {
     float _ox;
     float _oy;
     float _width;
     float _height;
+    
+    NSString *_callId;
 }
 
 @property (strong, nonatomic) EMCallLocalView *localView;
@@ -29,6 +31,26 @@
 @end
 
 @implementation ConferenceViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _callId = nil;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCallId:(NSString *)aCallId
+{
+    self = [super init];
+    if (self) {
+        _callId = aCallId;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,23 +75,22 @@
     [self.view addSubview:self.localView];
     _ox = 150;
     
-    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+    
     EMError *error = nil;
-    self.conference = [[EMClient sharedClient].callManager joinConferenceWithConfId:@"0001|testConference" password:@"" localVideoView:self.localView error:&error];
+    if (_callId == nil) {
+        self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMCallTypeVideo password:nil localVideoView:self.localView error:&error];
+    } else {
+        self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:_callId password:@"" localVideoView:self.localView error:&error];
+    }
+    
     if (error) {
         self.conference = nil;
-//        dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
-//        });
     }
     else{
         [self _setupSubviews];
     }
-    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        
-//        
-//    });
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,7 +133,7 @@
         _ox = 150;
     }
     
-    [[EMClient sharedClient].callManager subscribeConferenceStream:self.conference.callId stream:aStream remoteVideoView:remoteView error:&error];
+    [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:aStream remoteVideoView:remoteView error:&error];
     if (error) {
         [remoteView removeFromSuperview];
     }
@@ -123,42 +144,42 @@
 
 #pragma mark - EMCallManagerDelegate
 
-- (void)didReceiveCallMemberEntered:(EMCallSession *)aConference
-                        enteredName:(NSString *)aEnteredName
+- (void)userDidJoinConference:(EMCallConference *)aConference
+                         user:(NSString *)aUsername
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", aEnteredName];
+        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", aUsername];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Enter 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
     }
 }
 
-- (void)didReceiveCallMemberExited:(EMCallSession *)aConference
-                        exitedName:(NSString *)aExitedName
+- (void)userDidLeaveConference:(EMCallConference *)aConference
+                          user:(NSString *)aUsername
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", aExitedName];
+        NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", aUsername];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Exit 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
         
-        EMCallRemoteView *view = [self.remoteViews objectForKey:aExitedName];
+        EMCallRemoteView *view = [self.remoteViews objectForKey:aUsername];
         if (view) {
             [view removeFromSuperview];
         }
     }
 }
 
-- (void)didReceiveCallMemberPubed:(EMCallSession *)aConference
-                        pubedName:(NSString *)aPubedName
+- (void)userDidPubConferenceStream:(EMCallConference *)aConference
+                              user:(NSString *)aUsername
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", aPubedName];
+        NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", aUsername];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pub 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
     }
 }
 
-- (void)didReceiveCallMembersUpdated:(EMCallSession *)aConference
+- (void)conferenceMembersDidUpdate:(EMCallConference *)aConference
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"成员通知" message:@"会议成员已更新" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -166,9 +187,9 @@
     }
 }
 
-- (void)didReceiveCallTerminated:(EMCallSession *)aConference
-                          reason:(EMCallEndReason)aReason
-                           error:(EMError *)aError
+- (void)conferenceDidEnd:(EMCallConference *)aConference
+                  reason:(EMCallEndReason)aReason
+                   error:(EMError *)aError
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"会议通知" message:@"会议已关闭" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -202,7 +223,12 @@
         return;
     }
     
-    [[EMClient sharedClient].callManager leaveConferenceWithCallId:self.conference.callId error:nil];
+    if (_callId == nil) {
+         [[EMClient sharedClient].conferenceManager destroyConferenceWithCallId:self.conference.callId error:nil];
+    } else {
+         [[EMClient sharedClient].conferenceManager leaveConferenceWithCallId:self.conference.callId error:nil];
+    }
+   
     self.conference = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }

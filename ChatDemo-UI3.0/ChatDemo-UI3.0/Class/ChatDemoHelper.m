@@ -28,6 +28,7 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "CallViewController.h"
+#import "ConferenceViewController.h"
 //#import "EMLog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
@@ -105,6 +106,7 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createConfence:) name:KNOTIFICATION_CONFERENCE object:nil];
 #endif
 }
 
@@ -309,7 +311,8 @@ static ChatDemoHelper *helper = nil;
         EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
         NSString *action = cmdBody.action;
         if ([action isEqualToString:@"inviteToJoinConference"]) {
-//            NSString *callId = [message.ext objectForKey:@"callId"];
+            NSString *callId = [message.ext objectForKey:@"callId"];
+            [self recvInviteJoinConference:callId];
         } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
             [self.callController showHint:@"已转为会议模式"];
         }
@@ -798,6 +801,18 @@ static ChatDemoHelper *helper = nil;
         [tmpController clear];
         tmpController = nil;
     }
+}
+
+- (void)createConfence:(NSNotification *)notify
+{
+    ConferenceViewController *confController = [[ConferenceViewController alloc] init];
+    [self.mainVC.navigationController pushViewController:confController animated:NO];
+}
+
+- (void)recvInviteJoinConference:(NSString *)aCallId
+{
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aCallId];
+    [self.mainVC.navigationController pushViewController:confController animated:NO];
 }
 
 #endif
