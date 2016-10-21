@@ -1,6 +1,4 @@
 /* Localized versions of Info.plist keys */
 
 //"CFBundleDisplayName" = "环信Demo";
-//"CFBundleDisplayName" = "normal1014";
-//"CFBundleDisplayName" = "convert1014";
-"CFBundleDisplayName" = "custom1014";
+"CFBundleDisplayName" = "custom1021";
