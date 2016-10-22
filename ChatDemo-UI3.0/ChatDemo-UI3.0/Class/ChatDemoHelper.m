@@ -28,7 +28,6 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "CallViewController.h"
-#import "EMLog.h"
 
 @interface ChatDemoHelper()<EMCallManagerDelegate>
 {
@@ -569,8 +568,6 @@ static ChatDemoHelper *helper = nil;
                     [self.mainVC presentViewController:self.callController animated:NO completion:nil];
                 }
             });
-        
-            [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aSession.callId]];
         }
     }
 }
@@ -742,8 +739,6 @@ static ChatDemoHelper *helper = nil;
                         [self.mainVC presentViewController:self.callController animated:NO completion:nil];
                     }
                 });
-
-                [EMLog log:[NSString stringWithFormat:@"ChatDemoHelper::presentCallController %@", aCallSession.callId]];
             }
             
             [self _startCallTimer];
