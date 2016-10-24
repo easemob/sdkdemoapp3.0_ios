@@ -36,7 +36,11 @@
     [self setupForDismissKeyboard];
     
     _usernameTextField.delegate = self;
+    _usernameTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, _usernameTextField.height)];
+    _usernameTextField.leftViewMode = UITextFieldViewModeAlways;
     _passwordTextField.delegate = self;
+    _passwordTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, _usernameTextField.height)];
+    _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
 }
 
 - (void)setBackgroundColor
@@ -59,9 +63,11 @@
 - (IBAction)doLogin:(id)sender
 {
     __weak typeof(self) weakSelf = self;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] loginWithUsername:_usernameTextField.text
                                       password:_passwordTextField.text
                                     completion:^(NSString *aUsername, EMError *aError) {
+                                        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                                         if (!aError) {
                                             [[EMClient sharedClient].options setIsAutoLogin:YES];
                                             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
@@ -106,12 +112,16 @@
     
     }
     WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] registerWithUsername:_usernameTextField.text
                                          password:_passwordTextField.text
                                        completion:^(NSString *aUsername, EMError *aError) {
+                                           NSString *alertStr = nil;
+                                           [MBProgressHUD hideAllHUDsForView:weakSelf.view animated:YES];
                                            if (!aError) {
+                                               alertStr = NSLocalizedString(@"login.signup.succeed", @"Sign in succeed");
                                            } else {
-                                               NSString *alertStr = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
+                                               alertStr = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
                                                switch (aError.code)
                                                {
                                                    case EMErrorServerNotReachable:
@@ -135,9 +145,9 @@
                                                        weakSelf.errorLabel.text = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
                                                        break;
                                                }
-                                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
-                                               [alert show];
                                            }
+                                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
+                                           [alert show];
                                        }];
 }
 

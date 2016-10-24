@@ -8,6 +8,8 @@
 
 #import "EMChatBaseBubbleView.h"
 
+#import "EMMessageModel.h"
+
 @interface EMChatBaseBubbleView ()
 
 @end
@@ -45,13 +47,13 @@
 
 #pragma mark - setter
 
-- (void)setMessage:(EMMessage *)message
+- (void)setModel:(EMMessageModel *)model
 {
-    _message = message;
-    _backImageView.backgroundColor = _message.direction == EMMessageDirectionSend ? RGBACOLOR(0, 186, 110, 1) : RGBACOLOR(236, 239, 241, 1);
+    _model = model;
+    _backImageView.backgroundColor = model.message.direction == EMMessageDirectionSend ? RGBACOLOR(0, 186, 110, 1) : RGBACOLOR(236, 239, 241, 1);
 }
 
-+ (CGFloat)heightForBubbleWithMessage:(EMMessage *)message
++ (CGFloat)heightForBubbleWithMessageModel:(EMMessageModel *)model
 {
     return 100.f;
 }
@@ -61,7 +63,7 @@
 - (void)bubbleViewPressed:(id)sender
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didBubbleViewPressed:)]) {
-        [self.delegate didBubbleViewPressed:self.message];
+        [self.delegate didBubbleViewPressed:self.model];
     }
 }
 

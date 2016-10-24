@@ -32,6 +32,7 @@
 "login.changebutton.login" = "Log in";
 "login.taken" = "Username taken";
 "login.signup.failure" = "Sign up failure";
+"login.signup.succeed" = "Sign up succeed";
 "login.failure" = "Login failure";
 "login.failure.password.notmatch" = "Password does not match username";
 "login.ok" = "Ok";
@@ -51,6 +52,7 @@
 "chat.delete" = "Delete";
 "chat.copy" = "Copy";
 "chat.cancel" = "Cancel";
+"chat.placeHolder" = "Send Message";
 
 //error
 "error.connectNetworkFail" = "No network connection!";
@@ -165,3 +167,8 @@
 "message.friendapply.agree" = "%@ agreed to add friends to apply";
 "message.friendapply.refuse" = "%@ refuse to add friends to apply";
 "message.inputGroupSubject" = "Please input a group theme";
+
+//apns
+"apns.failToRegisterApns" = "Fail to register apns";
+"apns.failToBindDeviceToken" = "Fail to bind device token";
+"apns.content" = "Apns content";

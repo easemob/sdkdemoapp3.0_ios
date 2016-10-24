@@ -68,23 +68,26 @@
     self.title = NSLocalizedString(@"title.contacts", @"Contacts");
     _contactsVC = [[EMContactsViewController alloc] init];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.contacts", @"Contacts")
-                                                           image:nil
+                                                           image:[UIImage imageNamed:@"Contacts"]
                                                              tag:0];
+    [_contactsVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"Contacts_active"]];
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     [_contactsVC setupNavigationItem:self.navigationItem];
     
     _chatsVC = [[EMChatsViewController alloc] init];
     _chatsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.chats", @"Chats")
-                                                        image:nil
+                                                        image:[UIImage imageNamed:@"Chats"]
                                                           tag:1];
+    [_chatsVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"Chats_active"]];
     [self unSelectedTapTabBarItems:_chatsVC.tabBarItem];
     [self selectedTapTabBarItems:_chatsVC.tabBarItem];
     
     _settingsVC = [[EMSettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.settings", @"Settings")
-                                                           image:nil
+                                                           image:[UIImage imageNamed:@"Settings"]
                                                              tag:2];
+    [_settingsVC.tabBarItem setSelectedImage:[UIImage imageNamed:@"Settings_active"]];
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
     

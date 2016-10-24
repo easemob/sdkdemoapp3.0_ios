@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class EMMessageModel;
 @protocol EMChatBaseBubbleViewDelegate <NSObject>
 
 @optional
 
-- (void)didBubbleViewPressed:(EMMessage*)message;
+- (void)didBubbleViewPressed:(EMMessageModel*)models;
 
 - (void)didBubbleViewLongPressed;
 
@@ -22,10 +23,10 @@
 
 @property (strong, nonatomic) UIImageView *backImageView;
 
-@property (strong, nonatomic) EMMessage *message;
+@property (strong, nonatomic) EMMessageModel *model;
 
 @property (weak, nonatomic) id<EMChatBaseBubbleViewDelegate> delegate;
 
-+ (CGFloat)heightForBubbleWithMessage:(EMMessage *)message;
++ (CGFloat)heightForBubbleWithMessageModel:(EMMessageModel *)model;
 
 @end

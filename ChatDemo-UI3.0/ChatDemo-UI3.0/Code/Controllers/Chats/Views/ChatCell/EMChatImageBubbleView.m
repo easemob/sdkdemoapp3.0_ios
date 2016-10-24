@@ -8,6 +8,8 @@
 
 #import "EMChatImageBubbleView.h"
 
+#import "EMMessageModel.h"
+
 #define MAX_SIZE 250
 
 @interface EMChatImageBubbleView ()
@@ -30,8 +32,8 @@
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGSize retSize;
-    EMImageMessageBody *body = (EMImageMessageBody*)self.message.body;
-    if (self.message.ext) {
+    EMImageMessageBody *body = (EMImageMessageBody*)self.model.message.body;
+    if (self.model.message.ext) {
         retSize = CGSizeMake(0, 0);
     } else {
         retSize = body.size;
@@ -49,7 +51,7 @@
         retSize.width = width;
         retSize.height = MAX_SIZE;
     }
-    if (self.message.ext) {
+    if (self.model.message.ext) {
         retSize.height = MAX_SIZE / 4 * 3;
     }
     
@@ -63,10 +65,10 @@
 
 #pragma mark - setter
 
-- (void)setMessage:(EMMessage *)message
+- (void)setModel:(EMMessageModel *)model
 {
-    [super setMessage:message];
-    EMImageMessageBody *body = (EMImageMessageBody*)message.body;
+    [super setModel:model];
+    EMImageMessageBody *body = (EMImageMessageBody*)model.message.body;
     
     NSData *imageData = [NSData dataWithContentsOfFile:body.localPath];
     if (imageData.length) {
@@ -78,11 +80,11 @@
     }
 }
 
-+ (CGFloat)heightForBubbleWithMessage:(EMMessage *)message
++ (CGFloat)heightForBubbleWithMessageModel:(EMMessageModel *)model
 {
     CGSize retSize;
-    EMImageMessageBody *body = (EMImageMessageBody*)message.body;
-    if (message.ext) {
+    EMImageMessageBody *body = (EMImageMessageBody*)model.message.body;
+    if (model.message.ext) {
         retSize = CGSizeMake(0, 0);
     } else {
         retSize = body.size;
@@ -100,7 +102,7 @@
         retSize.width = width;
         retSize.height = MAX_SIZE;
     }
-    if (message.ext) {
+    if (model.message.ext) {
         retSize.height = MAX_SIZE / 4 * 3;
     }
     

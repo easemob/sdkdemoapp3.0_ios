@@ -21,6 +21,7 @@
 #import "EaseCallManager.h"
 #import "EMGroupInfoViewController.h"
 #import "EMConversationModel.h"
+#import "EMMessageModel.h"
 
 @interface EMChatViewController () <EMChatToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,EMLocationViewDelegate,EMChatManagerDelegate,EMChatBaseCellDelegate,UIActionSheetDelegate>
 
@@ -38,6 +39,7 @@
 @property (strong, nonatomic) NSIndexPath *longPressIndexPath;
 
 @property (strong, nonatomic) EMConversation *conversation;
+@property (strong, nonatomic) EMMessageModel *prevAudioModel;
 
 @end
 
@@ -180,14 +182,14 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EMMessage *message = [self.dataSource objectAtIndex:indexPath.row];
-    NSString *CellIdentifier = [EMChatBaseCell cellIdentifierForMessage:message];
+    EMMessageModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    NSString *CellIdentifier = [EMChatBaseCell cellIdentifierForMessageModel:model];
     EMChatBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[EMChatBaseCell alloc] initWithMessage:message];
+        cell = [[EMChatBaseCell alloc] initWithMessageModel:model];
         cell.delegate = self;
     }
-    [cell setMessage:message];
+    [cell setMessageModel:model];
     return cell;
 }
 
@@ -199,8 +201,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    EMMessage *message = [self.dataSource objectAtIndex:indexPath.row];
-    return [EMChatBaseCell heightForMessage:message];
+    EMMessageModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    return [EMChatBaseCell heightForMessageModel:model];
 }
 
 #pragma mark - EMChatToolBarDelegate
@@ -362,56 +364,55 @@
 
 #pragma mark - EMChatBaseCellDelegate
 
-- (void)didHeadImagePressed:(EMMessage *)message
+- (void)didHeadImagePressed:(EMMessageModel *)model
 {
-
+    
 }
 
-- (void)didImageCellPressed:(EMMessage *)message
+- (void)didImageCellPressed:(EMMessageModel *)model
 {
-    if ([self _shouldSendHasReadAckForMessage:message read:YES]) {
-        [self _sendHasReadResponseForMessages:@[message] isRead:YES];
+    if ([self _shouldSendHasReadAckForMessage:model.message read:YES]) {
+        [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
     }
-    EMImageMessageBody *body = (EMImageMessageBody*)message.body;
+    EMImageMessageBody *body = (EMImageMessageBody*)model.message.body;
     [[EMMessageReadManager shareInstance] showBrowserWithImages:@[[NSURL URLWithString:body.remotePath]]];
 }
 
-- (void)didAudioCellPressed:(EMMessage *)message
+- (void)didAudioCellPressed:(EMMessageModel *)model
 {
-    EMVoiceMessageBody *body = (EMVoiceMessageBody*)message.body;
+    EMVoiceMessageBody *body = (EMVoiceMessageBody*)model.message.body;
     EMDownloadStatus downloadStatus = [body downloadStatus];
     if (downloadStatus == EMDownloadStatusDownloading) {
         return;
     } else if (downloadStatus == EMDownloadStatusFailed) {
-        [[EMClient sharedClient].chatManager downloadMessageAttachment:message progress:nil completion:nil];
+        [[EMClient sharedClient].chatManager downloadMessageAttachment:model.message progress:nil completion:nil];
         return;
     }
     
     if (body.type == EMMessageBodyTypeVoice) {
-        if ([self _shouldSendHasReadAckForMessage:message read:YES]) {
-            [self _sendHasReadResponseForMessages:@[message] isRead:YES];
+        if ([self _shouldSendHasReadAckForMessage:model.message read:YES]) {
+            [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
         }
-//        [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
-//        __weak EaseMessageViewController *weakSelf = self;
-//        BOOL isPrepare = [[EaseMessageReadManager defaultManager] prepareMessageAudioModel:model updateViewCompletion:^(EaseMessageModel *prevAudioModel, EaseMessageModel *currentAudioModel) {
-//            if (prevAudioModel || currentAudioModel) {
-//                [weakSelf.tableView reloadData];
-//            }
-//        }];
+        
+        if (_prevAudioModel == nil) {
+            _prevAudioModel= model;
+            model.isPlaying = YES;
+        } else {
+            _prevAudioModel.isPlaying = NO;
+            model.isPlaying = YES;
+        }
+        [self.tableView reloadData];
         
         BOOL isPrepare = YES;
         
         if (isPrepare) {
-//            _isPlayingAudio = YES;
             WEAK_SELF
+            _prevAudioModel = model;
             [[EMCDDeviceManager sharedInstance] enableProximitySensor];
             [[EMCDDeviceManager sharedInstance] asyncPlayingWithPath:body.localPath completion:^(NSError *error) {
-//                [[EaseMessageReadManager defaultManager] stopMessageAudioModel];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.tableView reloadData];
-//                    weakSelf.isPlayingAudio = NO;
-                    [[EMCDDeviceManager sharedInstance] disableProximitySensor];
-//                });
+                [weakSelf.tableView reloadData];
+                [[EMCDDeviceManager sharedInstance] disableProximitySensor];
+                model.isPlaying = NO;
             }];
         }
         else{
@@ -420,12 +421,12 @@
     }
 }
 
-- (void)didVideoCellPressed:(EMMessage *)message
+- (void)didVideoCellPressed:(EMMessageModel*)model
 {
-    EMVideoMessageBody *videoBody = (EMVideoMessageBody *)message.body;
+    EMVideoMessageBody *videoBody = (EMVideoMessageBody *)model.message.body;
     if (videoBody.downloadStatus == EMDownloadStatusSuccessed) {
-        if ([self _shouldSendHasReadAckForMessage:message read:YES]) {
-            [self _sendHasReadResponseForMessages:@[message] isRead:YES];
+        if ([self _shouldSendHasReadAckForMessage:model.message read:YES]) {
+            [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
         }
         NSURL *videoURL = [NSURL fileURLWithPath:videoBody.localPath];
         MPMoviePlayerViewController *moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:videoURL];
@@ -433,14 +434,14 @@
         moviePlayerController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
         [self presentMoviePlayerViewControllerAnimated:moviePlayerController];
     } else {
-        [[EMClient sharedClient].chatManager downloadMessageAttachment:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        [[EMClient sharedClient].chatManager downloadMessageAttachment:model.message progress:nil completion:^(EMMessage *message, EMError *error) {
         }];
     }
 }
 
-- (void)didLocationCellPressed:(EMMessage *)message
+- (void)didLocationCellPressed:(EMMessageModel*)model
 {
-    EMLocationMessageBody *body = (EMLocationMessageBody*)message.body;
+    EMLocationMessageBody *body = (EMLocationMessageBody*)model.message.body;
     EMLocationViewController *locationController = [[EMLocationViewController alloc] initWithLocation:CLLocationCoordinate2DMake(body.latitude, body.longitude)];
     [self.navigationController pushViewController:locationController animated:YES];
 }
@@ -448,8 +449,8 @@
 - (void)didCellLongPressed:(EMChatBaseCell *)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    EMMessage *message = [self.dataSource objectAtIndex:indexPath.row];
-    if (message.body.type == EMMessageBodyTypeText) {
+    EMMessageModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    if (model.message.body.type == EMMessageBodyTypeText) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"chat.cancel", @"Cancel")
@@ -470,11 +471,11 @@
     }
 }
 
-- (void)didResendButtonPressed:(EMMessage *)message
+- (void)didResendButtonPressed:(EMMessageModel*)model
 {
     WEAK_SELF
     [self.tableView reloadData];
-    [[EMClient sharedClient].chatManager resendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+    [[EMClient sharedClient].chatManager resendMessage:model.message progress:nil completion:^(EMMessage *message, EMError *error) {
         NSLog(@"%@",error.errorDescription);
         [weakSelf.tableView reloadData];
     }];
@@ -489,9 +490,9 @@
             if (_longPressIndexPath && _longPressIndexPath.row > 0) {
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 if (_longPressIndexPath.row > 0) {
-                    EMMessage *message = [self.dataSource objectAtIndex:_longPressIndexPath.row];
-                    if (message.body.type == EMMessageBodyTypeText) {
-                        EMTextMessageBody *body = (EMTextMessageBody*)message.body;
+                    EMMessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
+                    if (model.message.body.type == EMMessageBodyTypeText) {
+                        EMTextMessageBody *body = (EMTextMessageBody*)model.message.body;
                         pasteboard.string = body.text;
                     }
                 }
@@ -499,9 +500,9 @@
             }
         } else if (buttonIndex == 1){
             if (_longPressIndexPath && _longPressIndexPath.row > 0) {
-                EMMessage *message = [self.dataSource objectAtIndex:_longPressIndexPath.row];
+                EMMessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
                 NSMutableIndexSet *indexs = [NSMutableIndexSet indexSetWithIndex:_longPressIndexPath.row];
-                [self.conversation deleteMessageWithId:message.messageId error:nil];
+                [self.conversation deleteMessageWithId:model.message.messageId error:nil];
                 NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:_longPressIndexPath, nil];;
                 if (_longPressIndexPath.row - 1 >= 0) {
                     id nextMessage = nil;
@@ -524,9 +525,9 @@
     } else if (actionSheet.tag == 1001) {
         if (buttonIndex == 0){
             if (_longPressIndexPath && _longPressIndexPath.row > 0) {
-                EMMessage *message = [self.dataSource objectAtIndex:_longPressIndexPath.row];
+                EMMessageModel *model = [self.dataSource objectAtIndex:_longPressIndexPath.row];
                 NSMutableIndexSet *indexs = [NSMutableIndexSet indexSetWithIndex:_longPressIndexPath.row];
-                [self.conversation deleteMessageWithId:message.messageId error:nil];
+                [self.conversation deleteMessageWithId:model.message.messageId error:nil];
                 NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:_longPressIndexPath, nil];;
                 if (_longPressIndexPath.row - 1 >= 0) {
                     id nextMessage = nil;
@@ -566,7 +567,9 @@
                                     completion:^(NSArray *aMessages, EMError *aError) {
                                         if (!aError) {
                                             [weakSelf.dataSource removeAllObjects];
-                                            [weakSelf.dataSource addObjectsFromArray:aMessages];
+                                            for (EMMessage * message in aMessages) {
+                                                [weakSelf _addMessageToDataSource:message];
+                                            }
                                             [weakSelf.refresh endRefreshing];
                                             [weakSelf.tableView reloadData];
                                             [weakSelf _scrollViewToBottom:NO];
@@ -614,13 +617,19 @@
 
 - (void)_sendMessage:(EMMessage*)message
 {
-    [self.dataSource addObject:message];
+    [self _addMessageToDataSource:message];
     [self.tableView reloadData];
     WEAK_SELF
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakSelf.tableView reloadData];
     }];
     [self _scrollViewToBottom:YES];
+}
+
+- (void)_addMessageToDataSource:(EMMessage*)message
+{
+    EMMessageModel *model = [[EMMessageModel alloc] initWithMessage:message];
+    [self.dataSource addObject:model];
 }
 
 - (void)_scrollViewToBottom:(BOOL)animated
@@ -774,7 +783,7 @@
 {
     for (EMMessage *message in aMessages) {
         if ([self.conversation.conversationId isEqualToString:message.conversationId]) {
-            [self.dataSource addObject:message];
+            [self _addMessageToDataSource:message];
             [self _sendHasReadResponseForMessages:@[message]
                                            isRead:NO];
             if ([self _shouldMarkMessageAsRead]) {

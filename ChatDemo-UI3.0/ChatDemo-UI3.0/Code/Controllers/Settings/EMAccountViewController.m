@@ -28,7 +28,7 @@
         
         _avatarView = [[UIImageView alloc] init];
         _avatarView.layer.cornerRadius = 45/2;
-        _avatarView.image = [UIImage imageNamed:@"123.jpg"];
+        _avatarView.image = [UIImage imageNamed:@"default_avatar"];
     }
     return _avatarView;
 }
@@ -55,7 +55,7 @@
         _signOutButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_signOutButton setFrame:CGRectMake(0, self.view.frame.size.height - 44 - 45, KScreenWidth, 45)];
         [_signOutButton setBackgroundColor:RGBACOLOR(255, 59, 48, 1.0)];
-        [_signOutButton setTitle:@"Sign Out" forState:UIControlStateNormal];
+        [_signOutButton setTitle:NSLocalizedString(@"setting.account.signout", @"Sign out") forState:UIControlStateNormal];
         [_signOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _signOutButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         [_signOutButton addTarget:self action:@selector(signOut) forControlEvents:UIControlEventTouchUpInside];
@@ -91,7 +91,7 @@
     if (indexPath.row == 0) {
         
         self.avatarView.frame = CGRectMake(15, 13, 45, 45);
-        self.editButton.frame = CGRectMake(75, 29, 24, 13);
+        self.editButton.frame = CGRectMake(75, 29, 30, 13);
         [cell.contentView addSubview:self.avatarView];
         [cell.contentView addSubview:self.editButton];
     } else {

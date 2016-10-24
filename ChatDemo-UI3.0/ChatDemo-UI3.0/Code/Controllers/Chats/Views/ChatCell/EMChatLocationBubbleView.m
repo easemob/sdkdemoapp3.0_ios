@@ -8,6 +8,8 @@
 
 #import "EMChatLocationBubbleView.h"
 
+#import "EMMessageModel.h"
+
 #define LABEL_FONT_SIZE 13.f
 #define LOCATION_IMAGEVIEW_SIZE 95
 
@@ -36,7 +38,7 @@
 -(CGSize)sizeThatFits:(CGSize)size
 {
     CGSize textBlockMinSize = {130, 25};
-    EMLocationMessageBody *body = (EMLocationMessageBody*)self.message.body;
+    EMLocationMessageBody *body = (EMLocationMessageBody*)self.model.message.body;
     CGSize addressSize = [body.address boundingRectWithSize:textBlockMinSize
                                                     options:NSStringDrawingUsesLineFragmentOrigin
                                                  attributes:@{NSFontAttributeName:_addressLabel.font}
@@ -51,14 +53,14 @@
     _addressLabel.frame = CGRectMake(5, self.backImageView.height - 30, self.backImageView.width - 10, 25);
 }
 
-- (void)setMessage:(EMMessage *)message
+- (void)setModel:(EMMessageModel *)model
 {
-    [super setMessage:message];
-    EMLocationMessageBody *body = (EMLocationMessageBody*)message.body;
+    [super setModel:model];
+    EMLocationMessageBody *body = (EMLocationMessageBody*)model.message.body;
     _addressLabel.text = body.address;
 }
 
-+ (CGFloat)heightForBubbleWithMessage:(EMMessage *)message
++ (CGFloat)heightForBubbleWithMessageModel:(EMMessageModel *)model
 {
     return 100.f;
 }

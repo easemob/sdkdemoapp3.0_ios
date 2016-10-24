@@ -31,7 +31,9 @@
                         <action selector="sendLocationAction:" destination="-1" eventType="touchUpInside" id="sFH-ev-YeT"/>
                     </connections>
                 </button>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="M50-52-5vU">
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M50-52-5vU">
+                    <frame key="frameInset" width="375" height="623"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="K43-Kr-9K7"/>
                     </connections>
@@ -39,12 +41,8 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="qFK-VZ-k4g" firstAttribute="top" secondItem="M50-52-5vU" secondAttribute="bottom" id="9yP-Cr-ofY"/>
                 <constraint firstAttribute="bottom" secondItem="qFK-VZ-k4g" secondAttribute="bottom" id="D2a-Lx-2z3"/>
                 <constraint firstAttribute="trailing" secondItem="qFK-VZ-k4g" secondAttribute="trailing" id="WkR-QV-bFD"/>
-                <constraint firstItem="M50-52-5vU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dsg-aZ-1Bx"/>
-                <constraint firstAttribute="trailing" secondItem="M50-52-5vU" secondAttribute="trailing" id="g9d-K5-LTy"/>
-                <constraint firstItem="M50-52-5vU" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="p5e-U4-g3O"/>
                 <constraint firstItem="qFK-VZ-k4g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zuS-CH-VsE"/>
             </constraints>
             <point key="canvasLocation" x="45.5" y="94.5"/>

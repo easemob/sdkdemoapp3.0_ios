@@ -26,7 +26,7 @@
                                 <constraint firstAttribute="height" constant="0.5" id="RPn-p2-fTT"/>
                             </constraints>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH" customClass="EMMessageTextView">
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="34" id="dGX-rF-JvR"/>
@@ -89,7 +89,7 @@
                                 <action selector="locationAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="N7j-Sk-DwR"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbQ-UG-S2E">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbQ-UG-S2E">
                             <frame key="frameInset" minX="342" minY="54" width="13" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" image="Icon_File_disable.png"/>
@@ -106,6 +106,11 @@
                         <constraint firstItem="JLV-Ip-5Ce" firstAttribute="top" secondItem="Lh5-oT-mc5" secondAttribute="top" id="sn6-ZS-2vI"/>
                         <constraint firstItem="34G-oT-3NH" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" constant="15" id="uad-od-MGq"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="kbQ-UG-S2E"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <outlet property="cameraButton" destination="S1W-J3-Mbn" id="vDO-r4-tHx"/>
                         <outlet property="emotionButton" destination="OSC-wW-s56" id="lfb-ag-IKg"/>

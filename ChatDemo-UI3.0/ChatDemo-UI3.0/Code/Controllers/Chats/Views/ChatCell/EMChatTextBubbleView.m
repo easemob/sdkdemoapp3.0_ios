@@ -9,6 +9,7 @@
 #import "EMChatTextBubbleView.h"
 
 #import "EMConvertToCommonEmoticonsHelper.h"
+#import "EMMessageModel.h"
 
 #define LABEL_FONT_SIZE 13.f
 #define BUBBLE_VIEW_PADDING 12.f
@@ -54,7 +55,7 @@
 {
     CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
     CGSize retSize;
-    NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)self.message.body).text];
+    NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)self.model.message.body).text];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:[[self class] lineSpacing]];//调整行间距
@@ -80,10 +81,10 @@
 
 #pragma mark - setter
 
-- (void)setMessage:(EMMessage *)message
+- (void)setModel:(EMMessageModel *)model
 {
-    [super setMessage:message];
-    NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)self.message.body).text];
+    [super setModel:model];
+    NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)self.model.message.body).text];
     NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc]
                                                     initWithString:text];
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -91,11 +92,11 @@
     [attributedString addAttribute:NSParagraphStyleAttributeName
                              value:paragraphStyle
                              range:NSMakeRange(0, [text length])];
-    _textLabel.textColor = self.message.direction == EMMessageDirectionSend ? RGBACOLOR(255, 255, 255, 1) : RGBACOLOR(12, 18, 24, 1);
+    _textLabel.textColor = self.model.message.direction == EMMessageDirectionSend ? RGBACOLOR(255, 255, 255, 1) : RGBACOLOR(12, 18, 24, 1);
     [_textLabel setAttributedText:attributedString];
 }
 
-+ (CGFloat)heightForBubbleWithMessage:(EMMessage *)message
++ (CGFloat)heightForBubbleWithMessageModel:(EMMessageModel *)model
 {
     CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
     CGSize size;
@@ -104,7 +105,7 @@
     dispatch_once(&onceToken, ^{
         systemVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
     });
-    NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)message.body).text];
+    NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)model.message.body).text];
     if (systemVersion >= 7.0) {
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:[[self class] lineSpacing]];//调整行间距
