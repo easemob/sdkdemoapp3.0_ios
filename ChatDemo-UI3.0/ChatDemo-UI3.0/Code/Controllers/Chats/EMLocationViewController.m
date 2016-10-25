@@ -47,8 +47,10 @@
     if (_isShowLocation) {
         [self removeToLocation:_currentLocationCoordinate];
         _sendButton.hidden = YES;
+        _mapView.height = KScreenHeight;
     } else {
         [self _startLocation];
+        _mapView.height = KScreenHeight - _sendButton.height;
     }
 }
 

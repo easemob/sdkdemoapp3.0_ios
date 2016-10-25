@@ -9,25 +9,26 @@
 #import <UIKit/UIKit.h>
 
 @class EMChatBaseCell;
+@class EMMessageModel;
 @protocol EMChatBaseCellDelegate <NSObject>
 
 @optional
 
-- (void)didHeadImagePressed:(EMMessage*)message;
+- (void)didHeadImagePressed:(EMMessageModel*)model;
 
-- (void)didTextCellPressed:(EMMessage*)message;
+- (void)didTextCellPressed:(EMMessageModel*)model;
 
-- (void)didImageCellPressed:(EMMessage*)message;
+- (void)didImageCellPressed:(EMMessageModel*)model;
 
-- (void)didAudioCellPressed:(EMMessage*)message;
+- (void)didAudioCellPressed:(EMMessageModel*)model;
 
-- (void)didVideoCellPressed:(EMMessage*)message;
+- (void)didVideoCellPressed:(EMMessageModel*)model;
 
-- (void)didLocationCellPressed:(EMMessage*)message;
+- (void)didLocationCellPressed:(EMMessageModel*)model;
 
 - (void)didCellLongPressed:(EMChatBaseCell*)cell;
 
-- (void)didResendButtonPressed:(EMMessage*)message;
+- (void)didResendButtonPressed:(EMMessageModel*)model;
 
 @end
 
@@ -35,12 +36,12 @@
 
 @property (weak, nonatomic) id<EMChatBaseCellDelegate> delegate;
 
-- (instancetype)initWithMessage:(EMMessage*)message;
+- (instancetype)initWithMessageModel:(EMMessageModel*)model;
 
-- (void)setMessage:(EMMessage*)message;
+- (void)setMessageModel:(EMMessageModel*)model;
 
-+ (CGFloat)heightForMessage:(EMMessage*)message;
++ (CGFloat)heightForMessageModel:(EMMessageModel*)model;
 
-+ (NSString *)cellIdentifierForMessage:(EMMessage *)message;
++ (NSString *)cellIdentifierForMessageModel:(EMMessageModel *)model;
 
 @end

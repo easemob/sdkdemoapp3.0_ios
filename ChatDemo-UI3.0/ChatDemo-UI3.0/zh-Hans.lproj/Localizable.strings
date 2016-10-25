@@ -8,6 +8,8 @@
 
 //title
 "title.contacts" = "联系人";
+"title.chats" = "会话";
+"title.settings" = "设置";
 "title.addContact" = "添加联系人";
 "title.newGroup" = "新建群组";
 "title.addParticipants" = "添加成员";
@@ -16,6 +18,74 @@
 "title.members" = "成员列表";
 "title.create" = "创建";
 
+//setting title
+"title.setting.about" = "关于";
+"title.setting.push" = "消息推送设置";
+"title.setting.pushdisplayname" = "推送设置显示";
+"title.setting.account" = "个人信息";
+"title.setting.chats" = "会话设置";
+
+//login
+"login.signup.tips" = "已经注册?";
+"login.tips" = "未注册账号?";
+"login.changebutton.signup" = "注册";
+"login.changebutton.login" = "登录";
+"login.taken" = "该账号已注册";
+"login.signup.failure" = "注册失败";
+"login.signup.succeed" = "注册成功";
+"login.failure" = "登陆失败";
+"login.failure.password.notmatch" = "密码与账号不匹配";
+"login.ok" = "确认";
+
+//chat
+"chat.not.delivered" = "未送达";
+"chat.read" = "已读";
+"chat.sent" = "发送";
+"chat.hold.record" = "按住说话";
+"chat.release.send" = "松开发送";
+"chat.release.cancel" = "松开取消";
+"chat.image1" = "[图片]";
+"chat.voice1" = "[语音]";
+"chat.location1" = "[位置]";
+"chat.video1" = "[视频]";
+"chat.file1" = "[文件]";
+"chat.delete" = "删除";
+"chat.copy" = "复制";
+"chat.cancel" = "取消";
+"chat.placeHolder" = "发送消息";
+
+//error
+"error.connectNetworkFail" = "连接服务器失败!";
+"error.connectServerFail" = "网络未连接!";
+"error.connectServerTimeout" = "连接服务器超时!";
+
+//setting
+"setting.about" = "关于";
+"setting.push" = "推送设置";
+"setting.account" = "账号";
+"setting.chats" = "会话设置";
+"setting.videoBitrate" = "调整实时视频比特率";
+
+//setting.about
+"setting.about.appversion" = "APP 版本";
+"setting.about.sdkversion" = "SDK 版本";
+"setting.about.uiversion" = "EaseUI 版本";
+
+//setting.push
+"setting.push.display" = "显示消息详情";
+"setting.push.enable" = "推送设置";
+"setting.push.on" = "开";
+"setting.push.off" = "关";
+"setting.push.displayname" = "推送显示昵称";
+"setting.push.tip" = "设置苹果推送时显示昵称";
+
+//setting.account
+"setting.account.edit" = "编辑";
+"setting.account.id" = "账号";
+"setting.account.signout" = "登出";
+
+//setting.chats
+"setting.chats.acceptInvitation" = "自动接受群组邀请";
 
 //loading
 "loading.dropdown" = "下拉加载...";
@@ -94,8 +164,12 @@
 "common.search" = "搜索";
 "common.open" = "打开";
 
-
 //message
 "message.friendapply.agree" = "%@同意了加好友申请";
 "message.friendapply.refuse" = "%@拒绝了加好友申请";
 "message.inputGroupSubject" = "请输入群组主题";
+
+//apns
+"apns.failToRegisterApns" = "注册推送失败";
+"apns.failToBindDeviceToken" = "消息推送与设备绑定失败";
+"apns.content" = "推送内容";

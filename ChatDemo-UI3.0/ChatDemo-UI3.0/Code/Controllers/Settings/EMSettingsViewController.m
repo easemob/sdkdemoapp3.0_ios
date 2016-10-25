@@ -145,7 +145,7 @@
     } else if (indexPath.row == 3) {
             
         EMChatsSettingViewController *chatSetting = [[EMChatsSettingViewController alloc] init];
-        chatSetting.title = NSLocalizedString(@"title.setting.Chats", @"Chats");
+        chatSetting.title = NSLocalizedString(@"title.setting.chats", @"Chats");
         [self.navigationController pushViewController:chatSetting animated:YES];
     }
 }

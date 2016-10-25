@@ -9,6 +9,7 @@
 #import "EMChatToolBar.h"
 
 #import "EMChatRecordView.h"
+#import "EMMessageTextView.h"
 #import "EMConvertToCommonEmoticonsHelper.h"
 
 #define kDefaultToolBarHeight 83
@@ -18,7 +19,7 @@
 @property (strong, nonatomic) UIView *activityButtomView;
 @property (nonatomic) BOOL isShowButtomView;
 
-@property (weak, nonatomic) IBOutlet UITextView *inputTextView;
+@property (weak, nonatomic) IBOutlet EMMessageTextView *inputTextView;
 
 @property (weak, nonatomic) IBOutlet UIButton *cameraButton;
 @property (weak, nonatomic) IBOutlet UIButton *photoButton;
@@ -46,6 +47,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+        
     }
     return self;
 }
@@ -56,6 +58,15 @@
     
     _inputTextView.layer.borderColor = RGBACOLOR(189, 189, 189, 1).CGColor;
     _inputTextView.layer.borderWidth = 0.5;
+    
+    _cameraButton.left = (KScreenWidth/5 - _cameraButton.width)/2;
+    _photoButton.left = (KScreenWidth/5 - _photoButton.width)/2 + KScreenWidth/5 * 1;
+    _emotionButton.left = (KScreenWidth/5 - _emotionButton.width)/2 + KScreenWidth/5 * 2;
+    _recordButton.left = (KScreenWidth/5 - _recordButton.width)/2 + KScreenWidth/5 * 3;
+    _locationButton.left = (KScreenWidth/5 - _locationButton.width)/2 + KScreenWidth/5 * 4;
+    
+    _inputTextView.placeHolder = NSLocalizedString(@"chat.placeHolder", @"Send Message");
+    _inputTextView.placeHolderTextColor = RGBACOLOR(173, 185, 193, 1);
 }
 
 - (void)drawRect:(CGRect)rect
@@ -94,11 +105,13 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(didSendText:)]) {
-            [self.delegate didSendText:[EMConvertToCommonEmoticonsHelper convertToCommonEmoticons:textView.text]];
+        if (text.length > 0) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(didSendText:)]) {
+                [self.delegate didSendText:[EMConvertToCommonEmoticonsHelper convertToCommonEmoticons:textView.text]];
+            }
+            textView.text = @"";
+            return NO;
         }
-        textView.text = @"";
-        return NO;
     }
     return YES;
 }

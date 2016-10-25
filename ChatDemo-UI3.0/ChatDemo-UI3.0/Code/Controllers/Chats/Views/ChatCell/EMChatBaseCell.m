@@ -14,6 +14,7 @@
 #import "EMChatAudioBubbleView.h"
 #import "EMChatVideoBubbleView.h"
 #import "EMChatLocationBubbleView.h"
+#import "EMMessageModel.h"
 
 #define HEAD_PADDING 15.f
 #define TIME_PADDING 45.f
@@ -34,7 +35,7 @@
 
 @property (strong, nonatomic) EMChatBaseBubbleView *bubbleView;
 
-@property (strong, nonatomic) EMMessage *message;
+@property (strong, nonatomic) EMMessageModel *model;
 
 - (IBAction)didResendButtonPressed:(id)sender;
 
@@ -51,11 +52,11 @@
     return self;
 }
 
-- (instancetype)initWithMessage:(EMMessage*)message
+- (instancetype)initWithMessageModel:(EMMessageModel *)model
 {
     self = (EMChatBaseCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatBaseCell" owner:nil options:nil] firstObject];
     if (self) {
-        [self _setupBubbleView:message];
+        [self _setupBubbleView:model];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didHeadImageSelected:)];
         self.headImageView.userInteractionEnabled = YES;
         [self.headImageView addGestureRecognizer:tap];
@@ -78,13 +79,13 @@
 {
     [super layoutSubviews];
     
-    _headImageView.left = _message.direction == EMMessageDirectionSend ? (self.width - _headImageView.width - HEAD_PADDING) : HEAD_PADDING;
+    _headImageView.left = _model.message.direction == EMMessageDirectionSend ? (self.width - _headImageView.width - HEAD_PADDING) : HEAD_PADDING;
     
-    _timeLabel.left = _message.direction == EMMessageDirectionSend ? (self.width - _timeLabel.width - TIME_PADDING) : TIME_PADDING;
+    _timeLabel.left = _model.message.direction == EMMessageDirectionSend ? (self.width - _timeLabel.width - TIME_PADDING) : TIME_PADDING;
     _timeLabel.top = self.height - BOTTOM_PADDING;
-    _timeLabel.textAlignment = _message.direction == EMMessageDirectionSend ? NSTextAlignmentRight : NSTextAlignmentLeft;
+    _timeLabel.textAlignment = _model.message.direction == EMMessageDirectionSend ? NSTextAlignmentRight : NSTextAlignmentLeft;
     
-    _bubbleView.left = _message.direction == EMMessageDirectionSend ? (self.width - _bubbleView.width - TIME_PADDING) : TIME_PADDING;
+    _bubbleView.left = _model.message.direction == EMMessageDirectionSend ? (self.width - _bubbleView.width - TIME_PADDING) : TIME_PADDING;
     _bubbleView.top = 5;
     
     _readLabel.left = KScreenWidth - 125;
@@ -103,33 +104,33 @@
 
 #pragma mark - EMChatBaseBubbleViewDelegate
 
-- (void)didBubbleViewPressed:(EMMessage *)message
+- (void)didBubbleViewPressed:(EMMessageModel *)model
 {
     if (self.delegate) {
-        switch (message.body.type) {
+        switch (model.message.body.type) {
             case EMMessageBodyTypeText:
                 if ([self.delegate respondsToSelector:@selector(didTextCellPressed:)]) {
-                    [self.delegate didTextCellPressed:message];
+                    [self.delegate didTextCellPressed:model];
                 }
                 break;
             case EMMessageBodyTypeImage:
                 if ([self.delegate respondsToSelector:@selector(didImageCellPressed:)]) {
-                    [self.delegate didImageCellPressed:message];
+                    [self.delegate didImageCellPressed:model];
                 }
                 break;
             case EMMessageBodyTypeVoice:
                 if ([self.delegate respondsToSelector:@selector(didAudioCellPressed:)]) {
-                    [self.delegate didAudioCellPressed:message];
+                    [self.delegate didAudioCellPressed:model];
                 }
                 break;
             case EMMessageBodyTypeVideo:
                 if ([self.delegate respondsToSelector:@selector(didVideoCellPressed:)]) {
-                    [self.delegate didVideoCellPressed:message];
+                    [self.delegate didVideoCellPressed:model];
                 }
                 break;
             case EMMessageBodyTypeLocation:
                 if ([self.delegate respondsToSelector:@selector(didLocationCellPressed:)]) {
-                    [self.delegate didLocationCellPressed:message];
+                    [self.delegate didLocationCellPressed:model];
                 }
                 break;
             default:
@@ -150,23 +151,23 @@
 - (void)didHeadImageSelected:(id)sender
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didHeadImagePressed:)]) {
-        [self.delegate didHeadImagePressed:self.message];
+        [self.delegate didHeadImagePressed:self.model];
     }
 }
 
 - (IBAction)didResendButtonPressed:(id)sender
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didResendButtonPressed:)]) {
-        [self.delegate didResendButtonPressed:self.message];
+        [self.delegate didResendButtonPressed:self.model];
     }
 }
 
 #pragma mark - private
 
-- (void)_setupBubbleView:(EMMessage*)message
+- (void)_setupBubbleView:(EMMessageModel*)model
 {
-    _message = message;
-    switch (message.body.type) {
+    _model = model;
+    switch (model.message.body.type) {
         case EMMessageBodyTypeText:
             _bubbleView = [[EMChatTextBubbleView alloc] init];
             break;
@@ -208,8 +209,8 @@
 - (void)_setViewsDisplay
 {
     _timeLabel.hidden = NO;
-    if (_message.direction == EMMessageDirectionSend) {
-        if (_message.status == EMMessageStatusFailed || _message.status == EMMessageStatusPending) {
+    if (_model.message.direction == EMMessageDirectionSend) {
+        if (_model.message.status == EMMessageStatusFailed || _model.message.status == EMMessageStatusPending) {
             _notDeliveredLabel.text = NSLocalizedString(@"chat.not.delivered", @"Not Delivered");
             _checkView.hidden = YES;
             _readLabel.hidden = YES;
@@ -218,8 +219,8 @@
             _resendButton.hidden = NO;
             _notDeliveredLabel.hidden = NO;
             
-        } else if (_message.status == EMMessageStatusSuccessed) {
-            if (_message.isReadAcked) {
+        } else if (_model.message.status == EMMessageStatusSuccessed) {
+            if (_model.message.isReadAcked) {
                 _readLabel.text = NSLocalizedString(@"chat.read", @"Read");
                 _checkView.hidden = NO;
             } else {
@@ -230,7 +231,7 @@
             _notDeliveredLabel.hidden = YES;
             _activityView.hidden = YES;
             _readLabel.hidden = NO;
-        } else if (_message.status == EMMessageStatusDelivering) {
+        } else if (_model.message.status == EMMessageStatusDelivering) {
             _activityView.hidden = YES;
             _readLabel.hidden = YES;
             _checkView.hidden = YES;
@@ -250,35 +251,35 @@
 
 #pragma mark - public
 
-- (void)setMessage:(EMMessage*)message
+- (void)setMessageModel:(EMMessageModel *)model
 {
-    _message = message;
+    _model = model;
     
-    [_bubbleView setMessage:message];
+    [_bubbleView setModel:_model];
     [_bubbleView sizeToFit];
     
     _headImageView.image = [UIImage imageNamed:@"default_avatar"];
-    _timeLabel.text = [self _getMessageTime:message];
+    _timeLabel.text = [self _getMessageTime:model.message];
 }
 
-+ (CGFloat)heightForMessage:(EMMessage*)message
++ (CGFloat)heightForMessageModel:(EMMessageModel *)model
 {
     CGFloat height = 100.f;
-    switch (message.body.type) {
+    switch (model.message.body.type) {
         case EMMessageBodyTypeText:
-            height = [EMChatTextBubbleView heightForBubbleWithMessage:message] + 26.f;
+            height = [EMChatTextBubbleView heightForBubbleWithMessageModel:model] + 26.f;
             break;
         case EMMessageBodyTypeImage:
-            height = [EMChatImageBubbleView heightForBubbleWithMessage:message] + 26.f;
+            height = [EMChatImageBubbleView heightForBubbleWithMessageModel:model] + 26.f;
             break;
         case EMMessageBodyTypeLocation:
-            height = [EMChatLocationBubbleView heightForBubbleWithMessage:message] + 26.f;
+            height = [EMChatLocationBubbleView heightForBubbleWithMessageModel:model] + 26.f;
             break;
         case EMMessageBodyTypeVoice:
-            height = [EMChatAudioBubbleView heightForBubbleWithMessage:message] + 26.f;
+            height = [EMChatAudioBubbleView heightForBubbleWithMessageModel:model] + 26.f;
             break;
         case EMMessageBodyTypeVideo:
-            height = [EMChatVideoBubbleView heightForBubbleWithMessage:message] + 26.f;
+            height = [EMChatVideoBubbleView heightForBubbleWithMessageModel:model] + 26.f;
             break;
         default:
             break;
@@ -286,17 +287,17 @@
     return height;
 }
 
-+ (NSString *)cellIdentifierForMessage:(EMMessage *)message
++ (NSString *)cellIdentifierForMessageModel:(EMMessageModel *)model
 {
     NSString *identifier = @"MessageCell";
-    if (message.direction == EMMessageDirectionSend) {
+    if (model.message.direction == EMMessageDirectionSend) {
         identifier = [identifier stringByAppendingString:@"Sender"];
     }
     else{
         identifier = [identifier stringByAppendingString:@"Receiver"];
     }
     
-    switch (message.body.type) {
+    switch (model.message.body.type) {
         case EMMessageBodyTypeText:
             identifier = [identifier stringByAppendingString:@"Text"];
             break;

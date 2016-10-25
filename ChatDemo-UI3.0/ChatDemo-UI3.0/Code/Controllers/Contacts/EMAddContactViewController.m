@@ -116,15 +116,16 @@
 
 - (void)sendAddContactRequest:(NSString *)contactName {
     NSString *requestMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"),contactName];
-    EMError *error = [[EMClient sharedClient].contactManager addContact:contactName
-                                                                message:requestMessage];
-    _addStatusLabel.hidden = NO;
-    if (!error) {
-        _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.sendApplySuccess", @"Requested") attributes:@{NSForegroundColorAttributeName:KermitGreenTwoColor}];
-    }
-    else {
-        _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:error.errorDescription attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
-    }
+    WEAK_SELF
+    [[EMClient sharedClient].contactManager addContact:contactName message:requestMessage completion:^(NSString *aUsername, EMError *aError) {
+        weakSelf.addStatusLabel.hidden = NO;
+        if (!aError) {
+            weakSelf.addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.sendApplySuccess", @"Requested") attributes:@{NSForegroundColorAttributeName:KermitGreenTwoColor}];
+        }
+        else {
+            weakSelf.addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:aError.errorDescription attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
+        }
+    }];
 }
 
 #pragma mark - Action Method

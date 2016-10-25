@@ -8,6 +8,8 @@
 
 #import "EMChatVideoBubbleView.h"
 
+#import "EMMessageModel.h"
+
 #define MAX_SIZE 250
 
 @implementation EMChatVideoBubbleView
@@ -31,8 +33,8 @@
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGSize retSize;
-    EMVideoMessageBody *body = (EMVideoMessageBody*)self.message.body;
-    if (self.message.ext) {
+    EMVideoMessageBody *body = (EMVideoMessageBody*)self.model.message.body;
+    if (self.model.message.ext) {
         retSize = CGSizeMake(0, 0);
     } else {
         retSize = body.thumbnailSize;
@@ -50,17 +52,17 @@
         retSize.width = width;
         retSize.height = MAX_SIZE;
     }
-    if (self.message.ext) {
+    if (self.model.message.ext) {
         retSize.height = MAX_SIZE / 4 * 3;
     }
     return retSize;
 }
 
-- (void)setMessage:(EMMessage *)message
+- (void)setModel:(EMMessageModel*)model;
 {
-    [super setMessage:message];
+    [super setModel:model];
     
-    EMVideoMessageBody *videoBody = (EMVideoMessageBody *)message.body;
+    EMVideoMessageBody *videoBody = (EMVideoMessageBody *)model.message.body;
     if ([videoBody.thumbnailLocalPath length] > 0) {
         NSData *thumbnailImageData = [NSData dataWithContentsOfFile:videoBody.thumbnailLocalPath];
         if (thumbnailImageData.length) {
@@ -71,11 +73,11 @@
     }
 }
 
-+ (CGFloat)heightForBubbleWithMessage:(EMMessage *)message
++ (CGFloat)heightForBubbleWithMessageModel:(EMMessageModel *)model
 {
     CGSize retSize;
-    EMVideoMessageBody *body = (EMVideoMessageBody*)message.body;
-    if (message.ext) {
+    EMVideoMessageBody *body = (EMVideoMessageBody*)model.message.body;
+    if (model.message.ext) {
         retSize = CGSizeMake(0, 0);
     } else {
         retSize = body.thumbnailSize;
@@ -93,7 +95,7 @@
         retSize.width = width;
         retSize.height = MAX_SIZE;
     }
-    if (message.ext) {
+    if (model.message.ext) {
         retSize.height = MAX_SIZE / 4 * 3;
     }
     

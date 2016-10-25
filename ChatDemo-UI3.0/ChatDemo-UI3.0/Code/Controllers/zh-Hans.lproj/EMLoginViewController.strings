@@ -1,0 +1,18 @@
+
+/* Class = "UILabel"; text = "Yay! New to Hyphenate?"; ObjectID = "7tK-h9-Mgx"; */
+"7tK-h9-Mgx.text" = "未注册账号?";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "IgV-CU-0WE"; */
+"IgV-CU-0WE.placeholder" = "密 码";
+
+/* Class = "UITextField"; placeholder = "Hyphenate ID"; ObjectID = "LmY-eG-rqi"; */
+"LmY-eG-rqi.placeholder" = "账 号";
+
+/* Class = "UIButton"; normalTitle = "LOG IN"; ObjectID = "ex1-Ar-Dxs"; */
+"ex1-Ar-Dxs.normalTitle" = "登 录";
+
+/* Class = "UIButton"; normalTitle = "Sign up"; ObjectID = "jye-rI-jmN"; */
+"jye-rI-jmN.normalTitle" = "注 册";
+
+/* Class = "UIButton"; normalTitle = "SIGN UP"; ObjectID = "poU-kr-smL"; */
+"poU-kr-smL.normalTitle" = "注 册";

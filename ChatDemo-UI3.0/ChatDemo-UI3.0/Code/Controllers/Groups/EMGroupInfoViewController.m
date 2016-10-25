@@ -108,16 +108,12 @@
 
 - (void)fetchGroupInfo {
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        EMError *error = nil;
-        EMGroup *group = [[EMClient sharedClient].groupManager fetchGroupInfo:_currentGroup.groupId
-                                                           includeMembersList:YES
-                                                                        error:&error];
-        if (!error) {
-            weakSelf.currentGroup = group;
+    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerByID:_currentGroup.groupId includeMembersList:YES completion:^(EMGroup *aGroup, EMError *aError) {
+        if (!aError) {
+            weakSelf.currentGroup = aGroup;
             [weakSelf reloadOccupants];
         }
-    });
+    }];
 }
 
 - (void)reloadOccupants {
@@ -216,34 +212,26 @@
 - (IBAction)deleteOrLeaveGroupAction:(UIButton *)sender {
     __weak typeof(self) weakSelf = self;
     if ([self isGroupOwner]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            EMError *error = nil;
-            [[EMClient sharedClient].groupManager destroyGroup:weakSelf.currentGroup.groupId error:&error];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error) {
-                    [weakSelf showPromptAlert:NSLocalizedString(@"group.destroyFailure", @"Destroy group failure")];
-                }
-                else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }
-            });
-        });
+        [[EMClient sharedClient].groupManager destroyGroup:self.currentGroup.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+            if (aError) {
+                [weakSelf showPromptAlert:NSLocalizedString(@"group.destroyFailure", @"Destroy group failure")];
+            }
+            else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        }];
     }
     else {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            EMError *error = nil;
-            [[EMClient sharedClient].groupManager leaveGroup:weakSelf.currentGroup.groupId error:&error];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error) {
-                    [weakSelf showPromptAlert:NSLocalizedString(@"group.leaveFailure", @"Leave group failure")];
-                }
-                else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }
-            });
-        });
+        [[EMClient sharedClient].groupManager leaveGroup:self.currentGroup.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+            if (aError) {
+                [weakSelf showPromptAlert:NSLocalizedString(@"group.leaveFailure", @"Leave group failure")];
+            }
+            else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        }];
     }
     
 }
@@ -447,17 +435,12 @@
     }];
     if (invitees.count > 0) {
         __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            EMError *error = nil;
-            [[EMClient sharedClient].groupManager addOccupants:invitees
-                                                       toGroup:weakSelf.currentGroup.groupId
-                                                welcomeMessage:@""
-                                                         error:&error];
-            if (!error) {
+        [[EMClient sharedClient].groupManager addMembers:invitees toGroup:self.currentGroup.groupId message:@"" completion:^(EMGroup *aGroup, EMError *aError) {
+            if (!aError) {
                 [weakSelf reloadOccupants];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
             }
-        });
+        }];
     }
 }
 

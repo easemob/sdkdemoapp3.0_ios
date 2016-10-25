@@ -79,17 +79,13 @@
         return;
     }
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        EMError *error = nil;
-        NSArray *bubbyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            if (!error) {
-                [weakSelf updateContacts:bubbyList];
-                [weakSelf.tableView reloadData];
-            }
-            [weakSelf endHeaderRefresh];
-        });
-    });
+    [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
+        if (!aError) {
+            [weakSelf updateContacts:aList];
+            [weakSelf.tableView reloadData];
+        }
+        [weakSelf endHeaderRefresh];
+    }];
 }
 
 - (void)reloadContacts {

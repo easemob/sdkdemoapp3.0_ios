@@ -12,15 +12,17 @@
 #import "EMChatsCell.h"
 #import "EMRealtimeSearchUtil.h"
 #import "EMChatViewController.h"
-#import "EMSearchDisplayController.h"
 #import "EMSearchBar.h"
 #import "EMConversationModel.h"
 
 @interface EMChatsViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate>
+{
+    BOOL _isSearchState;
+}
 
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) EMSearchDisplayController *searchController;
+@property (strong, nonatomic) NSMutableArray *resultsSource;
 
 @end
 
@@ -38,7 +40,7 @@
     }
     
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |UIViewAutoresizingFlexibleHeight;
-    
+    _isSearchState = NO;
     WEAK_SELF
     self.headerRefresh = ^(BOOL isRefreshing){
         [weakSelf tableViewDidTriggerHeaderRefresh];
@@ -99,42 +101,12 @@
     return _dataSource;
 }
 
-- (EMSearchDisplayController*)searchController
+- (NSMutableArray*)resultsSource
 {
-    if (_searchController == nil) {
-        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.delegate = self;
-        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _searchController.searchResultsTableView.tableFooterView = [[UIView alloc] init];
-        _searchController.displaysSearchBarInNavigationBar = YES;
-        
-        __weak EMChatsViewController *weakSelf = self;
-        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-            NSString *CellIdentifier = @"EMChatsSearchCell";
-            EMChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = (EMChatsCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatsCell" owner:nil options:nil] firstObject];
-            }
-            EMConversationModel *model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            [(EMChatsCell*)cell setConversationModel:model];
-            
-            return cell;
-        }];
-        
-        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-            return 90;
-        }];
-        
-        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            [weakSelf.searchController.searchBar endEditing:YES];
-            EMConversationModel *model = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.conversation.conversationId conversationType:model.conversation.type];
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
-            [weakSelf.navigationController pushViewController:chatViewController animated:YES];
-        }];
+    if (_resultsSource == nil) {
+        _resultsSource = [NSMutableArray array];
     }
-    return _searchController;
+    return _resultsSource;
 }
 
 #pragma mark - Table view data source
@@ -144,10 +116,25 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (_isSearchState) {
+        return [self.resultsSource count];
+    }
     return [self.dataSource count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_isSearchState) {
+        NSString *CellIdentifier = @"EMChatsSearchCell";
+        EMChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = (EMChatsCell*)[[[NSBundle mainBundle]loadNibNamed:@"EMChatsCell" owner:nil options:nil] firstObject];
+        }
+        EMConversationModel *model = [self.resultsSource objectAtIndex:indexPath.row];
+        [(EMChatsCell*)cell setConversationModel:model];
+        
+        return cell;
+    }
+    
     NSString *CellIdentifier = @"EMChatsCell";
     EMChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -159,6 +146,9 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_isSearchState) {
+        return NO;
+    }
     return YES;
 }
 
@@ -177,7 +167,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    EMConversationModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    
+    EMConversationModel *model = nil;
+    if (_isSearchState) {
+        model = [self.resultsSource objectAtIndex:indexPath.row];
+    } else {
+        model = [self.dataSource objectAtIndex:indexPath.row];
+    }
+    
     EMChatViewController *chatViewController = [[EMChatViewController alloc] initWithConversationId:model.conversation.conversationId conversationType:model.conversation.type];
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
     [self.navigationController pushViewController:chatViewController animated:YES];
@@ -193,7 +190,8 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    [self.searchController setActive:YES animated:YES];
+//    [self.searchController setActive:YES animated:YES];
+    _isSearchState = YES;
     return YES;
 }
 
@@ -203,9 +201,9 @@
     [[EMRealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.searchController.resultsSource removeAllObjects];
-                [weakSelf.searchController.resultsSource addObjectsFromArray:results];
-                [weakSelf.searchController.searchResultsTableView reloadData];
+                [weakSelf.resultsSource removeAllObjects];
+                [weakSelf.resultsSource addObjectsFromArray:results];
+                [weakSelf.tableView reloadData];
             });
         }
     }];
@@ -227,6 +225,7 @@
     [[EMRealtimeSearchUtil currentUtil] realtimeSearchStop];
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
+    _isSearchState = NO;
 }
 
 
