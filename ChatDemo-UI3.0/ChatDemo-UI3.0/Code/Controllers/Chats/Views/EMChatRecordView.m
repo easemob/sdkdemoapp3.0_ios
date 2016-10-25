@@ -46,6 +46,15 @@
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    _recordButton.left = (KScreenWidth - _recordButton.width)/2;
+    _timeLabel.width = KScreenWidth;
+    _recordLabel.width = KScreenWidth;
+}
+
 - (void)startTimer
 {
     _timeLabel.hidden = NO;

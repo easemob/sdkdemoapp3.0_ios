@@ -105,11 +105,13 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(didSendText:)]) {
-            [self.delegate didSendText:[EMConvertToCommonEmoticonsHelper convertToCommonEmoticons:textView.text]];
+        if (text.length > 0) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(didSendText:)]) {
+                [self.delegate didSendText:[EMConvertToCommonEmoticonsHelper convertToCommonEmoticons:textView.text]];
+            }
+            textView.text = @"";
+            return NO;
         }
-        textView.text = @"";
-        return NO;
     }
     return YES;
 }

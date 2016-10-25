@@ -55,13 +55,11 @@
 
 - (void)loadGroupsFromServer {
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        EMError *error = nil;
-        NSArray *groupList = [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
-        if (!error && groupList.count > 0) {
+    [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
+        if (!aError && aList.count > 0) {
             
             [weakSelf.groups removeAllObjects];
-            for (EMGroup *group in groupList) {
+            for (EMGroup *group in aList) {
                 EMGroupModel *model = [[EMGroupModel alloc] initWithObject:group];
                 if (model) {
                     [weakSelf.groups addObject:model];
@@ -72,7 +70,7 @@
                 [weakSelf.tableView reloadData];
             });
         }
-    });
+    }];
 }
 
 - (void)addNotifications {

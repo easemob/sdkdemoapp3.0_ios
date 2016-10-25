@@ -211,9 +211,8 @@
 {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
         __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            EMError *error = [[EMClient sharedClient].contactManager deleteContact:_model.hyphenateId];
-            if (!error) {
+        [[EMClient sharedClient].contactManager deleteContact:_model.hyphenateId completion:^(NSString *aUsername, EMError *aError) {
+            if (!aError) {
                 [[EMChatDemoHelper shareHelper].contactsVC reloadContacts];
                 [[EMClient sharedClient].chatManager deleteConversation:_model.hyphenateId isDeleteMessages:YES completion:nil];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -222,7 +221,7 @@
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"contact.deleteFailure", @"Delete contacts failed") delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
             }
-        });
+        }];
     }
 }
 

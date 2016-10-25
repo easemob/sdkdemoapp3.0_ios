@@ -103,7 +103,7 @@
 {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _backButton.frame = CGRectMake(0, 0, 44, 44);
+        _backButton.frame = CGRectMake(0, 0, 20, 12);
         [_backButton addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
         [_backButton setImage:[UIImage imageNamed:@"Icon_Back"] forState:UIControlStateNormal];
     }
@@ -114,7 +114,7 @@
 {
     if (_camButton == nil) {
         _camButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _camButton.frame = CGRectMake(0, 0, 44, 44);
+        _camButton.frame = CGRectMake(0, 0, 20, 12);
         [_camButton setImage:[UIImage imageNamed:@"IconVideo"] forState:UIControlStateNormal];
         [_camButton addTarget:self action:@selector(makeVideoCall) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -210,12 +210,9 @@
 - (void)chatToolBarDidChangeFrameToHeight:(CGFloat)toHeight
 {
     [UIView animateWithDuration:0.25 animations:^{
-        CGRect rect = self.tableView.frame;
-        rect.origin.y = 0;
-        rect.size.height = self.view.frame.size.height - toHeight;
-        self.tableView.frame = rect;
+        self.tableView.top = 0.f;
+        self.tableView.height = self.view.frame.size.height - toHeight;
     }];
-    
     [self _scrollViewToBottom:NO];
 }
 
@@ -394,16 +391,19 @@
             [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
         }
         
+        BOOL isPrepare = YES;
         if (_prevAudioModel == nil) {
             _prevAudioModel= model;
             model.isPlaying = YES;
+        } else if (_prevAudioModel == model){
+            model.isPlaying = NO;
+            _prevAudioModel = nil;
+            isPrepare = NO;
         } else {
             _prevAudioModel.isPlaying = NO;
             model.isPlaying = YES;
         }
         [self.tableView reloadData];
-        
-        BOOL isPrepare = YES;
         
         if (isPrepare) {
             WEAK_SELF
@@ -416,6 +416,7 @@
             }];
         }
         else{
+            [[EMCDDeviceManager sharedInstance] disableProximitySensor];
 //            _isPlayingAudio = NO;
         }
     }
@@ -644,8 +645,8 @@
 {
     WEAK_SELF
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMMessage *message = [weakSelf.dataSource objectAtIndex:0];
-        [_conversation loadMessagesStartFromId:message.messageId
+        EMMessageModel *model = [weakSelf.dataSource objectAtIndex:0];
+        [_conversation loadMessagesStartFromId:model.message.messageId
                                          count:20
                                searchDirection:EMMessageSearchDirectionUp
                                     completion:^(NSArray *aMessages, EMError *aError) {

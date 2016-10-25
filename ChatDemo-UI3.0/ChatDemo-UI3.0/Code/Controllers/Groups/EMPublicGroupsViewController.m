@@ -90,29 +90,22 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
                   withRowAnimation:UITableViewRowAnimationNone];
     
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        EMError *error = nil;
-        EMCursorResult *result = [[EMClient sharedClient].groupManager getPublicGroupsFromServerWithCursor:_cursor
-                                                                                                  pageSize:KPUBLICGROUP_PAGE_COUNT
-                                                                                                     error:&error];
-        if (!error) {
-            weakSelf.cursor = result.cursor;
-            for (EMGroup *group in result.list) {
+    [[EMClient sharedClient].groupManager getPublicGroupsFromServerWithCursor:_cursor pageSize:KPUBLICGROUP_PAGE_COUNT completion:^(EMCursorResult *aResult, EMError *aError) {
+        if (!aError) {
+            weakSelf.cursor = aResult.cursor;
+            for (EMGroup *group in aResult.list) {
                 EMGroupModel *model = [[EMGroupModel alloc] initWithObject:group];
                 if (model) {
                     [weakSelf.publicGroups addObject:model];
                 }
             }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.loadState = EMFetchPublicGroupState_Normal;
-                if (weakSelf.cursor.length == 0) {
-                    weakSelf.loadState = EMFetchPublicGroupState_Nomore;
-                }
-                [weakSelf.tableView reloadData];
-            });
+            weakSelf.loadState = EMFetchPublicGroupState_Normal;
+            if (weakSelf.cursor.length == 0) {
+                weakSelf.loadState = EMFetchPublicGroupState_Nomore;
+            }
+            [weakSelf.tableView reloadData];
         }
-    });
+    }];
 }
 
 - (void)reloadRequestedApplyDataSource {

@@ -60,41 +60,59 @@
     // Configure the view for the selected state
 }
 - (IBAction)declineAction:(UIButton *)sender {
-    EMError *error = nil;
+    WEAK_SELF
     switch (_model.style) {
         case EMApplyStyle_contact:
-            error = [[EMClient sharedClient].contactManager declineInvitationForUsername:_model.applyHyphenateId];
+        {
+            [[EMClient sharedClient].contactManager declineFriendRequestFromUser:_model.applyHyphenateId completion:^(NSString *aUsername, EMError *aError) {
+                [weakSelf declineApplyFinished:aError];
+            }];
+
             break;
+        }
         case EMApplyStyle_joinGroup:
-            error = [[EMClient sharedClient].groupManager declineJoinApplication:_model.groupId
-                                                                       applicant:_model.applyHyphenateId
-                                                                          reason:nil];
+        {
+            [[EMClient sharedClient].groupManager declineJoinGroupRequest:_model.groupId sender:_model.applyHyphenateId reason:nil completion:^(EMGroup *aGroup, EMError *aError) {
+                [weakSelf declineApplyFinished:aError];
+            }];
             break;
+        }
         default:
-            error = [[EMClient sharedClient].groupManager declineInvitationFromGroup:_model.groupId
-                                                                             inviter:_model.applyHyphenateId
-                                                                              reason:nil];
+        {
+            [[EMClient sharedClient].groupManager declineGroupInvitation:_model.groupId inviter:_model.applyHyphenateId reason:nil completion:^(EMError *aError) {
+                [weakSelf declineApplyFinished:aError];
+            }];
             break;
+        }
     }
-    [self declineApplyFinished:error];
 }
 
 
 - (IBAction)acceptAction:(id)sender {
-    EMError *error = nil;
+    WEAK_SELF
     switch (_model.style) {
         case EMApplyStyle_contact:
-            error = [[EMClient sharedClient].contactManager acceptInvitationForUsername:_model.applyHyphenateId];
+        {
+            [[EMClient sharedClient].contactManager approveFriendRequestFromUser:_model.applyHyphenateId completion:^(NSString *aUsername, EMError *aError) {
+                [weakSelf acceptApplyFinished:aError];
+            }];
             break;
+        }
         case EMApplyStyle_joinGroup:
-            error = [[EMClient sharedClient].groupManager acceptJoinApplication:_model.groupId
-                                                                      applicant:_model.applyHyphenateId];
+        {
+            [[EMClient sharedClient].groupManager approveJoinGroupRequest:_model.groupId sender:_model.applyHyphenateId completion:^(EMGroup *aGroup, EMError *aError) {
+                [weakSelf acceptApplyFinished:aError];
+            }];
             break;
+        }
         default:
-            [[EMClient sharedClient].groupManager acceptInvitationFromGroup:_model.groupId inviter:_model.applyHyphenateId error:&error];
+        {
+            [[EMClient sharedClient].groupManager acceptInvitationFromGroup:_model.groupId inviter:_model.applyHyphenateId completion:^(EMGroup *aGroup, EMError *aError) {
+                [weakSelf acceptApplyFinished:aError];
+            }];
             break;
+        }
     }
-    [self acceptApplyFinished:error];
 }
 
 - (void)declineApplyFinished:(EMError *)error {

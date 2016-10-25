@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 
+#import <UserNotifications/UserNotifications.h>
 #import "EMMainViewController.h"
 #import "EMLoginViewController.h"
 #import "EMLaunchViewController.h"
@@ -39,6 +40,14 @@
 #else
     apnsCertName = @"chatdemoui";
 #endif
+
+//aws
+#if DEBUG
+    apnsCertName = @"DevelopmentCertificate";
+#else
+    apnsCertName = @"ProductionCertificate";
+#endif
+    
     [options setApnsCertName:apnsCertName];
     [options setEnableConsoleLog:YES];
     [[EMClient sharedClient] initializeSDKWithOptions:options];
@@ -54,6 +63,8 @@
     EMLaunchViewController *launch = [[EMLaunchViewController alloc] init];
     self.window.rootViewController = launch;
     [self.window makeKeyAndVisible];
+    
+    [self _registerRemoteNotification];
     
     return YES;
 }
@@ -101,9 +112,12 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[EMClient sharedClient] bindDeviceToken:deviceToken];
-    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [[EMClient sharedClient] bindDeviceToken:deviceToken];
+//    });
+    [[EMClient sharedClient] registerForRemoteNotificationsWithDeviceToken:deviceToken completion:^(EMError *aError) {
+        
+    }];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -114,6 +128,41 @@
                                           cancelButtonTitle:NSLocalizedString(@"ok", @"OK")
                                           otherButtonTitles:nil];
     [alert show];
+}
+
+- (void)_registerRemoteNotification
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    application.applicationIconBadgeNumber = 0;
+    
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert completionHandler:^(BOOL granted, NSError *error) {
+            if (granted) {
+#if !TARGET_IPHONE_SIMULATOR
+                [application registerForRemoteNotifications];
+#endif
+            }
+        }];
+        return;
+    }
+    
+    if([application respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    
+#if !TARGET_IPHONE_SIMULATOR
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        [application registerForRemoteNotifications];
+    }else{
+        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
+        UIRemoteNotificationTypeSound |
+        UIRemoteNotificationTypeAlert;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    }
+#endif
 }
 
 

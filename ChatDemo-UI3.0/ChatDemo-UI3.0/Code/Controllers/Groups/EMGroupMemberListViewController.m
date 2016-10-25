@@ -147,38 +147,32 @@
         return;
     }
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-        EMError *error = nil;
-        [[EMClient sharedClient].groupManager removeOccupants:_selectMembers
-                                                    fromGroup:weakSelf.group.groupId
-                                                        error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            if (!error) {
-                NSMutableArray *array = [NSMutableArray arrayWithArray:weakSelf.occupants];
-                __block NSMutableArray *removeModels = [NSMutableArray array];
-                [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([obj isKindOfClass:[EMUserModel class]]) {
-                        EMUserModel *model = (EMUserModel *)obj;
-                        if ([weakSelf.selectMembers containsObject:model.hyphenateId]) {
-                            [array removeObject:obj];
-                            [removeModels addObject:obj];
-                        }
+    [[EMClient sharedClient].groupManager removeMembers:_selectMembers fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+        if (!aError) {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:weakSelf.occupants];
+            __block NSMutableArray *removeModels = [NSMutableArray array];
+            [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([obj isKindOfClass:[EMUserModel class]]) {
+                    EMUserModel *model = (EMUserModel *)obj;
+                    if ([weakSelf.selectMembers containsObject:model.hyphenateId]) {
+                        [array removeObject:obj];
+                        [removeModels addObject:obj];
                     }
-                }];
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.removeSuccess", @"Remove group members successfully")  delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
-                if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(removeSelectOccupants:)]) {
-                    [weakSelf.delegate removeSelectOccupants:removeModels];
                 }
-                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.removeSuccess", @"Remove group members successfully")  delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
+            if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(removeSelectOccupants:)]) {
+                [weakSelf.delegate removeSelectOccupants:removeModels];
             }
-            else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.removeFailure", @"Remove group members failure")  delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
-            }
-        });
-    });
+            [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.removeFailure", @"Remove group members failure")  delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+    }];
 }
 
 
