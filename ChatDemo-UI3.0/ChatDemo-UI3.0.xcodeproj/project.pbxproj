@@ -1870,6 +1870,7 @@
 				D28344FD1D8FD1D400FD48A9 /* Resources */,
 				55F5D39191F1F5FF9BD4640B /* [CP] Embed Pods Frameworks */,
 				8F507D0BE0F752ED869E3A49 /* [CP] Copy Pods Resources */,
+				C49A80721DC09B7E008978A8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2304,6 +2305,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C49A80721DC09B7E008978A8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 33bb2bc04d2ed7f91da02025c362279e3406ed81 304f46ac0fe00b79b828480c3b23c6e0e44f35508cac25a01a191755ecb2f40b";
 		};
 /* End PBXShellScriptBuildPhase section */
 
