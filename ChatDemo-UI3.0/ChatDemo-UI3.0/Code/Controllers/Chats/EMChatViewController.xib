@@ -26,14 +26,13 @@
                                 <constraint firstAttribute="height" constant="0.5" id="RPn-p2-fTT"/>
                             </constraints>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH" customClass="EMMessageTextView">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH" customClass="EMMessageTextView">
+                            <frame key="frameInset" minX="15" minY="10" width="570" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="34" id="dGX-rF-JvR"/>
-                            </constraints>
                             <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                     <integer key="value" value="2"/>
@@ -44,6 +43,25 @@
                                 <outlet property="delegate" destination="Lh5-oT-mc5" id="mFU-yp-Swg"/>
                             </connections>
                         </textView>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Eu-Lo-0J5">
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="NtE-wc-jhv"/>
+                                <constraint firstAttribute="height" constant="34" id="ral-1z-99i"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Send">
+                                <color key="titleColor" red="0.0" green="0.72941176470000002" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="sendAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="ucv-z8-LJ7"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbQ-UG-S2E">
+                            <frame key="frameInset" minX="342" minY="54" width="13" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Icon_File_disable.png"/>
+                            <state key="selected" image="Icon_File.png"/>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S1W-J3-Mbn">
                             <frame key="frameInset" minX="20" minY="54" width="22" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -89,22 +107,15 @@
                                 <action selector="locationAction:" destination="Lh5-oT-mc5" eventType="touchUpInside" id="N7j-Sk-DwR"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbQ-UG-S2E">
-                            <frame key="frameInset" minX="342" minY="54" width="13" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" image="Icon_File_disable.png"/>
-                            <state key="selected" image="Icon_File.png"/>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="0.5" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="JLV-Ip-5Ce" secondAttribute="trailing" id="FZO-jK-XGM"/>
-                        <constraint firstItem="34G-oT-3NH" firstAttribute="top" secondItem="JLV-Ip-5Ce" secondAttribute="bottom" constant="9.5" id="VTO-xn-r39"/>
+                        <constraint firstItem="7Eu-Lo-0J5" firstAttribute="top" secondItem="JLV-Ip-5Ce" secondAttribute="bottom" constant="9.5" id="HEL-qh-nMa"/>
                         <constraint firstItem="JLV-Ip-5Ce" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" id="boJ-rT-cQZ"/>
-                        <constraint firstAttribute="trailing" secondItem="34G-oT-3NH" secondAttribute="trailing" constant="15" id="cox-GZ-Xxr"/>
                         <constraint firstAttribute="height" constant="83" id="mLs-Ih-x2u"/>
                         <constraint firstItem="JLV-Ip-5Ce" firstAttribute="top" secondItem="Lh5-oT-mc5" secondAttribute="top" id="sn6-ZS-2vI"/>
-                        <constraint firstItem="34G-oT-3NH" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" constant="15" id="uad-od-MGq"/>
+                        <constraint firstAttribute="trailing" secondItem="7Eu-Lo-0J5" secondAttribute="trailing" constant="15" id="sxi-92-9es"/>
                     </constraints>
                     <variation key="default">
                         <mask key="subviews">
@@ -119,6 +130,7 @@
                         <outlet property="locationButton" destination="6a8-X0-Lxe" id="CEU-hr-NIF"/>
                         <outlet property="photoButton" destination="HaN-qg-NOO" id="L4t-o0-Cwg"/>
                         <outlet property="recordButton" destination="5LK-Pc-Gvd" id="DcR-rn-rwh"/>
+                        <outlet property="sendButton" destination="7Eu-Lo-0J5" id="hiK-XZ-FVT"/>
                     </connections>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pr1-TU-Mm9">

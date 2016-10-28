@@ -103,7 +103,7 @@
 {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _backButton.frame = CGRectMake(0, 0, 20, 12);
+        _backButton.frame = CGRectMake(0, 0, 44, 44);
         [_backButton addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
         [_backButton setImage:[UIImage imageNamed:@"Icon_Back"] forState:UIControlStateNormal];
     }
@@ -125,7 +125,7 @@
 {
     if (_photoButton == nil) {
         _photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _photoButton.frame = CGRectMake(0, 0, 44, 44);
+        _photoButton.frame = CGRectMake(0, 0, 20, 12);
         [_photoButton setImage:[UIImage imageNamed:@"IconCall"] forState:UIControlStateNormal];
         [_photoButton addTarget:self action:@selector(makeAudioCall) forControlEvents:UIControlEventTouchUpInside];
     }

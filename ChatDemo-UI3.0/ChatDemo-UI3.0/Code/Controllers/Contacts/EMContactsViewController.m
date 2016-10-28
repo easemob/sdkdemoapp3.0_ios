@@ -245,6 +245,7 @@
             cell = (EMGroupTitleCell *)[[[NSBundle mainBundle] loadNibNamed:@"EMGroupTitleCell" owner:self options:nil] lastObject];
         }
         cell.titleLabel.text = NSLocalizedString(@"common.groups", @"Groups");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
     }
     
