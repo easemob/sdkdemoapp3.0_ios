@@ -13,6 +13,7 @@
 #import "EMConvertToCommonEmoticonsHelper.h"
 
 #define kDefaultToolBarHeight 83
+#define kDefaultTextViewWidth KScreenWidth - 30.f
 
 @interface EMChatToolBar () <UITextViewDelegate,EMChatRecordViewDelegate>
 
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *recordButton;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIButton *fileButton;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (strong, nonatomic) EMChatRecordView *recordView;
 
@@ -37,6 +39,7 @@
 - (IBAction)locationAction:(id)sender;
 - (IBAction)recordAction:(id)sender;
 - (IBAction)emotionAction:(id)sender;
+- (IBAction)sendAction:(id)sender;
 
 @end
 
@@ -80,6 +83,8 @@
 
 //    CGContextSetStrokeColorWithColor(context, RGBACOLOR(0xe5, 0xe5, 0xe5, 1).CGColor);
 //    CGContextStrokeRect(context, CGRectMake(0, rect.size.height - 0.5, rect.size.width, 0.5));
+    
+    _inputTextView.width = kDefaultTextViewWidth;
 }
 #pragma mark - getter
 
@@ -104,15 +109,6 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"]) {
-        if (text.length > 0) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(didSendText:)]) {
-                [self.delegate didSendText:[EMConvertToCommonEmoticonsHelper convertToCommonEmoticons:textView.text]];
-            }
-            textView.text = @"";
-            return NO;
-        }
-    }
     return YES;
 }
 
@@ -122,6 +118,22 @@
         btn.selected = NO;
     }
     return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    _sendButton.hidden = NO;
+    [UIView animateWithDuration:0.25 animations:^{
+        _inputTextView.width = kDefaultTextViewWidth - _sendButton.width - 15.f;
+    }];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    _sendButton.hidden = YES;
+    [UIView animateWithDuration:0.25 animations:^{
+        _inputTextView.width = kDefaultTextViewWidth;
+    }];
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -210,6 +222,16 @@
         [self _willShowBottomView:self.recordView];
     } else {
         [self _willShowBottomView:nil];
+    }
+}
+
+- (IBAction)sendAction:(id)sender
+{
+    if (_inputTextView.text.length > 0) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(didSendText:)]) {
+            [self.delegate didSendText:[EMConvertToCommonEmoticonsHelper convertToCommonEmoticons:_inputTextView.text]];
+        }
+        _inputTextView.text = @"";
     }
 }
 

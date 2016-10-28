@@ -39,11 +39,11 @@
     // init HyphenateSDK
     EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];
     NSString *apnsCertName = nil;
-#if DEBUG
-    apnsCertName = @"chatdemoui_dev";
-#else
-    apnsCertName = @"chatdemoui";
-#endif
+//#if DEBUG
+//    apnsCertName = @"chatdemoui_dev";
+//#else
+//    apnsCertName = @"chatdemoui";
+//#endif
 
 //aws
 #if DEBUG
