@@ -31,7 +31,7 @@
     [super viewDidLoad];
     _defaultOffset = self.tableView.contentOffset;
     [self setupRefreshControl];
-
+    self.tableView.tableFooterView = self.tableViewFoot;
 }
 
 - (void)setupRefreshControl {
@@ -40,6 +40,10 @@
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:KEM_BASE_REFRESH_DROPDOWN
                                                                           attributes:KEM_BASE_REFRESH_ATTRIBUTES];
     [self.refreshControl addTarget:self action:@selector(refreshHeaderAction) forControlEvents:UIControlEventValueChanged];
+}
+
+- (UIView *)tableViewFoot {
+    return [UIView new];
 }
 
 - (void)endHeaderRefresh {
