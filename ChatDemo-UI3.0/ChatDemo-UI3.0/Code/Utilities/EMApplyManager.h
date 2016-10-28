@@ -23,4 +23,7 @@
 
 - (void)removeApplyRequest:(EMApplyModel *)model;
 
+- (BOOL)isExistingRequest:(NSString *)applyHyphenateId
+               applyStyle:(EMApplyStyle)applyStyle;
+
 @end

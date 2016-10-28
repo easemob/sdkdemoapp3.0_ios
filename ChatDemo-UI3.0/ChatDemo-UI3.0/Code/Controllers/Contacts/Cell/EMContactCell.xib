@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -35,21 +35,12 @@
                         <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y3k-HQ-S8c">
-                        <color key="backgroundColor" red="0.69803921568627447" green="0.72549019607843135" blue="0.75686274509803919" alpha="0.50483349116161613" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="QcR-Ry-5J6"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="Y3k-HQ-S8c" secondAttribute="trailing" id="0G6-yt-z1P"/>
                     <constraint firstAttribute="trailing" secondItem="anW-fc-m4H" secondAttribute="trailing" constant="15" id="Jit-is-bUY"/>
-                    <constraint firstItem="Y3k-HQ-S8c" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Mf8-wM-wle"/>
                     <constraint firstItem="anW-fc-m4H" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18" id="Nxp-MJ-Lid"/>
                     <constraint firstItem="anW-fc-m4H" firstAttribute="leading" secondItem="mxe-m8-7g3" secondAttribute="trailing" constant="7" id="bBH-zf-4T2"/>
                     <constraint firstItem="mxe-m8-7g3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="hCO-4S-L73"/>
-                    <constraint firstAttribute="bottom" secondItem="Y3k-HQ-S8c" secondAttribute="bottom" id="nYc-w4-Aua"/>
                     <constraint firstItem="mxe-m8-7g3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="p69-i1-eiP"/>
                 </constraints>
             </tableViewCellContentView>
