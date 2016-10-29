@@ -245,9 +245,10 @@
         
         [self hideHud];
         [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy];
+        EMError *error = nil;
+        [[[EaseMob sharedInstance] chatManager] removeBuddy:model.buddy.username removeFromRemote:YES error:&error];
         if (!error) {
-            [[EMClient sharedClient].chatManager deleteConversation:model.buddy deleteMessages:YES];
+            [[EaseMob sharedInstance].chatManager removeConversationByChatter:model.buddy.username deleteMessages:YES append2Chat:YES];
             
             [tableView beginUpdates];
             [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
@@ -255,10 +256,11 @@
             [tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             [tableView endUpdates];
         }
-        else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
+        else {
+            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.description]];
             [tableView reloadData];
         }
+    
         [self hideHud];
     }
 }

@@ -129,16 +129,15 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
+        EMError *error = [[EaseMob sharedInstance].chatManager unblockBuddy:username];
         if (!error)
         {
-            [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
             [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
             [tableView reloadData];
         }
         else
         {
-            [self showHint:error.errorDescription];
+            [self showHint:error.description];
         }
     }
 }

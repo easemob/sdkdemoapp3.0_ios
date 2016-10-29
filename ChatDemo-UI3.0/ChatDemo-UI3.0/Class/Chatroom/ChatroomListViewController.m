@@ -1,11 +1,11 @@
 /************************************************************
-  *  * EaseMob CONFIDENTIAL 
-  * __________________ 
-  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved. 
-  *  
-  * NOTICE: All information contained herein is, and remains 
+  *  * EaseMob CONFIDENTIAL
+  * __________________
+  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
+  *
+  * NOTICE: All information contained herein is, and remains
   * the property of EaseMob Technologies.
-  * Dissemination of this information or reproduction of this material 
+  * Dissemination of this information or reproduction of this material
   * is strictly forbidden unless prior written permission is obtained
   * from EaseMob Technologies.
   */
@@ -17,10 +17,11 @@
 #import "EMSearchDisplayController.h"
 #import "ChatViewController.h"
 #import "RealtimeSearchUtil.h"
-#import "EMCursorResult.h"
+#import "EMPageResult.h"
 
 @interface ChatroomListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate, EMChatManagerDelegate>
 
+@property (nonatomic) NSInteger page;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @property (strong, nonatomic) SRRefreshView *slimeView;
@@ -36,7 +37,6 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        _dataSource = [NSMutableArray array];
     }
     return self;
 }
@@ -45,14 +45,16 @@
 {
     [super viewDidLoad];
 
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
     // Uncomment the following line to preserve selection between presentations.
     self.title = NSLocalizedString(@"title.chatroomlist",@"chatroom list");
-    
+
+    _page = 0;
+    _dataSource = [NSMutableArray array];
+
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -60,7 +62,7 @@
     self.tableView.tableHeaderView = self.searchBar;
     [self.tableView addSubview:self.slimeView];
     [self searchController];
-    
+
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
@@ -106,7 +108,7 @@
         _slimeView.slime.shadowBlur = 4;
         _slimeView.slime.shadowColor = [UIColor grayColor];
     }
-    
+
     return _slimeView;
 }
 
@@ -118,7 +120,7 @@
         _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
         _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
     }
-    
+
     return _searchBar;
 }
 
@@ -128,40 +130,40 @@
         _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
         _searchController.delegate = self;
         _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
+
         __weak ChatroomListViewController *weakSelf = self;
         [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
             static NSString *CellIdentifier = @"ContactListCell";
             BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            
+
             // Configure the cell...
             if (cell == nil) {
                 cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
-            
+
             EMChatroom *chatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             NSString *imageName =  @"groupPublicHeader";
             cell.imageView.image = [UIImage imageNamed:imageName];
             cell.textLabel.text = chatroom.chatroomSubject;
-            
+
             return cell;
         }];
-        
+
         [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
             return 50;
         }];
-        
+
         [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [weakSelf.searchController.searchBar endEditing:YES];
-            
+
             EMChatroom *myChatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
             ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:eConversationTypeChatRoom];
             chatController.title = myChatroom.chatroomSubject;
             [weakSelf.navigationController pushViewController:chatController animated:YES];
         }];
     }
-    
+
     return _searchController;
 }
 
@@ -183,12 +185,12 @@
 {
     static NSString *CellIdentifier = @"GroupCell";
     BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
     // Configure the cell...
     if (cell == nil) {
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
+
     EMChatroom *chatroom = [self.dataSource objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"groupPublicHeader"];
     if ([chatroom.chatroomSubject length]) {
@@ -197,7 +199,7 @@
     else {
         cell.textLabel.text = chatroom.chatroomId;
     }
-    
+
     return cell;
 }
 
@@ -211,7 +213,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     EMChatroom *myChatroom = [self.dataSource objectAtIndex:indexPath.row];
     ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:eConversationTypeChatRoom];
     chatController.title = myChatroom.chatroomSubject;
@@ -223,7 +225,7 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    
+
     return YES;
 }
 
@@ -249,7 +251,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
-    
+
 //    [[EaseMob sharedInstance].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
 //        if (!error) {
 //            [self.searchController.resultsSource removeAllObjects];
@@ -299,12 +301,11 @@
 {
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    
+
     __weak typeof(self) weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncFetchChatroomsFromServerWithCursor:nil pageSize:-1 andCompletion:^(EMCursorResult *result, EMError *error) {
+    [[EaseMob sharedInstance].chatManager asyncFetchChatroomsFromServerWithPage:1 pageSize:10 completion:^(EMPageResult *result, EMError *error) {
         ChatroomListViewController *strongSelf = weakSelf;
-        if (strongSelf)
-        {
+        if (!error && strongSelf) {
             [strongSelf hideHud];
             [strongSelf.dataSource removeAllObjects];
             [strongSelf.dataSource addObjectsFromArray:result.list];
@@ -319,7 +320,7 @@
     {
         return;
     }
-    
+
     [self.dataSource enumerateObjectsUsingBlock:^(EMChatroom *chatroom, NSUInteger idx, BOOL *stop){
         if ([leavedChatroom.chatroomId isEqualToString:chatroom.chatroomId])
         {
