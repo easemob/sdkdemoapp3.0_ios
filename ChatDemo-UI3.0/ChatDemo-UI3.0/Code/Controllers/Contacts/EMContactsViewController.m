@@ -159,10 +159,10 @@
 
 - (EMSearchBar *)searchBar {
     if (!_searchBar) {
-        CGFloat rate = 313.0 / 375.0;
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        _searchBar = [[EMSearchBar alloc] initWithFrame:CGRectMake(0, 0, screenWidth * rate, 30)];
-        _searchBar.searchFieldWidth = screenWidth * rate;
+//        CGFloat rate = 313.0 / 375.0;
+//        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        _searchBar = [[EMSearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
+        _searchBar.searchFieldWidth = KScreenWidth;
         _searchBar.searchFieldHeight = 30.0f;
         _searchBar.delegate = self;
         [_searchBar setCancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")];

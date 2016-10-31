@@ -93,7 +93,7 @@
         self.avatarView.frame = CGRectMake(15, 13, 45, 45);
         self.editButton.frame = CGRectMake(75, 29, 30, 13);
         [cell.contentView addSubview:self.avatarView];
-        [cell.contentView addSubview:self.editButton];
+        //[cell.contentView addSubview:self.editButton];
     } else {
         
         cell.textLabel.text = NSLocalizedString(@"setting.account.id", @"Hyphenate ID");

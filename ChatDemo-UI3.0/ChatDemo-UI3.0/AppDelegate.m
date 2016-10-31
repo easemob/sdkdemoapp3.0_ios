@@ -76,6 +76,7 @@
 
         EMMainViewController *main = [[EMMainViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
+        navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         self.window.rootViewController = navigationController;
         [EMChatDemoHelper shareHelper].mainVC = main;
         

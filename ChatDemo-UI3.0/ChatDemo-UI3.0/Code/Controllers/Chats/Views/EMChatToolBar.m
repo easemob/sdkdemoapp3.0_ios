@@ -124,6 +124,7 @@
 {
     _sendButton.hidden = NO;
     [UIView animateWithDuration:0.25 animations:^{
+        [_inputTextView setNeedsDisplay];
         _inputTextView.width = kDefaultTextViewWidth - _sendButton.width - 15.f;
     }];
 }
@@ -132,6 +133,7 @@
 {
     _sendButton.hidden = YES;
     [UIView animateWithDuration:0.25 animations:^{
+        [_inputTextView setNeedsDisplay];
         _inputTextView.width = kDefaultTextViewWidth;
     }];
 }
