@@ -7,7 +7,6 @@
 //
 
 #import "EMGroupMemberListViewController.h"
-#import "EMContactCell.h"
 #import "EMUserModel.h"
 #import "EMGroupMemberCell.h"
 #import "EMNotificationNames.h"
@@ -71,7 +70,7 @@
         [_leftButton setTitleColor:KermitGreenTwoColor forState:UIControlStateHighlighted];
         
         _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _rightButton.frame = CGRectMake(0, 0, 44, 44);
+        _rightButton.frame = CGRectMake(0, 0, 50, 44);
         _rightButton.titleLabel.font = [UIFont systemFontOfSize:13];
         [_rightButton setTitleColor:KermitGreenTwoColor forState:UIControlStateNormal];
         [_rightButton setTitleColor:KermitGreenTwoColor forState:UIControlStateHighlighted];

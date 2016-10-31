@@ -107,6 +107,31 @@ static EMApplyManager *manager = nil;
     return _groupApplys;
 }
 
+
+- (BOOL)isExistingRequest:(NSString *)applyHyphenateId
+               applyStyle:(EMApplyStyle)applyStyle {
+    NSArray *sources = nil;
+    __block BOOL isExistingRequest = NO;
+    if (applyStyle == EMApplyStyle_contact && _contactApplys.count > 0) {
+        sources = _contactApplys;
+    }
+    else if (applyStyle != EMApplyStyle_contact && _groupApplys.count > 0) {
+        sources = _groupApplys;
+    }
+    if (sources.count > 0) {
+        [sources enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj conformsToProtocol:@protocol(IEMApplyModel)]) {
+                id<IEMApplyModel> model = (id<IEMApplyModel>)obj;
+                if ([model.applyHyphenateId isEqualToString:applyHyphenateId] && model.style == applyStyle) {
+                    isExistingRequest = YES;
+                    *stop = YES;
+                }
+            }
+        }];
+    }
+    return isExistingRequest;
+}
+
 - (void)addApplyRequest:(EMApplyModel *)model {
     NSString *key = @"";
     NSArray *array = [NSArray array];
