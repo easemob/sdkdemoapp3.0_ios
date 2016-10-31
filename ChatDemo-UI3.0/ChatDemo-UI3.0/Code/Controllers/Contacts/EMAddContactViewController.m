@@ -7,6 +7,7 @@
 //
 
 #import "EMAddContactViewController.h"
+#import "UIViewController+DismissKeyboard.h"
 
 @interface EMAddContactViewController ()<UITextFieldDelegate>
 
@@ -25,13 +26,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
     [self setupNavBar];
     [self setupTextField];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+    [self setupForDismissKeyboard];
 }
 
 - (void)setupNavBar {
@@ -41,8 +38,8 @@
     cancelBtn.frame = CGRectMake(0, 0, 44, 44);
     [cancelBtn setTitleColor:KermitGreenTwoColor forState:UIControlStateNormal];
     [cancelBtn setTitleColor:KermitGreenTwoColor forState:UIControlStateHighlighted];
-    [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelBtn setTitle:@"Cancel" forState:UIControlStateHighlighted];
+    [cancelBtn setTitle:NSLocalizedString(@"common.cancel", @"Cancel") forState:UIControlStateNormal];
+    [cancelBtn setTitle:NSLocalizedString(@"common.cancel", @"Cancel") forState:UIControlStateHighlighted];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     [cancelBtn addTarget:self action:@selector(cancelAddContact) forControlEvents:UIControlEventTouchUpInside];
     
@@ -52,11 +49,13 @@
 }
 
 - (void)setupTextField {
-    UIImageView *leftImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 18, 13, 13)];
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 13)];
+    UIImageView *leftImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 13, 13)];
     leftImage.contentMode = UIViewContentModeScaleAspectFit;
-    leftImage.image = [UIImage imageNamed:@"Icon_Search"];
-    _textField.leftView = leftImage;
-    _textField.leftViewMode = UITextFieldViewModeUnlessEditing;
+    leftImage.image = [UIImage imageNamed:@"Icon_Search.png"];
+    [leftView addSubview:leftImage];
+    _textField.leftView = leftView;
+    _textField.leftViewMode = UITextFieldViewModeAlways;
     
     _textField.placeholder = NSLocalizedString(@"contact.enterHyphenateID", @"Enter Hyphenate ID");
     [_textField setValue:CoolGrayColor  forKeyPath:@"_placeholderLabel.textColor"];

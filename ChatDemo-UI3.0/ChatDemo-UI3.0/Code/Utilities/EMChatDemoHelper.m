@@ -101,11 +101,15 @@ static EMChatDemoHelper *helper = nil;
         aMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
     }
     
-    EMApplyModel *model = [[EMApplyModel alloc] init];
-    model.applyHyphenateId = aUsername;
-    model.applyNickName = aUsername;
-    model.reason = aMessage;
-    [[EMApplyManager defaultManager] addApplyRequest:model];
+    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername applyStyle:EMApplyStyle_contact])
+    {
+        EMApplyModel *model = [[EMApplyModel alloc] init];
+        model.applyHyphenateId = aUsername;
+        model.applyNickName = aUsername;
+        model.reason = aMessage;
+        model.style = EMApplyStyle_contact;
+        [[EMApplyManager defaultManager] addApplyRequest:model];
+    }
     
     if (self.mainVC && helper) {
         [helper setupUntreatedApplyCount];
@@ -156,15 +160,18 @@ static EMChatDemoHelper *helper = nil;
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.subject, aReason];
     }
     
-    EMApplyModel *model = [[EMApplyModel alloc] init];
-    model.applyHyphenateId = aUsername;
-    model.applyNickName = aUsername;
-    model.groupId = aGroup.groupId;
-    model.groupSubject = aGroup.subject;
-    model.groupMemberCount = aGroup.membersCount;
-    model.reason = aReason;
-    model.style = EMApplyStyle_joinGroup;
-    [[EMApplyManager defaultManager] addApplyRequest:model];
+    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername applyStyle:EMApplyStyle_joinGroup])
+    {
+        EMApplyModel *model = [[EMApplyModel alloc] init];
+        model.applyHyphenateId = aUsername;
+        model.applyNickName = aUsername;
+        model.groupId = aGroup.groupId;
+        model.groupSubject = aGroup.subject;
+        model.groupMemberCount = aGroup.membersCount;
+        model.reason = aReason;
+        model.style = EMApplyStyle_joinGroup;
+        [[EMApplyManager defaultManager] addApplyRequest:model];
+    }
     
     if (self.mainVC && helper) {
         [helper setupUntreatedApplyCount];
@@ -209,13 +216,17 @@ static EMChatDemoHelper *helper = nil;
     if (!aGroupId || !aInviter) {
         return;
     }
-    EMApplyModel *model = [[EMApplyModel alloc] init];
-    model.groupId = aGroupId;
-    model.applyHyphenateId = aInviter;
-    model.applyNickName = aInviter;
-    model.reason = aMessage;
-    model.style = EMApplyStyle_groupInvitation;
-    [[EMApplyManager defaultManager] addApplyRequest:model];
+    
+    if (![[EMApplyManager defaultManager] isExistingRequest:aInviter applyStyle:EMApplyStyle_groupInvitation])
+    {
+        EMApplyModel *model = [[EMApplyModel alloc] init];
+        model.groupId = aGroupId;
+        model.applyHyphenateId = aInviter;
+        model.applyNickName = aInviter;
+        model.reason = aMessage;
+        model.style = EMApplyStyle_groupInvitation;
+        [[EMApplyManager defaultManager] addApplyRequest:model];
+    }
     
     if (self.mainVC && helper) {
         [helper setupUntreatedApplyCount];

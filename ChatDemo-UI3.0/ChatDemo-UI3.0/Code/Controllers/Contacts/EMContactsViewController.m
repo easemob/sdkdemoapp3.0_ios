@@ -61,7 +61,7 @@
 }
 
 - (void)setupNavigationItem:(UINavigationItem *)navigationItem {
-    
+
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 0, 20, 20);
     [btn setImage:[UIImage imageNamed:@"Icon_Add"] forState:UIControlStateNormal];
@@ -245,7 +245,6 @@
             cell = (EMGroupTitleCell *)[[[NSBundle mainBundle] loadNibNamed:@"EMGroupTitleCell" owner:self options:nil] lastObject];
         }
         cell.titleLabel.text = NSLocalizedString(@"common.groups", @"Groups");
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
     }
     
@@ -330,17 +329,17 @@
     
     switch (section) {
         case 0:
-            if (self.groupNotifications.count > 0) {
+            if (self.groupNotifications.count) {
                 return 40.0f;
             }
             break;
         case 1:
-            if (self.contactRequests.count > 0) {
+            if (self.contactRequests.count) {
                 return 40.0f;
             }
             break;
         case 2:
-            if (self.contactRequests.count > 0 || self.groupNotifications > 0) {
+            if (self.contactRequests.count || self.groupNotifications.count) {
                 return 20.0;
             }
             break;

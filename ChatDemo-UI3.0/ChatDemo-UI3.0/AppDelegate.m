@@ -14,6 +14,10 @@
 #import "EMLaunchViewController.h"
 #import "EMChatDemoHelper.h"
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
+
 @interface AppDelegate ()
 
 @end
@@ -65,6 +69,9 @@
     [self.window makeKeyAndVisible];
     
     [self _registerRemoteNotification];
+    
+    // Fabric
+    [Fabric with:@[[Crashlytics class]]];
     
     return YES;
 }
