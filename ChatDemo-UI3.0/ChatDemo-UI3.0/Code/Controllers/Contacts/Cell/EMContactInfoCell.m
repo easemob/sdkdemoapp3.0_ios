@@ -48,16 +48,29 @@
         return;
     }
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].contactManager addUserToBlackList:_hyphenateId
-                                                    completion:^(NSString *aUsername, EMError *aError) {
-                                                        if (!aError) {
-                                                            if (weakSelf.delegate &&
-                                                                [weakSelf.delegate respondsToSelector:@selector(needRefreshContactsFromServer:)])
-                                                            {
-                                                                [weakSelf.delegate needRefreshContactsFromServer:YES];
+    if (_blockSwitch.selected) {
+        [[EMClient sharedClient].contactManager addUserToBlackList:_hyphenateId
+                                                        completion:^(NSString *aUsername, EMError *aError) {
+                                                            if (!aError) {
+                                                                if (weakSelf.delegate &&
+                                                                    [weakSelf.delegate respondsToSelector:@selector(needRefreshContactsFromServer:)])
+                                                                {
+                                                                    [weakSelf.delegate needRefreshContactsFromServer:YES];
+                                                                }
                                                             }
-                                                        }
-    }];
+                                                        }];
+    } else {
+        [[EMClient sharedClient].contactManager removeUserFromBlackList:_hyphenateId
+                                                             completion:^(NSString *aUsername, EMError *aError) {
+                                                                 if (!aError) {
+                                                                     if (weakSelf.delegate &&
+                                                                         [weakSelf.delegate respondsToSelector:@selector(needRefreshContactsFromServer:)])
+                                                                     {
+                                                                         [weakSelf.delegate needRefreshContactsFromServer:YES];
+                                                                     }
+                                                                 }
+                                                             }];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
