@@ -27,6 +27,7 @@
 @property (strong, nonatomic) SRRefreshView *slimeView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
+@property (strong, nonatomic) UIButton *nextButton;
 
 @end
 
@@ -69,6 +70,13 @@
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    self.nextButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+    [self.nextButton setTitle:@"下一页" forState:UIControlStateNormal];
+    [self.nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.nextButton setBackgroundColor:[UIColor redColor]];
+    [self.nextButton addTarget:self action:@selector(nextPageAction) forControlEvents:UIControlEventTouchUpInside];
+    self.tableView.tableFooterView = self.nextButton;
 
     [self reloadDataSource];
 }
@@ -297,21 +305,38 @@
 
 #pragma mark - data
 
-- (void)reloadDataSource
+- (void)loadDataWithPage:(NSInteger)aPage
 {
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-
+    
     __weak typeof(self) weakSelf = self;
-    [[EaseMob sharedInstance].chatManager asyncFetchChatroomsFromServerWithPage:1 pageSize:10 completion:^(EMPageResult *result, EMError *error) {
+    [[EaseMob sharedInstance].chatManager asyncFetchChatroomsFromServerWithPage:aPage pageSize:10 completion:^(EMPageResult *result, EMError *error) {
         ChatroomListViewController *strongSelf = weakSelf;
         if (!error && strongSelf) {
+            if (result.count == 0) {
+                strongSelf.tableView.tableFooterView = nil;
+            } else if (strongSelf.tableView.tableFooterView == nil) {
+                strongSelf.tableView.tableFooterView = strongSelf.nextButton;
+            }
+            
             [strongSelf hideHud];
-            [strongSelf.dataSource removeAllObjects];
             [strongSelf.dataSource addObjectsFromArray:result.list];
             [strongSelf.tableView reloadData];
         }
     }];
+}
+
+- (void)nextPageAction
+{
+    ++self.page;
+    [self loadDataWithPage:self.page];
+}
+
+- (void)reloadDataSource
+{
+    self.page = 1;
+    [self loadDataWithPage:self.page];
 }
 
 - (void)beKickedOutFromChatroom:(EMChatroom *)leavedChatroom reason:(EMChatroomBeKickedReason)reason
