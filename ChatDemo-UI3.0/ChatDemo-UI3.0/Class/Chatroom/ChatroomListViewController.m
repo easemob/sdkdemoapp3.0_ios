@@ -18,6 +18,10 @@
 #import "ChatViewController.h"
 #import "RealtimeSearchUtil.h"
 #import "EMCursorResult.h"
+#import "BaseTableViewCell.h"
+#import "GettingMoreFooterView.h"
+
+#define FetchChatroomPageSize   20
 
 @interface ChatroomListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, SRRefreshDelegate, EMChatroomManagerDelegate>
 
@@ -26,7 +30,9 @@
 @property (strong, nonatomic) SRRefreshView *slimeView;
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
-
+@property (strong, nonatomic) GettingMoreFooterView *footerView;
+@property (nonatomic) NSInteger pageNum;
+@property (nonatomic) BOOL isGettingMore;
 @end
 
 @implementation ChatroomListViewController
@@ -37,6 +43,7 @@
     if (self) {
         // Custom initialization
         _dataSource = [NSMutableArray array];
+        _pageNum = 1;
     }
     return self;
 }
@@ -108,6 +115,16 @@
     }
     
     return _slimeView;
+}
+
+- (GettingMoreFooterView *)footerView
+{
+    if (!_footerView) {
+        CGRect frame = self.view.bounds;
+        frame.size.height = 50;
+        _footerView = [[GettingMoreFooterView alloc] initWithFrame:frame];
+    }
+    return _footerView;
 }
 
 - (UISearchBar *)searchBar
@@ -218,6 +235,42 @@
     [self.navigationController pushViewController:chatController animated:YES];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!_isGettingMore && indexPath.row == ([self.dataSource count] - 1) && _pageNum > 0)
+    {
+        __weak typeof(self) weakSelf = self;
+        self.footerView.state = eGettingMoreFooterViewStateGetting;
+        _isGettingMore = YES;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = nil;
+            EMPageResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithPage:weakSelf.pageNum++ pageSize:FetchChatroomPageSize error:&error];
+            if (weakSelf)
+            {
+                ChatroomListViewController *strongSelf = weakSelf;
+                strongSelf.isGettingMore = NO;
+                if (!error)
+                {
+                    [strongSelf.dataSource addObjectsFromArray:result.list];
+                    [strongSelf.tableView reloadData];
+                    if (result.count > 0)
+                    {
+                        self.footerView.state = eGettingMoreFooterViewStateIdle;
+                    }
+                    else
+                    {
+                        self.footerView.state = eGettingMoreFooterViewStateComplete;
+                    }
+                }
+                else
+                {
+                    self.footerView.state = eGettingMoreFooterViewStateFailed;
+                }
+            }
+        });
+    }
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
@@ -250,6 +303,52 @@
 {
     [searchBar resignFirstResponder];
     
+    if ([self.searchController.resultsSource count]) 
+    {
+        return;
+    }
+    else
+    {
+        __block EMChatroom *foundChatroom = nil;
+        [self.dataSource enumerateObjectsUsingBlock:^(EMChatroom *chatroom, NSUInteger idx, BOOL *stop){
+            if ([chatroom.chatroomId isEqualToString:searchBar.text])
+            {
+                foundChatroom = chatroom;
+                *stop = YES;
+            }
+        }];
+        
+        if (foundChatroom)
+        {
+            [self.searchController.resultsSource removeAllObjects];
+            [self.searchController.resultsSource addObject:foundChatroom];
+            [self.searchController.searchResultsTableView reloadData];
+        }
+        else
+        {
+            __weak typeof(self) weakSelf = self;
+            [self showHudInView:self.view hint:NSLocalizedString(@"searching", @"Searching")];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                EMError *error = nil;
+                EMChatroom *chatroom = [[EMClient sharedClient].roomManager fetchChatroomInfo:searchBar.text includeMembersList:false error:&error];
+                if (weakSelf)
+                {
+                    ChatroomListViewController *strongSelf = weakSelf;
+                    [strongSelf hideHud];
+                    if (!error) {
+                        [strongSelf.searchController.resultsSource removeAllObjects];
+                        [strongSelf.searchController.resultsSource addObject:chatroom];
+                        [strongSelf.searchController.searchResultsTableView reloadData];
+                    }
+                    else
+                    {
+                        [strongSelf showHint:NSLocalizedString(@"notFound", @"Can't found")];
+                    }
+                }
+            });
+        }
+    }
+
 //    [[EMClient sharedClient].chatManager asyncSearchPublicGroupWithGroupId:searchBar.text completion:^(EMGroup *group, EMError *error) {
 //        if (!error) {
 //            [self.searchController.resultsSource removeAllObjects];
@@ -299,17 +398,42 @@
 {
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+    _pageNum = 1;
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        NSArray *list = [[EMClient sharedClient].roomManager getAllChatroomsFromServerWithError:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.dataSource removeAllObjects];
-            [weakSelf.dataSource addObjectsFromArray:list];
-            [weakSelf.tableView reloadData];
-            [weakSelf hideHud];
-        });
+        EMPageResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithPage:weakSelf.pageNum++ pageSize:FetchChatroomPageSize error:&error];
+        if (weakSelf)
+        {
+            ChatroomListViewController *strongSelf = weakSelf;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf hideHud];
+                
+                if (!error)
+                {
+                    NSMutableArray *oldChatrooms = [self.dataSource mutableCopy];
+                    [self.dataSource removeAllObjects];
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [oldChatrooms removeAllObjects];
+                    });
+                    [strongSelf.dataSource addObjectsFromArray:result.list];
+                    [strongSelf.tableView reloadData];
+                    if (result.count > 0)
+                    {
+                        self.footerView.state = eGettingMoreFooterViewStateIdle;
+                    }
+                    else
+                    {
+                        self.footerView.state = eGettingMoreFooterViewStateComplete;
+                    }
+                }
+                else
+                {
+                    self.footerView.state = eGettingMoreFooterViewStateFailed;
+                }
+            });
+        }
     });
 }
 
