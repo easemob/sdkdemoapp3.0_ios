@@ -31,7 +31,7 @@
 @property (strong, nonatomic) EMSearchBar *searchBar;
 @property (strong, nonatomic) EMSearchDisplayController *searchController;
 @property (strong, nonatomic) GettingMoreFooterView *footerView;
-@property (nonatomic, strong) NSString *cursor;
+@property (nonatomic) NSInteger pageNum;
 @property (nonatomic) BOOL isGettingMore;
 @end
 
@@ -43,6 +43,7 @@
     if (self) {
         // Custom initialization
         _dataSource = [NSMutableArray array];
+        _pageNum = 1;
     }
     return self;
 }
@@ -236,14 +237,14 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!_isGettingMore && indexPath.row == ([self.dataSource count] - 1) && [_cursor length])
+    if (!_isGettingMore && indexPath.row == ([self.dataSource count] - 1) && _pageNum > 0)
     {
         __weak typeof(self) weakSelf = self;
         self.footerView.state = eGettingMoreFooterViewStateGetting;
         _isGettingMore = YES;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
-            EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithCursor:weakSelf.cursor pageSize:FetchChatroomPageSize error:&error];
+            EMPageResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithPage:weakSelf.pageNum++ pageSize:FetchChatroomPageSize error:&error];
             if (weakSelf)
             {
                 ChatroomListViewController *strongSelf = weakSelf;
@@ -252,8 +253,7 @@
                 {
                     [strongSelf.dataSource addObjectsFromArray:result.list];
                     [strongSelf.tableView reloadData];
-                    strongSelf.cursor = result.cursor;
-                    if ([result.cursor length])
+                    if (result.count > 0)
                     {
                         self.footerView.state = eGettingMoreFooterViewStateIdle;
                     }
@@ -398,12 +398,12 @@
 {
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    _cursor = nil;
+    _pageNum = 1;
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithCursor:weakSelf.cursor pageSize:FetchChatroomPageSize error:&error];
+        EMPageResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithPage:weakSelf.pageNum++ pageSize:FetchChatroomPageSize error:&error];
         if (weakSelf)
         {
             ChatroomListViewController *strongSelf = weakSelf;
@@ -419,8 +419,7 @@
                     });
                     [strongSelf.dataSource addObjectsFromArray:result.list];
                     [strongSelf.tableView reloadData];
-                    strongSelf.cursor = result.cursor;
-                    if ([result.cursor length])
+                    if (result.count > 0)
                     {
                         self.footerView.state = eGettingMoreFooterViewStateIdle;
                     }
