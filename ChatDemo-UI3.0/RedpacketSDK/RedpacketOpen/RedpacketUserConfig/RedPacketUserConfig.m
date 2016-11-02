@@ -10,11 +10,9 @@
 #import "EaseMob.h"
 #import "YZHRedpacketBridge.h"
 #import "RedpacketMessageModel.h"
+#import "AppDelegate.h"
+#import "ConversationListController.h"
 
-/**
- *  环信IMToken过期
- */
-#define RedpacketEaseMobTokenOutDate  20304
 
 
 static RedPacketUserConfig *__sharedConfig__ = nil;
@@ -63,6 +61,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
         
         [YZHRedpacketBridge sharedBridge].dataSource = __sharedConfig__;
         [YZHRedpacketBridge sharedBridge].delegate = __sharedConfig__;
+        [YZHRedpacketBridge sharedBridge].isDebug = YES;
         
     });
     
@@ -75,7 +74,6 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     
     if (self) {
         [self beginObserve];
-        [YZHRedpacketBridge sharedBridge].redpacketOrgName = @"环信";
     }
     
     return self;
@@ -130,26 +128,23 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 - (void)redpacketError:(NSString *)errorStr withErrorCode:(NSInteger)code
 {
     NSLog(@"获取RedpacketTokenFalied:%@", errorStr);
-    if (code == RedpacketEaseMobTokenOutDate) {
+    if (code == 20304) {
+        //  20304 环信Token验证问题
         //  刷新环信Token
         EaseMob *easemob = [EaseMob sharedInstance];
         EMError *error = nil;
         
         SEL selector = NSSelectorFromString(@"fetchTokenFromServer");
-        if ([easemob respondsToSelector:selector]) {
-            IMP imp = [easemob methodForSelector:selector];
-            EMError *(*func)(id, SEL) = (void *)imp;
-            error = func(easemob, selector);
-            
-            if (!error) {
-                [self configRedpacketService];
-            }
-        }
+        IMP imp = [easemob methodForSelector:selector];
+        EMError *(*func)(id, SEL) = (void *)imp;
+        error = func(easemob, selector);
     }
+    
+    [self configRedpacketService];
 }
 
 #pragma mark - IChatManagerDelegate
-    
+
 /**
  *  检测用户登陆状态
  */
@@ -160,10 +155,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     if(isLoginSuccess) {
         [self configRedpacketService];
         
-    }else {
-        [[YZHRedpacketBridge sharedBridge] redpacketUserLoginOut];
-    }
-}
+    }}
 
 /**
  *  自动登录状态监听
@@ -246,19 +238,41 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 - (void)didReceiveMessage:(EMMessage *)message
 {
-    if ([RedpacketMessageModel isRedpacketTakenMessage:message.ext] &&
-        message.messageType == eMessageTypeChat) {
+    NSDictionary *dict = message.ext;
+    
+    NSString *text;
+    if ([RedpacketMessageModel isRedpacketTakenMessage:dict]) {
+        
+        NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+        if (receiver.length == 0) {
+            receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+        }
+        text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
+        
+    }else if ([RedpacketMessageModel isRedpacketTransferMessage:message.ext]){
+        
+        NSString *currentUserId = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+        NSString *senderId = message.ext[RedpacketKeyRedpacketSenderId];
+        BOOL isRedpacketSender = [currentUserId isEqualToString:senderId];
+        
+        if (isRedpacketSender) {
+            text = [NSString stringWithFormat:@"[转账]转账%@元", [dict valueForKey:RedpacketKeyRedpacketTransferAmout]];
+        }else{
+            text = [NSString stringWithFormat:@"[转账]向你转账%@元", [dict valueForKey:RedpacketKeyRedpacketTransferAmout]];;
+        }
+    }
+    
+    if (text.length) {
         for (id body in message.messageBodies) {
             if ([body isKindOfClass:[EMTextMessageBody class]]) {
                 EMTextMessageBody *textBody = (EMTextMessageBody *)body;
-                NSDictionary *dict = message.ext;
-                NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-                if (receiver.length == 0) {
-                    receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-                }
-                textBody.text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];;
+                textBody.text = text;
                 [message updateMessageBodiesToDB];
-                return;
+                
+                ConversationListController *listVC = [((AppDelegate *)[UIApplication sharedApplication].delegate).mainController.viewControllers objectAtIndex:0];
+                [listVC refreshDataSource];
+                
+                break;
             }
         }
     }
