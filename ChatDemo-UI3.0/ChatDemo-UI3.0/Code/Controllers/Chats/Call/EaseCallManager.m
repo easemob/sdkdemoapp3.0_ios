@@ -74,7 +74,7 @@ static EaseCallManager *callManager = nil;
                 }
             }
             else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Failed to establish the call") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Failed to establish the call") delegate:nil cancelButtonTitle:NSLocalizedString(@"call.ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
             }
         }
@@ -146,7 +146,7 @@ static EaseCallManager *callManager = nil;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (error.code == EMErrorNetworkUnavailable)
                     {
-                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"network.disconnection", @"Network disconnection") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.network.disconnection", @"Network disconnection") delegate:nil cancelButtonTitle:NSLocalizedString(@"call.ok", @"OK") otherButtonTitles:nil, nil];
                         [alertView show];
                     }
                     else
@@ -203,22 +203,22 @@ static EaseCallManager *callManager = nil;
             switch (aReason) {
                 case EMCallEndReasonNoResponse:
                 {
-                    reasonStr = @"User didn't answer";
+                    reasonStr = NSLocalizedString(@"call.userNotAnswer", @"User didn't answer");
                 }
                     break;
                 case EMCallEndReasonDecline:
                 {
-                    reasonStr = @"Call declined";
+                    reasonStr = NSLocalizedString(@"call.declined", @"Call declined");
                 }
                     break;
                 case EMCallEndReasonBusy:
                 {
-                    reasonStr = @"User is busy";
+                    reasonStr = NSLocalizedString(@"call.userBusy", @"User is busy");
                 }
                     break;
                 case EMCallEndReasonFailed:
                 {
-                    reasonStr = @"Call failed";
+                    reasonStr = NSLocalizedString(@"call.failed", @"Call failed");
                 }
                     break;
                 default:
@@ -228,7 +228,7 @@ static EaseCallManager *callManager = nil;
             if (aError) {
                 
                 if (aError.code == EMErrorCallRemoteOffline) {
-                    reasonStr = @"User is offline";
+                    reasonStr = NSLocalizedString(@"call.userOffline", @"User is offline");
                 } else {
                     reasonStr = aError.errorDescription;
                 }
@@ -249,7 +249,7 @@ static EaseCallManager *callManager = nil;
     }
 }
 
-//收到通话请求
+// Receive Call
 - (void)callDidReceive:(EMCallSession *)aSession
 {
     if (_callSession && _callSession.status != EMCallSessionStatusDisconnected) {

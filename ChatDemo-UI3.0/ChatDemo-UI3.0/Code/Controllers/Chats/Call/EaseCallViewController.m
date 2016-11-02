@@ -110,7 +110,7 @@
 
 - (void)reloadCallingUI
 {
-    self.statusLabel.text = @"Calling";
+    self.statusLabel.text = NSLocalizedString(@"call.calling", @"Calling");
     self.statusLabel.hidden = NO;
     [self.cancelCallButton setHidden:YES];
     [self.answerCallButton setHidden:YES];
@@ -127,9 +127,9 @@
 - (void)reloadCalledUI
 {
     if (_callSession.type == EMCallTypeVideo) {
-        self.statusLabel.text = @"Incoming video call";
+        self.statusLabel.text = NSLocalizedString(@"call.incomingVideoCall", @"Incoming video call");
     } else {
-        self.statusLabel.text = @"Incoming call";
+        self.statusLabel.text = NSLocalizedString(@"call.incomingCall", @"Incoming call");
     }
     
     self.avatarView.hidden = NO;

@@ -54,6 +54,18 @@
 "chat.cancel" = "Cancel";
 "chat.placeHolder" = "Send Message";
 
+//call
+"call.calling" = "Calling";
+"call.initFailed" = "Failed to establish the call";
+"call.ok" = "OK";
+"call.network.disconnection" = "Network disconnection";
+"call.userNotAnswer" = "User didn't answer";
+"call.declined" = "Call declined";
+"call.userBusy" = "User is busy";
+"call.failed" = "Call failed";
+"call.userOffline" = "User is offline";
+"call.incomingCall" = "Incoming Call";
+"call.incomingVideoCall" = "Incoming video call";
 //error
 "error.connectNetworkFail" = "No network connection!";
 "error.connectServerFail" = "Connect to the server failed!";
@@ -78,6 +90,7 @@
 "setting.push.off" = "Off";
 "setting.push.displayname" = "Push notification display name";
 "setting.push.tip" = "The display name will appear in Apple's push notification system.";
+"setting.push.display" = "Push Notification Display";
 
 //setting.account
 "setting.account.edit" = "Edit";
@@ -86,6 +99,9 @@
 
 //setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
+
+//logout
+"logout.failed" = "Logout failed";
 
 //loading
 "loading.dropdown" = "Drop down loading...";

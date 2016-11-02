@@ -54,6 +54,8 @@
         _footerTip = [[UILabel alloc] init];
         _footerTip.backgroundColor = [UIColor clearColor];
         _footerTip.textAlignment = NSTextAlignmentLeft;
+        _footerTip.lineBreakMode = NSLineBreakByWordWrapping;
+        _footerTip.numberOfLines = 0;
         _footerTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
         _footerTip.font = [UIFont systemFontOfSize:11];
         _footerTip.text = NSLocalizedString(@"setting.push.tip", @"The display name will appear in Apple's push notification system.");
@@ -131,6 +133,7 @@
     if (indexPath.row == 2) {
         
         EMPushDisplaynameViewController *display = [[EMPushDisplaynameViewController alloc] init];
+        display.title = NSLocalizedString(@"setting.push.display", @"Push Notification Display");
         display.currentDisplayName = _pushNickname;
         [display getUpdatedDisplayName:^(NSString *newDisplayName) {
             _pushNickname = newDisplayName;
@@ -146,6 +149,8 @@
     UIView *footer = [[UIView alloc] init];
     footer.backgroundColor = [UIColor clearColor];
     self.footerTip.frame = CGRectMake(15, 10, self.tableView.frame.size.width - 15, 11);
+    CGSize size = [self.footerTip sizeThatFits:CGSizeMake(self.footerTip.frame.size.width, MAXFLOAT)];
+    self.footerTip.frame = CGRectMake(15, 10, self.tableView.frame.size.width, size.height);
     [footer addSubview:self.footerTip];
     
     return footer;
