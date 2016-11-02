@@ -1,4 +1,4 @@
-//
+ //
 //  ChatWithRedPacketViewController.m
 //  ChatDemo-UI3.0
 //
@@ -16,6 +16,7 @@
 #import "RedpacketOpenConst.h"
 #import "YZHRedpacketBridge.h"
 #import "UserProfileManager.h"
+#import "TransferCell.h"
 
 /**
  *  红包单击事件索引
@@ -77,16 +78,17 @@ EaseMessageViewControllerDataSource,RedpacketViewControlDelegate>
     //  设置头像圆角
     [[EaseRedBagCell appearance] setAvatarCornerRadius:20.f];
     
+    [[TransferCell appearance] setAvatarSize:40.0f];
+    [[TransferCell appearance] setAvatarCornerRadius:20.0f];
+    
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],NSFontAttributeName : [UIFont systemFontOfSize:18]};
     
     if ([self.chatToolbar isKindOfClass:[EaseChatToolbar class]]) {
         //  MARK: __redbag  红包
         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket_high"] title:@"红包"];
         
-        //  MARK: __redbag 零钱
-        /*
-         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_changeMoney_high"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_changeMoney"] title:@"零钱"];
-         */
+        //  MARK: __redbag 转账
+         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedPacketResource.bundle/redpacket_transfer_high"] highlightedImage:[UIImage imageNamed:@"RedPacketResource.bundle/redpacket_transfer_high"] title:@"转账"];
     }
     
     //  显示红包的Cell视图
@@ -129,7 +131,11 @@ EaseMessageViewControllerDataSource,RedpacketViewControlDelegate>
     if ([RedpacketMessageModel isRedpacket:dict]) {
         [self.viewControl redpacketCellTouchedWithMessageModel:[self toRedpacketMessageModel:model]];
         
-    }else {
+    }else if([RedpacketMessageModel isRedpacketTransferMessage:dict])
+    {
+        [self.viewControl presentTransferDetailViewController:[RedpacketMessageModel redpacketMessageModelWithDic:dict]];
+    }
+    else {
         [super messageCellSelected:model];
     }
 }
@@ -156,6 +162,17 @@ EaseMessageViewControllerDataSource,RedpacketViewControlDelegate>
         return cell;
     }
     
+    if ([RedpacketMessageModel isRedpacketTransferMessage:ext]) {
+        TransferCell *cell = [tableView dequeueReusableCellWithIdentifier:[TransferCell cellIdentifierWithModel:messageModel]];
+        if (!cell) {
+            cell = [[TransferCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[TransferCell cellIdentifierWithModel:messageModel] model:messageModel];
+            cell.delegate = self;
+        }
+        cell.model = messageModel;
+        return cell;
+
+    }
+    
     RedpacketMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RedpacketMessageCell class])];
     cell.model = messageModel;
     
@@ -170,6 +187,9 @@ EaseMessageViewControllerDataSource,RedpacketViewControlDelegate>
     
     if ([RedpacketMessageModel isRedpacket:ext])    {
         return [EaseRedBagCell cellHeightWithModel:messageModel];
+    }else if([RedpacketMessageModel isRedpacketTransferMessage:ext])
+    {
+        return [TransferCell cellHeightWithModel:messageModel];
     }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
         return 36;
     }
@@ -198,25 +218,27 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     if (index == _redpacket_send_index || index == 3) {
         if (self.conversation.conversationType == eConversationTypeChat) {
             //单聊发送界面
-            [self.viewControl presentRedPacketViewController];
+            [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerSingle memberCount:0];
         }else{
             //群内指向红包
             NSArray *groupArray = [EMGroup groupWithId:self.conversation.chatter].occupants;
             //群聊红包发送界面
-            [self.viewControl presentRedPacketMoreViewControllerWithGroupMemberArray:groupArray];
+            [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:groupArray.count];
         }
         
     } else if (index == _redpacket_change_index) {
-        //  零钱界面
-        [self.viewControl presentChangeMoneyViewController];
+        //  转账页面
+        RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
+        userInfo = [self profileEntityWith:self.conversation.chatter];
+        [self.viewControl presentTransferViewControllerWithReceiver:userInfo];
     }else {
         [self.chatToolbar endEditing:YES];
     }
 }
 
-#pragma Delegate RedpacketViewControlDelegate
-//定向红包
-- (NSArray *)groupMemberList
+#pragma mark - Delegate RedpacketViewControlDelegate
+
+- (void)getGroupMemberListCompletionHandle:(void (^)(NSArray<RedpacketUserInfo *> * groupMemberList))completionHandle
 {
     NSArray *groupArray = [[[EaseMob sharedInstance] chatManager] fetchOccupantList:self.conversation.chatter error:nil];
     
@@ -232,15 +254,16 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
             [mArray addObject:userInfo];
         }
     }
-    
-    return mArray;
+    completionHandle(mArray);
 }
 
 - (void)sendRedPacketMessage:(RedpacketMessageModel *)model
 {
     NSDictionary *dic = [model redpacketMessageModelToDic];
     NSString *message = [NSString stringWithFormat:@"[%@]%@", model.redpacket.redpacketOrgName, model.redpacket.redpacketGreeting];
-    
+    if ([RedpacketMessageModel isRedpacketTransferMessage:dic]) {
+        message = [NSString stringWithFormat:@"[转账]转账%@元",model.redpacket.redpacketMoney];
+    }
     [self sendTextMessage:message withExt:dic];
 }
 
@@ -306,12 +329,15 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 {
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
     BOOL isGroup = self.conversation.conversationType == eConversationTypeGroupChat;
-    messageModel.redpacketReceiver.isGroup = isGroup;
+//    messageModel.redpacketReceiver.isGroup = isGroup;
     if (isGroup) {
-        messageModel.redpacketSender = [self profileEntityWith:model.message.groupSenderName];
+        //如果群支持自定义头像 和 昵称 可以根据单独赋值
+        messageModel.redpacketSender= [self profileEntityWith:model.message.groupSenderName];
+        //此处需根据专属红包接收者的ID  给起头像地址  和  昵称赋值
         messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
     }else
     {
+        //如果群支持自定义头像 和 昵称 可以根据单独赋值
         messageModel.redpacketSender = [self profileEntityWith:model.message.from];
     }
     return messageModel;

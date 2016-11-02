@@ -28,17 +28,24 @@
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    self.titleLabel.textColor = rp_hexColor(rp_textColorGray);
+    self.titleLabel.textColor = [UIColor grayColor];
     
     self.backView.layer.cornerRadius = 3.0f;
     self.backView.layer.masksToBounds = YES;
-    
+    self.backView.backgroundColor = [self hexColor:0xe3e3e3];
     [self.icon setImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_smallIcon"]];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backViewTaped)];
     [self.backView addGestureRecognizer:tap];
+}
+
+- (UIColor *)hexColor:(uint)color
+{
+    float r = (color&0xFF0000) >> 16;
+    float g = (color&0xFF00) >> 8;
+    float b = (color&0xFF);
     
-    self.backView.backgroundColor = rp_hexColor(rp_backGroundColorGray);
+    return [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1.0f];
 }
 
 - (void)setModel:(id<IMessageModel>)model
@@ -47,9 +54,7 @@
     
     /*-------为了兼容红包2.0版本--------*/
     NSString *text = model.text;
-    if (model.bodyType == eMessageBodyType_Text &&
-        model.message.messageType == eMessageTypeChat) {
-        
+    if (model.bodyType == eMessageBodyType_Text) {
         NSDictionary *dict = model.message.ext;
         NSString *currentUserId = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
         NSString *receiverId = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
@@ -70,7 +75,7 @@
         }
     }
     
-    /*-------------------------------------------*/
+    /*--------兼容结束-----------------*/
     
     self.titleLabel.text = text;
     CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(200, 20)];
