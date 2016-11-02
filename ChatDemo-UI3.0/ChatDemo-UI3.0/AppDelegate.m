@@ -37,8 +37,7 @@
     }
     
     // init HyphenateSDK
-//    EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];
-    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+    EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];
     NSString *apnsCertName = nil;
 //#if DEBUG
 //    apnsCertName = @"chatdemoui_dev";

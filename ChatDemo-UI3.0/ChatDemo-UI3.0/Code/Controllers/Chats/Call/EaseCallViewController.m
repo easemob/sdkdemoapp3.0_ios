@@ -235,15 +235,21 @@
 
 - (IBAction)rejectCallAction:(UIButton *)sender
 {
-    [_timeTimer invalidate];
 
+    [self reloadAudioSession];
+    [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonHangup];
+    
+}
+
+- (void)reloadAudioSession
+{
+    [_timeTimer invalidate];
+    
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:_audioCategory error:nil];
     [audioSession setActive:YES error:nil];
-    
-    [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonDecline];
-    
 }
+
 
 - (IBAction)cancelCallAction:(UIButton *)sender
 {
@@ -253,7 +259,8 @@
         [EaseCallManager sharedManager].callController = nil;
     } else {
         
-        [self rejectCallAction:nil];
+        [self reloadAudioSession];
+        [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonDecline];
     }
 
 }
