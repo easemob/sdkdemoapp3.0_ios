@@ -65,7 +65,7 @@
     [self.navigationItem setLeftBarButtonItem:leftBar];
     
     _createBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _createBtn.frame = CGRectMake(0, 0, 40, 40);
+    _createBtn.frame = CGRectMake(0, 0, 50, 40);
     _createBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     [_createBtn setTitleColor:KermitGreenTwoColor forState:UIControlStateNormal];
     [_createBtn setTitleColor:KermitGreenTwoColor forState:UIControlStateHighlighted];

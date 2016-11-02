@@ -14,4 +14,6 @@
 
 - (void)endHeaderRefresh;
 
+- (UIView *)tableViewFoot;
+
 @end

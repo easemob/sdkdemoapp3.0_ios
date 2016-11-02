@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -8,11 +8,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EMGroupTitle_Cell" id="KGk-i7-Jjw" customClass="EMGroupTitleCell">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EMGroupTitle_Cell" id="KGk-i7-Jjw" customClass="EMGroupTitleCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <frame key="frameInset" width="320" height="54.5"/>
+                <frame key="frameInset" width="287" height="54"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gcf-cA-Ea8">
@@ -23,28 +23,10 @@
                         <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bfb-Nf-3Te">
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10.4" id="JuJ-By-cSZ"/>
-                            <constraint firstAttribute="width" constant="5.9000000000000004" id="NPS-Q5-ShY"/>
-                        </constraints>
-                    </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hSE-yp-Mhq">
-                        <color key="backgroundColor" red="0.69803921570000005" green="0.72549019609999998" blue="0.75686274509999996" alpha="0.50483349119999998" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="bN5-dt-xcb"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="bfb-Nf-3Te" secondAttribute="trailing" constant="16.100000000000001" id="3g8-oI-tRb"/>
-                    <constraint firstAttribute="bottom" secondItem="hSE-yp-Mhq" secondAttribute="bottom" id="DE7-SA-Nl5"/>
                     <constraint firstItem="Gcf-cA-Ea8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="NCO-7O-Jyg"/>
-                    <constraint firstItem="hSE-yp-Mhq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="hFS-6A-gj4"/>
                     <constraint firstItem="Gcf-cA-Ea8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="hHA-s4-cxe"/>
-                    <constraint firstItem="bfb-Nf-3Te" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="mO4-99-6aA"/>
-                    <constraint firstAttribute="trailing" secondItem="hSE-yp-Mhq" secondAttribute="trailing" id="scJ-pL-p5c"/>
-                    <constraint firstItem="bfb-Nf-3Te" firstAttribute="leading" secondItem="Gcf-cA-Ea8" secondAttribute="trailing" constant="10" id="seg-GU-vur"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
