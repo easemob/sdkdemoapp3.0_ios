@@ -77,6 +77,7 @@
 "error.recordStoping" = "语音录制还没有结束";
 "error.recordNotBegin" = "还没有开始语音录制";
 "error.recordTooShort" = "录制时间过短";
+"error.serverDisabled" = "服务被禁用";
 
 //login
 "login.beginAutoLogin" = "自动登录开始...";
