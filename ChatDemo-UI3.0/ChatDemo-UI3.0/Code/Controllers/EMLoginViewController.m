@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
-@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 @property (weak, nonatomic) IBOutlet UIButton *changeButton;
 
@@ -41,6 +41,14 @@
     _passwordTextField.delegate = self;
     _passwordTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, _usernameTextField.height)];
     _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    _loginButton.top = KScreenHeight - _loginButton.height;
+    _loginButton.width = KScreenWidth;
+    
+    _signupButton.top = KScreenHeight - _loginButton.height;
+    _signupButton.width = KScreenWidth;
 }
 
 - (void)setBackgroundColor
@@ -62,7 +70,6 @@
 
 - (IBAction)doLogin:(id)sender
 {
-    __weak typeof(self) weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] loginWithUsername:_usernameTextField.text
                                       password:_passwordTextField.text
@@ -77,27 +84,21 @@
                                             {
                                                 case EMErrorUserNotFound:
                                                     alertStr = aError.errorDescription;
-                                                    weakSelf.errorLabel.text = aError.errorDescription;
                                                     break;
                                                 case EMErrorNetworkUnavailable:
                                                     alertStr = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
-                                                    weakSelf.errorLabel.text = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
                                                     break;
                                                 case EMErrorServerNotReachable:
                                                     alertStr = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
-                                                    weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
                                                     break;
                                                 case EMErrorUserAuthenticationFailed:
                                                     alertStr = NSLocalizedString(@"login.failure.password.notmatch", @"Password does not match username");
-                                                    weakSelf.errorLabel.text = NSLocalizedString(@"login.failure.password.notmatch", @"Password does not match username");
                                                     break;
                                                 case EMErrorServerTimeout:
                                                     alertStr = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
-                                                    weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
                                                     break;
                                                 default:
                                                     alertStr = NSLocalizedString(@"login.failure", @"Login failure");
-                                                    weakSelf.errorLabel.text = NSLocalizedString(@"login.failure", @"Login failure");
                                                     break;
                                             }
                                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
@@ -126,23 +127,18 @@
                                                {
                                                    case EMErrorServerNotReachable:
                                                        alertStr = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
-                                                       weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
                                                        break;
                                                    case EMErrorNetworkUnavailable:
                                                        alertStr = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
-                                                       weakSelf.errorLabel.text = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
                                                        break;
                                                    case EMErrorServerTimeout:
                                                        alertStr = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
-                                                       weakSelf.errorLabel.text = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
                                                        break;
                                                    case EMErrorUserAlreadyExist:
                                                        alertStr = NSLocalizedString(@"login.taken", @"Username taken");
-                                                       weakSelf.errorLabel.text = NSLocalizedString(@"login.taken", @"Username taken");
                                                        break;
                                                    default:
                                                        alertStr = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
-                                                       weakSelf.errorLabel.text = NSLocalizedString(@"login.signup.failure", @"Sign up failure");
                                                        break;
                                                }
                                            }

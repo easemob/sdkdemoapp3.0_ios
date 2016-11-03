@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (copy, nonatomic) NSString *addressString;
+@property (strong, nonatomic) UIButton *backButton;
 
 - (IBAction)sendLocationAction:(id)sender;
 
@@ -47,16 +48,30 @@
     if (_isShowLocation) {
         [self removeToLocation:_currentLocationCoordinate];
         _sendButton.hidden = YES;
-        _mapView.height = KScreenHeight;
     } else {
         [self _startLocation];
-        _mapView.height = KScreenHeight - _sendButton.height;
+        [self.view bringSubviewToFront:_sendButton];
     }
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - getter
+
+- (UIButton*)backButton
+{
+    if (_backButton == nil) {
+        _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _backButton.frame = CGRectMake(0, 0, 8, 15);
+        [_backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+        [_backButton setImage:[UIImage imageNamed:@"Icon_Back"] forState:UIControlStateNormal];
+    }
+    return _backButton;
 }
 
 #pragma mark - MKMapViewDelegate
@@ -131,6 +146,8 @@
 
 - (void)removeToLocation:(CLLocationCoordinate2D)locationCoordinate
 {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    
     _currentLocationCoordinate = locationCoordinate;
     float zoomLevel = 0.01;
     MKCoordinateRegion region = MKCoordinateRegionMake(_currentLocationCoordinate, MKCoordinateSpanMake(zoomLevel, zoomLevel));
@@ -145,6 +162,8 @@
 
 - (void)_startLocation
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     if([CLLocationManager locationServicesEnabled]){
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;

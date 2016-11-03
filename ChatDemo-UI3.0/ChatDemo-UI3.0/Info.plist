@@ -6,6 +6,8 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Hyphenate</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -34,6 +36,8 @@
 			</dict>
 		</array>
 	</dict>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -42,13 +46,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Hyphenate need your Camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Hyphenate need your Location</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>Hyphenate need your Microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>Hyphenate need your Photo</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

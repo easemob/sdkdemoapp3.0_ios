@@ -73,6 +73,11 @@
 		71D4A1FB1D9C9359006FACB7 /* EMContactInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1F31D9C9359006FACB7 /* EMContactInfoCell.xib */; };
 		71D4A1FC1D9C9359006FACB7 /* EMGroupTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1F51D9C9359006FACB7 /* EMGroupTitleCell.m */; };
 		71D4A1FD1D9C9359006FACB7 /* EMGroupTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1F61D9C9359006FACB7 /* EMGroupTitleCell.xib */; };
+		D20E26D71DCA011C00B3FAC6 /* icon_info.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D41DCA011C00B3FAC6 /* icon_info.png */; };
+		D20E26D81DCA011C00B3FAC6 /* icon_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */; };
+		D20E26D91DCA011C00B3FAC6 /* icon_info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */; };
+		D20E26DB1DCA084B00B3FAC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20E26DA1DCA084B00B3FAC6 /* UIKit.framework */; };
+		D20E26DD1DCA092700B3FAC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20E26DC1DCA092700B3FAC6 /* Foundation.framework */; };
 		D22B7A301DB0F93300C8DD40 /* iconCall.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2A1DB0F93300C8DD40 /* iconCall.png */; };
 		D22B7A311DB0F93300C8DD40 /* iconCall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2B1DB0F93300C8DD40 /* iconCall@2x.png */; };
 		D22B7A321DB0F93300C8DD40 /* iconCall@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2C1DB0F93300C8DD40 /* iconCall@3x.png */; };
@@ -534,6 +539,12 @@
 		71D4A1F51D9C9359006FACB7 /* EMGroupTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupTitleCell.m; sourceTree = "<group>"; };
 		71D4A1F61D9C9359006FACB7 /* EMGroupTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMGroupTitleCell.xib; sourceTree = "<group>"; };
 		D16326FFC6F317D24E92E388 /* Pods-ChatDemo-UI3.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.release.xcconfig"; sourceTree = "<group>"; };
+		D20E26D41DCA011C00B3FAC6 /* icon_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info.png; sourceTree = "<group>"; };
+		D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@2x.png"; sourceTree = "<group>"; };
+		D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@3x.png"; sourceTree = "<group>"; };
+		D20E26DA1DCA084B00B3FAC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D20E26DC1DCA092700B3FAC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D20E26DE1DCA13A500B3FAC6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		D22B7A2A1DB0F93300C8DD40 /* iconCall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconCall.png; sourceTree = "<group>"; };
 		D22B7A2B1DB0F93300C8DD40 /* iconCall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconCall@2x.png"; sourceTree = "<group>"; };
 		D22B7A2C1DB0F93300C8DD40 /* iconCall@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconCall@3x.png"; sourceTree = "<group>"; };
@@ -952,10 +963,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D24510A81D961F8B006DB36F /* CoreLocation.framework in Frameworks */,
+				D20E26DD1DCA092700B3FAC6 /* Foundation.framework in Frameworks */,
+				D20E26DB1DCA084B00B3FAC6 /* UIKit.framework in Frameworks */,
 				D24510AA1D961FB5006DB36F /* MapKit.framework in Frameworks */,
 				D24327EA1DAA395F00EDCDAB /* libopencore-amrwb.a in Frameworks */,
 				D24327E91DAA395F00EDCDAB /* libopencore-amrnb.a in Frameworks */,
-				D24510A81D961F8B006DB36F /* CoreLocation.framework in Frameworks */,
 				30E5DE31A68CB65C97673D9B /* libPods-ChatDemo-UI3.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -966,6 +979,9 @@
 		2632E9220D0DB58F65DD15A8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D20E26DE1DCA13A500B3FAC6 /* CoreGraphics.framework */,
+				D20E26DC1DCA092700B3FAC6 /* Foundation.framework */,
+				D20E26DA1DCA084B00B3FAC6 /* UIKit.framework */,
 				D24510A91D961FB5006DB36F /* MapKit.framework */,
 				D24510A71D961F8B006DB36F /* CoreLocation.framework */,
 				6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */,
@@ -1555,6 +1571,9 @@
 		D2BF7D3E1D914DB20090AA66 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
+				D20E26D41DCA011C00B3FAC6 /* icon_info.png */,
+				D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */,
+				D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */,
 				D22B7A2A1DB0F93300C8DD40 /* iconCall.png */,
 				D22B7A2B1DB0F93300C8DD40 /* iconCall@2x.png */,
 				D22B7A2C1DB0F93300C8DD40 /* iconCall@3x.png */,
@@ -2010,6 +2029,7 @@
 				D24510B41D965FC3006DB36F /* EMChatEmotionView.xib in Resources */,
 				D2BF7EAA1D914DB30090AA66 /* Icon_Camera.png in Resources */,
 				716633F91DB0DE5600C92E27 /* message.png in Resources */,
+				D20E26D81DCA011C00B3FAC6 /* icon_info@2x.png in Resources */,
 				D2BF7E781D914DB30090AA66 /* Button_Speaker active@2x.png in Resources */,
 				D2BF7EAE1D914DB30090AA66 /* Icon_Emoji@2x.png in Resources */,
 				D2BF7E481D914DB30090AA66 /* Button_Delete@2x.png in Resources */,
@@ -2174,6 +2194,7 @@
 				D283454B1D900B2700FD48A9 /* EMChatsViewController.xib in Resources */,
 				D2BF7E691D914DB30090AA66 /* Button_Minimize disabled@2x.png in Resources */,
 				D2BF7F021D914DB30090AA66 /* Request accepted@2x.png in Resources */,
+				D20E26D71DCA011C00B3FAC6 /* icon_info.png in Resources */,
 				D2BF7E871D914DB30090AA66 /* Icon_Call@2x.png in Resources */,
 				D2BF7F041D914DB30090AA66 /* Button_Call.png in Resources */,
 				D2BF7E291D914DB30090AA66 /* Button_Join.png in Resources */,
@@ -2231,6 +2252,7 @@
 				D2BF7EA31D914DB30090AA66 /* Disabled@3x.png in Resources */,
 				D2BF7F0D1D914DB30090AA66 /* logo1.png in Resources */,
 				D2BF7ECB1D914DB30090AA66 /* Icon_Back.png in Resources */,
+				D20E26D91DCA011C00B3FAC6 /* icon_info@3x.png in Resources */,
 				D2BF7EF71D914DB30090AA66 /* Settings@3x.png in Resources */,
 				D2BF7EC21D914DB30090AA66 /* Icon_Video disabled.png in Resources */,
 				D2BF7E701D914DB30090AA66 /* Button_Mute active@3x.png in Resources */,
@@ -2273,7 +2295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		55F5D39191F1F5FF9BD4640B /* [CP] Embed Pods Frameworks */ = {
