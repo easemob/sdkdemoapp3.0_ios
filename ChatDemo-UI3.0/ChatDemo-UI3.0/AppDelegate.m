@@ -105,10 +105,14 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [[EMClient sharedClient] applicationWillEnterForeground:application];
+    if ([EMChatDemoHelper shareHelper].pushVC) {
+        [[EMChatDemoHelper shareHelper].pushVC reloadNotificationStatus];
+    }
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    
 }
 
 

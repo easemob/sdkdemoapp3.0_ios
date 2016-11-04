@@ -87,12 +87,16 @@
 
 //setting.push
 "setting.push.display" = "显示消息详情";
-"setting.push.enable" = "推送设置";
-"setting.push.on" = "开";
-"setting.push.off" = "关";
 "setting.push.displayname" = "推送显示昵称";
 "setting.push.tip" = "设置苹果推送时显示昵称";
-"setting.push.display" = "推送昵称";
+
+
+"setting.push.nodisturb" = "免打扰";
+"setting.push.enable" = "开启";
+"setting.push.disable" = "关闭";
+"setting.push.systemPush" = "系统通知";
+"setting.push.anotherTip" = "在“设置”->“通知”开启/关闭系统通知";
+"setting.push.changeFailed" = "更改失败";
 
 //setting.account
 "setting.account.edit" = "编辑";

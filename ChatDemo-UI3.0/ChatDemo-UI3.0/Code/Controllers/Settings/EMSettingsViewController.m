@@ -11,6 +11,7 @@
 #import "EMPushNotificationViewController.h"
 #import "EMAccountViewController.h"
 #import "EMChatsSettingViewController.h"
+#import "EMChatDemoHelper.h"
 
 @interface EMSettingsViewController ()
 
@@ -94,7 +95,7 @@
         
         cell.textLabel.text = NSLocalizedString(@"setting.push", @"Push Notifications");
         BOOL isPushOn = _pushStatus == EMPushNoDisturbStatusClose ? YES : NO;
-        cell.detailTextLabel.text = isPushOn ? NSLocalizedString(@"setting.push.on", @"On") : NSLocalizedString(@"setting.push.off", @"Off");
+        cell.detailTextLabel.text = isPushOn ? NSLocalizedString(@"setting.push.enable", @"Enable") : NSLocalizedString(@"setting.push.disable", @"Disable");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.row == 2) {
         
@@ -131,6 +132,7 @@
 
         EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
         pushController.title = NSLocalizedString(@"title.setting.push", @"Push Notifications");
+        [EMChatDemoHelper shareHelper].pushVC = pushController;
         [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
             
             _pushStatus = disturbStatus;

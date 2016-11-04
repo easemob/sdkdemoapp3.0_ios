@@ -122,7 +122,10 @@
 
 - (void)signOut
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (!aError) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         } else {
@@ -130,7 +133,6 @@
             NSString *alertString = [NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertString delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"OK"), nil];
             [alert show];
-#warning log out
         }
     }];
 }

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EMContactsViewController.h"
 #import "EMMainViewController.h"
+#import "EMPushNotificationViewController.h"
 
 @interface EMChatDemoHelper : NSObject<EMClientDelegate, EMContactManagerDelegate, EMGroupManagerDelegate>
 
@@ -16,8 +17,12 @@
 
 @property (nonatomic, weak) EMMainViewController *mainVC;
 
+@property (nonatomic, weak) EMPushNotificationViewController *pushVC;
+
 + (instancetype)shareHelper;
 
 - (void)setupUntreatedApplyCount;
+
+
 
 @end
