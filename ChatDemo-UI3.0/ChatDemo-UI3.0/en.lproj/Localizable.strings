@@ -99,6 +99,10 @@
 "setting.account.edit" = "Edit";
 "setting.account.id" = "Hyphenate ID";
 "setting.account.signout" = "Sign Out";
+"setting.account.name" = "Name";
+"setting.uploading" = "Uploading..";
+"setting.uploadSuccess" = "Upload Successfully";
+"seting.uploadFailed" = "Upload Failed";
 
 //setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";

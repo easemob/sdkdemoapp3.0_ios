@@ -16,7 +16,7 @@
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-
+#import "AppDelegate+Parse.h"
 
 @interface AppDelegate ()
 
@@ -35,6 +35,8 @@
         [[UINavigationBar appearance] setTintColor:RGBACOLOR(12, 18, 24, 1)];
         [[UINavigationBar appearance] setTranslucent:NO];
     }
+    
+    [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
     
     // init HyphenateSDK
     EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];

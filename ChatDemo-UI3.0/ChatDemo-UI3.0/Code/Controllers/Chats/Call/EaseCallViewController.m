@@ -182,13 +182,10 @@
     return [object boolValue];
 }
 
-
 - (void)_initializeVideoView
 {
-    
     _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
     [self.view addSubview:_callSession.remoteVideoView];
-    
     
     CGFloat width = 80;
     CGFloat height = KScreenHeight / KScreenWidth * width;
@@ -232,24 +229,19 @@
     NSLog(@"minimizeAction");
 }
 
-
 - (IBAction)rejectCallAction:(UIButton *)sender
 {
-
     [self reloadAudioSession];
     [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonHangup];
-    
 }
 
 - (void)reloadAudioSession
 {
     [_timeTimer invalidate];
-    
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:_audioCategory error:nil];
     [audioSession setActive:YES error:nil];
 }
-
 
 - (IBAction)cancelCallAction:(UIButton *)sender
 {
@@ -262,7 +254,6 @@
         [self reloadAudioSession];
         [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonDecline];
     }
-
 }
 
 - (BOOL)isVideo:(EMCallType)type
@@ -274,8 +265,6 @@
     
     if (_isCaller) {
         
-#warning - call again
-
         NSString *username = [_callSession.remoteUsername copy];
         BOOL isVideo = [self isVideo:_callSession.type];
         _callSession = nil;

@@ -102,6 +102,11 @@
 "setting.account.edit" = "编辑";
 "setting.account.id" = "账号";
 "setting.account.signout" = "登出";
+"setting.account.name" = "用户名";
+
+"setting.uploading" = "上传中..";
+"setting.uploadSuccess" = "上传成功";
+"seting.uploadFailed" = "上传失败";
 
 //setting.chats
 "setting.chats.acceptInvitation" = "自动接受群组邀请";
