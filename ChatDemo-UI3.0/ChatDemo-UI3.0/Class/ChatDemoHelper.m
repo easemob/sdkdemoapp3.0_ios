@@ -31,9 +31,10 @@
 #import "ConferenceViewController.h"
 //#import "EMLog.h"
 
-@interface ChatDemoHelper()<EMCallManagerDelegate>
+@interface ChatDemoHelper()<EMCallManagerDelegate, EMConferenceManagerDelegate>
 {
     NSTimer *_callTimer;
+    UINavigationController *_rootNavigationController;
 }
 
 @end
@@ -81,6 +82,8 @@ static ChatDemoHelper *helper = nil;
 
 - (void)initHelper
 {
+    _rootNavigationController = (UINavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    
 #ifdef REDPACKET_AVALABLE
     [[RedPacketUserConfig sharedConfig] beginObserveMessage];
 #endif
@@ -90,6 +93,7 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
 #if DEMO_CALL == 1
     self.callLock = [[NSObject alloc] init];
@@ -312,7 +316,7 @@ static ChatDemoHelper *helper = nil;
         NSString *action = cmdBody.action;
         if ([action isEqualToString:@"inviteToJoinConference"]) {
             NSString *callId = [message.ext objectForKey:@"callId"];
-            [self recvInviteJoinConference:callId];
+//            [self recvInviteJoinConference:callId];
         } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
             [self.callController showHint:@"已转为会议模式"];
         }
@@ -660,6 +664,17 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
+#pragma mark - EMConferenceManagerDelegate
+
+- (void)userDidRecvConferenceInvite:(NSString *)aConfId
+                                ext:(NSString *)aExt
+{
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aConfId];
+    [self.mainVC.navigationController pushViewController:confController animated:NO];
+    
+     [[[UIAlertView alloc] initWithTitle:@"邀请你加入多人会议" message:@"默认自动加入" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] show];
+}
+
 #endif
 
 #pragma mark - public 
@@ -809,11 +824,11 @@ static ChatDemoHelper *helper = nil;
     [self.mainVC.navigationController pushViewController:confController animated:NO];
 }
 
-- (void)recvInviteJoinConference:(NSString *)aCallId
-{
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aCallId];
-    [self.mainVC.navigationController pushViewController:confController animated:NO];
-}
+//- (void)recvInviteJoinConference:(NSString *)aCallId
+//{
+//    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aCallId];
+//    [self.mainVC.navigationController pushViewController:confController animated:NO];
+//}
 
 #endif
 
