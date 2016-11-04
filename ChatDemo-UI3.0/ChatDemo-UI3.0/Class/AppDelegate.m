@@ -92,6 +92,8 @@ didFinishLaunchingWithOptions:launchOptions
     if (_mainController) {
         [_mainController jumpToChatList];
     }
+    
+    [[EaseMob sharedInstance] application:application didReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
