@@ -48,6 +48,8 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     // Do any additional setup after loading the view.
     
+    self.title = @"Chatroom Info";
+    
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
@@ -155,7 +157,7 @@
             if (!error)
             {
                 weakSelf.chatroom = chatroom;
-                weakSelf.title = chatroom.chatroomSubject;
+//                weakSelf.title = chatroom.chatroomSubject;
                 weakSelf.occupants = result.list;
             }
             [weakSelf reloadDataSource];
