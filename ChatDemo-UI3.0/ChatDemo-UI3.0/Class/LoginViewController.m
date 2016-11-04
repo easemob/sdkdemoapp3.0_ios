@@ -114,6 +114,9 @@
                      case EMErrorServerTimeout:
                          TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
                          break;
+                     case EMErrorServerServingDisabled:
+                         TTAlertNoTitle(NSLocalizedString(@"error.serverDisabled", @"Server Disabled"));
+                         break;
                      default:
                          TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));
                          break;
@@ -169,6 +172,9 @@
                      break;
                  case EMErrorServerTimeout:
                      TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
+                     break;
+                 case EMErrorServerServingDisabled:
+                     TTAlertNoTitle(NSLocalizedString(@"error.serverDisabled", @"Server Disabled"));
                      break;
                  default:
                      TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
