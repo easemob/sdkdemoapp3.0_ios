@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -8,11 +8,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EMContact_Info_func_Cell" id="XGw-DW-qwv" customClass="EMContactInfoCell">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EMContact_Info_func_Cell" id="XGw-DW-qwv" customClass="EMContactInfoCell">
             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XGw-DW-qwv" id="sme-x7-ufX">
-                <frame key="frameInset" width="375" height="44"/>
+                <frame key="frameInset" width="375" height="44.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d6X-5c-HPS">
@@ -29,12 +29,6 @@
                             <action selector="blockContactAction:" destination="XGw-DW-qwv" eventType="valueChanged" id="dir-ka-dw8"/>
                         </connections>
                     </switch>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dfx-am-IB8">
-                        <color key="backgroundColor" red="0.69803921570000005" green="0.72549019609999998" blue="0.75686274509999996" alpha="0.5" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="Bpo-el-SEg"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="hho-tJ-FJv" firstAttribute="centerY" secondItem="sme-x7-ufX" secondAttribute="centerY" id="7B4-ok-MoI"/>
@@ -42,10 +36,7 @@
                     <constraint firstAttribute="bottom" secondItem="d6X-5c-HPS" secondAttribute="bottom" id="EJr-59-e0f"/>
                     <constraint firstItem="hho-tJ-FJv" firstAttribute="leading" secondItem="d6X-5c-HPS" secondAttribute="trailing" constant="10" id="TkO-cS-KbY"/>
                     <constraint firstItem="d6X-5c-HPS" firstAttribute="top" secondItem="sme-x7-ufX" secondAttribute="top" id="Ur1-wz-JKL"/>
-                    <constraint firstItem="dfx-am-IB8" firstAttribute="leading" secondItem="sme-x7-ufX" secondAttribute="leading" constant="15" id="WCt-Oi-Yeu"/>
                     <constraint firstItem="d6X-5c-HPS" firstAttribute="leading" secondItem="sme-x7-ufX" secondAttribute="leading" constant="15" id="llY-mF-gYt"/>
-                    <constraint firstAttribute="trailing" secondItem="dfx-am-IB8" secondAttribute="trailing" id="mS7-vu-itd"/>
-                    <constraint firstAttribute="bottom" secondItem="dfx-am-IB8" secondAttribute="bottom" id="p9k-4E-B8Y"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

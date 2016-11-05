@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		30E5DE31A68CB65C97673D9B /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */; };
 		711159011DB7278B005158BB /* NSArray+EMSortContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 711159001DB7278B005158BB /* NSArray+EMSortContacts.m */; };
+		7140373D1DCEA2E90041353D /* NSObject+EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7140373C1DCEA2E90041353D /* NSObject+EMAlertView.m */; };
 		716633EA1DB0DE1F00C92E27 /* addContact_disable.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E41DB0DE1F00C92E27 /* addContact_disable.png */; };
 		716633EB1DB0DE1F00C92E27 /* addContact_disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E51DB0DE1F00C92E27 /* addContact_disable@2x.png */; };
 		716633EC1DB0DE1F00C92E27 /* addContact_disable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 716633E61DB0DE1F00C92E27 /* addContact_disable@3x.png */; };
@@ -425,6 +426,8 @@
 		6CD1B189658F9B85B7BFA9CD /* libPods-ChatDemo-UI3.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		711158FF1DB7278B005158BB /* NSArray+EMSortContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+EMSortContacts.h"; sourceTree = "<group>"; };
 		711159001DB7278B005158BB /* NSArray+EMSortContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+EMSortContacts.m"; sourceTree = "<group>"; };
+		7140373B1DCEA2E90041353D /* NSObject+EMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+EMAlertView.h"; sourceTree = "<group>"; };
+		7140373C1DCEA2E90041353D /* NSObject+EMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+EMAlertView.m"; sourceTree = "<group>"; };
 		716633E41DB0DE1F00C92E27 /* addContact_disable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addContact_disable.png; sourceTree = "<group>"; };
 		716633E51DB0DE1F00C92E27 /* addContact_disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addContact_disable@2x.png"; sourceTree = "<group>"; };
 		716633E61DB0DE1F00C92E27 /* addContact_disable@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addContact_disable@3x.png"; sourceTree = "<group>"; };
@@ -1244,6 +1247,8 @@
 		D24327EB1DAA444C00EDCDAB /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				7140373B1DCEA2E90041353D /* NSObject+EMAlertView.h */,
+				7140373C1DCEA2E90041353D /* NSObject+EMAlertView.m */,
 				D24327EC1DAA444C00EDCDAB /* UIView+HyphenateView.h */,
 				D24327ED1DAA444C00EDCDAB /* UIView+HyphenateView.m */,
 				D24327EE1DAA444C00EDCDAB /* UIViewController+DismissKeyboard.h */,
@@ -2372,6 +2377,7 @@
 				716634241DB0E86900C92E27 /* EMGroupsViewController.m in Sources */,
 				7166340E1DB0E17C00C92E27 /* EMApplyModel.m in Sources */,
 				716634781DB0EFD900C92E27 /* EMRefreshFootViewCell.m in Sources */,
+				7140373D1DCEA2E90041353D /* NSObject+EMAlertView.m in Sources */,
 				716634741DB0EFC300C92E27 /* EMGroupPermissionCell.m in Sources */,
 				71D4A1F71D9C9359006FACB7 /* EMContactCell.m in Sources */,
 				D28345041D8FD1D400FD48A9 /* main.m in Sources */,

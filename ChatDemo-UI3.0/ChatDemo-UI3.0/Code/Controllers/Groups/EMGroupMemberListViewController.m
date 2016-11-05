@@ -52,6 +52,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"title.members", @"Members");
+    self.tableView.tableFooterView = [UIView new];
     [self setupNavBar];
 }
 

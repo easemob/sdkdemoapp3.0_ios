@@ -58,6 +58,7 @@
     self.title = NSLocalizedString(@"title.groupInfo", @"Group Info");
     [self setupNavigationItem];
     self.tableView.tableHeaderView = _headerView;
+    self.tableView.tableFooterView = [UIView new];
     [self.membersCollection registerNib:[UINib nibWithNibName:@"EMMemberCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"EMMemberCollectionCell"];
     [self initBasicData];
 }

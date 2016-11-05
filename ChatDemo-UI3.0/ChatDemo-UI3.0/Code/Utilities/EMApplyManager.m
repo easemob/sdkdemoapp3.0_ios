@@ -86,6 +86,7 @@ static EMApplyManager *manager = nil;
 }
 
 - (NSArray *)contactApplys {
+    [_contactApplys removeAllObjects];
     NSString *contactKey = [manager localContactApplysKey];
     if (contactKey.length > 0) {
         NSData *contactData = [_userDefaults objectForKey:contactKey];
@@ -97,6 +98,7 @@ static EMApplyManager *manager = nil;
 }
 
 - (NSArray *)groupApplys {
+    [_groupApplys removeAllObjects];
     NSString *groupKey = [manager localGroupApplysKey];
     if (groupKey.length > 0) {
         NSData *groupData = [_userDefaults objectForKey:groupKey];

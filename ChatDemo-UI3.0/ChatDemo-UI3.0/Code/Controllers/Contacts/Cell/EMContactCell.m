@@ -12,7 +12,6 @@
 @interface EMContactCell()
 @property (strong, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (strong, nonatomic) IBOutlet UILabel *nicknameLabel;
-@property (strong, nonatomic) IBOutlet UIButton *selectButton;
 
 @end
 
@@ -21,7 +20,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.accessoryType = UITableViewCellAccessoryNone;
 }
 
@@ -42,11 +40,6 @@
             }
         });
     }
-}
-
-- (void)setIsSelected:(BOOL)isSelected {
-    _isSelected = isSelected;
-    _selectButton.selected = _isSelected;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
