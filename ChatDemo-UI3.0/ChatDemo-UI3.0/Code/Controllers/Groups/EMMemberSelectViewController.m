@@ -7,7 +7,6 @@
 //
 
 #import "EMMemberSelectViewController.h"
-#import "EMSearchBar.h"
 #import "EMUserModel.h"
 #import "EMGroupMemberCell.h"
 #import "EMMemberCollectionCell.h"
@@ -21,7 +20,7 @@
 @interface EMMemberSelectViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, EMGroupUIProtocol>
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
-@property (strong, nonatomic) IBOutlet EMSearchBar *searchBar;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) IBOutlet UICollectionView *selectConllection;
 
@@ -67,13 +66,21 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self.selectConllection registerNib:[UINib nibWithNibName:@"EMMemberCollection_Edit_Cell" bundle:nil] forCellWithReuseIdentifier:@"EMMemberCollection_Edit_Cell"];
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
-    [self.searchBar setCancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")];
     [self setupNavBar];
     [self loadUnSelectContacts];
+    [self setupSearchBar];
+}
     
-    CGRect frame = self.searchBar.frame;
+- (void)setupSearchBar {
+    CGRect frame = _searchBar.frame;
     frame.size.height = 30;
-    self.searchBar.frame = frame;
+    _searchBar.frame = frame;
+    _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
+    _searchBar.showsCancelButton = NO;
+    _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
+    [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
+    [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
+    _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
 }
 
 

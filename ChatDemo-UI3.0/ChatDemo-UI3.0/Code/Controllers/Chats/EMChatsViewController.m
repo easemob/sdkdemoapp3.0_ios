@@ -12,7 +12,6 @@
 #import "EMChatsCell.h"
 #import "EMRealtimeSearchUtil.h"
 #import "EMChatViewController.h"
-#import "EMSearchBar.h"
 #import "EMConversationModel.h"
 
 @interface EMChatsViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate>
