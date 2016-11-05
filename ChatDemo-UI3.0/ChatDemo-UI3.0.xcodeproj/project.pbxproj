@@ -79,6 +79,7 @@
 		D22B7A331DB0F93300C8DD40 /* iconVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2D1DB0F93300C8DD40 /* iconVideo.png */; };
 		D22B7A341DB0F93300C8DD40 /* iconVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2E1DB0F93300C8DD40 /* iconVideo@2x.png */; };
 		D22B7A351DB0F93300C8DD40 /* iconVideo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2F1DB0F93300C8DD40 /* iconVideo@3x.png */; };
+		D230BEF11DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D230BEF01DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib */; };
 		D2426AE21DCC8273009C1632 /* EMNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AE11DCC8273009C1632 /* EMNameViewController.m */; };
 		D2426AE51DCC89C0009C1632 /* AppDelegate+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AE41DCC89C0009C1632 /* AppDelegate+Parse.m */; };
 		D2426AEB1DCCA70B009C1632 /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AEA1DCCA70B009C1632 /* UIImageView+HeadImage.m */; };
@@ -167,7 +168,6 @@
 		D2AA4DFA1D9398FF00967E0E /* EMChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DF81D9398FF00967E0E /* EMChatViewController.xib */; };
 		D2AD8EB11DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AD8EB01DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m */; };
 		D2AD8EB41DB4CEF100A0DD3C /* EMConversationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AD8EB31DB4CEF100A0DD3C /* EMConversationModel.m */; };
-		D2BE1AB51DC9D51700FFB842 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2BE1AB71DC9D51700FFB842 /* EaseVideoInfoViewController.xib */; };
 		D2BF7CC81D91306A0090AA66 /* EMLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7CC61D91306A0090AA66 /* EMLaunchViewController.xib */; };
 		D2BF7E231D914DB30090AA66 /* Button_Accept.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7D0D1D914DB20090AA66 /* Button_Accept.png */; };
 		D2BF7E241D914DB30090AA66 /* Button_Accept@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF7D0E1D914DB20090AA66 /* Button_Accept@2x.png */; };
@@ -545,6 +545,7 @@
 		D22B7A2D1DB0F93300C8DD40 /* iconVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconVideo.png; sourceTree = "<group>"; };
 		D22B7A2E1DB0F93300C8DD40 /* iconVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconVideo@2x.png"; sourceTree = "<group>"; };
 		D22B7A2F1DB0F93300C8DD40 /* iconVideo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconVideo@3x.png"; sourceTree = "<group>"; };
+		D230BEF01DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 		D2334E1C1DB6487400925ACE /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
 		D2426AE01DCC8273009C1632 /* EMNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNameViewController.h; sourceTree = "<group>"; };
 		D2426AE11DCC8273009C1632 /* EMNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNameViewController.m; sourceTree = "<group>"; };
@@ -674,7 +675,6 @@
 		D28538831DB1EBD80027D4E1 /* EaseCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCallViewController.m; sourceTree = "<group>"; };
 		D28538841DB1EBD80027D4E1 /* EaseVideoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseVideoInfoViewController.h; sourceTree = "<group>"; };
 		D28538851DB1EBD80027D4E1 /* EaseVideoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseVideoInfoViewController.m; sourceTree = "<group>"; };
-		D28538861DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 		D295026A1DB87932001B9954 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EMLoginViewController.xib; sourceTree = "<group>"; };
 		D295026C1DB8793A001B9954 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EMLoginViewController.strings; sourceTree = "<group>"; };
 		D295026E1DB8793C001B9954 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/EMLoginViewController.strings"; sourceTree = "<group>"; };
@@ -693,9 +693,6 @@
 		D2AD8EB01DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRealtimeSearchUtil.m; sourceTree = "<group>"; };
 		D2AD8EB21DB4CEF100A0DD3C /* EMConversationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationModel.h; sourceTree = "<group>"; };
 		D2AD8EB31DB4CEF100A0DD3C /* EMConversationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationModel.m; sourceTree = "<group>"; };
-		D2BE1AB61DC9D51700FFB842 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
-		D2BE1AB91DC9D51B00FFB842 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EaseVideoInfoViewController.strings; sourceTree = "<group>"; };
-		D2BE1ABB1DC9D53300FFB842 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/EaseVideoInfoViewController.strings"; sourceTree = "<group>"; };
 		D2BF7CB41D90EA530090AA66 /* EMChatDemoUIDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatDemoUIDefine.h; sourceTree = "<group>"; };
 		D2BF7CB51D90EE160090AA66 /* EMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		D2BF7CB61D90EE160090AA66 /* EMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
@@ -1461,7 +1458,7 @@
 				D28538831DB1EBD80027D4E1 /* EaseCallViewController.m */,
 				D28538841DB1EBD80027D4E1 /* EaseVideoInfoViewController.h */,
 				D28538851DB1EBD80027D4E1 /* EaseVideoInfoViewController.m */,
-				D28538861DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib */,
+				D230BEF01DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1969,7 +1966,7 @@
 				D2BF7EA81D914DB30090AA66 /* Icon_Camera active@2x.png in Resources */,
 				D2BF7E2F1D914DB30090AA66 /* Icon_New chat.png in Resources */,
 				D28538891DB1EBD80027D4E1 /* EaseCallView_Voice.xib in Resources */,
-				D2BE1AB51DC9D51700FFB842 /* EaseVideoInfoViewController.xib in Resources */,
+				D230BEF11DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib in Resources */,
 				D2BF7E6E1D914DB30090AA66 /* Button_Mute active.png in Resources */,
 				D2BF7E551D914DB30090AA66 /* Button_Answer@3x.png in Resources */,
 				D2BF7E261D914DB30090AA66 /* Button_Decline.png in Resources */,
@@ -2519,16 +2516,6 @@
 				D2AA4DCF1D9227A400967E0E /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D2BE1AB71DC9D51700FFB842 /* EaseVideoInfoViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D2BE1AB61DC9D51700FFB842 /* Base */,
-				D2BE1AB91DC9D51B00FFB842 /* en */,
-				D2BE1ABB1DC9D53300FFB842 /* zh-Hans */,
-			);
-			name = EaseVideoInfoViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
