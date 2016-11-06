@@ -38,17 +38,12 @@
         return;
     }
     _nicknamLabel.text = _model.nickname;
-    _avatarImageView.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
-        __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:weakSelf.model.avatarURLPath]];
-            if (data.length > 0) {
-                dispatch_async(dispatch_get_main_queue(), ^(){
-                    weakSelf.avatarImageView.image = [UIImage imageWithData:data];
-                });
-            }
-        });
+        NSURL *avatarUrl = [NSURL URLWithString:_model.avatarURLPath];
+        [_avatarImageView sd_setImageWithURL:avatarUrl placeholderImage:_model.defaultAvatarImage];
+    }
+    else {
+        _avatarImageView.image = _model.defaultAvatarImage;
     }
 }
 
