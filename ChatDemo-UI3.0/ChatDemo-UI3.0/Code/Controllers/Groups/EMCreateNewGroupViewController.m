@@ -42,6 +42,7 @@
     [super viewDidLoad];
     [self setupNavbar];
     self.tableView.tableHeaderView = _headerView;
+    self.tableView.tableFooterView = [UIView new];
     self.groupSubjectTextField.placeholder = NSLocalizedString(@"group.groupSubject", @"Group Subject");
     [self.membersCollection registerNib:[UINib nibWithNibName:@"EMMemberCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"EMMemberCollectionCell"];
     [self initBasicData];

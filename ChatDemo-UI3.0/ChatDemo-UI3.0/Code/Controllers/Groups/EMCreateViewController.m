@@ -7,7 +7,6 @@
 //
 
 #import "EMCreateViewController.h"
-#import "EMSearchBar.h"
 #import "EMCreateNewGroupViewController.h"
 #import "EMPublicGroupsViewController.h"
 #import "EMRealtimeSearchUtils.h"
@@ -18,7 +17,7 @@
 @interface EMCreateViewController ()
 
 @property (strong, nonatomic) IBOutlet UILabel *promptLabel;
-@property (strong, nonatomic) IBOutlet EMSearchBar *searchBar;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) EMPublicGroupsViewController *publicGroupsVc;
 
@@ -41,19 +40,34 @@
                                                  3*50,
                                                  self.view.bounds.size.width,
                                                  self.view.bounds.size.height - 3*50);
-    
-    
-    if ([_promptLabel.text isEqualToString:KChineseSimplified_Prompt]) {
-        CGRect frame = _promptLabel.frame;
-        frame.size.width = frame.size.width / 2;
-        _promptLabel.frame = frame;
-        frame = _searchBar.frame;
-        frame.origin.x -= _promptLabel.frame.size.width;
-        frame.size.width += _promptLabel.frame.size.width;
-        _searchBar.frame = frame;
-    }
+    [self setupSearchBar];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"%@",NSStringFromCGRect(_searchBar.frame));
+}
+
+- (void)setupSearchBar {
+    NSString *promptText = _promptLabel.text;
+    CGSize promptSize = [promptText sizeWithAttributes:@{NSFontAttributeName:_promptLabel.font}];
+    CGRect frame = _promptLabel.frame;
+    frame.size.width = promptSize.width;
+    _promptLabel.frame = frame;
+    
+    frame = _searchBar.frame;
+    frame.size.height = 30;
+    frame.origin.x = _promptLabel.frame.origin.x + _promptLabel.frame.size.width;
+    frame.size.width = KScreenWidth - frame.origin.x;
+    _searchBar.frame = frame;
+    _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
+    _searchBar.showsCancelButton = NO;
+    _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
+    [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
+    [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
+    _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
+}
+    
 - (void)setupNavBar {
     self.title = NSLocalizedString(@"title.create", @"Create");
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];

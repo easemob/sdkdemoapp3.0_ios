@@ -134,9 +134,11 @@
 "contact.delete" = "删除联系人";
 "contact.deleteFailure" = "删除联系人失败";
 "contact.somebodyAddWithName" = "%@申请加您为好友!";
+//"contact.somebodyDeleteWithName" = "%@从联系人中删除了您";
 "contact.refusedFailure" = "拒绝好友申请失败";
 "contact.agreeFailure" = "同意好友申请失败";
 "contact.requests" = "联系人申请";
+"contact.sendContactRequest" = "您的申请已经发送。";
 
 
 //Group
