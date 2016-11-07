@@ -25,7 +25,7 @@
 #import "UIView+HyphenateView.h"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
-
+#import "NSObject+EMAlertView.h"
 #import <AVFoundation/AVFoundation.h>
 
 #endif

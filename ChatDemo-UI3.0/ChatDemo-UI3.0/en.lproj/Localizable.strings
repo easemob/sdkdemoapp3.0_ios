@@ -130,9 +130,11 @@
 "contact.delete" = "Delete Contact";
 "contact.deleteFailure" = "Delete contacts failed";
 "contact.somebodyAddWithName" = "%@ add you as a friend";
+//"contact.somebodyDeleteWithName" = "%@ delete you from %@'s contacts";
 "contact.refusedFailure" = "Refused to apply for failure";
 "contact.agreeFailure" = "Failed to agree to apply";
 "contact.requests" = "Contact Requests";
+"contact.sendContactRequest" = "You request has been sent.";
 
 //group
 "group.participants" = "Participants";

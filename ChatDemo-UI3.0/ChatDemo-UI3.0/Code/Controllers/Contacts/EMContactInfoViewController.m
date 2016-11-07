@@ -49,18 +49,12 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.tableHeaderView = _headerView;
+    self.tableView.tableFooterView = [UIView new];
     _nicknameLabel.text = _model.nickname;
     _avatarImage.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
-        __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:weakSelf.model.avatarURLPath]];
-            if (data.length > 0) {
-                dispatch_async(dispatch_get_main_queue(), ^(){
-                    weakSelf.avatarImage.image = [UIImage imageWithData:data];
-                });
-            }
-        });
+        NSURL *avatarUrl = [NSURL URLWithString:_model.avatarURLPath];
+        [_avatarImage sd_setImageWithURL:avatarUrl placeholderImage:_model.defaultAvatarImage];
     }
     
     [self loadContactInfo];
@@ -156,7 +150,6 @@
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
         if (!cell) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"EMContactInfoCell" owner:self options:nil] lastObject];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         cell.infoDic = _contactInfo[indexPath.row];
     }
@@ -165,7 +158,6 @@
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
         if (!cell) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"EMContactInfo_funcCell" owner:self options:nil] lastObject];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         cell.hyphenateId = _model.hyphenateId;
         cell.infoDic = _contactFunc[indexPath.row];
@@ -210,8 +202,10 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
-        __weak typeof(self) weakSelf = self;
+        WEAK_SELF
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [[EMClient sharedClient].contactManager deleteContact:_model.hyphenateId completion:^(NSString *aUsername, EMError *aError) {
+            [MBProgressHUD hideAllHUDsForView:weakSelf.view animated:YES];
             if (!aError) {
                 [[EMChatDemoHelper shareHelper].contactsVC reloadContacts];
                 [[EMClient sharedClient].chatManager deleteConversation:_model.hyphenateId isDeleteMessages:YES completion:nil];

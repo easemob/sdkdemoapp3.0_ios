@@ -8,6 +8,7 @@
 
 #import "EMChatDemoHelper.h"
 #import "EMApplyManager.h"
+#import <UserNotifications/UserNotifications.h>
 
 static EMChatDemoHelper *helper = nil;
 
@@ -74,22 +75,26 @@ static EMChatDemoHelper *helper = nil;
 
 - (void)friendRequestDidApproveByUser:(NSString *)aUsername {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"message.friendapply.agree", @"%@ agreed to add friends to apply"), aUsername];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    [self showAlertWithMessage:msgstr];
 }
 
 - (void)friendRequestDidDeclineByUser:(NSString *)aUsername {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"message.friendapply.refuse", @"%@ refuse to add friends to apply"), aUsername];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    [self showAlertWithMessage:msgstr];
 }
 
 - (void)friendshipDidRemoveByUser:(NSString *)aUsername {
-    [_contactsVC reloadContacts];
+    NSString *msg = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"common.delete", @"Delete"), aUsername];
+    [_mainVC showAlertWithMessage:msg];
+    if (_contactsVC) {
+        [_contactsVC reloadContacts];
+    }
 }
 
 - (void)friendshipDidAddByUser:(NSString *)aUsername {
-    [_contactsVC reloadContacts];
+    if (_contactsVC) {
+        [_contactsVC reloadContacts];
+    }
 }
 
 - (void)friendRequestDidReceiveFromUser:(NSString *)aUsername message:(NSString *)aMessage {
@@ -117,12 +122,21 @@ static EMChatDemoHelper *helper = nil;
         
         BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
         if (!isAppActivity) {
-            //发送本地推送
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            notification.fireDate = [NSDate date]; //触发通知的时间
-            notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
-            notification.alertAction = NSLocalizedString(@"common.open", @"Open");
-            notification.timeZone = [NSTimeZone defaultTimeZone];
+            if (NSClassFromString(@"UNUserNotificationCenter")) {
+                UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                content.sound = [UNNotificationSound defaultSound];
+                content.body =[NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+                UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[[NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate] * 1000] stringValue] content:content trigger:trigger];
+                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+            }
+            else {
+                UILocalNotification *notification = [[UILocalNotification alloc] init];
+                notification.fireDate = [NSDate date];
+                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+                notification.alertAction = NSLocalizedString(@"common.open", @"Open");
+                notification.timeZone = [NSTimeZone defaultTimeZone];
+            }
         }
 #endif
     }
@@ -133,16 +147,15 @@ static EMChatDemoHelper *helper = nil;
 
 - (void)didLeaveGroup:(EMGroup *)aGroup
                reason:(EMGroupLeaveReason)aReason {
-    NSString *str = nil;
+    NSString *msgstr = nil;
     if (aReason == EMGroupLeaveReasonBeRemoved) {
-        str = [NSString stringWithFormat:@"Your are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
+        msgstr = [NSString stringWithFormat:@"Your are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
-        str = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.subject, aGroup.groupId];
+        msgstr = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.subject, aGroup.groupId];
     }
     
-    if (str.length > 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:str delegate:nil cancelButtonTitle:NSLocalizedString(@"", @"") otherButtonTitles:nil, nil];
-        [alertView show];
+    if (msgstr.length > 0) {
+        [self showAlertWithMessage:msgstr];
     }
 }
 
@@ -188,8 +201,8 @@ static EMChatDemoHelper *helper = nil;
              inviter:(NSString *)aInviter
              message:(NSString *)aMessage
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId];
+    [self showAlertWithMessage:msgstr];
 }
 
 - (void)joinGroupRequestDidDecline:(NSString *)aGroupId
@@ -198,15 +211,12 @@ static EMChatDemoHelper *helper = nil;
     if (!aReason || aReason.length == 0) {
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.beRefusedToJoin", @"be refused to join the group\'%@\'"), aGroupId];
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:aReason delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
-    
+    [self showAlertWithMessage:aReason];
 }
 
 - (void)joinGroupRequestDidApprove:(EMGroup *)aGroup {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
+    [self showAlertWithMessage:msgstr];
 }
 
 - (void)groupInvitationDidReceive:(NSString *)aGroupId

@@ -229,7 +229,7 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 90;
+    return 70;
 }
 
 #pragma mark - EMGroupUIProtocol

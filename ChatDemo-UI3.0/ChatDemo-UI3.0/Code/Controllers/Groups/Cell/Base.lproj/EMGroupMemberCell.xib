@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -8,11 +8,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EMGroupMemberCell" id="KGk-i7-Jjw" customClass="EMGroupMemberCell">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EMGroupMemberCell" id="KGk-i7-Jjw" customClass="EMGroupMemberCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <frame key="frameInset" width="320" height="49.5"/>
+                <frame key="frameInset" width="320" height="49"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Hs-ar-ATF">
@@ -54,26 +54,16 @@
                             <action selector="selectMemberAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="HyF-b1-Twe"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuc-g7-eQr">
-                        <color key="backgroundColor" red="0.69803921570000005" green="0.72549019609999998" blue="0.75686274509999996" alpha="0.50483349119999998" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="Gs8-ft-sae"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="iuc-g7-eQr" secondAttribute="trailing" id="4XZ-YT-Liy"/>
                     <constraint firstItem="2Hs-ar-ATF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="AKu-oQ-I2F"/>
                     <constraint firstItem="eUv-8m-hd1" firstAttribute="leading" secondItem="2Hs-ar-ATF" secondAttribute="trailing" constant="7" id="JS3-oh-ZMu"/>
                     <constraint firstAttribute="trailing" secondItem="1EZ-Go-EN5" secondAttribute="trailing" constant="15" id="Pq4-ya-zss"/>
-                    <constraint firstItem="nIp-9Y-pRe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="WSA-UG-eUp"/>
+                    <constraint firstItem="nIp-9Y-pRe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="WSA-UG-eUp"/>
                     <constraint firstItem="nIp-9Y-pRe" firstAttribute="leading" secondItem="eUv-8m-hd1" secondAttribute="trailing" constant="5" id="dQh-oT-hGj"/>
                     <constraint firstItem="eUv-8m-hd1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="jYM-Di-vad"/>
                     <constraint firstItem="2Hs-ar-ATF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="k1J-d6-tQx"/>
                     <constraint firstItem="1EZ-Go-EN5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="lPo-Vd-Aye"/>
-                    <constraint firstItem="iuc-g7-eQr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="mTz-ZD-pJ6"/>
-                    <constraint firstAttribute="bottom" secondItem="iuc-g7-eQr" secondAttribute="bottom" id="nTE-ec-kxc"/>
-                    <constraint firstItem="iuc-g7-eQr" firstAttribute="top" secondItem="nIp-9Y-pRe" secondAttribute="bottom" id="qU6-A0-Ox3"/>
                     <constraint firstAttribute="trailing" secondItem="nIp-9Y-pRe" secondAttribute="trailing" constant="15" id="yBI-rq-vWQ"/>
                 </constraints>
             </tableViewCellContentView>

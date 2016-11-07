@@ -13,6 +13,4 @@
 
 @property (nonatomic, strong) EMUserModel *model;
 
-@property (nonatomic, assign) BOOL isSelected; //联系人选择、编辑时使用
-
 @end
