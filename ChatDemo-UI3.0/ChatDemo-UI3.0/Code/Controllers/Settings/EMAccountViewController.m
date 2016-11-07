@@ -7,14 +7,23 @@
 //
 
 #import "EMAccountViewController.h"
+#import "EMNameViewController.h"
+#import "EMUserProfileManager.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "UIImageView+HeadImage.h"
+#import "UIViewController+HUD.h"
 
-@interface EMAccountViewController ()
+
+@interface EMAccountViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIImageView *avatarView;
 
 @property (nonatomic, strong) UIButton *editButton;
 
 @property (nonatomic, strong) UIButton *signOutButton;
+
+@property (nonatomic, copy) NSString *myName;
+@property (nonatomic, strong) UIImagePickerController *imagePicker;
 
 
 @end
@@ -28,8 +37,10 @@
         
         _avatarView = [[UIImageView alloc] init];
         _avatarView.layer.cornerRadius = 45/2;
-        _avatarView.image = [UIImage imageNamed:@"default_avatar"];
+        _avatarView.layer.masksToBounds = YES;
     }
+    UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
+    [_avatarView imageWithUsername:user.username placeholderImage:nil];
     return _avatarView;
 }
 
@@ -63,6 +74,18 @@
     return _signOutButton;
 }
 
+- (UIImagePickerController *)imagePicker
+{
+    if (_imagePicker == nil) {
+        _imagePicker = [[UIImagePickerController alloc] init];
+        _imagePicker.modalPresentationStyle= UIModalPresentationOverFullScreen;
+        _imagePicker.allowsEditing = YES;
+        _imagePicker.delegate = self;
+    }
+    
+    return _imagePicker;
+}
+
 
 - (void)viewDidLoad
 {
@@ -72,11 +95,18 @@
     [super viewDidLoad];
     [self configBackButton];
     [self.view addSubview:self.signOutButton];
+    NSString *currentUser = [[EMClient sharedClient] currentUsername];
+    [[EMUserProfileManager sharedInstance] loadUserProfileInBackground:@[currentUser] saveToLoacal:YES completion:^(BOOL success, NSError *error) {
+        if (!error && success) {
+            [self.tableView reloadData];
+        }
+    }];
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -93,7 +123,13 @@
         self.avatarView.frame = CGRectMake(15, 13, 45, 45);
         self.editButton.frame = CGRectMake(75, 29, 30, 13);
         [cell.contentView addSubview:self.avatarView];
-        //[cell.contentView addSubview:self.editButton];
+        [cell.contentView addSubview:self.editButton];
+    } else if (indexPath.row == 1) {
+        
+        cell.textLabel.text = NSLocalizedString(@"setting.account.name", @"Name");
+        NSString *user = [[EMUserProfileManager sharedInstance] getNickNameWithUsername:[[EMClient sharedClient] currentUsername]];
+        cell.detailTextLabel.text = _myName.length > 0 ? _myName : user;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         
         cell.textLabel.text = NSLocalizedString(@"setting.account.id", @"Hyphenate ID");
@@ -114,20 +150,74 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.row == 0) {
+        [self editAvatar];
+    } else if (indexPath.row == 1) {
+        EMNameViewController *name = [[EMNameViewController alloc] init];
+        name.title = NSLocalizedString(@"setting.account.name", @"Name");
+        name.myName = _myName;
+        [name getUpdatedMyName:^(NSString *newName) {
+            
+            _myName = newName;
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }];
+        [self.navigationController pushViewController:name animated:YES];
+    }
+}
+
 #pragma mark - Actions
 
 - (void)editAvatar {
     
+    self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    [self presentViewController:self.imagePicker animated:YES completion:NULL];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    [self hideHud];
+    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"Uploading..")];
+    WEAK_SELF
+    UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    if (orgImage) {
+        [[EMUserProfileManager sharedInstance] uploadUserHeadImageProfileInBackground:orgImage completion:^(BOOL success, NSError *error) {
+            [weakSelf hideHud];
+            if (success) {
+                UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
+                [weakSelf.avatarView imageWithUsername:user.username placeholderImage:orgImage];
+                [self showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
+            } else {
+                [self showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];
+            }
+        }];
+    } else {
+        [self hideHud];
+        [self showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];
+    }
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)signOut
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (!aError) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         } else {
             
-#warning log out
+            NSString *alertString = [NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code];
+            [self showHint:alertString];
         }
     }];
 }

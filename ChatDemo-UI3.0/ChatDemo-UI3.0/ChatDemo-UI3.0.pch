@@ -17,6 +17,7 @@
 #ifdef __OBJC__
 
 #import <Hyphenate/EMSDKFull.h>
+//#import <HyphenateFullSDK/EMSDKFull.h>
 
 #import "EMChatDemoUIDefine.h"
 #import "EaseCallManager.h"

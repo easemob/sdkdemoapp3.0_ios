@@ -11,11 +11,12 @@
 #import "EMChatRecordView.h"
 #import "EMMessageTextView.h"
 #import "EMConvertToCommonEmoticonsHelper.h"
+#import "EMFaceView.h"
 
 #define kDefaultToolBarHeight 83
 #define kDefaultTextViewWidth KScreenWidth - 30.f
 
-@interface EMChatToolBar () <UITextViewDelegate,EMChatRecordViewDelegate>
+@interface EMChatToolBar () <UITextViewDelegate,EMChatRecordViewDelegate,EMFaceDelegate>
 
 @property (strong, nonatomic) UIView *activityButtomView;
 @property (nonatomic) BOOL isShowButtomView;
@@ -31,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (strong, nonatomic) EMChatRecordView *recordView;
+@property (strong, nonatomic) EMFaceView *faceView;
 
 @property (strong, nonatomic) NSMutableArray *moreItems;
 
@@ -97,6 +99,17 @@
     return _recordView;
 }
 
+- (EMFaceView*)faceView
+{
+    if (_faceView == nil) {
+        _faceView = [[EMFaceView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 180)];
+        [_faceView setDelegate:self];
+        _faceView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0];
+        _faceView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    }
+    return _faceView;
+}
+
 - (NSMutableArray*)moreItems
 {
     if (_moreItems == nil) {
@@ -141,6 +154,55 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     [textView setNeedsDisplay];
+}
+
+#pragma mark - EMFaceDelegate
+
+- (void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete
+{
+    NSString *chatText = self.inputTextView.text;
+    
+    if (!isDelete && str.length > 0) {
+        self.inputTextView.text = [NSString stringWithFormat:@"%@%@",chatText,str];
+    } else {
+        if (chatText.length >= 2) {
+            NSString *subStr = [chatText substringFromIndex:chatText.length-2];
+            if ([self.faceView stringIsFace:subStr]) {
+                self.inputTextView.text = [chatText substringToIndex:chatText.length-2];
+                [self textViewDidChange:self.inputTextView];
+                return;
+            }
+        }
+        if (chatText.length > 0) {
+            self.inputTextView.text = [chatText substringToIndex:chatText.length-1];
+        }
+    }
+    
+    [self textViewDidChange:self.inputTextView];
+}
+
+-(NSMutableAttributedString*)backspaceText:(NSMutableAttributedString*) attr length:(NSInteger)length
+{
+    NSRange range = [self.inputTextView selectedRange];
+    if (range.location == 0) {
+        return attr;
+    }
+    [attr deleteCharactersInRange:NSMakeRange(range.location - length, length)];
+    return attr;
+}
+
+- (void)sendFace
+{
+    NSString *chatText = self.inputTextView.text;
+    if (chatText.length > 0) {
+        if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
+            if (![_inputTextView.text isEqualToString:@""]) {
+                NSMutableString *attStr = [[NSMutableString alloc] initWithString:self.inputTextView.attributedText.string];
+                [self.delegate didSendText:attStr];
+                self.inputTextView.text = @"";
+            }
+        }
+    }
 }
 
 #pragma mark - EMChatRecordViewDelegate
@@ -195,9 +257,10 @@
         }
     }
     if (button.selected) {
-        
+        [self.inputTextView resignFirstResponder];
+        [self _willShowBottomView:self.faceView];
     } else {
-        
+        [self _willShowBottomView:nil];
     }
 }
 

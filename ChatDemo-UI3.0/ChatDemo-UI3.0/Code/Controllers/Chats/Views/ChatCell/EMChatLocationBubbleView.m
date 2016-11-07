@@ -25,6 +25,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.layer.masksToBounds = YES;
+        self.backImageView.image = [UIImage imageNamed:@"Location"];
         _addressLabel = [[UILabel alloc] init];
         _addressLabel.font = [UIFont systemFontOfSize:LABEL_FONT_SIZE];
         _addressLabel.textColor = RGBACOLOR(12, 18, 24, 1);

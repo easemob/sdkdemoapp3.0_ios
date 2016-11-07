@@ -14,7 +14,9 @@
 
 @property (nonatomic, strong) UISwitch *pushSwitch;
 
-@property (nonatomic, strong) UILabel *footerTip;
+@property (nonatomic, strong) UILabel *displayNameTip;
+
+@property (nonatomic, strong) UILabel *systemNotificationTip;
 
 @property (nonatomic) EMPushDisplayStyle pushDisplayStyle;
 
@@ -47,18 +49,36 @@
     return _pushSwitch;
 }
 
-- (UILabel *)footerTip
+- (UILabel *)displayNameTip
 {
-    if (!_footerTip) {
+    if (!_displayNameTip) {
         
-        _footerTip = [[UILabel alloc] init];
-        _footerTip.backgroundColor = [UIColor clearColor];
-        _footerTip.textAlignment = NSTextAlignmentLeft;
-        _footerTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
-        _footerTip.font = [UIFont systemFontOfSize:11];
-        _footerTip.text = NSLocalizedString(@"setting.push.tip", @"The display name will appear in Apple's push notification system.");
+        _displayNameTip = [[UILabel alloc] init];
+        _displayNameTip.backgroundColor = [UIColor clearColor];
+        _displayNameTip.textAlignment = NSTextAlignmentLeft;
+        _displayNameTip.lineBreakMode = NSLineBreakByWordWrapping;
+        _displayNameTip.numberOfLines = 0;
+        _displayNameTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
+        _displayNameTip.font = [UIFont systemFontOfSize:11];
+        _displayNameTip.text = NSLocalizedString(@"setting.push.tip", @"The display name will appear in Apple's push notification system.");
      }
-    return _footerTip;
+    return _displayNameTip;
+}
+
+- (UILabel *)systemNotificationTip
+{
+    if (!_systemNotificationTip) {
+        
+        _systemNotificationTip = [[UILabel alloc] init];
+        _systemNotificationTip.backgroundColor = [UIColor clearColor];
+        _systemNotificationTip.textAlignment = NSTextAlignmentLeft;
+        _systemNotificationTip.lineBreakMode = NSLineBreakByWordWrapping;
+        _systemNotificationTip.numberOfLines = 0;
+        _systemNotificationTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
+        _systemNotificationTip.font = [UIFont systemFontOfSize:11];
+        _systemNotificationTip.text = NSLocalizedString(@"setting.push.anotherTip", @"Enable or disable Hyphenate Notifications via “Settings”->”Notifications” on your iPhone.");
+    }
+    return _systemNotificationTip;
 }
 
 - (void)viewDidLoad
@@ -71,6 +91,9 @@
     
 }
 
+
+
+
 - (void)getPushStatus:(PushStatus)callBack
 {
     self.callBack = callBack;
@@ -79,21 +102,61 @@
 
 - (void)refreshPushOptions
 {
+    
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+    
     _pushDisplayStyle = options.displayStyle;
     _noDisturbStatus = options.noDisturbStatus;
     _pushNickname = options.displayName;
     
     BOOL display = _pushDisplayStyle == EMPushDisplayStyleSimpleBanner ? NO : YES;
-    BOOL enablePush = _noDisturbStatus == EMPushNoDisturbStatusClose ? YES: NO;
+    BOOL noDisturb = _noDisturbStatus == EMPushNoDisturbStatusClose ? NO: YES;
     [self.displaySwitch setOn:display animated:YES];
-    [self.pushSwitch setOn:enablePush animated:YES];
+    [self.pushSwitch setOn:noDisturb animated:YES];
     [self.tableView reloadData];
+}
+
+- (void)reloadNotificationStatus
+{
+    [self.tableView reloadData];
+}
+
+- (BOOL)isAllowedNotification {
+    
+    if ([[UIDevice currentDevice].systemVersion floatValue] > 7.0) {
+        
+        UIUserNotificationSettings *setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        if (setting.types != UIUserNotificationTypeNone) {
+            
+            return YES;
+        }
+    } else {
+        
+        UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        if (type != UIRemoteNotificationTypeNone) {
+            
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+
+#pragma mark - UITableViewDatasource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    if (section == 0) {
+        return 2;
+    } else {
+        return 2;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -105,21 +168,33 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         
-        cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display on lickscreen");
-        self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
-        [cell.contentView addSubview:self.displaySwitch];
-    } else if (indexPath.row == 1) {
-        
-        cell.textLabel.text = NSLocalizedString(@"setting.push.enable", @"Push Notifications");
-        self.pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
-        [cell.contentView addSubview:self.pushSwitch];
+        if (indexPath.row == 0) {
+            
+            cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display preview text");
+            self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
+            [cell.contentView addSubview:self.displaySwitch];
+        } else {
+            
+            cell.textLabel.text = NSLocalizedString(@"setting.push.systemPush", @"Notification");
+            BOOL enableNotification = [self isAllowedNotification];
+            cell.detailTextLabel.text = enableNotification ? NSLocalizedString(@"setting.push.enable", @"Enable") : NSLocalizedString(@"setting.push.disable", @"Disable");
+        }
+    
     } else {
         
-        cell.textLabel.text = NSLocalizedString(@"setting.push.displayname", @"Push notification display name");
-        cell.detailTextLabel.text = _pushNickname;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (indexPath.row == 0) {
+            
+            cell.textLabel.text = NSLocalizedString(@"setting.push.nodisturb", @"Do not disturb");
+            self.pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
+            [cell.contentView addSubview:self.pushSwitch];
+        } else {
+            
+            cell.textLabel.text = NSLocalizedString(@"setting.push.displayname", @"Push notification display name");
+            cell.detailTextLabel.text = _pushNickname;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     }
     
     return cell;
@@ -128,11 +203,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 2) {
+    if (indexPath.section == 1 && indexPath.row == 1) {
         
         EMPushDisplaynameViewController *display = [[EMPushDisplaynameViewController alloc] init];
+        display.title = NSLocalizedString(@"setting.push.display", @"Display preview text");
         display.currentDisplayName = _pushNickname;
         [display getUpdatedDisplayName:^(NSString *newDisplayName) {
+            
             _pushNickname = newDisplayName;
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }];
@@ -143,17 +220,43 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *footer = [[UIView alloc] init];
-    footer.backgroundColor = [UIColor clearColor];
-    self.footerTip.frame = CGRectMake(15, 10, self.tableView.frame.size.width - 15, 11);
-    [footer addSubview:self.footerTip];
-    
-    return footer;
+    if (section == 0) {
+        
+        return [self footerWithTip:self.systemNotificationTip];
+    } else {
+        
+        return [self footerWithTip:self.displayNameTip];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 30;
+    CGRect rect = CGRectZero;
+    if (section == 0) {
+        
+        rect = [self frameFromLabel:self.systemNotificationTip];
+    } else {
+        
+        rect = [self frameFromLabel:self.displayNameTip];
+    }
+    return rect.size.height + 20;
+}
+
+- (UIView *)footerWithTip:(UILabel *)label
+{
+    UIView *footer = [[UIView alloc] init];
+    footer.backgroundColor = [UIColor clearColor];
+    label.frame = [self frameFromLabel:label];
+    [footer addSubview:label];
+    return footer;
+}
+
+- (CGRect)frameFromLabel:(UILabel *)label
+{
+    label.frame = CGRectMake(15, 10, self.tableView.frame.size.width - 15, 11);
+    CGSize size = [label sizeThatFits:CGSizeMake(label.frame.size.width, MAXFLOAT)];
+    CGRect frame = CGRectMake(15, 10, self.tableView.frame.size.width, size.height);
+    return frame;
 }
 
 
@@ -170,9 +273,19 @@
     if (_pushDisplayStyle != pushOptions.displayStyle) {
         
         pushOptions.displayStyle = _pushDisplayStyle;
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (aError) {
-                NSLog(@"%u",aError.code);
+                
+                [sender setOn:!sender.isOn animated:YES];
+                if (pushOptions.displayStyle == EMPushDisplayStyleMessageSummary) {
+                    pushOptions.displayStyle = EMPushDisplayStyleSimpleBanner;
+                } else {
+                    pushOptions.displayStyle = EMPushDisplayStyleMessageSummary;
+                }
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message: [NSString stringWithFormat:@"%@:%d", NSLocalizedString(@"setting.push.changeFailed", @"Change Failed"), aError.code] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"common.ok", @"OK"), nil];
+                [alertView show];
             }
         }];
     }
@@ -183,19 +296,30 @@
 {
     if (sender.isOn) {
         
-        _noDisturbStatus = EMPushNoDisturbStatusClose;
-    } else {
-        // NO Notification
         _noDisturbStatus = EMPushNoDisturbStatusDay;
+    } else {
+
+        _noDisturbStatus = EMPushNoDisturbStatusClose;
     }
     EMPushOptions *pushOptions = [[EMClient sharedClient] pushOptions];
     if (_noDisturbStatus != pushOptions.noDisturbStatus) {
         
         pushOptions.noDisturbStatus = _noDisturbStatus;
+        NSLog(@"%d",pushOptions.noDisturbStatus);
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (aError) {
                 
-                NSLog(@"%u",aError.code);
+                [sender setOn:!sender.isOn animated:YES];
+                if (pushOptions.noDisturbStatus == EMPushNoDisturbStatusDay) {
+                    pushOptions.noDisturbStatus = EMPushNoDisturbStatusClose;
+                } else {
+                    pushOptions.noDisturbStatus = EMPushNoDisturbStatusDay;
+                }
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@:%d",NSLocalizedString(@"setting.push.changeFailed", @"Change failed"),aError.code] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"common.ok", @"OK"), nil];
+                [alert show];
+                
             } else {
                 
                 if (self.callBack) {
@@ -203,6 +327,7 @@
                     self.callBack(_noDisturbStatus);
                 }
             }
+
         }];
     }
 }

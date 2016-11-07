@@ -1,0 +1,42 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "2vn-cA-3oP"; */
+"2vn-cA-3oP.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "4zm-7L-1Va"; */
+"4zm-7L-1Va.text" = "Label";
+
+/* Class = "UILabel"; text = "username"; ObjectID = "9CJ-D3-Kmk"; */
+"9CJ-D3-Kmk.text" = "username";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Lj9-Ly-wQu"; */
+"Lj9-Ly-wQu.text" = "Label";
+
+/* Class = "UILabel"; text = "LOCAL BITRATE"; ObjectID = "Ne2-BL-t3d"; */
+"Ne2-BL-t3d.text" = "比特率";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Y01-HU-5wM"; */
+"Y01-HU-5wM.text" = "Label";
+
+/* Class = "UILabel"; text = "LOST RATE"; ObjectID = "Y5n-A6-vAI"; */
+"Y5n-A6-vAI.text" = "丢包率";
+
+/* Class = "UILabel"; text = "RESOLUTION"; ObjectID = "Ywm-O5-X7I"; */
+"Ywm-O5-X7I.text" = "视频宽高";
+
+/* Class = "UILabel"; text = "FRAME RATE"; ObjectID = "dJ1-9H-9cl"; */
+"dJ1-9H-9cl.text" = "帧率";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ix7-Mq-zoO"; */
+"ix7-Mq-zoO.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "jaO-Bk-D9R"; */
+"jaO-Bk-D9R.text" = "Label";
+
+/* Class = "UILabel"; text = "REMOTE BITRATE"; ObjectID = "oY8-ei-19h"; */
+"oY8-ei-19h.text" = "对方比特率";
+
+/* Class = "UILabel"; text = "TIME LATENCY"; ObjectID = "uoq-IJ-D9T"; */
+"uoq-IJ-D9T.text" = "延迟";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "vaY-gJ-Cx0"; */
+"vaY-gJ-Cx0.text" = "Label";

@@ -15,4 +15,5 @@ typedef void (^PushStatus)(EMPushNoDisturbStatus disturbStatus);
 
 - (void)getPushStatus:(PushStatus)callBack;
 
+- (void)reloadNotificationStatus;
 @end
