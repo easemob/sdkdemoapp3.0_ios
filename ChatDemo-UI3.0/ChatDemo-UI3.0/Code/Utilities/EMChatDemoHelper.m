@@ -8,6 +8,7 @@
 
 #import "EMChatDemoHelper.h"
 #import "EMApplyManager.h"
+#import <UserNotifications/UserNotifications.h>
 
 static EMChatDemoHelper *helper = nil;
 
