@@ -190,6 +190,9 @@
             if (success) {
                 UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
                 [weakSelf.avatarView imageWithUsername:user.username placeholderImage:orgImage];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.tableView reloadData];
+                });
                 [self showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
             } else {
                 [self showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];

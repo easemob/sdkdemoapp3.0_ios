@@ -102,7 +102,7 @@
 "setting.account.name" = "Name";
 "setting.uploading" = "Uploading..";
 "setting.uploadSuccess" = "Upload Successfully";
-"seting.uploadFailed" = "Upload Failed";
+"setting.uploadFailed" = "Upload Failed";
 
 //setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
