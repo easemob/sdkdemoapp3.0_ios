@@ -12,16 +12,14 @@
 #import "EMChatsCell.h"
 #import "EMRealtimeSearchUtil.h"
 #import "EMChatViewController.h"
-#import "EMSearchBar.h"
 #import "EMConversationModel.h"
-#import "EMSearchBar.h"
 
 @interface EMChatsViewController () <EMChatManagerDelegate,EMGroupManagerDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate>
 {
     BOOL _isSearchState;
 }
 
-@property (strong, nonatomic) EMSearchBar *searchBar;
+@property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *resultsSource;
 
@@ -81,33 +79,20 @@
 
 #pragma mark - getter
 
-- (EMSearchBar *)searchBar {
-    if (!_searchBar) {
-        CGFloat rate = 313.0 / 375.0;
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        _searchBar = [[EMSearchBar alloc] initWithFrame:CGRectMake(0, 0, screenWidth * rate, 30)];
-        _searchBar.searchFieldWidth = screenWidth * rate;
-        _searchBar.searchFieldHeight = 30.0f;
+- (UISearchBar*)searchBar
+{
+    if (_searchBar == nil) {
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
+        _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
         _searchBar.delegate = self;
-        [_searchBar setCancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")];
+        _searchBar.showsCancelButton = NO;
+        _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
+        [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
+        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
+        _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
     }
     return _searchBar;
 }
-
-//- (UISearchBar*)searchBar
-//{
-//    if (_searchBar == nil) {
-//        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
-//        _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
-//        _searchBar.delegate = self;
-//        _searchBar.showsCancelButton = NO;
-//        _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
-//        [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
-//        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
-//        _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
-//    }
-//    return _searchBar;
-//}
 
 - (NSMutableArray*)dataSource
 {
@@ -198,7 +183,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 90.f;
+    return 70.f;
 }
 
 #pragma marl - UISearchBarDelegate

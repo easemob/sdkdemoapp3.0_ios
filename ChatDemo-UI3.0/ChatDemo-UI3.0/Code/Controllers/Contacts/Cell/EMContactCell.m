@@ -12,7 +12,6 @@
 @interface EMContactCell()
 @property (strong, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (strong, nonatomic) IBOutlet UILabel *nicknameLabel;
-@property (strong, nonatomic) IBOutlet UIButton *selectButton;
 
 @end
 
@@ -21,7 +20,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.accessoryType = UITableViewCellAccessoryNone;
 }
 
@@ -32,21 +30,11 @@
     _nicknameLabel.text = _model.nickname;
     _avatarImage.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
-        __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-            NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:weakSelf.model.avatarURLPath]];
-            if (data.length > 0) {
-                dispatch_async(dispatch_get_main_queue(), ^(){
-                    weakSelf.avatarImage.image = [UIImage imageWithData:data];
-                });
-            }
-        });
+        [_avatarImage sd_setImageWithURL:[NSURL URLWithString:_model.avatarURLPath] placeholderImage:_model.defaultAvatarImage];
     }
-}
-
-- (void)setIsSelected:(BOOL)isSelected {
-    _isSelected = isSelected;
-    _selectButton.selected = _isSelected;
+    else {
+        _avatarImage.image = _model.defaultAvatarImage;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -8,7 +8,6 @@
 
 #import "EMContactsViewController.h"
 #import "EMContactListSectionHeader.h"
-#import "EMSearchBar.h"
 #import "EMAddContactViewController.h"
 #import "EMContactInfoViewController.h"
 #import "EMGroupTitleCell.h"
@@ -30,7 +29,7 @@
 @property (nonatomic, strong) NSMutableArray *contactRequests;
 @property (nonatomic, strong) NSMutableArray *groupNotifications;
 
-@property (nonatomic, strong) EMSearchBar *searchBar;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @end
 
@@ -156,20 +155,20 @@
     }
     return _groupNotifications;
 }
-
-- (EMSearchBar *)searchBar {
+    
+- (UISearchBar *)searchBar {
     if (!_searchBar) {
-//        CGFloat rate = 313.0 / 375.0;
-//        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        _searchBar = [[EMSearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
-        _searchBar.searchFieldWidth = KScreenWidth;
-        _searchBar.searchFieldHeight = 30.0f;
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30)];
+        _searchBar.placeholder = NSLocalizedString(@"common.search", @"Search");
         _searchBar.delegate = self;
-        [_searchBar setCancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel")];
+        _searchBar.showsCancelButton = NO;
+        _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
+        [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
+        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:RGBACOLOR(228, 233, 236, 1) size:_searchBar.bounds.size] forState:UIControlStateNormal];
+        _searchBar.tintColor = RGBACOLOR(12, 18, 24, 1);
     }
     return _searchBar;
 }
-
 
 #pragma mark - Action Method
 

@@ -13,14 +13,16 @@
 
 @property (strong, nonatomic) IBOutlet UITextField *textField;
 
-@property (strong, nonatomic) IBOutlet UILabel *addStatusLabel;
 @property (strong, nonatomic) IBOutlet UIButton *addButton;
+
+@property (strong, nonatomic) IBOutlet UIView *addView;
 
 @end
 
 @implementation EMAddContactViewController
 {
     UIButton *_addButton;
+    CGFloat _addViewY;
 }
 
 - (void)viewDidLoad {
@@ -29,7 +31,31 @@
     [self setupNavBar];
     [self setupTextField];
     [self setupForDismissKeyboard];
+    [_addButton addObserver:self forKeyPath:@"userInteractionEnabled" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    _addViewY = _addView.frame.origin.y;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"userInteractionEnabled"]) {
+        NSString *imageName = @"addContact_disable.png";
+        if (_addButton.userInteractionEnabled) {
+            imageName = @"addContact_enable.png";
+        }
+        [_addButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+        [_addButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
+    }
+}
+
+- (void)dealloc {
+    [_addButton removeObserver:self forKeyPath:@"userInteractionEnabled"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+}
+
 
 - (void)setupNavBar {
     self.title = NSLocalizedString(@"title.addContact", @"Add Contact");
@@ -65,25 +91,12 @@
     _textField.layer.borderColor = CoolGrayColor.CGColor;
     
     _textField.returnKeyType = UIReturnKeySearch;
-
 }
 
 - (void)cancelAddContact {
     [_textField resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-- (void)showMessageAlertView
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:NSLocalizedString(@"saySomething", @"say somthing")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel")
-                                          otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
-    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [alert show];
-}
-
 
 - (BOOL)isContainInMyContacts:(NSString *)contactName {
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
@@ -96,18 +109,19 @@
 - (void)addContact {
     NSString *contactName = _textField.text;
     if (contactName.length == 0) {
-        _addStatusLabel.hidden = NO;
-        _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.noinput", @"No input contact name") attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
+        [self showAlertWithMessage:NSLocalizedString(@"contact.noinput", @"No input contact name")];
         return;
     }
     if ([self isContainInMyContacts:contactName]) {
-        _addStatusLabel.hidden = NO;
-        _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.repeatContact", @"This contact has been added") attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
+        self.textField.text = @"";
+        _addButton.userInteractionEnabled = NO;
+        [self showAlertWithMessage:NSLocalizedString(@"contact.repeatContact", @"This contact has been added")];
         return;
     }
     if ([contactName isEqualToString:[EMClient sharedClient].currentUsername]) {
-        _addStatusLabel.hidden = NO;
-        _addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.addOwner", @"Not allowed to send their own friends to apply for") attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
+        self.textField.text = @"";
+        _addButton.userInteractionEnabled = NO;
+        [self showAlertWithMessage:NSLocalizedString(@"contact.addOwner", @"Not allowed to send their own friends to apply for")];
         return;
     }
     [self sendAddContactRequest:contactName];
@@ -116,15 +130,21 @@
 - (void)sendAddContactRequest:(NSString *)contactName {
     NSString *requestMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"),contactName];
     WEAK_SELF
-    [[EMClient sharedClient].contactManager addContact:contactName message:requestMessage completion:^(NSString *aUsername, EMError *aError) {
-        weakSelf.addStatusLabel.hidden = NO;
-        if (!aError) {
-            weakSelf.addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"contact.sendApplySuccess", @"Requested") attributes:@{NSForegroundColorAttributeName:KermitGreenTwoColor}];
-        }
-        else {
-            weakSelf.addStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:aError.errorDescription attributes:@{NSForegroundColorAttributeName:OrangeRedColor}];
-        }
-    }];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [[EMClient sharedClient].contactManager addContact:contactName
+                                               message:requestMessage
+                                            completion:^(NSString *aUsername, EMError *aError) {
+                                                [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+                                                if (!aError) {
+                                                    weakSelf.textField.text = @"";
+                                                    _addButton.userInteractionEnabled = NO;
+                                                    NSString *msg = NSLocalizedString(@"contact.sendContactRequest", @"You request has been sent.");
+                                                    [weakSelf showAlertWithMessage:msg];
+                                                }
+                                                else {
+                                                    [weakSelf showAlertWithMessage:aError.errorDescription];
+                                                }
+                                            }];
 }
 
 #pragma mark - Action Method
@@ -143,7 +163,6 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     _textField.layer.borderColor = FrogGreenColor.CGColor;
-    _addStatusLabel.hidden = YES;
     return YES;
 }
 
@@ -154,21 +173,38 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSString *imageName = @"addContact_disable.png";
-    _addButton.userInteractionEnabled = NO;
+    BOOL userInteractionEnabled = NO;
     if (textField.text.length > 1 ||
         ((textField.text.length == 1 || textField.text.length == 0) && ![string isEqualToString:@""])) {
-        imageName = @"addContact_enable.png";
-        _addButton.userInteractionEnabled = YES;
+        userInteractionEnabled = YES;
     }
-    [_addButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-    [_addButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
-    
+    if (_addButton.userInteractionEnabled != userInteractionEnabled) {
+        _addButton.userInteractionEnabled = userInteractionEnabled;
+    }
     
     return YES;
 }
 
+#pragma mark - notification
 
-
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    NSValue *endValue = [userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"];
+    CGRect endRect;
+    [endValue getValue:&endRect];
+    
+    CGRect addFrame = _addView.frame;
+    CGFloat bottomOffset = addFrame.origin.y + addFrame.size.height + 64;
+    if (bottomOffset > endRect.origin.y) {
+        addFrame.origin.y -= (10 + bottomOffset - endRect.origin.y);
+    }
+    else if (endRect.origin.y >= KScreenHeight) {
+        addFrame.origin.y = _addViewY;
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        _addView.frame = addFrame;
+    }];
+}
 
 @end
