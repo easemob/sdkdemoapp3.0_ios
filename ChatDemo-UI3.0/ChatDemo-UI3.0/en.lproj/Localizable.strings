@@ -54,6 +54,19 @@
 "chat.cancel" = "Cancel";
 "chat.placeHolder" = "Send Message";
 
+//call
+"call.calling" = "Calling";
+"call.initFailed" = "Failed to establish the call";
+"call.ok" = "OK";
+"call.network.disconnection" = "Network disconnection";
+"call.userNotAnswer" = "User didn't answer";
+"call.declined" = "Call declined";
+"call.userBusy" = "User is busy";
+"call.failed" = "Call failed";
+"call.userOffline" = "User is offline";
+"call.incomingCall" = "Incoming Call";
+"call.incomingVideoCall" = "Incoming video call";
+
 //error
 "error.connectNetworkFail" = "No network connection!";
 "error.connectServerFail" = "Connect to the server failed!";
@@ -72,20 +85,30 @@
 "setting.about.uiversion" = "EaseUI Library Version";
 
 //setting.push
-"setting.push.display" = "Display on lockscreen";
-"setting.push.enable" = "Push Notifications";
-"setting.push.on" = "On";
-"setting.push.off" = "Off";
+"setting.push.display" = "Display preview text";
+"setting.push.nodisturb" = "Do not disturb";
+"setting.push.enable" = "Enable";
+"setting.push.disable" = "Disable";
 "setting.push.displayname" = "Push notification display name";
 "setting.push.tip" = "The display name will appear in Apple's push notification system.";
+"setting.push.systemPush" = "Notification";
+"setting.push.anotherTip" = "Enable or disable Hyphenate Notifications via “Settings”->”Notifications” on your iPhone.";
+"setting.push.changeFailed" = "Change failed";
 
 //setting.account
 "setting.account.edit" = "Edit";
 "setting.account.id" = "Hyphenate ID";
 "setting.account.signout" = "Sign Out";
+"setting.account.name" = "Name";
+"setting.uploading" = "Uploading..";
+"setting.uploadSuccess" = "Upload Successfully";
+"seting.uploadFailed" = "Upload Failed";
 
 //setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
+
+//logout
+"logout.failed" = "Logout failed";
 
 //loading
 "loading.dropdown" = "Drop down loading...";

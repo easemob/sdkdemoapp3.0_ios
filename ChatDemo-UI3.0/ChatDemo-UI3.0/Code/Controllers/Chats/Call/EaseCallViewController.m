@@ -110,7 +110,7 @@
 
 - (void)reloadCallingUI
 {
-    self.statusLabel.text = @"Calling";
+    self.statusLabel.text = NSLocalizedString(@"call.calling", @"Calling");
     self.statusLabel.hidden = NO;
     [self.cancelCallButton setHidden:YES];
     [self.answerCallButton setHidden:YES];
@@ -127,9 +127,9 @@
 - (void)reloadCalledUI
 {
     if (_callSession.type == EMCallTypeVideo) {
-        self.statusLabel.text = @"Incoming video call";
+        self.statusLabel.text = NSLocalizedString(@"call.incomingVideoCall", @"Incoming video call");
     } else {
-        self.statusLabel.text = @"Incoming call";
+        self.statusLabel.text = NSLocalizedString(@"call.incomingCall", @"Incoming call");
     }
     
     self.avatarView.hidden = NO;
@@ -182,13 +182,10 @@
     return [object boolValue];
 }
 
-
 - (void)_initializeVideoView
 {
-    
     _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
     [self.view addSubview:_callSession.remoteVideoView];
-    
     
     CGFloat width = 80;
     CGFloat height = KScreenHeight / KScreenWidth * width;
@@ -232,17 +229,18 @@
     NSLog(@"minimizeAction");
 }
 
-
 - (IBAction)rejectCallAction:(UIButton *)sender
 {
-    [_timeTimer invalidate];
+    [self reloadAudioSession];
+    [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonHangup];
+}
 
+- (void)reloadAudioSession
+{
+    [_timeTimer invalidate];
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:_audioCategory error:nil];
     [audioSession setActive:YES error:nil];
-    
-    [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonDecline];
-    
 }
 
 - (IBAction)cancelCallAction:(UIButton *)sender
@@ -253,9 +251,9 @@
         [EaseCallManager sharedManager].callController = nil;
     } else {
         
-        [self rejectCallAction:nil];
+        [self reloadAudioSession];
+        [[EaseCallManager sharedManager] hangupCallWithReason:EMCallEndReasonDecline];
     }
-
 }
 
 - (BOOL)isVideo:(EMCallType)type
@@ -267,8 +265,6 @@
     
     if (_isCaller) {
         
-#warning - call again
-
         NSString *username = [_callSession.remoteUsername copy];
         BOOL isVideo = [self isVideo:_callSession.type];
         _callSession = nil;

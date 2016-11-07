@@ -79,6 +79,12 @@
 		D22B7A331DB0F93300C8DD40 /* iconVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2D1DB0F93300C8DD40 /* iconVideo.png */; };
 		D22B7A341DB0F93300C8DD40 /* iconVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2E1DB0F93300C8DD40 /* iconVideo@2x.png */; };
 		D22B7A351DB0F93300C8DD40 /* iconVideo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D22B7A2F1DB0F93300C8DD40 /* iconVideo@3x.png */; };
+		D230BEF11DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D230BEF01DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib */; };
+		D2426AE21DCC8273009C1632 /* EMNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AE11DCC8273009C1632 /* EMNameViewController.m */; };
+		D2426AE51DCC89C0009C1632 /* AppDelegate+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AE41DCC89C0009C1632 /* AppDelegate+Parse.m */; };
+		D2426AEB1DCCA70B009C1632 /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AEA1DCCA70B009C1632 /* UIImageView+HeadImage.m */; };
+		D2426AEE1DCCAD14009C1632 /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AED1DCCAD14009C1632 /* UIViewController+HUD.m */; };
+		D2426AF11DCCB3DD009C1632 /* EMUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2426AF01DCCB3DD009C1632 /* EMUserProfileManager.m */; };
 		D24327B91DAA024A00EDCDAB /* EMMessageReadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D24327B81DAA024A00EDCDAB /* EMMessageReadManager.m */; };
 		D24327DF1DAA395F00EDCDAB /* EMAudioPlayerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D24327C11DAA395F00EDCDAB /* EMAudioPlayerUtil.m */; };
 		D24327E01DAA395F00EDCDAB /* EMAudioRecorderUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D24327C31DAA395F00EDCDAB /* EMAudioRecorderUtil.m */; };
@@ -146,7 +152,6 @@
 		D28538891DB1EBD80027D4E1 /* EaseCallView_Voice.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28538811DB1EBD80027D4E1 /* EaseCallView_Voice.xib */; };
 		D285388A1DB1EBD80027D4E1 /* EaseCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28538831DB1EBD80027D4E1 /* EaseCallViewController.m */; };
 		D285388B1DB1EBD80027D4E1 /* EaseVideoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28538851DB1EBD80027D4E1 /* EaseVideoInfoViewController.m */; };
-		D285388C1DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D28538861DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib */; };
 		D285388D1DB20BBE0027D4E1 /* EMMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D283452D1D90042F00FD48A9 /* EMMainViewController.m */; };
 		D285388E1DB20BC60027D4E1 /* EMLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BF7CC51D91306A0090AA66 /* EMLaunchViewController.m */; };
 		D285388F1DB20BD90027D4E1 /* EMChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28345481D900B2700FD48A9 /* EMChatsViewController.m */; };
@@ -540,7 +545,18 @@
 		D22B7A2D1DB0F93300C8DD40 /* iconVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconVideo.png; sourceTree = "<group>"; };
 		D22B7A2E1DB0F93300C8DD40 /* iconVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconVideo@2x.png"; sourceTree = "<group>"; };
 		D22B7A2F1DB0F93300C8DD40 /* iconVideo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconVideo@3x.png"; sourceTree = "<group>"; };
+		D230BEF01DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 		D2334E1C1DB6487400925ACE /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
+		D2426AE01DCC8273009C1632 /* EMNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNameViewController.h; sourceTree = "<group>"; };
+		D2426AE11DCC8273009C1632 /* EMNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNameViewController.m; sourceTree = "<group>"; };
+		D2426AE31DCC89C0009C1632 /* AppDelegate+Parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Parse.h"; sourceTree = "<group>"; };
+		D2426AE41DCC89C0009C1632 /* AppDelegate+Parse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Parse.m"; sourceTree = "<group>"; };
+		D2426AE91DCCA70B009C1632 /* UIImageView+HeadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+HeadImage.h"; sourceTree = "<group>"; };
+		D2426AEA1DCCA70B009C1632 /* UIImageView+HeadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HeadImage.m"; sourceTree = "<group>"; };
+		D2426AEC1DCCAD14009C1632 /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
+		D2426AED1DCCAD14009C1632 /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		D2426AEF1DCCB3DD009C1632 /* EMUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMUserProfileManager.h; sourceTree = "<group>"; };
+		D2426AF01DCCB3DD009C1632 /* EMUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMUserProfileManager.m; sourceTree = "<group>"; };
 		D24327B71DAA024A00EDCDAB /* EMMessageReadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageReadManager.h; sourceTree = "<group>"; };
 		D24327B81DAA024A00EDCDAB /* EMMessageReadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageReadManager.m; sourceTree = "<group>"; };
 		D24327BC1DAA395F00EDCDAB /* EMCDDeviceManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCDDeviceManagerDelegate.h; sourceTree = "<group>"; };
@@ -659,7 +675,6 @@
 		D28538831DB1EBD80027D4E1 /* EaseCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCallViewController.m; sourceTree = "<group>"; };
 		D28538841DB1EBD80027D4E1 /* EaseVideoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseVideoInfoViewController.h; sourceTree = "<group>"; };
 		D28538851DB1EBD80027D4E1 /* EaseVideoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseVideoInfoViewController.m; sourceTree = "<group>"; };
-		D28538861DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 		D295026A1DB87932001B9954 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EMLoginViewController.xib; sourceTree = "<group>"; };
 		D295026C1DB8793A001B9954 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EMLoginViewController.strings; sourceTree = "<group>"; };
 		D295026E1DB8793C001B9954 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/EMLoginViewController.strings"; sourceTree = "<group>"; };
@@ -1248,6 +1263,10 @@
 				D24327ED1DAA444C00EDCDAB /* UIView+HyphenateView.m */,
 				D24327EE1DAA444C00EDCDAB /* UIViewController+DismissKeyboard.h */,
 				D24327EF1DAA444C00EDCDAB /* UIViewController+DismissKeyboard.m */,
+				D2426AE91DCCA70B009C1632 /* UIImageView+HeadImage.h */,
+				D2426AEA1DCCA70B009C1632 /* UIImageView+HeadImage.m */,
+				D2426AEC1DCCAD14009C1632 /* UIViewController+HUD.h */,
+				D2426AED1DCCAD14009C1632 /* UIViewController+HUD.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1291,6 +1310,10 @@
 				D28345251D8FEE3F00FD48A9 /* Resources */,
 				D28345051D8FD1D400FD48A9 /* AppDelegate.h */,
 				D28345061D8FD1D400FD48A9 /* AppDelegate.m */,
+				D2426AE31DCC89C0009C1632 /* AppDelegate+Parse.h */,
+				D2426AE41DCC89C0009C1632 /* AppDelegate+Parse.m */,
+				D2426AEF1DCCB3DD009C1632 /* EMUserProfileManager.h */,
+				D2426AF01DCCB3DD009C1632 /* EMUserProfileManager.m */,
 				D283450E1D8FD1D400FD48A9 /* Assets.xcassets */,
 				D28345101D8FD1D400FD48A9 /* LaunchScreen.storyboard */,
 				D2AA4DCE1D9227A400967E0E /* Main.storyboard */,
@@ -1406,6 +1429,8 @@
 				D28538691DB1EBB50027D4E1 /* EMAboutViewController.xib */,
 				D285386A1DB1EBB50027D4E1 /* EMAccountViewController.h */,
 				D285386B1DB1EBB50027D4E1 /* EMAccountViewController.m */,
+				D2426AE01DCC8273009C1632 /* EMNameViewController.h */,
+				D2426AE11DCC8273009C1632 /* EMNameViewController.m */,
 				D285386C1DB1EBB50027D4E1 /* EMBaseSettingController.h */,
 				D285386D1DB1EBB50027D4E1 /* EMBaseSettingController.m */,
 				D285386E1DB1EBB50027D4E1 /* EMBaseSettingController.xib */,
@@ -1433,7 +1458,7 @@
 				D28538831DB1EBD80027D4E1 /* EaseCallViewController.m */,
 				D28538841DB1EBD80027D4E1 /* EaseVideoInfoViewController.h */,
 				D28538851DB1EBD80027D4E1 /* EaseVideoInfoViewController.m */,
-				D28538861DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib */,
+				D230BEF01DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1941,6 +1966,7 @@
 				D2BF7EA81D914DB30090AA66 /* Icon_Camera active@2x.png in Resources */,
 				D2BF7E2F1D914DB30090AA66 /* Icon_New chat.png in Resources */,
 				D28538891DB1EBD80027D4E1 /* EaseCallView_Voice.xib in Resources */,
+				D230BEF11DCD8B3E00EB3CA2 /* EaseVideoInfoViewController.xib in Resources */,
 				D2BF7E6E1D914DB30090AA66 /* Button_Mute active.png in Resources */,
 				D2BF7E551D914DB30090AA66 /* Button_Answer@3x.png in Resources */,
 				D2BF7E261D914DB30090AA66 /* Button_Decline.png in Resources */,
@@ -2041,7 +2067,6 @@
 				D2BF7EA91D914DB30090AA66 /* Icon_Camera active@3x.png in Resources */,
 				D2BF7E461D914DB30090AA66 /* Button_Add Member@3x.png in Resources */,
 				D28538791DB1EBB50027D4E1 /* EMBaseSettingController.xib in Resources */,
-				D285388C1DB1EBD80027D4E1 /* EaseVideoInfoViewController.xib in Resources */,
 				D2835FFC1D94FFD800EC7A4A /* Icon_Audio_disable@2x.png in Resources */,
 				D2BF7F0E1D914DB30090AA66 /* logo10.png in Resources */,
 				D2BF7F061D914DB30090AA66 /* Button_Call@3x.png in Resources */,
@@ -2326,6 +2351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2426AEE1DCCAD14009C1632 /* UIViewController+HUD.m in Sources */,
 				D2AD8EB11DB4BDA800A0DD3C /* EMRealtimeSearchUtil.m in Sources */,
 				D28538921DB20C770027D4E1 /* EMLoginViewController.m in Sources */,
 				D28538911DB20C4D0027D4E1 /* EMContactsViewController.m in Sources */,
@@ -2348,6 +2374,7 @@
 				D24327F01DAA444C00EDCDAB /* UIView+HyphenateView.m in Sources */,
 				D243280D1DAE1A7300EDCDAB /* EMEmoji.m in Sources */,
 				D24327F41DAA44AC00EDCDAB /* EMSDKHelper.m in Sources */,
+				D2426AEB1DCCA70B009C1632 /* UIImageView+HeadImage.m in Sources */,
 				D24327E71DAA395F00EDCDAB /* wav.mm in Sources */,
 				D2CAE2191D9BDCEE00B9A532 /* EMChatLocationBubbleView.m in Sources */,
 				D24510B21D965F9F006DB36F /* EMChatEmotionView.m in Sources */,
@@ -2382,6 +2409,7 @@
 				D285387A1DB1EBB50027D4E1 /* EMChatsSettingViewController.m in Sources */,
 				D24510AD1D962A7E006DB36F /* EMChatRecordView.m in Sources */,
 				D2AA4DF91D9398FF00967E0E /* EMChatViewController.m in Sources */,
+				D2426AE51DCC89C0009C1632 /* AppDelegate+Parse.m in Sources */,
 				D24327E01DAA395F00EDCDAB /* EMAudioRecorderUtil.m in Sources */,
 				D24327E21DAA395F00EDCDAB /* EMCDDeviceManager+Microphone.m in Sources */,
 				D28538771DB1EBB50027D4E1 /* EMAccountViewController.m in Sources */,
@@ -2398,6 +2426,7 @@
 				716634161DB0E1AB00C92E27 /* EMBaseRefreshTableController.m in Sources */,
 				716634051DB0E03F00C92E27 /* EMApplyManager.m in Sources */,
 				7166340F1DB0E17C00C92E27 /* EMGroupModel.m in Sources */,
+				D2426AE21DCC8273009C1632 /* EMNameViewController.m in Sources */,
 				7166346D1DB0EF9200C92E27 /* EMMemberSelectViewController.m in Sources */,
 				716634611DB0EF2600C92E27 /* EMGroupMemberCell.m in Sources */,
 				7166344B1DB0ED2E00C92E27 /* EMCreateNewGroupViewController.m in Sources */,
@@ -2405,6 +2434,7 @@
 				71D4A1E81D9C934C006FACB7 /* EMAddContactViewController.m in Sources */,
 				716634501DB0EE5800C92E27 /* EMPublicGroupsViewController.m in Sources */,
 				D2AD8EB41DB4CEF100A0DD3C /* EMConversationModel.m in Sources */,
+				D2426AF11DCCB3DD009C1632 /* EMUserProfileManager.m in Sources */,
 				7166341E1DB0E45700C92E27 /* EMApplyRequestCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

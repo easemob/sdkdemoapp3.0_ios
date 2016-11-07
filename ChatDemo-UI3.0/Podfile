@@ -11,5 +11,5 @@ pod 'Hyphenate'
 pod 'MWPhotoBrowser', '~> 2.1.2'
 pod 'Fabric'
 pod 'Crashlytics'
-
+pod 'Parse', '~> 1.14.2'
 end

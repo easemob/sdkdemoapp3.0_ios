@@ -54,6 +54,20 @@
 "chat.cancel" = "取消";
 "chat.placeHolder" = "发送消息";
 
+//call
+
+"call.calling" = "呼叫中";
+"call.initFailed" = "请求通话失败";
+"call.ok" = "确定";
+"call.network.disconnection" = "网络未连接";
+"call.userNotAnswer" = "对方没有响应";
+"call.declined" = "对方拒接";
+"call.userBusy" = "对方忙碌";
+"call.failed" = "通话失败";
+"call.userOffline" = "对方不在线";
+"call.incomingCall" = "收到语音请求";
+"call.incomingVideoCall" = "收到视频请求";
+
 //error
 "error.connectNetworkFail" = "连接服务器失败!";
 "error.connectServerFail" = "网络未连接!";
@@ -73,19 +87,32 @@
 
 //setting.push
 "setting.push.display" = "显示消息详情";
-"setting.push.enable" = "推送设置";
-"setting.push.on" = "开";
-"setting.push.off" = "关";
 "setting.push.displayname" = "推送显示昵称";
 "setting.push.tip" = "设置苹果推送时显示昵称";
+
+
+"setting.push.nodisturb" = "免打扰";
+"setting.push.enable" = "开启";
+"setting.push.disable" = "关闭";
+"setting.push.systemPush" = "系统通知";
+"setting.push.anotherTip" = "在“设置”->“通知”开启/关闭系统通知";
+"setting.push.changeFailed" = "更改失败";
 
 //setting.account
 "setting.account.edit" = "编辑";
 "setting.account.id" = "账号";
 "setting.account.signout" = "登出";
+"setting.account.name" = "用户名";
+
+"setting.uploading" = "上传中..";
+"setting.uploadSuccess" = "上传成功";
+"seting.uploadFailed" = "上传失败";
 
 //setting.chats
 "setting.chats.acceptInvitation" = "自动接受群组邀请";
+
+//logout
+"logout.failed" = "退出登录失败";
 
 //loading
 "loading.dropdown" = "下拉加载...";
