@@ -38,6 +38,8 @@
         _avatarView = [[UIImageView alloc] init];
         _avatarView.layer.cornerRadius = 45/2;
         _avatarView.layer.masksToBounds = YES;
+        _avatarView.frame = CGRectMake(15, 13, 45, 45);
+        _avatarView.contentMode = UIViewContentModeScaleAspectFill;
     }
     UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
     [_avatarView imageWithUsername:user.username placeholderImage:nil];
@@ -51,6 +53,7 @@
         _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_editButton setTitle:NSLocalizedString(@"setting.account.edit", @"Edit")   forState:UIControlStateNormal];
         [_editButton setTitleColor:RGBACOLOR(72, 184, 0, 1.0) forState:UIControlStateNormal];
+        _editButton.frame = CGRectMake(75, 29, 30, 13);
         _editButton.titleLabel.font = [UIFont systemFontOfSize:13];
         _editButton.enabled = NO;
         [_editButton addTarget:self action:@selector(editAvatar) forControlEvents:UIControlEventTouchUpInside];
@@ -119,9 +122,7 @@
     }
     
     if (indexPath.row == 0) {
-        
-        self.avatarView.frame = CGRectMake(15, 13, 45, 45);
-        self.editButton.frame = CGRectMake(75, 29, 30, 13);
+
         [cell.contentView addSubview:self.avatarView];
         [cell.contentView addSubview:self.editButton];
     } else if (indexPath.row == 1) {
@@ -190,12 +191,9 @@
             if (success) {
                 UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
                 [weakSelf.avatarView imageWithUsername:user.username placeholderImage:orgImage];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.tableView reloadData];
-                });
-                [self showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
+                [weakSelf showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
             } else {
-                [self showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];
+                [weakSelf showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];
             }
         }];
     } else {
@@ -212,15 +210,14 @@
 - (void)signOut
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    WEAK_SELF
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (!aError) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         } else {
-            
-            NSString *alertString = [NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code];
-            [self showHint:alertString];
+            [weakSelf showHint:[NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code]];
         }
     }];
 }

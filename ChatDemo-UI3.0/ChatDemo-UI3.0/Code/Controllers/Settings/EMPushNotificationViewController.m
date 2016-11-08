@@ -35,6 +35,7 @@
         
         _displaySwitch = [[UISwitch alloc] init];
         [_displaySwitch addTarget:self action:@selector(displayPush:) forControlEvents:UIControlEventValueChanged];
+
     }
     return _displaySwitch;
 }
@@ -45,6 +46,7 @@
         
         _pushSwitch = [[UISwitch alloc] init];
         [_pushSwitch addTarget:self action:@selector(activePush:) forControlEvents:UIControlEventValueChanged];
+
     }
     return _pushSwitch;
 }
@@ -60,7 +62,7 @@
         _displayNameTip.numberOfLines = 0;
         _displayNameTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
         _displayNameTip.font = [UIFont systemFontOfSize:11];
-        _displayNameTip.text = NSLocalizedString(@"setting.push.tip", @"The display name will appear in Apple's push notification system.");
+        _displayNameTip.text = NSLocalizedString(@"setting.push.tip", @"The display name will appear in notification center.");
      }
     return _displayNameTip;
 }
@@ -89,22 +91,17 @@
     
     [self refreshPushOptions];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPushOptions) name:@"RefreshPushOptions" object:nil];
 }
-
-
-
 
 - (void)getPushStatus:(PushStatus)callBack
 {
     self.callBack = callBack;
 }
 
-
 - (void)refreshPushOptions
 {
-    
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    
     _pushDisplayStyle = options.displayStyle;
     _noDisturbStatus = options.noDisturbStatus;
     _pushNickname = options.displayName;
@@ -153,9 +150,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 2;
+        return 1;
     } else {
-        return 2;
+        return 3;
     }
 }
 
@@ -172,19 +169,21 @@
         
         if (indexPath.row == 0) {
             
-            cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display preview text");
-            self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
-            [cell.contentView addSubview:self.displaySwitch];
-        } else {
-            
             cell.textLabel.text = NSLocalizedString(@"setting.push.systemPush", @"Notification");
             BOOL enableNotification = [self isAllowedNotification];
-            cell.detailTextLabel.text = enableNotification ? NSLocalizedString(@"setting.push.enable", @"Enable") : NSLocalizedString(@"setting.push.disable", @"Disable");
+            cell.detailTextLabel.text = enableNotification ? NSLocalizedString(@"setting.push.enable", @"Enabled") : NSLocalizedString(@"setting.push.disable", @"Disabled");
+            
         }
-    
     } else {
         
         if (indexPath.row == 0) {
+            
+            cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display preview text");
+            self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
+            [cell.contentView addSubview:self.displaySwitch];
+
+
+        } else if (indexPath.row == 1) {
             
             cell.textLabel.text = NSLocalizedString(@"setting.push.nodisturb", @"Do not disturb");
             self.pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
@@ -203,7 +202,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 1 && indexPath.row == 1) {
+    if (indexPath.section == 1 && indexPath.row == 2) {
         
         EMPushDisplaynameViewController *display = [[EMPushDisplaynameViewController alloc] init];
         display.title = NSLocalizedString(@"setting.push.display", @"Display preview text");
@@ -330,6 +329,11 @@
 
         }];
     }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"RefreshPushOptions" object:nil];
 }
 
 @end
