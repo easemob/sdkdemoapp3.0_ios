@@ -18,16 +18,17 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lh5-oT-mc5" customClass="EMChatToolBar">
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lh5-oT-mc5" customClass="EMChatToolBar">
+                    <frame key="frameInset" minY="584" width="375" height="83"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JLV-Ip-5Ce" userLabel="Line">
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JLV-Ip-5Ce" userLabel="Line">
+                            <frame key="frameInset" width="375" height="0.5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="0.5" id="RPn-p2-fTT"/>
-                            </constraints>
                         </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="34G-oT-3NH" customClass="EMMessageTextView">
-                            <frame key="frameInset" minX="15" minY="10" width="570" height="34"/>
+                            <frame key="frameInset" minX="15" minY="10" width="345" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="textColor" red="0.047058823529411764" green="0.070588235294117646" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
@@ -43,11 +44,9 @@
                                 <outlet property="delegate" destination="Lh5-oT-mc5" id="mFU-yp-Swg"/>
                             </connections>
                         </textView>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Eu-Lo-0J5">
-                            <constraints>
-                                <constraint firstAttribute="width" constant="32" id="NtE-wc-jhv"/>
-                                <constraint firstAttribute="height" constant="34" id="ral-1z-99i"/>
-                            </constraints>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Eu-Lo-0J5">
+                            <frame key="frameInset" minX="328" minY="10" width="32" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <state key="normal" title="Send">
                                 <color key="titleColor" red="0.0" green="0.72941176470000002" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -109,14 +108,6 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="0.5" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="JLV-Ip-5Ce" secondAttribute="trailing" id="FZO-jK-XGM"/>
-                        <constraint firstItem="7Eu-Lo-0J5" firstAttribute="top" secondItem="JLV-Ip-5Ce" secondAttribute="bottom" constant="9.5" id="HEL-qh-nMa"/>
-                        <constraint firstItem="JLV-Ip-5Ce" firstAttribute="leading" secondItem="Lh5-oT-mc5" secondAttribute="leading" id="boJ-rT-cQZ"/>
-                        <constraint firstAttribute="height" constant="83" id="mLs-Ih-x2u"/>
-                        <constraint firstItem="JLV-Ip-5Ce" firstAttribute="top" secondItem="Lh5-oT-mc5" secondAttribute="top" id="sn6-ZS-2vI"/>
-                        <constraint firstAttribute="trailing" secondItem="7Eu-Lo-0J5" secondAttribute="trailing" constant="15" id="sxi-92-9es"/>
-                    </constraints>
                     <variation key="default">
                         <mask key="subviews">
                             <exclude reference="kbQ-UG-S2E"/>
@@ -127,13 +118,16 @@
                         <outlet property="emotionButton" destination="OSC-wW-s56" id="lfb-ag-IKg"/>
                         <outlet property="fileButton" destination="kbQ-UG-S2E" id="eKK-xA-4E4"/>
                         <outlet property="inputTextView" destination="34G-oT-3NH" id="qyU-Gm-enW"/>
+                        <outlet property="line" destination="JLV-Ip-5Ce" id="UzM-T6-f2l"/>
                         <outlet property="locationButton" destination="6a8-X0-Lxe" id="CEU-hr-NIF"/>
                         <outlet property="photoButton" destination="HaN-qg-NOO" id="L4t-o0-Cwg"/>
                         <outlet property="recordButton" destination="5LK-Pc-Gvd" id="DcR-rn-rwh"/>
                         <outlet property="sendButton" destination="7Eu-Lo-0J5" id="hiK-XZ-FVT"/>
                     </connections>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pr1-TU-Mm9">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pr1-TU-Mm9">
+                    <frame key="frameInset" width="375" height="576"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="p9u-zr-0PC"/>
@@ -142,15 +136,6 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstAttribute="bottom" secondItem="Lh5-oT-mc5" secondAttribute="bottom" id="85o-H9-vcF"/>
-                <constraint firstItem="pr1-TU-Mm9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CLE-1Y-sbm"/>
-                <constraint firstItem="Lh5-oT-mc5" firstAttribute="top" secondItem="pr1-TU-Mm9" secondAttribute="bottom" constant="8" id="Jex-jf-Yrv"/>
-                <constraint firstAttribute="trailing" secondItem="Lh5-oT-mc5" secondAttribute="trailing" id="ONp-hH-WS1"/>
-                <constraint firstItem="Lh5-oT-mc5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WNC-Gn-2MA"/>
-                <constraint firstItem="pr1-TU-Mm9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bes-7R-v4L"/>
-                <constraint firstAttribute="trailing" secondItem="pr1-TU-Mm9" secondAttribute="trailing" id="xFT-Uf-peJ"/>
-            </constraints>
             <point key="canvasLocation" x="46" y="-53"/>
         </view>
     </objects>

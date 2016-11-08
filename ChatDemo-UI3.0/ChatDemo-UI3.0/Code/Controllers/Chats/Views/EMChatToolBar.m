@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIButton *fileButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIView *line;
 
 @property (strong, nonatomic) EMChatRecordView *recordView;
 @property (strong, nonatomic) EMFaceView *faceView;
@@ -72,6 +73,9 @@
     
     _inputTextView.placeHolder = NSLocalizedString(@"chat.placeHolder", @"Send Message");
     _inputTextView.placeHolderTextColor = RGBACOLOR(173, 185, 193, 1);
+    _line.width = KScreenWidth;
+    
+    _sendButton.left = KScreenWidth - _sendButton.width - 15.f;
 }
 
 - (void)drawRect:(CGRect)rect

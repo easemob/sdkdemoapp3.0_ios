@@ -36,6 +36,7 @@
 "login.failure" = "Login failure";
 "login.failure.password.notmatch" = "Password does not match username";
 "login.ok" = "Ok";
+"login.inputNameAndPswd" = "Please enter username and password";
 
 //chat
 "chat.not.delivered" = "Not Delivered";

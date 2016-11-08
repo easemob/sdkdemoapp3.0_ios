@@ -49,6 +49,7 @@
         [self removeToLocation:_currentLocationCoordinate];
         _sendButton.hidden = YES;
     } else {
+        _mapView.showsUserLocation = YES;
         [self _startLocation];
         [self.view bringSubviewToFront:_sendButton];
     }

@@ -85,6 +85,8 @@
     } else if (_conversation.type == EMConversationTypeChatRoom){
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
     }
+    
+    [self setupViewLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -109,6 +111,15 @@
 - (void)dealloc
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
+}
+
+- (void)setupViewLayout
+{
+    self.tableView.width = KScreenWidth;
+    self.tableView.height = KScreenHeight - self.chatToolBar.height - 64;
+    
+    self.chatToolBar.width = KScreenWidth;
+    self.chatToolBar.top = KScreenHeight - self.chatToolBar.height - 64;
 }
 
 #pragma mark - getter
@@ -387,7 +398,12 @@
         [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
     }
     EMImageMessageBody *body = (EMImageMessageBody*)model.message.body;
-    [[EMMessageReadManager shareInstance] showBrowserWithImages:@[[NSURL URLWithString:body.remotePath]]];
+    if (model.message.direction == EMMessageDirectionSend && body.localPath.length > 0) {
+        UIImage *image = [UIImage imageWithContentsOfFile:body.localPath];
+        [[EMMessageReadManager shareInstance] showBrowserWithImages:@[image]];
+    } else {
+        [[EMMessageReadManager shareInstance] showBrowserWithImages:@[[NSURL URLWithString:body.remotePath]]];
+    }
 }
 
 - (void)didAudioCellPressed:(EMMessageModel *)model

@@ -16,7 +16,7 @@
 
 @protocol EMFaceDelegate
 
-@required
+@optional
 - (void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete;
 - (void)sendFace;
 - (void)sendFaceWithEmotion:(NSString *)emotion;

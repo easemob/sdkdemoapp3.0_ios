@@ -50,7 +50,7 @@
     [_scrollview setContentOffset:CGPointZero];
 	NSInteger maxRow = 4;
     NSInteger maxCol = 7;
-    NSInteger pageSize = 3 * 7;
+    NSInteger pageSize = (maxRow - 1) * 7;
     CGFloat itemWidth = self.frame.size.width / maxCol;
     CGFloat itemHeight = self.frame.size.height / maxRow;
     
@@ -59,14 +59,14 @@
     _scrollview.frame = frame;
     
     NSInteger totalPage = [_faces count]%pageSize == 0 ? [_faces count]/pageSize : [_faces count]/pageSize + 1;
-    [_scrollview setContentSize:CGSizeMake(totalPage * CGRectGetWidth(self.frame), itemHeight * maxCol)];
+    [_scrollview setContentSize:CGSizeMake(totalPage * CGRectGetWidth(self.frame), itemHeight * (maxRow - 1))];
     
     _pageControl.currentPage = 0;
     _pageControl.numberOfPages = totalPage;
     _pageControl.frame = CGRectMake(0, (maxRow - 1) * itemHeight + 5, CGRectGetWidth(self.frame), itemHeight - 10);
     
     for (int i = 0; i < totalPage; i ++) {
-        for (int row = 0; row < maxRow; row++) {
+        for (int row = 0; row < (maxRow - 1); row++) {
             for (int col = 0; col < maxCol; col++) {
                 NSInteger index = i * pageSize + row * maxCol + col;
                 if (index != 0 && (index - (pageSize-1))%pageSize == 0) {
@@ -90,9 +90,9 @@
         }
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [deleteButton setBackgroundColor:[UIColor clearColor]];
-        [deleteButton setFrame:CGRectMake(i * CGRectGetWidth(self.frame) + (maxCol - 1) * itemWidth, (maxRow - 1) * itemHeight, itemWidth, itemHeight)];
-        [deleteButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/faceDelete"] forState:UIControlStateNormal];
-        [deleteButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/faceDelete_select"] forState:UIControlStateHighlighted];
+        [deleteButton setFrame:CGRectMake(i * CGRectGetWidth(self.frame) + (maxCol - 1) * itemWidth, (maxRow - 2) * itemHeight, itemWidth, itemHeight)];
+        [deleteButton setImage:[UIImage imageNamed:@"faceDelete"] forState:UIControlStateNormal];
+        [deleteButton setImage:[UIImage imageNamed:@"faceDelete"] forState:UIControlStateHighlighted];
         deleteButton.tag = 10000;
         [deleteButton addTarget:self action:@selector(selected:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollview addSubview:deleteButton];

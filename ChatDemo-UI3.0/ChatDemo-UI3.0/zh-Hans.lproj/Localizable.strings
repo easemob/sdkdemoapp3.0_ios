@@ -36,6 +36,7 @@
 "login.failure" = "登陆失败";
 "login.failure.password.notmatch" = "密码与账号不匹配";
 "login.ok" = "确认";
+"login.inputNameAndPswd" = "请输入账号和密码";
 
 //chat
 "chat.not.delivered" = "未送达";

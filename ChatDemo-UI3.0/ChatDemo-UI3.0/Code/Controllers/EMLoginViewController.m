@@ -70,6 +70,9 @@
 
 - (IBAction)doLogin:(id)sender
 {
+    if ([self _isEmpty]) {
+        return;
+    }
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] loginWithUsername:_usernameTextField.text
                                       password:_passwordTextField.text
@@ -109,8 +112,8 @@
 
 - (IBAction)doSignUp:(id)sender
 {
-    if (_usernameTextField.text.length == 0 || _passwordTextField.text.length == 0) {
-    
+    if ([self _isEmpty]) {
+        return;
     }
     WEAK_SELF
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -187,6 +190,22 @@
     return YES;
 }
 
+#pragma private
+- (BOOL)_isEmpty
+{
+    BOOL ret = NO;
+    NSString *username = _usernameTextField.text;
+    NSString *password = _passwordTextField.text;
+    if (username.length == 0 || password.length == 0) {
+        ret = YES;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"login.inputNameAndPswd", @"Please enter username and password") delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
+        [alert show];
+
+    }
+    
+    return ret;
+}
+
 #pragma mark - notification
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
@@ -213,11 +232,8 @@
         buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
     }
     [UIView animateWithDuration:0.3 animations:^{
-        if (_signupButton.hidden) {
-            _loginButton.frame = buttonFrame;
-        } else {
-            _signupButton.frame = buttonFrame;
-        }
+        _loginButton.frame = buttonFrame;
+        _signupButton.frame = buttonFrame;
     }];
 }
 
