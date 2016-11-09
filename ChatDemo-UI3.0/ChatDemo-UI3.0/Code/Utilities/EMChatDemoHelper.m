@@ -9,6 +9,7 @@
 #import "EMChatDemoHelper.h"
 #import "EMApplyManager.h"
 #import <UserNotifications/UserNotifications.h>
+#import "EMGroupsViewController.h"
 
 static EMChatDemoHelper *helper = nil;
 
@@ -26,6 +27,7 @@ static EMChatDemoHelper *helper = nil;
 - (void)dealloc
 {
     [[EMClient sharedClient] removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
 }
@@ -42,6 +44,7 @@ static EMChatDemoHelper *helper = nil;
 - (void)initHelper
 {
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
 }
@@ -68,6 +71,13 @@ static EMChatDemoHelper *helper = nil;
         [_contactsVC reloadGroupNotifications];
         [_contactsVC reloadContactRequests];
         [_contactsVC reloadContacts];
+    }
+}
+
+#pragma mark - EMChatManagerDelegate
+- (void)conversationListDidUpdate:(NSArray *)aConversationList {
+    if (_mainVC) {
+        [_mainVC setupUnreadMessageCount];
     }
 }
 
@@ -203,6 +213,17 @@ static EMChatDemoHelper *helper = nil;
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId];
     [self showAlertWithMessage:msgstr];
+    NSArray *vcArray = _mainVC.navigationController.viewControllers;
+    EMGroupsViewController *groupsVc = nil;
+    for (UIViewController *vc in vcArray) {
+        if ([vc isKindOfClass:[EMGroupsViewController class]]) {
+            groupsVc = (EMGroupsViewController *)vc;
+            break;
+        }
+    }
+    if (groupsVc) {
+        [groupsVc loadGroupsFromCache];
+    }
 }
 
 - (void)joinGroupRequestDidDecline:(NSString *)aGroupId

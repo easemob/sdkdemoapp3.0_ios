@@ -10,4 +10,6 @@
 
 @interface EMMainViewController : UITabBarController
 
+-(void)setupUnreadMessageCount;
+
 @end

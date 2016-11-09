@@ -108,8 +108,10 @@
 }
 
 - (void)fetchGroupInfo {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient].groupManager getGroupSpecificationFromServerByID:_currentGroup.groupId includeMembersList:YES completion:^(EMGroup *aGroup, EMError *aError) {
+        [MBProgressHUD hideAllHUDsForView:weakSelf.view animated:YES];
         if (!aError) {
             weakSelf.currentGroup = aGroup;
             [weakSelf reloadOccupants];
@@ -197,40 +199,36 @@
     return ([self isGroupOwner] || _currentGroup.setting.style == EMGroupStylePrivateMemberCanInvite);
 }
 
-- (void)showPromptAlert:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
-}
-
 #pragma mark - Action Method
 - (void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)deleteOrLeaveGroupAction:(UIButton *)sender {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if ([self isGroupOwner]) {
         [[EMClient sharedClient].groupManager destroyGroup:self.currentGroup.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+            [MBProgressHUD hideAllHUDsForView:weakSelf.view animated:YES];
             if (aError) {
-                [weakSelf showPromptAlert:NSLocalizedString(@"group.destroyFailure", @"Destroy group failure")];
+                [weakSelf showAlertWithMessage:NSLocalizedString(@"group.destroyFailure", @"Destroy group failure")];
             }
             else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [weakSelf.navigationController popViewControllerAnimated:NO];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REMOVEGROUP_NOTIFICATION object:nil];
             }
         }];
     }
     else {
         [[EMClient sharedClient].groupManager leaveGroup:self.currentGroup.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+            [MBProgressHUD hideAllHUDsForView:weakSelf.view animated:YES];
             if (aError) {
-                [weakSelf showPromptAlert:NSLocalizedString(@"group.leaveFailure", @"Leave group failure")];
+                [weakSelf showAlertWithMessage:NSLocalizedString(@"group.leaveFailure", @"Leave group failure")];
             }
             else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [weakSelf.navigationController popViewControllerAnimated:NO];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REMOVEGROUP_NOTIFICATION object:nil];
             }
         }];
     }
@@ -262,7 +260,7 @@
 }
 
 - (void)isPushEnabled:(BOOL)isCanPush {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     [[EMClient sharedClient].groupManager updatePushServiceForGroup:_currentGroup.groupId
                                                       isPushEnabled:isCanPush
                                                          completion:^(EMGroup *aGroup, EMError *aError) {
@@ -273,13 +271,13 @@
                                                              else {
                                                                  message = NSLocalizedString(@"group.setFailure", @"Set failure");
                                                              }
-                                                             [weakSelf showPromptAlert:message];
+                                                             [weakSelf showAlertWithMessage:message];
                                                          }];
 }
 
 
 - (void)blockGroupMessages {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     [[EMClient sharedClient].groupManager blockGroup:_currentGroup.groupId
                                           completion:^(EMGroup *aGroup, EMError *aError) {
                                               NSString *message = @"";
@@ -289,15 +287,15 @@
                                               else {
                                                   message = NSLocalizedString(@"group.blockGroupSuccess", @"Block group success");
                                                   [weakSelf reloadPermissionData];
-                                                  [weakSelf.tableView reloadData];
                                               }
-                                              [weakSelf showPromptAlert:message];
+                                              [weakSelf.tableView reloadData];
+                                              [weakSelf showAlertWithMessage:message];
                                               
                                           }];
 }
 
 - (void)unblockGroupMessages {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     [[EMClient sharedClient].groupManager unblockGroup:_currentGroup.groupId
                                             completion:^(EMGroup *aGroup, EMError *aError) {
                                                 NSString *message = @"";
@@ -306,8 +304,10 @@
                                                 }
                                                 else {
                                                     message = NSLocalizedString(@"group.unblockGroupSuccess", @"Unblock group success");
+                                                    [weakSelf reloadPermissionData];
                                                 }
-                                                [weakSelf showPromptAlert:message];
+                                                [weakSelf.tableView reloadData];
+                                                [weakSelf showAlertWithMessage:message];
                                             }];
 }
 
@@ -435,7 +435,7 @@
         [invitees addObject:obj.hyphenateId];
     }];
     if (invitees.count > 0) {
-        __weak typeof(self) weakSelf = self;
+        WEAK_SELF
         [[EMClient sharedClient].groupManager addMembers:invitees toGroup:self.currentGroup.groupId message:@"" completion:^(EMGroup *aGroup, EMError *aError) {
             if (!aError) {
                 [weakSelf reloadOccupants];

@@ -11,9 +11,6 @@
 #import "EMPublicGroupsViewController.h"
 #import "EMRealtimeSearchUtils.h"
 
-
-#define KChineseSimplified_Prompt      @"公开群"
-
 @interface EMCreateViewController ()
 
 @property (strong, nonatomic) IBOutlet UILabel *promptLabel;
@@ -37,9 +34,9 @@
     [self addChildViewController:_publicGroupsVc];
     [self.view addSubview:_publicGroupsVc.tableView];
     _publicGroupsVc.tableView.frame = CGRectMake(0,
-                                                 3*50,
+                                                 2*50,
                                                  self.view.bounds.size.width,
-                                                 self.view.bounds.size.height - 3*50);
+                                                 self.view.bounds.size.height - 2*50);
     [self setupSearchBar];
 }
 
@@ -107,9 +104,6 @@
 - (void)cancelAction {
     [_searchBar resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)createNewChatAction:(id)sender {
 }
 
 - (IBAction)createNewGroupAction:(id)sender {

@@ -7,3 +7,4 @@
 //
 
 #define KEM_REFRESH_GROUPLIST_NOTIFICATION     @"refreshGroups_notification"
+#define KEM_REMOVEGROUP_NOTIFICATION           @"removeGroups_notification"
