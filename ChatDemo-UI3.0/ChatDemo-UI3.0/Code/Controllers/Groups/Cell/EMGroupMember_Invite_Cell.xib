@@ -15,7 +15,7 @@
                 <frame key="frameInset" width="375" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="keo-CQ-wa2">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_group_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="keo-CQ-wa2">
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="5f0-PI-FLg"/>
                             <constraint firstAttribute="height" constant="30" id="NtA-Tp-HvM"/>
@@ -76,6 +76,6 @@
     <resources>
         <image name="Button_Radio Active.png" width="20" height="20"/>
         <image name="Button_Radio.png" width="20" height="20"/>
-        <image name="default_avatar.png" width="50" height="50"/>
+        <image name="default_group_avatar.png" width="50" height="50"/>
     </resources>
 </document>
