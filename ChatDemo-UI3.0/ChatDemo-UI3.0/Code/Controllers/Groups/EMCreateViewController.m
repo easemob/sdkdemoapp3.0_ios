@@ -107,7 +107,9 @@
 }
 
 - (IBAction)createNewGroupAction:(id)sender {
-    [self searchBarCancelButtonClicked:_searchBar];
+    if (_searchBar.isFirstResponder) {
+        [self searchBarCancelButtonClicked:_searchBar];
+    }
     EMCreateNewGroupViewController *createVc = [[EMCreateNewGroupViewController alloc] initWithNibName:@"EMCreateNewGroupViewController"
                                                                                                 bundle:nil];
     [self.navigationController pushViewController:createVc animated:YES];
