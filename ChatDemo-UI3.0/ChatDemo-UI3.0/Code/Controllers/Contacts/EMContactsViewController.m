@@ -82,7 +82,6 @@
     [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
         if (!aError) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
-                [[EMClient sharedClient].contactManager getBlackListFromServerWithError:nil];
                 [weakSelf updateContacts:aList];
                 dispatch_async(dispatch_get_main_queue(), ^(){
                     [weakSelf.tableView reloadData];
