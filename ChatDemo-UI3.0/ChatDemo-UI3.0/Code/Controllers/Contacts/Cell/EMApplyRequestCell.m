@@ -31,11 +31,13 @@
 
 - (void)setModel:(EMApplyModel *)model {
     _model = model;
+    NSString *defaultImageName = @"default_avatar.png";
     if (_model.style == EMApplyStyle_contact) {
         _descriptionLabel.hidden = YES;
         _tiitleLabel.text = _model.applyNickName;
     }
     else {
+        defaultImageName = @"default_group_avatar.png";
         _descriptionLabel.hidden = NO;
         _tiitleLabel.text = _model.groupSubject.length > 0 ? _model.groupSubject : _model.groupId;
         _descriptionLabel.text = [NSString stringWithFormat:@"%ld %@",(long)_model.groupMemberCount,NSLocalizedString(@"title.members", @"Members")];
@@ -43,6 +45,7 @@
             _descriptionLabel.text = [NSString stringWithFormat:@"%@ wants to join",_model.applyNickName];
         }
     }
+    _avatarImageView.image = [UIImage imageNamed:defaultImageName];
     if (_model.style > EMApplyStyle_joinGroup) {
         [_acceptButton setImage:[UIImage imageNamed:@"Button_Join.png"] forState:UIControlStateNormal];
         [_acceptButton setImage:[UIImage imageNamed:@"Button_Join.png"] forState:UIControlStateNormal];
