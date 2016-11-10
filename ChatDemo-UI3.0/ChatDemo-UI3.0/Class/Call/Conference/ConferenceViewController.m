@@ -135,7 +135,7 @@
         _ox = 150;
     }
     
-//    [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:aStream remoteVideoView:remoteView error:&error];
+    [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:aStream remoteVideoView:remoteView error:&error];
     if (error) {
         [remoteView removeFromSuperview];
     }
