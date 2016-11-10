@@ -119,7 +119,9 @@ static EMChatDemoHelper *helper = nil;
         aMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
     }
     
-    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername applyStyle:EMApplyStyle_contact])
+    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername
+                                                    groupId:nil
+                                                 applyStyle:EMApplyStyle_contact])
     {
         EMApplyModel *model = [[EMApplyModel alloc] init];
         model.applyHyphenateId = aUsername;
@@ -186,7 +188,9 @@ static EMChatDemoHelper *helper = nil;
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.subject, aReason];
     }
     
-    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername applyStyle:EMApplyStyle_joinGroup])
+    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername
+                                                    groupId:aGroup.groupId
+                                                 applyStyle:EMApplyStyle_joinGroup])
     {
         EMApplyModel *model = [[EMApplyModel alloc] init];
         model.applyHyphenateId = aUsername;
@@ -251,7 +255,9 @@ static EMChatDemoHelper *helper = nil;
         return;
     }
     
-    if (![[EMApplyManager defaultManager] isExistingRequest:aInviter applyStyle:EMApplyStyle_groupInvitation])
+    if (![[EMApplyManager defaultManager] isExistingRequest:aInviter
+                                                    groupId:aGroupId
+                                                 applyStyle:EMApplyStyle_groupInvitation])
     {
         EMApplyModel *model = [[EMApplyModel alloc] init];
         model.groupId = aGroupId;
