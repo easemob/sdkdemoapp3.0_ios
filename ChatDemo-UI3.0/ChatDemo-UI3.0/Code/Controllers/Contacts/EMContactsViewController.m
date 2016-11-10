@@ -106,7 +106,8 @@
 - (void)reloadContactRequests {
     NSArray *contactApplys = [[EMApplyManager defaultManager] contactApplys];
     self.contactRequests = [NSMutableArray arrayWithArray:contactApplys];
-    NSIndexSet *set = [NSIndexSet indexSetWithIndex:1];
+    NSMutableIndexSet *set = [NSMutableIndexSet indexSetWithIndex:1];
+    [set addIndex:2];
     [self.tableView beginUpdates];
     [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
@@ -115,7 +116,8 @@
 - (void)reloadGroupNotifications {
     NSArray *groupApplys = [[EMApplyManager defaultManager] groupApplys];
     self.groupNotifications = [NSMutableArray arrayWithArray:groupApplys];
-    NSIndexSet *set = [NSIndexSet indexSetWithIndex:0];
+    NSMutableIndexSet *set = [NSMutableIndexSet indexSetWithIndex:0];
+    [set addIndex:2];
     [self.tableView beginUpdates];
     [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
