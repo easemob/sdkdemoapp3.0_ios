@@ -195,6 +195,7 @@
 "common.remove" = "移除";
 "common.search" = "搜索";
 "common.open" = "打开";
+"common.searchFailure" = "搜索失败。";
 
 //message
 "message.friendapply.agree" = "%@同意了加好友申请";

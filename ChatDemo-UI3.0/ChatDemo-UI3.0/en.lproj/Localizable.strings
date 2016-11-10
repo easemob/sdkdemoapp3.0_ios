@@ -190,6 +190,7 @@
 "common.remove" = "Remove";
 "common.search" = "Search";
 "common.open" = "Open";
+"common.searchFailure" = "Search failure.";
 
 //message
 "message.friendapply.agree" = "%@ agreed to add friends to apply";

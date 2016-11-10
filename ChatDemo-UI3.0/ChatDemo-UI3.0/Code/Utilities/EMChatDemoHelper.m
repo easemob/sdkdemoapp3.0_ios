@@ -79,6 +79,9 @@ static EMChatDemoHelper *helper = nil;
     if (_mainVC) {
         [_mainVC setupUnreadMessageCount];
     }
+    if (_chatsVC) {
+        [_chatsVC tableViewDidTriggerHeaderRefresh];
+    }
 }
 
 #pragma mark - EMContactManagerDelegate

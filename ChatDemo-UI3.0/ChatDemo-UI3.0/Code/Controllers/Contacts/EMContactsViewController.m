@@ -20,6 +20,7 @@
 #import "EMRealtimeSearchUtils.h"
 
 #import "NSArray+EMSortContacts.h"
+#import "EMUserProfileManager.h"
 
 #define KEM_CONTACT_BASICSECTION_NUM  3
 
@@ -53,7 +54,7 @@
     [self reloadContactRequests];
     [self loadContactsFromServer];
     
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     self.headerRefresh = ^(BOOL isRefreshing){
         [weakSelf loadContactsFromServer];
     };
@@ -77,19 +78,29 @@
         [self endHeaderRefresh];
         return;
     }
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
         if (!aError) {
-            [weakSelf updateContacts:aList];
-            [weakSelf.tableView reloadData];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+                [[EMClient sharedClient].contactManager getBlackListFromServerWithError:nil];
+                [weakSelf updateContacts:aList];
+                dispatch_async(dispatch_get_main_queue(), ^(){
+                    [weakSelf.tableView reloadData];
+                    [weakSelf endHeaderRefresh];
+                });
+            });
         }
-        [weakSelf endHeaderRefresh];
     }];
 }
 
 - (void)reloadContacts {
     NSArray *bubbyList = [[EMClient sharedClient].contactManager getContacts];
     [self updateContacts:bubbyList];
+    WEAK_SELF
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [weakSelf.tableView reloadData];
+        [weakSelf.refreshControl endRefreshing];
+    });
 }
 
 - (void)reloadContactRequests {
@@ -116,6 +127,7 @@
     for (NSString *blockId in blockList) {
         [contacts removeObject:blockId];
     }
+    
     [self.contacts removeAllObjects];
     NSMutableArray *sectionTitles = nil;
     NSMutableArray *searchSource = nil;
@@ -126,11 +138,14 @@
     _sectionTitls = [NSMutableArray arrayWithArray:sectionTitles];
     _searchSource = [NSMutableArray arrayWithArray:searchSource];
     
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^(){
-        [weakSelf.tableView reloadData];
-        [weakSelf.refreshControl endRefreshing];
-    });
+    WEAK_SELF
+    [[EMUserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:contacts saveToLoacal:YES completion:^(BOOL success, NSError *error) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [weakSelf.tableView reloadData];
+            });
+        }
+    }];
 }
 
 
@@ -199,6 +214,10 @@
     return _sectionTitls;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    return index + KEM_CONTACT_BASICSECTION_NUM;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (_isSearchState) {
         return _searchResults.count;
@@ -232,8 +251,14 @@
         if (!cell) {
             cell = (EMContactCell *)[[[NSBundle mainBundle] loadNibNamed:@"EMContactCell" owner:self options:nil] lastObject];
         }
-        NSArray *sectionList = _contacts[indexPath.section-KEM_CONTACT_BASICSECTION_NUM];
-        cell.model = sectionList[indexPath.row];
+        EMUserModel *model = nil;
+        if (_contacts.count > indexPath.section-KEM_CONTACT_BASICSECTION_NUM) {
+            NSArray *sectionList = _contacts[indexPath.section-KEM_CONTACT_BASICSECTION_NUM];
+            if (sectionList.count > indexPath.row) {
+                model = sectionList[indexPath.row];
+            }
+        }
+        cell.model = model;
         return cell;
     }
     if (indexPath.section == 2) {
@@ -259,7 +284,7 @@
     else {
         model = _contactRequests[indexPath.row];
     }
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     cell.declineApply = ^(EMApplyModel *model) {
         if (model.style == EMApplyStyle_contact) {
             [weakSelf reloadContactRequests];
@@ -277,7 +302,6 @@
             [weakSelf reloadGroupNotifications];
         }
         [[EMChatDemoHelper shareHelper] setupUntreatedApplyCount];
-        [weakSelf reloadContacts];
     };
     cell.model = model;
     return cell;

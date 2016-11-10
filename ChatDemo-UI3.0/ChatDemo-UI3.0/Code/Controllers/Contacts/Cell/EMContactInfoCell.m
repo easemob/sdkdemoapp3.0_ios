@@ -47,16 +47,19 @@
     if (_hyphenateId.length == 0) {
         return;
     }
-    __weak typeof(self) weakSelf = self;
-    if (_blockSwitch.selected) {
+    WEAK_SELF
+    if (_blockSwitch.isOn) {
         [[EMClient sharedClient].contactManager addUserToBlackList:_hyphenateId
                                                         completion:^(NSString *aUsername, EMError *aError) {
                                                             if (!aError) {
                                                                 if (weakSelf.delegate &&
                                                                     [weakSelf.delegate respondsToSelector:@selector(needRefreshContactsFromServer:)])
                                                                 {
-                                                                    [weakSelf.delegate needRefreshContactsFromServer:YES];
+                                                                    [weakSelf.delegate needRefreshContactsFromServer:NO];
                                                                 }
+                                                            }
+                                                            else {
+                                                                [weakSelf showAlertWithMessage:NSLocalizedString(@"contact.blockFailure", @"Block failure")];
                                                             }
                                                         }];
     } else {
@@ -68,6 +71,9 @@
                                                                      {
                                                                          [weakSelf.delegate needRefreshContactsFromServer:YES];
                                                                      }
+                                                                 }
+                                                                 else {
+                                                                     [weakSelf showAlertWithMessage:NSLocalizedString(@"contact.unblockFailure", @"Unblock failure")];
                                                                  }
                                                              }];
     }

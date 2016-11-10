@@ -61,6 +61,7 @@
 }
 - (IBAction)declineAction:(UIButton *)sender {
     WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     switch (_model.style) {
         case EMApplyStyle_contact:
         {
@@ -90,6 +91,7 @@
 
 - (IBAction)acceptAction:(id)sender {
     WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     switch (_model.style) {
         case EMApplyStyle_contact:
         {
@@ -116,6 +118,7 @@
 }
 
 - (void)declineApplyFinished:(EMError *)error {
+    [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
     if (!error) {
         [[EMApplyManager defaultManager] removeApplyRequest:_model];
         if (self.declineApply) {
@@ -129,6 +132,7 @@
 }
 
 - (void)acceptApplyFinished:(EMError *)error {
+    [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
     if (!error) {
         [[EMApplyManager defaultManager] removeApplyRequest:_model];
         if (self.acceptApply) {

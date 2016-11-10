@@ -130,11 +130,11 @@
 - (void)sendAddContactRequest:(NSString *)contactName {
     NSString *requestMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"),contactName];
     WEAK_SELF
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     [[EMClient sharedClient].contactManager addContact:contactName
                                                message:requestMessage
                                             completion:^(NSString *aUsername, EMError *aError) {
-                                                [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+                                                [MBProgressHUD hideHUDForView:weakSelf.navigationController.view animated:YES];
                                                 if (!aError) {
                                                     weakSelf.textField.text = @"";
                                                     _addButton.userInteractionEnabled = NO;

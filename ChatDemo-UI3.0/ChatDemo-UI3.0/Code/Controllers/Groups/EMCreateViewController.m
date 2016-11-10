@@ -107,6 +107,7 @@
 }
 
 - (IBAction)createNewGroupAction:(id)sender {
+    [self searchBarCancelButtonClicked:_searchBar];
     EMCreateNewGroupViewController *createVc = [[EMCreateNewGroupViewController alloc] initWithNibName:@"EMCreateNewGroupViewController"
                                                                                                 bundle:nil];
     [self.navigationController pushViewController:createVc animated:YES];
@@ -157,6 +158,7 @@
         return;
     }
     __weak typeof(_publicGroupsVc) weakVc = _publicGroupsVc;
+    WEAK_SELF
     [[EMClient sharedClient].groupManager searchPublicGroupWithId:searchBar.text completion:^(EMGroup *aGroup, EMError *aError) {
         
         EMPublicGroupsViewController *strongVc = weakVc;
@@ -168,6 +170,7 @@
                 [strongVc.tableView reloadData];
             }
             else {
+                [weakSelf showAlertWithMessage:NSLocalizedString(@"common.searchFailure", @"Search failure.")];
             }
         });
     }];

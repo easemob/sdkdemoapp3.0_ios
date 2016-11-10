@@ -16,7 +16,6 @@
 #define NAME                NSLocalizedString(@"contact.name", @"Name")
 #define HYPHENATE_ID        NSLocalizedString(@"contact.hyphenateId", @"Hyphenate ID")
 #define APNS_NICKNAME       NSLocalizedString(@"contact.apnsnickname", @"iOS APNS")
-#define BLOCK_CONTACT       NSLocalizedString(@"contact.block", @"Block Contact")
 #define DELETE_CONTACT      NSLocalizedString(@"contact.delete", @"Delete Contact")
 
 
@@ -80,8 +79,7 @@
         }
     }
     _contactInfo = [NSArray arrayWithArray:info];
-    
-    _contactFunc = @[@{BLOCK_CONTACT:RGBACOLOR(12.0, 18.0, 24.0, 1.0)}, @{DELETE_CONTACT:RGBACOLOR(255.0, 59.0, 48.0, 1.0)}];
+    _contactFunc = @[@{DELETE_CONTACT:RGBACOLOR(255.0, 59.0, 48.0, 1.0)}];
 }
 
 - (void)makeCallWithContact:(NSString *)contact callTyfpe:(EMCallType)callType {
@@ -171,7 +169,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 1 && indexPath.row == 1) {
+    if (indexPath.section == 1) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"common.cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"common.delete", @"Delete") otherButtonTitles:nil, nil];
         [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     }
@@ -212,8 +210,7 @@
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }
             else{
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"contact.deleteFailure", @"Delete contacts failed") delegate:nil cancelButtonTitle:NSLocalizedString(@"common.ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
+                [weakSelf showAlertWithMessage:NSLocalizedString(@"contact.deleteFailure", @"Delete contacts failed")];
             }
         }];
     }
@@ -223,6 +220,9 @@
 - (void)needRefreshContactsFromServer:(BOOL)isNeedRefresh {
     if (isNeedRefresh) {
         [[EMChatDemoHelper shareHelper].contactsVC loadContactsFromServer];
+    }
+    else {
+        [[EMChatDemoHelper shareHelper].contactsVC reloadContacts];
     }
 }
 
