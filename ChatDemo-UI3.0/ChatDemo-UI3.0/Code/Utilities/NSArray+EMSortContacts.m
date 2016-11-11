@@ -8,18 +8,12 @@
 
 #import "NSArray+EMSortContacts.h"
 #import "EMUserModel.h"
-#import "EMUserProfileManager.h"
 
 @implementation NSArray (SortContacts)
 
 + (NSArray<NSArray *> *)sortContacts:(NSArray *)contacts
                        sectionTitles:(NSArray **)sectionTitles
                         searchSource:(NSArray **)searchSource {
-    NSString *currentUsername = [EMClient sharedClient].currentUsername;
-    if (![[EMUserProfileManager sharedInstance] getUserProfileByUsername:currentUsername]) {
-        [[EMUserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:@[currentUsername] saveToLoacal:YES completion:NULL];
-    }
-    
     UILocalizedIndexedCollation *indexCollation = [UILocalizedIndexedCollation currentCollation];
     NSMutableArray *_sectionTitles = [NSMutableArray arrayWithArray:indexCollation.sectionTitles];
     NSMutableArray *_contacts = [NSMutableArray arrayWithCapacity:_sectionTitles.count];
@@ -38,9 +32,6 @@
     for (NSString *hyphenateId in sortArray) {
         EMUserModel *model = [[EMUserModel alloc] initWithHyphenateId:hyphenateId];
         if (model) {
-            if (![[EMUserProfileManager sharedInstance] getUserProfileByUsername:hyphenateId]) {
-                [[EMUserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:@[hyphenateId] saveToLoacal:YES completion:NULL];
-            }
             NSString *firstLetter = [model.nickname substringToIndex:1];
             NSUInteger sectionIndex = [indexCollation sectionForObject:firstLetter collationStringSelector:@selector(uppercaseString)];
             NSMutableArray *array = _contacts[sectionIndex];

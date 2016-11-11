@@ -11,4 +11,6 @@
 
 @interface EMGroupsViewController : EMBaseRefreshTableController
 
+- (void)loadGroupsFromCache;
+
 @end

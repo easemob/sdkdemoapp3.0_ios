@@ -9,6 +9,7 @@
 #import "EMChatDemoHelper.h"
 #import "EMApplyManager.h"
 #import <UserNotifications/UserNotifications.h>
+#import "EMGroupsViewController.h"
 
 static EMChatDemoHelper *helper = nil;
 
@@ -26,6 +27,7 @@ static EMChatDemoHelper *helper = nil;
 - (void)dealloc
 {
     [[EMClient sharedClient] removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
 }
@@ -42,6 +44,7 @@ static EMChatDemoHelper *helper = nil;
 - (void)initHelper
 {
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
 }
@@ -68,6 +71,16 @@ static EMChatDemoHelper *helper = nil;
         [_contactsVC reloadGroupNotifications];
         [_contactsVC reloadContactRequests];
         [_contactsVC reloadContacts];
+    }
+}
+
+#pragma mark - EMChatManagerDelegate
+- (void)conversationListDidUpdate:(NSArray *)aConversationList {
+    if (_mainVC) {
+        [_mainVC setupUnreadMessageCount];
+    }
+    if (_chatsVC) {
+        [_chatsVC tableViewDidTriggerHeaderRefresh];
     }
 }
 
@@ -106,7 +119,9 @@ static EMChatDemoHelper *helper = nil;
         aMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
     }
     
-    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername applyStyle:EMApplyStyle_contact])
+    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername
+                                                    groupId:nil
+                                                 applyStyle:EMApplyStyle_contact])
     {
         EMApplyModel *model = [[EMApplyModel alloc] init];
         model.applyHyphenateId = aUsername;
@@ -173,7 +188,9 @@ static EMChatDemoHelper *helper = nil;
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.subject, aReason];
     }
     
-    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername applyStyle:EMApplyStyle_joinGroup])
+    if (![[EMApplyManager defaultManager] isExistingRequest:aUsername
+                                                    groupId:aGroup.groupId
+                                                 applyStyle:EMApplyStyle_joinGroup])
     {
         EMApplyModel *model = [[EMApplyModel alloc] init];
         model.applyHyphenateId = aUsername;
@@ -203,6 +220,17 @@ static EMChatDemoHelper *helper = nil;
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId];
     [self showAlertWithMessage:msgstr];
+    NSArray *vcArray = _mainVC.navigationController.viewControllers;
+    EMGroupsViewController *groupsVc = nil;
+    for (UIViewController *vc in vcArray) {
+        if ([vc isKindOfClass:[EMGroupsViewController class]]) {
+            groupsVc = (EMGroupsViewController *)vc;
+            break;
+        }
+    }
+    if (groupsVc) {
+        [groupsVc loadGroupsFromCache];
+    }
 }
 
 - (void)joinGroupRequestDidDecline:(NSString *)aGroupId
@@ -227,7 +255,9 @@ static EMChatDemoHelper *helper = nil;
         return;
     }
     
-    if (![[EMApplyManager defaultManager] isExistingRequest:aInviter applyStyle:EMApplyStyle_groupInvitation])
+    if (![[EMApplyManager defaultManager] isExistingRequest:aInviter
+                                                    groupId:aGroupId
+                                                 applyStyle:EMApplyStyle_groupInvitation])
     {
         EMApplyModel *model = [[EMApplyModel alloc] init];
         model.groupId = aGroupId;

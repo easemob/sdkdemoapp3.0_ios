@@ -15,7 +15,7 @@
                 <frame key="frameInset" width="375" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="2cc-ic-z0f">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_group_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="2cc-ic-z0f">
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="YNz-Xg-vvn"/>
                             <constraint firstAttribute="height" constant="50" id="YaO-kI-Vom"/>
@@ -52,6 +52,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="default_avatar.png" width="50" height="50"/>
+        <image name="default_group_avatar.png" width="50" height="50"/>
     </resources>
 </document>

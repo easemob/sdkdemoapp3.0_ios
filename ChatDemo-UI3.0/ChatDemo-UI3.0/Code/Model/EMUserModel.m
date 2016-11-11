@@ -22,15 +22,11 @@
 }
 
 - (NSString *)nickname {
-    if (_nickname.length == 0) {
-        UserProfileEntity *profileEntity = [[EMUserProfileManager sharedInstance] getUserProfileByUsername:self.hyphenateId];
-        if (profileEntity) {
-            _nickname = profileEntity.nickname;
-            _avatarURLPath = profileEntity.imageUrl;
-        }
-        return _nickname.length > 0 ? _nickname : _hyphenateId;
+    UserProfileEntity *profileEntity = [[EMUserProfileManager sharedInstance] getUserProfileByUsername:self.hyphenateId];
+    if (profileEntity) {
+        _nickname = profileEntity.nickname;
     }
-    return _nickname;
+    return _nickname.length > 0 ? _nickname : _hyphenateId;
 }
 
 - (NSString *)searchKey {
@@ -41,18 +37,11 @@
 }
 
 - (NSString *)avatarURLPath {
-    if (_avatarURLPath.length > 0) {
-        return _avatarURLPath;
-    }
     UserProfileEntity *profileEntity = [[EMUserProfileManager sharedInstance] getUserProfileByUsername:self.hyphenateId];
     if (profileEntity) {
-        _nickname = profileEntity.nickname;
         _avatarURLPath = profileEntity.imageUrl;
     }
-    if (_avatarURLPath.length > 0) {
-        return _avatarURLPath;
-    }
-    return nil;
+    return _avatarURLPath.length > 0 ? _avatarURLPath : nil;
 }
 
 @end

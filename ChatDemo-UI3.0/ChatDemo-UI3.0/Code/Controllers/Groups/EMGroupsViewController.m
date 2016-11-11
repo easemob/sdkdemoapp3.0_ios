@@ -73,6 +73,19 @@
     }];
 }
 
+- (void)loadGroupsFromCache {
+    NSArray *myGroups = [[EMClient sharedClient].groupManager getJoinedGroups];
+    [self.groups removeAllObjects];
+    for (EMGroup *group in myGroups) {
+        EMGroupModel *model = [[EMGroupModel alloc] initWithObject:group];
+        if (model) {
+            [self.groups addObject:model];
+        }
+    }
+    [self endHeaderRefresh];
+    [self.tableView reloadData];
+}
+
 - (void)addNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshGroupList:) name:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 }

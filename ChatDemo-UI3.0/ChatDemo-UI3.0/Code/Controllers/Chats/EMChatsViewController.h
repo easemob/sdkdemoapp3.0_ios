@@ -14,4 +14,6 @@
 
 - (void)setupNavigationItem:(UINavigationItem *)navigationItem;
 
+- (void)tableViewDidTriggerHeaderRefresh;
+
 @end

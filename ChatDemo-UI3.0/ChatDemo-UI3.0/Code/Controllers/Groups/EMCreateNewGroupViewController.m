@@ -178,26 +178,30 @@
     if (_isPublic) {
         options.style = _isAllowMemberInvite ? EMGroupStylePublicOpenJoin : EMGroupStylePublicJoinNeedApproval;
     }
-    else {
-        options.style = _isAllowMemberInvite ? EMGroupStylePrivateMemberCanInvite: EMGroupStylePrivateOnlyOwnerInvite;
-    }
     
     NSString *descreiption = [NSString stringWithFormat:NSLocalizedString(@"group.creategroup", @"%@ create a group[%@]"),[EMClient sharedClient].currentUsername, _groupSubjectTextField.text];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.inviteToJoin", @"%@ invite you to join the group [%@]"),[EMClient sharedClient].currentUsername, _groupSubjectTextField.text];
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    _createBtn.userInteractionEnabled = NO;
     [[EMClient sharedClient].groupManager createGroupWithSubject:_groupSubjectTextField.text
                                                      description:descreiption
                                                         invitees:_invitees
                                                          message:message
                                                          setting:options
                                                       completion:^(EMGroup *aGroup, EMError *aError) {
+                                                          [MBProgressHUD hideAllHUDsForView:weakSelf.navigationController.view animated:YES];
+                                                          _createBtn.userInteractionEnabled = YES;
                                                           if (!aError) {
                                                               dispatch_async(dispatch_get_main_queue(), ^(){
                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION
                                                                                                                       object:nil];
                                                                   [weakSelf.navigationController popViewControllerAnimated:YES];
                                                               });
+                                                          }
+                                                          else {
+                                                              [weakSelf showAlertWithMessage:NSLocalizedString(@"group.createFailure", @"Create group failure")];
                                                           }
                                                       }
      ];
