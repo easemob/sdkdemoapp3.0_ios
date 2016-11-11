@@ -58,6 +58,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

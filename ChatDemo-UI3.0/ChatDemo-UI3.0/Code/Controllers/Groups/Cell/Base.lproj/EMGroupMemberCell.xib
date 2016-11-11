@@ -15,7 +15,7 @@
                 <frame key="frameInset" width="320" height="49"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Hs-ar-ATF">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_group_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Hs-ar-ATF">
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="bir-QI-ma7"/>
                             <constraint firstAttribute="height" constant="30" id="lri-zG-N53"/>
@@ -78,6 +78,6 @@
     <resources>
         <image name="Button_Radio Active.png" width="20" height="20"/>
         <image name="Button_Radio.png" width="20" height="20"/>
-        <image name="default_avatar.png" width="50" height="50"/>
+        <image name="default_group_avatar.png" width="50" height="50"/>
     </resources>
 </document>

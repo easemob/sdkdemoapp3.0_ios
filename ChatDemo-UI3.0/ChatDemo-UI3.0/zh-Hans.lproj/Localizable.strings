@@ -133,6 +133,8 @@
 "contact.hyphenateId" = "Hyphenate ID";
 "contact.apnsnickname" = "iOS推送昵称";
 "contact.block" = "联系人加入黑名单";
+"contact.blockFailure" = "加入黑名单失败";
+"contact.unblockFailure" = "移除黑名单失败";
 "contact.delete" = "删除联系人";
 "contact.deleteFailure" = "删除联系人失败";
 "contact.somebodyAddWithName" = "%@申请加您为好友!";
@@ -147,6 +149,7 @@
 "group.participants" = "成员";
 "group.groupSubject" = "群组主题";
 "group.create" = "创建";
+"group.createFailure" = "创建群组失败";
 "group.isPublic" = "是否为公开群";
 "group.allowedOccupantInvite" = "允许成员邀请";
 "group.openJoin" = "用户可自由加入";
@@ -194,6 +197,7 @@
 "common.remove" = "移除";
 "common.search" = "搜索";
 "common.open" = "打开";
+"common.searchFailure" = "搜索失败。";
 
 //message
 "message.friendapply.agree" = "%@同意了加好友申请";

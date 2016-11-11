@@ -15,7 +15,7 @@
                 <frame key="frameInset" width="375" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nvr-pl-gZf">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_group_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nvr-pl-gZf">
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="QWr-Zl-iWB"/>
                             <constraint firstAttribute="width" constant="50" id="hfm-zU-n6D"/>
@@ -70,6 +70,6 @@
     </objects>
     <resources>
         <image name="Button_Join.png" width="75" height="40"/>
-        <image name="default_avatar.png" width="50" height="50"/>
+        <image name="default_group_avatar.png" width="50" height="50"/>
     </resources>
 </document>

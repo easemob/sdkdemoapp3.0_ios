@@ -11,9 +11,6 @@
 #import "EMPublicGroupsViewController.h"
 #import "EMRealtimeSearchUtils.h"
 
-
-#define KChineseSimplified_Prompt      @"公开群"
-
 @interface EMCreateViewController ()
 
 @property (strong, nonatomic) IBOutlet UILabel *promptLabel;
@@ -37,9 +34,9 @@
     [self addChildViewController:_publicGroupsVc];
     [self.view addSubview:_publicGroupsVc.tableView];
     _publicGroupsVc.tableView.frame = CGRectMake(0,
-                                                 3*50,
+                                                 2*50,
                                                  self.view.bounds.size.width,
-                                                 self.view.bounds.size.height - 3*50);
+                                                 self.view.bounds.size.height - 2*50);
     [self setupSearchBar];
 }
 
@@ -109,10 +106,10 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)createNewChatAction:(id)sender {
-}
-
 - (IBAction)createNewGroupAction:(id)sender {
+    if (_searchBar.isFirstResponder) {
+        [self searchBarCancelButtonClicked:_searchBar];
+    }
     EMCreateNewGroupViewController *createVc = [[EMCreateNewGroupViewController alloc] initWithNibName:@"EMCreateNewGroupViewController"
                                                                                                 bundle:nil];
     [self.navigationController pushViewController:createVc animated:YES];
@@ -163,6 +160,7 @@
         return;
     }
     __weak typeof(_publicGroupsVc) weakVc = _publicGroupsVc;
+    WEAK_SELF
     [[EMClient sharedClient].groupManager searchPublicGroupWithId:searchBar.text completion:^(EMGroup *aGroup, EMError *aError) {
         
         EMPublicGroupsViewController *strongVc = weakVc;
@@ -174,6 +172,7 @@
                 [strongVc.tableView reloadData];
             }
             else {
+                [weakSelf showAlertWithMessage:NSLocalizedString(@"common.searchFailure", @"Search failure.")];
             }
         });
     }];

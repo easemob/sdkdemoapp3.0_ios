@@ -129,6 +129,8 @@
 "contact.hyphenateId" = "Hyphenate ID";
 "contact.apnsnickname" = "iOS APNS";
 "contact.block" = "Block Contact";
+"contact.blockFailure" = "Block failure";
+"contact.unblockFailure" = "Unblock failure";
 "contact.delete" = "Delete Contact";
 "contact.deleteFailure" = "Delete contacts failed";
 "contact.somebodyAddWithName" = "%@ add you as a friend";
@@ -153,6 +155,7 @@
 "group.enabled" = "Enabled";
 "group.disabled" = "Disabled";
 "group.create" = "Create";
+"group.createFailure" = "Create group failure";
 "group.deleteGroup" = "Delete Group";
 "group.leaveGroup" = "Leave Group";
 "group.seeAll" = "See all";
@@ -189,6 +192,7 @@
 "common.remove" = "Remove";
 "common.search" = "Search";
 "common.open" = "Open";
+"common.searchFailure" = "Search failure.";
 
 //message
 "message.friendapply.agree" = "%@ agreed to add friends to apply";
