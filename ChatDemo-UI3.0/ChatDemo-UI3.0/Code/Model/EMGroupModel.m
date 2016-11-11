@@ -17,7 +17,7 @@
             _group = (EMGroup *)obj;
             _hyphenateId = _group.groupId;
             _subject = _group.subject;
-            _defaultAvatarImage = [UIImage imageNamed:@"default_avatar.png"];
+            _defaultAvatarImage = [UIImage imageNamed:@"default_group_avatar.png"];
         }
         return self;
     }

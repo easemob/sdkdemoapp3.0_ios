@@ -22,6 +22,7 @@
 #import "EMGroupInfoViewController.h"
 #import "EMConversationModel.h"
 #import "EMMessageModel.h"
+#import "EMNotificationNames.h"
 
 @interface EMChatViewController () <EMChatToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,EMLocationViewDelegate,EMChatManagerDelegate,EMChatBaseCellDelegate,UIActionSheetDelegate>
 
@@ -85,6 +86,11 @@
     } else if (_conversation.type == EMConversationTypeChatRoom){
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeGroupsNotification:)
+                                                 name:KEM_REMOVEGROUP_NOTIFICATION
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,6 +101,9 @@
 - (void)dealloc
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:KEM_REMOVEGROUP_NOTIFICATION
+                                                  object:nil];
 }
 
 #pragma mark - getter
@@ -169,6 +178,12 @@
         [_refresh addTarget:self action:@selector(_loadMoreMessage) forControlEvents:UIControlEventValueChanged];
     }
     return _refresh;
+}
+
+#pragma mark - Notification Method
+
+- (void)removeGroupsNotification:(NSNotification *)notification {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source

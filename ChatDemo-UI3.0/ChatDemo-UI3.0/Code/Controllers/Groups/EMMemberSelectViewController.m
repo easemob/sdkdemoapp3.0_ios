@@ -66,6 +66,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self.selectConllection registerNib:[UINib nibWithNibName:@"EMMemberCollection_Edit_Cell" bundle:nil] forCellWithReuseIdentifier:@"EMMemberCollection_Edit_Cell"];
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+    self.tableView.tableFooterView = [UIView new];
     [self setupNavBar];
     [self loadUnSelectContacts];
     [self setupSearchBar];

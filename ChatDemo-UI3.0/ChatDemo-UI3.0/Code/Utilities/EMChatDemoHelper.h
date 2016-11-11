@@ -10,14 +10,17 @@
 #import "EMContactsViewController.h"
 #import "EMMainViewController.h"
 #import "EMPushNotificationViewController.h"
+#import "EMChatsViewController.h"
 
-@interface EMChatDemoHelper : NSObject<EMClientDelegate, EMContactManagerDelegate, EMGroupManagerDelegate>
+@interface EMChatDemoHelper : NSObject<EMClientDelegate, EMContactManagerDelegate, EMGroupManagerDelegate, EMChatManagerDelegate>
 
 @property (nonatomic, weak) EMContactsViewController *contactsVC;
 
 @property (nonatomic, weak) EMMainViewController *mainVC;
 
 @property (nonatomic, weak) EMPushNotificationViewController *pushVC;
+
+@property (nonatomic, weak) EMChatsViewController *chatsVC;
 
 + (instancetype)shareHelper;
 

@@ -111,6 +111,7 @@ static EMApplyManager *manager = nil;
 
 
 - (BOOL)isExistingRequest:(NSString *)applyHyphenateId
+                  groupId:(NSString *)groupId
                applyStyle:(EMApplyStyle)applyStyle {
     NSArray *sources = nil;
     __block BOOL isExistingRequest = NO;
@@ -118,15 +119,23 @@ static EMApplyManager *manager = nil;
         sources = _contactApplys;
     }
     else if (applyStyle != EMApplyStyle_contact && _groupApplys.count > 0) {
+        if (!groupId || groupId.length == 0) {
+            return YES;
+        }
         sources = _groupApplys;
     }
     if (sources.count > 0) {
         [sources enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([obj conformsToProtocol:@protocol(IEMApplyModel)]) {
                 id<IEMApplyModel> model = (id<IEMApplyModel>)obj;
-                if ([model.applyHyphenateId isEqualToString:applyHyphenateId] && model.style == applyStyle) {
-                    isExistingRequest = YES;
-                    *stop = YES;
+                if ([model.applyHyphenateId isEqualToString:applyHyphenateId] && model.style == applyStyle)
+                {
+                    if (applyStyle == EMApplyStyle_contact ||
+                        (applyStyle != EMApplyStyle_contact && [model.groupId isEqualToString:groupId]))
+                    {
+                        isExistingRequest = YES;
+                        *stop = YES;
+                    }
                 }
             }
         }];
