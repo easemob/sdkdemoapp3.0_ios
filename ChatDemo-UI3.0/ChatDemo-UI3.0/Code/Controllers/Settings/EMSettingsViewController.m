@@ -12,6 +12,7 @@
 #import "EMAccountViewController.h"
 #import "EMChatsSettingViewController.h"
 #import "EMChatDemoHelper.h"
+#import "UIViewController+HUD.h"
 
 @interface EMSettingsViewController ()
 
@@ -31,11 +32,14 @@
 
 - (void)loadPushOptions
 {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
     [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {
         
         if (!aError) {
             [weakSelf refreshPushOptions];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshPushOptions" object:nil];
+        } else {
+            [weakSelf showHint:[NSString stringWithFormat:@"%@:%d",NSLocalizedString(@"push.setting.getFailed", @"Get push status failed"), aError.code]];
         }
     }];
 }

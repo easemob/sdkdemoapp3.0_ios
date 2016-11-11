@@ -95,8 +95,8 @@
     }
 }
 
-
 - (void)applicationWillResignActive:(UIApplication *)application {
+    
 }
 
 
@@ -119,6 +119,7 @@
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    
 }
 
 #pragma mark - App Delegate

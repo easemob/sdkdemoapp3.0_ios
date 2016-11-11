@@ -63,6 +63,7 @@
     {
         _myName = newName;
         [[EMUserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:newName} completion:^(BOOL success, NSError *error) {}];
+        [[EMClient sharedClient] updatePushNotifiationDisplayName:newName completion:^(NSString *aDisplayName, EMError *aError) {}];
         if (self.callBack) {
             self.callBack(newName);
         }

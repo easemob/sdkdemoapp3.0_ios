@@ -148,6 +148,9 @@ static EMUserProfileManager *sharedInstance = nil;
     UIImage *img = [image imageByScalingAndCroppingForSize:CGSizeMake(120.f, 120.f)];
     if (_objectId && _objectId.length > 0) {
         PFObject *object = [PFObject objectWithoutDataWithClassName:kPARSE_HXUSER objectId:_objectId];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [object fetchIfNeeded];
+        });
         NSData *imageData = UIImageJPEGRepresentation(img, 0.5);
         PFFile *imageFile = [PFFile fileWithName:@"image.png" data:imageData];
         object[kPARSE_HXUSER_AVATAR] = imageFile;
@@ -191,6 +194,9 @@ static EMUserProfileManager *sharedInstance = nil;
 {
     if (_objectId && _objectId.length > 0) {
         PFObject *object = [PFObject objectWithoutDataWithClassName:kPARSE_HXUSER objectId:_objectId];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [object fetchIfNeeded];
+        });
         if( param!=nil && [[param allKeys] count] > 0) {
             for (NSString *key in param) {
                 [object setObject:[param objectForKey:key] forKey:key];
