@@ -189,13 +189,15 @@
         [[EMUserProfileManager sharedInstance] uploadUserHeadImageProfileInBackground:orgImage completion:^(BOOL success, NSError *error) {
             [weakSelf hideHud];
             if (success) {
-                UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
-                [weakSelf.avatarView imageWithUsername:user.username placeholderImage:orgImage];
+
                 [weakSelf showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
             } else {
                 [weakSelf showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];
+                UserProfileEntity *user = [[EMUserProfileManager sharedInstance] getCurUserProfile];
+                [weakSelf.avatarView imageWithUsername:user.username placeholderImage:orgImage];
             }
         }];
+        [self.avatarView imageWithUsername:nil placeholderImage:orgImage];
     } else {
         [self hideHud];
         [self showHint:NSLocalizedString(@"setting.uploadFailed", @"Upload Failed")];

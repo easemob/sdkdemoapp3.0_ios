@@ -11,4 +11,5 @@
 
 @interface EMSettingsViewController :EMBaseSettingController
 
+- (void)reloadNotificationStatus;
 @end
