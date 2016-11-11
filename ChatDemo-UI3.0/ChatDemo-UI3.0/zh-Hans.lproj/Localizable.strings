@@ -88,6 +88,7 @@
 "setting.about.uiversion" = "EaseUI 版本";
 
 //setting.push
+"setting.push.getFailed" = "获取推送状态失败";
 "setting.push.display" = "显示消息详情";
 "setting.push.displayname" = "推送显示昵称";
 "setting.push.tip" = "设置苹果推送时显示昵称";

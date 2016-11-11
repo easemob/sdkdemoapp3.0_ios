@@ -87,12 +87,13 @@
 "setting.about.uiversion" = "EaseUI Library Version";
 
 //setting.push
+"setting.push.getFailed" = "Get push status failed";
 "setting.push.display" = "Display preview text";
 "setting.push.nodisturb" = "Do not disturb";
-"setting.push.enable" = "Enable";
-"setting.push.disable" = "Disable";
+"setting.push.enable" = "Enabled";
+"setting.push.disable" = "Disabled";
 "setting.push.displayname" = "Push notification display name";
-"setting.push.tip" = "The display name will appear in Apple's push notification system.";
+"setting.push.tip" = "The display name will appear in notification center.";
 "setting.push.systemPush" = "Notification";
 "setting.push.anotherTip" = "Enable or disable Hyphenate Notifications via “Settings”->”Notifications” on your iPhone.";
 "setting.push.changeFailed" = "Change failed";
@@ -104,7 +105,7 @@
 "setting.account.name" = "Name";
 "setting.uploading" = "Uploading..";
 "setting.uploadSuccess" = "Upload Successfully";
-"seting.uploadFailed" = "Upload Failed";
+"setting.uploadFailed" = "Upload Failed";
 
 //setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
