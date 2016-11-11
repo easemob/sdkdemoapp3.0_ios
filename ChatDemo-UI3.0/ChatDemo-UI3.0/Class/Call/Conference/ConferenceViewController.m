@@ -14,10 +14,11 @@
 
 @interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConferenceBuilderDelegate, StreamTableViewControllerDelegate>
 {
-    float _ox;
-    float _oy;
+//    float _ox;
+    float _top;
     float _width;
     float _height;
+    float _border;
     
     NSString *_callId;
 }
@@ -67,15 +68,17 @@
     
     [[EMClient sharedClient].conferenceManager setBuilder:self];
     
-    _ox = 10;
-    _oy = 80;
-    _width = 120;
-    _height = 140;
+//    _ox = 10;
+//    _oy = 80;
+    _top = 80;
+    _border = 20;
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    _width = (size.width - _border * 3) / 2;
+    _height = _width / (size.width / (size.height - 65));
     
-    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
+    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_border, _top, _width, _height)];
     self.localView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.localView];
-    _ox = 150;
     
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
@@ -120,27 +123,25 @@
     }
     
     NSString *subName = aStream.userName;
+    EMCallRemoteView *remoteView = [self.remoteViews objectForKey:subName];
+    if (remoteView == nil) {
+        int count = (int )[self.remoteViews count] + 2;
+        int row = count / 2 - 1 + (count % 2 == 0 ? 0 : 1);
+        int col = (count % 2 == 0 ? 1 : 0);
+        CGFloat ox = _border + col * (_width + _border);
+        CGFloat oy = _top + row * (_height + _border);
+        remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(ox, oy, _width, _height)];
+//        remoteView.backgroundColor = [UIColor redColor];
+        [self.remoteViews setObject:remoteView forKey:subName];
+    }
     
     EMError *error = nil;
-    
-    EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
-    remoteView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:remoteView];
-    
-    if (_ox >= 150) {
-        _ox = 10;
-        _oy += 20 + _height;
-    }
-    else{
-        _ox = 150;
-    }
-    
     [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:aStream remoteVideoView:remoteView error:&error];
     if (error) {
-        [remoteView removeFromSuperview];
+        [self.remoteViews removeObjectForKey:subName];
     }
     else{
-        [self.remoteViews setObject:remoteView forKey:subName];
+        [self.view addSubview:remoteView];
     }
 }
 
@@ -149,21 +150,17 @@
 - (EMCallRemoteView *)mutilConference:(EMCallConference *)aConference
                      videoViewForUser:(NSString *)aUserName
 {
-    EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
-    remoteView.backgroundColor = [UIColor redColor];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.view addSubview:remoteView];
-    });
-    
-    if (_ox >= 150) {
-        _ox = 10;
-        _oy += 20 + _height;
+    EMCallRemoteView *remoteView = [self.remoteViews objectForKey:aUserName];
+    if (remoteView == nil) {
+        int count = (int )[self.remoteViews count] + 2;
+        int row = count / 2 - 1 + (count % 2 == 0 ? 0 : 1);
+        int col = (count % 2 == 0 ? 1 : 0);
+        CGFloat ox = _border + col * (_width + _border);
+        CGFloat oy = _top + _border + row * (_height + _border);
+        EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(ox, oy, _width, _height)];
+        remoteView.backgroundColor = [UIColor redColor];
+        [self.remoteViews setObject:remoteView forKey:aUserName];
     }
-    else{
-        _ox = 150;
-    }
-    
-    [self.remoteViews setObject:remoteView forKey:aUserName];
     
     return remoteView;
 }
@@ -191,6 +188,22 @@
         EMCallRemoteView *view = [self.remoteViews objectForKey:aUsername];
         if (view) {
             [view removeFromSuperview];
+            [self.remoteViews removeObjectForKey:aUsername];
+        }
+        
+        CGFloat ox = _border;
+        CGFloat oy = _top;
+        for (NSString *key in self.remoteViews) {
+            if (ox >= _width + _border) {
+                ox = _border;
+                oy += _border + _height;
+            }
+            else{
+                ox = _width + _border * 2;
+            }
+            
+            UIView *view = [self.remoteViews objectForKey:key];
+            view.frame = CGRectMake(ox, oy, _width, _height);
         }
     }
 }
