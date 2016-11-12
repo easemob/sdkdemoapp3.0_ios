@@ -178,6 +178,9 @@
     if (_isPublic) {
         options.style = _isAllowMemberInvite ? EMGroupStylePublicOpenJoin : EMGroupStylePublicJoinNeedApproval;
     }
+    else {
+        options.style = _isAllowMemberInvite ? EMGroupStylePrivateMemberCanInvite : EMGroupStylePrivateOnlyOwnerInvite;
+    }
     
     NSString *descreiption = [NSString stringWithFormat:NSLocalizedString(@"group.creategroup", @"%@ create a group[%@]"),[EMClient sharedClient].currentUsername, _groupSubjectTextField.text];
     
