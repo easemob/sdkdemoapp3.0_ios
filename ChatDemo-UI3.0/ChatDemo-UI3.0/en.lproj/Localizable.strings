@@ -172,6 +172,7 @@
 "group.applyJoin" = "%@ apply to join groups\'%@\'";
 "group.applyJoinWithName" = "%@ apply to join groups\'%@\'：%@";
 "group.invite" = "%@ invite you to group: %@ [%@]";
+"group.inviteFailure" = "invite contacts to group failure";
 "group.beRefusedToJoin" = "be refused to join the group\'%@\'";
 "group.agreedAndJoined" = "agreed and joined the group of \'%@\'";
 "group.creategroup" = "%@ create a group[%@]";

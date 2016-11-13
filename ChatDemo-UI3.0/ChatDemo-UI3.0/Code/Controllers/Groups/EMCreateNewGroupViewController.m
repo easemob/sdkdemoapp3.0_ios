@@ -13,6 +13,7 @@
 #import "EMNotificationNames.h"
 #import "EMMemberSelectViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "UIViewController+DismissKeyboard.h"
 
 #define KEM_GROUP_MEMBERSCOUNT         2000
 
@@ -41,6 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupNavbar];
+    [self setupForDismissKeyboard];
     self.tableView.tableHeaderView = _headerView;
     self.tableView.tableFooterView = [UIView new];
     self.groupSubjectTextField.placeholder = NSLocalizedString(@"group.groupSubject", @"Group Subject");
