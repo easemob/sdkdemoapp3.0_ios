@@ -113,6 +113,7 @@
         NSArray *contactApplys = [[EMApplyManager defaultManager] contactApplys];
         weakSelf.contactRequests = [NSMutableArray arrayWithArray:contactApplys];
         [weakSelf.tableView reloadData];
+        [[EMChatDemoHelper shareHelper] setupUntreatedApplyCount];
     });
 }
 
@@ -122,6 +123,7 @@
         NSArray *groupApplys = [[EMApplyManager defaultManager] groupApplys];
         weakSelf.groupNotifications = [NSMutableArray arrayWithArray:groupApplys];
         [weakSelf.tableView reloadData];
+        [[EMChatDemoHelper shareHelper] setupUntreatedApplyCount];
     });
 }
 
