@@ -97,7 +97,8 @@
 "setting.push.disable" = "关闭";
 "setting.push.systemPush" = "系统通知";
 "setting.push.anotherTip" = "在“设置”->“通知”开启/关闭系统通知";
-"setting.push.changeFailed" = "更改失败";
+"setting.push.changeStyleFailed" = "修改推送样式失败";
+"setting.push.changeDisturbFailed" = "修改免打扰状态失败";
 
 //setting.account
 "setting.account.edit" = "编辑";

@@ -7,13 +7,9 @@
 //
 
 #import "EMBaseSettingController.h"
-typedef void (^PushStatus)(EMPushNoDisturbStatus disturbStatus);
+
 
 @interface EMPushNotificationViewController : EMBaseSettingController
-
-@property (nonatomic, copy) PushStatus callBack;
-
-- (void)getPushStatus:(PushStatus)callBack;
 
 - (void)reloadNotificationStatus;
 @end

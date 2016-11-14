@@ -64,20 +64,12 @@
     {
         _currentDisplayName = newDisplay;
     
-        [[EMClient sharedClient] updatePushNotifiationDisplayName:_currentDisplayName completion:^(NSString *aDisplayName, EMError *aError) {
-            if (aError) {
-                NSLog(@"uodate nickname failed:%u",aError.code);
-            } else {
-                if (self.callBack) {
-                    self.callBack(aDisplayName);
-                }
-            }
-        }];
-        [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        
-        [self.navigationController popViewControllerAnimated:YES];
+        [[EMClient sharedClient] updatePushNotifiationDisplayName:_currentDisplayName completion:^(NSString *aDisplayName, EMError *aError) {}];
+        if (self.callBack) {
+            self.callBack(_currentDisplayName);
+        }
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

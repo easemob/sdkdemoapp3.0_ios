@@ -18,6 +18,8 @@
 
 @property (nonatomic, weak) EMMainViewController *mainVC;
 
+@property (nonatomic, weak) EMSettingsViewController *settingsVC;
+
 @property (nonatomic, weak) EMPushNotificationViewController *pushVC;
 
 @property (nonatomic, weak) EMChatsViewController *chatsVC;
