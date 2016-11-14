@@ -98,7 +98,7 @@ static EMChatDemoHelper *helper = nil;
 
 - (void)friendshipDidRemoveByUser:(NSString *)aUsername {
     NSString *msg = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"common.delete", @"Delete"), aUsername];
-    [_mainVC showAlertWithMessage:msg];
+    [self showAlertWithMessage:msg];
     if (_contactsVC) {
         [_contactsVC reloadContacts];
     }

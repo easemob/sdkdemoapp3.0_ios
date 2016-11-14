@@ -169,6 +169,7 @@
 "group.leaveGroup" = "离开群组";
 "group.seeAll" = "查看全部成员";
 "group.requested" = "已申请";
+"group.requestFailure" = "入群申请失败";
 "group.destroyFailure" = "解散群组失败";
 "group.leaveFailure" = "退出群组失败";
 "group.blockGroupFailure" = "屏蔽群组消息失败";
@@ -182,6 +183,7 @@
 "group.applyJoin" = "%@ 申请加入群组\'%@\'";
 "group.applyJoinWithName" = "%@ 申请加入群组\'%@\'：%@";
 "group.invite" = "%@邀请您加入群组: %@ [%@]";
+"group.inviteFailure" = "邀请联系人加入群组失败";
 "group.beRefusedToJoin" = "被拒绝加入群组\'%@\'";
 "group.agreedAndJoined" = "同意并已加入群组\'%@\'";
 "group.creategroup" = "%@创建了群组[%@]";

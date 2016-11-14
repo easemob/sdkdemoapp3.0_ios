@@ -436,10 +436,16 @@
     }];
     if (invitees.count > 0) {
         WEAK_SELF
+        [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         [[EMClient sharedClient].groupManager addMembers:invitees toGroup:self.currentGroup.groupId message:@"" completion:^(EMGroup *aGroup, EMError *aError) {
+            [MBProgressHUD hideAllHUDsForView:weakSelf.navigationController.view animated:YES];
             if (!aError) {
                 [weakSelf reloadOccupants];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+            }
+            else {
+                NSString *msg = NSLocalizedString(@"group.inviteFailure", @"invite contacts to group failure");
+                [weakSelf showAlertWithMessage:msg];
             }
         }];
     }

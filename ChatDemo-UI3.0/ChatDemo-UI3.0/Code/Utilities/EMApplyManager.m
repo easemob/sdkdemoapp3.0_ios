@@ -115,14 +115,14 @@ static EMApplyManager *manager = nil;
                applyStyle:(EMApplyStyle)applyStyle {
     NSArray *sources = nil;
     __block BOOL isExistingRequest = NO;
-    if (applyStyle == EMApplyStyle_contact && _contactApplys.count > 0) {
-        sources = _contactApplys;
+    if (applyStyle == EMApplyStyle_contact) {
+        sources = [self contactApplys];
     }
-    else if (applyStyle != EMApplyStyle_contact && _groupApplys.count > 0) {
+    else if (applyStyle != EMApplyStyle_contact) {
         if (!groupId || groupId.length == 0) {
             return YES;
         }
-        sources = _groupApplys;
+        sources = [self groupApplys];
     }
     if (sources.count > 0) {
         [sources enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -199,7 +199,7 @@ static EMApplyManager *manager = nil;
         [_userDefaults setObject:data forKey:key];
         [_userDefaults synchronize];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             [manager loadAllApplys];
         });
     }

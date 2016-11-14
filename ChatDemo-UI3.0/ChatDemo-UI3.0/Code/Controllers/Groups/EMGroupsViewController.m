@@ -27,6 +27,10 @@
     [self setupNavBar];
     [self loadGroupsFromServer];
     [self addNotifications];
+    WEAK_SELF
+    self.headerRefresh = ^(BOOL isRefreshing){
+        [weakSelf loadGroupsFromServer];
+    };
 }
 
 - (void)dealloc {
@@ -68,6 +72,11 @@
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [weakSelf endHeaderRefresh];
                 [weakSelf.tableView reloadData];
+            });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [weakSelf endHeaderRefresh];
             });
         }
     }];
