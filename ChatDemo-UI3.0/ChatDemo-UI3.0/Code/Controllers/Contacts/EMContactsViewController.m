@@ -89,6 +89,11 @@
                 });
             });
         }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [weakSelf endHeaderRefresh];
+            });
+        }
     }];
 }
 
@@ -103,23 +108,23 @@
 }
 
 - (void)reloadContactRequests {
-    NSArray *contactApplys = [[EMApplyManager defaultManager] contactApplys];
-    self.contactRequests = [NSMutableArray arrayWithArray:contactApplys];
-    NSMutableIndexSet *set = [NSMutableIndexSet indexSetWithIndex:1];
-    [set addIndex:2];
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
+    WEAK_SELF
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        NSArray *contactApplys = [[EMApplyManager defaultManager] contactApplys];
+        weakSelf.contactRequests = [NSMutableArray arrayWithArray:contactApplys];
+        [weakSelf.tableView reloadData];
+        [[EMChatDemoHelper shareHelper] setupUntreatedApplyCount];
+    });
 }
 
 - (void)reloadGroupNotifications {
-    NSArray *groupApplys = [[EMApplyManager defaultManager] groupApplys];
-    self.groupNotifications = [NSMutableArray arrayWithArray:groupApplys];
-    NSMutableIndexSet *set = [NSMutableIndexSet indexSetWithIndex:0];
-    [set addIndex:2];
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
+    WEAK_SELF
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        NSArray *groupApplys = [[EMApplyManager defaultManager] groupApplys];
+        weakSelf.groupNotifications = [NSMutableArray arrayWithArray:groupApplys];
+        [weakSelf.tableView reloadData];
+        [[EMChatDemoHelper shareHelper] setupUntreatedApplyCount];
+    });
 }
 
 - (void)updateContacts:(NSArray *)bubbyList {
@@ -128,25 +133,33 @@
     for (NSString *blockId in blockList) {
         [contacts removeObject:blockId];
     }
-    
-    [self.contacts removeAllObjects];
+    [self sortContacts:contacts];
+    WEAK_SELF
+    [[EMUserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:contacts
+                                                                   saveToLoacal:YES
+                                                                     completion:^(BOOL success, NSError *error) {
+                                                                         if (success) {
+                                                                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                                                 [weakSelf sortContacts:contacts];
+                                                                                 dispatch_async(dispatch_get_main_queue(), ^(){
+                                                                                     [weakSelf.tableView reloadData];
+                                                                                 });
+                                                                             });
+                                                                         }
+                                                                     }
+     ];
+}
+
+- (void)sortContacts:(NSArray *)contacts {
     NSMutableArray *sectionTitles = nil;
     NSMutableArray *searchSource = nil;
     NSArray *sortArray = [NSArray sortContacts:contacts
                                  sectionTitles:&sectionTitles
                                   searchSource:&searchSource];
+    [self.contacts removeAllObjects];
     [self.contacts addObjectsFromArray:sortArray];
     _sectionTitls = [NSMutableArray arrayWithArray:sectionTitles];
     _searchSource = [NSMutableArray arrayWithArray:searchSource];
-    
-    WEAK_SELF
-    [[EMUserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:contacts saveToLoacal:YES completion:^(BOOL success, NSError *error) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^(){
-                [weakSelf.tableView reloadData];
-            });
-        }
-    }];
 }
 
 

@@ -123,23 +123,37 @@ typedef NS_ENUM(NSUInteger, EMFetchPublicGroupState) {
 
 #pragma mark - Join Public Group
 - (void)joinToPublicGroup:(NSString *)groupId {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow
+                         animated:YES];
     [[EMClient sharedClient].groupManager joinPublicGroup:groupId
                                                completion:^(EMGroup *aGroup, EMError *aError) {
+                                                   [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
                                                    if (!aError) {
                                                        [weakSelf reloadRequestedApplyDataSource];
+                                                   }
+                                                   else {
+                                                       NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
+                                                       [weakSelf showAlertWithMessage:msg];
                                                    }
                                                }
      ];
 }
 
 - (void)requestToJoinPublicGroup:(NSString *)groupId message:(NSString *)message {
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF
+    [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow
+                         animated:YES];
     [[EMClient sharedClient].groupManager requestToJoinPublicGroup:groupId
                                                            message:message
                                                         completion:^(EMGroup *aGroup, EMError *aError) {
+                                                            [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
                                                             if (!aError) {
                                                                 [weakSelf reloadRequestedApplyDataSource];
+                                                            }
+                                                            else {
+                                                                NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
+                                                                [weakSelf showAlertWithMessage:msg];
                                                             }
                                                         }];
 }

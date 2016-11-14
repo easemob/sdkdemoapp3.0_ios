@@ -160,6 +160,7 @@
 "group.leaveGroup" = "Leave Group";
 "group.seeAll" = "See all";
 "group.requested" = "Requested";
+"group.requestFailure" = "Failed to apply to the group";
 "group.destroyFailure" = "Destroy group failure";
 "group.leaveFailure" = "Leave group failure";
 "group.blockGroupFailure" = "Block group failure";
@@ -173,6 +174,7 @@
 "group.applyJoin" = "%@ apply to join groups\'%@\'";
 "group.applyJoinWithName" = "%@ apply to join groups\'%@\'：%@";
 "group.invite" = "%@ invite you to group: %@ [%@]";
+"group.inviteFailure" = "invite contacts to group failure";
 "group.beRefusedToJoin" = "be refused to join the group\'%@\'";
 "group.agreedAndJoined" = "agreed and joined the group of \'%@\'";
 "group.creategroup" = "%@ create a group[%@]";

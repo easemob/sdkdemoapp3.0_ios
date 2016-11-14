@@ -8,6 +8,7 @@
 
 #import "NSArray+EMSortContacts.h"
 #import "EMUserModel.h"
+#import "EMUserProfileManager.h"
 
 @implementation NSArray (SortContacts)
 
@@ -25,7 +26,9 @@
     NSArray *sortArray = [contacts sortedArrayUsingComparator:^NSComparisonResult(NSString *hyphenateId1,
                                                                                   NSString *hyphenateId2)
     {
-        return [hyphenateId1 caseInsensitiveCompare:hyphenateId2];
+        NSString *nickname1 = [[EMUserProfileManager sharedInstance] getNickNameWithUsername:hyphenateId1];
+        NSString *nickname2 = [[EMUserProfileManager sharedInstance] getNickNameWithUsername:hyphenateId2];
+        return [nickname1 caseInsensitiveCompare:nickname2];
     }];
 
     NSMutableArray *_searchSource = [NSMutableArray array];
