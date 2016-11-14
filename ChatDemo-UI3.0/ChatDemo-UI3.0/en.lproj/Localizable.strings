@@ -98,7 +98,8 @@
 "setting.push.tip" = "The display name will appear in notification center.";
 "setting.push.systemPush" = "Notification";
 "setting.push.anotherTip" = "Enable or disable Hyphenate Notifications via “Settings”->”Notifications” on your iPhone.";
-"setting.push.changeFailed" = "Change failed";
+"setting.push.changeStyleFailed" = "Modify push displayStyle failed";
+"setting.push.changeDisturbFailed" = "Modify noDisturb status failed";
 
 //setting.account
 "setting.account.edit" = "Edit";

@@ -112,6 +112,9 @@
     if ([EMChatDemoHelper shareHelper].pushVC) {
         [[EMChatDemoHelper shareHelper].pushVC reloadNotificationStatus];
     }
+    if ([EMChatDemoHelper shareHelper].settingsVC) {
+        [[EMChatDemoHelper shareHelper].settingsVC reloadNotificationStatus];
+    }
 }
 
 

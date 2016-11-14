@@ -8,6 +8,7 @@
 
 #import "EMPushNotificationViewController.h"
 #import "EMPushDisplaynameViewController.h"
+#import "UIViewController+HUD.h"
 @interface EMPushNotificationViewController()
 
 @property (nonatomic, strong) UISwitch *displaySwitch;
@@ -89,23 +90,29 @@
 
     [self configBackButton];
     
-    [self refreshPushOptions];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPushOptions) name:@"RefreshPushOptions" object:nil];
+    [self loadPushOptions];
+
 }
 
-- (void)getPushStatus:(PushStatus)callBack
+- (void)loadPushOptions
 {
-    self.callBack = callBack;
+    WEAK_SELF
+    [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {
+        
+        if (!aError) {
+            [weakSelf updatePushOptions:aOptions];
+        } else {
+            [weakSelf showHint:[NSString stringWithFormat:@"%@:%d",NSLocalizedString(@"setting.push.getFailed", @"Get push status failed"), aError.code]];
+        }
+    }];
 }
 
-- (void)refreshPushOptions
+- (void)updatePushOptions:(EMPushOptions *)options
 {
-    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     _pushDisplayStyle = options.displayStyle;
     _noDisturbStatus = options.noDisturbStatus;
     _pushNickname = options.displayName;
-    
+    NSLog(@"%@",options.displayName);
     BOOL display = _pushDisplayStyle == EMPushDisplayStyleSimpleBanner ? NO : YES;
     BOOL noDisturb = _noDisturbStatus == EMPushNoDisturbStatusClose ? NO: YES;
     [self.displaySwitch setOn:display animated:YES];
@@ -269,71 +276,66 @@
         _pushDisplayStyle = EMPushDisplayStyleSimpleBanner;
     }
     EMPushOptions *pushOptions = [[EMClient sharedClient] pushOptions];
-    if (_pushDisplayStyle != pushOptions.displayStyle) {
-        
-        pushOptions.displayStyle = _pushDisplayStyle;
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            if (aError) {
-                
-                [sender setOn:!sender.isOn animated:YES];
-                if (pushOptions.displayStyle == EMPushDisplayStyleMessageSummary) {
-                    pushOptions.displayStyle = EMPushDisplayStyleSimpleBanner;
-                } else {
-                    pushOptions.displayStyle = EMPushDisplayStyleMessageSummary;
-                }
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message: [NSString stringWithFormat:@"%@:%d", NSLocalizedString(@"setting.push.changeFailed", @"Change Failed"), aError.code] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"common.ok", @"OK"), nil];
-                [alertView show];
-            }
-        }];
-    }
 
+    pushOptions.displayStyle = _pushDisplayStyle;
+
+    WEAK_SELF
+    [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+        if (aError) {
+
+            if (pushOptions.displayStyle == EMPushDisplayStyleMessageSummary) {
+                pushOptions.displayStyle = EMPushDisplayStyleSimpleBanner;
+            } else {
+                pushOptions.displayStyle = EMPushDisplayStyleMessageSummary;
+            }
+            [sender setOn:!sender.isOn animated:YES];
+            if ([weakSelf needShowFailedAlert]) {
+                [weakSelf showAlertWithMessage:[NSString stringWithFormat:@"%@:%d", NSLocalizedString(@"setting.push.changeStyleFailed", @"Modify push displayStyle failed"), aError.code]];
+            }
+        }
+    }];
+
+}
+
+
+- (BOOL)needShowFailedAlert
+{
+    NSArray *viewControllers = self.navigationController.viewControllers;
+    if ([[viewControllers lastObject] isKindOfClass:[EMPushNotificationViewController class]] ) {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)activePush:(UISwitch *)sender
 {
+        EMPushOptions *pushOptions = [[EMClient sharedClient] pushOptions];
     if (sender.isOn) {
-        
         _noDisturbStatus = EMPushNoDisturbStatusDay;
+        pushOptions.noDisturbingStartH = 0;
+        pushOptions.noDisturbingEndH = 24;
     } else {
-
         _noDisturbStatus = EMPushNoDisturbStatusClose;
     }
-    EMPushOptions *pushOptions = [[EMClient sharedClient] pushOptions];
-    if (_noDisturbStatus != pushOptions.noDisturbStatus) {
-        
-        pushOptions.noDisturbStatus = _noDisturbStatus;
-        NSLog(@"%d",pushOptions.noDisturbStatus);
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            if (aError) {
+    pushOptions.noDisturbStatus = _noDisturbStatus;
+    NSLog(@"%d",pushOptions.noDisturbStatus);
+
+    WEAK_SELF
+    [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+        if (aError) {
                 
-                [sender setOn:!sender.isOn animated:YES];
-                if (pushOptions.noDisturbStatus == EMPushNoDisturbStatusDay) {
-                    pushOptions.noDisturbStatus = EMPushNoDisturbStatusClose;
-                } else {
-                    pushOptions.noDisturbStatus = EMPushNoDisturbStatusDay;
-                }
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@:%d",NSLocalizedString(@"setting.push.changeFailed", @"Change failed"),aError.code] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"common.ok", @"OK"), nil];
-                [alert show];
-                
+            if (pushOptions.noDisturbStatus == EMPushNoDisturbStatusDay) {
+                pushOptions.noDisturbStatus = EMPushNoDisturbStatusClose;
             } else {
-                
-                if (self.callBack) {
-                    
-                    self.callBack(_noDisturbStatus);
-                }
+                pushOptions.noDisturbStatus = EMPushNoDisturbStatusDay;
             }
-
-        }];
-    }
+            [sender setOn:!sender.isOn animated:YES];
+            if ([weakSelf needShowFailedAlert]) {
+                [weakSelf showAlertWithMessage:[NSString stringWithFormat:@"%@:%d",NSLocalizedString(@"setting.push.changeDisturbFailed", @"Modify noDisturb status failed"),aError.code]];
+            }
+        }
+    }];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"RefreshPushOptions" object:nil];
-}
 
 @end

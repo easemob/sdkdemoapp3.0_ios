@@ -26,32 +26,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadPushOptions];
-    
 }
 
-- (void)loadPushOptions
+- (void)reloadNotificationStatus
 {
-    WEAK_SELF
-    [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {
-        
-        if (!aError) {
-            [weakSelf refreshPushOptions];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshPushOptions" object:nil];
-        } else {
-            [weakSelf showHint:[NSString stringWithFormat:@"%@:%d",NSLocalizedString(@"push.setting.getFailed", @"Get push status failed"), aError.code]];
-        }
-    }];
-}
-
-- (void)refreshPushOptions
-{
-    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    if (_pushStatus != options.noDisturbStatus) {
-        
-        _pushStatus = options.noDisturbStatus;
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
 }
 
 #pragma mark - getters
@@ -98,7 +77,7 @@
     } else if (indexPath.row == 1) {
         
         cell.textLabel.text = NSLocalizedString(@"setting.push", @"Push Notifications");
-        BOOL isPushOn = _pushStatus == EMPushNoDisturbStatusClose ? YES : NO;
+        BOOL isPushOn = [self isAllowedNotification];
         cell.detailTextLabel.text = isPushOn ? NSLocalizedString(@"setting.push.enable", @"Enable") : NSLocalizedString(@"setting.push.disable", @"Disable");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.row == 2) {
@@ -137,11 +116,6 @@
         EMPushNotificationViewController *pushController = [[EMPushNotificationViewController alloc] init];
         pushController.title = NSLocalizedString(@"title.setting.push", @"Push Notifications");
         [EMChatDemoHelper shareHelper].pushVC = pushController;
-        [pushController getPushStatus:^(EMPushNoDisturbStatus disturbStatus) {
-            
-            _pushStatus = disturbStatus;
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        }];
         [self.navigationController pushViewController:pushController animated:YES];
     } else if (indexPath.row == 2) {
             
@@ -178,6 +152,26 @@
     }
 }
 
+- (BOOL)isAllowedNotification {
+    
+    if ([[UIDevice currentDevice].systemVersion floatValue] > 7.0) {
+        
+        UIUserNotificationSettings *setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        if (setting.types != UIUserNotificationTypeNone) {
+            
+            return YES;
+        }
+    } else {
+        
+        UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        if (type != UIRemoteNotificationTypeNone) {
+            
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 #pragma mark - Actions
 
 - (void)switchVideoBitrate:(UISwitch *)sender

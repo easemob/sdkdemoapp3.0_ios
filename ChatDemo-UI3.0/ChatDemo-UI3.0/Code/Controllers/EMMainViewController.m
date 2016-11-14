@@ -95,7 +95,11 @@
     self.selectedIndex = 0;
     
     [EMChatDemoHelper shareHelper].contactsVC = _contactsVC;
+
+    [EMChatDemoHelper shareHelper].settingsVC = _settingsVC;
+
     [EMChatDemoHelper shareHelper].chatsVC = _chatsVC;
+
 }
 
 -(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
