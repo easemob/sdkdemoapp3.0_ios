@@ -10,6 +10,8 @@
 
 @interface EMChatViewController : UIViewController
 
+@property (nonatomic, strong, readonly) NSString *conversationId;
+
 - (instancetype)initWithConversationId:(NSString*)conversationId conversationType:(EMConversationType)type;
 
 @end

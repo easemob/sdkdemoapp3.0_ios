@@ -63,7 +63,7 @@
                                          [UIImage imageNamed:@"logo10"],
                                          [UIImage imageNamed:@"logo11"]];
     _launchImageView.animationDuration = 1.65;
-//    _launchImageView.animationRepeatCount = 1;
+    _launchImageView.animationRepeatCount = 1;
     [_launchImageView startAnimating];
 }
 

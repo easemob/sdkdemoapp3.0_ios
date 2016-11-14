@@ -119,12 +119,22 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
+
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    if ([EMChatDemoHelper shareHelper].mainVC) {
+        [[EMChatDemoHelper shareHelper].mainVC didReceiveLocalNotification:notification];
+    }
 }
 
 #pragma mark - App Delegate

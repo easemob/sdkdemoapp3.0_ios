@@ -204,6 +204,7 @@
 "message.friendapply.agree" = "%@ agreed to add friends to apply";
 "message.friendapply.refuse" = "%@ refuse to add friends to apply";
 "message.inputGroupSubject" = "Please input a group theme";
+"message.receiveMessage" = "you have a new message";
 
 //apns
 "apns.failToRegisterApns" = "Fail to register apns";

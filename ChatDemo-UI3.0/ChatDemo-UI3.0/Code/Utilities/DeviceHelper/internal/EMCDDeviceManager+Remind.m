@@ -25,8 +25,8 @@ void EMSystemSoundFinishedPlayingCallback(SystemSoundID sound_id, void* user_dat
 - (SystemSoundID)playNewMessageSound
 {
     // 要播放的音频文件地址
-    NSURL *bundlePath = [[NSBundle mainBundle] URLForResource:@"EaseMob" withExtension:@"bundle"];
-    NSURL *audioPath = [[NSBundle bundleWithURL:bundlePath] URLForResource:@"in" withExtension:@"caf"];
+    NSString *path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/sms-received1.caf"];
+    NSURL *audioPath = [NSURL URLWithString:path];
     // 创建系统声音，同时返回一个ID
     SystemSoundID soundID;
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)(audioPath), &soundID);

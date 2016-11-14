@@ -12,4 +12,6 @@
 
 -(void)setupUnreadMessageCount;
 
+- (void)didReceiveLocalNotification:(UILocalNotification *)notification;
+
 @end

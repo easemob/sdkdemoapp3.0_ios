@@ -209,6 +209,7 @@
 "message.friendapply.agree" = "%@同意了加好友申请";
 "message.friendapply.refuse" = "%@拒绝了加好友申请";
 "message.inputGroupSubject" = "请输入群组主题";
+"message.receiveMessage" = "您有一条新消息";
 
 //apns
 "apns.failToRegisterApns" = "注册推送失败";

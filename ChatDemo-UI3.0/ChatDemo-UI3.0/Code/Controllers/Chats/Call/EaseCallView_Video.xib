@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -76,8 +76,8 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cka-d3-ynl">
                             <constraints>
-                                <constraint firstAttribute="height" constant="25" id="Qal-mC-4eR"/>
-                                <constraint firstAttribute="width" constant="16" id="aAq-4A-mZL"/>
+                                <constraint firstAttribute="width" constant="16" id="C92-Gx-uYv"/>
+                                <constraint firstAttribute="height" constant="25" id="q7H-S4-pcQ"/>
                             </constraints>
                             <state key="normal" image="Button_Mute.png"/>
                             <state key="disabled" image="Button_Mute disabled.png"/>
@@ -88,8 +88,8 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCN-Js-TMR">
                             <constraints>
-                                <constraint firstAttribute="height" constant="22" id="eKL-4r-uKN"/>
-                                <constraint firstAttribute="width" constant="28" id="uk0-hM-aH1"/>
+                                <constraint firstAttribute="width" constant="28" id="K8w-7k-f9W"/>
+                                <constraint firstAttribute="height" constant="22" id="MK8-YD-VjM"/>
                             </constraints>
                             <state key="normal" image="Button_Camera switch.png"/>
                             <state key="disabled" image="Button_Camera switch disabled.png"/>
@@ -110,19 +110,22 @@
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="6PT-p6-VSj" firstAttribute="top" secondItem="cka-d3-ynl" secondAttribute="bottom" constant="54" id="2D8-CT-Jog"/>
-                        <constraint firstItem="dab-FR-ouG" firstAttribute="centerY" secondItem="cka-d3-ynl" secondAttribute="centerY" id="9ZZ-ca-QHd"/>
-                        <constraint firstItem="cka-d3-ynl" firstAttribute="leading" secondItem="KCN-Js-TMR" secondAttribute="trailing" constant="60" id="C9Z-Ts-35I"/>
-                        <constraint firstItem="cka-d3-ynl" firstAttribute="centerX" secondItem="M1T-Ah-IOv" secondAttribute="centerX" id="JB2-nd-ZqR"/>
+                        <constraint firstItem="KCN-Js-TMR" firstAttribute="top" secondItem="M1T-Ah-IOv" secondAttribute="top" constant="159" id="Aah-R0-A4B"/>
+                        <constraint firstItem="KCN-Js-TMR" firstAttribute="leading" secondItem="M1T-Ah-IOv" secondAttribute="leading" constant="91.5" id="FwB-0N-nJi"/>
                         <constraint firstAttribute="bottom" secondItem="6PT-p6-VSj" secondAttribute="bottom" constant="32" id="KJ2-Ep-aDH"/>
+                        <constraint firstItem="cka-d3-ynl" firstAttribute="top" secondItem="M1T-Ah-IOv" secondAttribute="top" constant="157" id="OSw-Az-T4J"/>
                         <constraint firstItem="Nio-E8-ehp" firstAttribute="centerY" secondItem="6PT-p6-VSj" secondAttribute="centerY" id="QAx-Hx-dK5"/>
                         <constraint firstItem="Nio-E8-ehp" firstAttribute="leading" secondItem="6PT-p6-VSj" secondAttribute="trailing" constant="18" id="TdQ-r8-K8M"/>
-                        <constraint firstItem="dab-FR-ouG" firstAttribute="leading" secondItem="cka-d3-ynl" secondAttribute="trailing" constant="60" id="bHs-T7-MfE"/>
-                        <constraint firstItem="KCN-Js-TMR" firstAttribute="centerY" secondItem="cka-d3-ynl" secondAttribute="centerY" id="nnq-W5-Fuq"/>
+                        <constraint firstAttribute="trailing" secondItem="cka-d3-ynl" secondAttribute="trailing" constant="103" id="dXT-dQ-Soa"/>
                         <constraint firstItem="dQb-17-Y7h" firstAttribute="centerY" secondItem="6PT-p6-VSj" secondAttribute="centerY" id="pc7-bF-vQK"/>
                         <constraint firstItem="6PT-p6-VSj" firstAttribute="centerX" secondItem="M1T-Ah-IOv" secondAttribute="centerX" id="uZJ-oT-KsQ"/>
                         <constraint firstItem="6PT-p6-VSj" firstAttribute="leading" secondItem="dQb-17-Y7h" secondAttribute="trailing" constant="17" id="ugN-qL-XFz"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="subviews">
+                            <exclude reference="dab-FR-ouG"/>
+                        </mask>
+                    </variation>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yed-AB-GKs">
                     <subviews>
