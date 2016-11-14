@@ -20,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 @property (weak, nonatomic) IBOutlet UIButton *changeButton;
 
+@property (weak, nonatomic) IBOutlet UIView *loginView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *upConstraint;
+
 - (IBAction)doLogin:(id)sender;
 - (IBAction)doSignUp:(id)sender;
 - (IBAction)doChangeState:(id)sender;
@@ -73,6 +76,7 @@
     if ([self _isEmpty]) {
         return;
     }
+    [self.view endEditing:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] loginWithUsername:_usernameTextField.text
                                       password:_passwordTextField.text
@@ -115,6 +119,7 @@
     if ([self _isEmpty]) {
         return;
     }
+    [self.view endEditing:YES];
     WEAK_SELF
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[EMClient sharedClient] registerWithUsername:_usernameTextField.text
@@ -219,6 +224,7 @@
     [endValue getValue:&endRect];
     
     CGRect buttonFrame;
+    CGFloat top = 0;
     if (_signupButton.hidden) {
         buttonFrame = _loginButton.frame;
     } else {
@@ -227,11 +233,14 @@
     if (endRect.origin.y == self.view.frame.size.height) {
         buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame);
     } else if(beginRect.origin.y == self.view.frame.size.height){
-        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
+        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect) + 100;
+        top = -100;
     } else {
-        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect);
+        buttonFrame.origin.y = KScreenHeight - CGRectGetHeight(buttonFrame) - CGRectGetHeight(endRect) + 100;;
+        top = -100;
     }
     [UIView animateWithDuration:0.3 animations:^{
+        [[UIApplication sharedApplication].keyWindow setTop:top];
         _loginButton.frame = buttonFrame;
         _signupButton.frame = buttonFrame;
     }];

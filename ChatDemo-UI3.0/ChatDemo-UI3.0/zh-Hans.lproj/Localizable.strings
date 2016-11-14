@@ -37,6 +37,8 @@
 "login.failure.password.notmatch" = "密码与账号不匹配";
 "login.ok" = "确认";
 "login.inputNameAndPswd" = "请输入账号和密码";
+"login.endAutoLogin.failure" = "自动登录失败";
+"login.endAutoLogin.succeed" = "自动登录成功";
 
 //chat
 "chat.not.delivered" = "未送达";
@@ -209,3 +211,6 @@
 "apns.failToRegisterApns" = "注册推送失败";
 "apns.failToBindDeviceToken" = "消息推送与设备绑定失败";
 "apns.content" = "推送内容";
+
+//network
+"network.disconnection" = "当前网络连接失败";

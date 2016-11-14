@@ -37,6 +37,8 @@
 "login.failure.password.notmatch" = "Password does not match username";
 "login.ok" = "Ok";
 "login.inputNameAndPswd" = "Please enter username and password";
+"login.endAutoLogin.failure" = "Automatic logon failure";
+"login.endAutoLogin.succeed" = "Automatic logon succeed";
 
 //chat
 "chat.not.delivered" = "Not Delivered";
@@ -204,3 +206,6 @@
 "apns.failToRegisterApns" = "Fail to register apns";
 "apns.failToBindDeviceToken" = "Fail to bind device token";
 "apns.content" = "Apns content";
+
+//network
+"network.disconnection" = "Network disconnection";

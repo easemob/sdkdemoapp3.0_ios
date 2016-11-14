@@ -14,6 +14,8 @@
 
 - (void)setupNavigationItem:(UINavigationItem *)navigationItem;
 
+- (void)networkChanged:(EMConnectionState)connectionState;
+
 - (void)tableViewDidTriggerHeaderRefresh;
 
 @end

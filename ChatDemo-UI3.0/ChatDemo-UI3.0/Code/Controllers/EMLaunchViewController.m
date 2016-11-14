@@ -8,7 +8,7 @@
 
 #import "EMLaunchViewController.h"
 
-@interface EMLaunchViewController ()
+@interface EMLaunchViewController () <EMClientDelegate>
 
 @property (weak ,nonatomic) IBOutlet UIImageView *launchImageView;
 
@@ -22,14 +22,21 @@
     [self setBackgroundColor];
     [self setLauchAnimation];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.65 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        BOOL isAutoLogin = [EMClient sharedClient].isAutoLogin;
-        if (isAutoLogin){
+    BOOL isAutoLogin = [EMClient sharedClient].isAutoLogin;
+    if (isAutoLogin){
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.65 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-        } else {
+        });
+    } else {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.65 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-        }
-    });
+        });
+    }
+}
+
+- (void)dealloc
+{
+
 }
 
 - (void)setBackgroundColor
@@ -56,7 +63,7 @@
                                          [UIImage imageNamed:@"logo10"],
                                          [UIImage imageNamed:@"logo11"]];
     _launchImageView.animationDuration = 1.65;
-    _launchImageView.animationRepeatCount = 1;
+//    _launchImageView.animationRepeatCount = 1;
     [_launchImageView startAnimating];
 }
 
@@ -65,6 +72,5 @@
     [super didReceiveMemoryWarning];
 
 }
-
 
 @end

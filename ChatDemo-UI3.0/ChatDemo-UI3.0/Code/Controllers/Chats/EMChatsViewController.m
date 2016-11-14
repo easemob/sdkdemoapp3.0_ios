@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSMutableArray *resultsSource;
+@property (strong, nonatomic) UIView *networkStateView;
 
 @end
 
@@ -78,6 +79,27 @@
 }
 
 #pragma mark - getter
+
+- (UIView *)networkStateView
+{
+    if (_networkStateView == nil) {
+        _networkStateView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+
+        _networkStateView.backgroundColor = RGBACOLOR(0, 186, 110, 1);
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (_networkStateView.frame.size.height - 20) / 2, 20, 20)];
+        imageView.image = [UIImage imageNamed:@"Icon_error"];
+        [_networkStateView addSubview:imageView];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(imageView.frame) + 5, 0, _networkStateView.frame.size.width - (CGRectGetMaxX(imageView.frame) + 15), _networkStateView.frame.size.height)];
+        label.font = [UIFont systemFontOfSize:15.0];
+        label.textColor = [UIColor grayColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.text = NSLocalizedString(@"network.disconnection", @"Network disconnection");
+        [_networkStateView addSubview:label];
+    }
+    return _networkStateView;
+}
 
 - (UISearchBar*)searchBar
 {
@@ -286,6 +308,15 @@
 - (void)setupNavigationItem:(UINavigationItem *)navigationItem
 {
     navigationItem.titleView = self.searchBar;
+}
+
+- (void)networkChanged:(EMConnectionState)connectionState
+{
+    if (connectionState == EMConnectionDisconnected) {
+        self.tableView.tableHeaderView = self.networkStateView;
+    } else {
+        self.tableView.tableHeaderView = nil;
+    }
 }
 
 #pragma mark - private

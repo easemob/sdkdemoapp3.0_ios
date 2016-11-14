@@ -162,6 +162,11 @@
 
 #pragma mark - EMClientDelegate
 
+- (void)connectionStateDidChange:(EMConnectionState)aConnectionState
+{
+    [_chatsVC networkChanged:aConnectionState];
+}
+
 - (void)userAccountDidLoginFromOtherDevice
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];

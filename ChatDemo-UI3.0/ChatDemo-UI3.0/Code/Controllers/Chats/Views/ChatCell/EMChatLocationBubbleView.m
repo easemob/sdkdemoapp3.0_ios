@@ -39,7 +39,7 @@
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
-    CGSize textBlockMinSize = {130, 25};
+    CGSize textBlockMinSize = {95, 25};
     EMLocationMessageBody *body = (EMLocationMessageBody*)self.model.message.body;
     CGSize addressSize = [body.address boundingRectWithSize:textBlockMinSize
                                                     options:NSStringDrawingUsesLineFragmentOrigin

@@ -12,6 +12,12 @@
 
 #define MAX_SIZE 250
 
+@interface EMChatVideoBubbleView ()
+
+@property (strong, nonatomic) UIButton *videoPlayButton;
+
+@end
+
 @implementation EMChatVideoBubbleView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -21,6 +27,11 @@
         self.layer.masksToBounds = YES;
         self.contentMode = UIViewContentModeScaleAspectFill;
         self.layer.cornerRadius = 10.f;
+        
+        self.videoPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *backgroundImage = [UIImage imageNamed:@"Icon_Play"];
+        [self.videoPlayButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+        [self addSubview:self.videoPlayButton];
     }
     return self;
 }
@@ -28,6 +39,11 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    CGFloat width = 50.0f;
+    CGFloat height = 50.0f;
+    CGFloat x = self.frame.size.width/2 - width/2;
+    CGFloat y = self.frame.size.height/2 - height/2;
+    [self.videoPlayButton setFrame:CGRectMake(x, y, width, height)];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

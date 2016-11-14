@@ -18,7 +18,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import "AppDelegate+Parse.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <EMClientDelegate>
 
 @end
 
@@ -71,6 +71,7 @@
     [self.window makeKeyAndVisible];
     
     [self _registerRemoteNotification];
+    [self registerNotifications];
     
     // Fabric
     [Fabric with:@[[Crashlytics class]]];
@@ -180,5 +181,23 @@
 #endif
 }
 
+-(void)registerNotifications{
+    [self unregisterNotifications];
+    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+}
+
+-(void)unregisterNotifications{
+    [[EMClient sharedClient] removeDelegate:self];
+}
+
+
+#pragma mark - EMClientDelegate
+
+- (void)autoLoginDidCompleteWithError:(EMError *)aError
+{
+    NSString *alertMsg = aError == nil ? NSLocalizedString(@"login.endAutoLogin.succeed", @"Automatic logon succeed") : NSLocalizedString(@"login.endAutoLogin.failure", @"Automatic logon failure");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertMsg delegate:nil cancelButtonTitle:NSLocalizedString(@"login.ok", @"Ok") otherButtonTitles:nil, nil];
+    [alert show];
+}
 
 @end
