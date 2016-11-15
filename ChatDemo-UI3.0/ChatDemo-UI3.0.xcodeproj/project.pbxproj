@@ -170,6 +170,7 @@
 		D29502691DB87932001B9954 /* EMLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295026B1DB87932001B9954 /* EMLoginViewController.xib */; };
 		D29502711DB9D13E001B9954 /* EMMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D29502701DB9D13E001B9954 /* EMMessageTextView.m */; };
 		D29502741DBB2BF3001B9954 /* EMMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D29502731DBB2BF3001B9954 /* EMMessageModel.m */; };
+		D2A9BED81DD9CFFD00C7A497 /* EaseVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2A9BED71DD9CFFD00C7A497 /* EaseVideoInfoViewController.xib */; };
 		D2AA4DD01D9227A400967E0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DCE1D9227A400967E0E /* Main.storyboard */; };
 		D2AA4DEA1D9271A600967E0E /* EMChatsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA4DE91D9271A600967E0E /* EMChatsCell.xib */; };
 		D2AA4DED1D92746800967E0E /* EMChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AA4DEC1D92746800967E0E /* EMChatsCell.m */; };
@@ -705,6 +706,7 @@
 		D29502701DB9D13E001B9954 /* EMMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageTextView.m; sourceTree = "<group>"; };
 		D29502721DBB2BF3001B9954 /* EMMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageModel.h; sourceTree = "<group>"; };
 		D29502731DBB2BF3001B9954 /* EMMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageModel.m; sourceTree = "<group>"; };
+		D2A9BED71DD9CFFD00C7A497 /* EaseVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EaseVideoInfoViewController.xib; sourceTree = "<group>"; };
 		D2AA4DCF1D9227A400967E0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2AA4DE91D9271A600967E0E /* EMChatsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMChatsCell.xib; sourceTree = "<group>"; };
 		D2AA4DEB1D92746800967E0E /* EMChatsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatsCell.h; sourceTree = "<group>"; };
@@ -1486,6 +1488,7 @@
 		D285387D1DB1EBD80027D4E1 /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				D2A9BED71DD9CFFD00C7A497 /* EaseVideoInfoViewController.xib */,
 				D285387E1DB1EBD80027D4E1 /* EaseCallManager.h */,
 				D285387F1DB1EBD80027D4E1 /* EaseCallManager.m */,
 				D28538801DB1EBD80027D4E1 /* EaseCallView_Video.xib */,
@@ -2227,6 +2230,7 @@
 				D2BF7F0B1D914DB30090AA66 /* Button_Video@2x.png in Resources */,
 				D2BF7ED21D914DB30090AA66 /* Icon_New@2x.png in Resources */,
 				D2BF7F1B1D914DB30090AA66 /* logo3@3x.png in Resources */,
+				D2A9BED81DD9CFFD00C7A497 /* EaseVideoInfoViewController.xib in Resources */,
 				D2BF7E9D1D914DB30090AA66 /* Button_Record cancel@3x.png in Resources */,
 				714E9DC41DD32B0A009D1E2D /* default_avatar@3x.png in Resources */,
 				D28360061D95009C00EC7A4A /* Icon_File_disable@3x.png in Resources */,

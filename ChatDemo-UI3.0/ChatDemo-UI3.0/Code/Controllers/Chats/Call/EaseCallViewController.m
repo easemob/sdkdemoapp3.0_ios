@@ -162,9 +162,11 @@
     
     if (_callSession.type == EMCallTypeVideo) {
         _speakerOutButton.selected = YES;
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        [audioSession setActive:YES error:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            [audioSession setActive:YES error:nil];
+        });
     }
 }
 
