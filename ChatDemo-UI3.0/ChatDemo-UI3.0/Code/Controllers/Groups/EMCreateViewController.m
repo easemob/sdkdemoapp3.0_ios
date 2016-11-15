@@ -165,13 +165,12 @@
         
         EMPublicGroupsViewController *strongVc = weakVc;
         dispatch_async(dispatch_get_main_queue(), ^(){
-            if (!aError && !aGroup) {
+            if (aGroup) {
                 [strongVc.searchResults removeAllObjects];
                 EMGroupModel *model = [[EMGroupModel alloc] initWithObject:aGroup];
                 [strongVc.searchResults addObject:model];
                 [strongVc.tableView reloadData];
-            }
-            else {
+            } else {
                 [weakSelf showAlertWithMessage:NSLocalizedString(@"common.searchFailure", @"Search failure.")];
             }
         });

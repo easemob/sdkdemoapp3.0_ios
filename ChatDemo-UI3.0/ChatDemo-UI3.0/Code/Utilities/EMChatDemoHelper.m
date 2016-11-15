@@ -10,6 +10,8 @@
 #import "EMApplyManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import "EMGroupsViewController.h"
+#import "EMChatViewController.h"
+#import "EMGroupInfoViewController.h"
 
 static EMChatDemoHelper *helper = nil;
 
@@ -172,6 +174,24 @@ static EMChatDemoHelper *helper = nil;
     if (msgstr.length > 0) {
         [self showAlertWithMessage:msgstr];
     }
+    
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:_mainVC.navigationController.viewControllers];
+    EMChatViewController *chatViewContrller = nil;
+    for (id viewController in viewControllers) {
+        if ([viewController isKindOfClass:[EMChatViewController class]] && [aGroup.groupId isEqualToString:[(EMChatViewController*)viewController conversationId]]) {
+            chatViewContrller = viewController;
+            break;
+        }
+    }
+    
+    if (chatViewContrller) {
+        [viewControllers removeObject:chatViewContrller];
+        if ([viewControllers count] > 0) {
+            [_mainVC.navigationController setViewControllers:@[viewControllers[0]] animated:YES];
+        } else {
+            [_mainVC.navigationController setViewControllers:viewControllers animated:YES];
+        }
+    }
 }
 
 - (void)joinGroupRequestDidReceive:(EMGroup *)aGroup
@@ -254,29 +274,30 @@ static EMChatDemoHelper *helper = nil;
     if (!aGroupId || !aInviter) {
         return;
     }
-    
-    if (![[EMApplyManager defaultManager] isExistingRequest:aInviter
-                                                    groupId:aGroupId
-                                                 applyStyle:EMApplyStyle_groupInvitation])
-    {
-        EMApplyModel *model = [[EMApplyModel alloc] init];
-        model.groupId = aGroupId;
-        model.applyHyphenateId = aInviter;
-        model.applyNickName = aInviter;
-        model.reason = aMessage;
-        model.style = EMApplyStyle_groupInvitation;
-        [[EMApplyManager defaultManager] addApplyRequest:model];
-    }
-    
-    if (self.mainVC && helper) {
-        [helper setupUntreatedApplyCount];
-#if !TARGET_IPHONE_SIMULATOR
-#endif
-    }
-    
-    if (self.contactsVC) {
-        [self.contactsVC reloadGroupNotifications];
-    }
+
+    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerByID:aGroupId includeMembersList:NO completion:^(EMGroup *aGroup, EMError *aError) {
+        if (![[EMApplyManager defaultManager] isExistingRequest:aInviter
+                                                        groupId:aGroupId
+                                                     applyStyle:EMApplyStyle_groupInvitation])
+        {
+            EMApplyModel *model = [[EMApplyModel alloc] init];
+            model.groupId = aGroupId;
+            model.groupSubject = aGroup.subject;
+            model.applyHyphenateId = aInviter;
+            model.applyNickName = aInviter;
+            model.reason = aMessage;
+            model.style = EMApplyStyle_groupInvitation;
+            [[EMApplyManager defaultManager] addApplyRequest:model];
+        }
+        
+        if (self.mainVC && helper) {
+            [helper setupUntreatedApplyCount];
+        }
+        
+        if (self.contactsVC) {
+            [self.contactsVC reloadGroupNotifications];
+        }
+    }];
 }
 
 @end

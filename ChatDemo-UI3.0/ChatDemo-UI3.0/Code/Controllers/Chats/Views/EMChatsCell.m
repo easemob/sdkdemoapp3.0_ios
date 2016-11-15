@@ -10,6 +10,7 @@
 
 #import "EMConvertToCommonEmoticonsHelper.h"
 #import "EMConversationModel.h"
+#import "EMUserProfileManager.h"
 
 @interface EMChatsCell ()
 
@@ -31,11 +32,11 @@
     if (_model.conversation.unreadMessagesCount == 0) {
         _unreadLabel.hidden = YES;
         _nameLabel.left = 75.f;
-        _nameLabel.width += 20.f;
+        _nameLabel.width = 195.f;
     } else {
         _unreadLabel.hidden = NO;
         _nameLabel.left = 95.f;
-        _nameLabel.width -= 20.f;
+        _nameLabel.width = 175.f;
         _unreadLabel.text = [NSString stringWithFormat:@"%d",_model.conversation.unreadMessagesCount];
     }
 }

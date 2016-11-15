@@ -214,7 +214,6 @@
             }
             else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:NO];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REMOVEGROUP_NOTIFICATION object:nil];
             }
         }];
@@ -227,7 +226,6 @@
             }
             else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:NO];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REMOVEGROUP_NOTIFICATION object:nil];
             }
         }];
@@ -413,8 +411,8 @@
 }
 
 #pragma mark - EMGroupManagerDelegate
-- (void)didReceiveAcceptedGroupInvitation:(EMGroup *)aGroup
-                                  invitee:(NSString *)aInvitee
+- (void)groupInvitationDidApprove:(EMGroup *)aGroup
+                          invitee:(NSString *)aInvitee
 {
     if ([aGroup.groupId isEqualToString:_currentGroup.groupId]) {
         [self fetchGroupInfo];

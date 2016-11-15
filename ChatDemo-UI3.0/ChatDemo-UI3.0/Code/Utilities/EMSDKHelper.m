@@ -8,6 +8,8 @@
 
 #import "EMSDKHelper.h"
 
+#import "EMNotificationNames.h"
+
 @implementation EMSDKHelper
 
 + (EMMessage *)sendTextMessage:(NSString *)text

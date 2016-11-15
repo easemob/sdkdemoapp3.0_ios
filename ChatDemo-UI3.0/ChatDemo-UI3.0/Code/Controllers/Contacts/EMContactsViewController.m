@@ -325,10 +325,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (_isSearchState) {
-        [_searchBar resignFirstResponder];
-        [_searchBar setShowsCancelButton:NO];
-    }
     if (indexPath.section == 2 && !_isSearchState) {
         EMGroupsViewController *groupsVc = [[EMGroupsViewController alloc] initWithNibName:@"EMGroupsViewController" bundle:nil];
         [self.navigationController pushViewController:groupsVc animated:YES];
@@ -409,23 +405,20 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
     _isSearchState = YES;
-    self.tableView.scrollEnabled = !_isSearchState;
+    self.tableView.userInteractionEnabled = NO;
     return YES;
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    self.tableView.scrollEnabled = YES;
+    self.tableView.userInteractionEnabled = YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (searchBar.text.length == 0) {
-        _isSearchState = NO;
-        self.tableView.scrollEnabled = NO;
         [_searchResults removeAllObjects];
         [self.tableView reloadData];
         return;
     }
-    _isSearchState = YES;
     __weak typeof(self) weakSelf = self;
     [[EMRealtimeSearchUtils defaultUtil] realtimeSearchWithSource:_searchSource searchString:searchText resultBlock:^(NSArray *results) {
         if (results) {
@@ -438,8 +431,6 @@
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [searchBar setShowsCancelButton:NO animated:NO];
-    self.tableView.scrollEnabled = YES;
     [searchBar resignFirstResponder];
 }
 
@@ -452,8 +443,5 @@
     self.tableView.scrollEnabled = !_isSearchState;
     [self.tableView reloadData];
 }
-
-
-
 
 @end

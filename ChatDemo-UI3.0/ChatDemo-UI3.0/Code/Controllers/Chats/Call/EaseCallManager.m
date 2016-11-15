@@ -33,6 +33,7 @@ static EaseCallManager *callManager = nil;
     self = [super init];
     if (self) {
         [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
+        [[EMClient sharedClient].callManager enableAdaptiveBirateStreaming:[[[NSUserDefaults standardUserDefaults] objectForKey:@"switchVideoBitrate"] boolValue]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
     }
     return self;

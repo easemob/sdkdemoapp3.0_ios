@@ -8,6 +8,8 @@
 
 #import "EMConversationModel.h"
 
+#import "EMUserProfileManager.h"
+
 @implementation EMConversationModel
 
 - (instancetype)initWithConversation:(EMConversation*)conversation
@@ -31,7 +33,7 @@
 - (NSString*)title
 {
     if (_conversation.type == EMConversationTypeChat) {
-        return _conversation.conversationId;
+        return [[EMUserProfileManager sharedInstance] getNickNameWithUsername:_conversation.conversationId];
     } else {
         return _title;
     }

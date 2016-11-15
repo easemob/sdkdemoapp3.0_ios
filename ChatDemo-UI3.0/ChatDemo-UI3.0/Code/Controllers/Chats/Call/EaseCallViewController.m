@@ -152,7 +152,7 @@
     self.cancelCallButton.hidden = YES;
     self.answerCallButton.hidden = YES;
     self.rejectCallButton.hidden = NO;
-    self.showVideoInfoButton.enabled = [self isShowVideoInfo];
+    self.showVideoInfoButton.enabled = YES;
     
     self.speakerOutButton.hidden = NO;
     self.switchCameraButton.hidden = NO;
@@ -176,12 +176,6 @@
     self.showVideoInfoButton.enabled = NO;
 }
 
-- (BOOL)isShowVideoInfo
-{
-    id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"];
-    return [object boolValue];
-}
-
 - (void)_initializeVideoView
 {
     _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
@@ -191,6 +185,9 @@
     CGFloat height = KScreenHeight / KScreenWidth * width;
     _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(KScreenWidth - 90, CGRectGetMinY(_showVideoInfoButton.frame), width, height)];
     [self.view addSubview:_callSession.localVideoView];
+    
+    _speakerOutButton.selected = YES;
+    [self speakerOutAction:_speakerOutButton];
 }
 
 #pragma mark - Actions

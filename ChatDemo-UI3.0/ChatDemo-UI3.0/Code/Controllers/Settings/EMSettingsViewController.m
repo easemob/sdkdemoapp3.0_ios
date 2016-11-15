@@ -41,7 +41,7 @@
         
         _videoBitrateSwitch = [[UISwitch alloc] init];
         [_videoBitrateSwitch addTarget:self action:@selector(switchVideoBitrate:) forControlEvents:UIControlEventValueChanged];
-        [_videoBitrateSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"] boolValue]];
+        [_videoBitrateSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"switchVideoBitrate"] boolValue]];
     }
     
     return _videoBitrateSwitch;
@@ -177,19 +177,19 @@
 - (void)switchVideoBitrate:(UISwitch *)sender
 {
     NSLog(@"switchVideoBitrate --- %d",(int)sender.on);
-    
+    [[EMClient sharedClient].callManager enableAdaptiveBirateStreaming:sender.isOn];
     if (sender.isOn) {
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if (![ud objectForKey:@"showCallInfo"]) {
-            [ud setBool:YES forKey:@"showCallInfo"];
+        if (![ud objectForKey:@"switchVideoBitrate"]) {
+            [ud setBool:YES forKey:@"switchVideoBitrate"];
             [ud synchronize];
         }
     } else {
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if ([ud objectForKey:@"showCallInfo"]) {
-            [ud removeObjectForKey:@"showCallInfo"];
+        if ([ud objectForKey:@"switchVideoBitrate"]) {
+            [ud removeObjectForKey:@"switchVideoBitrate"];
             [ud synchronize];
         }
     }

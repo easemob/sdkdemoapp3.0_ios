@@ -213,13 +213,18 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-//    [self.searchController setActive:YES animated:YES];
     _isSearchState = YES;
+    self.tableView.userInteractionEnabled = NO;
     return YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    if (searchBar.text.length == 0) {
+        [self.resultsSource removeAllObjects];
+        [self.tableView reloadData];
+        return;
+    }
     WEAK_SELF
     [[EMRealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
         if (results) {
@@ -234,6 +239,7 @@
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
+    self.tableView.userInteractionEnabled = YES;
     return YES;
 }
 
@@ -249,6 +255,7 @@
     [searchBar resignFirstResponder];
     [searchBar setShowsCancelButton:NO animated:YES];
     _isSearchState = NO;
+    [self.tableView reloadData];
 }
 
 

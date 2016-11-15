@@ -42,18 +42,12 @@
 
 - (void)startShowInfo
 {
-    if (_callSession.type == EMCallTypeVideo && [self isShowCallInfo]) {
+    if (_callSession.type == EMCallTypeVideo) {
         
         [self _reloadPropertyData];
         _propertyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(_reloadPropertyData) userInfo:nil repeats:YES];
         
     }
-}
-
-- (BOOL)isShowCallInfo
-{
-    id object = [[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"];
-    return [object boolValue];
 }
 
 - (void)_reloadPropertyData

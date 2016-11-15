@@ -83,7 +83,7 @@
                             <state key="disabled" image="Button_Mute disabled.png"/>
                             <state key="selected" image="Button_Mute active.png"/>
                             <connections>
-                                <action selector="pauseVideoAction:" destination="-1" eventType="touchUpInside" id="UMt-7j-BN4"/>
+                                <action selector="silenceAction:" destination="-1" eventType="touchUpInside" id="75p-uz-rTg"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCN-Js-TMR">

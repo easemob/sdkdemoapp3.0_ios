@@ -15,6 +15,7 @@
 #import "EMChatVideoBubbleView.h"
 #import "EMChatLocationBubbleView.h"
 #import "EMMessageModel.h"
+#import "UIImageView+HeadImage.h"
 
 #define HEAD_PADDING 15.f
 #define TIME_PADDING 45.f
@@ -88,9 +89,9 @@
     _bubbleView.left = _model.message.direction == EMMessageDirectionSend ? (self.width - _bubbleView.width - TIME_PADDING) : TIME_PADDING;
     _bubbleView.top = 5;
     
-    _readLabel.left = KScreenWidth - 125;
+    _readLabel.left = KScreenWidth - 135;
     _readLabel.top = self.height - BOTTOM_PADDING;
-    _checkView.left = KScreenWidth - 141;
+    _checkView.left = KScreenWidth - 151;
     _checkView.top = self.height - BOTTOM_PADDING;
     _resendButton.top = _bubbleView.top + (_bubbleView.height - _resendButton.height)/2;
     _resendButton.left = _bubbleView.left - 25.f;
@@ -200,7 +201,7 @@
             timeInterval = timeInterval / 1000;
         }
         NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"aa HH:mm"];
+        [formatter setDateFormat:@"MM-dd HH:mm"];
         messageTime = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
     }
     return messageTime;
@@ -258,7 +259,7 @@
     [_bubbleView setModel:_model];
     [_bubbleView sizeToFit];
     
-    _headImageView.image = [UIImage imageNamed:@"default_avatar"];
+    [_headImageView imageWithUsername:model.message.from placeholderImage:[UIImage imageNamed:@"default_avatar"]];
     _timeLabel.text = [self _getMessageTime:model.message];
 }
 

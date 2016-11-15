@@ -23,6 +23,7 @@
 #import "EMConversationModel.h"
 #import "EMMessageModel.h"
 #import "EMNotificationNames.h"
+#import "EMUserProfileManager.h"
 
 @interface EMChatViewController () <EMChatToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,EMLocationViewDelegate,EMChatManagerDelegate,EMChatBaseCellDelegate,UIActionSheetDelegate>
 
@@ -74,11 +75,12 @@
     [self tableViewDidTriggerHeaderRefresh];
     
     [[EMClient sharedClient].chatManager addDelegate:self];
+    [[EMClient sharedClient].groupManager addDelegate:self];
     
     if (_conversation.type == EMConversationTypeChat) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
         self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.photoButton],[[UIBarButtonItem alloc] initWithCustomView:self.camButton]];
-         self.title = self.conversation.conversationId;
+         self.title = [[EMUserProfileManager sharedInstance] getNickNameWithUsername:_conversation.conversationId];
     } else if (_conversation.type == EMConversationTypeGroupChat){
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.detailButton];
@@ -131,6 +133,11 @@
 }
 
 #pragma mark - getter
+
+- (NSString*)conversationId
+{
+    return _conversation.conversationId;
+}
 
 - (UIButton*)backButton
 {
@@ -208,6 +215,7 @@
 #pragma mark - Notification Method
 
 - (void)removeGroupsNotification:(NSNotification *)notification {
+    [self.navigationController popToViewController:self animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
