@@ -54,6 +54,12 @@
     _signupButton.width = KScreenWidth;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+}
+
 - (void)setBackgroundColor
 {
     CAGradientLayer *gradient = [CAGradientLayer layer];

@@ -75,7 +75,6 @@
     [self tableViewDidTriggerHeaderRefresh];
     
     [[EMClient sharedClient].chatManager addDelegate:self];
-    [[EMClient sharedClient].groupManager addDelegate:self];
     
     if (_conversation.type == EMConversationTypeChat) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
@@ -154,7 +153,7 @@
 {
     if (_camButton == nil) {
         _camButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _camButton.frame = CGRectMake(0, 0, 20, 12);
+        _camButton.frame = CGRectMake(0, 0, 25, 12);
         [_camButton setImage:[UIImage imageNamed:@"iconVideo"] forState:UIControlStateNormal];
         [_camButton addTarget:self action:@selector(makeVideoCall) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -165,7 +164,7 @@
 {
     if (_photoButton == nil) {
         _photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _photoButton.frame = CGRectMake(0, 0, 20, 15);
+        _photoButton.frame = CGRectMake(0, 0, 25, 15);
         [_photoButton setImage:[UIImage imageNamed:@"iconCall"] forState:UIControlStateNormal];
         [_photoButton addTarget:self action:@selector(makeAudioCall) forControlEvents:UIControlEventTouchUpInside];
     }

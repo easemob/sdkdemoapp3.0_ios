@@ -11,6 +11,7 @@
 #import "EMConvertToCommonEmoticonsHelper.h"
 #import "EMConversationModel.h"
 #import "EMUserProfileManager.h"
+#import "UIImageView+HeadImage.h"
 
 @interface EMChatsCell ()
 
@@ -32,11 +33,11 @@
     if (_model.conversation.unreadMessagesCount == 0) {
         _unreadLabel.hidden = YES;
         _nameLabel.left = 75.f;
-        _nameLabel.width = 195.f;
+        _nameLabel.width = 170.f;
     } else {
         _unreadLabel.hidden = NO;
         _nameLabel.left = 95.f;
-        _nameLabel.width = 175.f;
+        _nameLabel.width = 150.f;
         _unreadLabel.text = [NSString stringWithFormat:@"%d",_model.conversation.unreadMessagesCount];
     }
 }
@@ -44,7 +45,11 @@
 - (void)setConversationModel:(EMConversationModel *)model
 {
     _model = model;
-    _headImageView.image = [UIImage imageNamed:@"default_avatar"];
+    if (model.conversation.type == EMConversationTypeChat) {
+        [_headImageView imageWithUsername:model.conversation.conversationId placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+    } else {
+        _headImageView.image = [UIImage imageNamed:@"default_group_avatar"];
+    }
     _nameLabel.text = model.title;
     _contentLabel.text = [self _latestMessageTitleWithConversation:model.conversation];
     _timeLabel.text = [self _latestMessageTimeWithConversation:model.conversation];

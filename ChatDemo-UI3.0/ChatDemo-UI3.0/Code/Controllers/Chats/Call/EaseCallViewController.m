@@ -160,6 +160,12 @@
     self.minimizeButton.hidden = NO;
     self.showVideoInfoButton.hidden = NO;
     
+    if (_callSession.type == EMCallTypeVideo) {
+        _speakerOutButton.selected = YES;
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
+    }
 }
 
 - (void)reloadCallDisconnectedUI
@@ -186,8 +192,6 @@
     _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(KScreenWidth - 90, CGRectGetMinY(_showVideoInfoButton.frame), width, height)];
     [self.view addSubview:_callSession.localVideoView];
     
-    _speakerOutButton.selected = YES;
-    [self speakerOutAction:_speakerOutButton];
 }
 
 #pragma mark - Actions

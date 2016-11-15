@@ -13,7 +13,8 @@ typedef NS_ENUM(NSUInteger, EMGroupPermissionType) {
     EMGroupPermissionType_canAllInvite,
     EMGroupPermissionType_openJoin,
     EMGroupPermissionType_mute,
-    EMGroupPermissionType_pushSetting
+    EMGroupPermissionType_pushSetting,
+    EMGroupPermissionType_groupId
 };
 @class EMGroupPermissionModel;
 

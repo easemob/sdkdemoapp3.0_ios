@@ -144,6 +144,13 @@
     BOOL isOwner = [self isGroupOwner];
     
     EMGroupPermissionModel *model = [[EMGroupPermissionModel alloc] init];
+    model.title = NSLocalizedString(@"group.id",@"Group ID");
+    model.isEdit = NO;
+    model.permissionDescription = self.currentGroup.groupId;
+    model.type = EMGroupPermissionType_groupId;
+    [sectionData1 addObject:model];
+    
+    model = [[EMGroupPermissionModel alloc] init];
     model.title = isOwner ? NSLocalizedString(@"group.isPublic", @"Appear in group search") : NSLocalizedString(@"group.groupType", @"Group Type");
     model.isEdit = NO;
     model.permissionDescription = isPublic ? NSLocalizedString(@"group.public", @"Public") : NSLocalizedString(@"group.private", @"Private");
@@ -158,7 +165,7 @@
         model.permissionDescription = _currentGroup.setting.style == EMGroupStylePrivateMemberCanInvite ? NSLocalizedString(@"group.enabled", @"Enabled") : NSLocalizedString(@"group.disabled", @"Disabled");
     }
     else {
-        model.title = NSLocalizedString(@"group.mute", @"Mute");
+        model.title = NSLocalizedString(@"group.block", @"Block");
         model.isEdit = YES;
         model.type = EMGroupPermissionType_mute;
         model.switchState = _currentGroup.isBlocked;

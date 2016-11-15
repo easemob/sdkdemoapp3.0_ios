@@ -153,7 +153,7 @@
 "group.groupType" = "Group Type";
 "group.isOpenJoin" = "need to agree to apply for owner";
 "group.pushNotification" = "Push Notification";
-"group.mute" = "Mute";
+"group.block" = "Block";
 "group.public" = "Public";
 "group.private" = "Private";
 "group.enabled" = "Enabled";
@@ -184,6 +184,7 @@
 "group.creategroup" = "%@ create a group[%@]";
 "group.inviteToJoin" = "%@ invite you to join the group [%@]";
 "group.notifications" = "Group Notifications";
+"group.id" = "Group ID";
 
 //common
 "common.delete" = "Delete";

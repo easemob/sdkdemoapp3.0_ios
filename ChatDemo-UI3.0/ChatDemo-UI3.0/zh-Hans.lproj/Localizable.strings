@@ -160,7 +160,7 @@
 "group.groupType" = "群组类型";
 "group.isOpenJoin" = "需要群主同意";
 "group.pushNotification" = "群消息提醒";
-"group.mute" = "屏蔽群消息";
+"group.block" = "屏蔽群消息";
 "group.public" = "公开";
 "group.private" = "私有";
 "group.enabled" = "启用";
@@ -189,6 +189,7 @@
 "group.creategroup" = "%@创建了群组[%@]";
 "group.inviteToJoin" = "%@邀请您加入群组[%@]";
 "group.notifications" = "群组通知";
+"group.id" = "群ID";
 
 //common
 "common.delete" = "删除";

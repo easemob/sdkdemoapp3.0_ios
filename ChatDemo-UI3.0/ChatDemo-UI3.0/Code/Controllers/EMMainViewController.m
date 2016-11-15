@@ -54,6 +54,12 @@ static NSString *kGroupName = @"GroupName";
     [EaseCallManager sharedManager].mainVC = self;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+}
+
 - (void)dealloc
 {
     [self unregisterNotifications];
