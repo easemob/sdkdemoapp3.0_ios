@@ -41,7 +41,7 @@
         _model = model;
     }
     _groupSubjectLabel.text = _model.subject;
-    _numbersLabel.text = [NSString stringWithFormat:@"%ld members",_model.group.occupants.count];
+    _numbersLabel.text = [NSString stringWithFormat:@"%d members",_model.group.occupants.count];
     if (_model.avatarURLPath.length > 0) {
         NSURL *avatarUrl = [NSURL URLWithString:_model.avatarURLPath];
         [_avatarImageVIew sd_setImageWithURL:avatarUrl placeholderImage:_model.defaultAvatarImage];

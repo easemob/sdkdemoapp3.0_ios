@@ -39,6 +39,8 @@
     [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
     
     // init HyphenateSDK
+    //hyphenatedemo#hyphenatedemo
+    //easemob-demo#chatdemoui
     EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];
     NSString *apnsCertName = nil;
 //#if DEBUG

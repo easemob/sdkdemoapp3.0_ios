@@ -131,7 +131,7 @@
 }
 
 - (void)updateMemberCountDescription {
-    _memberCountLabel.text = [NSString stringWithFormat:@"%@: %ld/%d",NSLocalizedString(@"group.participants", @"Participants"),_occupants.count,KEM_GROUP_MEMBERSCOUNT];
+    _memberCountLabel.text = [NSString stringWithFormat:@"%@: %ld/%d",NSLocalizedString(@"group.participants", @"Participants"),(unsigned long)_occupants.count,KEM_GROUP_MEMBERSCOUNT];
 }
 
 #pragma mark - Lazy Method

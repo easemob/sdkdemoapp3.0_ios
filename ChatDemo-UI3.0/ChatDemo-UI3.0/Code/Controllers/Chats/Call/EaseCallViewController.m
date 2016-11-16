@@ -9,6 +9,7 @@
 #import "EaseCallViewController.h"
 #import "EaseCallManager.h"
 #import "EaseVideoInfoViewController.h"
+#import "UIImageView+HeadImage.h"
 @interface EaseCallViewController ()
 {
 
@@ -83,7 +84,7 @@
 - (void)setupSubViews
 {
     self.timeLabel.hidden = YES;
-    self.nameLabel.text = _callSession.remoteUsername;
+    self.nameLabel.text = _callSession.remoteName;
     
     [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker active"] forState:UIControlStateSelected | UIControlStateHighlighted];
     [self.switchCameraButton setImage:[UIImage imageNamed:@"Button_Camera switch active"] forState:UIControlStateSelected | UIControlStateHighlighted];
@@ -119,6 +120,7 @@
     self.speakerOutButton.enabled = YES;
     self.switchCameraButton.enabled = YES;
     self.minimizeButton.enabled = YES;
+    [self.avatarView imageWithUsername:_callSession.remoteName placeholderImage:[UIImage imageNamed:@"default_avatar"]];
     if (_callSession.type == EMCallTypeVideo) {
         _avatarView.hidden = YES;
     }
@@ -132,7 +134,10 @@
         self.statusLabel.text = NSLocalizedString(@"call.incomingCall", @"Incoming call");
     }
     
-    self.avatarView.hidden = NO;
+    [self.avatarView imageWithUsername:_callSession.remoteName placeholderImage:[UIImage imageNamed:@"default_avatar"]];
+    if (_callSession.type == EMCallTypeVideo) {
+        _avatarView.hidden = YES;
+    }
     
     self.speakerOutButton.hidden = YES;
     self.switchCameraButton.hidden = YES;
@@ -167,6 +172,28 @@
             [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
             [audioSession setActive:YES error:nil];
         });
+        
+        [self _setupRemoteView];
+    }
+}
+
+- (void)_setupRemoteView
+{
+    //1.对方窗口
+    if (_callSession.type == EMCallTypeVideo && _callSession.remoteVideoView == nil) {
+        NSLog(@"\n########################_setupRemoteView");
+        _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        _callSession.remoteVideoView.hidden = YES;
+        _callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
+        _callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
+        [self.view addSubview:_callSession.remoteVideoView];
+        [self.view sendSubviewToBack:_callSession.remoteVideoView];
+        
+        WEAK_SELF
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.callSession.remoteVideoView.hidden = NO;
+        });
     }
 }
 
@@ -186,9 +213,6 @@
 
 - (void)_initializeVideoView
 {
-    _callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
-    [self.view addSubview:_callSession.remoteVideoView];
-    
     CGFloat width = 80;
     CGFloat height = KScreenHeight / KScreenWidth * width;
     _callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(KScreenWidth - 90, CGRectGetMinY(_showVideoInfoButton.frame), width, height)];
@@ -218,11 +242,9 @@
 {
     sender.selected = !sender.isSelected;
     if (_silenceButton.selected) {
-        
-        [[EMClient sharedClient].callManager pauseVoiceWithSession:_callSession.sessionId error:nil];
+        [_callSession pauseVoice];
     } else {
-        
-        [[EMClient sharedClient].callManager resumeVoiceWithSession:_callSession.sessionId error:nil];
+        [_callSession resumeVoice];
     }
 }
 
@@ -268,7 +290,7 @@
     
     if (_isCaller) {
         
-        NSString *username = [_callSession.remoteUsername copy];
+        NSString *username = [_callSession.remoteName copy];
         BOOL isVideo = [self isVideo:_callSession.type];
         _callSession = nil;
         
@@ -362,9 +384,9 @@
 {
     _silenceButton.selected = !_silenceButton.selected;
     if (_silenceButton.selected) {
-        [[EMClient sharedClient].callManager pauseVideoWithSession:_callSession.sessionId error:nil];
+        [_callSession pauseVideo];
     } else {
-        [[EMClient sharedClient].callManager resumeVideoWithSession:_callSession.sessionId error:nil];
+        [_callSession resumeVideo];
     }
 }
 

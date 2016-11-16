@@ -82,7 +82,7 @@
 "setting.push" = "推送设置";
 "setting.account" = "账号";
 "setting.chats" = "会话设置";
-"setting.videoBitrate" = "调整实时视频比特率";
+"setting.callPush" = "实时通话是否发送离线推送";
 
 //setting.about
 "setting.about.appversion" = "APP 版本";

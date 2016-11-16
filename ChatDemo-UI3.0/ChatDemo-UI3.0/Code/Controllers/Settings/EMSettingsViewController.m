@@ -16,7 +16,7 @@
 
 @interface EMSettingsViewController ()
 
-@property (nonatomic, strong) UISwitch *videoBitrateSwitch;
+@property (nonatomic, strong) UISwitch *callPushSwitch;
 
 @property (nonatomic) EMPushNoDisturbStatus pushStatus;
 @end
@@ -35,16 +35,16 @@
 
 #pragma mark - getters
 
-- (UISwitch *)videoBitrateSwitch
+- (UISwitch *)callPushSwitch
 {
-    if (_videoBitrateSwitch == nil) {
+    if (_callPushSwitch == nil) {
         
-        _videoBitrateSwitch = [[UISwitch alloc] init];
-        [_videoBitrateSwitch addTarget:self action:@selector(switchVideoBitrate:) forControlEvents:UIControlEventValueChanged];
-        [_videoBitrateSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"switchVideoBitrate"] boolValue]];
+        _callPushSwitch = [[UISwitch alloc] init];
+        [_callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
+        [_callPushSwitch setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"callPushChanged"] boolValue]];
     }
     
-    return _videoBitrateSwitch;
+    return _callPushSwitch;
 }
 
 #pragma mark - Table view data source
@@ -92,9 +92,9 @@
 
     } else {
         
-        cell.textLabel.text = NSLocalizedString(@"setting.videoBitrate", @"Adaptive Video Bitrate");
-        self.videoBitrateSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
-        [cell.contentView addSubview:self.videoBitrateSwitch];
+        cell.textLabel.text = NSLocalizedString(@"setting.callPush", @"If the offline send call push");
+        self.callPushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
+        [cell.contentView addSubview:self.callPushSwitch];
     }
     
     return cell;
@@ -174,22 +174,24 @@
 }
 #pragma mark - Actions
 
-- (void)switchVideoBitrate:(UISwitch *)sender
+- (void)callPushChanged:(UISwitch *)sender
 {
-    NSLog(@"switchVideoBitrate --- %d",(int)sender.on);
-    [[EMClient sharedClient].callManager enableAdaptiveBirateStreaming:sender.isOn];
+    NSLog(@"callPushChanged --- %d",(int)sender.on);
+    
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    options.isSendPushIfOffline = sender.isOn;
     if (sender.isOn) {
-        
+
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if (![ud objectForKey:@"switchVideoBitrate"]) {
-            [ud setBool:YES forKey:@"switchVideoBitrate"];
+        if (![ud objectForKey:@"callPushChanged"]) {
+            [ud setBool:YES forKey:@"callPushChanged"];
             [ud synchronize];
         }
     } else {
         
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        if ([ud objectForKey:@"switchVideoBitrate"]) {
-            [ud removeObjectForKey:@"switchVideoBitrate"];
+        if ([ud objectForKey:@"callPushChanged"]) {
+            [ud removeObjectForKey:@"callPushChanged"];
             [ud synchronize];
         }
     }

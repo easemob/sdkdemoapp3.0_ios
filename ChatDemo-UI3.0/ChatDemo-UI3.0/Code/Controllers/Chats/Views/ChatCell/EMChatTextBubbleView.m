@@ -56,20 +56,14 @@
     CGSize textBlockMinSize = {TEXTLABEL_MAX_WIDTH, CGFLOAT_MAX};
     CGSize retSize;
     NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)self.model.message.body).text];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineSpacing:[[self class] lineSpacing]];//调整行间距
-        retSize = [text boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin
-                                  attributes:@{
-                                               NSFontAttributeName:[[self class] textLabelFont],
-                                               NSParagraphStyleAttributeName:paragraphStyle
-                                               }
-                                     context:nil].size;
-    }else{
-        retSize = [text sizeWithFont:[[self class] textLabelFont]
-                   constrainedToSize:textBlockMinSize
-                       lineBreakMode:[[self class] textLabelLineBreakModel]];
-    }
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:[[self class] lineSpacing]];//调整行间距
+    retSize = [text boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin
+                              attributes:@{
+                                           NSFontAttributeName:[[self class] textLabelFont],
+                                           NSParagraphStyleAttributeName:paragraphStyle
+                                           }
+                                 context:nil].size;
     
     CGFloat height = 2*BUBBLE_VIEW_PADDING + retSize.height;
 //    if (2*BUBBLE_VIEW_PADDING + retSize.height > height) {
@@ -106,20 +100,14 @@
         systemVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
     });
     NSString *text = [EMConvertToCommonEmoticonsHelper convertToSystemEmoticons:((EMTextMessageBody *)model.message.body).text];
-    if (systemVersion >= 7.0) {
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineSpacing:[[self class] lineSpacing]];//调整行间距
-        size = [text boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin
-                               attributes:@{
-                                            NSFontAttributeName:[[self class] textLabelFont],
-                                            NSParagraphStyleAttributeName:paragraphStyle
-                                            }
-                                  context:nil].size;
-    }else{
-        size = [text sizeWithFont:[self textLabelFont]
-                constrainedToSize:textBlockMinSize
-                    lineBreakMode:[self textLabelLineBreakModel]];
-    }
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:[[self class] lineSpacing]];//调整行间距
+    size = [text boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin
+                           attributes:@{
+                                        NSFontAttributeName:[[self class] textLabelFont],
+                                        NSParagraphStyleAttributeName:paragraphStyle
+                                        }
+                              context:nil].size;
     return 2 * BUBBLE_VIEW_PADDING + size.height;
 }
 

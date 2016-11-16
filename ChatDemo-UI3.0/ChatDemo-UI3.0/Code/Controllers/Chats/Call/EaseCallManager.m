@@ -33,7 +33,9 @@ static EaseCallManager *callManager = nil;
     self = [super init];
     if (self) {
         [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
-        [[EMClient sharedClient].callManager enableAdaptiveBirateStreaming:[[[NSUserDefaults standardUserDefaults] objectForKey:@"switchVideoBitrate"] boolValue]];
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+        [options setIsSendPushIfOffline:[[[NSUserDefaults standardUserDefaults] objectForKey:@"callPushChanged"] boolValue]];
+        [[EMClient sharedClient].callManager setCallOptions:options];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
     }
     return self;
@@ -80,20 +82,20 @@ static EaseCallManager *callManager = nil;
             }
         }
         else {
-            [[EMClient sharedClient].callManager endCall:aCallSession.sessionId reason:EMCallEndReasonNoResponse];
+            [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
+    EMCallType type = EMCallTypeVideo;
     if (aIsVideo) {
-#if TARGET_IPHONE_SIMULATOR
-        
-#elif TARGET_OS_IPHONE
-        [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
+        type = EMCallTypeVideo;
+#if TARGET_OS_IPHONE
+        [[EMClient sharedClient].callManager startCall:type remoteName:aUsername ext:nil completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
         }];
 #endif
-    }
-    else {
-        [[EMClient sharedClient].callManager startVoiceCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
+    } else {
+        type = EMCallTypeVoice;
+        [[EMClient sharedClient].callManager startCall:type remoteName:aUsername ext:nil completion:^(EMCallSession *aCallSession, EMError *aError) {
             completionBlock(aCallSession, aError);
         }];
     }
@@ -126,7 +128,7 @@ static EaseCallManager *callManager = nil;
     [self _stopCallTimer];
     
     if (_callSession) {
-        [[EMClient sharedClient].callManager endCall:_callSession.sessionId reason:aReason];
+        [[EMClient sharedClient].callManager endCall:_callSession.callId reason:aReason];
     }
     
     _callSession = nil;
@@ -141,7 +143,7 @@ static EaseCallManager *callManager = nil;
     if (_callSession)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.sessionId];
+            EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:self.callSession.callId];
             if (error)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -167,9 +169,9 @@ static EaseCallManager *callManager = nil;
 {
     if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
         
-        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonFailed];
+        [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonFailed];
     }
-    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+    if ([aSession.callId isEqualToString:_callSession.callId]) {
         
         [self _stopCallTimer];
         [_callController reloadConnectedUI];
@@ -178,7 +180,7 @@ static EaseCallManager *callManager = nil;
 
 - (void)callDidConnect:(EMCallSession *)aSession
 {
-    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+    if ([aSession.callId isEqualToString:_callSession.callId]) {
         
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
@@ -188,7 +190,7 @@ static EaseCallManager *callManager = nil;
 
 - (void)callDidEnd:(EMCallSession *)aSession reason:(EMCallEndReason)aReason error:(EMError *)aError
 {
-    if ([aSession.sessionId isEqualToString:_callSession.sessionId]) {
+    if ([aSession.callId isEqualToString:_callSession.callId]) {
         
         [self _stopCallTimer];
         
@@ -254,11 +256,11 @@ static EaseCallManager *callManager = nil;
 - (void)callDidReceive:(EMCallSession *)aSession
 {
     if (_callSession && _callSession.status != EMCallSessionStatusDisconnected) {
-        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonBusy];
+        [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
     }
     
     if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-        [[EMClient sharedClient].callManager endCall:aSession.sessionId reason:EMCallEndReasonFailed];
+        [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonFailed];
     }
     
     _callSession = aSession;

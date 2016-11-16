@@ -36,7 +36,7 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="header.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="hJs-XY-CIn">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="hJs-XY-CIn">
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="mK4-vc-Yua"/>
                         <constraint firstAttribute="width" constant="150" id="o6F-W1-01B"/>
@@ -162,6 +162,6 @@
         <image name="Button_Speaker active.png" width="25" height="20"/>
         <image name="Button_Speaker disabled.png" width="25" height="20"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
-        <image name="header.jpg" width="640" height="640"/>
+        <image name="default_avatar.png" width="50" height="50"/>
     </resources>
 </document>

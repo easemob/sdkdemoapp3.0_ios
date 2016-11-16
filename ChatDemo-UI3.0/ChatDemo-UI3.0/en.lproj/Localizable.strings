@@ -81,7 +81,7 @@
 "setting.push" = "Push Notifications";
 "setting.account" = "Account";
 "setting.chats" = "Chats";
-"setting.videoBitrate" = "Adaptive Video Bitrate";
+"setting.callPush" = "If the offline send call push";
 
 //setting.about
 "setting.about.appversion" = "App Version";
