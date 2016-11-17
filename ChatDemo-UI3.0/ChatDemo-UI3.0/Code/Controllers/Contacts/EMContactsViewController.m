@@ -202,9 +202,6 @@
 #pragma mark - Action Method
 
 - (void)addContactAction {
-    if (_isSearchState) {
-        [_searchBar setShowsCancelButton:NO];
-    }
     EMAddContactViewController *addContactVc = [[EMAddContactViewController alloc] initWithNibName:@"EMAddContactViewController" bundle:nil];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:addContactVc];
     [self presentViewController:nav animated:YES completion:nil];
