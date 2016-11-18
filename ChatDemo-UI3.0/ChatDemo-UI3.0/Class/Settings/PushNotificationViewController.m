@@ -265,7 +265,7 @@
 - (void)pushDisplayChanged:(UISwitch *)pushDisplaySwitch
 {
     if (pushDisplaySwitch.isOn) {
-#warning Set the nickname for the details，比如_nickName = @"环信";
+#warning Set the nickname for the details，such as _nickName = @"环信";
         _pushDisplayStyle = EMPushDisplayStyleMessageSummary;
     }
     else{
