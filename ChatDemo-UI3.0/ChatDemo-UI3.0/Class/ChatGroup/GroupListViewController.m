@@ -12,8 +12,6 @@
 
 #import "GroupListViewController.h"
 
-#import "EMSearchBar.h"
-#import "SRRefreshView.h"
 #import "BaseTableViewCell.h"
 #import "ChatViewController.h"
 #import "CreateGroupViewController.h"
@@ -23,11 +21,9 @@
 
 #import "UIViewController+SearchController.h"
 
-@interface GroupListViewController ()<EMSearchControllerDelegate, EMGroupManagerDelegate, SRRefreshDelegate>
+@interface GroupListViewController ()<EMSearchControllerDelegate, EMGroupManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
-
-@property (strong, nonatomic) SRRefreshView *slimeView;
 
 @end
 
@@ -76,30 +72,6 @@
 {
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-#pragma mark - getter
-
-- (SRRefreshView *)slimeView
-{
-    if (_slimeView == nil) {
-        _slimeView = [[SRRefreshView alloc] init];
-        _slimeView.delegate = self;
-        _slimeView.upInset = 0;
-        _slimeView.slimeMissWhenGoingBack = YES;
-        _slimeView.slime.bodyColor = [UIColor grayColor];
-        _slimeView.slime.skinColor = [UIColor grayColor];
-        _slimeView.slime.lineWith = 1;
-        _slimeView.slime.shadowBlur = 4;
-        _slimeView.slime.shadowColor = [UIColor grayColor];
-    }
-    
-    return _slimeView;
 }
 
 #pragma mark - Table view data source
@@ -223,35 +195,6 @@
     return contentView;
 }
 
-#pragma mark - SRRefreshDelegate
-
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    [_slimeView scrollViewDidScroll];
-//}
-//
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    [_slimeView scrollViewDidEndDraging];
-//}
-//
-//- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
-//{
-//    __weak typeof(self) weakself = self;
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        EMError *error = nil;
-//        NSArray *groups = [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if (!error) {
-//                [weakself.dataSource removeAllObjects];
-//                [weakself.dataSource addObjectsFromArray:groups];
-//                [weakself.tableView reloadData];
-//            }
-//            [weakself.slimeView endRefresh];
-//        });
-//    });
-//}
-
 #pragma mark - EMGroupManagerDelegate
 
 - (void)didUpdateGroupList:(NSArray *)groupList
@@ -265,7 +208,7 @@
                                                        
 - (void)willSearchBegin
 {
-//   [self.slimeView endRefresh];
+    [self tableViewDidFinishTriggerHeader:YES reload:NO];
 }
                                                        
 - (void)cancelButtonClicked
@@ -350,7 +293,8 @@
                 [weakself.dataSource addObjectsFromArray:groups];
                 [weakself.tableView reloadData];
             }
-            [weakself.slimeView endRefresh];
+            
+            [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
         });
     });
 }
