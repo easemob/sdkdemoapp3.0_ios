@@ -24,7 +24,6 @@
 		28B223A31D5495B6006FA0C6 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B223A11D5495B6006FA0C6 /* Fabric.framework */; };
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
-		28BFD6381B01D40500D0ADEC /* MyChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */; };
 		3A05524B1DCC859900D583E5 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */; };
 		3A595FA61D6D8EEB00504DB3 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
@@ -294,8 +293,6 @@
 		28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
 		28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
-		28BFD6341B01D40500D0ADEC /* MyChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChatroomListViewController.h; sourceTree = "<group>"; };
-		28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChatroomListViewController.m; sourceTree = "<group>"; };
 		3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../easeui_ios/EaseUI/export/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
 		3A0FEB331D8E8C2F005C6B8F /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "../../emclient-ios/newSDK/HyphenateSDK/CallManager/Plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3A32AB811DDEBF4600E03E27 /* EMSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchControllerDelegate.h; sourceTree = "<group>"; };
@@ -762,8 +759,6 @@
 				28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */,
 				28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */,
 				28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */,
-				28BFD6341B01D40500D0ADEC /* MyChatroomListViewController.h */,
-				28BFD6351B01D40500D0ADEC /* MyChatroomListViewController.m */,
 			);
 			path = Chatroom;
 			sourceTree = "<group>";
@@ -1704,7 +1699,6 @@
 				287094851DAC6EA000BCB3CD /* RedpacketMessageCell.m in Sources */,
 				3C6BBA0C1941A7CF00A64684 /* EMTextView.m in Sources */,
 				9091111B192EEAED008A48AA /* UIResponder+Router.m in Sources */,
-				28BFD6381B01D40500D0ADEC /* MyChatroomListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
