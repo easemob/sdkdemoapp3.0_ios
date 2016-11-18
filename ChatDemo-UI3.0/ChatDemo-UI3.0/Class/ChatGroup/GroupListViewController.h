@@ -12,7 +12,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GroupListViewController : UITableViewController
+@interface GroupListViewController : EaseRefreshTableViewController
 
 - (void)reloadDataSource;
 

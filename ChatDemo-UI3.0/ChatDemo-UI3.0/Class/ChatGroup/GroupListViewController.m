@@ -15,20 +15,19 @@
 #import "EMSearchBar.h"
 #import "SRRefreshView.h"
 #import "BaseTableViewCell.h"
-#import "EMSearchDisplayController.h"
 #import "ChatViewController.h"
 #import "CreateGroupViewController.h"
 #import "PublicGroupListViewController.h"
 #import "RealtimeSearchUtil.h"
 #import "RedPacketChatViewController.h"
 
-@interface GroupListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate, EMGroupManagerDelegate, SRRefreshDelegate>
+#import "UIViewController+SearchController.h"
+
+@interface GroupListViewController ()<EMSearchControllerDelegate, EMGroupManagerDelegate, SRRefreshDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @property (strong, nonatomic) SRRefreshView *slimeView;
-@property (strong, nonatomic) EMSearchBar *searchBar;
-@property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
 
@@ -48,35 +47,8 @@
 {
     [super viewDidLoad];
     
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-    }
-    
     self.title = NSLocalizedString(@"title.group", @"Group");
-    
-#warning Registered as SDK delegate
-    [[EMClient sharedClient].groupManager removeDelegate:self];
-    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
-    
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.tableFooterView = [[UIView alloc] init];
-    self.tableView.tableHeaderView = self.searchBar;
-    [self.tableView addSubview:self.slimeView];
-    [self searchController];
-    
-//    UIButton *publicButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
-//    [publicButton setImage:[UIImage imageNamed:@"nav_createGroup"] forState:UIControlStateNormal];
-//    [publicButton addTarget:self action:@selector(showPublicGroupList) forControlEvents:UIControlEventTouchUpInside];
-//    UIBarButtonItem *publicItem = [[UIBarButtonItem alloc] initWithCustomView:publicButton];
-//    
-//    UIButton *createButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
-//    [createButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
-//    [createButton addTarget:self action:@selector(createGroup) forControlEvents:UIControlEventTouchUpInside];
-//    UIBarButtonItem *createGroupItem = [[UIBarButtonItem alloc] initWithCustomView:createButton];
-//    
-//    [self.navigationItem setRightBarButtonItems:@[createGroupItem, publicItem]];
+    self.showRefreshHeader = YES;
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
@@ -84,6 +56,12 @@
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    [self setupSearchController];
+    
+    // Registered as SDK delegate
+    [[EMClient sharedClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     
     [self reloadDataSource];
 }
@@ -98,6 +76,11 @@
 {
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - getter
@@ -117,67 +100,6 @@
     }
     
     return _slimeView;
-}
-
-- (UISearchBar *)searchBar
-{
-    if (_searchBar == nil) {
-        _searchBar = [[EMSearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
-        _searchBar.delegate = self;
-        _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
-        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
-    }
-    
-    return _searchBar;
-}
-
-- (EMSearchDisplayController *)searchController
-{
-    if (_searchController == nil) {
-        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.delegate = self;
-        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
-        __weak GroupListViewController *weakSelf = self;
-        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-            static NSString *CellIdentifier = @"ContactListCell";
-            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            
-            // Configure the cell...
-            if (cell == nil) {
-                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            
-            EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            NSString *imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
-            cell.imageView.image = [UIImage imageNamed:imageName];
-            cell.textLabel.text = group.subject;
-            
-            return cell;
-        }];
-        
-        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-            return 50;
-        }];
-        
-        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            [weakSelf.searchController.searchBar endEditing:YES];
-            
-            EMGroup *group = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-#ifdef REDPACKET_AVALABLE
-            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
-#else
-            ChatViewController *chatVC = [[ChatViewController alloc]
-#endif
-                                          initWithConversationChatter:group.groupId
-                                                                                conversationType:EMConversationTypeGroupChat];
-            chatVC.title = group.subject;
-            [weakSelf.navigationController pushViewController:chatVC animated:YES];
-        }];
-    }
-    
-    return _searchController;
 }
 
 #pragma mark - Table view data source
@@ -301,68 +223,122 @@
     return contentView;
 }
 
-#pragma mark - UISearchBarDelegate
+#pragma mark - SRRefreshDelegate
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    [_slimeView scrollViewDidScroll];
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+//{
+//    [_slimeView scrollViewDidEndDraging];
+//}
+//
+//- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+//{
+//    __weak typeof(self) weakself = self;
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        EMError *error = nil;
+//        NSArray *groups = [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (!error) {
+//                [weakself.dataSource removeAllObjects];
+//                [weakself.dataSource addObjectsFromArray:groups];
+//                [weakself.tableView reloadData];
+//            }
+//            [weakself.slimeView endRefresh];
+//        });
+//    });
+//}
+
+#pragma mark - EMGroupManagerDelegate
+
+- (void)didUpdateGroupList:(NSArray *)groupList
 {
-    [searchBar setShowsCancelButton:YES animated:YES];
-    
-    return YES;
+    [self.dataSource removeAllObjects];
+    [self.dataSource addObjectsFromArray:groupList];
+    [self.tableView reloadData];
 }
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+                                                       
+#pragma mark - EMSearchControllerDelegate
+                                                       
+- (void)willSearchBegin
+{
+//   [self.slimeView endRefresh];
+}
+                                                       
+- (void)cancelButtonClicked
+{
+    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+}
+                                               
+- (void)searchButtonClickedWithString:(NSString *)aString
 {
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:(NSString *)searchText collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.self.dataSource searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.searchController.resultsSource removeAllObjects];
-                [weakSelf.searchController.resultsSource addObjectsFromArray:results];
-                [weakSelf.searchController.searchResultsTableView reloadData];
+                [weakSelf.resultController.displaySource removeAllObjects];
+                [weakSelf.resultController.displaySource addObjectsFromArray:results];
+                [weakSelf.resultController.tableView reloadData];
             });
         }
     }];
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+#pragma mark - private
+
+- (void)setupSearchController
 {
-    return YES;
+    [self enableSearchController];
+    
+    __weak GroupListViewController *weakSelf = self;
+    [self.resultController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
+        static NSString *CellIdentifier = @"ContactListCell";
+        BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+
+        EMGroup *group = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
+        NSString *imageName = group.isPublic ? @"groupPublicHeader" : @"groupPrivateHeader";
+        cell.imageView.image = [UIImage imageNamed:imageName];
+        cell.textLabel.text = group.subject;
+
+        return cell;
+    }];
+
+    [self.resultController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
+        return 50;
+    }];
+
+    [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+        EMGroup *group = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+#else
+        ChatViewController *chatVC = [[ChatViewController alloc]
+#endif
+                                      initWithConversationChatter:group.groupId
+                                                                            conversationType:EMConversationTypeGroupChat];
+        chatVC.title = group.subject;
+        [weakSelf.navigationController pushViewController:chatVC animated:YES];
+                                               
+        [weakSelf cancelSearch];
+    }];
+    
+    UISearchBar *searchBar = self.searchController.searchBar;
+    self.tableView.tableHeaderView = searchBar;
 }
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    searchBar.text = @"";
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
-    [searchBar resignFirstResponder];
-    [searchBar setShowsCancelButton:NO animated:YES];
-}
-
-#pragma mark - UISearchDisplayDelegate
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
-{
-    self.tableView.tableHeaderView = nil;
-    self.tableView.tableHeaderView = self.searchBar;
-}
-
-#pragma mark - SRRefreshDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_slimeView scrollViewDidScroll];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [_slimeView scrollViewDidEndDraging];
-}
-
-- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+                                                       
+#pragma mark - data
+                                                       
+- (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -378,17 +354,6 @@
         });
     });
 }
-
-#pragma mark - EMGroupManagerDelegate
-
-- (void)didUpdateGroupList:(NSArray *)groupList
-{
-    [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:groupList];
-    [self.tableView reloadData];
-}
-
-#pragma mark - data
 
 - (void)reloadDataSource
 {
