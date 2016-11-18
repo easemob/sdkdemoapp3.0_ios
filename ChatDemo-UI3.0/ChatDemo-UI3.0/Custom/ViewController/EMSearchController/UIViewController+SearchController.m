@@ -19,13 +19,16 @@ static const void *ResultControllerKey = &ResultControllerKey;
 @implementation UIViewController (SearchController)
 
 @dynamic searchController;
+@dynamic resultController;
 
 #pragma mark - getter & setter
-- (UISearchController *)searchController {
+- (UISearchController *)searchController
+{
     return objc_getAssociatedObject(self, SearchControllerKey);
 }
 
-- (void)setSearchController:(UISearchController *)searchController{
+- (void)setSearchController:(UISearchController *)searchController
+{
     objc_setAssociatedObject(self, SearchControllerKey, searchController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -40,28 +43,28 @@ static const void *ResultControllerKey = &ResultControllerKey;
 }
 
 #pragma mark - enable
-- (void)enableSearchController {
-    
+
+- (void)enableSearchController
+{
     self.resultController = [[EMSearchResultController alloc] init];
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.resultController];
     self.searchController.hidesNavigationBarDuringPresentation = NO;
     self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.obscuresBackgroundDuringPresentation = NO;
     self.searchController.searchResultsUpdater = self;
     
     self.searchController.searchBar.delegate = self;
-//    self.searchDatasource = nil;
     self.definesPresentationContext = YES;
     
-    self.searchController.searchBar.backgroundColor = [UIColor redColor];
-    CGRect frame = self.searchController.searchBar.frame;
-    frame.size.width = self.view.frame.size.width;
-    self.searchController.searchBar.frame = frame;
-    [self.searchController.searchBar sizeToFit];
+    self.searchController.searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.0];;
+    
 }
 
 #pragma mark - disable
-- (void)disableSearchController {
+
+- (void)disableSearchController
+{
     self.searchController.searchBar.delegate = nil;
     self.searchController = nil;
 }
@@ -70,8 +73,6 @@ static const void *ResultControllerKey = &ResultControllerKey;
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    [self.searchController.searchBar setShowsCancelButton:YES animated:YES];
-    
     if ([self conformsToProtocol:@protocol(EMSearchControllerDelegate)] &&
         [self respondsToSelector:@selector(willSearchBegin)]) {
         [self performSelector:@selector(willSearchBegin)];
@@ -113,9 +114,7 @@ static const void *ResultControllerKey = &ResultControllerKey;
 
 - (void)cancelSearch
 {
-    [self.searchController.searchBar resignFirstResponder]; //searchBar失去焦点
-    [self.searchController.searchBar setShowsCancelButton:NO animated:YES];
-    self.searchController.searchBar.text = @"";
+    [self.searchController setActive:NO];
 }
 
 @end
