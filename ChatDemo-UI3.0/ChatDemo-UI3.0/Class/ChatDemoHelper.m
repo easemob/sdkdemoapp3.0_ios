@@ -615,7 +615,7 @@ static ChatDemoHelper *helper = nil;
         }
         
         if (aReason != EMCallEndReasonHangup) {
-            NSString *reasonStr = @"";
+            NSString *reasonStr = @"end";
             switch (aReason) {
                 case EMCallEndReasonNoResponse:
                 {
@@ -642,11 +642,11 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.connectUnsupported", @"Unsupported");
                 }
                     break;
-//                case EMCallEndReasonRemoteOffline:
-//                {
-//                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
-//                }
-//                    break;
+                case EMCallEndReasonRemoteOffline:
+                {
+                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
+                }
+                    break;
                 default:
                     break;
             }
