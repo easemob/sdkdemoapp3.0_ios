@@ -318,7 +318,6 @@
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
         return;
     }
     
@@ -327,8 +326,7 @@
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
                                                
-#pragma mark - EMSearchControllerDelegate
-                                               
+#pragma mark - EMSearchControllerDelegate                                               
 - (void)cancelButtonClicked
 {
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
@@ -386,7 +384,6 @@
     
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [weakSelf cancelSearch];
         
         NSString *buddy = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
         [weakSelf.searchController.searchBar endEditing:YES];
@@ -400,11 +397,13 @@
                                      conversationType:EMConversationTypeChat];
         chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
+                                               
+        [weakSelf cancelSearch];
     }];
         
-        UISearchBar *searchBar = self.searchController.searchBar;
-        self.tableView.tableHeaderView = searchBar;
-        [searchBar sizeToFit];
+    UISearchBar *searchBar = self.searchController.searchBar;
+    self.tableView.tableHeaderView = searchBar;
+    [searchBar sizeToFit];
 
 }
 
