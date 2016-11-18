@@ -546,7 +546,7 @@
     [self reloadApplyView];
     
     if (_groupController) {
-        [_groupController reloadDataSource];
+        [_groupController tableViewDidTriggerHeaderRefresh];
     }
 }
 

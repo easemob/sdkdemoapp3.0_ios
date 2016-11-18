@@ -14,6 +14,4 @@
 
 @interface GroupListViewController : EaseRefreshTableViewController
 
-- (void)reloadDataSource;
-
 @end
