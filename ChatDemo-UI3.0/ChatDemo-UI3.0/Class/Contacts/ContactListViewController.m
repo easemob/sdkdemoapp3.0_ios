@@ -454,7 +454,12 @@
             model.nickname = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             
             NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:[[UserProfileManager sharedInstance] getNickNameWithUsername:buddy]];
-            NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
+            NSInteger section;
+            if (firstLetter.length > 0) {
+                section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
+            } else {
+                section = [sortedArray count] - 1;
+            }
             
             NSMutableArray *array = [sortedArray objectAtIndex:section];
             [array addObject:model];
