@@ -438,22 +438,6 @@ static NSString *kGroupName = @"GroupName";
                         chatViewController = [[ChatViewController alloc]
 #endif
                                               initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                        switch (messageType) {
-                            case EMChatTypeChat:
-                                {
-                                    NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                                    for (EMGroup *group in groupArray) {
-                                        if ([group.groupId isEqualToString:conversationChatter]) {
-                                            chatViewController.title = group.subject;
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                chatViewController.title = conversationChatter;
-                                break;
-                        }
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -470,22 +454,6 @@ static NSString *kGroupName = @"GroupName";
                 chatViewController = [[ChatViewController alloc]
 #endif
                                       initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                switch (messageType) {
-                    case EMChatTypeGroupChat:
-                    {
-                        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                        for (EMGroup *group in groupArray) {
-                            if ([group.groupId isEqualToString:conversationChatter]) {
-                                chatViewController.title = group.subject;
-                                break;
-                            }
-                        }
-                    }
-                        break;
-                    default:
-                        chatViewController.title = conversationChatter;
-                        break;
-                }
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];
@@ -529,22 +497,6 @@ static NSString *kGroupName = @"GroupName";
                         chatViewController = [[ChatViewController alloc]
 #endif
                                             initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                        switch (messageType) {
-                            case EMChatTypeChat:
-                            {
-                                NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                                for (EMGroup *group in groupArray) {
-                                    if ([group.groupId isEqualToString:conversationChatter]) {
-                                        chatViewController.title = group.subject;
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                            default:
-                                chatViewController.title = conversationChatter;
-                                break;
-                        }
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -561,22 +513,6 @@ static NSString *kGroupName = @"GroupName";
                 chatViewController = [[ChatViewController alloc]
 #endif
                                   initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                switch (messageType) {
-                case EMChatTypeGroupChat:
-                    {
-                        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                        for (EMGroup *group in groupArray) {
-                            if ([group.groupId isEqualToString:conversationChatter]) {
-                                chatViewController.title = group.subject;
-                                break;
-                            }
-                        }
-                    }
-                        break;
-                    default:
-                        chatViewController.title = conversationChatter;
-                        break;
-                }
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];
