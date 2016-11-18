@@ -615,7 +615,7 @@ static ChatDemoHelper *helper = nil;
         }
         
         if (aReason != EMCallEndReasonHangup) {
-            NSString *reasonStr = @"";
+            NSString *reasonStr = @"end";
             switch (aReason) {
                 case EMCallEndReasonNoResponse:
                 {
@@ -642,11 +642,11 @@ static ChatDemoHelper *helper = nil;
                     reasonStr = NSLocalizedString(@"call.connectUnsupported", @"Unsupported");
                 }
                     break;
-//                case EMCallEndReasonRemoteOffline:
-//                {
-//                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
-//                }
-//                    break;
+                case EMCallEndReasonRemoteOffline:
+                {
+                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
+                }
+                    break;
                 default:
                     break;
             }
@@ -726,7 +726,7 @@ static ChatDemoHelper *helper = nil;
         ChatDemoHelper *strongSelf = weakSelf;
         if (strongSelf) {
             if (aError || aCallSession == nil) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.initFailed", @"Establish call failure") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"call.initFailed", @"Establish call failure") message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
                 return;
             }
@@ -748,16 +748,9 @@ static ChatDemoHelper *helper = nil;
         }
     };
     
-    if (aType == EMCallTypeVideo) {
-        [[EMClient sharedClient].callManager startVideoCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
-            completionBlock(aCallSession, aError);
-        }];
-    }
-    else {
-        [[EMClient sharedClient].callManager startVoiceCall:aUsername completion:^(EMCallSession *aCallSession, EMError *aError) {
-            completionBlock(aCallSession, aError);
-        }];
-    }
+    [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
+        completionBlock(aCallSession, aError);
+    }];
 }
 
 - (void)hangupCallWithReason:(EMCallEndReason)aReason
