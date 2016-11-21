@@ -22,6 +22,7 @@ static const void *ResultControllerKey = &ResultControllerKey;
 @dynamic resultController;
 
 #pragma mark - getter & setter
+
 - (UISearchController *)searchController
 {
     return objc_getAssociatedObject(self, SearchControllerKey);
@@ -99,7 +100,8 @@ static const void *ResultControllerKey = &ResultControllerKey;
     }
 }
 
-- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar
+{
     return UIBarPositionTopAttached;
 }
 
