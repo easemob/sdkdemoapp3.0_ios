@@ -326,7 +326,8 @@
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
                                                
-#pragma mark - EMSearchControllerDelegate                                               
+#pragma mark - EMSearchControllerDelegate     
+                                                       
 - (void)cancelButtonClicked
 {
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
