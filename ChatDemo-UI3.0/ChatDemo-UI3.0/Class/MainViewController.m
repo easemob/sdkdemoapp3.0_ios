@@ -61,9 +61,10 @@ static NSString *kGroupName = @"GroupName";
     [super viewDidLoad];
     
     //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
+    
     self.title = NSLocalizedString(@"title.conversation", @"Conversations");
     
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的

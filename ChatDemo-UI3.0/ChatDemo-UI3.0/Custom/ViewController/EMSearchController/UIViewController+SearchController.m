@@ -99,6 +99,10 @@ static const void *ResultControllerKey = &ResultControllerKey;
     }
 }
 
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
+}
+
 #pragma mark - UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
