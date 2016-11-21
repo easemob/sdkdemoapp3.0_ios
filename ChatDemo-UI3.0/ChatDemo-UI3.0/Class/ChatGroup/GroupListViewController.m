@@ -218,7 +218,7 @@
 - (void)searchButtonClickedWithString:(NSString *)aString
 {
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.self.dataSource searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.resultController.displaySource removeAllObjects];

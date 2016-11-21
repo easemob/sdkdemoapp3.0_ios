@@ -85,49 +85,6 @@
     [[EMClient sharedClient].roomManager removeDelegate:self];
 }
 
-//- (EMSearchDisplayController *)searchController
-//{
-//    if (_searchController == nil) {
-//        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-//        _searchController.delegate = self;
-//        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//        
-//        __weak ChatroomListViewController *weakSelf = self;
-//        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-//            static NSString *CellIdentifier = @"ContactListCell";
-//            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//            
-//            // Configure the cell...
-//            if (cell == nil) {
-//                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//            }
-//            
-//            EMChatroom *chatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//            NSString *imageName =  @"groupPublicHeader";
-//            cell.imageView.image = [UIImage imageNamed:imageName];
-//            cell.textLabel.text = chatroom.subject;
-//            
-//            return cell;
-//        }];
-//        
-//        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-//            return 50;
-//        }];
-//        
-//        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-//            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//            [weakSelf.searchController.searchBar endEditing:YES];
-//            
-//            EMChatroom *myChatroom = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-//            ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:myChatroom.chatroomId conversationType:EMConversationTypeChatRoom];
-//            chatController.title = myChatroom.subject;
-//            [weakSelf.navigationController pushViewController:chatController animated:YES];
-//        }];
-//    }
-//    
-//    return _searchController;
-//}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

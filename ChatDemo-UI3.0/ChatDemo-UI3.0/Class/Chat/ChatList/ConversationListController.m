@@ -325,11 +325,10 @@
             chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
         }else {
 #ifdef REDPACKET_AVALABLE
-            chatController = [[RedPacketChatViewController alloc]
+            chatController = [[RedPacketChatViewController alloc]  initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
 #else
-            chatController = [[ChatViewController alloc]
+            chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
 #endif
-                              initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
             chatController.title = [conversation showName];
         }
         [weakSelf.navigationController pushViewController:chatController animated:YES];

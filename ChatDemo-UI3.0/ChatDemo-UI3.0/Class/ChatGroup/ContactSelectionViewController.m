@@ -91,8 +91,6 @@
     
     [self.view addSubview:self.footerView];
     self.tableView.editing = YES;
-//    self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height - self.footerView.frame.size.height);
-//    [self searchController];
     
     if ([_blockSelectedUsernames count] > 0) {
         for (NSString *username in _blockSelectedUsernames) {
@@ -208,63 +206,6 @@
         [self reloadFooterView];
     }
 }
-
-//#pragma mark - UISearchBarDelegate
-//
-//- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-//{
-//    [searchBar setShowsCancelButton:YES animated:YES];
-//    [self.searchBar setCancelButtonTitle:NSLocalizedString(@"ok", @"OK")];
-//    
-//    return YES;
-//}
-//
-//- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-//{
-//    __weak typeof(self) weakSelf = self;
-//    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:searchText collationStringSelector:@selector(username) resultBlock:^(NSArray *results) {
-//        if (results) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [weakSelf.searchController.resultsSource removeAllObjects];
-//                [weakSelf.searchController.resultsSource addObjectsFromArray:results];
-//                [weakSelf.searchController.searchResultsTableView reloadData];
-//                
-//                for (NSString *username in results) {
-//                    if ([weakSelf.selectedContacts containsObject:username])
-//                    {
-//                        NSInteger row = [results indexOfObject:username];
-//                        [weakSelf.searchController.searchResultsTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-//                    }
-//                }
-//            });
-//        }
-//    }];
-//}
-//
-//- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-//{
-//    return YES;
-//}
-//
-//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-//{
-//    [searchBar resignFirstResponder];
-//}
-//
-//- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-//{
-//    searchBar.text = @"";
-//    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
-//    [searchBar resignFirstResponder];
-//    [searchBar setShowsCancelButton:NO animated:YES];
-//}
-//
-//#pragma mark - UISearchDisplayDelegate
-//
-//- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
-//{
-//    tableView.editing = YES;
-//}
 
 #pragma mark - private
 
