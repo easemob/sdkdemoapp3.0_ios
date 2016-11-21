@@ -433,11 +433,10 @@ static NSString *kGroupName = @"GroupName";
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                        chatViewController = [[RedPacketChatViewController alloc]
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                        chatViewController = [[ChatViewController alloc]
+                        chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                              initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -449,11 +448,10 @@ static NSString *kGroupName = @"GroupName";
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                chatViewController = [[RedPacketChatViewController alloc]
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                chatViewController = [[ChatViewController alloc]
+                chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                      initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];
@@ -492,11 +490,10 @@ static NSString *kGroupName = @"GroupName";
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                        chatViewController = [[RedPacketChatViewController alloc]
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                        chatViewController = [[ChatViewController alloc]
+                        chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                            initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -508,11 +505,10 @@ static NSString *kGroupName = @"GroupName";
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                chatViewController = [[RedPacketChatViewController alloc]
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                chatViewController = [[ChatViewController alloc]
+                chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                  initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];

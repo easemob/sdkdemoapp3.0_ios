@@ -160,13 +160,12 @@
     } else {
         EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
         
+        UIViewController *chatController = nil;
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
 #else
-        ChatViewController *chatController = [[ChatViewController alloc]
+        chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
 #endif
-                                              initWithConversationChatter:group.groupId
-                                                                                    conversationType:EMConversationTypeGroupChat];
         chatController.title = group.subject;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -262,13 +261,12 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
         EMGroup *group = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
+        UIViewController *chatVC = nil;
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+        chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
 #else
-        ChatViewController *chatVC = [[ChatViewController alloc]
+        chatVC = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
 #endif
-                                      initWithConversationChatter:group.groupId
-                                                                            conversationType:EMConversationTypeGroupChat];
         chatVC.title = group.subject;
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
                                                

@@ -239,12 +239,12 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
+        UIViewController *chatController = nil;
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
 #else
-        ChatViewController *chatController = [[ChatViewController alloc]
+        chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
 #endif
-                                              initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -390,12 +390,11 @@
         [weakSelf.searchController.searchBar endEditing:YES];
         
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy conversationType:EMConversationTypeChat];
 #else
-        ChatViewController *chatVC = [[ChatViewController alloc]
-#endif
-                                     initWithConversationChatter:buddy
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
                                      conversationType:EMConversationTypeChat];
+#endif
         chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
                                                
