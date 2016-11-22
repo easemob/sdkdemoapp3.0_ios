@@ -237,7 +237,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!_isGettingMore && indexPath.row == ([self.dataSource count] - 1) && _pageNum > 0)
+    if (!_isGettingMore && indexPath.row == ([self.dataSource count] - 1) && _pageNum > 0 && self.footerView.state != eGettingMoreFooterViewStateComplete)
     {
         __weak typeof(self) weakSelf = self;
         self.footerView.state = eGettingMoreFooterViewStateGetting;
@@ -247,25 +247,27 @@
             EMPageResult *result = [[EMClient sharedClient].roomManager getChatroomsFromServerWithPage:weakSelf.pageNum++ pageSize:FetchChatroomPageSize error:&error];
             if (weakSelf)
             {
-                ChatroomListViewController *strongSelf = weakSelf;
-                strongSelf.isGettingMore = NO;
-                if (!error)
-                {
-                    [strongSelf.dataSource addObjectsFromArray:result.list];
-                    [strongSelf.tableView reloadData];
-                    if (result.count > 0)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    ChatroomListViewController *strongSelf = weakSelf;
+                    strongSelf.isGettingMore = NO;
+                    if (!error)
                     {
-                        self.footerView.state = eGettingMoreFooterViewStateIdle;
+                        [strongSelf.dataSource addObjectsFromArray:result.list];
+                        [strongSelf.tableView reloadData];
+                        if (result.count > 0)
+                        {
+                            self.footerView.state = eGettingMoreFooterViewStateIdle;
+                        }
+                        else
+                        {
+                            self.footerView.state = eGettingMoreFooterViewStateComplete;
+                        }
                     }
                     else
                     {
-                        self.footerView.state = eGettingMoreFooterViewStateComplete;
+                        self.footerView.state = eGettingMoreFooterViewStateFailed;
                     }
-                }
-                else
-                {
-                    self.footerView.state = eGettingMoreFooterViewStateFailed;
-                }
+                });
             }
         });
     }
