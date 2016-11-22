@@ -239,12 +239,12 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
+        UIViewController *chatController = nil;
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
 #else
-        ChatViewController *chatController = [[ChatViewController alloc]
+        chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
 #endif
-                                              initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -318,7 +318,6 @@
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
         return;
     }
     
@@ -327,8 +326,8 @@
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
                                                
-#pragma mark - EMSearchControllerDelegate
-                                               
+#pragma mark - EMSearchControllerDelegate     
+                                                       
 - (void)cancelButtonClicked
 {
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
@@ -386,25 +385,25 @@
     
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [weakSelf cancelSearch];
         
         NSString *buddy = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
         [weakSelf.searchController.searchBar endEditing:YES];
         
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
+        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy conversationType:EMConversationTypeChat];
 #else
-        ChatViewController *chatVC = [[ChatViewController alloc]
-#endif
-                                     initWithConversationChatter:buddy
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
                                      conversationType:EMConversationTypeChat];
+#endif
         chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
+                                               
+        [weakSelf cancelSearch];
     }];
         
-        UISearchBar *searchBar = self.searchController.searchBar;
-        self.tableView.tableHeaderView = searchBar;
-        [searchBar sizeToFit];
+    UISearchBar *searchBar = self.searchController.searchBar;
+    self.tableView.tableHeaderView = searchBar;
+    [searchBar sizeToFit];
 
 }
 
@@ -547,7 +546,7 @@
     [self reloadApplyView];
     
     if (_groupController) {
-        [_groupController reloadDataSource];
+        [_groupController tableViewDidTriggerHeaderRefresh];
     }
 }
 
