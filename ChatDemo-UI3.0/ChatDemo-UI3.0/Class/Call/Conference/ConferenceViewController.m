@@ -8,7 +8,7 @@
 
 #import "ConferenceViewController.h"
 
-#import "ChatDemoHelper.h"
+#import "DemoCallManager.h"
 #import "StreamTableViewController.h"
 #import "UserTableViewController.h"
 
@@ -23,11 +23,21 @@
     NSString *_callId;
 }
 
-@property (strong, nonatomic) EMCallLocalView *localView;
+@property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
-@property (strong, nonatomic) NSMutableDictionary *remoteViews;
+@property (weak, nonatomic) IBOutlet UIView *remotesView;
+
+@property (weak, nonatomic) IBOutlet UIView *actionView;
+@property (weak, nonatomic) IBOutlet UIButton *speakerOutButton;
+@property (weak, nonatomic) IBOutlet UIButton *silenceButton;
+@property (weak, nonatomic) IBOutlet UIButton *switchCameraButton;
+@property (weak, nonatomic) IBOutlet UIButton *hangupButton;
 
 @property (strong, nonatomic) EMCallConference *conference;
+@property (strong, nonatomic) EMCallLocalView *localView;
+@property (strong, nonatomic) NSMutableDictionary *remoteViews;
 
 @end
 
@@ -57,45 +67,45 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIBarButtonItem *exitItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(exitConfernece)];
-    UIBarButtonItem *subItem = [[UIBarButtonItem alloc] initWithTitle:@"订阅" style:UIBarButtonItemStylePlain target:self action:@selector(subStream)];
-    UIBarButtonItem *inviteItem = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStylePlain target:self action:@selector(inviteUser)];
-    self.navigationItem.rightBarButtonItems = @[exitItem, subItem, inviteItem];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationInviteUser:) name:@"selecteInviteUser" object:nil];
+//    UIBarButtonItem *exitItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(exitConfernece)];
+//    UIBarButtonItem *subItem = [[UIBarButtonItem alloc] initWithTitle:@"订阅" style:UIBarButtonItemStylePlain target:self action:@selector(subStream)];
+//    UIBarButtonItem *inviteItem = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStylePlain target:self action:@selector(inviteUser)];
+//    self.navigationItem.rightBarButtonItems = @[exitItem, subItem, inviteItem];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationInviteUser:) name:@"selecteInviteUser" object:nil];
     
     self.remoteViews = [[NSMutableDictionary alloc] init];
     
-    [[EMClient sharedClient].conferenceManager setBuilder:self];
-    
-//    _ox = 10;
-//    _oy = 80;
-    _top = 80;
-    _border = 20;
-    CGSize size = [[UIScreen mainScreen] bounds].size;
-    _width = (size.width - _border * 3) / 2;
-    _height = _width / (size.width / (size.height - 65));
-    
-    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_border, _top, _width, _height)];
-    self.localView.backgroundColor = [UIColor lightGrayColor];
-    [self.view addSubview:self.localView];
-    
-    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
-    
-    EMError *error = nil;
-    if (_callId == nil) {
-        self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMCallTypeVideo password:nil localVideoView:self.localView error:&error];
-    } else {
-        self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" localVideoView:self.localView error:&error];
-    }
-    
-    if (error) {
-        self.conference = nil;
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else{
-        [self _setupSubviews];
-    }
+//    [[EMClient sharedClient].conferenceManager setBuilder:self];
+//    
+////    _ox = 10;
+////    _oy = 80;
+//    _top = 80;
+//    _border = 20;
+//    CGSize size = [[UIScreen mainScreen] bounds].size;
+//    _width = (size.width - _border * 3) / 2;
+//    _height = _width / (size.width / (size.height - 65));
+//    
+//    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_border, _top, _width, _height)];
+//    self.localView.backgroundColor = [UIColor lightGrayColor];
+//    [self.view addSubview:self.localView];
+//    
+//    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+//    
+//    EMError *error = nil;
+//    if (_callId == nil) {
+//        self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMCallTypeVideo password:nil localVideoView:self.localView error:&error];
+//    } else {
+//        self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" localVideoView:self.localView error:&error];
+//    }
+//    
+//    if (error) {
+//        self.conference = nil;
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+//    else{
+//        [self _setupSubviews];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -309,20 +309,6 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
-{
-    for (EMMessage *message in aCmdMessages) {
-        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
-        NSString *action = cmdBody.action;
-        if ([action isEqualToString:@"inviteToJoinConference"]) {
-            NSString *callId = [message.ext objectForKey:@"callId"];
-//            [self recvInviteJoinConference:callId];
-        } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
-            [self.callController showHint:@"已转为会议模式"];
-        }
-    }
-}
-
 #pragma mark - EMGroupManagerDelegate
 
 - (void)didReceiveLeavedGroup:(EMGroup *)aGroup
