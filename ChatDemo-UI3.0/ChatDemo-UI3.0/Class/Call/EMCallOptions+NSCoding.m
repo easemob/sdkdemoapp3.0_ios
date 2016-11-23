@@ -30,7 +30,7 @@
 {
     [aCoder encodeBool:self.isSendPushIfOffline forKey:@"emIsSendPushIfOffline"];
     [aCoder encodeInteger:self.videoResolution forKey:@"emVideoResolution"];
-    [aCoder encodeInt:self.videoKbps forKey:@"emVideoKbps"];
+    [aCoder encodeInt:(int)self.videoKbps forKey:@"emVideoKbps"];
 }
 
 @end

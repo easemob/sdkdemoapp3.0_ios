@@ -50,12 +50,13 @@
             [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *aMessage, EMError *aError) {
                 if (!aError) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                    UIViewController *chatController = nil;
 #ifdef REDPACKET_AVALABLE
-                    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+                    chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
 #else
-                    ChatViewController *chatController = [[ChatViewController alloc]
-#endif
+                    chatController = [[ChatViewController alloc]
                                                           initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+#endif
                     chatController.title = userModel.nickname.length != 0 ? [userModel.nickname copy] : [userModel.buddy copy];
                     if ([array count] >= 3) {
                         [array removeLastObject];
@@ -87,12 +88,12 @@
             [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
                 if (!error) {
                     NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                    
 #ifdef REDPACKET_AVALABLE
-                    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+                    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
 #else
-                    ChatViewController *chatController = [[ChatViewController alloc]
+                    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
 #endif
-                                                          initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
                     chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
                     if ([array count] >= 3) {
                         [array removeLastObject];

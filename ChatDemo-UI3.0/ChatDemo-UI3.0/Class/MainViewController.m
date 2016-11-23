@@ -61,9 +61,10 @@ static NSString *kGroupName = @"GroupName";
     [super viewDidLoad];
     
     //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
+    
     self.title = NSLocalizedString(@"title.conversation", @"Conversations");
     
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
@@ -433,27 +434,10 @@ static NSString *kGroupName = @"GroupName";
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                        chatViewController = [[RedPacketChatViewController alloc]
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                        chatViewController = [[ChatViewController alloc]
+                        chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                              initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                        switch (messageType) {
-                            case EMChatTypeChat:
-                                {
-                                    NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                                    for (EMGroup *group in groupArray) {
-                                        if ([group.groupId isEqualToString:conversationChatter]) {
-                                            chatViewController.title = group.subject;
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                chatViewController.title = conversationChatter;
-                                break;
-                        }
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -465,27 +449,10 @@ static NSString *kGroupName = @"GroupName";
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                chatViewController = [[RedPacketChatViewController alloc]
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                chatViewController = [[ChatViewController alloc]
+                chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                      initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                switch (messageType) {
-                    case EMChatTypeGroupChat:
-                    {
-                        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                        for (EMGroup *group in groupArray) {
-                            if ([group.groupId isEqualToString:conversationChatter]) {
-                                chatViewController.title = group.subject;
-                                break;
-                            }
-                        }
-                    }
-                        break;
-                    default:
-                        chatViewController.title = conversationChatter;
-                        break;
-                }
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];
@@ -524,27 +491,10 @@ static NSString *kGroupName = @"GroupName";
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                        chatViewController = [[RedPacketChatViewController alloc]
+                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                        chatViewController = [[ChatViewController alloc]
+                        chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                            initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                        switch (messageType) {
-                            case EMChatTypeChat:
-                            {
-                                NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                                for (EMGroup *group in groupArray) {
-                                    if ([group.groupId isEqualToString:conversationChatter]) {
-                                        chatViewController.title = group.subject;
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                            default:
-                                chatViewController.title = conversationChatter;
-                                break;
-                        }
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -556,27 +506,10 @@ static NSString *kGroupName = @"GroupName";
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
 #ifdef REDPACKET_AVALABLE
-                chatViewController = [[RedPacketChatViewController alloc]
+                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #else
-                chatViewController = [[ChatViewController alloc]
+                chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
 #endif
-                                  initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-                switch (messageType) {
-                case EMChatTypeGroupChat:
-                    {
-                        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-                        for (EMGroup *group in groupArray) {
-                            if ([group.groupId isEqualToString:conversationChatter]) {
-                                chatViewController.title = group.subject;
-                                break;
-                            }
-                        }
-                    }
-                        break;
-                    default:
-                        chatViewController.title = conversationChatter;
-                        break;
-                }
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];

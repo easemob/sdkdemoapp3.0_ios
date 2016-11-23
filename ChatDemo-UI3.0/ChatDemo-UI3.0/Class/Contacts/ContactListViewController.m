@@ -12,18 +12,18 @@
 
 #import "ContactListViewController.h"
 
-//#import "EaseChineseToPinyin.h"
 #import "ChatViewController.h"
 #import "RobotListViewController.h"
 #import "ChatroomListViewController.h"
 #import "AddFriendViewController.h"
 #import "ApplyViewController.h"
-#import "EMSearchBar.h"
-#import "EMSearchDisplayController.h"
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
 #import "RedPacketChatViewController.h"
+
+#import "BaseTableViewCell.h"
+#import "UIViewController+SearchController.h"
 
 
 @implementation NSString (search)
@@ -36,7 +36,7 @@
 
 @end
 
-@interface ContactListViewController ()<UISearchBarDelegate, UISearchDisplayDelegate,BaseTableCellDelegate,UIActionSheetDelegate,EaseUserCellDelegate>
+@interface ContactListViewController ()<UISearchBarDelegate, UIActionSheetDelegate, EaseUserCellDelegate, EMSearchControllerDelegate>
 {
     NSIndexPath *_currentLongPressIndex;
 }
@@ -45,9 +45,6 @@
 @property (strong, nonatomic) NSMutableArray *contactsSource;
 
 @property (nonatomic) NSInteger unapplyCount;
-@property (strong, nonatomic) EMSearchBar *searchBar;
-
-@property (strong, nonatomic) EMSearchDisplayController *searchController;
 
 @end
 
@@ -61,14 +58,10 @@
     _contactsSource = [NSMutableArray array];
     _sectionTitles = [NSMutableArray array];
     
-    [self searchController];
-    self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
-    [self.view addSubview:self.searchBar];
-    
-    self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
-    
     // 环信UIdemo中有用到Parse, 加载用户好友个人信息
     [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
+    
+    [self setupSearchController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -98,69 +91,8 @@
     return _rightItems;
 }
 
-- (UISearchBar *)searchBar
-{
-    if (_searchBar == nil) {
-        _searchBar = [[EMSearchBar alloc] init];
-        _searchBar.delegate = self;
-        _searchBar.placeholder = NSLocalizedString(@"search", @"Search");
-        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
-    }
-    
-    return _searchBar;
-}
-
-- (EMSearchDisplayController *)searchController
-{
-    if (_searchController == nil) {
-        _searchController = [[EMSearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-        _searchController.delegate = self;
-        _searchController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
-        __weak ContactListViewController *weakSelf = self;
-        [_searchController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
-            static NSString *CellIdentifier = @"ContactListCell";
-            BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            
-            // Configure the cell...
-            if (cell == nil) {
-                cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            
-            NSString *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-            cell.textLabel.text = buddy;
-            cell.username = buddy;
-            
-            return cell;
-        }];
-        
-        [_searchController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
-            return 50;
-        }];
-        
-        [_searchController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            NSString *buddy = [weakSelf.searchController.resultsSource objectAtIndex:indexPath.row];
-            [weakSelf.searchController.searchBar endEditing:YES];
-
-#ifdef REDPACKET_AVALABLE
-            RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc]
-#else
-            ChatViewController *chatVC = [[ChatViewController alloc]
-#endif
-                                          initWithConversationChatter:buddy
-                                                                                conversationType:EMConversationTypeChat];
-            chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
-            [weakSelf.navigationController pushViewController:chatVC animated:YES];
-        }];
-    }
-    
-    return _searchController;
-}
-
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -314,12 +246,12 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
+        UIViewController *chatController = nil;
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc]
+        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
 #else
-        ChatViewController *chatController = [[ChatViewController alloc]
+        chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
 #endif
-                                              initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -362,60 +294,64 @@
         }
     }
 }
-
-#pragma mark - UISearchBarDelegate
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+                                                       
+#pragma mark - UIActionSheetDelegate
+                                                       
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [searchBar setShowsCancelButton:YES animated:YES];
+    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
+        return;
+    }
     
-    return YES;
+    NSIndexPath *indexPath = _currentLongPressIndex;
+    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+    _currentLongPressIndex = nil;
+    
+    [self hideHud];
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
+    EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
+    [self hideHud];
+    if (!error) {
+        //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
+        [self reloadDataSource];
+    }
+    else {
+        [self showHint:error.errorDescription];
+    }
 }
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:(NSString *)searchText collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
-        if (results) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.searchController.resultsSource removeAllObjects];
-                [weakSelf.searchController.resultsSource addObjectsFromArray:results];
-                [weakSelf.searchController.searchResultsTableView reloadData];
-            });
-        }
-    }];
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
-    return YES;
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    searchBar.text = @"";
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
-    [searchBar resignFirstResponder];
-    [searchBar setShowsCancelButton:NO animated:YES];
-}
-
-#pragma mark - BaseTableCellDelegate
-
-- (void)cellImageViewLongPressAtIndexPath:(NSIndexPath *)indexPath
+                                                       
+#pragma mark - EaseUserCellDelegate
+                                                       
+- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
         return;
     }
     
     _currentLongPressIndex = indexPath;
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+}
+                                               
+#pragma mark - EMSearchControllerDelegate     
+                                                       
+- (void)cancelButtonClicked
+{
+    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+}
+                                               
+- (void)searchButtonClickedWithString:(NSString *)aString
+{
+    __weak typeof(self) weakSelf = self;
+    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
+        if (results) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.resultController.displaySource removeAllObjects];
+                [weakSelf.resultController.displaySource addObjectsFromArray:results];
+                [weakSelf.resultController.tableView reloadData];
+            });
+        }
+    }];
 }
 
 #pragma mark - action
@@ -426,7 +362,57 @@
     [self.navigationController pushViewController:addController animated:YES];
 }
 
-#pragma mark - private data
+#pragma mark - private
+                                                       
+- (void)setupSearchController
+{
+    [self enableSearchController];
+    
+    __weak ContactListViewController *weakSelf = self;
+    [self.resultController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
+        static NSString *CellIdentifier = @"BaseTableViewCell";
+        BaseTableViewCell *cell = (BaseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        NSString *buddy = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
+        cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
+        cell.textLabel.text = buddy;
+        cell.username = buddy;
+        
+        return cell;
+    }];
+    
+    [self.resultController setHeightForRowAtIndexPathCompletion:^CGFloat(UITableView *tableView, NSIndexPath *indexPath) {
+        return 50;
+    }];
+    
+    [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        NSString *buddy = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
+        [weakSelf.searchController.searchBar endEditing:YES];
+        
+#ifdef REDPACKET_AVALABLE
+        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy conversationType:EMConversationTypeChat];
+#else
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
+                                     conversationType:EMConversationTypeChat];
+#endif
+        chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
+        [weakSelf.navigationController pushViewController:chatVC animated:YES];
+                                               
+        [weakSelf cancelSearch];
+    }];
+        
+    UISearchBar *searchBar = self.searchController.searchBar;
+    self.tableView.tableHeaderView = searchBar;
+    [searchBar sizeToFit];
+
+}
 
 - (void)_sortDataArray:(NSArray *)buddyList
 {
@@ -461,7 +447,12 @@
             model.nickname = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             
             NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:[[UserProfileManager sharedInstance] getNickNameWithUsername:buddy]];
-            NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
+            NSInteger section;
+            if (firstLetter.length > 0) {
+                section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
+            } else {
+                section = [sortedArray count] - 1;
+            }
             
             NSMutableArray *array = [sortedArray objectAtIndex:section];
             [array addObject:model];
@@ -495,45 +486,6 @@
     
     [self.dataArray addObjectsFromArray:sortedArray];
     [self.tableView reloadData];
-}
-
-#pragma mark - EaseUserCellDelegate
-
-- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0 && indexPath.row >= 1) {
-        // 群组，聊天室
-        return;
-    }
-    
-    _currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:NSLocalizedString(@"friend.block", @"join the blacklist") otherButtonTitles:nil, nil];
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-}
-
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
-        return;
-    }
-    
-    NSIndexPath *indexPath = _currentLongPressIndex;
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
-    _currentLongPressIndex = nil;
-    
-    [self hideHud];
-    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
-    [self hideHud];
-    if (!error) {
-        //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
-        [self reloadDataSource];
-    }
-    else {
-        [self showHint:error.errorDescription];
-    }
 }
 
 #pragma mark - data
@@ -601,7 +553,7 @@
     [self reloadApplyView];
     
     if (_groupController) {
-        [_groupController reloadDataSource];
+        [_groupController tableViewDidTriggerHeaderRefresh];
     }
 }
 

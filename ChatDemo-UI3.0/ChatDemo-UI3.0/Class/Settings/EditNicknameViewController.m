@@ -96,9 +96,8 @@
                                          attributes:attributes
                                             context:nil];
     } else {
-        rect.size = [_tipLabel.text sizeWithFont:_tipLabel.font
-                           constrainedToSize:CGSizeMake(kTextFieldWidth, MAXFLOAT)
-                               lineBreakMode:NSLineBreakByCharWrapping];
+        NSDictionary * attrs = [NSDictionary dictionaryWithObjectsAndKeys:_tipLabel.font, NSFontAttributeName,nil];
+        rect.size = [_tipLabel.text boundingRectWithSize:CGSizeMake(kTextFieldWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
     }
     
     height = rect.size.height;

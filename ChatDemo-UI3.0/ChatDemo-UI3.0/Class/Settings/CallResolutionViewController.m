@@ -10,6 +10,10 @@
 
 #import "ChatDemoHelper.h"
 
+#if DEMO_CALL == 1
+#import "DemoCallManager.h"
+#endif
+
 @interface CallResolutionViewController ()
 
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
@@ -97,10 +101,12 @@
         UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
         newCell.accessoryType = UITableViewCellAccessoryCheckmark;
         
+#if DEMO_CALL == 1
         EMCallVideoResolution resolution = (EMCallVideoResolution)indexPath.row;
         EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.videoResolution = resolution;
-        [ChatDemoHelper updateCallOptions];
+        [[DemoCallManager sharedManager] saveCallOptions];
+#endif
     }
     
     self.selectedIndexPath = indexPath;

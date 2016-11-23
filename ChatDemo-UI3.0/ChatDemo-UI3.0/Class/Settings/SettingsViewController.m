@@ -21,12 +21,7 @@
 #import "RedpacketViewControl.h"
 
 #if DEMO_CALL == 1
-#import "CallViewController.h"
-#endif
-
-#if DEMO_CALL == 1
-#import "CallViewController.h"
-#import "ChatDemoHelper.h"
+#import "DemoCallManager.h"
 #import "CallResolutionViewController.h"
 #endif
 
@@ -296,7 +291,7 @@
                 if ([nameTextField.text intValue] >= 150 && [nameTextField.text intValue] <= 1000) {
                     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
                     options.videoKbps = [nameTextField.text intValue];
-                    [ChatDemoHelper updateCallOptions];
+                    [[DemoCallManager sharedManager] saveCallOptions];
                     flag = NO;
                 }
             }
@@ -360,9 +355,11 @@
     
 - (void)callPushChanged:(UISwitch *)control
 {
+#if DEMO_CALL == 1
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.isSendPushIfOffline = control.on;
-    [ChatDemoHelper updateCallOptions];
+    [[DemoCallManager sharedManager] saveCallOptions];
+#endif
 }
 
 - (void)refreshConfig
