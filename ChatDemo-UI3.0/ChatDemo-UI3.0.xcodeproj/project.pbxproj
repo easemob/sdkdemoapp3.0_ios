@@ -83,6 +83,10 @@
 		3A386F0C1DE5539C000F3D8E /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A386ECD1DE5539C000F3D8E /* default_avatar.png */; };
 		3A386F151DE557BA000F3D8E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F131DE557BA000F3D8E /* Crashlytics.framework */; };
 		3A386F161DE557BA000F3D8E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F141DE557BA000F3D8E /* Fabric.framework */; };
+		3A386F1F1DE55AAF000F3D8E /* ConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386F191DE55AAF000F3D8E /* ConferenceViewController.m */; };
+		3A386F201DE55AAF000F3D8E /* ConferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A386F1A1DE55AAF000F3D8E /* ConferenceViewController.xib */; };
+		3A386F211DE55AAF000F3D8E /* StreamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386F1C1DE55AAF000F3D8E /* StreamTableViewController.m */; };
+		3A386F221DE55AAF000F3D8E /* UserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386F1E1DE55AAF000F3D8E /* UserTableViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
@@ -408,6 +412,13 @@
 		3A386ECD1DE5539C000F3D8E /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
 		3A386F131DE557BA000F3D8E /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3A386F141DE557BA000F3D8E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		3A386F181DE55AAF000F3D8E /* ConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConferenceViewController.h; sourceTree = "<group>"; };
+		3A386F191DE55AAF000F3D8E /* ConferenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConferenceViewController.m; sourceTree = "<group>"; };
+		3A386F1A1DE55AAF000F3D8E /* ConferenceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConferenceViewController.xib; sourceTree = "<group>"; };
+		3A386F1B1DE55AAF000F3D8E /* StreamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamTableViewController.h; sourceTree = "<group>"; };
+		3A386F1C1DE55AAF000F3D8E /* StreamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamTableViewController.m; sourceTree = "<group>"; };
+		3A386F1D1DE55AAF000F3D8E /* UserTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTableViewController.h; sourceTree = "<group>"; };
+		3A386F1E1DE55AAF000F3D8E /* UserTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTableViewController.m; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
@@ -870,6 +881,7 @@
 		3A386E881DE5539C000F3D8E /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				3A386F171DE55AAF000F3D8E /* Conference */,
 				3A386E891DE5539C000F3D8E /* 1v1call */,
 				3A386E981DE5539C000F3D8E /* DemoCallManager.h */,
 				3A386E991DE5539C000F3D8E /* DemoCallManager.m */,
@@ -947,6 +959,20 @@
 				3A386ECD1DE5539C000F3D8E /* default_avatar.png */,
 			);
 			path = imgs;
+			sourceTree = "<group>";
+		};
+		3A386F171DE55AAF000F3D8E /* Conference */ = {
+			isa = PBXGroup;
+			children = (
+				3A386F181DE55AAF000F3D8E /* ConferenceViewController.h */,
+				3A386F191DE55AAF000F3D8E /* ConferenceViewController.m */,
+				3A386F1A1DE55AAF000F3D8E /* ConferenceViewController.xib */,
+				3A386F1B1DE55AAF000F3D8E /* StreamTableViewController.h */,
+				3A386F1C1DE55AAF000F3D8E /* StreamTableViewController.m */,
+				3A386F1D1DE55AAF000F3D8E /* UserTableViewController.h */,
+				3A386F1E1DE55AAF000F3D8E /* UserTableViewController.m */,
+			);
+			path = Conference;
 			sourceTree = "<group>";
 		};
 		3C16149C1973D1A600564BF5 /* Core Data */ = {
@@ -1782,6 +1808,7 @@
 				D2A910831C83E7890025AD0A /* 57.png in Resources */,
 				D2B3DACE1BF1D7B700913BD5 /* icon_013.gif in Resources */,
 				EBD2AB561A7CDAC000D16528 /* faceDelete@2x.png in Resources */,
+				3A386F201DE55AAF000F3D8E /* ConferenceViewController.xib in Resources */,
 				D2B3DAC61BF1D7B700913BD5 /* icon_002.gif in Resources */,
 				3A386EF81DE5539C000F3D8E /* Button_Mute disabled@2x.png in Resources */,
 				EBD2AB3C1A7CDAC000D16528 /* call_out_h@2x.png in Resources */,
@@ -1846,10 +1873,12 @@
 				3A386EDA1DE5539C000F3D8E /* DemoCallManager.m in Sources */,
 				906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */,
 				3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */,
+				3A386F1F1DE55AAF000F3D8E /* ConferenceViewController.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
 				D2F7691C1CBF3F26009778FB /* SearchMessageViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
+				3A386F221DE55AAF000F3D8E /* UserTableViewController.m in Sources */,
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
 				287094871DAC6EA000BCB3CD /* TransferCell.m in Sources */,
@@ -1875,6 +1904,7 @@
 				3C35365C19A22164003EF79E /* GroupSettingViewController.m in Sources */,
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
+				3A386F211DE55AAF000F3D8E /* StreamTableViewController.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				3C13D94B1A12095D00903622 /* GroupBansViewController.m in Sources */,

@@ -18,7 +18,7 @@
 
 static DemoCallManager *callManager = nil;
 
-@interface DemoCallManager()<EMCallManagerDelegate>
+@interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate>
 
 @property (strong, nonatomic) NSObject *callLock;
 
@@ -58,6 +58,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)dealloc
 {
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_CALL object:nil];
 }
@@ -70,6 +71,7 @@ static DemoCallManager *callManager = nil;
     _currentSession = nil;
     _currentController = nil;
     
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
@@ -120,6 +122,22 @@ static DemoCallManager *callManager = nil;
     
     [self.timer invalidate];
     self.timer = nil;
+}
+
+#pragma mark - EMChatManagerDelegate
+
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    for (EMMessage *message in aCmdMessages) {
+        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
+        NSString *action = cmdBody.action;
+        if ([action isEqualToString:@"inviteToJoinConference"]) {
+            //            NSString *callId = [message.ext objectForKey:@"callId"];
+        } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"已转为会议模式" delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+    }
 }
 
 #pragma mark - EMCallManagerDelegate

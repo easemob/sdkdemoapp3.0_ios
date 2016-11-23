@@ -8,7 +8,7 @@
 
 #import "ConferenceViewController.h"
 
-#import "ChatDemoHelper.h"
+#import "DemoCallManager.h"
 #import "StreamTableViewController.h"
 #import "UserTableViewController.h"
 
@@ -20,11 +20,21 @@
     float _height;
 }
 
-@property (strong, nonatomic) EMCallLocalView *localView;
+@property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
-@property (strong, nonatomic) NSMutableDictionary *remoteViews;
+@property (weak, nonatomic) IBOutlet UIView *remotesView;
+
+@property (weak, nonatomic) IBOutlet UIView *actionView;
+@property (weak, nonatomic) IBOutlet UIButton *speakerOutButton;
+@property (weak, nonatomic) IBOutlet UIButton *silenceButton;
+@property (weak, nonatomic) IBOutlet UIButton *switchCameraButton;
+@property (weak, nonatomic) IBOutlet UIButton *hangupButton;
 
 @property (strong, nonatomic) EMCallConference *conference;
+@property (strong, nonatomic) EMCallLocalView *localView;
+@property (strong, nonatomic) NSMutableDictionary *remoteViews;
 
 @end
 
@@ -34,42 +44,42 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIBarButtonItem *exitItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(exitConfernece)];
-    UIBarButtonItem *subItem = [[UIBarButtonItem alloc] initWithTitle:@"订阅" style:UIBarButtonItemStylePlain target:self action:@selector(subStream)];
-    UIBarButtonItem *inviteItem = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStylePlain target:self action:@selector(inviteUser)];
-    self.navigationItem.rightBarButtonItems = @[exitItem, subItem, inviteItem];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationInviteUser:) name:@"selecteInviteUser" object:nil];
+//    UIBarButtonItem *exitItem = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(exitConfernece)];
+//    UIBarButtonItem *subItem = [[UIBarButtonItem alloc] initWithTitle:@"订阅" style:UIBarButtonItemStylePlain target:self action:@selector(subStream)];
+//    UIBarButtonItem *inviteItem = [[UIBarButtonItem alloc] initWithTitle:@"邀请" style:UIBarButtonItemStylePlain target:self action:@selector(inviteUser)];
+//    self.navigationItem.rightBarButtonItems = @[exitItem, subItem, inviteItem];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationInviteUser:) name:@"selecteInviteUser" object:nil];
     
     self.remoteViews = [[NSMutableDictionary alloc] init];
     
-    _ox = 10;
-    _oy = 80;
-    _width = 120;
-    _height = 140;
-    
-    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
-    self.localView.backgroundColor = [UIColor lightGrayColor];
-    [self.view addSubview:self.localView];
-    _ox = 150;
-    
-    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
-    EMError *error = nil;
-    self.conference = [[EMClient sharedClient].callManager joinConferenceWithConfId:@"0001|testConference" password:@"" localVideoView:self.localView error:&error];
-    if (error) {
-        self.conference = nil;
-//        dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController popViewControllerAnimated:YES];
-//        });
-    }
-    else{
-        [self _setupSubviews];
-    }
-    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        
-//        
-//    });
+//    _ox = 10;
+//    _oy = 80;
+//    _width = 120;
+//    _height = 140;
+//    
+//    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_ox, _oy, _width, _height)];
+//    self.localView.backgroundColor = [UIColor lightGrayColor];
+//    [self.view addSubview:self.localView];
+//    _ox = 150;
+//    
+//    [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
+//    EMError *error = nil;
+//    self.conference = [[EMClient sharedClient].callManager joinConferenceWithConfId:@"0001|testConference" password:@"" localVideoView:self.localView error:&error];
+//    if (error) {
+//        self.conference = nil;
+////        dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.navigationController popViewControllerAnimated:YES];
+////        });
+//    }
+//    else{
+//        [self _setupSubviews];
+//    }
+//    
+////    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+////        
+////        
+////    });
 }
 
 - (void)didReceiveMemoryWarning {
