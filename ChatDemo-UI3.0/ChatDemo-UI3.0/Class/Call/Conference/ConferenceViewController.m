@@ -8,6 +8,9 @@
 
 #import "ConferenceViewController.h"
 
+#import "EMClient+Conference.h"
+#import "IEMConferenceManager.h"
+
 #import "DemoCallManager.h"
 #import "StreamTableViewController.h"
 #import "UserTableViewController.h"
