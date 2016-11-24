@@ -25,6 +25,7 @@
 
 #if DEMO_CALL == 1
 #import "DemoCallManager.h"
+#import "DemoConfManager.h"
 #endif
 
 static ChatDemoHelper *helper = nil;
@@ -66,6 +67,7 @@ static ChatDemoHelper *helper = nil;
     
 #if DEMO_CALL == 1
     [[DemoCallManager sharedManager] setMainController:mainVC];
+    [[DemoConfManager sharedManager] setMainController:mainVC];
 #endif
 }
 
@@ -85,6 +87,7 @@ static ChatDemoHelper *helper = nil;
     
 #if DEMO_CALL == 1
     [DemoCallManager sharedManager];
+    [DemoConfManager sharedManager];
 #endif
 }
 

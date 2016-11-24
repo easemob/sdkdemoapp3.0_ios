@@ -25,6 +25,11 @@
 #import "BaseTableViewCell.h"
 #import "UIViewController+SearchController.h"
 
+#if DEMO_CALL == 1
+#import "DemoCallManager.h"
+#import "DemoConfManager.h"
+#endif
+
 
 @implementation NSString (search)
 
@@ -241,7 +246,9 @@
 //            [self.navigationController pushViewController:robot animated:YES];
 //        }
         else if (row == 3) {
-             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_CONFERENCE object:nil];
+#if DEMO_CALL == 1
+            [[DemoConfManager sharedManager] chooseUsersToConferenceAction];
+#endif
         }
     }
     else{

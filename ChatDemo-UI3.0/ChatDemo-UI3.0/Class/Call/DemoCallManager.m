@@ -347,7 +347,6 @@ static DemoCallManager *callManager = nil;
     [self _clearCurrentCallViewAndData];
 }
 
-
 #endif
 
 @end

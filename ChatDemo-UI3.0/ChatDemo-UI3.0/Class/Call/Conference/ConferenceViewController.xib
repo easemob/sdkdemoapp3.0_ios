@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,6 +23,7 @@
                 <outlet property="switchCameraButton" destination="xk1-zM-duE" id="kJh-dT-aNW"/>
                 <outlet property="topView" destination="g6Z-ui-5RU" id="3eF-8m-zw1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="voiceAddButton" destination="6Sd-wp-WMu" id="bt9-EC-V0c"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -70,6 +73,9 @@
                                 <constraint firstAttribute="width" constant="65" id="dcS-bI-YnD"/>
                             </constraints>
                             <state key="normal" image="Button_End.png"/>
+                            <connections>
+                                <action selector="hangupAction:" destination="-1" eventType="touchUpInside" id="DLB-Sh-SAh"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nU-Ls-Abk">
                             <rect key="frame" x="235" y="20" width="40" height="40"/>
@@ -127,10 +133,46 @@
             </constraints>
             <point key="canvasLocation" x="-291.5" y="45.5"/>
         </view>
+        <view hidden="YES" contentMode="scaleToFill" id="6Sd-wp-WMu">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zf-21-J3X">
+                    <rect key="frame" x="15" y="0.0" width="70" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="3zf-21-J3X" secondAttribute="height" multiplier="1:1" id="elU-dE-x8f"/>
+                    </constraints>
+                    <state key="normal" image="Button_Minimize.png"/>
+                    <connections>
+                        <action selector="inviteUserAction:" destination="-1" eventType="touchUpInside" id="Apd-YP-jye"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="添加成员" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTT-fl-9tj">
+                    <rect key="frame" x="0.0" y="70" width="100" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="hTT-fl-9tj" secondAttribute="trailing" id="72u-Zp-JAL"/>
+                <constraint firstAttribute="bottom" secondItem="hTT-fl-9tj" secondAttribute="bottom" id="JDx-H3-udU"/>
+                <constraint firstItem="hTT-fl-9tj" firstAttribute="top" secondItem="3zf-21-J3X" secondAttribute="bottom" id="QXy-WA-QsP"/>
+                <constraint firstItem="3zf-21-J3X" firstAttribute="top" secondItem="6Sd-wp-WMu" secondAttribute="top" id="TAe-tU-DVE"/>
+                <constraint firstItem="3zf-21-J3X" firstAttribute="centerX" secondItem="6Sd-wp-WMu" secondAttribute="centerX" id="pYf-Rk-EDU"/>
+                <constraint firstItem="3zf-21-J3X" firstAttribute="height" secondItem="6Sd-wp-WMu" secondAttribute="height" multiplier="0.7" id="pzJ-2Y-uqP"/>
+                <constraint firstItem="hTT-fl-9tj" firstAttribute="leading" secondItem="6Sd-wp-WMu" secondAttribute="leading" id="uf1-ic-QD5"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-427" y="536"/>
+        </view>
     </objects>
     <resources>
         <image name="Button_Camera switch.png" width="28" height="21"/>
         <image name="Button_End.png" width="65" height="65"/>
+        <image name="Button_Minimize.png" width="25" height="25"/>
         <image name="Button_Mute.png" width="16" height="25"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
     </resources>
