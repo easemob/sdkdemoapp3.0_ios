@@ -15,7 +15,7 @@
     // Initialization code
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    [self.checkButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateSelected];
+    [self.checkButton setImage:[UIImage imageNamed:@"conf_check"] forState:UIControlStateSelected];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

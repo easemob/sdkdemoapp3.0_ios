@@ -19,8 +19,11 @@
 
 @interface ConferenceViewController : UIViewController
 
+@property (nonatomic, readonly) EMCallType type;
+
 - (instancetype)initWithCallId:(NSString *)aCallId;
 
-- (instancetype)initWithUsers:(NSArray *)aUserNams;
+- (instancetype)initWithUsers:(NSArray *)aUserNams
+                         type:(EMCallType)aType;
 
 @end

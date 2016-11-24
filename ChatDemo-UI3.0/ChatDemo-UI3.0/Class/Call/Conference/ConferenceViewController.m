@@ -20,8 +20,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
-    
 }
 
 @end
@@ -34,6 +32,7 @@
     float _border;
     
     NSString *_callId;
+    BOOL _isConnected;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -49,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *hangupButton;
 
 @property (weak, nonatomic) IBOutlet UIView *voiceAddButton;
+@property (weak, nonatomic) IBOutlet UIView *videoAddButton;
 
 @property (strong, nonatomic) EMCallConference *conference;
 @property (strong, nonatomic) NSMutableArray *remoteNames;
@@ -64,6 +64,7 @@
     self = [super init];
     if (self) {
         _callId = nil;
+        _isConnected = NO;
     }
     
     return self;
@@ -80,12 +81,14 @@
 }
 
 - (instancetype)initWithUsers:(NSArray *)aUserNams
+                         type:(EMCallType)aType
 {
     self = [super init];
     if (self) {
         _userViews = [[NSMutableDictionary alloc] init];
         _remoteNames = [[NSMutableArray alloc] init];
         [_remoteNames addObjectsFromArray:aUserNams];
+        _type = aType;
     }
     
     return self;
@@ -98,26 +101,28 @@
     
     [self _setupSubviews];
     
-//    [[EMClient sharedClient].conferenceManager setBuilder:self];
-//    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
-//
-//
-//
-//    
-//    EMError *error = nil;
-//    if (_callId == nil) {
-//        self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMCallTypeVideo password:nil localVideoView:self.localView error:&error];
-//    } else {
-//        self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" localVideoView:self.localView error:&error];
-//    }
-//    
-//    if (error) {
-//        self.conference = nil;
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }
-//    else{
-//        [self _setupSubviews];
-//    }
+    [[EMClient sharedClient].conferenceManager setBuilder:self];
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+    
+    EMError *error = nil;
+    EMCallLocalView *localView = self.type == EMCallTypeVoice ? nil : nil;
+    if (_callId == nil) {
+        self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:nil localVideoView:localView error:&error];
+    } else {
+        self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" localVideoView:localView error:&error];
+    }
+    
+    if (error) {
+        self.conference = nil;
+        [self.navigationController popViewControllerAnimated:NO];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    } else {
+        for (NSString *userName in self.remoteNames) {
+            [self _inviteUser:userName];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,10 +130,24 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.navigationController.navigationBarHidden = NO;
+}
+
 - (void)dealloc
 {
-//    [[EMClient sharedClient].conferenceManager setBuilder:nil];
-//    [[EMClient sharedClient].conferenceManager removeDelegate:self];
+    [[EMClient sharedClient].conferenceManager setBuilder:nil];
+    [[EMClient sharedClient].conferenceManager removeDelegate:self];
 }
 
 #pragma mark - Private
@@ -139,6 +158,17 @@
 //    CGFloat width = 80;
 //    CGFloat height = _callSession.remoteView.frame.size.height / _callSession.remoteView.frame.size.width * width;
 //    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
+    
+    if (_isConnected == NO) {
+        self.statusLabel.text = @"正在连接...";
+    }
+    
+    UIButton *addButton = [self.voiceAddButton viewWithTag:100];
+    addButton.backgroundColor = [UIColor redColor];
+    addButton.layer.borderColor = [UIColor grayColor].CGColor;
+    addButton.layer.borderWidth = 1;
+    addButton.layer.cornerRadius = addButton.frame.size.width / 2;
+    addButton.layer.masksToBounds = YES;
     
     CGSize boundSize = [[UIScreen mainScreen] bounds].size;
     int maxHeight = (self.remotesView.frame.size.height - 20) / 2;
@@ -213,6 +243,18 @@
     }
 }
 
+- (void)_inviteUser:(NSString *)aUserName
+{
+    EMError *error = nil;
+    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference.callId userName:aUserName ext:nil error:&error];
+    if (error) {
+        [self showHint:@"邀请发送失败，请重新发送"];
+    }
+    else {
+        [self showHint:@"邀请发送成功"];
+    }
+}
+
 #pragma mark - StreamTableViewControllerDelegate
 
 - (void)streamController:(StreamTableViewController *)aController
@@ -231,7 +273,6 @@
         CGFloat ox = _border + col * (_width + _border);
         CGFloat oy = _top + row * (_height + _border);
         remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(ox, oy, _width, _height)];
-//        remoteView.backgroundColor = [UIColor redColor];
         [self.userViews setObject:remoteView forKey:subName];
     }
     
@@ -278,6 +319,9 @@
 //        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", aUsername];
 //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Enter 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
 //        [alertView show];
+        
+        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", aUsername];
+        [self showHint:message];
     }
 }
 
@@ -286,8 +330,9 @@
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", aUsername];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Exit 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Exit 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [alertView show];
+        [self showHint:message];
         
         EMCallRemoteView *view = [self.userViews objectForKey:aUsername];
         if (view) {
@@ -316,9 +361,10 @@
                               user:(NSString *)aUsername
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", aUsername];
+        NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", aUsername];
 //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pub 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
 //        [alertView show];
+        [self showHint:message];
         
         EMCallStream *stream = nil;
         NSArray *streams = [self.conference getSubscribableStreams];
@@ -346,6 +392,7 @@
     if ([aConference.callId isEqualToString:self.conference.callId]) {
 //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"成员通知" message:@"会议成员已更新" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
 //        [alertView show];
+        [self showHint:@"会议成员已更新"];
     }
 }
 
@@ -373,41 +420,14 @@
         
         EMConfUserVoiceView *userView = [self.userViews objectForKey:userName];
         if (userView) {
-            userView.statusImgView.backgroundColor = [UIColor greenColor];
+            userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
         }
     }
 }
 
-#pragma mark - notification
-
-- (void)notificationInviteUser:(NSNotification *)notification
-{
-    NSString *username = (NSString *)notification.object;
-//    NSString *from = [[EMClient sharedClient] currentUsername];
-//    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@"inviteToJoinConference"];
-//    NSDictionary *ext = @{@"callId": self.conference.callId};
-//    EMMessage *message = [[EMMessage alloc] initWithConversationID:username from:from to:username body:body ext:ext];
-//    message.chatType = EMChatTypeChat;
-//    [[EMClient sharedClient].chatManager sendMessage:message progress:^(int progress) {
-//        //
-//    } completion:^(EMMessage *message, EMError *error) {
-//        //
-//    }];
-    
-    EMError *error = nil;
-    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference.callId userName:username ext:nil error:&error];
-    if (error) {
-        [self showHint:@"邀请发送失败，请重新发送"];
-    }
-    else {
-        [self showHint:@"邀请发送成功"];
-    }
-}
-
-
 #pragma mark - action
 
-- (IBAction)inviteUserAction:(id)sender
+- (IBAction)addUserAction:(id)sender
 {
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
     NSMutableArray *usernames = [[NSMutableArray alloc] init];
@@ -416,33 +436,40 @@
             [usernames addObject:username];
         }
     }
-    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:usernames];
+    
+    NSMutableArray *selectedUsers = [[NSMutableArray alloc] init];
+    [selectedUsers addObject:[EMClient sharedClient].currentUsername];
+    [selectedUsers addObjectsFromArray:self.remoteNames];
+    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:usernames selectedUsers:selectedUsers];
     [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
-        //
+        [self.remoteNames addObjectsFromArray:selectedUsers];
+        
+        for (NSString *userName in selectedUsers) {
+            [self _setupUserVoiceView:userName];
+            [self _inviteUser:userName];
+        }
+        [self _layoutVoiceAddButton];
     }];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)hangupAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:NO];
-}
-
-- (void)exitConfernece
-{
     if (!self.conference) {
-        [self.navigationController popViewControllerAnimated:YES];
+        self.navigationController.navigationBarHidden = NO;
+        [self.navigationController popViewControllerAnimated:NO];
         return;
     }
     
     if (_callId == nil) {
-         [[EMClient sharedClient].conferenceManager destroyConferenceWithId:self.conference.callId error:nil];
+        [[EMClient sharedClient].conferenceManager destroyConferenceWithId:self.conference.callId error:nil];
     } else {
-         [[EMClient sharedClient].conferenceManager leaveConferenceWithId:self.conference.callId error:nil];
+        [[EMClient sharedClient].conferenceManager leaveConferenceWithId:self.conference.callId error:nil];
     }
-   
+    
     self.conference = nil;
-    [self.navigationController popViewControllerAnimated:YES];
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)subStream
@@ -457,19 +484,6 @@
         controller.delegate = self;
         [self.navigationController pushViewController:controller animated:YES];
     }
-}
-
-- (void)inviteUser
-{
-    NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-    NSMutableArray *usernames = [[NSMutableArray alloc] init];
-    for (NSString *username in contacts) {
-        if (![self.remoteNames containsObject:username]) {
-            [usernames addObject:username];
-        }
-    }
-    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:usernames];
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

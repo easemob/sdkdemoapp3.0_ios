@@ -29,6 +29,7 @@
 
 @property (copy) void (^selecteUserFinishedCompletion)(NSArray *selectedUsers);
 
-- (instancetype)initWithDataSource:(NSArray *)aDataSource;
+- (instancetype)initWithDataSource:(NSArray *)aDataSource
+                     selectedUsers:(NSArray *)aSelectedUsers;
 
 @end

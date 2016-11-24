@@ -38,7 +38,7 @@
                             <constraint firstAttribute="width" constant="37" id="MGb-vC-4XK"/>
                             <constraint firstAttribute="height" constant="37" id="RpB-RV-F5Z"/>
                         </constraints>
-                        <state key="normal" image="uncheck.png"/>
+                        <state key="normal" image="conf_uncheck.png"/>
                         <connections>
                             <action selector="checkAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="4Dy-Yd-gka"/>
                         </connections>
@@ -65,7 +65,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="conf_uncheck.png" width="20" height="20"/>
         <image name="default_avatar.png" width="50" height="50"/>
-        <image name="uncheck.png" width="20" height="20"/>
     </resources>
 </document>

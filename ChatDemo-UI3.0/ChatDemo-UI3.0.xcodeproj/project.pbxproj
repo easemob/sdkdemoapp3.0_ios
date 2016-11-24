@@ -92,11 +92,19 @@
 		3A386F161DE557BA000F3D8E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F141DE557BA000F3D8E /* Fabric.framework */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A74957F1DE69A1500D85AEF /* EMConfUserVoiceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A74957E1DE69A1500D85AEF /* EMConfUserVoiceView.xib */; };
-		3A7495831DE6CF0D00D85AEF /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495821DE6CF0D00D85AEF /* uncheck.png */; };
-		3A7495851DE6CF3300D85AEF /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495841DE6CF3300D85AEF /* check.png */; };
 		3A7495871DE6CFB500D85AEF /* EMConfSelectionUserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495861DE6CFB500D85AEF /* EMConfSelectionUserView.xib */; };
-		3A7495891DE6D10600D85AEF /* conf_delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495881DE6D10600D85AEF /* conf_delete@3x.png */; };
-		3A74958B1DE6D11B00D85AEF /* conf_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74958A1DE6D11B00D85AEF /* conf_delete@2x.png */; };
+		3A74958E1DE6F2BE00D85AEF /* conf_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74958C1DE6F2BE00D85AEF /* conf_delete@2x.png */; };
+		3A74958F1DE6F2BE00D85AEF /* conf_delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74958D1DE6F2BE00D85AEF /* conf_delete@3x.png */; };
+		3A7495921DE6F2E500D85AEF /* conf_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495901DE6F2E500D85AEF /* conf_add@2x.png */; };
+		3A7495931DE6F2E500D85AEF /* conf_add@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495911DE6F2E500D85AEF /* conf_add@3x.png */; };
+		3A7495981DE6F36A00D85AEF /* conf_check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495941DE6F36A00D85AEF /* conf_check@2x.png */; };
+		3A7495991DE6F36A00D85AEF /* conf_check@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495951DE6F36A00D85AEF /* conf_check@3x.png */; };
+		3A74959A1DE6F36A00D85AEF /* conf_uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495961DE6F36A00D85AEF /* conf_uncheck@2x.png */; };
+		3A74959B1DE6F36A00D85AEF /* conf_uncheck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495971DE6F36A00D85AEF /* conf_uncheck@3x.png */; };
+		3A7495A01DE6F39600D85AEF /* conf_connected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74959C1DE6F39600D85AEF /* conf_connected@2x.png */; };
+		3A7495A11DE6F39600D85AEF /* conf_connected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74959D1DE6F39600D85AEF /* conf_connected@3x.png */; };
+		3A7495A21DE6F39600D85AEF /* conf_ring@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74959E1DE6F39600D85AEF /* conf_ring@2x.png */; };
+		3A7495A31DE6F39600D85AEF /* conf_ring@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74959F1DE6F39600D85AEF /* conf_ring@3x.png */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3A87CD4D1D8FBE2200016402 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */; };
@@ -436,11 +444,19 @@
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A74957E1DE69A1500D85AEF /* EMConfUserVoiceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMConfUserVoiceView.xib; sourceTree = "<group>"; };
-		3A7495821DE6CF0D00D85AEF /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheck.png; sourceTree = "<group>"; };
-		3A7495841DE6CF3300D85AEF /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		3A7495861DE6CFB500D85AEF /* EMConfSelectionUserView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMConfSelectionUserView.xib; sourceTree = "<group>"; };
-		3A7495881DE6D10600D85AEF /* conf_delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@3x.png"; sourceTree = "<group>"; };
-		3A74958A1DE6D11B00D85AEF /* conf_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@2x.png"; sourceTree = "<group>"; };
+		3A74958C1DE6F2BE00D85AEF /* conf_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@2x.png"; sourceTree = "<group>"; };
+		3A74958D1DE6F2BE00D85AEF /* conf_delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@3x.png"; sourceTree = "<group>"; };
+		3A7495901DE6F2E500D85AEF /* conf_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@2x.png"; sourceTree = "<group>"; };
+		3A7495911DE6F2E500D85AEF /* conf_add@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@3x.png"; sourceTree = "<group>"; };
+		3A7495941DE6F36A00D85AEF /* conf_check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_check@2x.png"; sourceTree = "<group>"; };
+		3A7495951DE6F36A00D85AEF /* conf_check@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_check@3x.png"; sourceTree = "<group>"; };
+		3A7495961DE6F36A00D85AEF /* conf_uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_uncheck@2x.png"; sourceTree = "<group>"; };
+		3A7495971DE6F36A00D85AEF /* conf_uncheck@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_uncheck@3x.png"; sourceTree = "<group>"; };
+		3A74959C1DE6F39600D85AEF /* conf_connected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_connected@2x.png"; sourceTree = "<group>"; };
+		3A74959D1DE6F39600D85AEF /* conf_connected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_connected@3x.png"; sourceTree = "<group>"; };
+		3A74959E1DE6F39600D85AEF /* conf_ring@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_ring@2x.png"; sourceTree = "<group>"; };
+		3A74959F1DE6F39600D85AEF /* conf_ring@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_ring@3x.png"; sourceTree = "<group>"; };
 		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
 		3A807B0D1D951301004D18CB /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
 		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
@@ -957,10 +973,18 @@
 		3A386E9C1DE5539C000F3D8E /* imgs */ = {
 			isa = PBXGroup;
 			children = (
-				3A74958A1DE6D11B00D85AEF /* conf_delete@2x.png */,
-				3A7495881DE6D10600D85AEF /* conf_delete@3x.png */,
-				3A7495841DE6CF3300D85AEF /* check.png */,
-				3A7495821DE6CF0D00D85AEF /* uncheck.png */,
+				3A74959C1DE6F39600D85AEF /* conf_connected@2x.png */,
+				3A74959D1DE6F39600D85AEF /* conf_connected@3x.png */,
+				3A74959E1DE6F39600D85AEF /* conf_ring@2x.png */,
+				3A74959F1DE6F39600D85AEF /* conf_ring@3x.png */,
+				3A7495941DE6F36A00D85AEF /* conf_check@2x.png */,
+				3A7495951DE6F36A00D85AEF /* conf_check@3x.png */,
+				3A7495961DE6F36A00D85AEF /* conf_uncheck@2x.png */,
+				3A7495971DE6F36A00D85AEF /* conf_uncheck@3x.png */,
+				3A7495901DE6F2E500D85AEF /* conf_add@2x.png */,
+				3A7495911DE6F2E500D85AEF /* conf_add@3x.png */,
+				3A74958C1DE6F2BE00D85AEF /* conf_delete@2x.png */,
+				3A74958D1DE6F2BE00D85AEF /* conf_delete@3x.png */,
 				3A386E9D1DE5539C000F3D8E /* Button_Answer.png */,
 				3A386E9E1DE5539C000F3D8E /* Button_Answer@2x.png */,
 				3A386E9F1DE5539C000F3D8E /* Button_Answer@3x.png */,
@@ -1705,6 +1729,7 @@
 				3A386EE41DE5539C000F3D8E /* Button_Camera switch disabled@3x.png in Resources */,
 				EBD2AB531A7CDAC000D16528 /* chat_location_preview.png in Resources */,
 				3A386EF51DE5539C000F3D8E /* Button_Mute active@2x.png in Resources */,
+				3A74959A1DE6F36A00D85AEF /* conf_uncheck@2x.png in Resources */,
 				EBD2ABA71A7CDAC000D16528 /* group_participant_add@2x.png in Resources */,
 				EBD2AB891A7CDAC000D16528 /* chat_receiver_audio_playing002@2x.png in Resources */,
 				3A74957F1DE69A1500D85AEF /* EMConfUserVoiceView.xib in Resources */,
@@ -1725,11 +1750,10 @@
 				3A386EDD1DE5539C000F3D8E /* Button_Answer@2x.png in Resources */,
 				EBD2AB581A7CDAC000D16528 /* messageSendFail@2x.png in Resources */,
 				3A386EFC1DE5539C000F3D8E /* Button_Mute@3x.png in Resources */,
-				3A74958B1DE6D11B00D85AEF /* conf_delete@2x.png in Resources */,
 				EBD2ABB21A7CDAC000D16528 /* tabbar_contacts@2x.png in Resources */,
 				3A386F001DE5539C000F3D8E /* Button_Speaker disabled.png in Resources */,
-				3A7495891DE6D10600D85AEF /* conf_delete@3x.png in Resources */,
 				EBD2AB9E1A7CDAC000D16528 /* password.png in Resources */,
+				3A7495991DE6F36A00D85AEF /* conf_check@3x.png in Resources */,
 				D2B3DACA1BF1D7B700913BD5 /* icon_010.gif in Resources */,
 				D2B3DACF1BF1D7B700913BD5 /* icon_018_cover.png in Resources */,
 				EBD2AB511A7CDAC000D16528 /* chat_location_detail_disclosureHL.png in Resources */,
@@ -1746,7 +1770,9 @@
 				3A386EE01DE5539C000F3D8E /* Button_Camera switch active@2x.png in Resources */,
 				3A386EED1DE5539C000F3D8E /* Button_End@3x.png in Resources */,
 				3A386F0B1DE5539C000F3D8E /* Button_Stats@3x.png in Resources */,
+				3A7495981DE6F36A00D85AEF /* conf_check@2x.png in Resources */,
 				EBD2AB9F1A7CDAC000D16528 /* password@2x.png in Resources */,
+				3A74959B1DE6F36A00D85AEF /* conf_uncheck@3x.png in Resources */,
 				EBD2AB411A7CDAC000D16528 /* callBg@2x.png in Resources */,
 				3A1C569F1DE59B310032D89C /* EMConfAddUserCell.xib in Resources */,
 				3A386EDE1DE5539C000F3D8E /* Button_Answer@3x.png in Resources */,
@@ -1756,12 +1782,15 @@
 				EBD2ABAB1A7CDAC000D16528 /* nav_createGroup@2x.png in Resources */,
 				D2B3DAD61BF1D7B700913BD5 /* icon_021.gif in Resources */,
 				D2B3DAD81BF1D7B700913BD5 /* icon_022.gif in Resources */,
+				3A7495931DE6F2E500D85AEF /* conf_add@3x.png in Resources */,
 				EBD2AB911A7CDAC000D16528 /* chat_sender_audio_playing_000@2x.png in Resources */,
 				EBD2AB9D1A7CDAC000D16528 /* account@2x.png in Resources */,
+				3A7495A01DE6F39600D85AEF /* conf_connected@2x.png in Resources */,
 				EBD2AB3F1A7CDAC000D16528 /* call_silence_h.png in Resources */,
 				3C9B15911A6D157E00D09FD6 /* InfoPlist.strings in Resources */,
 				D2A910801C83E7890025AD0A /* 114.png in Resources */,
 				EBD2AB4F1A7CDAC000D16528 /* chat_location_detail_disclosure.png in Resources */,
+				3A74958E1DE6F2BE00D85AEF /* conf_delete@2x.png in Resources */,
 				D2B3DAC81BF1D7B700913BD5 /* icon_007.gif in Resources */,
 				EBD2AB9B1A7CDAC000D16528 /* chat_sender_bg@2x.png in Resources */,
 				EBD2AB521A7CDAC000D16528 /* chat_location_detail_disclosureHL@2x.png in Resources */,
@@ -1800,10 +1829,10 @@
 				3A386EE31DE5539C000F3D8E /* Button_Camera switch disabled@2x.png in Resources */,
 				EBD2ABA21A7CDAC000D16528 /* delete@2x.png in Resources */,
 				3A386F091DE5539C000F3D8E /* Button_Stats.png in Resources */,
+				3A74958F1DE6F2BE00D85AEF /* conf_delete@3x.png in Resources */,
 				EBD2AB851A7CDAC000D16528 /* chat_receiver_audio_playing000@2x.png in Resources */,
 				3A386EFE1DE5539C000F3D8E /* Button_Speaker active@2x.png in Resources */,
 				EBD2ABA41A7CDAC000D16528 /* titleBar.png in Resources */,
-				3A7495831DE6CF0D00D85AEF /* uncheck.png in Resources */,
 				D2B3DAC91BF1D7B700913BD5 /* icon_010_cover.png in Resources */,
 				3A386F061DE5539C000F3D8E /* Button_Stats disabled.png in Resources */,
 				3A386EFB1DE5539C000F3D8E /* Button_Mute@2x.png in Resources */,
@@ -1812,7 +1841,6 @@
 				3A386EEE1DE5539C000F3D8E /* Button_Minimize disabled.png in Resources */,
 				D2B3DAE41BF1D7B700913BD5 /* icon_040.gif in Resources */,
 				EBD2AB3A1A7CDAC000D16528 /* call_out@2x.png in Resources */,
-				3A7495851DE6CF3300D85AEF /* check.png in Resources */,
 				EBD2AB571A7CDAC000D16528 /* imageDownloadFail@2x.png in Resources */,
 				D2B3DACD1BF1D7B700913BD5 /* icon_013_cover.png in Resources */,
 				EBD2AB931A7CDAC000D16528 /* chat_sender_audio_playing_001@2x.png in Resources */,
@@ -1837,6 +1865,7 @@
 				EBD2AB9A1A7CDAC000D16528 /* chat_sender_bg.png in Resources */,
 				D2B3DAD41BF1D7B700913BD5 /* icon_020.gif in Resources */,
 				EBD2ABAF1A7CDAC000D16528 /* tabbar_chatsHL.png in Resources */,
+				3A7495921DE6F2E500D85AEF /* conf_add@2x.png in Resources */,
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
 				EBD2ABB81A7CDAC000D16528 /* tabbar_settingHL@2x.png in Resources */,
 				EBD2ABAA1A7CDAC000D16528 /* groupPublicHeader@2x.png in Resources */,
@@ -1852,12 +1881,15 @@
 				3A386F051DE5539C000F3D8E /* Button_Speaker@3x.png in Resources */,
 				3A386EF41DE5539C000F3D8E /* Button_Mute active.png in Resources */,
 				D2A910831C83E7890025AD0A /* 57.png in Resources */,
+				3A7495A21DE6F39600D85AEF /* conf_ring@2x.png in Resources */,
 				D2B3DACE1BF1D7B700913BD5 /* icon_013.gif in Resources */,
 				EBD2AB561A7CDAC000D16528 /* faceDelete@2x.png in Resources */,
 				3A1C56531DE57A4C0032D89C /* ConferenceViewController.xib in Resources */,
 				D2B3DAC61BF1D7B700913BD5 /* icon_002.gif in Resources */,
+				3A7495A11DE6F39600D85AEF /* conf_connected@3x.png in Resources */,
 				3A386EF81DE5539C000F3D8E /* Button_Mute disabled@2x.png in Resources */,
 				EBD2AB3C1A7CDAC000D16528 /* call_out_h@2x.png in Resources */,
+				3A7495A31DE6F39600D85AEF /* conf_ring@3x.png in Resources */,
 				D2B3DAC51BF1D7B700913BD5 /* icon_002_cover.png in Resources */,
 				3A386EF61DE5539C000F3D8E /* Button_Mute active@3x.png in Resources */,
 				EBD2ABB11A7CDAC000D16528 /* tabbar_contacts.png in Resources */,

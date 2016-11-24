@@ -26,9 +26,8 @@
                                 <constraint firstAttribute="width" secondItem="wNK-gG-cnG" secondAttribute="height" multiplier="1:1" id="hfd-au-q82"/>
                             </constraints>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-Gu-s37">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conf_ring.png" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-Gu-s37">
                             <rect key="frame" x="62" y="62" width="17" height="17"/>
-                            <color key="backgroundColor" red="1" green="0.86790476940000005" blue="0.1608545811" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="SJf-Gu-s37" secondAttribute="height" multiplier="1:1" id="dGB-mz-L7a"/>
                             </constraints>
@@ -74,6 +73,7 @@
         </view>
     </objects>
     <resources>
+        <image name="conf_ring.png" width="14" height="14"/>
         <image name="default_avatar.png" width="50" height="50"/>
     </resources>
 </document>

@@ -65,7 +65,7 @@ static DemoConfManager *confManager = nil;
 {
     _currentController = nil;
     
-//    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
 
 #pragma mark - EMConferenceManagerDelegate
@@ -81,9 +81,9 @@ static DemoConfManager *confManager = nil;
 - (void)chooseUsersToConferenceAction
 {
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:contacts];
+    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:contacts selectedUsers:@[[EMClient sharedClient].currentUsername]];
     [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithUsers:selectedUsers];
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithUsers:selectedUsers type:EMCallTypeVoice];
         [self.mainController.navigationController pushViewController:confController animated:NO];
     }];
     [self.mainController.navigationController pushViewController:controller animated:YES];

@@ -21,7 +21,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="100" height="70"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="ad2-n8-yHk">
-                            <rect key="frame" x="17.5" y="5" width="65" height="65"/>
+                            <rect key="frame" x="18" y="5" width="65" height="65"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="ad2-n8-yHk" secondAttribute="height" multiplier="1:1" id="Hgh-se-cVI"/>
                             </constraints>
@@ -75,7 +75,7 @@
         </view>
     </objects>
     <resources>
-        <image name="conf_delete.png" width="15" height="15"/>
+        <image name="conf_delete.png" width="20" height="20"/>
         <image name="default_avatar.png" width="50" height="50"/>
     </resources>
 </document>

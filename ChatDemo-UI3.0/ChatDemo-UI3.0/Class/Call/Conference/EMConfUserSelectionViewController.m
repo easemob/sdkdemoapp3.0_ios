@@ -19,19 +19,8 @@
     [super awakeFromNib];
     // Initialization code
     
-    self.deleteImgView.clipsToBounds = YES;
-    self.deleteImgView.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.deleteImgView.layer.borderWidth = 3.0;
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleteAction:)];
     [self addGestureRecognizer:tap];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    self.deleteImgView.layer.cornerRadius = (self.deleteImgView.frame.size.width - 6) / 2;
 }
 
 #pragma mark - action
@@ -57,6 +46,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSArray *topShowArray;
 @property (nonatomic, strong) NSMutableArray *selectedNames;
 @property (nonatomic, strong) NSMutableArray *userViews;
 
@@ -65,10 +55,12 @@
 @implementation EMConfUserSelectionViewController
 
 - (instancetype)initWithDataSource:(NSArray *)aDataSource
+                     selectedUsers:(NSArray *)aSelectedUsers
 {
     self = [super init];
     if (self) {
         self.dataArray = aDataSource;
+        self.topShowArray = aSelectedUsers;
         self.selectedNames = [[NSMutableArray alloc] init];
         self.userViews = [[NSMutableArray alloc] init];
     }
@@ -102,6 +94,8 @@
 
 - (void)_setupSubviews
 {
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     int oY = 0;
     _border = 10;
     _userViewSize = 70;
@@ -138,8 +132,10 @@
     [self.tableView registerNib:nib forCellReuseIdentifier:@"EMConfAddUserCell"];
     [self.view addSubview:self.tableView];
     
-    EMConfSelectionUserView *loginView = [self _setupUserView:[EMClient sharedClient].currentUsername];
-    loginView.deleteImgView.hidden = YES;
+    for (NSString *username in self.topShowArray) {
+        EMConfSelectionUserView *loginView = [self _setupUserView:username];
+        loginView.deleteImgView.hidden = YES;
+    }
 }
 
 - (EMConfSelectionUserView *)_setupUserView:(NSString *)aUserName

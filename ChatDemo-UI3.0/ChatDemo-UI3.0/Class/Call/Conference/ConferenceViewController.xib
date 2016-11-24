@@ -22,6 +22,7 @@
                 <outlet property="statusLabel" destination="au8-LE-BYZ" id="VmB-Zy-WXP"/>
                 <outlet property="switchCameraButton" destination="xk1-zM-duE" id="kJh-dT-aNW"/>
                 <outlet property="topView" destination="g6Z-ui-5RU" id="3eF-8m-zw1"/>
+                <outlet property="videoAddButton" destination="S3c-fJ-bIl" id="P0J-5R-y0e"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="voiceAddButton" destination="6Sd-wp-WMu" id="bt9-EC-V0c"/>
             </connections>
@@ -137,14 +138,14 @@
             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zf-21-J3X">
+                <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3zf-21-J3X">
                     <rect key="frame" x="15" y="0.0" width="70" height="70"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="3zf-21-J3X" secondAttribute="height" multiplier="1:1" id="elU-dE-x8f"/>
                     </constraints>
-                    <state key="normal" image="Button_Minimize.png"/>
+                    <state key="normal" image="conf_add.png"/>
                     <connections>
-                        <action selector="inviteUserAction:" destination="-1" eventType="touchUpInside" id="Apd-YP-jye"/>
+                        <action selector="addUserAction:" destination="-1" eventType="touchUpInside" id="oYG-bS-hMA"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="添加成员" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTT-fl-9tj">
@@ -168,12 +169,43 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-427" y="536"/>
         </view>
+        <view hidden="YES" contentMode="scaleToFill" id="S3c-fJ-bIl">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DgD-3Z-y5D">
+                    <rect key="frame" x="40.5" y="39" width="19" height="22"/>
+                    <state key="normal" image="conf_add.png"/>
+                    <connections>
+                        <action selector="addUserAction:" destination="-1" eventType="touchUpInside" id="Zgc-qJ-uvJ"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="添加成员" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LcD-sp-Ush">
+                    <rect key="frame" x="5" y="70" width="95" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="LcD-sp-Ush" secondAttribute="bottom" id="8i8-a3-VTz"/>
+                <constraint firstItem="LcD-sp-Ush" firstAttribute="height" secondItem="S3c-fJ-bIl" secondAttribute="height" multiplier="0.3" id="L7K-uQ-kAO"/>
+                <constraint firstItem="DgD-3Z-y5D" firstAttribute="centerY" secondItem="S3c-fJ-bIl" secondAttribute="centerY" id="LDA-aH-NXf"/>
+                <constraint firstItem="LcD-sp-Ush" firstAttribute="leading" secondItem="S3c-fJ-bIl" secondAttribute="leading" constant="5" id="eUI-V5-L0j"/>
+                <constraint firstAttribute="trailing" secondItem="LcD-sp-Ush" secondAttribute="trailing" id="gFe-bM-ojk"/>
+                <constraint firstItem="DgD-3Z-y5D" firstAttribute="centerX" secondItem="S3c-fJ-bIl" secondAttribute="centerX" id="jcx-tF-rNp"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-126" y="536"/>
+        </view>
     </objects>
     <resources>
         <image name="Button_Camera switch.png" width="28" height="21"/>
         <image name="Button_End.png" width="65" height="65"/>
-        <image name="Button_Minimize.png" width="25" height="25"/>
         <image name="Button_Mute.png" width="16" height="25"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
+        <image name="conf_add.png" width="19" height="19"/>
     </resources>
 </document>
