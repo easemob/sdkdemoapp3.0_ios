@@ -23,6 +23,7 @@
 
 - (instancetype)initWithCallId:(NSString *)aCallId
                        creater:(NSString *)aCreater
+                    otherUsers:(NSArray *)aOthers
                           type:(EMCallType)aType;
 
 - (instancetype)initWithUsers:(NSArray *)aUserNams

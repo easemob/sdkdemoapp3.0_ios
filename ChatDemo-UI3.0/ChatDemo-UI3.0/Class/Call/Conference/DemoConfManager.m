@@ -77,7 +77,8 @@ static DemoConfManager *confManager = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
     EMCallType type = (EMCallType)[[dic objectForKey:@"type"] integerValue];
     NSString *creater = [dic objectForKey:@"creater"];
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aConfId creater:creater type:type];
+    NSArray *others = [dic objectForKey:@"others"];
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aConfId creater:creater otherUsers:others type:type];
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 

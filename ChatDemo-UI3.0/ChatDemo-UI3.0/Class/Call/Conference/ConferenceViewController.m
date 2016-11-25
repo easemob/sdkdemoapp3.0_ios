@@ -74,6 +74,7 @@
 
 - (instancetype)initWithCallId:(NSString *)aCallId
                        creater:(NSString *)aCreater
+                    otherUsers:(NSArray *)aOthers
                           type:(EMCallType)aType
 {
     self = [super init];
@@ -86,6 +87,7 @@
         _userViews = [[NSMutableDictionary alloc] init];
         _memberNames = [[NSMutableArray alloc] init];
         [_memberNames addObject:[EMClient sharedClient].currentUsername];
+        [_memberNames addObjectsFromArray:aOthers];
     }
     
     return self;
