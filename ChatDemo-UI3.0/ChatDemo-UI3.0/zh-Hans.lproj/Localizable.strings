@@ -300,7 +300,8 @@
 "title.groupSearchMessage" = "查找聊天记录";
 "title.chatroomlist" = "聊天室列表";
 "title.robotlist" = "环信助手";
-"title.conference" = "多人会议";
+"title.conference.voice" = "多人语音会议";
+"title.conference.video" = "多人视频会议";
 "title.profile" = "详细资料";
 
 

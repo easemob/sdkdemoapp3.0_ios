@@ -73,17 +73,22 @@ static DemoConfManager *confManager = nil;
 - (void)userDidRecvConferenceInvite:(NSString *)aConfId
                                 ext:(NSString *)aExt
 {
-    
+    NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+    EMCallType type = (EMCallType)[[dic objectForKey:@"type"] integerValue];
+    NSString *creater = [dic objectForKey:@"creater"];
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithCallId:aConfId creater:creater type:type];
+    [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
 #pragma mark - conference
 
-- (void)chooseUsersToConferenceAction
+- (void)chooseUsersToConference:(EMCallType)aType
 {
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
     EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:contacts selectedUsers:@[[EMClient sharedClient].currentUsername]];
     [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithUsers:selectedUsers type:EMCallTypeVoice];
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithUsers:selectedUsers type:aType];
         [self.mainController.navigationController pushViewController:confController animated:NO];
     }];
     [self.mainController.navigationController pushViewController:controller animated:YES];

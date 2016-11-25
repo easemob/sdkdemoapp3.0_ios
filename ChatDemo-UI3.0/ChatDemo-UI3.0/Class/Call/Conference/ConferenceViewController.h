@@ -21,7 +21,9 @@
 
 @property (nonatomic, readonly) EMCallType type;
 
-- (instancetype)initWithCallId:(NSString *)aCallId;
+- (instancetype)initWithCallId:(NSString *)aCallId
+                       creater:(NSString *)aCreater
+                          type:(EMCallType)aType;
 
 - (instancetype)initWithUsers:(NSArray *)aUserNams
                          type:(EMCallType)aType;

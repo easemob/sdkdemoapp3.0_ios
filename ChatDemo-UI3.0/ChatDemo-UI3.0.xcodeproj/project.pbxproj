@@ -95,8 +95,6 @@
 		3A7495871DE6CFB500D85AEF /* EMConfSelectionUserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495861DE6CFB500D85AEF /* EMConfSelectionUserView.xib */; };
 		3A74958E1DE6F2BE00D85AEF /* conf_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74958C1DE6F2BE00D85AEF /* conf_delete@2x.png */; };
 		3A74958F1DE6F2BE00D85AEF /* conf_delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A74958D1DE6F2BE00D85AEF /* conf_delete@3x.png */; };
-		3A7495921DE6F2E500D85AEF /* conf_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495901DE6F2E500D85AEF /* conf_add@2x.png */; };
-		3A7495931DE6F2E500D85AEF /* conf_add@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495911DE6F2E500D85AEF /* conf_add@3x.png */; };
 		3A7495981DE6F36A00D85AEF /* conf_check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495941DE6F36A00D85AEF /* conf_check@2x.png */; };
 		3A7495991DE6F36A00D85AEF /* conf_check@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495951DE6F36A00D85AEF /* conf_check@3x.png */; };
 		3A74959A1DE6F36A00D85AEF /* conf_uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7495961DE6F36A00D85AEF /* conf_uncheck@2x.png */; };
@@ -108,6 +106,8 @@
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3A87CD4D1D8FBE2200016402 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */; };
+		3A9696831DE7ED80004F91DE /* conf_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A9696811DE7ED80004F91DE /* conf_add@2x.png */; };
+		3A9696841DE7ED80004F91DE /* conf_add@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A9696821DE7ED80004F91DE /* conf_add@3x.png */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3AF848231DD07E9A00CB8BE9 /* Hyphenate_CN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF848211DD07A7B00CB8BE9 /* Hyphenate_CN.framework */; };
@@ -447,8 +447,6 @@
 		3A7495861DE6CFB500D85AEF /* EMConfSelectionUserView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMConfSelectionUserView.xib; sourceTree = "<group>"; };
 		3A74958C1DE6F2BE00D85AEF /* conf_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@2x.png"; sourceTree = "<group>"; };
 		3A74958D1DE6F2BE00D85AEF /* conf_delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@3x.png"; sourceTree = "<group>"; };
-		3A7495901DE6F2E500D85AEF /* conf_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@2x.png"; sourceTree = "<group>"; };
-		3A7495911DE6F2E500D85AEF /* conf_add@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@3x.png"; sourceTree = "<group>"; };
 		3A7495941DE6F36A00D85AEF /* conf_check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_check@2x.png"; sourceTree = "<group>"; };
 		3A7495951DE6F36A00D85AEF /* conf_check@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_check@3x.png"; sourceTree = "<group>"; };
 		3A7495961DE6F36A00D85AEF /* conf_uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_uncheck@2x.png"; sourceTree = "<group>"; };
@@ -462,6 +460,8 @@
 		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
 		3A87CD4B1D8FBE2200016402 /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
 		3A87CD4C1D8FBE2200016402 /* CallResolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallResolutionViewController.m; sourceTree = "<group>"; };
+		3A9696811DE7ED80004F91DE /* conf_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@2x.png"; sourceTree = "<group>"; };
+		3A9696821DE7ED80004F91DE /* conf_add@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@3x.png"; sourceTree = "<group>"; };
 		3AA412E61DDEDB2600317D72 /* EMSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchResultController.h; sourceTree = "<group>"; };
 		3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchResultController.m; sourceTree = "<group>"; };
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -973,6 +973,8 @@
 		3A386E9C1DE5539C000F3D8E /* imgs */ = {
 			isa = PBXGroup;
 			children = (
+				3A9696811DE7ED80004F91DE /* conf_add@2x.png */,
+				3A9696821DE7ED80004F91DE /* conf_add@3x.png */,
 				3A74959C1DE6F39600D85AEF /* conf_connected@2x.png */,
 				3A74959D1DE6F39600D85AEF /* conf_connected@3x.png */,
 				3A74959E1DE6F39600D85AEF /* conf_ring@2x.png */,
@@ -981,8 +983,6 @@
 				3A7495951DE6F36A00D85AEF /* conf_check@3x.png */,
 				3A7495961DE6F36A00D85AEF /* conf_uncheck@2x.png */,
 				3A7495971DE6F36A00D85AEF /* conf_uncheck@3x.png */,
-				3A7495901DE6F2E500D85AEF /* conf_add@2x.png */,
-				3A7495911DE6F2E500D85AEF /* conf_add@3x.png */,
 				3A74958C1DE6F2BE00D85AEF /* conf_delete@2x.png */,
 				3A74958D1DE6F2BE00D85AEF /* conf_delete@3x.png */,
 				3A386E9D1DE5539C000F3D8E /* Button_Answer.png */,
@@ -1761,10 +1761,12 @@
 				EBD2AB9C1A7CDAC000D16528 /* account.png in Resources */,
 				3A386EE81DE5539C000F3D8E /* Button_Cancel Call.png in Resources */,
 				D2B3DACC1BF1D7B700913BD5 /* icon_012.gif in Resources */,
+				3A9696841DE7ED80004F91DE /* conf_add@3x.png in Resources */,
 				D2BF97501AEB566B009E0D5C /* group_header@2x.png in Resources */,
 				EBD2AB8D1A7CDAC000D16528 /* chat_receiver_audio_playing_full@2x.png in Resources */,
 				D2B3DAE21BF1D7B700913BD5 /* icon_035.gif in Resources */,
 				3A386F021DE5539C000F3D8E /* Button_Speaker disabled@3x.png in Resources */,
+				3A9696831DE7ED80004F91DE /* conf_add@2x.png in Resources */,
 				EBD2ABBA1A7CDAC000D16528 /* tabbarBackground@2x.png in Resources */,
 				909E89C21A6E7A270064B20F /* LoginViewController.xib in Resources */,
 				3A386EE01DE5539C000F3D8E /* Button_Camera switch active@2x.png in Resources */,
@@ -1782,7 +1784,6 @@
 				EBD2ABAB1A7CDAC000D16528 /* nav_createGroup@2x.png in Resources */,
 				D2B3DAD61BF1D7B700913BD5 /* icon_021.gif in Resources */,
 				D2B3DAD81BF1D7B700913BD5 /* icon_022.gif in Resources */,
-				3A7495931DE6F2E500D85AEF /* conf_add@3x.png in Resources */,
 				EBD2AB911A7CDAC000D16528 /* chat_sender_audio_playing_000@2x.png in Resources */,
 				EBD2AB9D1A7CDAC000D16528 /* account@2x.png in Resources */,
 				3A7495A01DE6F39600D85AEF /* conf_connected@2x.png in Resources */,
@@ -1865,7 +1866,6 @@
 				EBD2AB9A1A7CDAC000D16528 /* chat_sender_bg.png in Resources */,
 				D2B3DAD41BF1D7B700913BD5 /* icon_020.gif in Resources */,
 				EBD2ABAF1A7CDAC000D16528 /* tabbar_chatsHL.png in Resources */,
-				3A7495921DE6F2E500D85AEF /* conf_add@2x.png in Resources */,
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
 				EBD2ABB81A7CDAC000D16528 /* tabbar_settingHL@2x.png in Resources */,
 				EBD2ABAA1A7CDAC000D16528 /* groupPublicHeader@2x.png in Resources */,

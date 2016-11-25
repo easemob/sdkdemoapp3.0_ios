@@ -108,7 +108,11 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 4;
+#if DEMO_CALL == 1
+        return 5;
+#else
+        return 3;
+#endif
     }
     
     return [[self.dataArray objectAtIndex:(section - 1)] count];
@@ -149,7 +153,11 @@
 //        }
         else if (indexPath.row == 3) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
-            cell.titleLabel.text = NSLocalizedString(@"title.conference",@"mutil conference");
+            cell.titleLabel.text = NSLocalizedString(@"title.conference.voice",@"mutil voice conference");
+        }
+        else if (indexPath.row == 4) {
+            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
+            cell.titleLabel.text = NSLocalizedString(@"title.conference.video",@"mutil video conference");
         }
         return cell;
     }
@@ -245,11 +253,14 @@
 //            RobotListViewController *robot = [[RobotListViewController alloc] init];
 //            [self.navigationController pushViewController:robot animated:YES];
 //        }
-        else if (row == 3) {
 #if DEMO_CALL == 1
-            [[DemoConfManager sharedManager] chooseUsersToConferenceAction];
-#endif
+        else if (row == 3) {
+            [[DemoConfManager sharedManager] chooseUsersToConference:EMCallTypeVoice];
         }
+        else if (row == 4) {
+            [[DemoConfManager sharedManager] chooseUsersToConference:EMCallTypeVideo];
+        }
+#endif
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
