@@ -175,7 +175,7 @@
             <subviews>
                 <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DgD-3Z-y5D">
                     <rect key="frame" x="40.5" y="39" width="19" height="22"/>
-                    <state key="normal" image="conf_add.png"/>
+                    <state key="normal" image="conf_plus.png"/>
                     <connections>
                         <action selector="addUserAction:" destination="-1" eventType="touchUpInside" id="Zgc-qJ-uvJ"/>
                     </connections>
@@ -187,6 +187,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
+            <color key="backgroundColor" red="0.085605107247829437" green="0.10556752234697342" blue="0.12639361619949341" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="LcD-sp-Ush" secondAttribute="bottom" id="8i8-a3-VTz"/>
                 <constraint firstItem="LcD-sp-Ush" firstAttribute="height" secondItem="S3c-fJ-bIl" secondAttribute="height" multiplier="0.3" id="L7K-uQ-kAO"/>
@@ -206,6 +207,7 @@
         <image name="Button_End.png" width="65" height="65"/>
         <image name="Button_Mute.png" width="16" height="25"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
-        <image name="conf_add.png" width="19" height="19"/>
+        <image name="conf_add.png" width="159" height="159"/>
+        <image name="conf_plus.png" width="19" height="19"/>
     </resources>
 </document>

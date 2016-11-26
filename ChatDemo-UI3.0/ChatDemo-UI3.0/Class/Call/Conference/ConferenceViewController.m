@@ -12,10 +12,9 @@
 #import "IEMConferenceManager.h"
 
 #import "DemoConfManager.h"
-#import "StreamTableViewController.h"
 #import "EMConfUserSelectionViewController.h"
 
-@implementation EMConfUserVoiceView
+@implementation EMConfUserView
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -24,7 +23,7 @@
 
 @end
 
-@interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConferenceBuilderDelegate, StreamTableViewControllerDelegate>
+@interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConferenceBuilderDelegate>
 {
     float _top;
     float _width;
@@ -122,7 +121,11 @@
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
     EMError *error = nil;
-    EMCallLocalView *localView = self.type == EMCallTypeVoice ? nil : nil;
+    EMCallLocalView *localView = nil;
+    if (self.type == EMCallTypeVideo) {
+        EMConfUserView *userView = [self.userViews objectForKey:[EMClient sharedClient].currentUsername];
+        localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
+    }
     if (_isCreater) {
         self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:nil localVideoView:localView error:&error];
     } else {
@@ -178,11 +181,6 @@
 
 - (void)_setupSubviews
 {
-//    //2.自己窗口
-//    CGFloat width = 80;
-//    CGFloat height = _callSession.remoteView.frame.size.height / _callSession.remoteView.frame.size.width * width;
-//    _callSession.localView = [[LocalVideoView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90, CGRectGetMaxY(_statusLabel.frame), width, height)];
-    
     if (_isConnected == NO) {
         self.statusLabel.text = @"正在连接...";
     }
@@ -190,7 +188,7 @@
     CGSize boundSize = [[UIScreen mainScreen] bounds].size;
     int maxHeight = 0;
     _top = 0;
-    if (self.conference.type == EMCallTypeVoice) {
+    if (self.type == EMCallTypeVoice) {
         _border = 20;
         maxHeight = (self.remotesView.frame.size.height - _border) / 2;
         _width = (boundSize.width - _border * 4) / 3;
@@ -201,23 +199,29 @@
         for (NSString *userName in self.memberNames) {
             [self _setupUserVoiceView:userName];
         }
+        
         [self _layoutVoiceAddButton];
-    } else if (self.conference.type == EMCallTypeVideo) {
-        _border = 10;
-        maxHeight = (self.remotesView.frame.size.height - 10) / 2;
+    } else if (self.type == EMCallTypeVideo) {
+        self.view.backgroundColor = [UIColor colorWithRed:33 / 255.0 green:41 / 255.0 blue:48 / 255.0 alpha:1.0];
+        self.videoAddButton.layer.borderWidth = 1;
+        self.voiceAddButton.layer.borderColor = [UIColor grayColor].CGColor;
+        
+        
+        _border = 5;
+        maxHeight = (self.remotesView.frame.size.height - 5) / 2;
         _width = (boundSize.width - _border * 2) / 3;
         _height = MIN(_width, maxHeight);
         _width = _height;
         
         [self _setupUserVideoView:_creater];
+        for (NSString *userName in self.memberNames) {
+            [self _setupUserVideoView:userName];
+        }
+        [self _layoutVideoAddButton];
     }
-    
-    //    self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(_border, _top, _width, _height)];
-    //    self.localView.backgroundColor = [UIColor lightGrayColor];
-    //    [self.view addSubview:self.localView];
 }
 
-- (EMConfUserVoiceView *)_setupUserVoiceView:(NSString *)aUserName
+- (EMConfUserView *)_setupUserVoiceView:(NSString *)aUserName
 {
     int count = (int )[self.userViews count] + 1;
     int row = count < 4 ? 0 : 1;
@@ -231,7 +235,7 @@
     CGFloat oy = _top + row * (_height + 10);
     
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EMConfUserVoiceView" owner:self options:nil];
-    EMConfUserVoiceView *userView = [nib objectAtIndex:0];
+    EMConfUserView *userView = [nib objectAtIndex:0];
     
     userView.frame = CGRectMake(ox, oy, _width, _height);
     userView.nameLabel.text = aUserName;
@@ -271,7 +275,7 @@
     }
 }
 
-- (EMConfUserVoiceView *)_setupUserVideoView:(NSString *)aUserName
+- (EMConfUserView *)_setupUserVideoView:(NSString *)aUserName
 {
     int count = (int )[self.userViews count] + 1;
     int row = count < 4 ? 0 : 1;
@@ -281,17 +285,36 @@
     } else if (count == 3 || count == 6) {
         col = 2;
     }
-    CGFloat ox = _border + col * (_width + _border);
+    CGFloat ox = col * (_width + _border);
     CGFloat oy = _top + row * (_height + 10);
     
-    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EMConfUserVoiceView" owner:self options:nil];
-    EMConfUserVoiceView *userView = [nib objectAtIndex:0];
+    BOOL isLocal = [[EMClient sharedClient].currentUsername isEqualToString:aUserName];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EMConfUserVideoView" owner:self options:nil];
+    EMConfUserView *userView = [nib objectAtIndex:0];
     
     userView.frame = CGRectMake(ox, oy, _width, _height);
     userView.nameLabel.text = aUserName;
     
     [self.remotesView addSubview:userView];
     [self.userViews setObject:userView forKey:aUserName];
+    
+    if (isLocal) {
+        [userView.imgView removeFromSuperview];
+        
+        EMCallLocalView *localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, userView.topView.frame.size.width, userView.topView.frame.size.height)];
+        localView.tag = 100;
+        localView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        localView.scaleMode = EMCallViewScaleModeAspectFill;
+        [userView.topView addSubview:localView];
+        [userView.topView sendSubviewToBack:localView];
+    } else {
+        EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, userView.topView.frame.size.width, userView.topView.frame.size.height)];
+        remoteView.tag = 100;
+        remoteView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+        [userView.topView addSubview:remoteView];
+        [userView.topView sendSubviewToBack:remoteView];
+    }
     
     return userView;
 }
@@ -378,45 +401,20 @@
 
 - (void)_subUserStream:(NSString *)aUserName
 {
+    EMCallRemoteView *remoteView = nil;
+    if (self.type == EMCallTypeVideo) {
+        EMConfUserView *userView = [self.userViews objectForKey:aUserName];
+        remoteView = (EMCallRemoteView *)[userView.topView viewWithTag:100];
+    }
+    
     EMCallStream *stream = [self.conference getSubscribableStreamForUserName:aUserName];
     if (stream) {
         EMError *error = nil;
-        [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:stream remoteVideoView:nil error:&error];
+        [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:stream remoteVideoView:remoteView error:&error];
         if (error) {
             NSString *message = [NSString stringWithFormat:@"订阅 %@ 失败", _creater];
             [self showHint:message];
         }
-    }
-}
-
-#pragma mark - StreamTableViewControllerDelegate
-
-- (void)streamController:(StreamTableViewController *)aController
-       didSelectedStream:(EMCallStream *)aStream
-{
-    if (!aStream) {
-        return;
-    }
-    
-    NSString *subName = aStream.userName;
-    EMCallRemoteView *remoteView = [self.userViews objectForKey:subName];
-    if (remoteView == nil) {
-        int count = (int )[self.userViews count] + 2;
-        int row = count / 2 - 1 + (count % 2 == 0 ? 0 : 1);
-        int col = (count % 2 == 0 ? 1 : 0);
-        CGFloat ox = _border + col * (_width + _border);
-        CGFloat oy = _top + row * (_height + _border);
-        remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(ox, oy, _width, _height)];
-        [self.userViews setObject:remoteView forKey:subName];
-    }
-    
-    EMError *error = nil;
-    [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:aStream remoteVideoView:remoteView error:&error];
-    if (error) {
-        [self.userViews removeObjectForKey:subName];
-    }
-    else{
-        [self.view addSubview:remoteView];
     }
 }
 
@@ -429,19 +427,17 @@
         return nil;
     }
     
-    EMCallRemoteView *remoteView = [self.userViews objectForKey:aUserName];
-    if (remoteView == nil) {
-        int count = (int )[self.userViews count] + 2;
-        int row = count / 2 - 1 + (count % 2 == 0 ? 0 : 1);
-        int col = (count % 2 == 0 ? 1 : 0);
-        CGFloat ox = _border + col * (_width + _border);
-        CGFloat oy = _top + _border + row * (_height + _border);
-        EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(ox, oy, _width, _height)];
-        remoteView.backgroundColor = [UIColor redColor];
-        [self.userViews setObject:remoteView forKey:aUserName];
+    EMConfUserView *userView = [self.userViews objectForKey:aUserName];
+    if (!userView) {
+        return nil;
     }
     
-    return remoteView;
+    UIView *view = [userView.topView viewWithTag:100];
+    if ([view isKindOfClass:[EMCallRemoteView class]]) {
+        return (EMCallRemoteView *)view;
+    } else {
+        return nil;
+    }
 }
 
 #pragma mark - EMConferenceManagerDelegate
@@ -482,30 +478,15 @@
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", aUsername];
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pub 通知" message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alertView show];
         [self showHint:message];
         
-        EMCallStream *stream = [self.conference getSubscribableStreamForUserName:aUsername];
-        if (stream) {
-            EMError *error = nil;
-            [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:stream remoteVideoView:nil error:&error];
-            if (error) {
-                [self.userViews removeObjectForKey:aUsername];
-            }
-            else{
-                //            [self _setupUserVoiceView:aUsername];
-                //            [self _layoutVoiceAddButton];
-            }
-        }
+        [self _subUserStream:aUsername];
     }
 }
 
 - (void)conferenceMembersDidUpdate:(EMCallConference *)aConference
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"成员通知" message:@"会议成员已更新" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alertView show];
         [self showHint:@"会议成员已更新"];
     }
 }
@@ -532,9 +513,12 @@
             return;
         }
         
-        EMConfUserVoiceView *userView = [self.userViews objectForKey:userName];
+        EMConfUserView *userView = [self.userViews objectForKey:userName];
         if (userView) {
             userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
+            if (self.type == EMCallTypeVideo) {
+                [userView.imgView removeFromSuperview];
+            }
         }
     }
 }
@@ -585,20 +569,6 @@
     self.conference = nil;
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController popViewControllerAnimated:NO];
-}
-
-- (void)subStream
-{
-    NSArray *streams = [self.conference getSubscribableStreams];
-    if ([streams count] == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"没有可订阅的数据流" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-    }
-    else{
-        StreamTableViewController *controller = [[StreamTableViewController alloc] initWithDataSource:streams];
-        controller.delegate = self;
-        [self.navigationController pushViewController:controller animated:YES];
-    }
 }
 
 @end

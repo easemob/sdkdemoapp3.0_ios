@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMConfUserVoiceView : UIView
+@interface EMConfUserView : UIView
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
