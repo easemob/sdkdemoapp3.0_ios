@@ -9,28 +9,17 @@
 #ifndef YZHRedpacketBridgeProtocol_h
 #define YZHRedpacketBridgeProtocol_h
 
- /// 用通知减少耦合
+
+@class RedpacketRegisitModel;
+
+//  初始化参数需要开发者回调， 如果初始化失败请传入nil
+typedef void (^FetchRegisitParamBlock)(RedpacketRegisitModel *model);
 
 @class RedpacketUserInfo;
 
-typedef NS_ENUM(NSInteger, RequestTokenMethod) {
-    /**
-     *  通过ImToken验证
-     */
-    RequestTokenMethodByImToken,
-    /**
-     *  通过签名验证
-     */
-    RequestTokenMethodBySign
-};
-
 @protocol YZHRedpacketBridgeDataSource <NSObject>
 
-/**
- *  主动获取App用户的用户信息
- *
- *  @return 用户信息Info
- */
+/** 主动获取App用户的用户信息 */
 - (RedpacketUserInfo *)redpacketUserInfo;
 
 @end
@@ -38,12 +27,16 @@ typedef NS_ENUM(NSInteger, RequestTokenMethod) {
 
 @protocol YZHRedpacketBridgeDelegate <NSObject>
 
-/**
- *  环信Token过期会回调这个方法
- *
- *  @param method 用到的获取Token的方法
+@optional
+
+- (void)redpacketError:(NSString *)error withErrorCode:(NSInteger)code __deprecated_msg("方法已经停止使用，请使用redpacketFetchRegisitParam: withError:");
+
+@required
+
+/** 使用红包服务时，如果红包Token不存在或者过期，则回调此方法，需要在RedpacketRegisitModel生成后，通过fetchBlock回传给红包SDK
+  * 如果错误error不为空， 1. 如果是环信IM，则刷新环信ImToken 2.如果是签名方式， 则刷新签名.
  */
-- (void)redpacketUserTokenGetInfoByMethod:(RequestTokenMethod)method;
+- (void)redpacketFetchRegisitParam:(FetchRegisitParamBlock)fetchBlock withError:(NSError *)error;
 
 @end
 

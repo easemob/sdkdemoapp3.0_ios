@@ -9,6 +9,25 @@
 #import <Foundation/Foundation.h>
 #import "YZHRedpacketBridgeProtocol.h"
 
+@interface RedpacketRegisitModel : NSObject
+
+//  签名方式
++ (RedpacketRegisitModel *)signModelWithAppUserId:(NSString *)appUserId     //  App的用户ID
+                                       signString:(NSString *)sign          //  当前用户的签名
+                                          partner:(NSString *)partner       //  在云账户注册的合作者
+                                     andTimeStamp:(NSString *)timeStamp;    //  签名的时间戳
+
+//  环信的方式
++ (RedpacketRegisitModel *)easeModelWithAppKey:(NSString *)appkey           //  环信的注册商户Key
+                                      appToken:(NSString *)appToken         //  环信IM的Token
+                                  andAppUserId:(NSString *)appUserId;       //  环信IM的用户ID
+
+//  容联云的方式
++ (RedpacketRegisitModel *)rongCloudModelWithAppId:(NSString *)appId        //  容联云的AppId
+                                         appUserId:(NSString *)appUserId;   //  容联云的用户ID
+
+@end
+
 
 @interface YZHRedpacketBridge : NSObject
 
@@ -16,65 +35,32 @@
 
 @property (nonatomic, weak) id <YZHRedpacketBridgeDataSource>dataSource;
 
+/** 是否是调试模式, 默认为NO */
+@property (nonatomic, assign)   BOOL isDebug;
+
+/** 支付宝回调当前APP时的URL Scheme, 默认为当前App的Bundle Identifier */
+@property (nonatomic, copy)  NSString *redacketURLScheme;
 
 + (YZHRedpacketBridge *)sharedBridge;
 
-/**
- *  检测Token是否存在
- */
-@property (nonatomic, readonly, getter=isRedpacketTokenExist) BOOL redpacketTokenExist;
+@end
 
-/* 以下2种方法，根据IM选择其一 */
 
-/**
- *  Method1:通过签名的方式获取Token (以下参数均需要由AppServer提供签名接口支持，签名方法见集成文档)
- *  此方法目前适应于：腾讯IM， 未适配的可联系我们
- *
- *  @param sign       签名接口返回参数
- *  @param partner    签名接口返回参数
- *  @param appUserid  签名接口返回参数 - 用户在App的用户ID
- *  @param timeStamp  签名接口返回参数 - 时间戳
- */
+/** 已经不再使用的API，请注意修改(可以将以下内容直接删除) */
+@interface YZHRedpacketBridge (Deprecated)
+
+/** 是否需要更新签名 */
+- (BOOL)isNeedUpdateSignWithUserId:(NSString *)userId __deprecated_msg("方法已经停用，请实现Delegate中的redpacketFetchRegisitParam:withError:");
+
+/** 签名注册Token */
 - (void)configWithSign:(NSString *)sign
-               partner:(NSString *)partner
-             appUserId:(NSString *)appUserid
-             timeStamp:(long)timeStamp;
+                     partner:(NSString *)partner
+                   appUserId:(NSString *)appUserid
+                   timeStamp:(long)timeStamp __deprecated_msg("方法命名不规范，已经停用, 请使用上边的方法");
 
-/**
- *  Method2: 通过验证imToken的方式获取Token
- *
- *  @param appKey    商户在环信申请的APPKey
- *  @param appUserId 用户在App的用户ID，默认与imUserid相同
- *  @param imUserId  用户在IM的登陆ID
- *  @param userPass  用户的登陆密码，用于验证环信Token
- */
-- (void)configWithAppKey:(NSString *)appKey
-               appUserId:(NSString *)appUserId
-                imUserId:(NSString*)imUserId
-           andImUserpass:(NSString *)userPass;
-
-/**
- *  Method3: 适用于环信2.0版本SDK
- *
- *  @param appKey    商户在环信申请的AppKey
- *  @param appUserId 用户在App的用户ID， 默认与imUserId相同
- *  @param imToken   环信IM的Token
- */
-- (void)configWithAppKey:(NSString *)appKey
-               appUserId:(NSString *)appUserId
-                 imToken:(NSString *)imToken;
-
-
-/**
- *  用户退出登录，或者在其它地点登录后，清除用户信息
- */
-- (void)redpacketUserLoginOut;
-
-/**
- *   重新请求红包用户Token
- */
-- (void)reRequestRedpacketUserToken;
-
-
+/** 环信IM的注册方式 */
+- (NSString *)configWithAppKey:(NSString *)appKey
+                     appUserId:(NSString *)appUserId
+                       imToken:(NSString *)imToken __deprecated_msg("方法已经停用，请实现Delegate中的redpacketFetchRegisitParam:withError:");
 
 @end
