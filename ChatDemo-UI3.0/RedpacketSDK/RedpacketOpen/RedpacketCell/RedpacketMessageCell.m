@@ -3,13 +3,14 @@
 //  ChatDemo-UI3.0
 //
 //  Created by Mr.Yang on 16/2/28.
-//  Copyright © 2016年 Mr.Yang. All rights reserved.
 //
+
 
 #import "RedpacketMessageCell.h"
 #import "RedpacketOpenConst.h"
 #import "EaseMob.h"
 #import "RedpacketMessageModel.h"
+#import "RedpacketDefines.h"
 
 
 @interface RedpacketMessageCell ()
@@ -25,73 +26,59 @@
 @implementation RedpacketMessageCell
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    self.titleLabel.textColor = rp_hexColor(rp_textColorGray);
+    self.titleLabel.textColor = [UIColor grayColor];
     
     self.backView.layer.cornerRadius = 3.0f;
     self.backView.layer.masksToBounds = YES;
-    
-    [self.icon setImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_smallIcon"]];
+    self.backView.backgroundColor = rpHexColor(0xe3e3e3);
+    [self.icon setImage:RedpacketImage(@"redpacket_smallIcon")];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backViewTaped)];
     [self.backView addGestureRecognizer:tap];
-    
-    self.backView.backgroundColor = rp_hexColor(rp_backGroundColorGray);
 }
 
 - (void)setModel:(id<IMessageModel>)model
 {
     _model = model;
-    
-    NSDictionary *dict = model.message.ext;
-    
-    NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderNickname];
-    NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
-    NSString *senderId = [dict valueForKey:RedpacketKeyRedpacketSenderId];
-    NSString *receiverId = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
-    
-    NSString *prompt;
-    
-    if (model.message.messageType == eMessageTypeChat ) {
-        /**
-         *  点对点红包
-         */
-        if(model.isSender) {
-            prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
-        }else {
-            prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
-        }
+    /*-------为了兼容红包2.0版本--------*/
+    NSString *text = model.text;
+    if (model.bodyType == eMessageBodyType_Text) {
+        NSDictionary *dict = model.message.ext;
+        NSString *currentUserId = [[[[EaseMob sharedInstance] chatManager] loginInfo] objectForKey:kSDKUsername];
+        NSString *receiverId = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
         
-    }else{
-        /**
-         *  群红包
-         */
-        NSDictionary *userInfoDic = [[[EaseMob sharedInstance] chatManager] loginInfo];
-        NSString *current = [userInfoDic objectForKey:kSDKUsername];
-        
-        if([receiverId isEqualToString:current]) {
-            if([senderId isEqualToString:receiverId]) {
-                //  自己抢了自己发送的红包
-                prompt = [NSString stringWithFormat:@"你领取了自己的红包"];
-                
-            }else {
-                prompt = [NSString stringWithFormat:@"你领取了%@的红包", sender];
+        BOOL isReceiver = [receiverId isEqualToString:currentUserId];
+        if (isReceiver) {
+            NSString *sender = [dict valueForKey:RedpacketKeyRedpacketSenderNickname];
+            NSString *senderID = [dict valueForKey:RedpacketKeyRedpacketSenderId];
+            if (sender.length == 0) {
+                sender = senderID;
             }
-        }else{
-            prompt = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
+            if ([senderID isEqualToString:receiverId]) {
+                text = [NSString stringWithFormat:@"你领取了自己的红包"];
+            }else {
+                text = [NSString stringWithFormat:@"你领取了%@的红包", sender];
+            }
+        }else {
+            NSString *receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverNickname];
+            if (receiver.length == 0) {
+                receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
+            }
+            text = [NSString stringWithFormat:@"%@领取了你的红包", receiver];
         }
     }
     
-    model.text = prompt;
+    /*--------兼容结束-----------------*/
     
-    self.titleLabel.text = prompt;
+    self.titleLabel.text = text;
     CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(200, 20)];
     self.widthContraint.constant = size.width + 30;
     [self.backView updateConstraintsIfNeeded];
 }
-
 
 - (void)backViewTaped
 {
