@@ -14,7 +14,6 @@
 
 #import "MainViewController.h"
 #import "EMCallViewController.h"
-#import "EMCallOptions+NSCoding.h"
 
 static DemoCallManager *callManager = nil;
 
@@ -81,6 +80,8 @@ static DemoCallManager *callManager = nil;
     } else {
         options = [[EMClient sharedClient].callManager getCallOptions];
         options.isSendPushIfOffline = NO;
+        options.videoResolution = EMCallVideoResolution640_480;
+        options.isFixedVideoResolution = YES;
     }
     [[EMClient sharedClient].callManager setCallOptions:options];
     
