@@ -170,8 +170,10 @@
 
     
     frame.origin.x = RedpacketViewWidth - RedpacketLeftMargin;
-    self.typeLable.frame = frame;
-    
+    self.typeLable.frame = CGRectMake(RedpacketLeftMargin,
+                                      RedpacketViewHeight - RedapcketLabelHBottom,
+                                      RedpacketViewWidth - RedpacketLeftMargin * 2,
+                                      RedapcketLabelHBottom);
     if (!model.isRedacketSender) {
         for (UIView *view in self.bubbleBackgroundView.subviews) {
             
