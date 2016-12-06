@@ -314,7 +314,11 @@
     [[EaseMob sharedInstance].chatManager asyncFetchChatroomsFromServerWithPage:aPage pageSize:10 completion:^(EMPageResult *result, EMError *error) {
         ChatroomListViewController *strongSelf = weakSelf;
         if (!error && strongSelf) {
-            if (result.count == 0) {
+            if (strongSelf.page == 1) {
+                [strongSelf.dataSource removeAllObjects];
+            }
+            
+            if (result.count == 0 || result.count < 10) {
                 strongSelf.tableView.tableFooterView = nil;
             } else if (strongSelf.tableView.tableFooterView == nil) {
                 strongSelf.tableView.tableFooterView = strongSelf.nextButton;
