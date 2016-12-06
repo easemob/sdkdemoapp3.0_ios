@@ -292,7 +292,7 @@
     
     if (buttonIndex == alertView.cancelButtonIndex)
     {
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isKeepConversation:YES];
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isDeleteConversation:NO];
         if (!error) {
             [self.tableView beginUpdates];
             [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
@@ -307,7 +307,7 @@
     }
     else
     {
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isKeepConversation:NO];
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isDeleteConversation:YES];
         if (!error) {
             [[EMClient sharedClient].chatManager deleteConversation:model.buddy isDeleteMessages:YES completion:nil];
             
