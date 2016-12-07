@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "EMCallOptions+NSCoding.h"
+
 @class MainViewController;
 @interface DemoCallManager : NSObject
 
