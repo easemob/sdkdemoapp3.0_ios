@@ -315,6 +315,12 @@
 {
     [self _startTimeTimer];
     
+    if (self.callSession.type == EMCallTypeVideo) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
+    }
+    
     NSString *connectStr = @"None";
     if (_callSession.connectType == EMCallConnectTypeRelay) {
         connectStr = @"Relay";
@@ -330,7 +336,6 @@
     self.answerButton.hidden = YES;
     
     [self _setupRemoteVideoView];
-    
 }
 
 - (void)clearData
