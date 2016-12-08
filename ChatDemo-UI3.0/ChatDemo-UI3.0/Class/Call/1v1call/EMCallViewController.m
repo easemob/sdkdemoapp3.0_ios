@@ -340,6 +340,10 @@
 
 - (void)clearData
 {
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    [audioSession setActive:YES error:nil];
+    
     self.callSession.remoteVideoView.hidden = YES;
     self.callSession.remoteVideoView = nil;
     _callSession = nil;
