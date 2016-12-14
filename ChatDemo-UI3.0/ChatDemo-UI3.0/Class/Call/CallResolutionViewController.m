@@ -64,7 +64,7 @@
     
     switch (indexPath.row) {
         case 0:
-            cell.textLabel.text = @"默认 (352 * 288)";
+            cell.textLabel.text = @"默认 (640 * 480)";
             break;
         case 1:
             cell.textLabel.text = @"352 * 288";
