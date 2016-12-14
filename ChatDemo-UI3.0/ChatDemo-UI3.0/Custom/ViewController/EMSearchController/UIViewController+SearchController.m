@@ -84,14 +84,12 @@ static const void *ResultControllerKey = &ResultControllerKey;
     return YES;
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     if ([self conformsToProtocol:@protocol(EMSearchControllerDelegate)] &&
         [self respondsToSelector:@selector(willSearchFinish)]) {
         [self performSelector:@selector(willSearchFinish)];
     }
-    
-    return YES;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
