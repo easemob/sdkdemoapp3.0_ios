@@ -55,6 +55,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
+    
     self.showRefreshHeader = YES;
     
     _contactsSource = [NSMutableArray array];
@@ -438,8 +442,9 @@
     }];
         
     UISearchBar *searchBar = self.searchController.searchBar;
-    self.tableView.tableHeaderView = searchBar;
+    [self.view addSubview:searchBar];
     [searchBar sizeToFit];
+    self.tableView.frame = CGRectMake(0, searchBar.frame.size.height, self.view.frame.size.width,self.view.frame.size.height - searchBar.frame.size.height);
 
 }
 

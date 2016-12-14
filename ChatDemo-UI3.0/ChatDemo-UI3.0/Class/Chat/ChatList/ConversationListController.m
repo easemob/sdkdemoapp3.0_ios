@@ -340,9 +340,8 @@
     
     UISearchBar *searchBar = self.searchController.searchBar;
     [self.view addSubview:searchBar];
+    [searchBar sizeToFit];
     self.tableView.frame = CGRectMake(0, searchBar.frame.size.height, self.view.frame.size.width,self.view.frame.size.height - searchBar.frame.size.height);
-//    self.tableView.tableHeaderView = searchBar;
-//    [searchBar sizeToFit];
 }
 
 #pragma mark - public

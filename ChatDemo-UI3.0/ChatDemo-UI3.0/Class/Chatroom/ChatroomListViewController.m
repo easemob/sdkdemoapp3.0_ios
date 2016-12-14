@@ -170,53 +170,53 @@
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
 }
 
-- (void)willSearchFinish
-{
-    if ([self.resultController.displaySource count]) {
-        return ;
-    }
-    
-    UISearchBar *searchBar = self.searchController.searchBar;
-    __block EMChatroom *foundChatroom = nil;
-    [self.dataSource enumerateObjectsUsingBlock:^(EMChatroom *chatroom, NSUInteger idx, BOOL *stop){
-        if ([chatroom.chatroomId isEqualToString:searchBar.text])
-        {
-            foundChatroom = chatroom;
-            *stop = YES;
-        }
-    }];
-    
-    if (foundChatroom)
-    {
-        [self.resultController.displaySource removeAllObjects];
-        [self.resultController.displaySource addObject:foundChatroom];
-        [self.resultController.tableView reloadData];
-    }
-    else
-    {
-        __weak typeof(self) weakSelf = self;
-        [self showHudInView:self.view hint:NSLocalizedString(@"searching", @"Searching")];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            EMError *error = nil;
-            EMChatroom *chatroom = [[EMClient sharedClient].roomManager fetchChatroomInfo:searchBar.text includeMembersList:false error:&error];
-            [weakSelf hideHud];
-            
-            if (weakSelf)
-            {
-                ChatroomListViewController *strongSelf = weakSelf;
-                if (!error) {
-                    [weakSelf.resultController.displaySource removeAllObjects];
-                    [weakSelf.resultController.displaySource addObject:chatroom];
-                    [strongSelf.resultController.tableView reloadData];
-                }
-                else
-                {
-                    [strongSelf showHint:NSLocalizedString(@"notFound", @"Can't found")];
-                }
-            }
-        });
-    }
-}
+//- (void)willSearchFinish
+//{
+//    if ([self.resultController.displaySource count]) {
+//        return ;
+//    }
+//    
+//    UISearchBar *searchBar = self.searchController.searchBar;
+//    __block EMChatroom *foundChatroom = nil;
+//    [self.dataSource enumerateObjectsUsingBlock:^(EMChatroom *chatroom, NSUInteger idx, BOOL *stop){
+//        if ([chatroom.chatroomId isEqualToString:searchBar.text])
+//        {
+//            foundChatroom = chatroom;
+//            *stop = YES;
+//        }
+//    }];
+//    
+//    if (foundChatroom)
+//    {
+//        [self.resultController.displaySource removeAllObjects];
+//        [self.resultController.displaySource addObject:foundChatroom];
+//        [self.resultController.tableView reloadData];
+//    }
+//    else
+//    {
+//        __weak typeof(self) weakSelf = self;
+//        [self showHudInView:self.view hint:NSLocalizedString(@"searching", @"Searching")];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            EMError *error = nil;
+//            EMChatroom *chatroom = [[EMClient sharedClient].roomManager fetchChatroomInfo:searchBar.text includeMembersList:false error:&error];
+//            [weakSelf hideHud];
+//            
+//            if (weakSelf)
+//            {
+//                ChatroomListViewController *strongSelf = weakSelf;
+//                if (!error) {
+//                    [weakSelf.resultController.displaySource removeAllObjects];
+//                    [weakSelf.resultController.displaySource addObject:chatroom];
+//                    [strongSelf.resultController.tableView reloadData];
+//                }
+//                else
+//                {
+//                    [strongSelf showHint:NSLocalizedString(@"notFound", @"Can't found")];
+//                }
+//            }
+//        });
+//    }
+//}
 
 - (void)searchButtonClickedWithString:(NSString *)aString
 {
@@ -273,7 +273,9 @@
     }];
     
     UISearchBar *searchBar = self.searchController.searchBar;
-    self.tableView.tableHeaderView = searchBar;
+    [self.view addSubview:searchBar];
+    [searchBar sizeToFit];
+    self.tableView.frame = CGRectMake(0, searchBar.frame.size.height, self.view.frame.size.width,self.view.frame.size.height - searchBar.frame.size.height);
 }
 
 #pragma mark - data
