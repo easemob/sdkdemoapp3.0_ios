@@ -14,7 +14,7 @@
 #import "RedpacketMessageModel.h"
 
 @interface EaseRedBagCell()
-@property (nonatomic) RedpacketView *redpacketView;
+@property (nonatomic, strong) RedpacketView *redpacketView;
 @property (nonatomic, strong) RedPacketLuckView *repacketLuckView;
 @end
 @implementation EaseRedBagCell

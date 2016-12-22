@@ -266,11 +266,9 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (RedpacketMessageModel *)toRedpacketMessageModel:(id <IMessageModel>)model
 {
     RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
-    BOOL isGroup = self.conversation.type == EMConversationTypeGroupChat;
-    if (isGroup) {
+    if (self.conversation.type == EMConversationTypeGroupChat) {
         messageModel.redpacketSender = [self profileEntityWith:model.message.from];
         messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
-        
     }else{
         messageModel.redpacketSender = [self profileEntityWith:model.message.from];
     }
