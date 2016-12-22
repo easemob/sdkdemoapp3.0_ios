@@ -156,7 +156,7 @@
     if ([RedpacketMessageModel isRedpacket:ext] || [RedpacketMessageModel isRedpacketTransferMessage:ext])    {
         return [EaseRedBagCell cellHeightWithModel:messageModel];
     }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
-        return 36;
+        return [RedpacketTakenMessageTipCell heightForRedpacketMessageTipCell];
     }
     return 0;
 }
