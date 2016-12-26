@@ -52,7 +52,9 @@ static const void *ResultControllerKey = &ResultControllerKey;
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.resultController];
     self.searchController.hidesNavigationBarDuringPresentation = NO;
     self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.obscuresBackgroundDuringPresentation = NO;
+    if ([self.searchController respondsToSelector:@selector(setObscuresBackgroundDuringPresentation:)]) {
+        [self.searchController setObscuresBackgroundDuringPresentation:NO];
+    }
     self.searchController.searchResultsUpdater = self;
     
     self.searchController.searchBar.delegate = self;
