@@ -16,7 +16,7 @@
 #import "YZHRedpacketBridge.h"
 #import "ChatDemoHelper.h"
 #import "UserProfileManager.h"
-#import "UIImageView+WebCache.h"
+#import "UIImageView+EMWebCache.h"
 
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,

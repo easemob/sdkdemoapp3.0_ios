@@ -14,7 +14,7 @@
 
 #import "ContactSelectionViewController.h"
 #import "GroupSettingViewController.h"
-#import "EMGroup.h"
+#import <Hyphenate_CN/EMGroup.h>
 #import "ContactView.h"
 #import "GroupBansViewController.h"
 #import "GroupSubjectChangingViewController.h"

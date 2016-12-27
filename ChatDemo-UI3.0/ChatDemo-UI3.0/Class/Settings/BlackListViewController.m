@@ -115,6 +115,7 @@
     cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
     cell.textLabel.text = username;
     cell.username = username;
+    cell.textLabel.accessibilityIdentifier = @"title";
     
     return cell;
 }

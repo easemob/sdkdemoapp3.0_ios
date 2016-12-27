@@ -11,7 +11,7 @@
   */
 
 #import "LoginViewController.h"
-#import "EMError.h"
+#import <Hyphenate_CN/EMError.h>
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
 #import "RedPacketUserConfig.h"
