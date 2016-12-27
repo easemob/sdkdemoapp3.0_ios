@@ -17,7 +17,7 @@
 
 static DemoCallManager *callManager = nil;
 
-@interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate>
+@interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate, EMCallBuilderDelegate>
 
 @property (strong, nonatomic) NSObject *callLock;
 
@@ -72,6 +72,7 @@ static DemoCallManager *callManager = nil;
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].callManager setBuilderDelegate:self];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = nil;
@@ -256,6 +257,19 @@ static DemoCallManager *callManager = nil;
 //        [self.callController setNetwork:aStatus];
 //    }
 //}
+
+#pragma mark - EMCallBuilderDelegate
+
+- (void)callRemoteOffline:(NSString *)aRemoteName
+{
+    NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
+    NSString *fromStr = [EMClient sharedClient].currentUsername;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
+    message.chatType = EMChatTypeChat;
+    
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+}
 
 #pragma mark - NSNotification
 

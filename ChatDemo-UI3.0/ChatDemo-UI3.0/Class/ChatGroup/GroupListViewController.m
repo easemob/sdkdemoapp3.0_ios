@@ -215,7 +215,7 @@
     [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
 }
                                                
-- (void)searchButtonClickedWithString:(NSString *)aString
+- (void)searchTextChangeWithString:(NSString *)aString
 {
     __weak typeof(self) weakSelf = self;
     [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataSource searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
