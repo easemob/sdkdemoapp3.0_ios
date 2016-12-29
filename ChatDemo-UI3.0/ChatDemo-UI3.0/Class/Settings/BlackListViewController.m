@@ -109,13 +109,13 @@
     
     if (cell == nil) {
         cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.textLabel.accessibilityIdentifier = @"title";
     }
     
     NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageNamed:@"chatListCellHead.png"];
     cell.textLabel.text = username;
     cell.username = username;
-    cell.textLabel.accessibilityIdentifier = @"title";
     
     return cell;
 }

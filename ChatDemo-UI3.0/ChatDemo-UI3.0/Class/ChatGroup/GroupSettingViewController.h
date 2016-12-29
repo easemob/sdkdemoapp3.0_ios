@@ -12,7 +12,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <Hyphenate_CN/EMGroup.h>
+#import <Hyphenate/EMGroup.h>
 
 @interface GroupSettingViewController : UITableViewController
 

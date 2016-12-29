@@ -21,7 +21,7 @@
     #import "TTGlobalUICommon.h"
 
     //#import "EMSDKFull.h"
-    #import <Hyphenate_CN/Hyphenate_CN.h>
+    #import <Hyphenate/Hyphenate.h>
     #import "EaseUI.h"
 
 #define DEMO_CALL 1

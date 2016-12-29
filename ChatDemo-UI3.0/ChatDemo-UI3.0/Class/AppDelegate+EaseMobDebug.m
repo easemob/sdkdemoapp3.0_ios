@@ -12,6 +12,8 @@
 
 #import "AppDelegate+EaseMobDebug.h"
 
+#import <Hyphenate/EMOptions+PrivateDeploy.h>
+
 #warning Internal testing, developers do not need to use
 
 @implementation AppDelegate (EaseMobDebug)
@@ -56,10 +58,10 @@
         EMOptions *options = [EMOptions optionsWithAppkey:appkey];
         if (![ud boolForKey:@"enable_dns"])
         {
-            [options performSelector:@selector(setEnableDnsConfig:) withObject:@(NO)];
-            [options performSelector:@selector(setChatPort:) withObject:@([[ud stringForKey:@"identifier_import"] intValue])];
-            [options performSelector:@selector(setChatServer:) withObject:[ud stringForKey:@"identifier_imserver"]];
-            [options performSelector:@selector(setRestServer:) withObject:[ud stringForKey:@"identifier_restserver"]];
+            options.enableDnsConfig = NO;
+            options.chatPort = [[ud stringForKey:@"identifier_import"] intValue];
+            options.chatServer = [ud stringForKey:@"identifier_imserver"];
+            options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
         //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
         options.apnsCertName = @"chatdemoui_dev";
