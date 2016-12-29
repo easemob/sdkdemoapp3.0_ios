@@ -20,7 +20,7 @@
     #import "EMAlertView.h"
     #import "TTGlobalUICommon.h"
 
-    #import "EMSDKFull.h"
+    #import <Hyphenate/Hyphenate.h>
     #import "EaseUI.h"
 
 #define DEMO_CALL 1

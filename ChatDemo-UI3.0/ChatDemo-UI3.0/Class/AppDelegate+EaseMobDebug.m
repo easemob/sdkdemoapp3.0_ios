@@ -12,7 +12,7 @@
 
 #import "AppDelegate+EaseMobDebug.h"
 
-#import "EMOptions+PrivateDeploy.h"
+#import <Hyphenate/EMOptions+PrivateDeploy.h>
 
 #warning Internal testing, developers do not need to use
 

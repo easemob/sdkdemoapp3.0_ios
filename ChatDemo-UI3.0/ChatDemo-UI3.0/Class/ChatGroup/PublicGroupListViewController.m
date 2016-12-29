@@ -14,7 +14,7 @@
 
 #import "PublicGroupDetailViewController.h"
 #import "RealtimeSearchUtil.h"
-#import "EMCursorResult.h"
+#import <Hyphenate/EMCursorResult.h>
 #import "BaseTableViewCell.h"
 
 #import "UIViewController+SearchController.h"
