@@ -302,7 +302,7 @@
     if (self.callSession.isCaller) {
         self.statusLabel.text = NSLocalizedString(@"call.connecting", @"Connecting...");
     } else {
-        self.statusLabel.text = NSLocalizedString(@"call.connecting", "Incoimg call");
+        self.statusLabel.text = NSLocalizedString(@"call.connecting", "Incomimg call");
     }
 }
 
