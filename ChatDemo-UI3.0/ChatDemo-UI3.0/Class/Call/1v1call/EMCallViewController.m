@@ -50,6 +50,12 @@
     if (self) {
         _callSession = aCallSession;
         _isDismissing = NO;
+        
+        if (aCallSession.type == EMCallTypeVideo) {
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            [audioSession setActive:YES error:nil];
+        }
     }
     
     return self;
