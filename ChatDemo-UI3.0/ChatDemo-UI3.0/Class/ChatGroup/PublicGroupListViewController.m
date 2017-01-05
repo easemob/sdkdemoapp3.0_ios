@@ -12,9 +12,9 @@
 
 #import "PublicGroupListViewController.h"
 
-#import <Hyphenate/EMCursorResult.h>
 #import "PublicGroupDetailViewController.h"
 #import "RealtimeSearchUtil.h"
+#import <Hyphenate/EMCursorResult.h>
 #import "BaseTableViewCell.h"
 
 #import "UIViewController+SearchController.h"

@@ -12,8 +12,8 @@
 
 #import "ChatroomDetailViewController.h"
 #import <Hyphenate/EMChatroom.h>
-#import <Hyphenate/EMCursorResult.h>
 #import "ContactView.h"
+#import <Hyphenate/EMCursorResult.h>
 
 #pragma mark - ChatGroupDetailViewController
 

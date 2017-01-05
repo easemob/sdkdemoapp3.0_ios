@@ -12,10 +12,9 @@
 
 #import "ChatGroupDetailViewController.h"
 
-#import <Hyphenate/EMGroup.h>
-
 #import "ContactSelectionViewController.h"
 #import "GroupSettingViewController.h"
+#import <Hyphenate/EMGroup.h>
 #import "ContactView.h"
 #import "GroupBansViewController.h"
 #import "GroupSubjectChangingViewController.h"

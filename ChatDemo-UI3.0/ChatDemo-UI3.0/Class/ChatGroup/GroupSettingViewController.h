@@ -12,6 +12,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <Hyphenate/EMGroup.h>
+
 @interface GroupSettingViewController : UITableViewController
 
 - (instancetype)initWithGroup:(EMGroup *)group;
