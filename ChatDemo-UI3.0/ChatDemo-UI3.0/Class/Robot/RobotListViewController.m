@@ -14,11 +14,12 @@
 
 #import "BaseTableViewCell.h"
 #import "ChatViewController.h"
-#import "EMCursorResult.h"
 //#import "EMRobot.h"
 #import "RobotManager.h"
 #import "SRRefreshView.h"
 #import "RobotChatViewController.h"
+
+
 @interface RobotListViewController ()<EMChatManagerDelegate,SRRefreshDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataSource;

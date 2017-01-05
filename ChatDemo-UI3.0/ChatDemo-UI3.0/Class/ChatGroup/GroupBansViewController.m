@@ -12,8 +12,8 @@
 
 #import "GroupBansViewController.h"
 
+#import <Hyphenate/EMGroup.h>
 #import "ContactView.h"
-#import "EMGroup.h"
 
 #define kColOfRow 5
 #define kContactSize 60
