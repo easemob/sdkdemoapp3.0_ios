@@ -95,10 +95,11 @@
 		3AECBAA01E1BAD2C0044D1B2 /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */; };
 		3AECBAA11E1BAD2C0044D1B2 /* libHyphenateVideoRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9F1E1BAD2C0044D1B2 /* libHyphenateVideoRecorder.a */; };
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
+		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
+		3AF6A65D1E1F84360022E835 /* EMGroupMutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C117121197D243B00E2DBEC /* PushNotificationViewController.m */; };
-		3C13D94B1A12095D00903622 /* GroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C13D94A1A12095D00903622 /* GroupBansViewController.m */; };
 		3C13D94E1A120BA200903622 /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C13D94D1A120BA200903622 /* ContactView.m */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2923B01988E13300DCCD40 /* BlackListViewController.m */; };
@@ -437,13 +438,15 @@
 		3AECBAA21E1BAE210044D1B2 /* EMVideoRecorderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMVideoRecorderPlugin.h; sourceTree = "<group>"; };
 		3AF6A6551E1F5BD40022E835 /* EMGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMembersViewController.h; sourceTree = "<group>"; };
 		3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMembersViewController.m; sourceTree = "<group>"; };
+		3AF6A6581E1F80570022E835 /* EMGroupBansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupBansViewController.h; sourceTree = "<group>"; };
+		3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupBansViewController.m; sourceTree = "<group>"; };
+		3AF6A65B1E1F84360022E835 /* EMGroupMutesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMutesViewController.h; sourceTree = "<group>"; };
+		3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMutesViewController.m; sourceTree = "<group>"; };
 		3AF848211DD07A7B00CB8BE9 /* Hyphenate_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hyphenate_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/Hyphenate_CN.framework"; sourceTree = "<group>"; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3C117120197D243B00E2DBEC /* PushNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationViewController.h; sourceTree = "<group>"; };
 		3C117121197D243B00E2DBEC /* PushNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotificationViewController.m; sourceTree = "<group>"; };
-		3C13D9491A12095D00903622 /* GroupBansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupBansViewController.h; sourceTree = "<group>"; };
-		3C13D94A1A12095D00903622 /* GroupBansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupBansViewController.m; sourceTree = "<group>"; };
 		3C13D94C1A120BA100903622 /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
 		3C13D94D1A120BA200903622 /* ContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactView.m; sourceTree = "<group>"; };
 		3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -966,6 +969,10 @@
 				3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */,
 				3AF6A6551E1F5BD40022E835 /* EMGroupMembersViewController.h */,
 				3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */,
+				3AF6A6581E1F80570022E835 /* EMGroupBansViewController.h */,
+				3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */,
+				3AF6A65B1E1F84360022E835 /* EMGroupMutesViewController.h */,
+				3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -1008,8 +1015,6 @@
 				3AD0FB8E1E1E5CE2001F3957 /* Info */,
 				3C13D94C1A120BA100903622 /* ContactView.h */,
 				3C13D94D1A120BA200903622 /* ContactView.m */,
-				3C13D9491A12095D00903622 /* GroupBansViewController.h */,
-				3C13D94A1A12095D00903622 /* GroupBansViewController.m */,
 				3C914D7419514BBD0002DAD3 /* ChatGroupDetailViewController.h */,
 				3C914D7519514BBD0002DAD3 /* ChatGroupDetailViewController.m */,
 				3C914D7719514BBD0002DAD3 /* GroupListViewController.h */,
@@ -1880,6 +1885,7 @@
 				3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */,
 				3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
+				3AF6A65D1E1F84360022E835 /* EMGroupMutesViewController.m in Sources */,
 				D2F7691C1CBF3F26009778FB /* SearchMessageViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
@@ -1893,6 +1899,7 @@
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
+				3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */,
 				D2B61E361BC7C76B007CB53E /* ContactListViewController.m in Sources */,
 				90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */,
 				3AD0FB841E1E0962001F3957 /* EaseRedBagCell.m in Sources */,
@@ -1914,7 +1921,6 @@
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
 				3AD0FB831E1E0962001F3957 /* AppDelegate+Redpacket.m in Sources */,
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
-				3C13D94B1A12095D00903622 /* GroupBansViewController.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,

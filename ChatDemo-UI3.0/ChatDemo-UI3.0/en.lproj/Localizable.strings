@@ -181,11 +181,14 @@
 "group.leaveFail" = "exit the group failure";
 "group.addOccupantFail" = "Failed to add group member, please try again later";
 "group.removeMember" = "Remove from group";
+"group.removeBan" = "Remove from blacklist";
 "group.changeOwner" = "Change owner";
 "group.changeOwnerFail" = "Failed to change owner";
 "group.addAdmin" = "Add to admin";
 "group.removeAdmin" = "Remove from Admin";
 "group.toMute" = "Mute 60s";
+"group.unmute" = "Unmute";
+"group.fetchMuteFail" = "fail to get mutes: %@";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "recv and notification group messages";
