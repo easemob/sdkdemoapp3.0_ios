@@ -180,8 +180,12 @@
 "group.destroyFail" = "解散群组失败";
 "group.leaveFail" = "退出群组失败";
 "group.addOccupantFail" = "添加群成员失败, 请稍后再试";
+"group.removeMember" = "从群组中移除";
 "group.changeOwner" = "改变群主";
 "group.changeOwnerFail" = "改变群主失败";
+"group.addAdmin" = "升级为管理员";
+"group.removeAdmin" = "移除管理员权限";
+"group.toMute" = "禁言1分钟";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "接收并提示群消息";
