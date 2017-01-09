@@ -1,38 +1,37 @@
 //
-//  EMGroupMutesViewController.m
+//  EMChatroomAdminsViewController.m
 //  ChatDemo-UI3.0
 //
-//  Created by XieYajie on 06/01/2017.
+//  Created by XieYajie on 05/01/2017.
 //  Copyright © 2017 XieYajie. All rights reserved.
 //
 
-#import "EMGroupMutesViewController.h"
+#import "EMChatroomAdminsViewController.h"
 
-@interface EMGroupMutesViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
+@interface EMChatroomAdminsViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
 
-@property (nonatomic, strong) EMGroup *group;
+@property (nonatomic, strong) EMChatroom *chatroom;
 @property (nonatomic, strong) NSIndexPath *currentLongPressIndex;
 
 @end
 
-@implementation EMGroupMutesViewController
+@implementation EMChatroomAdminsViewController
 
-- (instancetype)initWithGroup:(EMGroup *)aGroup
+- (instancetype)initWithChatroom:(EMChatroom *)aChatroom
 {
     self = [super init];
     if (self) {
-        self.group = aGroup;
-        [self.dataArray addObjectsFromArray:self.group.admins];
+        self.chatroom = aChatroom;
+        [self.dataArray addObjectsFromArray:self.chatroom.admins];
     }
     
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"group.mutes", @"Mutes");
+    self.title = NSLocalizedString(@"group.admins", @"Admins");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
@@ -42,7 +41,7 @@
     [self.navigationItem setLeftBarButtonItem:backItem];
     
     self.showRefreshHeader = YES;
-    [self tableViewDidTriggerHeaderRefresh];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,7 +60,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *CellIdentifier = @"GroupOccupantCell";
+    NSString *CellIdentifier = @"ChatroomOccupantCell";
     EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -90,9 +89,13 @@
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
     EMError *error = nil;
-    
     if (buttonIndex == 0) { //移除
-        self.group = [[EMClient sharedClient].groupManager unmuteMembers:@[userName] fromGroup:self.group.groupId error:&error];
+        self.chatroom = [[EMClient sharedClient].roomManager removeAdmin:userName fromChatroom:self.chatroom.chatroomId error:&error];
+    } else if (buttonIndex == 1) { //加入黑名单
+        self.chatroom = [[EMClient sharedClient].roomManager blockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
+    } else if (buttonIndex == 2) {  //禁言
+        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUserName:userName muteSeconds:60];
+        self.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[muteOptions] fromChatroom:self.chatroom.chatroomId error:&error];
     }
     
     [self hideHud];
@@ -109,13 +112,12 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.membershipType != EMGroupMembershipTypeOwner && self.group.membershipType != EMGroupMembershipTypeAdmin) {
+    if (self.chatroom.membershipType != EMChatroomMembershipTypeOwner) {
         return;
     }
     
     self.currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.unmute", @"Remove from mutes"), nil];;
-    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"group.removeAdmin", @"Remove from Admin"), NSLocalizedString(@"friend.block", @"add to black list"), NSLocalizedString(@"group.toMute", @"Mute 60s"), nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
@@ -123,41 +125,30 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    self.page = 1;
-    [self fetchBansWithPage:self.page isHeader:YES];
-}
-
-- (void)tableViewDidTriggerFooterRefresh
-{
-    self.page += 1;
-    [self fetchBansWithPage:self.page isHeader:NO];
-}
-
-- (void)fetchBansWithPage:(NSInteger)aPage
-                 isHeader:(BOOL)aIsHeader
-{
-    NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].groupManager fetchGroupMutesList:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
-        [weakSelf hideHud];
-        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
-        if (!aError) {
-            [weakSelf.dataArray removeAllObjects];
-            [weakSelf.dataArray addObjectsFromArray:aMembers];
-            [weakSelf.tableView reloadData];
-        } else {
-            NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.fetchMuteFail", @"fail to get mutes: %@"), aError.errorDescription];
-            [weakSelf showHint:errorStr];
-        }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        EMError *error = nil;
+        EMChatroom *chatroom = [[EMClient sharedClient].roomManager fetchChatroomInfo:weakSelf.chatroom.chatroomId error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+        });
         
-        if ([aMembers count] < pageSize) {
-            self.showRefreshFooter = NO;
-        } else {
-            self.showRefreshFooter = YES;
+        [weakSelf tableViewDidFinishTriggerHeader:YES reload:NO];
+        if (!error) {
+            weakSelf.chatroom = chatroom;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.dataArray removeAllObjects];
+                [weakSelf.dataArray addObjectsFromArray:weakSelf.chatroom.admins];
+                [weakSelf.tableView reloadData];
+            });
         }
-    }];
+        else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
+            });
+        }
+    });
 }
-
 
 @end

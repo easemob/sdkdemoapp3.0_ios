@@ -35,11 +35,6 @@
 - (void)unregisterNotifications;
 - (void)registerNotifications;
 
-//@property (strong, nonatomic) NSMutableArray *dataSource;
-//@property (strong, nonatomic) UIScrollView *scrollView;
-//@property (strong, nonatomic) UIButton *addButton;
-//@property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
-
 @property (strong, nonatomic) EMGroup *chatGroup;
 @property (strong, nonatomic) UIBarButtonItem *addMemberItem;
 

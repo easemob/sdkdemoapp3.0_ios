@@ -15,16 +15,20 @@
 #import "ContactView.h"
 #import <Hyphenate/EMCursorResult.h>
 
+#import "EMChatroomAdminsViewController.h"
+#import "EMChatroomMembersViewController.h"
+#import "EMChatroomBansViewController.h"
+#import "EMChatroomMutesViewController.h"
+
 #pragma mark - ChatGroupDetailViewController
 
 #define kColOfRow 5
 #define kContactSize 60
+#define ALERTVIEW_CHANGEOWNER 100
 
-@interface ChatroomDetailViewController ()
+@interface ChatroomDetailViewController ()<UIAlertViewDelegate>
 
 @property (strong, nonatomic) EMChatroom *chatroom;
-@property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) UIScrollView *scrollView;
 
 @end
 
@@ -34,7 +38,6 @@
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        _dataSource = [NSMutableArray array];
         _chatroom = [EMChatroom chatroomWithId:chatroomId];
     }
     
@@ -58,18 +61,6 @@
     [self fetchChatroomInfo];
 }
 
-#pragma mark - getter
-
-- (UIScrollView *)scrollView
-{
-    if (_scrollView == nil) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, kContactSize)];
-        _scrollView.tag = 0;
-    }
-    
-    return _scrollView;
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -81,7 +72,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 4;
+    if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner || self.chatroom.membershipType == EMChatroomMembershipTypeAdmin) {
+        return 8;
+    }
+    else {
+        return 6;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -93,27 +89,53 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    if (indexPath.row == 0) {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.contentView addSubview:self.scrollView];
-    }
-    else if (indexPath.row == 1)
+    if (indexPath.row == 0)
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.id", @"chatroom Id");
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.detailTextLabel.text = _chatroom.chatroomId;
     }
-    else if (indexPath.row == 2)
+    else if (indexPath.row == 1)
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.description", @"description");
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.detailTextLabel.text = _chatroom.description;
     }
-    else if (indexPath.row == 3)
+    else if (indexPath.row == 2)
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.occupantCount", @"members count");
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.membersCount, (int)_chatroom.maxMembersCount];
+    }
+    else if (indexPath.row == 3) {
+        cell.textLabel.text = NSLocalizedString(@"group.owner", @"Owner");
+        
+        cell.detailTextLabel.text = self.chatroom.owner;
+        
+        if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+    }
+    else if (indexPath.row == 4) {
+        cell.textLabel.text = NSLocalizedString(@"group.admins", @"Admins");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[self.chatroom.admins count]];
+    }
+    else if (indexPath.row == 5) {
+        cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)self.chatroom.membersCount, (int)self.chatroom.maxMembersCount];
+    }
+    else if (indexPath.row == 6) {
+        cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else if (indexPath.row == 7) {
+        cell.textLabel.text = NSLocalizedString(@"title.groupBlackList", @"Black list");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     return cell;
@@ -123,18 +145,68 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = (int)indexPath.row;
-    if (row == 0) {
-        return self.scrollView.frame.size.height + 40;
-    }
-    else {
-        return 50;
-    }
+    return 50;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 3) { //群主转换
+        if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.changeOwner", @"Change Owner") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+            alert.tag = ALERTVIEW_CHANGEOWNER;
+            
+            UITextField *textField = [alert textFieldAtIndex:0];
+            textField.text = self.chatroom.owner;
+            
+            [alert show];
+        }
+    }
+    else if (indexPath.row == 4) { //展示群管理员
+        EMChatroomAdminsViewController *adminController = [[EMChatroomAdminsViewController alloc] initWithChatroom:self.chatroom];
+        [self.navigationController pushViewController:adminController animated:YES];
+    }
+    else if (indexPath.row == 5) { //展示群成员
+        EMChatroomMembersViewController *membersController = [[EMChatroomMembersViewController alloc] initWithChatroom:self.chatroom];
+        [self.navigationController pushViewController:membersController animated:YES];
+    }
+    else if (indexPath.row == 6) { //展示被禁言列表
+        EMChatroomMutesViewController *mutesController = [[EMChatroomMutesViewController alloc] initWithChatroom:self.chatroom];
+        [self.navigationController pushViewController:mutesController animated:YES];
+    }
+    else if (indexPath.row == 7) { //展示黑名单
+        EMChatroomBansViewController *bansController = [[EMChatroomBansViewController alloc] initWithChatroom:self.chatroom];
+        [self.navigationController pushViewController:bansController animated:YES];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+//弹出提示的代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([alertView cancelButtonIndex] == buttonIndex) {
+        return;
+    }
+    
+    if (alertView.tag == ALERTVIEW_CHANGEOWNER) {
+        //获取文本输入框
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        NSString *newOwner = textField.text;
+        if ([newOwner length] > 0) {
+            EMError *error = nil;
+            [self showHudInView:self.view hint:@"Hold on ..."];
+            [[EMClient sharedClient].roomManager updateChatroomOwner:self.chatroom.chatroomId newOwner:newOwner error:&error];
+            [self hideHud];
+            if (error) {
+                [self showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
+            } else {
+                [self.tableView reloadData];
+            }
+        }
+        
+    }
 }
 
 #pragma mark - data
@@ -160,49 +232,8 @@
 
 - (void)reloadDataSource
 {
-    [self.dataSource removeAllObjects];
-    [self.dataSource addObjectsFromArray:self.chatroom.members];
-    [self refreshScrollView];
-    [self hideHud];
-}
-
-- (void)refreshScrollView
-{
-    [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
-    int tmp = ([self.dataSource count] + 1) % kColOfRow;
-    int row = (int)([self.dataSource count] + 1) / kColOfRow;
-    row += tmp == 0 ? 0 : 1;
-    self.scrollView.tag = row;
-    self.scrollView.frame = CGRectMake(10, 20, self.tableView.frame.size.width - 20, row * kContactSize);
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, row * kContactSize);
-    
-    int i = 0;
-    int j = 0;
-    BOOL isEnd = NO;
-    for (i = 0; i < row; i++) {
-        for (j = 0; j < kColOfRow; j++) {
-            NSInteger index = i * kColOfRow + j;
-            if (index < [self.dataSource count]) {
-                NSString *username = [self.dataSource objectAtIndex:index];
-                ContactView *contactView = [[ContactView alloc] initWithFrame:CGRectMake(j * kContactSize, i * kContactSize, kContactSize, kContactSize)];
-                contactView.index = i * kColOfRow + j;
-                contactView.image = [UIImage imageNamed:@"chatListCellHead.png"];
-                contactView.remark = username;
-                [self.scrollView addSubview:contactView];
-            }
-            else{
-                isEnd = YES;
-                break;
-            }
-        }
-        
-        if (isEnd) {
-            break;
-        }
-    }
-    
     [self.tableView reloadData];
+    [self hideHud];
 }
 
 @end

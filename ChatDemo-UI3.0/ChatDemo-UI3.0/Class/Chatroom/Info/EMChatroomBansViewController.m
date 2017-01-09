@@ -1,28 +1,28 @@
 //
-//  EMGroupMutesViewController.m
+//  EMChatroomBansViewController.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 06/01/2017.
 //  Copyright © 2017 XieYajie. All rights reserved.
 //
 
-#import "EMGroupMutesViewController.h"
+#import "EMChatroomBansViewController.h"
 
-@interface EMGroupMutesViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
+@interface EMChatroomBansViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
 
-@property (nonatomic, strong) EMGroup *group;
+@property (nonatomic, strong) EMChatroom *chatroom;
 @property (nonatomic, strong) NSIndexPath *currentLongPressIndex;
 
 @end
 
-@implementation EMGroupMutesViewController
+@implementation EMChatroomBansViewController
 
-- (instancetype)initWithGroup:(EMGroup *)aGroup
+- (instancetype)initWithChatroom:(EMChatroom *)aChatroom
 {
     self = [super init];
     if (self) {
-        self.group = aGroup;
-        [self.dataArray addObjectsFromArray:self.group.admins];
+        self.chatroom = aChatroom;
+        [self.dataArray addObjectsFromArray:self.chatroom.admins];
     }
     
     return self;
@@ -32,7 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"group.mutes", @"Mutes");
+    self.title = NSLocalizedString(@"title.groupBlackList", @"Black list");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
@@ -92,7 +92,7 @@
     EMError *error = nil;
     
     if (buttonIndex == 0) { //移除
-        self.group = [[EMClient sharedClient].groupManager unmuteMembers:@[userName] fromGroup:self.group.groupId error:&error];
+        self.chatroom = [[EMClient sharedClient].roomManager unblockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
     }
     
     [self hideHud];
@@ -109,12 +109,12 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.membershipType != EMGroupMembershipTypeOwner && self.group.membershipType != EMGroupMembershipTypeAdmin) {
+    if (self.chatroom.membershipType != EMChatroomMembershipTypeOwner && self.chatroom.membershipType != EMChatroomMembershipTypeAdmin) {
         return;
     }
     
     self.currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.unmute", @"Remove from mutes"), nil];;
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeBan", @"Remove from blacklist"), nil];;
     
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
@@ -139,7 +139,7 @@
     NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].groupManager fetchGroupMutesList:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
+    [[EMClient sharedClient].roomManager fetchChatroomBansList:self.chatroom.chatroomId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
@@ -147,7 +147,7 @@
             [weakSelf.dataArray addObjectsFromArray:aMembers];
             [weakSelf.tableView reloadData];
         } else {
-            NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.fetchMuteFail", @"fail to get mutes: %@"), aError.errorDescription];
+            NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.ban.fetchFail", @"fail to get blacklist: %@"), aError.errorDescription];
             [weakSelf showHint:errorStr];
         }
         
@@ -158,6 +158,5 @@
         }
     }];
 }
-
 
 @end
