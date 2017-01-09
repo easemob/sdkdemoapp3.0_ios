@@ -351,21 +351,21 @@
     
     [self _setupRemoteVideoView];
     
-    NSString *recordPath = NSHomeDirectory();
-    recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
-    NSFileManager *fm = [NSFileManager defaultManager];
-    if(![fm fileExistsAtPath:recordPath]) {
-        [fm createDirectoryAtPath:recordPath
-      withIntermediateDirectories:YES
-                       attributes:nil
-                            error:nil];
-    }
-    [[EMVideoRecorderPlugin sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
+//    NSString *recordPath = NSHomeDirectory();
+//    recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+//    NSFileManager *fm = [NSFileManager defaultManager];
+//    if(![fm fileExistsAtPath:recordPath]) {
+//        [fm createDirectoryAtPath:recordPath
+//      withIntermediateDirectories:YES
+//                       attributes:nil
+//                            error:nil];
+//    }
+//    [[EMVideoRecorderPlugin sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
 }
 
 - (void)clearData
 {
-    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
+//    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
