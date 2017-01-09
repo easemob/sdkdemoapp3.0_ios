@@ -352,7 +352,7 @@
         if ([newOwner length] > 0) {
             EMError *error = nil;
             [self showHudInView:self.view hint:@"Hold on ..."];
-            [[EMClient sharedClient].groupManager transferGroupOwner:self.chatGroup.groupId newOwner:newOwner error:&error];
+            [[EMClient sharedClient].groupManager updateGroupOwner:self.chatGroup.groupId newOwner:newOwner error:&error];
             [self hideHud];
             if (error) {
                 [self showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
