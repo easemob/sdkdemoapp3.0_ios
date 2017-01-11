@@ -2121,7 +2121,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
 					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
-					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -2133,7 +2132,6 @@
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/Class/Call/plugin",
-					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -2183,7 +2181,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
 					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
-					"\"$(SRCROOT)/../../emclient-ios/newSDK/export/include\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -2195,7 +2192,6 @@
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/3rdparty/UMeng",
 					"$(PROJECT_DIR)/RedacketSDK/AliPay/AlipayLib",
 					"$(PROJECT_DIR)/ChatDemo-UI3.0/Class/Call/plugin",
-					"$(PROJECT_DIR)/RedacketSDK/RedpacketStaticLib/lib",
 					"$(PROJECT_DIR)/RedpacketSDK/RedpacketStaticLib/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;

@@ -72,7 +72,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner || self.chatroom.membershipType == EMChatroomMembershipTypeAdmin) {
+    if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
         return 8;
     }
     else {
@@ -112,7 +112,7 @@
         
         cell.detailTextLabel.text = self.chatroom.owner;
         
-        if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner) {
+        if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         else {
@@ -122,7 +122,7 @@
     else if (indexPath.row == 4) {
         cell.textLabel.text = NSLocalizedString(@"group.admins", @"Admins");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[self.chatroom.admins count]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[self.chatroom.adminList count]];
     }
     else if (indexPath.row == 5) {
         cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
@@ -153,7 +153,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 3) { //群主转换
-        if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner) {
+        if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.changeOwner", @"Change Owner") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
             [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
             alert.tag = ALERTVIEW_CHANGEOWNER;

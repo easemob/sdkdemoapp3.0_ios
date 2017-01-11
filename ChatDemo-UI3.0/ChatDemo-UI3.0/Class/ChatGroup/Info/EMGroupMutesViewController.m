@@ -22,7 +22,6 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [self.dataArray addObjectsFromArray:self.group.admins];
     }
     
     return self;
@@ -109,7 +108,7 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.membershipType != EMGroupMembershipTypeOwner && self.group.membershipType != EMGroupMembershipTypeAdmin) {
+    if (self.group.permissionType != EMGroupPermissionTypeOwner && self.group.permissionType != EMGroupPermissionTypeAdmin) {
         return;
     }
     
@@ -139,7 +138,7 @@
     NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].groupManager fetchGroupMutesList:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
+    [[EMClient sharedClient].groupManager fetchGroupMuteList:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {

@@ -22,7 +22,6 @@
     self = [super init];
     if (self) {
         self.chatroom = aChatroom;
-        [self.dataArray addObjectsFromArray:self.chatroom.admins];
     }
     
     return self;
@@ -95,7 +94,7 @@
     } else if (buttonIndex == 1) { //加入黑名单
         self.chatroom = [[EMClient sharedClient].roomManager blockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
     } else if (buttonIndex == 2) {  //禁言
-        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUserName:userName muteSeconds:60];
+        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUsername:userName muteSeconds:60];
         self.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[muteOptions] fromChatroom:self.chatroom.chatroomId error:&error];
     } else if (buttonIndex == 3) {  //升为管理员
         self.chatroom = [[EMClient sharedClient].roomManager addAdmin:userName toChatroom:self.chatroom.chatroomId error:&error];
@@ -115,15 +114,15 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.chatroom.membershipType != EMChatroomMembershipTypeOwner && self.chatroom.membershipType != EMChatroomMembershipTypeAdmin) {
+    if (self.chatroom.permissionType != EMChatroomPermissionTypeOwner && self.chatroom.permissionType != EMChatroomPermissionTypeAdmin) {
         return;
     }
     
     self.currentLongPressIndex = indexPath;
     UIActionSheet *actionSheet = nil;
-    if (self.chatroom.membershipType == EMChatroomMembershipTypeOwner) {
+    if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner) {
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeMember", @"Remove from group"), NSLocalizedString(@"friend.block", @"Add to black list"), NSLocalizedString(@"group.toMute", @"Mute 60s"), NSLocalizedString(@"group.addAdmin", @"Add to admin"), nil];
-    } else if (self.chatroom.membershipType == EMChatroomMembershipTypeAdmin) {
+    } else if (self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeMember", @"Remove from group"), NSLocalizedString(@"friend.block", @"Add to black list"), NSLocalizedString(@"group.toMute", @"Mute 60s"), nil];
     }
     
@@ -152,7 +151,7 @@
     NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].roomManager fetchChatroomMembersList:self.chatroom.chatroomId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
+    [[EMClient sharedClient].roomManager fetchChatroomMemberList:self.chatroom.chatroomId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {

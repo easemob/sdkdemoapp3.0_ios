@@ -22,7 +22,7 @@
     self = [super init];
     if (self) {
         self.chatroom = aChatroom;
-        [self.dataArray addObjectsFromArray:self.chatroom.admins];
+        [self.dataArray addObjectsFromArray:self.chatroom.adminList];
     }
     
     return self;
@@ -94,7 +94,7 @@
     } else if (buttonIndex == 1) { //加入黑名单
         self.chatroom = [[EMClient sharedClient].roomManager blockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
     } else if (buttonIndex == 2) {  //禁言
-        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUserName:userName muteSeconds:60];
+        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUsername:userName muteSeconds:60];
         self.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[muteOptions] fromChatroom:self.chatroom.chatroomId error:&error];
     }
     
@@ -112,7 +112,7 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.chatroom.membershipType != EMChatroomMembershipTypeOwner) {
+    if (self.chatroom.permissionType != EMChatroomPermissionTypeOwner) {
         return;
     }
     
@@ -139,7 +139,7 @@
             weakSelf.chatroom = chatroom;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.dataArray removeAllObjects];
-                [weakSelf.dataArray addObjectsFromArray:weakSelf.chatroom.admins];
+                [weakSelf.dataArray addObjectsFromArray:weakSelf.chatroom.adminList];
                 [weakSelf.tableView reloadData];
             });
         }

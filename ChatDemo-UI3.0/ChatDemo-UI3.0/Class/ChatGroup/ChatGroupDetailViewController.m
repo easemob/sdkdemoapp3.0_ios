@@ -210,7 +210,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.chatGroup.membershipType == EMGroupMembershipTypeOwner || self.chatGroup.membershipType == EMGroupMembershipTypeAdmin) {
+    if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner || self.chatGroup.permissionType == EMGroupPermissionTypeAdmin) {
         return 9;
     }
     else {
@@ -249,7 +249,7 @@
         
         cell.detailTextLabel.text = _chatGroup.owner;
         
-        if (self.chatGroup.membershipType == EMGroupMembershipTypeOwner) {
+        if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         else {
@@ -259,7 +259,7 @@
     else if (indexPath.row == 5) {
         cell.textLabel.text = NSLocalizedString(@"group.admins", @"Admins");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[_chatGroup.admins count]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[_chatGroup.adminList count]];
     }
     else if (indexPath.row == 6) {
         cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
@@ -303,7 +303,7 @@
         [self.navigationController pushViewController:searchMsgController animated:YES];
     }
     else if (indexPath.row == 4) { //群主转换
-        if (self.chatGroup.membershipType == EMGroupMembershipTypeOwner) {
+        if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"group.changeOwner", @"Change Owner") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
             [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
             alert.tag = ALERTVIEW_CHANGEOWNER;
@@ -445,7 +445,7 @@
 - (void)reloadDataSource
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.chatGroup.membershipType == EMGroupMembershipTypeOwner || self.chatGroup.membershipType == EMGroupMembershipTypeAdmin) {
+        if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner || self.chatGroup.permissionType == EMGroupPermissionTypeAdmin) {
             self.navigationItem.rightBarButtonItem = self.addMemberItem;
         } else {
             self.navigationItem.rightBarButtonItem = nil;
@@ -459,7 +459,7 @@
 
 - (void)refreshFooterView
 {
-    if (self.chatGroup.membershipType == EMGroupMembershipTypeOwner) {
+    if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner) {
         [_exitButton removeFromSuperview];
         [_footerView addSubview:self.dissolveButton];
     }
@@ -475,8 +475,8 @@
 {
     NSMutableArray *occupants = [[NSMutableArray alloc] init];
     [occupants addObject:self.chatGroup.owner];
-    [occupants addObjectsFromArray:self.chatGroup.admins];
-    [occupants addObjectsFromArray:self.chatGroup.members];
+    [occupants addObjectsFromArray:self.chatGroup.adminList];
+    [occupants addObjectsFromArray:self.chatGroup.memberList];
     ContactSelectionViewController *selectionController = [[ContactSelectionViewController alloc] initWithBlockSelectedUsernames:occupants];
     selectionController.delegate = self;
     [self.navigationController pushViewController:selectionController animated:YES];

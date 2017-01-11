@@ -22,7 +22,6 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [self.dataArray addObjectsFromArray:self.group.admins];
     }
     
     return self;
@@ -95,7 +94,7 @@
     } else if (buttonIndex == 1) { //加入黑名单
         self.group = [[EMClient sharedClient].groupManager blockOccupants:@[userName] fromGroup:self.group.groupId error:&error];
     } else if (buttonIndex == 2) {  //禁言
-        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUserName:userName muteSeconds:60];
+        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUsername:userName muteSeconds:60];
         self.group = [[EMClient sharedClient].groupManager muteMembers:@[muteOptions] fromGroup:self.group.groupId error:&error];
     } else if (buttonIndex == 3) {  //升为管理员
         self.group = [[EMClient sharedClient].groupManager addAdmin:userName toGroup:self.group.groupId error:&error];
@@ -115,15 +114,15 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.membershipType != EMGroupMembershipTypeOwner && self.group.membershipType != EMGroupMembershipTypeAdmin) {
+    if (self.group.permissionType != EMGroupPermissionTypeOwner && self.group.permissionType != EMGroupPermissionTypeAdmin) {
         return;
     }
     
     self.currentLongPressIndex = indexPath;
     UIActionSheet *actionSheet = nil;
-    if (self.group.membershipType == EMGroupMembershipTypeOwner) {
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeMember", @"Remove from group"), NSLocalizedString(@"friend.block", @"Add to black list"), NSLocalizedString(@"group.toMute", @"Mute 60s"), NSLocalizedString(@"group.addAdmin", @"Add to admin"), nil];
-    } else if (self.group.membershipType == EMGroupMembershipTypeAdmin) {
+    } else if (self.group.permissionType == EMGroupPermissionTypeAdmin) {
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeMember", @"Remove from group"), NSLocalizedString(@"friend.block", @"Add to black list"), NSLocalizedString(@"group.toMute", @"Mute 60s"), nil];
     }
     
@@ -152,7 +151,7 @@
     NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].groupManager fetchGroupMembersList:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
+    [[EMClient sharedClient].groupManager fetchGroupMemberList:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {

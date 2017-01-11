@@ -22,7 +22,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [self.dataArray addObjectsFromArray:self.group.admins];
+        [self.dataArray addObjectsFromArray:self.group.blacklist];
     }
     
     return self;
@@ -109,7 +109,7 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.membershipType != EMGroupMembershipTypeOwner && self.group.membershipType != EMGroupMembershipTypeAdmin) {
+    if (self.group.permissionType != EMGroupPermissionTypeOwner && self.group.permissionType != EMGroupPermissionTypeAdmin) {
         return;
     }
     

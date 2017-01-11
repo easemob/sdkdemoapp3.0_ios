@@ -22,7 +22,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [self.dataArray addObjectsFromArray:self.group.admins];
+        [self.dataArray addObjectsFromArray:self.group.adminList];
     }
     
     return self;
@@ -94,7 +94,7 @@
     } else if (buttonIndex == 1) { //加入黑名单
         self.group = [[EMClient sharedClient].groupManager blockOccupants:@[userName] fromGroup:self.group.groupId error:&error];
     } else if (buttonIndex == 2) {  //禁言
-        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUserName:userName muteSeconds:60];
+        EMMemberMuteOptions *muteOptions = [EMMemberMuteOptions createWithUsername:userName muteSeconds:60];
         self.group = [[EMClient sharedClient].groupManager muteMembers:@[muteOptions] fromGroup:self.group.groupId error:&error];
     }
     
@@ -112,7 +112,7 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.membershipType != EMGroupMembershipTypeOwner) {
+    if (self.group.permissionType != EMGroupPermissionTypeOwner) {
         return;
     }
     
@@ -139,7 +139,7 @@
             weakSelf.group = group;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.dataArray removeAllObjects];
-                [weakSelf.dataArray addObjectsFromArray:weakSelf.group.admins];
+                [weakSelf.dataArray addObjectsFromArray:weakSelf.group.adminList];
                 [weakSelf.tableView reloadData];
             });
         }

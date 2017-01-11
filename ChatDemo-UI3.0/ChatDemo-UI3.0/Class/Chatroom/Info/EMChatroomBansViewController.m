@@ -22,7 +22,7 @@
     self = [super init];
     if (self) {
         self.chatroom = aChatroom;
-        [self.dataArray addObjectsFromArray:self.chatroom.admins];
+        [self.dataArray addObjectsFromArray:self.chatroom.blacklist];
     }
     
     return self;
@@ -109,7 +109,7 @@
 
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.chatroom.membershipType != EMChatroomMembershipTypeOwner && self.chatroom.membershipType != EMChatroomMembershipTypeAdmin) {
+    if (self.chatroom.permissionType != EMChatroomPermissionTypeOwner && self.chatroom.permissionType != EMChatroomPermissionTypeAdmin) {
         return;
     }
     
@@ -139,7 +139,7 @@
     NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].roomManager fetchChatroomBansList:self.chatroom.chatroomId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
+    [[EMClient sharedClient].roomManager fetchChatroomBlacklist:self.chatroom.chatroomId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
