@@ -129,7 +129,7 @@
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         EMError *error = nil;
-        EMChatroom *chatroom = [[EMClient sharedClient].roomManager fetchChatroomInfo:weakSelf.chatroom.chatroomId error:&error];
+        EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:weakSelf.chatroom.chatroomId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
         });
