@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import <Hyphenate/EMSDKFull.h>
 #import "EMCallOptions+NSCoding.h"
 
 @class MainViewController;

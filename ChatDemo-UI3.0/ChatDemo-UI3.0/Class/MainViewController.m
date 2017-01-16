@@ -29,6 +29,8 @@ static NSString *kConversationChatter = @"ConversationChatter";
 static NSString *kGroupName = @"GroupName";
 
 #if DEMO_CALL == 1
+#import <Hyphenate/EMSDKFull.h>
+
 @interface MainViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
 #else
 @interface MainViewController () <UIAlertViewDelegate>
