@@ -202,6 +202,11 @@
 //Chatroom detail
 "chatroom.somebodyInvite" = "%@ 邀请你加入聊天室\'%@\'";
 "chatroom.id" = "聊天室Id";
+"chatroom.owner" = "创建者";
+"chatroom.admins" = "管理员";
+"chatroom.members" = "成员列表";
+"chatroom.blacklist" = "黑名单列表";
+"chatroom.mutes" = "被禁言成员";
 "chatroom.occupantCount" = "聊天室人数";
 "chatroom.description" = "描述";
 "chatroom.joining" = "正在加入...";

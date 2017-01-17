@@ -32,7 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"title.groupBlackList", @"Black list");
+    self.title = NSLocalizedString(@"chatroom.blacklist", @"Blacklist");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";

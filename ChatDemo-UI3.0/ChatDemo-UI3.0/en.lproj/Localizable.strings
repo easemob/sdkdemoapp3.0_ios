@@ -202,6 +202,11 @@
 //Chatroom detail
 "chatroom.somebodyInvite" = "%@ invite you to join chatroom \'%@\'";
 "chatroom.id" = "chatroomId";
+"chatroom.owner" = "Owner";
+"chatroom.admins" = "Admin List";
+"chatroom.members" = "Member List";
+"chatroom.blacklist" = "Blacklist";
+"chatroom.mutes" = "Mute List";
 "chatroom.occupantCount" = "members count";
 "chatroom.description" = "description";
 "chatroom.joining" = "Joining...";

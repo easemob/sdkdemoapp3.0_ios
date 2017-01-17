@@ -215,7 +215,7 @@
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerByID:_chatroom.chatroomId includeMembersList:YES completion:^(EMChatroom *aChatroom, EMError *aError) {
+    [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_chatroom.chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
         __strong ChatroomDetailViewController *strongSelf = weakSelf;
         if (strongSelf) {
             [strongSelf hideHud];
