@@ -69,6 +69,7 @@
 "error.connectServerFail" = "Connect to the server failed!";
 "error.connectServerTimeout" = "Connect to the server timed out!";
 "error.connectNetworkFail" = "No network connection!";
+"error.usernotExist" = "User do not exist.";
 "error.notFound" = "File path not exist";
 "error.initPlayerFail" = "Failed to initialize AVAudioPlayer!";
 "error.palyFail" = "Play failure!";

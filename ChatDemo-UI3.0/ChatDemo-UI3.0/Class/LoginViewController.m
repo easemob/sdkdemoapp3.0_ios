@@ -162,9 +162,9 @@
             } else {
                 switch (error.code)
                 {
-//                    case EMErrorNotFound:
-//                        TTAlertNoTitle(error.errorDescription);
-//                        break;
+                    case EMErrorUserNotFound:
+                        TTAlertNoTitle(NSLocalizedString(@"error.usernotExist", @"User not exist!"));
+                        break;
                     case EMErrorNetworkUnavailable:
                         TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
                         break;
