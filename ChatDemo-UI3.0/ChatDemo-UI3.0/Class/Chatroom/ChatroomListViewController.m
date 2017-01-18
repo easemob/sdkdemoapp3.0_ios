@@ -18,6 +18,7 @@
 #import "BaseTableViewCell.h"
 
 #import "UIViewController+SearchController.h"
+#import "EMCreateChatroomController.h"
 
 #define FetchChatroomPageSize   20
 
@@ -56,6 +57,13 @@
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [addButton setTitle:@"创建" forState:UIControlStateNormal];
+    [addButton addTarget:self action:@selector(createChatroomAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+    [self.navigationItem setRightBarButtonItem:addItem];
+
     
     self.showRefreshHeader = YES;
     [self setupSearchController];
@@ -274,6 +282,12 @@
     
     UISearchBar *searchBar = self.searchController.searchBar;
     self.tableView.tableHeaderView = searchBar;
+}
+
+- (void)createChatroomAction
+{
+    EMCreateChatroomController *createRoomController = [[EMCreateChatroomController alloc] init];
+    [self.navigationController pushViewController:createRoomController animated:YES];
 }
 
 #pragma mark - data

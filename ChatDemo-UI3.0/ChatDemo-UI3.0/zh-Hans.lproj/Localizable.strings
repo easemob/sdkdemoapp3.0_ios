@@ -215,6 +215,11 @@
 "chatroom.join" = "\'%@\'加入聊天室\'%@\'";
 "chatroom.leave" = "\'%@\'离开聊天室\'%@\'";
 "chatroom.remove" = "被踢出聊天室\'%@\'";
+"chatroom.create.inputName" = "请输入聊天室名称";
+"chatroom.create.inputDescribe" = "请输入聊天室简介";
+"chatroom.create.ongoing" = "创建聊天室...";
+"chatroom.create.success" = "创建聊天室成功";
+"chatroom.create.fail" = "创建聊天室失败，请重新操作";
 
 //call
 "call.initFailed"="创建实时通话失败，请稍后重试";
@@ -319,6 +324,7 @@
 "title.chatroomlist" = "聊天室列表";
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";
+"title.createChatroom" = "创建聊天室";
 
 
 //setting

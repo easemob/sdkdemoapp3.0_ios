@@ -215,6 +215,11 @@
 "chatroom.join" = "\'%@\'join chatroom\'%@\'";
 "chatroom.leave" = "\'%@\'leave chatroom\'%@\'";
 "chatroom.remove" = "be removed from chatroom\'%@\'";
+"chatroom.create.inputName" = "Please input chatroom name";
+"chatroom.create.inputDescribe" = "Please input chatroom description";
+"chatroom.create.ongoing" = "create a chatroom...";
+"chatroom.create.success" = "create chatroom success";
+"chatroom.create.fail" = "Failed to create a chatroom, please operate again";
 
 //call
 "call.initFailed"="Establish call failure";
@@ -321,6 +326,7 @@
 "title.chatroomlist" = "Chatroom List";
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
+"title.createChatroom" = "Create a chatroom";
 
 //setting
 "setting.autoLogin" = "automatic login";

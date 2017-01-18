@@ -11,6 +11,7 @@
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
 		3A05524B1DCC859900D583E5 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */; };
+		3A22B1B71E2F7D8F0001D791 /* EMCreateChatroomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A22B1B61E2F7D8F0001D791 /* EMCreateChatroomController.m */; };
 		3A27807B1DDB270200362CA7 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A27807A1DDB270200362CA7 /* libEaseUI.a */; };
 		3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */; };
 		3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */; };
@@ -325,6 +326,8 @@
 		28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
 		3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../easeui_ios/EaseUI/export/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
+		3A22B1B51E2F7D8F0001D791 /* EMCreateChatroomController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCreateChatroomController.h; sourceTree = "<group>"; };
+		3A22B1B61E2F7D8F0001D791 /* EMCreateChatroomController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMCreateChatroomController.m; sourceTree = "<group>"; };
 		3A27807A1DDB270200362CA7 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		3A27807C1DDB271400362CA7 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateFullSDK.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libHyphenateFullSDK.a"; sourceTree = "<group>"; };
 		3A2858121DF856AD0062B7F0 /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
@@ -777,6 +780,8 @@
 		28BFD62F1B01D40500D0ADEC /* Chatroom */ = {
 			isa = PBXGroup;
 			children = (
+				3A22B1B51E2F7D8F0001D791 /* EMCreateChatroomController.h */,
+				3A22B1B61E2F7D8F0001D791 /* EMCreateChatroomController.m */,
 				3A2C3A1C1E23AF5000DCD9BE /* Info */,
 				28BFD6301B01D40500D0ADEC /* ChatroomDetailViewController.h */,
 				28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */,
@@ -1906,6 +1911,7 @@
 				D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */,
 				3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */,
 				9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */,
+				3A22B1B71E2F7D8F0001D791 /* EMCreateChatroomController.m in Sources */,
 				906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */,
 				3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */,
 				3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */,

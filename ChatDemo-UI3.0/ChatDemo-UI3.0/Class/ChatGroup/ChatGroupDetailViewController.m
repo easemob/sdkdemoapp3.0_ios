@@ -119,7 +119,7 @@
     addButton.accessibilityIdentifier = @"add";
     [addButton setTitle:@"+ 成员" forState:UIControlStateNormal];
     [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [addButton addTarget:self.navigationController action:@selector(addMemberButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [addButton addTarget:self action:@selector(addMemberButtonAction) forControlEvents:UIControlEventTouchUpInside];
     self.addMemberItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     self.tableView.tableFooterView = self.footerView;
@@ -347,7 +347,7 @@
         if ([newOwner length] > 0) {
             EMError *error = nil;
             [self showHudInView:self.view hint:@"Hold on ..."];
-            [[EMClient sharedClient].groupManager updateGroupOwner:self.chatGroup.groupId newOwner:newOwner error:&error];
+            self.chatGroup = [[EMClient sharedClient].groupManager updateGroupOwner:self.chatGroup.groupId newOwner:newOwner error:&error];
             [self hideHud];
             if (error) {
                 [self showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
@@ -383,7 +383,7 @@
         NSString *username = [[EMClient sharedClient] currentUsername];
         NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join group \'%@\'"), username, weakSelf.chatGroup.subject];
         EMError *error = nil;
-        weakSelf.chatGroup = [[EMClient sharedClient].groupManager addOccupants:source toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:&error];
+        weakSelf.chatGroup = [[EMClient sharedClient].groupManager addOccupants:@[@"newg001"] toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 [weakSelf reloadDataSource];
