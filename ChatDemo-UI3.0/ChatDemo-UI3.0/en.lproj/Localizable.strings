@@ -221,6 +221,11 @@
 "chatroom.create.success" = "create chatroom success";
 "chatroom.create.fail" = "Failed to create a chatroom, please operate again";
 
+"chatroom.destroy" = "Destroy the chatroom";
+"chatroom.leave" = "Leave the chatroom";
+"chatroom.destroyFail" = "Destroy the chatroom failure";
+"chatroom.leaveFail" = "Leave the chatroom failure";
+
 //call
 "call.initFailed"="Establish call failure";
 "call.waiting"="Waiting to answer...";

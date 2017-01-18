@@ -30,6 +30,10 @@
 
 @property (strong, nonatomic) EMChatroom *chatroom;
 
+@property (strong, nonatomic) UIView *footerView;
+@property (strong, nonatomic) UIButton *leaveButton;
+@property (strong, nonatomic) UIButton *destroyButton;
+
 @end
 
 @implementation ChatroomDetailViewController
@@ -59,6 +63,30 @@
     [self.navigationItem setLeftBarButtonItem:backItem];
 
     [self fetchChatroomInfo];
+}
+
+- (UIView *)footerView
+{
+    if (_footerView == nil) {
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 160)];
+        _footerView.backgroundColor = [UIColor clearColor];
+        
+        _destroyButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 40, _footerView.frame.size.width - 40, 35)];
+        _destroyButton.accessibilityIdentifier = @"leave";
+        [_destroyButton setTitle:NSLocalizedString(@"chatroom.destroy", @"dissolution of the group") forState:UIControlStateNormal];
+        [_destroyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_destroyButton addTarget:self action:@selector(destroyAction) forControlEvents:UIControlEventTouchUpInside];
+        [_destroyButton setBackgroundColor: [UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
+        
+        _leaveButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 40, _footerView.frame.size.width - 40, 35)];
+        _leaveButton.accessibilityIdentifier = @"leave";
+        [_leaveButton setTitle:NSLocalizedString(@"chatroom.leave", @"quit the group") forState:UIControlStateNormal];
+        [_leaveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_leaveButton addTarget:self action:@selector(leaveAction) forControlEvents:UIControlEventTouchUpInside];
+        [_leaveButton setBackgroundColor:[UIColor colorWithRed:191 / 255.0 green:48 / 255.0 blue:49 / 255.0 alpha:1.0]];
+    }
+    
+    return _footerView;
 }
 
 #pragma mark - Table view data source
@@ -207,6 +235,45 @@
         }
         
     }
+}
+
+#pragma mark - action
+
+- (void)leaveAction
+{
+    __weak typeof(self) weakSelf = self;
+    [self showHudInView:self.view hint:NSLocalizedString(@"chatroom.leave", @"leave the chatroom")];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        EMError *error = nil;
+        [[EMClient sharedClient].roomManager leaveChatroom:weakSelf.chatroom.chatroomId error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (error) {
+                [weakSelf showHint:NSLocalizedString(@"chatroom.leaveFail", @"leave the chatroom failure")];
+            }
+            else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+            }
+        });
+    });
+}
+
+- (void)destroyAction
+{
+    __weak typeof(self) weakSelf = self;
+    [self showHudInView:self.view hint:NSLocalizedString(@"chatroom.destroy", @"destroy the chatroom")];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
+        EMError *error = [[EMClient sharedClient].roomManager destroyChatroom:weakSelf.chatroom.chatroomId];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (error) {
+                [weakSelf showHint:NSLocalizedString(@"chatroom.destroyFail", @"destroy the chatroom failure")];
+            }
+            else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+            }
+        });
+    });
 }
 
 #pragma mark - data
