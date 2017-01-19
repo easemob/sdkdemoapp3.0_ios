@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) EMChatroom *chatroom;
 @property (nonatomic, strong) NSIndexPath *currentLongPressIndex;
+@property (nonatomic, strong) NSString *cursor;
 
 @end
 
@@ -151,18 +152,19 @@
     NSInteger pageSize = 50;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.chatroom.chatroomId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, EMError *aError) {
+    [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.chatroom.chatroomId cursor:self.cursor pageSize:pageSize completion:^(EMCursorResult *aResult, EMError *aError) {
+        weakSelf.cursor = aResult.cursor;
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
             [weakSelf.dataArray removeAllObjects];
-            [weakSelf.dataArray addObjectsFromArray:aMembers];
+            [weakSelf.dataArray addObjectsFromArray:aResult.list];
             [weakSelf.tableView reloadData];
         } else {
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
         
-        if ([aMembers count] < pageSize) {
+        if ([aResult.cursor length] == 0) {
             self.showRefreshFooter = NO;
         } else {
             self.showRefreshFooter = YES;

@@ -383,7 +383,7 @@
         NSString *username = [[EMClient sharedClient] currentUsername];
         NSString *messageStr = [NSString stringWithFormat:NSLocalizedString(@"group.somebodyInvite", @"%@ invite you to join group \'%@\'"), username, weakSelf.chatGroup.subject];
         EMError *error = nil;
-        weakSelf.chatGroup = [[EMClient sharedClient].groupManager addOccupants:@[@"newg001"] toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:&error];
+        weakSelf.chatGroup = [[EMClient sharedClient].groupManager addOccupants:source toGroup:weakSelf.chatGroup.groupId welcomeMessage:messageStr error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 [weakSelf reloadDataSource];
