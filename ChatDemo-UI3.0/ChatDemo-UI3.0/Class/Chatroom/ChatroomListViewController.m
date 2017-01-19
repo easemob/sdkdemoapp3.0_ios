@@ -58,11 +58,11 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
-    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [addButton setTitle:@"创建" forState:UIControlStateNormal];
-    [addButton addTarget:self action:@selector(createChatroomAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
-    [self.navigationItem setRightBarButtonItem:addItem];
+//    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+//    [addButton setTitle:@"创建" forState:UIControlStateNormal];
+//    [addButton addTarget:self action:@selector(createChatroomAction) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+//    [self.navigationItem setRightBarButtonItem:addItem];
 
     
     self.showRefreshHeader = YES;
