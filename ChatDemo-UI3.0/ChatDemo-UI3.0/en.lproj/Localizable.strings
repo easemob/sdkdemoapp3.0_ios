@@ -170,8 +170,8 @@
 "group.leave" = "quit the group";
 "group.id" = "groupID";
 "group.owner" = "Owner";
-"group.admins" = "Admins";
-"group.members" = "Members";
+"group.admins" = "Admin List";
+"group.members" = "Member List";
 "group.mutes" = "Mutes";
 "group.occupantCount" = "members count";
 "group.addingOccupant" = "add a group member...";

@@ -171,7 +171,7 @@
 "group.id" = "群组ID";
 "group.owner" = "群主";
 "group.admins" = "管理员";
-"group.members" = "群成员";
+"group.members" = "普通成员";
 "group.mutes" = "被禁言成员";
 "group.occupantCount" = "群组人数";
 "group.addingOccupant" = "添加组成员...";

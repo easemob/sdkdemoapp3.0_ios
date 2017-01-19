@@ -155,7 +155,7 @@
     else if (indexPath.row == 5) {
         cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)self.chatroom.membersCount, (int)self.chatroom.maxMembersCount];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)(self.chatroom.occupantsCount - 1 - self.chatroom.adminList.count)];
     }
     else if (indexPath.row == 6) {
         cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");

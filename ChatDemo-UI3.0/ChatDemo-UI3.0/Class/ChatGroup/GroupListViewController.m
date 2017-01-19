@@ -302,6 +302,8 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
         NSArray *groupList = [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:aPage pageSize:50 error:&error];
+        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+        
         if (weakSelf)
         {
             GroupListViewController *strongSelf = weakSelf;
@@ -325,8 +327,6 @@
                     } else {
                         strongSelf.showRefreshFooter = NO;
                     }
-                    
-                    [strongSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
                 }
             });
         }

@@ -74,7 +74,6 @@
     if (self) {
         // Custom initialization
         _chatGroup = chatGroup;
-        [self registerNotifications];
     }
     return self;
 }
@@ -123,6 +122,8 @@
     self.addMemberItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     self.tableView.tableFooterView = self.footerView;
+    
+    [self registerNotifications];
     
     [self fetchGroupInfo];
 }
@@ -247,7 +248,7 @@
     else if (indexPath.row == 4) {
         cell.textLabel.text = NSLocalizedString(@"group.owner", @"Owner");
         
-        cell.detailTextLabel.text = _chatGroup.owner;
+        cell.detailTextLabel.text = self.chatGroup.owner;
         
         if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -259,12 +260,13 @@
     else if (indexPath.row == 5) {
         cell.textLabel.text = NSLocalizedString(@"group.admins", @"Admins");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[_chatGroup.adminList count]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[self.chatGroup.adminList count]];
     }
     else if (indexPath.row == 6) {
         cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatGroup.membersCount, (int)_chatGroup.setting.maxUsersCount];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)(self.chatGroup.occupantsCount - 1 - [self.chatGroup.adminList count]), (int)self.chatGroup.setting.maxUsersCount];
+        NSLog([NSString stringWithFormat:@"111111=========%ld", (long)self.chatGroup.occupantsCount]);
     }
     else if (indexPath.row == 7) {
         cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");
