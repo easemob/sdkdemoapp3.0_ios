@@ -10,7 +10,6 @@
 		283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */; };
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
-		3A05524B1DCC859900D583E5 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */; };
 		3A27807B1DDB270200362CA7 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A27807A1DDB270200362CA7 /* libEaseUI.a */; };
 		3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
@@ -103,6 +102,7 @@
 		3CBB931C1A14B227007FED9E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBB931B1A14B227007FED9E /* libsqlite3.dylib */; };
 		3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
+		4C59E5A9968AB3D81A7A83C4 /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */; };
 		833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */; };
 		8414902F1E0BD66F000A2B0C /* AppDelegate+Redpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414901C1E0BD66F000A2B0C /* AppDelegate+Redpacket.m */; };
 		841490301E0BD66F000A2B0C /* EaseRedBagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841490201E0BD66F000A2B0C /* EaseRedBagCell.m */; };
@@ -112,7 +112,6 @@
 		841490341E0BD66F000A2B0C /* RedpacketCellResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 841490271E0BD66F000A2B0C /* RedpacketCellResource.bundle */; };
 		841490351E0BD66F000A2B0C /* RedPacketChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414902A1E0BD66F000A2B0C /* RedPacketChatViewController.m */; };
 		841490361E0BD66F000A2B0C /* RedPacketUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414902D1E0BD66F000A2B0C /* RedPacketUserConfig.m */; };
-		841490371E0BD66F000A2B0C /* 环信红包3.x接入文档(iOS).md in Sources */ = {isa = PBXBuildFile; fileRef = 8414902E1E0BD66F000A2B0C /* 环信红包3.x接入文档(iOS).md */; };
 		90011F921AE4BF090088D549 /* EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90011F911AE4BF090088D549 /* EMAlertView.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
 		9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D85E1939D8D000DC38A4 /* AddFriendCell.m */; };
@@ -151,12 +150,6 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
-		D21E563F1E11120800C50BA0 /* libRedpacketLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E56351E11120800C50BA0 /* libRedpacketLib.a */; };
-		D21E56401E11120900C50BA0 /* RedPacketResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D21E563C1E11120800C50BA0 /* RedPacketResource.bundle */; };
-		D21E56471E1117B900C50BA0 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D21E56451E1117B900C50BA0 /* AlipaySDK.bundle */; };
-		D21E56481E1117B900C50BA0 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E56461E1117B900C50BA0 /* AlipaySDK.framework */; };
-		D21E583E1E127D6100C50BA0 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E583D1E127D6100C50BA0 /* Hyphenate.framework */; };
-		D21E583F1E127D6100C50BA0 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D21E583D1E127D6100C50BA0 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
@@ -299,7 +292,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D21E583F1E127D6100C50BA0 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,7 +306,7 @@
 		28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
 		28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
-		3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../easeui_ios/EaseUI/export/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
+		2C3F069E4561DF87C1CF28DB /* Pods-ChatDemo-UI3.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.debug.xcconfig"; sourceTree = "<group>"; };
 		3A27807A1DDB270200362CA7 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		3A27807C1DDB271400362CA7 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateFullSDK.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libHyphenateFullSDK.a"; sourceTree = "<group>"; };
 		3A2858121DF856AD0062B7F0 /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
@@ -447,6 +439,8 @@
 		3CBF90BE19302F5000AD68AE /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		3CBF90BF19302F5000AD68AE /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		634D221907BE36EED83B80C7 /* Pods-ChatDemo-UI3.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.release.xcconfig"; sourceTree = "<group>"; };
 		833E2D9C1DC723D600C5AB48 /* GettingMoreFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GettingMoreFooterView.h; sourceTree = "<group>"; };
 		833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GettingMoreFooterView.m; sourceTree = "<group>"; };
 		8414901B1E0BD66F000A2B0C /* AppDelegate+Redpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Redpacket.h"; sourceTree = "<group>"; };
@@ -465,7 +459,6 @@
 		8414902A1E0BD66F000A2B0C /* RedPacketChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketChatViewController.m; sourceTree = "<group>"; };
 		8414902C1E0BD66F000A2B0C /* RedPacketUserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedPacketUserConfig.h; sourceTree = "<group>"; };
 		8414902D1E0BD66F000A2B0C /* RedPacketUserConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedPacketUserConfig.m; sourceTree = "<group>"; };
-		8414902E1E0BD66F000A2B0C /* 环信红包3.x接入文档(iOS).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "环信红包3.x接入文档(iOS).md"; sourceTree = "<group>"; };
 		90011F901AE4BF090088D549 /* EMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAlertView.h; sourceTree = "<group>"; };
 		90011F911AE4BF090088D549 /* EMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAlertView.m; sourceTree = "<group>"; };
 		9003D7851939D8D000DC38A4 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
@@ -535,18 +528,6 @@
 		90F1BED21930493F00121AEC /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		D21E56351E11120800C50BA0 /* libRedpacketLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRedpacketLib.a; sourceTree = "<group>"; };
-		D21E56361E11120800C50BA0 /* RedpacketErrorCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketErrorCode.h; sourceTree = "<group>"; };
-		D21E56371E11120800C50BA0 /* RedpacketLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketLib.h; sourceTree = "<group>"; };
-		D21E56381E11120800C50BA0 /* RedpacketMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketMessageModel.h; sourceTree = "<group>"; };
-		D21E56391E11120800C50BA0 /* RedpacketOpenConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketOpenConst.h; sourceTree = "<group>"; };
-		D21E563A1E11120800C50BA0 /* RedpacketViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedpacketViewControl.h; sourceTree = "<group>"; };
-		D21E563C1E11120800C50BA0 /* RedPacketResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RedPacketResource.bundle; sourceTree = "<group>"; };
-		D21E563D1E11120800C50BA0 /* YZHRedpacketBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridge.h; sourceTree = "<group>"; };
-		D21E563E1E11120800C50BA0 /* YZHRedpacketBridgeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridgeProtocol.h; sourceTree = "<group>"; };
-		D21E56451E1117B900C50BA0 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
-		D21E56461E1117B900C50BA0 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
-		D21E583D1E127D6100C50BA0 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
 		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
@@ -719,7 +700,6 @@
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
 				3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */,
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
-				D21E563F1E11120800C50BA0 /* libRedpacketLib.a in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
@@ -727,13 +707,12 @@
 				D29A6BB21B72098D002324BB /* Bolts.framework in Frameworks */,
 				90F1BED11930493200121AEC /* libiconv.dylib in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
-				D21E56481E1117B900C50BA0 /* AlipaySDK.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				90F1BECB1930491D00121AEC /* libz.dylib in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				D29A6BB31B72098D002324BB /* Parse.framework in Frameworks */,
-				D21E583E1E127D6100C50BA0 /* Hyphenate.framework in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
+				4C59E5A9968AB3D81A7A83C4 /* libPods-ChatDemo-UI3.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,14 +912,19 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		62D218E3D6E4A02086A5A14A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2C3F069E4561DF87C1CF28DB /* Pods-ChatDemo-UI3.0.debug.xcconfig */,
+				634D221907BE36EED83B80C7 /* Pods-ChatDemo-UI3.0.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		841490191E0BD66E000A2B0C /* RedpacketSDK */ = {
 			isa = PBXGroup;
 			children = (
-				D21E56451E1117B900C50BA0 /* AlipaySDK.bundle */,
-				D21E56461E1117B900C50BA0 /* AlipaySDK.framework */,
-				D21E56331E11120800C50BA0 /* RedpacketStaticLib */,
 				8414901A1E0BD66F000A2B0C /* RedpacketOpen */,
-				8414902E1E0BD66F000A2B0C /* 环信红包3.x接入文档(iOS).md */,
 			);
 			path = RedpacketSDK;
 			sourceTree = "<group>";
@@ -1078,11 +1062,11 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				D21E583D1E127D6100C50BA0 /* Hyphenate.framework */,
 				841490191E0BD66E000A2B0C /* RedpacketSDK */,
 				9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
+				62D218E3D6E4A02086A5A14A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1134,6 +1118,7 @@
 				90911027192EEA70008A48AA /* Foundation.framework */,
 				90911029192EEA70008A48AA /* CoreGraphics.framework */,
 				9091102B192EEA70008A48AA /* UIKit.framework */,
+				4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1141,7 +1126,6 @@
 		9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */ = {
 			isa = PBXGroup;
 			children = (
-				3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */,
 				287094581DAC6E2900BCB3CD /* ChatDemo-UI3.0.entitlements */,
 				3CBF90BC19302F5000AD68AE /* Custom */,
 				90911120192EEBB8008A48AA /* Class */,
@@ -1255,38 +1239,6 @@
 				90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */,
 			);
 			path = SlimeRefresh;
-			sourceTree = "<group>";
-		};
-		D21E56331E11120800C50BA0 /* RedpacketStaticLib */ = {
-			isa = PBXGroup;
-			children = (
-				D21E56341E11120800C50BA0 /* lib */,
-				D21E56361E11120800C50BA0 /* RedpacketErrorCode.h */,
-				D21E56371E11120800C50BA0 /* RedpacketLib.h */,
-				D21E56381E11120800C50BA0 /* RedpacketMessageModel.h */,
-				D21E56391E11120800C50BA0 /* RedpacketOpenConst.h */,
-				D21E563A1E11120800C50BA0 /* RedpacketViewControl.h */,
-				D21E563B1E11120800C50BA0 /* resources */,
-				D21E563D1E11120800C50BA0 /* YZHRedpacketBridge.h */,
-				D21E563E1E11120800C50BA0 /* YZHRedpacketBridgeProtocol.h */,
-			);
-			path = RedpacketStaticLib;
-			sourceTree = "<group>";
-		};
-		D21E56341E11120800C50BA0 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				D21E56351E11120800C50BA0 /* libRedpacketLib.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		D21E563B1E11120800C50BA0 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				D21E563C1E11120800C50BA0 /* RedPacketResource.bundle */,
-			);
-			path = resources;
 			sourceTree = "<group>";
 		};
 		D24C39B31B561F3B00F16AA8 /* Parse */ = {
@@ -1546,11 +1498,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "ChatDemo-UI3.0" */;
 			buildPhases = (
+				1D9A935339E8E51600F5800C /* [CP] Check Pods Manifest.lock */,
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
 				28B2239B1D549488006FA0C6 /* ShellScript */,
 				D21E58401E127D6200C50BA0 /* Embed Frameworks */,
+				1FAE2C03F754239016BFDFC0 /* [CP] Embed Pods Frameworks */,
+				E03EC4A615E9E692AE82001B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1716,7 +1671,6 @@
 				EBD2ABA31A7CDAC000D16528 /* group_detail@2x.png in Resources */,
 				3A386EE31DE5539C000F3D8E /* Button_Camera switch disabled@2x.png in Resources */,
 				EBD2ABA21A7CDAC000D16528 /* delete@2x.png in Resources */,
-				D21E56471E1117B900C50BA0 /* AlipaySDK.bundle in Resources */,
 				3A386F091DE5539C000F3D8E /* Button_Stats.png in Resources */,
 				EBD2AB851A7CDAC000D16528 /* chat_receiver_audio_playing000@2x.png in Resources */,
 				3A386EFE1DE5539C000F3D8E /* Button_Speaker active@2x.png in Resources */,
@@ -1743,14 +1697,12 @@
 				3A386EE61DE5539C000F3D8E /* Button_Camera switch@2x.png in Resources */,
 				EBD2AB991A7CDAC000D16528 /* chat_sender_audio_playing_full@2x.png in Resources */,
 				EBD2ABA61A7CDAC000D16528 /* group_invitee_delete@2x.png in Resources */,
-				3A05524B1DCC859900D583E5 /* EaseUIResource.bundle in Resources */,
 				3A386EFD1DE5539C000F3D8E /* Button_Speaker active.png in Resources */,
 				EBD2AB971A7CDAC000D16528 /* chat_sender_audio_playing_003@2x.png in Resources */,
 				3C3D2D1C1A6E5A760099EF88 /* Localizable.strings in Resources */,
 				3A386F041DE5539C000F3D8E /* Button_Speaker@2x.png in Resources */,
 				3A386EE51DE5539C000F3D8E /* Button_Camera switch.png in Resources */,
 				EBD2AB871A7CDAC000D16528 /* chat_receiver_audio_playing001@2x.png in Resources */,
-				D21E56401E11120900C50BA0 /* RedPacketResource.bundle in Resources */,
 				EBD2AB9A1A7CDAC000D16528 /* chat_sender_bg.png in Resources */,
 				D2B3DAD41BF1D7B700913BD5 /* icon_020.gif in Resources */,
 				EBD2ABAF1A7CDAC000D16528 /* tabbar_chatsHL.png in Resources */,
@@ -1788,6 +1740,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1D9A935339E8E51600F5800C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		1FAE2C03F754239016BFDFC0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		28B2239B1D549488006FA0C6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1800,6 +1782,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 6b54bd4edc63eba3ef59d69f8e0a5070bea384e2 f3a2c9f94cf05e0339623383ac05ceb747bcd51a0b03c4ba0295170ac524e894";
+		};
+		E03EC4A615E9E692AE82001B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1873,7 +1870,6 @@
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
 				841490351E0BD66F000A2B0C /* RedPacketChatViewController.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
-				841490371E0BD66F000A2B0C /* 环信红包3.x接入文档(iOS).md in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
 				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,
@@ -2009,6 +2005,7 @@
 		};
 		90911051192EEA70008A48AA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2C3F069E4561DF87C1CF28DB /* Pods-ChatDemo-UI3.0.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2071,6 +2068,7 @@
 		};
 		90911052192EEA70008A48AA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 634D221907BE36EED83B80C7 /* Pods-ChatDemo-UI3.0.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

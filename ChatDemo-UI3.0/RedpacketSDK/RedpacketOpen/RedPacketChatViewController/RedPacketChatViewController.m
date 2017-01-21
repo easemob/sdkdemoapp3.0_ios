@@ -20,8 +20,8 @@
 
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
-                                            EaseMessageViewControllerDataSource,
-                                            RedpacketViewControlDelegate>
+                                            EaseMessageViewControllerDataSource
+                                            >
 /** 发红包的控制器 */
 @property (nonatomic, strong)   RedpacketViewControl *viewControl;
 
@@ -32,31 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    /** RedPacketUserConfig 持有当前聊天窗口 */
-    [RedPacketUserConfig sharedConfig].chatVC = self;
-    /** 红包功能的控制器， 产生用户单击红包后的各种动作 */
-    _viewControl = [[RedpacketViewControl alloc] init];
-    /** 获取群组用户代理 */
-    _viewControl.delegate = self;
-    /** 需要当前的聊天窗口 */
-    _viewControl.conversationController = self;
-    /** 需要当前聊天窗口的会话ID */
-    RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
-    userInfo.userId = self.conversation.conversationId;
-    _viewControl.converstationInfo = userInfo;
-    __weak typeof(self) weakSelf = self;
-    /** 用户抢红包和用户发送红包的回调 */
-    [_viewControl setRedpacketGrabBlock:^(RedpacketMessageModel *messageModel) {
-        /** 发送通知到发送红包者处 */
-        if (messageModel.redpacketType != RedpacketTypeAmount) {
-            [weakSelf sendRedpacketHasBeenTaked:messageModel];
-        }
-    } andRedpacketBlock:^(RedpacketMessageModel *model) {
-        /** 发送红包 */
-        [weakSelf sendRedPacketMessage:model];
-    }];
-    
     /** 设置用户头像大小 */
     [[EaseRedBagCell appearance] setAvatarSize:40.f];
     /** 设置头像圆角 */
@@ -177,21 +152,37 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 #pragma mark - 发送红包消息
 - (void)messageViewController:(EaseMessageViewController *)viewController didSelectMoreView:(EaseChatBarMoreView *)moreView AtIndex:(NSInteger)index
 {
-    if (self.conversation.type == EMConversationTypeChat) {
-        /** 单聊发送界面 */
-        if (index == 5) {
-            [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerRand memberCount:0];
+    __weak typeof(self) weakSelf = self;
+    RPRedpacketControllerType  redpacketVCType;
+    RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
+    userInfo = [self profileEntityWith:self.conversation.conversationId];
+    NSArray *groupArray = [EMGroup groupWithId:self.conversation.conversationId].occupants;
+    if (index == 5 || index == 3) {
+        if (self.conversation.type == EMConversationTypeChat) {
+            redpacketVCType = RPRedpacketControllerTypeRand;
         }else {
-            /** 转账页面 */
-            RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
-            userInfo = [self profileEntityWith:self.conversation.conversationId];
-            [self.viewControl presentTransferViewControllerWithReceiver:userInfo];
+            redpacketVCType = RPRedpacketControllerTypeGroup;
         }
-    }else{
-        NSArray *groupArray = [EMGroup groupWithId:self.conversation.conversationId].occupants;
-        /** 群聊红包发送界面 */
-        [self.viewControl presentRedPacketViewControllerWithType:RPSendRedPacketViewControllerMember memberCount:groupArray.count];
+    } else if (index == 6) {
+        redpacketVCType = RPRedpacketControllerTypeTransfer;
     }
+    
+    [RedpacketViewControl presentRedpacketViewController:redpacketVCType
+                                         fromeController:weakSelf
+                                        groupMemberCount:groupArray.count
+                                   withRedpacketReceiver:userInfo
+                                         andSuccessBlock:^(RedpacketMessageModel *model) {
+                                             [weakSelf sendRedPacketMessage:model];
+                                         } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
+                                             EMGroup *group = [[[EMClient sharedClient] groupManager] fetchGroupInfo:self.conversation.conversationId includeMembersList:YES error:nil];
+                                             NSMutableArray *mArray = [[NSMutableArray alloc]init];
+                                             for (NSString *username in group.occupants) {
+                                                 /** 创建一个用户模型 并赋值 */
+                                                 RedpacketUserInfo *userInfo = [self profileEntityWith:username];
+                                                 [mArray addObject:userInfo];
+                                             }
+                                             completionHandle(mArray);
+    }];
 }
 
 #pragma mark - 发送红包消息
@@ -254,21 +245,58 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (void)messageCellSelected:(id<IMessageModel>)model
 {
     NSDictionary *dict = model.message.ext;
-    if ([RedpacketMessageModel isRedpacket:dict]) {
-        [self.viewControl redpacketCellTouchedWithMessageModel:[self toRedpacketMessageModel:model]];
-    }else if([RedpacketMessageModel isRedpacketTransferMessage:dict]) {
-        [self.viewControl presentTransferDetailViewController:[RedpacketMessageModel redpacketMessageModelWithDic:dict]];
-    }else {
+    __weak typeof(self) weakSelf = self;
+    if ([RedpacketMessageModel isRedpacket:dict] || [RedpacketMessageModel isRedpacketTransferMessage:dict]) {
+        [self.view endEditing:YES];
+        [RedpacketViewControl redpacketTouchedWithMessageModel:[self toRedpacketMessageModel:model]
+                                            fromViewController:self
+                                            redpacketGrabBlock:^(RedpacketMessageModel *messageModel) {
+                                                if (messageModel.redpacketType != RedpacketTypeAmount) {
+                                                    [weakSelf sendRedpacketHasBeenTaked:messageModel];
+                                                }
+                                            } advertisementAction:^(NSDictionary *args) {
+                                                NSInteger actionType = [args[@"actionType"] integerValue];
+                                                switch (actionType) {
+                                                    case 0:
+                                                        // 点击了领取红包
+                                                        break;
+                                                    case 1: {
+                                                        // 点击了去看看按钮，此处为演示
+                                                        UIViewController     *VC = [[UIViewController alloc]init];
+                                                        UIWebView *webView = [[UIWebView alloc]initWithFrame:self.view.bounds];
+                                                        [VC.view addSubview:webView];
+                                                        NSString *url = args[@"LandingPage"];
+                                                        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+                                                        [webView loadRequest:request];
+                                                        [(UINavigationController *)self.presentedViewController pushViewController:VC animated:YES];
+                                                    }
+                                                        break;
+                                                    case 2: {
+                                                        // 点击了分享按钮，开发者可以根据需求自定义，动作。
+                                                        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"点击「分享」按钮，红包SDK将该红包素材内配置的分享链接传递给商户APP，由商户APP自行定义分享渠道完成分享动作。" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+                                                        [alert show];
+                                                    }
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                                
+        }];
+    } else {
         [super messageCellSelected:model];
     }
+
 }
 
 - (RedpacketMessageModel *)toRedpacketMessageModel:(id <IMessageModel>)model
 {
-    RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:model.message.ext];
-    if (self.conversation.type == EMConversationTypeGroupChat) {
+    NSDictionary *dict = model.message.ext;
+    RedpacketMessageModel *messageModel = [RedpacketMessageModel redpacketMessageModelWithDic:dict];
+    BOOL isGroup = self.conversation.type == EMConversationTypeGroupChat;
+    if (isGroup) {
         messageModel.redpacketSender = [self profileEntityWith:model.message.from];
-        messageModel.toRedpacketReceiver = [self profileEntityWith:messageModel.toRedpacketReceiver.userId];
+        messageModel.redpacketReceiver = [self profileEntityWith:messageModel.redpacketReceiver.userId];
+        
     }else{
         messageModel.redpacketSender = [self profileEntityWith:model.message.from];
     }

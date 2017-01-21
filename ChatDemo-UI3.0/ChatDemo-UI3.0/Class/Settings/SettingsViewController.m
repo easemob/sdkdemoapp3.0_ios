@@ -195,9 +195,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 #ifdef REDPACKET_AVALABLE
     if (indexPath.section == 0) {
-        UIViewController *controller = [RedpacketViewControl changeMoneyController];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-        [self presentViewController:nav animated:YES completion:nil];
+        [RedpacketViewControl presentChangePocketViewControllerFromeController:self];
         return;
     }
 #endif
