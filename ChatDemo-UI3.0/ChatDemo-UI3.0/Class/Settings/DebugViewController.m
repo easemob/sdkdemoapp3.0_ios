@@ -116,7 +116,7 @@
         EMError *error = nil;
         [self showHudInView:self.view hint:@"获取压缩路径..."];
         __weak typeof(self) weakSelf = self;
-        [[EMClient sharedClient] getLogFilsCompressionPathWithCompletion:^(NSString *aPath, EMError *aError) {
+        [[EMClient sharedClient] getLogFilesPathWithCompletion:^(NSString *aPath, EMError *aError) {
             [weakSelf hideHud];
             
             if (error == nil) {
@@ -127,8 +127,8 @@
                     [mailCompose setMailComposeDelegate:self];
                     
                     //设置收件人
-                    NSArray *toAddress = [NSArray arrayWithObject:@"xieyajie@easemob.com"];
-                    [mailCompose setToRecipients:toAddress];
+//                    NSArray *toAddress = [NSArray arrayWithObject:@""];
+//                    [mailCompose setToRecipients:toAddress];
                     
                     //设置邮件主题
                     [mailCompose setSubject:@"这是Log文件"];
