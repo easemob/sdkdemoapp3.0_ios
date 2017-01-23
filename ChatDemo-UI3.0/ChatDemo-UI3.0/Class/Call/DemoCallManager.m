@@ -11,6 +11,7 @@
 #if DEMO_CALL == 1
 
 #import "EaseSDKHelper.h"
+//#import "EMVideoRecorderPlugin.h"
 
 #import "MainViewController.h"
 #import "EMCallViewController.h"
@@ -73,6 +74,8 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
+    
+//    [EMVideoRecorderPlugin initGlobalConfig];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = nil;

@@ -10,6 +10,8 @@
 
 #if DEMO_CALL == 1
 
+#import "EMVideoRecorderPlugin.h"
+
 #import "DemoCallManager.h"
 #import "EMVideoInfoViewController.h"
 
@@ -50,6 +52,15 @@
     if (self) {
         _callSession = aCallSession;
         _isDismissing = NO;
+        
+        if (aCallSession.type == EMCallTypeVideo) {
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            BOOL ret = [audioSession setActive:NO error:nil];
+            if (!ret) {
+                NSLog(@"1234567");
+            }
+        }
     }
     
     return self;
@@ -302,7 +313,7 @@
     if (self.callSession.isCaller) {
         self.statusLabel.text = NSLocalizedString(@"call.connecting", @"Connecting...");
     } else {
-        self.statusLabel.text = NSLocalizedString(@"call.connecting", "Incoimg call");
+        self.statusLabel.text = NSLocalizedString(@"call.connecting", "Incomimg call");
     }
 }
 
@@ -318,7 +329,6 @@
     if (self.callSession.type == EMCallTypeVideo) {
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        [audioSession setActive:YES error:nil];
     }
     
     NSString *connectStr = @"None";
@@ -336,10 +346,23 @@
     self.answerButton.hidden = YES;
     
     [self _setupRemoteVideoView];
+    
+//    NSString *recordPath = NSHomeDirectory();
+//    recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
+//    NSFileManager *fm = [NSFileManager defaultManager];
+//    if(![fm fileExistsAtPath:recordPath]) {
+//        [fm createDirectoryAtPath:recordPath
+//      withIntermediateDirectories:YES
+//                       attributes:nil
+//                            error:nil];
+//    }
+//    [[EMVideoRecorderPlugin sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
 }
 
 - (void)clearData
 {
+//    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
+    
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     [audioSession setActive:YES error:nil];

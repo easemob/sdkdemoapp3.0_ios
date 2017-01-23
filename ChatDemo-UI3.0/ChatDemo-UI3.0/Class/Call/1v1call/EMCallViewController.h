@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "DemoCallManager.h"
+
 @interface EMCallViewController : UIViewController
 
 #if DEMO_CALL == 1
