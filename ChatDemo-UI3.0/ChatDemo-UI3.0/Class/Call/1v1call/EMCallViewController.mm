@@ -329,10 +329,6 @@
     if (self.callSession.type == EMCallTypeVideo) {
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        BOOL ret = [audioSession setActive:YES error:nil];
-        if (!ret) {
-            NSLog(@"0987654321");
-        }
     }
     
     NSString *connectStr = @"None";
