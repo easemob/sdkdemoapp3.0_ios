@@ -10,6 +10,7 @@
 		283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */; };
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
+		3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B1B9EE1C3B80290087A74F /* MessageUI.framework */; };
 		3A05524B1DCC859900D583E5 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */; };
 		3A22B16A1E2CA5C60001D791 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A22B1691E2CA5C60001D791 /* Hyphenate.framework */; };
 		3A22B16B1E2CA5C60001D791 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A22B1691E2CA5C60001D791 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -711,6 +712,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
 				3A22B19F1E2CB4FC0001D791 /* liblibHyphenateVideoRecorderPlugin.a in Frameworks */,
 				3A27807B1DDB270200362CA7 /* libEaseUI.a in Frameworks */,
 				3A22B19A1E2CA6C20001D791 /* libRedpacketLib.a in Frameworks */,

@@ -319,6 +319,7 @@
 
 "setting.uploadLog" = "upload run log";
 "setting.sdkVersion" = "SDK version";
+"setting.emailLog" = "email send log";
 "setting.uploading" = "uploading...";
 "setting.uploadSuccess" = "uploaded successfully";
 "setting.uploadFail" = "uploaded failed";
