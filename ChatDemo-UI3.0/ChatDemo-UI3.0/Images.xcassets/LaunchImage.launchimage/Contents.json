@@ -4,24 +4,25 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "iphone6P.png",
+      "filename" : "iphone-hd-5.5.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
-      "scale" : "3x"
-    },
-    {
-      "orientation" : "landscape",
-      "idiom" : "iphone",
-      "extent" : "full-screen",
-      "minimum-system-version" : "8.0",
-      "subtype" : "736h",
       "scale" : "3x"
     },
     {
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "667h",
-      "filename" : "iphone6.png",
+      "filename" : "iphone-hd-4.7.png",
+      "minimum-system-version" : "8.0",
+      "orientation" : "portrait",
+      "scale" : "2x"
+    },
+    {
+      "extent" : "full-screen",
+      "idiom" : "ipad",
+      "subtype" : "1366h",
+      "filename" : "ipad-pro.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -29,6 +30,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "iphone-portrait.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -37,29 +39,25 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "iphone5.png",
+      "filename" : "iphone-portrait@2x.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
-      "idiom" : "iphone",
+      "idiom" : "ipad",
+      "filename" : "ipad-portarit.png",
       "extent" : "full-screen",
+      "minimum-system-version" : "7.0",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
-      "idiom" : "iphone",
+      "idiom" : "ipad",
+      "filename" : "ipad-portarit@2x.png",
       "extent" : "full-screen",
-      "scale" : "2x"
-    },
-    {
-      "orientation" : "portrait",
-      "idiom" : "iphone",
-      "filename" : "iphone4.png",
-      "extent" : "full-screen",
-      "subtype" : "retina4",
+      "minimum-system-version" : "7.0",
       "scale" : "2x"
     }
   ],
