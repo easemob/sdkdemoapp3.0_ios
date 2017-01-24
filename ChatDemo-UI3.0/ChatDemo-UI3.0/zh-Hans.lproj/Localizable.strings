@@ -186,7 +186,7 @@
 "group.changeOwnerFail" = "改变群主失败";
 "group.addAdmin" = "升级为管理员";
 "group.removeAdmin" = "移除管理员权限";
-"group.toMute" = "禁言1分钟";
+"group.toMute" = "禁言";
 "group.unmute" = "解除禁言";
 "group.fetchMuteFail" = "获取禁言列表失败: %@";
 

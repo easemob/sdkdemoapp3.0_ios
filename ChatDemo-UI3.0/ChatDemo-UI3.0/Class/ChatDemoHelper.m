@@ -396,6 +396,45 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
+- (void)groupMuteListDidUpdate:(EMGroup *)aGroup
+             addedMutedMembers:(NSArray *)aMutedMembers
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群主更新" message:@"禁言群成员" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupMuteListDidUpdate:(EMGroup *)aGroup
+           removedMutedMembers:(NSArray *)aMutedMembers
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群主更新" message:@"解除禁言" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupAdminListDidUpdate:(EMGroup *)aGroup
+                     addedAdmin:(NSString *)aAdmin
+{
+    NSString *msg = [NSString stringWithFormat:@"%@ 变为管理员", aAdmin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群主更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupAdminListDidUpdate:(EMGroup *)aGroup
+                   removedAdmin:(NSString *)aAdmin
+{
+    NSString *msg = [NSString stringWithFormat:@"%@ 被移出管理员", aAdmin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群主更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupOwnerDidUpdate:(EMGroup *)aGroup
+                   newOwner:(NSString *)aNewOwner
+                   oldOwner:(NSString *)aOldOwner
+{
+    NSString *msg = [NSString stringWithFormat:@"群主由 %@ 变为 %@", aOldOwner, aNewOwner];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群主更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
 #pragma mark - EMContactManagerDelegate
 
 - (void)didReceiveAgreedFromUsername:(NSString *)aUsername
@@ -499,6 +538,37 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveKickedFromChatroom:(EMChatroom *)aChatroom
                               reason:(EMChatroomBeKickedReason)aReason
+{
+    
+}
+
+- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+                addedMutedMembers:(NSArray *)aMutes
+{
+    
+}
+
+- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+              removedMutedMembers:(NSArray *)aMutes
+{
+    
+}
+
+- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+                        addedAdmin:(NSString *)aAdmin
+{
+    
+}
+
+- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+                      removedAdmin:(NSString *)aAdmin
+{
+    
+}
+
+- (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom
+                      newOwner:(NSString *)aNewOwner
+                      oldOwner:(NSString *)aOldOwner
 {
     
 }

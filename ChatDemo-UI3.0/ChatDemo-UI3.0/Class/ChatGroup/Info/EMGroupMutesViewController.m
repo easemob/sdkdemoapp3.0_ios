@@ -67,8 +67,9 @@
         cell.delegate = self;
     }
     
+    EMMuteMember *item = [self.dataArray objectAtIndex:indexPath.row];
     cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    cell.titleLabel.text = [self.dataArray objectAtIndex:indexPath.row];
+    cell.titleLabel.text = item.userName;
     cell.indexPath = indexPath;
     
     return cell;

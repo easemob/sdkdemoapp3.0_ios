@@ -186,7 +186,7 @@
 "group.changeOwnerFail" = "Failed to change owner";
 "group.addAdmin" = "Add to admin";
 "group.removeAdmin" = "Remove from Admin";
-"group.toMute" = "Mute 60s";
+"group.toMute" = "Mute";
 "group.unmute" = "Unmute";
 "group.fetchMuteFail" = "fail to get mutes: %@";
 
