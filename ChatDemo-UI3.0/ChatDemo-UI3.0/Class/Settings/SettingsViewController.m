@@ -136,7 +136,7 @@
 
 #ifdef REDPACKET_AVALABLE
     if (indexPath.section == 0) {
-        cell.textLabel.text = @"零钱";
+        cell.textLabel.text = @"红包记录";
     }else if (indexPath.section == 1) {
 #else
     if (indexPath.section == 0) {
