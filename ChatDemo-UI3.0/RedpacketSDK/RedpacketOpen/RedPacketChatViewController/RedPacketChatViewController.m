@@ -16,7 +16,7 @@
 #import "YZHRedpacketBridge.h"
 #import "ChatDemoHelper.h"
 #import "UserProfileManager.h"
-#import "UIImageView+EMWebCache.h"
+#import "UIImageView+WebCache.h"
 
 /** 红包聊天窗口 */
 @interface RedPacketChatViewController () < EaseMessageCellDelegate,
@@ -40,8 +40,6 @@
     if ([self.chatToolbar isKindOfClass:[EaseChatToolbar class]]) {
         /** 红包按钮 */
         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket_high"] title:@"红包"];
-        /** 转账按钮 */
-        [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedPacketResource.bundle/redpacket_transfer_high"] highlightedImage:[UIImage imageNamed:@"RedPacketResource.bundle/redpacket_transfer_high"] title:@"转账"];
     }
 }
 
@@ -163,26 +161,19 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
         }else {
             redpacketVCType = RPRedpacketControllerTypeGroup;
         }
-    } else if (index == 6) {
-        redpacketVCType = RPRedpacketControllerTypeTransfer;
     }
-    
-    [RedpacketViewControl presentRedpacketViewController:redpacketVCType
-                                         fromeController:weakSelf
-                                        groupMemberCount:groupArray.count
-                                   withRedpacketReceiver:userInfo
-                                         andSuccessBlock:^(RedpacketMessageModel *model) {
-                                             [weakSelf sendRedPacketMessage:model];
-                                         } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
-                                             EMGroup *group = [[[EMClient sharedClient] groupManager] fetchGroupInfo:self.conversation.conversationId includeMembersList:YES error:nil];
-                                             NSMutableArray *mArray = [[NSMutableArray alloc]init];
-                                             for (NSString *username in group.occupants) {
-                                                 /** 创建一个用户模型 并赋值 */
-                                                 RedpacketUserInfo *userInfo = [self profileEntityWith:username];
-                                                 [mArray addObject:userInfo];
-                                             }
-                                             completionHandle(mArray);
-    }];
+    [RedpacketViewControl presentRedpacketViewController:redpacketVCType fromeController:self groupMemberCount:groupArray.count withRedpacketReceiver:userInfo andSuccessBlock:^(RedpacketMessageModel *model) {
+        [weakSelf sendRedPacketMessage:model];
+    } withFetchGroupMemberListBlock:^(RedpacketMemberListFetchBlock completionHandle) {
+        EMGroup *group = [[[EMClient sharedClient] groupManager] fetchGroupInfo:self.conversation.conversationId includeMembersList:YES error:nil];
+        NSMutableArray *mArray = [[NSMutableArray alloc]init];
+        for (NSString *username in group.occupants) {
+            /** 创建一个用户模型 并赋值 */
+            RedpacketUserInfo *userInfo = [self profileEntityWith:username];
+            [mArray addObject:userInfo];
+        }
+        completionHandle(mArray);
+    } andGenerateRedpacketIDBlock:nil];
 }
 
 #pragma mark - 发送红包消息

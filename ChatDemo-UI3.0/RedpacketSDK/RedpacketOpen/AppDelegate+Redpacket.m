@@ -8,9 +8,8 @@
 
 #import "AppDelegate+Redpacket.h"
 #import <objc/runtime.h>
-#import <AlipaySDK/AlipaySDK.h>
 #import "RedpacketOpenConst.h"
-
+#import <AlipaySDK/AlipaySDK.h>
 
 BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelector, SEL nopSelector) {
     
@@ -79,7 +78,22 @@ BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelect
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
         }];
+        
+#ifdef AliAuthPay
+        [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAliAuthNotifaction object:resultDic];
+        }];
+#endif
+
     }
+    
+#ifdef WeChatAvaliable
+    else if ([url.host isEqualToString:@"pay"]) {
+        //  微信支付
+        [WXApi handleOpenURL:url delegate:self];
+    }
+#endif
+    
     return [self rp_application:application
                                openURL:url
                      sourceApplication:sourceApplication
@@ -91,12 +105,50 @@ BOOL rp_classMethodSwizzle(Class aClass, SEL originalSelector, SEL swizzleSelect
             openURL:(NSURL *)url
             options:(NSDictionary<NSString*, id> *)options
 {
+    
     if ([url.host isEqualToString:@"safepay"]) {
         //  支付宝支付
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAlipayNotifaction object:resultDic];
         }];
+        
+#ifdef AliAuthPay
+        [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketAliAuthNotifaction object:resultDic];
+        }];
+#endif
+        
     }
+
+#ifdef WeChatAvaliable
+    else if ([url.host isEqualToString:@"pay"]) {
+        //  微信支付
+        [WXApi handleOpenURL:url delegate:self];
+    }
+#endif
+    
     return [self rp_application:app openURL:url options:options];
 }
+
+#ifdef WeChatAvaliable
+//  微信支付回调
+-(void)rp_onResp:(BaseResp*)resp{
+    
+    if ([resp isKindOfClass:[PayResp class]]){
+        PayResp*response=(PayResp*)resp;
+        switch(response.errCode){
+            case WXSuccess:
+                //  服务器端查询支付通知或查询API返回的结果再提示成功
+                [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketWechatPayNotifaction object:resp];
+                break;
+            default:
+                //  微信支付失败
+                [[NSNotificationCenter defaultCenter] postNotificationName:RedpacketCancelPayNotifaction object:nil];
+                break;
+        }
+    }
+}
+
+#endif
+
 @end
