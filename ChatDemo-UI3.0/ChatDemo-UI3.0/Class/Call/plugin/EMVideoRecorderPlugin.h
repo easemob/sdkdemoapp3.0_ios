@@ -1,15 +1,29 @@
-//
-//  EMPluginVideoRecorder.h
-//  HyphenateSDK
-//
-//  Created by XieYajie on 23/09/2016.
-//  Copyright © 2016 easemob.com. All rights reserved.
-//
-
+/*!
+ *  \~chinese
+ *  @header EMVideoRecorderPlugin.h
+ *  @abstract 录制视频插件，与视频通话配合使用
+ *  @author Hyphenate
+ *  @version 3.00
+ *
+ *  \~english
+ *  @header EMVideoRecorderPlugin.h
+ *  @abstract Setting options of Apple Push Notification
+ *  @author Hyphenate
+ *  @version 3.00
+ */
 #import <Foundation/Foundation.h>
 
 @class EMError;
-@interface EMPluginVideoRecorder : NSObject
+@interface EMVideoRecorderPlugin : NSObject
+
+/*!
+ *  \~chinese
+ *  初始化全局设置, 必须在视频通话开始之前调用
+ *
+ *  \~english
+ *  Init global config，it must be called before the video call begins.
+ */
++ (void)initGlobalConfig;
 
 /*!
  *  \~chinese
