@@ -9,6 +9,6 @@ pod 'Hyphenate'
 
 pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
 
-pod 'RedpacketLib'
+pod 'RedpacketAliAuthLib'
 
 end
