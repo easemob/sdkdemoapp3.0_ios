@@ -360,6 +360,7 @@
 "setting.iospushname" = "iOS离线推送昵称";
 "setting.useIp" = "使用IP";
 "setting.deleteConWhenLeave" = "退群时删除会话";
+"setting.autoAcceptGrupInvite" = "自动同意进群邀请";
 "setting.microphoneNoAuthority" = "未获得授权使用麦克风";
 "setting.microphoneAuthority" = "请在iOS\"设置中\"-\"隐私\"-\"麦克风\"中打开";
 "setting.cameraNoAuthority" = "未获得授权使用相机";

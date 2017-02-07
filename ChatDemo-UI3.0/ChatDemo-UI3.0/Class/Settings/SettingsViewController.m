@@ -30,6 +30,7 @@
 
 @property (strong, nonatomic) UISwitch *autoLoginSwitch;
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
+@property (strong, nonatomic) UISwitch *groupInviteSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
 
 @end
@@ -86,6 +87,17 @@
     return _delConversationSwitch;
 }
 
+- (UISwitch *)groupInviteSwitch
+{
+    if (!_groupInviteSwitch)
+    {
+        _groupInviteSwitch = [[UISwitch alloc] init];
+        _groupInviteSwitch.on = [[EMClient sharedClient].options isAutoAcceptGroupInvitation];
+        [_groupInviteSwitch addTarget:self action:@selector(groupInviteChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    return _groupInviteSwitch;
+}
+
 - (UISwitch *)sortMethodSwitch
 {
     if (_sortMethodSwitch == nil) {
@@ -115,10 +127,10 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 9;
+    return 10;
 #endif
 
-    return 8;
+    return 9;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -164,17 +176,22 @@
             self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
             [cell.contentView addSubview:self.delConversationSwitch];
         } else if (indexPath.row == 5) {
+            cell.textLabel.text = NSLocalizedString(@"setting.autoAcceptGrupInvite", @"Auto accept group invite");
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.groupInviteSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.groupInviteSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.groupInviteSwitch.frame.size.height) / 2, self.groupInviteSwitch.frame.size.width, self.groupInviteSwitch.frame.size.height);
+            [cell.contentView addSubview:self.groupInviteSwitch];
+        } else if (indexPath.row == 6) {
             cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 6) {
+        } else if (indexPath.row == 7) {
             cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 7) {
+        } else if (indexPath.row == 8) {
             cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
             [cell.contentView addSubview:self.sortMethodSwitch];
-        } else if (indexPath.row == 8) {
+        } else if (indexPath.row == 9) {
             cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -215,14 +232,14 @@
     {
         DebugViewController *debugController = [[DebugViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:debugController animated:YES];
-    } else if (indexPath.row == 5) {
+    } else if (indexPath.row == 6) {
         EditNicknameViewController *editName = [[EditNicknameViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:editName animated:YES];
-    } else if (indexPath.row == 6){
+    } else if (indexPath.row == 7){
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         
-    } else if (indexPath.row == 8) {
+    } else if (indexPath.row == 9) {
         CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:callSettingController animated:YES];
     }
@@ -264,6 +281,11 @@
 - (void)delConversationChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setIsDeleteMessagesWhenExitGroup:control.on];
+}
+    
+- (void)groupInviteChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setIsAutoAcceptGroupInvitation:control.on];
 }
 
 - (void)sortMethodChanged:(UISwitch *)control
