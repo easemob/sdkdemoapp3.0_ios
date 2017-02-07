@@ -105,6 +105,8 @@
     if (!error) {
         [self.dataArray removeObject:userName];
         [self.tableView reloadData];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:self.chatroom];
     }
     else {
         [self showHint:error.errorDescription];

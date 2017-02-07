@@ -61,8 +61,15 @@
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUI:) name:@"UpdateChatroomDetail" object:nil];
 
     [self fetchChatroomInfo];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (UIView *)footerView
@@ -238,6 +245,15 @@
 }
 
 #pragma mark - action
+
+- (void)updateUI:(NSNotification *)aNotif
+{
+    id obj = aNotif.object;
+    if (obj && [obj isKindOfClass:[EMChatroom class]]) {
+        self.chatroom = (EMChatroom *)obj;
+        [self reloadDataSource];
+    }
+}
 
 - (void)leaveAction
 {

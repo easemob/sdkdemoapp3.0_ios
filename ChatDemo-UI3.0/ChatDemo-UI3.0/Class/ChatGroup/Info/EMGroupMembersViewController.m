@@ -105,6 +105,8 @@
     if (!error) {
         [self.dataArray removeObject:userName];
         [self.tableView reloadData];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:self.group];
     }
     else {
         [self showHint:error.errorDescription];

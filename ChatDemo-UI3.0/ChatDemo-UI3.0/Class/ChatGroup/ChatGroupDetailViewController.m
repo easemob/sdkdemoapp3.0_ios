@@ -55,19 +55,6 @@
 
 @implementation ChatGroupDetailViewController
 
-- (void)registerNotifications {
-    [self unregisterNotifications];
-    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
-}
-
-- (void)unregisterNotifications {
-    [[EMClient sharedClient].groupManager removeDelegate:self];
-}
-
-- (void)dealloc {
-    [self unregisterNotifications];
-}
-
 - (instancetype)initWithGroup:(EMGroup *)chatGroup
 {
     self = [super init];
@@ -123,6 +110,8 @@
     
     self.tableView.tableFooterView = self.footerView;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUI:) name:@"UpdateGroupDetail" object:nil];
+    
     [self registerNotifications];
     
     [self fetchGroupInfo];
@@ -137,6 +126,20 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+}
+
+- (void)dealloc {
+    [self unregisterNotifications];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)registerNotifications {
+    [self unregisterNotifications];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+}
+
+- (void)unregisterNotifications {
+    [[EMClient sharedClient].groupManager removeDelegate:self];
 }
 
 #pragma mark - getter
@@ -472,6 +475,15 @@
 }
 
 #pragma mark - action
+
+- (void)updateUI:(NSNotification *)aNotif
+{
+    id obj = aNotif.object;
+    if (obj && [obj isKindOfClass:[EMGroup class]]) {
+        self.chatGroup = (EMGroup *)obj;
+        [self reloadDataSource];
+    }
+}
 
 - (void)addMemberButtonAction
 {
