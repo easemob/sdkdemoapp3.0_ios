@@ -311,6 +311,12 @@
 
 "setting.uploadLog" = "upload run log";
 "setting.sdkVersion" = "SDK version";
+"setting.emailCancel" = "Mail cancel";
+"setting.emailSaved" = "Mail saved";
+"setting.emailSendSuccess" = "Mail send successfully";
+"setting.emailSendFailed" = "Mail send failed";
+"setting.emailSubject" = "Log file";
+"setting.emailBody" = "This is a log file for test";
 "setting.uploading" = "uploading...";
 "setting.uploadSuccess" = "uploaded successfully";
 "setting.uploadFail" = "uploaded failed";

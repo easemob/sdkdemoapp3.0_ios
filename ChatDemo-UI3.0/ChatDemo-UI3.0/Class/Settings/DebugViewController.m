@@ -12,7 +12,12 @@
 
 #import "DebugViewController.h"
 
-@interface DebugViewController ()
+#import <MessageUI/MFMailComposeViewController.h>
+#import <MessageUI/MessageUI.h>
+
+@interface DebugViewController () <MFMailComposeViewControllerDelegate>
+
+@property (nonatomic, copy) NSString *logPath;
 
 @end
 
@@ -96,6 +101,41 @@
     return cell;
 }
 
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error
+{
+    NSString *msg = @"";
+    
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            msg = NSLocalizedString(@"setting.emailCancel", @"Mail cancel");
+            break;
+        case MFMailComposeResultSaved:
+            msg = NSLocalizedString(@"setting.emailSaved", @"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            msg = NSLocalizedString(@"setting.emailSendSuccess", @"Mail send successfully");
+            break;
+        case MFMailComposeResultFailed:
+            msg = NSLocalizedString(@"setting.emailSendFailed", @"Mail send failed");
+            break;
+        default:
+            break;
+    }
+    
+    if ([msg length] > 0) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+    
+    [[NSFileManager defaultManager] removeItemAtPath:self.logPath error:nil];
+    self.logPath = nil;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - action
 
 - (void)back
@@ -105,6 +145,29 @@
 
 - (void)uploadLogAction
 {
+    if ([MFMailComposeViewController canSendMail] == NO) {
+        return;
+    }
+    
+    [[EaseMob sharedInstance] getLogFilesPathWithCompletion:^(NSString *aPath, EMError *aError) {
+        if (aError == nil) {
+            self.logPath = aPath;
+            MFMailComposeViewController *mailCompose = [[MFMailComposeViewController alloc] init];
+            if(mailCompose) {
+                [mailCompose setMailComposeDelegate:self];
+                
+                [mailCompose setSubject:NSLocalizedString(@"setting.emailSubject", @"Log file")];
+                
+                NSString *emailBody = NSLocalizedString(@"setting.emailBody", @"This is a log file for test");
+                [mailCompose setMessageBody:emailBody isHTML:NO];
+                
+                NSData* pData = [[NSData alloc]initWithContentsOfFile:aPath];
+                [mailCompose addAttachmentData:pData mimeType:@"" fileName:@"log.zip"];
+                
+                [self presentViewController:mailCompose animated:YES completion:nil];
+            }
+        }
+    }];
 //    __weak typeof(self) weakSelf = self;
 //    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
 //    [[EaseMob sharedInstance] asyncUploadLogToServerWithCompletion:^(EMError *error) {
