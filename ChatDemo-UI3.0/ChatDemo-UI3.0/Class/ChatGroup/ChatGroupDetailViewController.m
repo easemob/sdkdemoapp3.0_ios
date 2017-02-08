@@ -450,7 +450,7 @@
 - (void)reloadDataSource
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner || self.chatGroup.permissionType == EMGroupPermissionTypeAdmin) {
+        if (self.chatGroup.permissionType == EMGroupPermissionTypeOwner || self.chatGroup.permissionType == EMGroupPermissionTypeAdmin || self.chatGroup.setting.style == EMGroupStylePrivateMemberCanInvite) {
             self.navigationItem.rightBarButtonItem = self.addMemberItem;
         } else {
             self.navigationItem.rightBarButtonItem = nil;
