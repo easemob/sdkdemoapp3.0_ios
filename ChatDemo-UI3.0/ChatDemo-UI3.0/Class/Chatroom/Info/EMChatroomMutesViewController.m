@@ -84,7 +84,8 @@
     }
     
     NSIndexPath *indexPath = _currentLongPressIndex;
-    NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
+    EMMuteMember *item = [self.dataArray objectAtIndex:indexPath.row];
+    NSString *userName = item.userName;
     _currentLongPressIndex = nil;
     
     [self hideHud];
