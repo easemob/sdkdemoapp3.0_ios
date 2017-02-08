@@ -46,15 +46,15 @@
     self.title = NSLocalizedString(@"title.createChatroom", @"Create a chatroom");
     self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     
-    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
-    addButton.accessibilityIdentifier = @"add_member";
-    addButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
-    [addButton setTitle:NSLocalizedString(@"group.create.addOccupant", @"add members") forState:UIControlStateNormal];
-    [addButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-    [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [addButton addTarget:self action:@selector(addContacts:) forControlEvents:UIControlEventTouchUpInside];
-    _rightItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
-    [self.navigationItem setRightBarButtonItem:_rightItem];
+//    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+//    addButton.accessibilityIdentifier = @"add_member";
+//    addButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
+//    [addButton setTitle:NSLocalizedString(@"group.create.addOccupant", @"add members") forState:UIControlStateNormal];
+//    [addButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [addButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+//    [addButton addTarget:self action:@selector(addContacts:) forControlEvents:UIControlEventTouchUpInside];
+//    _rightItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+//    [self.navigationItem setRightBarButtonItem:_rightItem];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
@@ -62,6 +62,13 @@
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
+    
+    UIButton *doneButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    doneButton.accessibilityIdentifier = @"done";
+    [doneButton setTitle:@"完成" forState:UIControlStateNormal];
+    [doneButton addTarget:self.navigationController action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+    [self.navigationItem setRightBarButtonItem:doneItem];
     
     [self.view addSubview:self.textField];
     [self.view addSubview:self.textView];
@@ -178,6 +185,28 @@
 }
 
 #pragma mark - action
+
+- (void)doneAction:(id)sender
+{
+    [self showHudInView:self.view hint:NSLocalizedString(@"chatroom.create.ongoing", @"Create a chatroom...")];
+    
+    __weak EMCreateChatroomController *weakSelf = self;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        EMChatroom *chatroom = [[EMClient sharedClient].roomManager createChatroomWithSubject:self.textField.text description:self.textView.text invitees:nil message:nil maxMembersCount:100 error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (chatroom && !error) {
+                [weakSelf showHint:NSLocalizedString(@"chatroom.create.success", @"create chatroom success")];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+            else{
+                [weakSelf showHint:NSLocalizedString(@"chatroom.create.fail", @"Failed to create a chatroom, please operate again")];
+            }
+        });
+    });
+}
 
 - (void)addContacts:(id)sender
 {
