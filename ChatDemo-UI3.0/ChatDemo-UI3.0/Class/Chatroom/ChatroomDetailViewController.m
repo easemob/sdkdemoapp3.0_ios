@@ -140,7 +140,7 @@
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.occupantCount", @"members count");
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.membersCount, (int)_chatroom.maxMembersCount];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.membersCount, (int)_chatroom.maxOccupantsCount];
     }
     else if (indexPath.row == 3) {
         cell.textLabel.text = NSLocalizedString(@"group.owner", @"Owner");

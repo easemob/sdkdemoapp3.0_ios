@@ -213,7 +213,7 @@
 "chatroom.fetchInfoFail" = "获取聊天室详情失败";
 "chatroom.joinFailed" = "加入聊天室\'%@\'失败";
 "chatroom.join" = "\'%@\'加入聊天室\'%@\'";
-"chatroom.leave" = "\'%@\'离开聊天室\'%@\'";
+"chatroom.leave.hint" = "\'%@\'离开聊天室\'%@\'";
 "chatroom.remove" = "被踢出聊天室\'%@\'";
 "chatroom.create.inputName" = "请输入聊天室名称";
 "chatroom.create.inputDescribe" = "请输入聊天室简介";

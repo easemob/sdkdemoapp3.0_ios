@@ -213,7 +213,7 @@
 "chatroom.fetchInfoFail" = "Failed to get the chatroom details";
 "chatroom.joinFailed" = "join chatroom \'%@\' failed";
 "chatroom.join" = "\'%@\'join chatroom\'%@\'";
-"chatroom.leave" = "\'%@\'leave chatroom\'%@\'";
+"chatroom.leave.hint" = "\'%@\'leave chatroom\'%@\'";
 "chatroom.remove" = "be removed from chatroom\'%@\'";
 "chatroom.create.inputName" = "Please input chatroom name";
 "chatroom.create.inputDescribe" = "Please input chatroom description";
