@@ -100,8 +100,12 @@
     
     [self hideHud];
     if (!error) {
-        [self.dataArray removeObject:userName];
-        [self.tableView reloadData];
+        if (buttonIndex != 2) {
+            [self.dataArray removeObject:userName];
+            [self.tableView reloadData];
+        } else {
+            [self showHint:@"禁言成功"];
+        }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:self.group];
     }
