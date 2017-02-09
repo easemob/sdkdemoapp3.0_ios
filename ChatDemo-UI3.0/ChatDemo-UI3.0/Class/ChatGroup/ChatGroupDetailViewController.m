@@ -531,7 +531,7 @@
                 [weakSelf showHint:NSLocalizedString(@"group.destroyFail", @"dissolution of group failure")];
             }
             else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:nil];
             }
         });
     });
@@ -560,7 +560,7 @@
                 [weakSelf showHint:NSLocalizedString(@"group.leaveFail", @"exit the group failure")];
             }
             else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:nil];
             }
         });
     });

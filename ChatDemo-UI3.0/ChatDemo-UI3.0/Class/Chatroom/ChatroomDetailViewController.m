@@ -270,7 +270,7 @@
                 [weakSelf showHint:NSLocalizedString(@"chatroom.leaveFail", @"leave the chatroom failure")];
             }
             else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:weakSelf.chatroom.chatroomId];
             }
         });
     });
@@ -288,7 +288,7 @@
                 [weakSelf showHint:NSLocalizedString(@"chatroom.destroyFail", @"destroy the chatroom failure")];
             }
             else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitGroup" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:weakSelf.chatroom.chatroomId];
             }
         });
     });

@@ -66,7 +66,7 @@
     UIButton *doneButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     doneButton.accessibilityIdentifier = @"done";
     [doneButton setTitle:@"完成" forState:UIControlStateNormal];
-    [doneButton addTarget:self.navigationController action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
+    [doneButton addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
     [self.navigationItem setRightBarButtonItem:doneItem];
     
