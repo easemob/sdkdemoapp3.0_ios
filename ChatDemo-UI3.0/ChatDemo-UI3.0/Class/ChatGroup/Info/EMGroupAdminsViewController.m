@@ -96,6 +96,8 @@
     } else if (buttonIndex == 2) {  //禁言
         EMMuteMember *muteMember = [EMMuteMember createWithUsername:userName muteMilliseconds:-1];
         self.group = [[EMClient sharedClient].groupManager muteMembers:@[muteMember] fromGroup:self.group.groupId error:&error];
+    }  else if (buttonIndex == 3) {  //移出群组
+        self.group = [[EMClient sharedClient].groupManager removeOccupants:@[userName] fromGroup:self.group.groupId error:&error];
     }
     
     [self hideHud];
@@ -123,7 +125,7 @@
     }
     
     self.currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"group.removeAdmin", @"Remove from Admin"), NSLocalizedString(@"friend.block", @"add to black list"), NSLocalizedString(@"group.toMute", @"Mute"), nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"group.removeAdmin", @"Remove from Admin"), NSLocalizedString(@"friend.block", @"add to black list"), NSLocalizedString(@"group.toMute", @"Mute"), NSLocalizedString(@"group.removeMember", @"Remove from group"), nil];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
