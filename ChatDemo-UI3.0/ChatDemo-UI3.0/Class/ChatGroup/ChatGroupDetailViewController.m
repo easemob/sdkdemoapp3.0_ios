@@ -108,10 +108,10 @@
     [addButton addTarget:self action:@selector(addMemberButtonAction) forControlEvents:UIControlEventTouchUpInside];
     self.addMemberItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
+    self.showRefreshHeader = YES;
     self.tableView.tableFooterView = self.footerView;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUI:) name:@"UpdateGroupDetail" object:nil];
-    
     [self registerNotifications];
     
     [self fetchGroupInfo];
@@ -416,6 +416,11 @@
 
 #pragma mark - data
 
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    [self fetchGroupInfo];
+}
+
 - (void)fetchGroupInfo
 {
     __weak typeof(self) weakSelf = self;
@@ -425,7 +430,9 @@
         EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.chatGroup.groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
+            [weakSelf tableViewDidFinishTriggerHeader:YES reload:NO];
         });
+        
         if (!error) {
             weakSelf.chatGroup = group;
             EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:group.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
