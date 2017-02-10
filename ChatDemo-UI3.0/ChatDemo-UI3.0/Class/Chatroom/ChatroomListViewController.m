@@ -293,6 +293,10 @@
     id obj = aNotif.object;
     if (obj && [obj isKindOfClass:[NSString class]]) {
         NSString *roomId = (NSString *)obj;
+        if ([roomId length] == 0) {
+            return;
+        }
+        
         for (EMChatroom *room in self.dataArray) {
             if ([room.chatroomId isEqualToString:roomId]) {
                 [self.dataArray removeObject:room];

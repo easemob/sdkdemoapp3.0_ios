@@ -270,7 +270,7 @@
                 [weakSelf showHint:NSLocalizedString(@"chatroom.leaveFail", @"leave the chatroom failure")];
             }
             else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:weakSelf.chatroom.chatroomId];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:nil];
             }
         });
     });
