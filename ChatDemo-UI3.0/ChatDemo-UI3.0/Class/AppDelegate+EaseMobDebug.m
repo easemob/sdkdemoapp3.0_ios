@@ -61,6 +61,8 @@
         id easemob = [EaseMob sharedInstance];
         SEL selector = @selector(registerPrivateServerWithParams:);
         [easemob performSelector:selector withObject:dic];
+        
+        [[EaseMob sharedInstance].chatManager setIsUseHttpsOnly:NO];
         return YES;
     }
     

@@ -11,7 +11,7 @@
  */
 
 #import "AppDelegate+UMeng.h"
-#import "MobClick.h"
+#import <UMMobClick/MobClick.h>
 
 @implementation AppDelegate (UMeng)
 
@@ -19,9 +19,10 @@
     //友盟
     NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
     if ([bundleID isEqualToString:@"com.easemob.enterprise.demo.ui"]) {
-        [MobClick startWithAppkey:@"5389bb7f56240ba94208ac97"
-                     reportPolicy:BATCH
-                        channelId:Nil];
+        UMAnalyticsConfig *config = [UMAnalyticsConfig sharedInstance];
+        config.appKey = @"5389bb7f56240ba94208ac97";
+        config.ePolicy = BATCH;
+        [MobClick startWithConfigure:config];
 #if DEBUG
         [MobClick setLogEnabled:YES];
 #else

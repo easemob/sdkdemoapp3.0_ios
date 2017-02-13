@@ -260,15 +260,16 @@ static UserProfileManager *sharedInstance = nil;
 {
     PFQuery *query = [PFQuery queryWithClassName:kPARSE_HXUSER];
     [query whereKey:kPARSE_HXUSER_USERNAME containedIn:usernames];
+    __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             for (id user in objects) {
                 if ([user isKindOfClass:[PFObject class]]) {
                     PFObject *pfuser = (PFObject*)user;
                     if (save) {
-                        [self savePFUserInDisk:pfuser];
+                        [weakSelf savePFUserInDisk:pfuser];
                     } else {
-                        [self savePFUserInMemory:pfuser];
+                        [weakSelf savePFUserInMemory:pfuser];
                     }
                 }
             }
