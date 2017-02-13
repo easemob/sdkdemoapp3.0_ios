@@ -398,6 +398,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)groupMuteListDidUpdate:(EMGroup *)aGroup
              addedMutedMembers:(NSArray *)aMutedMembers
+                    muteExpire:(NSInteger)aMuteExpire
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
     
@@ -558,6 +559,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
                 addedMutedMembers:(NSArray *)aMutes
+                       muteExpire:(NSInteger)aMuteExpire
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
     

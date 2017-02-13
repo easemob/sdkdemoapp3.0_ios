@@ -67,9 +67,8 @@
         cell.delegate = self;
     }
     
-    EMMuteMember *item = [self.dataArray objectAtIndex:indexPath.row];
     cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    cell.titleLabel.text = item.userName;
+    cell.titleLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     cell.indexPath = indexPath;
     
     return cell;
@@ -84,8 +83,7 @@
     }
     
     NSIndexPath *indexPath = _currentLongPressIndex;
-    EMMuteMember *item = [self.dataArray objectAtIndex:indexPath.row];
-    NSString *userName = item.userName;
+    NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
     _currentLongPressIndex = nil;
     
     [self hideHud];
@@ -98,7 +96,7 @@
     
     [self hideHud];
     if (!error) {
-        [self.dataArray removeObject:item];
+        [self.dataArray removeObject:userName];
         [self.tableView reloadData];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:self.group];

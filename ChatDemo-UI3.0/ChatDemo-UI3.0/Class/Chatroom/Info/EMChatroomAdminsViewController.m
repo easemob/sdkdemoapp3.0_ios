@@ -94,8 +94,7 @@
     } else if (buttonIndex == 1) { //加入黑名单
         self.chatroom = [[EMClient sharedClient].roomManager blockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
     } else if (buttonIndex == 2) {  //禁言
-        EMMuteMember *muteMember = [EMMuteMember createWithUsername:userName muteMilliseconds:-1];
-        self.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[muteMember] fromChatroom:self.chatroom.chatroomId error:&error];
+        self.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[userName] muteMilliseconds:-1 fromChatroom:self.chatroom.chatroomId error:&error];
     }
     
     [self hideHud];

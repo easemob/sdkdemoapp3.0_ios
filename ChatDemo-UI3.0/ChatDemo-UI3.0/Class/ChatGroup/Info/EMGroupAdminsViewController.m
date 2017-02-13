@@ -94,8 +94,7 @@
     } else if (buttonIndex == 1) { //加入黑名单
         self.group = [[EMClient sharedClient].groupManager blockOccupants:@[userName] fromGroup:self.group.groupId error:&error];
     } else if (buttonIndex == 2) {  //禁言
-        EMMuteMember *muteMember = [EMMuteMember createWithUsername:userName muteMilliseconds:-1];
-        self.group = [[EMClient sharedClient].groupManager muteMembers:@[muteMember] fromGroup:self.group.groupId error:&error];
+        self.group = [[EMClient sharedClient].groupManager muteMembers:@[userName] muteMilliseconds:-1 fromGroup:self.group.groupId error:&error];
     }  else if (buttonIndex == 3) {  //移出群组
         self.group = [[EMClient sharedClient].groupManager removeOccupants:@[userName] fromGroup:self.group.groupId error:&error];
     }
