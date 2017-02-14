@@ -10,13 +10,8 @@
   * from Hyphenate Inc.
   */
 
-#import "EaseRefreshTableViewController.h"
+#import <UIKit/UIKit.h>
 
-
-@interface ChatGroupDetailViewController : EaseRefreshTableViewController
-
-- (instancetype)initWithGroup:(EMGroup *)chatGroup;
-
-- (instancetype)initWithGroupId:(NSString *)chatGroupId;
+@interface EMCreateChatroomController : UIViewController
 
 @end

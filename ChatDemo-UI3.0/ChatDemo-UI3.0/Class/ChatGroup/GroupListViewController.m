@@ -35,6 +35,7 @@
     if (self) {
         // Custom initialization
         _dataSource = [NSMutableArray array];
+        self.page = 1;
     }
     return self;
 }
@@ -278,22 +279,57 @@
 }
                                                        
 #pragma mark - data
-                                                       
+
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    __weak typeof(self) weakself = self;
+    self.page = 1;
+    [self fetchGroupsWithPage:self.page isHeader:YES];
+}
+
+- (void)tableViewDidTriggerFooterRefresh
+{
+    self.page += 1;
+    [self fetchGroupsWithPage:self.page isHeader:NO];
+}
+
+- (void)fetchGroupsWithPage:(NSInteger)aPage
+                   isHeader:(BOOL)aIsHeader
+{
+    [self hideHud];
+    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+    
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        NSArray *groups = [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!error) {
-                [weakself.dataSource removeAllObjects];
-                [weakself.dataSource addObjectsFromArray:groups];
-                [weakself.tableView reloadData];
-            }
-            
-            [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
-        });
+        NSArray *groupList = [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:aPage pageSize:50 error:&error];
+        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+        
+        if (weakSelf)
+        {
+            GroupListViewController *strongSelf = weakSelf;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf hideHud];
+                
+                if (!error)
+                {
+                    if (aIsHeader) {
+                        NSMutableArray *oldChatrooms = [self.dataSource mutableCopy];
+                        [self.dataSource removeAllObjects];
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            [oldChatrooms removeAllObjects];
+                        });
+                    }
+                    
+                    [strongSelf.dataSource addObjectsFromArray:groupList];
+                    [strongSelf.tableView reloadData];
+                    if (groupList.count == 50) {
+                        strongSelf.showRefreshFooter = YES;
+                    } else {
+                        strongSelf.showRefreshFooter = NO;
+                    }
+                }
+            });
+        }
     });
 }
 
