@@ -83,21 +83,14 @@
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
-		3AD0FB811E1E0962001F3957 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0FB5E1E1E0962001F3957 /* AlipaySDK.bundle */; };
 		3AD0FB821E1E0962001F3957 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD0FB5F1E1E0962001F3957 /* AlipaySDK.framework */; };
 		3AD0FB831E1E0962001F3957 /* AppDelegate+Redpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB621E1E0962001F3957 /* AppDelegate+Redpacket.m */; };
 		3AD0FB841E1E0962001F3957 /* EaseRedBagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB661E1E0962001F3957 /* EaseRedBagCell.m */; };
 		3AD0FB851E1E0962001F3957 /* RedPacketLuckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB681E1E0962001F3957 /* RedPacketLuckView.m */; };
-		3AD0FB861E1E0962001F3957 /* RedpacketTakenMessageTipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6A1E1E0962001F3957 /* RedpacketTakenMessageTipCell.m */; };
-		3AD0FB871E1E0962001F3957 /* RedpacketView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6C1E1E0962001F3957 /* RedpacketView.m */; };
-		3AD0FB881E1E0962001F3957 /* RedpacketCellResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6D1E1E0962001F3957 /* RedpacketCellResource.bundle */; };
 		3AD0FB891E1E0962001F3957 /* RedPacketChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB701E1E0962001F3957 /* RedPacketChatViewController.m */; };
-		3AD0FB8A1E1E0962001F3957 /* RedPacketUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB731E1E0962001F3957 /* RedPacketUserConfig.m */; };
 		3AD0FB8B1E1E0962001F3957 /* libRedpacketLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD0FB761E1E0962001F3957 /* libRedpacketLib.a */; };
-		3AD0FB8C1E1E0962001F3957 /* RedPacketResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0FB7D1E1E0962001F3957 /* RedPacketResource.bundle */; };
 		3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */; };
 		3AECBAA01E1BAD2C0044D1B2 /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */; };
-		3AECBAA11E1BAD2C0044D1B2 /* libHyphenateVideoRecorder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9F1E1BAD2C0044D1B2 /* libHyphenateVideoRecorder.a */; };
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
 		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
 		3AF6A65D1E1F84360022E835 /* EMGroupMutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */; };
@@ -166,7 +159,6 @@
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
 		D21E563F1E11120800C50BA0 /* libRedpacketLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E56351E11120800C50BA0 /* libRedpacketLib.a */; };
-		D21E56481E1117B900C50BA0 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E56461E1117B900C50BA0 /* AlipaySDK.framework */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
@@ -309,7 +301,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A22B16B1E2CA5C60001D791 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -447,8 +438,6 @@
 		3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HyphenateVideoRecorder_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Release-iphoneos/HyphenateVideoRecorder_CN.framework"; sourceTree = "<group>"; };
 		3AECBA8E1E1BA7E40044D1B2 /* libHyphenateVideoRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateVideoRecorder.a; path = "../../emclient-ios/newSDK/build/Release-iphoneos/libHyphenateVideoRecorder.a"; sourceTree = "<group>"; };
 		3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
-		3AECBA9F1E1BAD2C0044D1B2 /* libHyphenateVideoRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateVideoRecorder.a; sourceTree = "<group>"; };
-		3AECBAA21E1BAE210044D1B2 /* EMVideoRecorderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMVideoRecorderPlugin.h; sourceTree = "<group>"; };
 		3AF6A6551E1F5BD40022E835 /* EMGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMembersViewController.h; sourceTree = "<group>"; };
 		3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMembersViewController.m; sourceTree = "<group>"; };
 		3AF6A6581E1F80570022E835 /* EMGroupBansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupBansViewController.h; sourceTree = "<group>"; };
@@ -577,7 +566,6 @@
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		D21E56351E11120800C50BA0 /* libRedpacketLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRedpacketLib.a; sourceTree = "<group>"; };
-		D21E56461E1117B900C50BA0 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
 		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
@@ -735,9 +723,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
-				3A22B19F1E2CB4FC0001D791 /* liblibHyphenateVideoRecorderPlugin.a in Frameworks */,
 				3A27807B1DDB270200362CA7 /* libEaseUI.a in Frameworks */,
-				3A22B19A1E2CA6C20001D791 /* libRedpacketLib.a in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
 				3AD0FB8B1E1E0962001F3957 /* libRedpacketLib.a in Frameworks */,
 				3A386F151DE557BA000F3D8E /* Crashlytics.framework in Frameworks */,
@@ -764,12 +750,10 @@
 				D29A6BB21B72098D002324BB /* Bolts.framework in Frameworks */,
 				90F1BED11930493200121AEC /* libiconv.dylib in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
-				3A22B1911E2CA6C20001D791 /* AlipaySDK.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				90F1BECB1930491D00121AEC /* libz.dylib in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				D29A6BB31B72098D002324BB /* Parse.framework in Frameworks */,
-				3A22B16A1E2CA5C60001D791 /* Hyphenate.framework in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1013,7 +997,6 @@
 		3AECBA9C1E1BAD2C0044D1B2 /* plugin */ = {
 			isa = PBXGroup;
 			children = (
-				3A22B19D1E2CB4F00001D791 /* EMVideoRecorderPlugin.h */,
 				3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */,
 			);
 			path = plugin;
@@ -1188,7 +1171,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				3A22B1691E2CA5C60001D791 /* Hyphenate.framework */,
 				9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -1206,8 +1188,6 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3A22B19E1E2CB4FC0001D791 /* liblibHyphenateVideoRecorderPlugin.a */,
-				3A22B02B1E2C82130001D791 /* libHyphenateFullSDK.a */,
 				3AECBA8E1E1BA7E40044D1B2 /* libHyphenateVideoRecorder.a */,
 				3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */,
 				3A386F131DE557BA000F3D8E /* Crashlytics.framework */,
@@ -1720,7 +1700,6 @@
 				EBD2AB3E1A7CDAC000D16528 /* call_silence@2x.png in Resources */,
 				EBD2ABAD1A7CDAC000D16528 /* tabbar_chats.png in Resources */,
 				EBD2AB4D1A7CDAC000D16528 /* chat_location_annotation_someone.png in Resources */,
-				3A22B1901E2CA6C20001D791 /* AlipaySDK.bundle in Resources */,
 				D2B3DADB1BF1D7B700913BD5 /* icon_027_cover.png in Resources */,
 				EBD2AB551A7CDAC000D16528 /* faceDelete.png in Resources */,
 				D2B3DAD51BF1D7B700913BD5 /* icon_021_cover.png in Resources */,
@@ -1758,7 +1737,6 @@
 				D2BF97511AEB566B009E0D5C /* group_joinpublicgroup@2x.png in Resources */,
 				EBD2ABAB1A7CDAC000D16528 /* nav_createGroup@2x.png in Resources */,
 				D2B3DAD61BF1D7B700913BD5 /* icon_021.gif in Resources */,
-				3A22B19B1E2CA6C20001D791 /* RedPacketResource.bundle in Resources */,
 				D2B3DAD81BF1D7B700913BD5 /* icon_022.gif in Resources */,
 				EBD2AB911A7CDAC000D16528 /* chat_sender_audio_playing_000@2x.png in Resources */,
 				EBD2AB9D1A7CDAC000D16528 /* account@2x.png in Resources */,
@@ -1863,7 +1841,6 @@
 				EBD2AB421A7CDAC000D16528 /* chat_video_play.png in Resources */,
 				3A386EF01DE5539C000F3D8E /* Button_Minimize disabled@3x.png in Resources */,
 				EBD2AB4E1A7CDAC000D16528 /* chat_location_annotation_someone@2x.png in Resources */,
-				3A22B1971E2CA6C20001D791 /* RedpacketCellResource.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1894,7 +1871,6 @@
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */,
-				3A22B1991E2CA6C20001D791 /* RedPacketUserConfig.m in Sources */,
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
@@ -1926,7 +1902,6 @@
 				3A2C3A281E23AF5000DCD9BE /* EMChatroomMutesViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
-				3A22B1951E2CA6C20001D791 /* RedpacketTakenMessageTipCell.m in Sources */,
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
 				3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
@@ -1970,7 +1945,6 @@
 				D2BF98B31AEDD780009E0D5C /* EditNicknameViewController.m in Sources */,
 				3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */,
 				90911145192EEE6E008A48AA /* MainViewController.m in Sources */,
-				3A22B1961E2CA6C20001D791 /* RedpacketView.m in Sources */,
 				3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */,
 				3C6BBA0C1941A7CF00A64684 /* EMTextView.m in Sources */,
 				9091111B192EEAED008A48AA /* UIResponder+Router.m in Sources */,
@@ -2151,7 +2125,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2211,7 +2185,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
