@@ -290,7 +290,7 @@ static ChatDemoHelper *helper = nil;
 {
     NSString *str = nil;
     if (aReason == EMGroupLeaveReasonBeRemoved) {
-        str = [NSString stringWithFormat:@"Your are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
+        str = [NSString stringWithFormat:@"You are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
         str = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.subject, aGroup.groupId];
     }
@@ -396,6 +396,56 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
+- (void)groupMuteListDidUpdate:(EMGroup *)aGroup
+             addedMutedMembers:(NSArray *)aMutedMembers
+                    muteExpire:(NSInteger)aMuteExpire
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群组更新" message:@"禁言群成员" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupMuteListDidUpdate:(EMGroup *)aGroup
+           removedMutedMembers:(NSArray *)aMutedMembers
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群组更新" message:@"解除禁言" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupAdminListDidUpdate:(EMGroup *)aGroup
+                     addedAdmin:(NSString *)aAdmin
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
+    
+    NSString *msg = [NSString stringWithFormat:@"%@ 变为管理员", aAdmin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"管理员更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupAdminListDidUpdate:(EMGroup *)aGroup
+                   removedAdmin:(NSString *)aAdmin
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
+    
+    NSString *msg = [NSString stringWithFormat:@"%@ 被移出管理员", aAdmin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"管理员更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupOwnerDidUpdate:(EMGroup *)aGroup
+                   newOwner:(NSString *)aNewOwner
+                   oldOwner:(NSString *)aOldOwner
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
+    
+    NSString *msg = [NSString stringWithFormat:@"群主由 %@ 变为 %@", aOldOwner, aNewOwner];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群主更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
 #pragma mark - EMContactManagerDelegate
 
 - (void)didReceiveAgreedFromUsername:(NSString *)aUsername
@@ -494,13 +544,67 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveUserLeavedChatroom:(EMChatroom *)aChatroom
                             username:(NSString *)aUsername
 {
-
+    
 }
 
 - (void)didReceiveKickedFromChatroom:(EMChatroom *)aChatroom
                               reason:(EMChatroomBeKickedReason)aReason
 {
+    NSString *roomId = nil;
+    if (aReason == EMChatroomBeKickedReasonDestroyed) {
+        roomId = aChatroom.chatroomId;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:roomId];
+}
+
+- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+                addedMutedMembers:(NSArray *)aMutes
+                       muteExpire:(NSInteger)aMuteExpire
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
     
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"聊天室更新" message:@"禁言成员" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+              removedMutedMembers:(NSArray *)aMutes
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"聊天室更新" message:@"解除禁言" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+                        addedAdmin:(NSString *)aAdmin
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
+    
+    NSString *msg = [NSString stringWithFormat:@"%@ 变为管理员", aAdmin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"管理员更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+                      removedAdmin:(NSString *)aAdmin
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
+    
+    NSString *msg = [NSString stringWithFormat:@"%@ 被移出管理员", aAdmin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"管理员更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom
+                      newOwner:(NSString *)aNewOwner
+                      oldOwner:(NSString *)aOldOwner
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
+    
+    NSString *msg = [NSString stringWithFormat:@"聊天室创建者由 %@ 变为 %@", aOldOwner, aNewOwner];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"聊天室创建者更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
 }
 
 #pragma mark - public
