@@ -10,7 +10,7 @@
 
 #if DEMO_CALL == 1
 
-#import "EMVideoRecorderPlugin.h"
+//#import "EMVideoRecorderPlugin.h"
 
 #import "DemoCallManager.h"
 #import "EMVideoInfoViewController.h"
