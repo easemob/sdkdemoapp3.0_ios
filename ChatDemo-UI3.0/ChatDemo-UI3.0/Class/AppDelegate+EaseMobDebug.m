@@ -29,6 +29,7 @@
 //    
 //    options.apnsCertName = @"chatdemoui_dev";
 //    options.enableConsoleLog = YES;
+//    options.usingHttpsOnly = NO;
 //    
 //    [[EMClient sharedClient] initializeSDKWithOptions:options];
 //
@@ -82,6 +83,7 @@
         //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
         options.apnsCertName = @"chatdemoui_dev";
         options.enableConsoleLog = YES;
+        options.usingHttpsOnly = NO;
         
         [[EMClient sharedClient] initializeSDKWithOptions:options];
         return YES;
