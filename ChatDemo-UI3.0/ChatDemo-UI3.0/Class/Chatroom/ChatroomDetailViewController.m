@@ -164,7 +164,12 @@
     else if (indexPath.row == 5) {
         cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)(self.chatroom.occupantsCount - 1 - self.chatroom.adminList.count)];
+        
+        NSInteger count = self.chatroom.occupantsCount - 1 - self.chatroom.adminList.count;
+        if (count < 0) {
+            count = 0;
+        }
+        cell.detailTextLabel.text = @(count).stringValue;
     }
     else if (indexPath.row == 6) {
         cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");
