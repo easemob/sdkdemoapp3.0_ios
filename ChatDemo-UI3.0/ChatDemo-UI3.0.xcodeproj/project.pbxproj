@@ -10,6 +10,10 @@
 		283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */; };
 		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
+		3049C18D1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3049C18C1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a */; };
+		3049C18E1E5305DD00D3B159 /* RedpacketTakenMessageTipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6A1E1E0962001F3957 /* RedpacketTakenMessageTipCell.m */; };
+		3049C18F1E5305DD00D3B159 /* RedpacketView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6C1E1E0962001F3957 /* RedpacketView.m */; };
+		3049C1901E5305DD00D3B159 /* RedPacketUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB731E1E0962001F3957 /* RedPacketUserConfig.m */; };
 		3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B1B9EE1C3B80290087A74F /* MessageUI.framework */; };
 		3A05524B1DCC859900D583E5 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */; };
 		3A22B1B71E2F7D8F0001D791 /* EMCreateChatroomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A22B1B61E2F7D8F0001D791 /* EMCreateChatroomController.m */; };
@@ -78,11 +82,6 @@
 		3A386F151DE557BA000F3D8E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F131DE557BA000F3D8E /* Crashlytics.framework */; };
 		3A386F161DE557BA000F3D8E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F141DE557BA000F3D8E /* Fabric.framework */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
-		3A5E4C951E52E29400F3A3C0 /* RedpacketTakenMessageTipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6A1E1E0962001F3957 /* RedpacketTakenMessageTipCell.m */; };
-		3A5E4C961E52E29400F3A3C0 /* RedpacketView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6C1E1E0962001F3957 /* RedpacketView.m */; };
-		3A5E4C971E52E29400F3A3C0 /* RedPacketUserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB731E1E0962001F3957 /* RedPacketUserConfig.m */; };
-		3A5E4C991E52E32200F3A3C0 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5E4C981E52E32200F3A3C0 /* Hyphenate.framework */; };
-		3A5E4C9A1E52E32200F3A3C0 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5E4C981E52E32200F3A3C0 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A635C141DF696AC005C995E /* CallSettingViewController.m */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
@@ -306,7 +305,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A5E4C9A1E52E32200F3A3C0 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,6 +319,7 @@
 		28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
 		28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
+		3049C18C1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibHyphenateVideoRecorderPlugin.a; path = "../../../Library/Developer/Xcode/DerivedData/emsdk-dgepvhpfdjdmiaexuzjopyisfqud/Build/Products/Release-iphonesimulator/liblibHyphenateVideoRecorderPlugin.a"; sourceTree = "<group>"; };
 		3A05524A1DCC859900D583E5 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = EaseUIResource.bundle; path = ../../../easeui_ios/EaseUI/export/resources/EaseUIResource.bundle; sourceTree = "<group>"; };
 		3A22B1B51E2F7D8F0001D791 /* EMCreateChatroomController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCreateChatroomController.h; sourceTree = "<group>"; };
 		3A22B1B61E2F7D8F0001D791 /* EMCreateChatroomController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMCreateChatroomController.m; sourceTree = "<group>"; };
@@ -402,7 +401,6 @@
 		3A386F141DE557BA000F3D8E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		3A5E4C981E52E32200F3A3C0 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A635C131DF696AC005C995E /* CallSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallSettingViewController.h; sourceTree = "<group>"; };
 		3A635C141DF696AC005C995E /* CallSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallSettingViewController.m; sourceTree = "<group>"; };
 		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
@@ -729,6 +727,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3049C18D1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a in Frameworks */,
 				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
 				3A27807B1DDB270200362CA7 /* libEaseUI.a in Frameworks */,
 				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
@@ -744,7 +743,6 @@
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
 				EB1975B21ADE0C77002E7E27 /* libc++.dylib in Frameworks */,
 				EBF9556C1ADD0F0C0087E035 /* libstdc++.6.0.9.dylib in Frameworks */,
-				3A5E4C991E52E32200F3A3C0 /* Hyphenate.framework in Frameworks */,
 				3CBB931C1A14B227007FED9E /* libsqlite3.dylib in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
 				3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */,
@@ -1179,7 +1177,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				3A5E4C981E52E32200F3A3C0 /* Hyphenate.framework */,
 				9091102D192EEA70008A48AA /* ChatDemo-UI3.0 */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -1197,6 +1194,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3049C18C1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a */,
 				3AECBA8E1E1BA7E40044D1B2 /* libHyphenateVideoRecorder.a */,
 				3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */,
 				3A386F131DE557BA000F3D8E /* Crashlytics.framework */,
@@ -1876,9 +1874,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A5E4C951E52E29400F3A3C0 /* RedpacketTakenMessageTipCell.m in Sources */,
-				3A5E4C961E52E29400F3A3C0 /* RedpacketView.m in Sources */,
-				3A5E4C971E52E29400F3A3C0 /* RedPacketUserConfig.m in Sources */,
+				3049C18E1E5305DD00D3B159 /* RedpacketTakenMessageTipCell.m in Sources */,
+				3049C18F1E5305DD00D3B159 /* RedpacketView.m in Sources */,
+				3049C1901E5305DD00D3B159 /* RedPacketUserConfig.m in Sources */,
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
@@ -2114,6 +2112,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
 					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
+					"\"$(SRCROOT)/../../emclient-ios/newSDK/libHyphenateVideoRecorderPlugin\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
@@ -2175,6 +2174,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../RedpacketSDK/",
 					"\"$(SRCROOT)/../../easeui_ios/EaseUI/EaseUI\"/**",
+					"\"$(SRCROOT)/../../emclient-ios/newSDK/libHyphenateVideoRecorderPlugin\"",
 				);
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "ChatDemo-UI3.0/ChatDemo-UI3.0-Info.plist";
