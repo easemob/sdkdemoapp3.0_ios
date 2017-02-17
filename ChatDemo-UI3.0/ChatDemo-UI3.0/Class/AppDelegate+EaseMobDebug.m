@@ -69,6 +69,13 @@
             restServer = @"a1.sdb.easemob.com";
             [ud setObject:restServer forKey:@"identifier_restserver"];
         }
+        
+        BOOL isHttpsOnly = NO;
+        NSNumber *httpsOnly = [ud objectForKey:@"identifier_httpsonly"];
+        if (httpsOnly) {
+            isHttpsOnly = [httpsOnly boolValue];
+        }
+        
         [ud synchronize];
         
         EMOptions *options = [EMOptions optionsWithAppkey:appkey];
@@ -82,6 +89,7 @@
         //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
         options.apnsCertName = @"chatdemoui_dev";
         options.enableConsoleLog = YES;
+        options.usingHttpsOnly = isHttpsOnly;
         
         [[EMClient sharedClient] initializeSDKWithOptions:options];
         return YES;

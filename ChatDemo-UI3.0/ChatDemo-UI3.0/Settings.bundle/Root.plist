@@ -98,6 +98,22 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>SETTING</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>HttpsOnly</string>
+			<key>Key</key>
+			<string>identifier_httpsonly</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
 	</array>
 	<key>StringsTable</key>
 	<string>Root</string>
