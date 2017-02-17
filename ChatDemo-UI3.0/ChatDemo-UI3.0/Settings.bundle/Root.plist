@@ -130,7 +130,7 @@
 			<key>Title</key>
 			<string>HttpsOnly</string>
 			<key>Key</key>
-			<string>identifier_httpsonly_enable</string>
+			<string>identifier_httpsonly</string>
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
