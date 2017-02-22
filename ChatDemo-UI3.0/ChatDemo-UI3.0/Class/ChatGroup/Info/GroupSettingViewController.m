@@ -15,7 +15,6 @@
 @interface GroupSettingViewController ()
 {
     EMGroup *_group;
-    BOOL _isOwner;
     UISwitch *_pushSwitch;
     UISwitch *_blockSwitch;
 }
@@ -38,9 +37,6 @@
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
         _group = group;
-        
-        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-        _isOwner = [_group.owner isEqualToString:loginUsername];
     }
     
     return self;
@@ -59,11 +55,9 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
     
-    if (!_isOwner) {
-        UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(saveAction:)];
-        saveItem.accessibilityIdentifier = @"save";
-        [self.navigationItem setRightBarButtonItem:saveItem];
-    }
+    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(saveAction:)];
+    saveItem.accessibilityIdentifier = @"save";
+    [self.navigationItem setRightBarButtonItem:saveItem];
     
     _pushSwitch = [[UISwitch alloc] init];
     _pushSwitch.accessibilityIdentifier = @"push_switch";
@@ -103,16 +97,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (_isOwner) {
+    if (_blockSwitch.isOn) {
         return 1;
     }
     else{
-        if (_blockSwitch.isOn) {
-            return 1;
-        }
-        else{
-            return 2;
-        }
+        return 2;
     }
 }
 
@@ -125,7 +114,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    if ((_isOwner && indexPath.row == 0) || (!_isOwner && indexPath.row == 1)) {
+    if (indexPath.row == 1) {
         _pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - (_pushSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - _pushSwitch.frame.size.height) / 2, _pushSwitch.frame.size.width, _pushSwitch.frame.size.height);
         
         if (_pushSwitch.isOn) {
@@ -138,7 +127,7 @@
         [cell.contentView addSubview:_pushSwitch];
         [cell.contentView bringSubviewToFront:_pushSwitch];
     }
-    else if(!_isOwner && indexPath.row == 0){
+    else if(indexPath.row == 0){
         _blockSwitch.frame = CGRectMake(self.tableView.frame.size.width - (_blockSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - _blockSwitch.frame.size.height) / 2, _blockSwitch.frame.size.width, _blockSwitch.frame.size.height);
         
         cell.textLabel.text = NSLocalizedString(@"group.setting.blockMessage", @"shielding of the message");
@@ -188,7 +177,7 @@
 
 - (void)pushSwitchChanged:(id)sender
 {
-    [self enablePush:[_pushSwitch isOn]];
+//    [self enablePush:[_pushSwitch isOn]];
     [self.tableView reloadData];
 }
 
