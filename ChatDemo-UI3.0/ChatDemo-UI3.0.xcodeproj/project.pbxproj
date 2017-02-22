@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */; };
-		28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
 		3049C18D1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3049C18C1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a */; };
 		3049C18E1E5305DD00D3B159 /* RedpacketTakenMessageTipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6A1E1E0962001F3957 /* RedpacketTakenMessageTipCell.m */; };
@@ -85,6 +84,7 @@
 		3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A635C141DF696AC005C995E /* CallSettingViewController.m */; };
 		3A6764B11E5D2C4F00ABF196 /* ChatGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */; };
 		3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */; };
+		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
@@ -315,8 +315,6 @@
 		283403071A9EBB8200B7DE9B /* GroupSubjectChangingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSubjectChangingViewController.h; sourceTree = "<group>"; };
 		283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSubjectChangingViewController.m; sourceTree = "<group>"; };
 		287094581DAC6E2900BCB3CD /* ChatDemo-UI3.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ChatDemo-UI3.0.entitlements"; sourceTree = "<group>"; };
-		28BFD6301B01D40500D0ADEC /* ChatroomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomDetailViewController.h; sourceTree = "<group>"; };
-		28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
 		28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomListViewController.h; sourceTree = "<group>"; };
 		28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomListViewController.m; sourceTree = "<group>"; };
 		3049C18C1E52FF1E00D3B159 /* liblibHyphenateVideoRecorderPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibHyphenateVideoRecorderPlugin.a; path = "../../../Library/Developer/Xcode/DerivedData/emsdk-dgepvhpfdjdmiaexuzjopyisfqud/Build/Products/Release-iphonesimulator/liblibHyphenateVideoRecorderPlugin.a"; sourceTree = "<group>"; };
@@ -407,6 +405,8 @@
 		3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatGroupDetailViewController.m; sourceTree = "<group>"; };
 		3A6764B21E5D2C6800ABF196 /* GroupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSettingViewController.h; sourceTree = "<group>"; };
 		3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSettingViewController.m; sourceTree = "<group>"; };
+		3A6764B51E5D3FB300ABF196 /* ChatroomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomDetailViewController.h; sourceTree = "<group>"; };
+		3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
 		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
 		3A807B0D1D951301004D18CB /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
 		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
@@ -773,8 +773,6 @@
 				3A22B1B51E2F7D8F0001D791 /* EMCreateChatroomController.h */,
 				3A22B1B61E2F7D8F0001D791 /* EMCreateChatroomController.m */,
 				3A2C3A1C1E23AF5000DCD9BE /* Info */,
-				28BFD6301B01D40500D0ADEC /* ChatroomDetailViewController.h */,
-				28BFD6311B01D40500D0ADEC /* ChatroomDetailViewController.m */,
 				28BFD6321B01D40500D0ADEC /* ChatroomListViewController.h */,
 				28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */,
 			);
@@ -784,6 +782,8 @@
 		3A2C3A1C1E23AF5000DCD9BE /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				3A6764B51E5D3FB300ABF196 /* ChatroomDetailViewController.h */,
+				3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */,
 				3A2C3A1D1E23AF5000DCD9BE /* EMChatroomAdminsViewController.h */,
 				3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */,
 				3A2C3A1F1E23AF5000DCD9BE /* EMChatroomBansViewController.h */,
@@ -1918,8 +1918,8 @@
 				3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */,
 				3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */,
 				9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */,
+				3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
-				28BFD6361B01D40500D0ADEC /* ChatroomDetailViewController.m in Sources */,
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */,

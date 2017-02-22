@@ -204,7 +204,7 @@
 "chatroom.id" = "聊天室Id";
 "chatroom.owner" = "创建者";
 "chatroom.admins" = "管理员";
-"chatroom.members" = "成员列表";
+"chatroom.onlineMembers" = "在线成员列表";
 "chatroom.blacklist" = "黑名单列表";
 "chatroom.mutes" = "被禁言成员";
 "chatroom.occupantCount" = "聊天室人数";
