@@ -146,13 +146,12 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    self.page = 1;
+    self.cursor = @"";
     [self fetchMembersWithPage:self.page isHeader:YES];
 }
 
 - (void)tableViewDidTriggerFooterRefresh
 {
-    self.page += 1;
     [self fetchMembersWithPage:self.page isHeader:NO];
 }
 
