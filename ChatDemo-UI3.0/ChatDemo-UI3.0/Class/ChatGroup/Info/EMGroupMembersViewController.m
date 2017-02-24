@@ -88,32 +88,37 @@
     
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    EMError *error = nil;
     
-    if (buttonIndex == 0) { //移除
-        self.group = [[EMClient sharedClient].groupManager removeOccupants:@[userName] fromGroup:self.group.groupId error:&error];
-    } else if (buttonIndex == 1) { //加入黑名单
-        self.group = [[EMClient sharedClient].groupManager blockOccupants:@[userName] fromGroup:self.group.groupId error:&error];
-    } else if (buttonIndex == 2) {  //禁言
-        self.group = [[EMClient sharedClient].groupManager muteMembers:@[userName] muteMilliseconds:-1 fromGroup:self.group.groupId error:&error];
-    } else if (buttonIndex == 3) {  //升为管理员
-        self.group = [[EMClient sharedClient].groupManager addAdmin:userName toGroup:self.group.groupId error:&error];
-    }
-    
-    [self hideHud];
-    if (!error) {
-        if (buttonIndex != 2) {
-            [self.dataArray removeObject:userName];
-            [self.tableView reloadData];
-        } else {
-            [self showHint:@"禁言成功"];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        if (buttonIndex == 0) { //移除
+            weakSelf.group = [[EMClient sharedClient].groupManager removeOccupants:@[userName] fromGroup:weakSelf.group.groupId error:&error];
+        } else if (buttonIndex == 1) { //加入黑名单
+            weakSelf.group = [[EMClient sharedClient].groupManager blockOccupants:@[userName] fromGroup:weakSelf.group.groupId error:&error];
+        } else if (buttonIndex == 2) {  //禁言
+            weakSelf.group = [[EMClient sharedClient].groupManager muteMembers:@[userName] muteMilliseconds:-1 fromGroup:weakSelf.group.groupId error:&error];
+        } else if (buttonIndex == 3) {  //升为管理员
+            weakSelf.group = [[EMClient sharedClient].groupManager addAdmin:userName toGroup:weakSelf.group.groupId error:&error];
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:self.group];
-    }
-    else {
-        [self showHint:error.errorDescription];
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                if (buttonIndex != 2) {
+                    [weakSelf.dataArray removeObject:userName];
+                    [weakSelf.tableView reloadData];
+                } else {
+                    [weakSelf showHint:@"禁言成功"];
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];
+            }
+            else {
+                [weakSelf showHint:error.errorDescription];
+            }
+        });
+    });
 }
 
 #pragma mark - EaseUserCellDelegate
@@ -162,7 +167,10 @@
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
-            [weakSelf.dataArray removeAllObjects];
+            if (aIsHeader) {
+                [weakSelf.dataArray removeAllObjects];
+            }
+            
             [weakSelf.dataArray addObjectsFromArray:aResult.list];
             [weakSelf.tableView reloadData];
         } else {

@@ -89,22 +89,26 @@
     
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    EMError *error = nil;
-    
-    if (buttonIndex == 0) { //移除
-        self.chatroom = [[EMClient sharedClient].roomManager unblockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
-    }
-    
-    [self hideHud];
-    if (!error) {
-        [self.dataArray removeObject:userName];
-        [self.tableView reloadData];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        if (buttonIndex == 0) { //移除
+            weakSelf.chatroom = [[EMClient sharedClient].roomManager unblockMembers:@[userName] fromChatroom:weakSelf.chatroom.chatroomId error:&error];
+        }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:self.chatroom];
-    }
-    else {
-        [self showHint:error.errorDescription];
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                [weakSelf.dataArray removeObject:userName];
+                [weakSelf.tableView reloadData];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:weakSelf.chatroom];
+            }
+            else {
+                [weakSelf showHint:error.errorDescription];
+            }
+        });
+    });
 }
 
 #pragma mark - EaseUserCellDelegate
@@ -145,7 +149,10 @@
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
-            [weakSelf.dataArray removeAllObjects];
+            if (aIsHeader) {
+                [weakSelf.dataArray removeAllObjects];
+            }
+
             [weakSelf.dataArray addObjectsFromArray:aMembers];
             [weakSelf.tableView reloadData];
         } else {
