@@ -65,6 +65,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>环信Demo需要使用您的相机</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>环信Demo需要使用您的位置信息</string>
 	<key>NSMicrophoneUsageDescription</key>

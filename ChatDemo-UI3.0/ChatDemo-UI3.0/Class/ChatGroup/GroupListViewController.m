@@ -313,8 +313,8 @@
                 if (!error)
                 {
                     if (aIsHeader) {
-                        NSMutableArray *oldChatrooms = [self.dataSource mutableCopy];
-                        [self.dataSource removeAllObjects];
+                        NSMutableArray *oldChatrooms = [weakSelf.dataSource mutableCopy];
+                        [weakSelf.dataSource removeAllObjects];
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             [oldChatrooms removeAllObjects];
                         });

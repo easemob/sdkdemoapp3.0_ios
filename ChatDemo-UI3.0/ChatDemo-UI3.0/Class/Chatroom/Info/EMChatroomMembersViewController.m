@@ -88,32 +88,36 @@
     
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    EMError *error = nil;
-    
-    if (buttonIndex == 0) { //移除
-        self.chatroom = [[EMClient sharedClient].roomManager removeMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
-    } else if (buttonIndex == 1) { //加入黑名单
-        self.chatroom = [[EMClient sharedClient].roomManager blockMembers:@[userName] fromChatroom:self.chatroom.chatroomId error:&error];
-    } else if (buttonIndex == 2) {  //禁言
-        self.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[userName] muteMilliseconds:-1 fromChatroom:self.chatroom.chatroomId error:&error];
-    } else if (buttonIndex == 3) {  //升为管理员
-        self.chatroom = [[EMClient sharedClient].roomManager addAdmin:userName toChatroom:self.chatroom.chatroomId error:&error];
-    }
-    
-    [self hideHud];
-    if (!error) {
-        if (buttonIndex != 2) {
-            [self.dataArray removeObject:userName];
-            [self.tableView reloadData];
-        } else {
-            [self showHint:@"禁言成功"];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        if (buttonIndex == 0) { //移除
+            weakSelf.chatroom = [[EMClient sharedClient].roomManager removeMembers:@[userName] fromChatroom:weakSelf.chatroom.chatroomId error:&error];
+        } else if (buttonIndex == 1) { //加入黑名单
+            weakSelf.chatroom = [[EMClient sharedClient].roomManager blockMembers:@[userName] fromChatroom:weakSelf.chatroom.chatroomId error:&error];
+        } else if (buttonIndex == 2) {  //禁言
+            weakSelf.chatroom = [[EMClient sharedClient].roomManager muteMembers:@[userName] muteMilliseconds:-1 fromChatroom:weakSelf.chatroom.chatroomId error:&error];
+        } else if (buttonIndex == 3) {  //升为管理员
+            weakSelf.chatroom = [[EMClient sharedClient].roomManager addAdmin:userName toChatroom:weakSelf.chatroom.chatroomId error:&error];
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:self.chatroom];
-    }
-    else {
-        [self showHint:error.errorDescription];
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                if (buttonIndex != 2) {
+                    [weakSelf.dataArray removeObject:userName];
+                    [weakSelf.tableView reloadData];
+                } else {
+                    [weakSelf showHint:@"禁言成功"];
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:weakSelf.chatroom];
+            }
+            else {
+                [weakSelf showHint:error.errorDescription];
+            }
+        });
+    });
 }
 
 #pragma mark - EaseUserCellDelegate
@@ -141,13 +145,12 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    self.page = 1;
+    self.cursor = @"";
     [self fetchMembersWithPage:self.page isHeader:YES];
 }
 
 - (void)tableViewDidTriggerFooterRefresh
 {
-    self.page += 1;
     [self fetchMembersWithPage:self.page isHeader:NO];
 }
 
@@ -162,7 +165,10 @@
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
-            [weakSelf.dataArray removeAllObjects];
+            if (aIsHeader) {
+                [weakSelf.dataArray removeAllObjects];
+            }
+
             [weakSelf.dataArray addObjectsFromArray:aResult.list];
             [weakSelf.tableView reloadData];
         } else {

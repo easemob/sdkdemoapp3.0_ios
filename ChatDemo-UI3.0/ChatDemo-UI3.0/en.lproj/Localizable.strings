@@ -204,10 +204,10 @@
 "chatroom.id" = "ChatroomId";
 "chatroom.owner" = "Owner";
 "chatroom.admins" = "Admin List";
-"chatroom.members" = "Member List";
+"chatroom.onlineMembers" = "Online member List";
 "chatroom.blacklist" = "Blacklist";
 "chatroom.mutes" = "Mute List";
-"chatroom.occupantCount" = "Members count";
+"chatroom.onlineMembers" = "members count";
 "chatroom.description" = "Description";
 "chatroom.joining" = "Joining...";
 "chatroom.fetchInfoFail" = "Failed to get the chatroom info, please try again later.";

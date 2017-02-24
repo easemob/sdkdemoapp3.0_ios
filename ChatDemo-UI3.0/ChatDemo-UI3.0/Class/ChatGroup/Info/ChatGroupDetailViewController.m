@@ -406,8 +406,8 @@
 
 #pragma mark - EMGroupManagerDelegate
 
-- (void)didReceiveAcceptedGroupInvitation:(EMGroup *)aGroup
-                                  invitee:(NSString *)aInvitee
+- (void)groupInvitationDidAccept:(EMGroup *)aGroup
+                         invitee:(NSString *)aInvitee
 {
     if ([aGroup.groupId isEqualToString:self.chatGroup.groupId]) {
         [self fetchGroupInfo];

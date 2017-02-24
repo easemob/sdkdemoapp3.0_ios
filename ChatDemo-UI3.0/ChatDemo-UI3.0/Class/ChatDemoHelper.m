@@ -288,7 +288,7 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveLeavedGroup:(EMGroup *)aGroup
                        reason:(EMGroupLeaveReason)aReason
 {
-    NSString *str = nil;
+    NSString *str = @"从群组中离开";
     if (aReason == EMGroupLeaveReasonBeRemoved) {
         str = [NSString stringWithFormat:@"You are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
@@ -354,6 +354,14 @@ static ChatDemoHelper *helper = nil;
                message:(NSString *)aMessage
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:@"%@ invite you to group: %@ [%@]", aInviter, aGroup.subject, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupInvitationDidAccept:(EMGroup *)aGroup
+                         invitee:(NSString *)aInvitee
+{
+    NSString *message = [NSString stringWithFormat:@"%@ 已同意群组\"%@\"的入群邀请", aInvitee, aGroup.subject];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 

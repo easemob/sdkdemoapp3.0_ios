@@ -142,7 +142,7 @@
     {
         cell.textLabel.text = NSLocalizedString(@"chatroom.occupantCount", @"members count");
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.membersCount, (int)_chatroom.maxOccupantsCount];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)_chatroom.occupantsCount, (int)_chatroom.maxOccupantsCount];
     }
     else if (indexPath.row == 3) {
         cell.textLabel.text = NSLocalizedString(@"group.owner", @"Owner");
@@ -162,14 +162,9 @@
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", (int)[self.chatroom.adminList count]];
     }
     else if (indexPath.row == 5) {
-        cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
+        cell.textLabel.text = NSLocalizedString(@"chatroom.onlineMembers", @"Online Members");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        NSInteger count = self.chatroom.occupantsCount - 1 - self.chatroom.adminList.count;
-        if (count < 0) {
-            count = 0;
-        }
-        cell.detailTextLabel.text = @(count).stringValue;
+        cell.detailTextLabel.text = @(self.chatroom.occupantsCount).stringValue;
     }
     else if (indexPath.row == 6) {
         cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");
