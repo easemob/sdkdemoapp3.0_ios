@@ -254,12 +254,12 @@ static DemoCallManager *callManager = nil;
     }
 }
 
-//- (void)didReceiveCallNetworkChanged:(EMCallSession *)aSession status:(EMCallNetworkStatus)aStatus
-//{
-//    if ([aSession.callId isEqualToString:self.callSession.callId]) {
+- (void)didReceiveCallNetworkChanged:(EMCallSession *)aSession status:(EMCallNetworkStatus)aStatus
+{
+    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
 //        [self.callController setNetwork:aStatus];
-//    }
-//}
+    }
+}
 
 #pragma mark - EMCallBuilderDelegate
 

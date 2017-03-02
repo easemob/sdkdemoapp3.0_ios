@@ -177,9 +177,9 @@
         }
         
         if ([aResult.cursor length] == 0) {
-            self.showRefreshFooter = NO;
+            weakSelf.showRefreshFooter = NO;
         } else {
-            self.showRefreshFooter = YES;
+            weakSelf.showRefreshFooter = YES;
         }
     }];
 }
