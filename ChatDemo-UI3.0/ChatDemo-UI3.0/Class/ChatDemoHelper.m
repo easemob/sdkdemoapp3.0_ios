@@ -357,6 +357,15 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
+- (void)groupInvitationDidDecline:(EMGroup *)aGroup
+                          invitee:(NSString *)aInvitee
+                           reason:(NSString *)aReason
+{
+    NSString *message = [NSString stringWithFormat:@"%@ 拒绝群组\"%@\"的入群邀请", aInvitee, aGroup.subject];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
 - (void)groupInvitationDidAccept:(EMGroup *)aGroup
                          invitee:(NSString *)aInvitee
 {
@@ -375,7 +384,7 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
-- (void)didReceiveAcceptedJoinGroup:(EMGroup *)aGroup
+- (void)joinGroupRequestDidApprove:(EMGroup *)aGroup
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
