@@ -166,6 +166,9 @@
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
+		D2680A941E66B9A6009021F9 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0FB5E1E1E0962001F3957 /* AlipaySDK.bundle */; };
+		D2680A951E66B9A6009021F9 /* RedpacketCellResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0FB6D1E1E0962001F3957 /* RedpacketCellResource.bundle */; };
+		D2680A961E66B9A6009021F9 /* RedPacketResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD0FB7D1E1E0962001F3957 /* RedPacketResource.bundle */; };
 		D26CE39B1C2BD37700697F48 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE39A1C2BD37700697F48 /* Settings.bundle */; };
 		D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */; };
 		D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BAB1B72090F002324BB /* UserProfileManager.m */; };
@@ -1677,6 +1680,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2680A941E66B9A6009021F9 /* AlipaySDK.bundle in Resources */,
+				D2680A951E66B9A6009021F9 /* RedpacketCellResource.bundle in Resources */,
+				D2680A961E66B9A6009021F9 /* RedPacketResource.bundle in Resources */,
 				EBD2ABA81A7CDAC000D16528 /* group_participant_addHL@2x.png in Resources */,
 				D2B3DAD91BF1D7B700913BD5 /* icon_024_cover.png in Resources */,
 				EBD2AB8B1A7CDAC000D16528 /* chat_receiver_audio_playing003@2x.png in Resources */,

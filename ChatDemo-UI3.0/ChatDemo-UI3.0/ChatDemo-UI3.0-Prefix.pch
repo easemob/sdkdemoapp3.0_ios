@@ -24,10 +24,10 @@
 
 #define DEMO_CALL 1
 
-#endif
-
 #if DEMO_CALL == 1
 #import <Hyphenate/Hyphenate.h>
 #else
 #import <HyphenateLite/HyphenateLite.h>
+#endif
+
 #endif
