@@ -175,7 +175,7 @@
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
         
-        if ([aResult.cursor length] == 0) {
+        if ([aResult.list count] == 0) {
             self.showRefreshFooter = NO;
         } else {
             self.showRefreshFooter = YES;
