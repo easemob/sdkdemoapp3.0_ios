@@ -8,10 +8,11 @@
 
 #import "EMGroupBansViewController.h"
 
-@interface EMGroupBansViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
+#import "EMMemberCell.h"
+
+@interface EMGroupBansViewController ()
 
 @property (nonatomic, strong) EMGroup *group;
-@property (nonatomic, strong) NSIndexPath *currentLongPressIndex;
 
 @end
 
@@ -61,41 +62,44 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *CellIdentifier = @"GroupOccupantCell";
-    EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
     if (cell == nil) {
-        cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.delegate = self;
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
+        
+        cell.showAccessoryViewInDelete = YES;
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    cell.titleLabel.text = [self.dataArray objectAtIndex:indexPath.row];
-    cell.indexPath = indexPath;
+    cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
+    cell.leftLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     
     return cell;
 }
 
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
-        return;
-    }
-    
-    NSIndexPath *indexPath = _currentLongPressIndex;
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"移除";
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
-    _currentLongPressIndex = nil;
-    
-    [self hideHud];
+
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        if (buttonIndex == 0) { //移除
-            weakSelf.group = [[EMClient sharedClient].groupManager unblockOccupants:@[userName] forGroup:weakSelf.group.groupId error:&error];
-        }
+        weakSelf.group = [[EMClient sharedClient].groupManager unblockOccupants:@[userName] forGroup:weakSelf.group.groupId error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
@@ -110,20 +114,6 @@
             }
         });
     });
-}
-
-#pragma mark - EaseUserCellDelegate
-
-- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.group.permissionType != EMGroupPermissionTypeOwner && self.group.permissionType != EMGroupPermissionTypeAdmin) {
-        return;
-    }
-    
-    self.currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeBan", @"Remove from blacklist"), nil];;
-    
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
 #pragma mark - data

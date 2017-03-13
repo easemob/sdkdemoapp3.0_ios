@@ -318,7 +318,7 @@
 "title.mychatroom" = "My Chatroom";
 "title.chooseContact" = "Choose a contact";
 "title.debug" = "Debug";
-"title.groupBlackList" = "Group blacklist";
+"title.groupBlackList" = "Blacklist";
 "title.createGroup" = "Create a group";
 "title.publicGroup" = "Public group";
 "title.groupSetting" = "Group Setting";

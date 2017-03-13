@@ -82,12 +82,18 @@
 		3A386F161DE557BA000F3D8E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F141DE557BA000F3D8E /* Fabric.framework */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A635C141DF696AC005C995E /* CallSettingViewController.m */; };
-		3A6764B11E5D2C4F00ABF196 /* ChatGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */; };
 		3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */; };
 		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
+		3AB08AEE1E70FF7600DF1162 /* EMMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB08AEC1E70FF7600DF1162 /* EMMemberCell.m */; };
+		3AB08AEF1E70FF7600DF1162 /* EMMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AB08AED1E70FF7600DF1162 /* EMMemberCell.xib */; };
+		3AB08AF11E713B4A00DF1162 /* shape_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB08AF01E713B4A00DF1162 /* shape_left@2x.png */; };
+		3AB08AF31E71415900DF1162 /* shape_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB08AF21E71415900DF1162 /* shape_right@2x.png */; };
+		3AB08AF81E71455800DF1162 /* group_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB08AF71E71455800DF1162 /* group_add@2x.png */; };
+		3AB08AFB1E71726A00DF1162 /* EMGroupTransferOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB08AFA1E71726A00DF1162 /* EMGroupTransferOwnerViewController.m */; };
+		3AB08AFD1E71761200DF1162 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB08AFC1E71761200DF1162 /* check@2x.png */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3AD0FB821E1E0962001F3957 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD0FB5F1E1E0962001F3957 /* AlipaySDK.framework */; };
 		3AD0FB831E1E0962001F3957 /* AppDelegate+Redpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB621E1E0962001F3957 /* AppDelegate+Redpacket.m */; };
@@ -96,6 +102,10 @@
 		3AD0FB891E1E0962001F3957 /* RedPacketChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB701E1E0962001F3957 /* RedPacketChatViewController.m */; };
 		3AD0FB8B1E1E0962001F3957 /* libRedpacketLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD0FB761E1E0962001F3957 /* libRedpacketLib.a */; };
 		3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */; };
+		3AD76A741E6FC5BF001CB429 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD76A731E6FC5BF001CB429 /* EMGroupInfoViewController.m */; };
+		3AD76A751E6FC84B001CB429 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A152BA41E67F74000A2626C /* Hyphenate.framework */; };
+		3AD76A761E6FC84B001CB429 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A152BA41E67F74000A2626C /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3AD76A791E6FDDE1001CB429 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AD76A781E6FDDE1001CB429 /* default_avatar@2x.png */; };
 		3AECBAA01E1BAD2C0044D1B2 /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */; };
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
 		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
@@ -404,8 +414,6 @@
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A635C131DF696AC005C995E /* CallSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallSettingViewController.h; sourceTree = "<group>"; };
 		3A635C141DF696AC005C995E /* CallSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallSettingViewController.m; sourceTree = "<group>"; };
-		3A6764AF1E5D2C4F00ABF196 /* ChatGroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatGroupDetailViewController.h; sourceTree = "<group>"; };
-		3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatGroupDetailViewController.m; sourceTree = "<group>"; };
 		3A6764B21E5D2C6800ABF196 /* GroupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSettingViewController.h; sourceTree = "<group>"; };
 		3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSettingViewController.m; sourceTree = "<group>"; };
 		3A6764B51E5D3FB300ABF196 /* ChatroomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomDetailViewController.h; sourceTree = "<group>"; };
@@ -415,6 +423,15 @@
 		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
 		3AA412E61DDEDB2600317D72 /* EMSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchResultController.h; sourceTree = "<group>"; };
 		3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchResultController.m; sourceTree = "<group>"; };
+		3AB08AEB1E70FF7600DF1162 /* EMMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMemberCell.h; sourceTree = "<group>"; };
+		3AB08AEC1E70FF7600DF1162 /* EMMemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMemberCell.m; sourceTree = "<group>"; };
+		3AB08AED1E70FF7600DF1162 /* EMMemberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMMemberCell.xib; sourceTree = "<group>"; };
+		3AB08AF01E713B4A00DF1162 /* shape_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_left@2x.png"; sourceTree = "<group>"; };
+		3AB08AF21E71415900DF1162 /* shape_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_right@2x.png"; sourceTree = "<group>"; };
+		3AB08AF71E71455800DF1162 /* group_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_add@2x.png"; sourceTree = "<group>"; };
+		3AB08AF91E71726A00DF1162 /* EMGroupTransferOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupTransferOwnerViewController.h; sourceTree = "<group>"; };
+		3AB08AFA1E71726A00DF1162 /* EMGroupTransferOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupTransferOwnerViewController.m; sourceTree = "<group>"; };
+		3AB08AFC1E71761200DF1162 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		3AB62A121D926375000776F0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -447,6 +464,9 @@
 		3AD0FB7F1E1E0962001F3957 /* YZHRedpacketBridgeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YZHRedpacketBridgeProtocol.h; sourceTree = "<group>"; };
 		3AD0FB981E1E7267001F3957 /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
 		3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
+		3AD76A721E6FC5BF001CB429 /* EMGroupInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupInfoViewController.h; sourceTree = "<group>"; };
+		3AD76A731E6FC5BF001CB429 /* EMGroupInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupInfoViewController.m; sourceTree = "<group>"; };
+		3AD76A781E6FDDE1001CB429 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HyphenateVideoRecorder_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Release-iphoneos/HyphenateVideoRecorder_CN.framework"; sourceTree = "<group>"; };
 		3AECBA8E1E1BA7E40044D1B2 /* libHyphenateVideoRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateVideoRecorder.a; path = "../../emclient-ios/newSDK/build/Release-iphoneos/libHyphenateVideoRecorder.a"; sourceTree = "<group>"; };
 		3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
@@ -991,10 +1011,13 @@
 		3AD0FB8E1E1E5CE2001F3957 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				3AB08AFC1E71761200DF1162 /* check@2x.png */,
+				3AB08AF71E71455800DF1162 /* group_add@2x.png */,
+				3AB08AF21E71415900DF1162 /* shape_right@2x.png */,
+				3AB08AF01E713B4A00DF1162 /* shape_left@2x.png */,
+				3AD76A781E6FDDE1001CB429 /* default_avatar@2x.png */,
 				3A6764B21E5D2C6800ABF196 /* GroupSettingViewController.h */,
 				3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */,
-				3A6764AF1E5D2C4F00ABF196 /* ChatGroupDetailViewController.h */,
-				3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */,
 				3AD0FB981E1E7267001F3957 /* EMGroupAdminsViewController.h */,
 				3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */,
 				3AF6A6551E1F5BD40022E835 /* EMGroupMembersViewController.h */,
@@ -1003,6 +1026,13 @@
 				3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */,
 				3AF6A65B1E1F84360022E835 /* EMGroupMutesViewController.h */,
 				3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */,
+				3AD76A721E6FC5BF001CB429 /* EMGroupInfoViewController.h */,
+				3AD76A731E6FC5BF001CB429 /* EMGroupInfoViewController.m */,
+				3AB08AEB1E70FF7600DF1162 /* EMMemberCell.h */,
+				3AB08AEC1E70FF7600DF1162 /* EMMemberCell.m */,
+				3AB08AED1E70FF7600DF1162 /* EMMemberCell.xib */,
+				3AB08AF91E71726A00DF1162 /* EMGroupTransferOwnerViewController.h */,
+				3AB08AFA1E71726A00DF1162 /* EMGroupTransferOwnerViewController.m */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -1696,6 +1726,7 @@
 				EBD2ABB91A7CDAC000D16528 /* tabbarBackground.png in Resources */,
 				3A386EE11DE5539C000F3D8E /* Button_Camera switch active@3x.png in Resources */,
 				EBD2AB3B1A7CDAC000D16528 /* call_out_h.png in Resources */,
+				3AD76A791E6FDDE1001CB429 /* default_avatar@2x.png in Resources */,
 				EBD2AB081A7CDAC000D16528 /* chatListCellHead@2x.png in Resources */,
 				D2A910841C83E7890025AD0A /* 58.png in Resources */,
 				EBD2ABB51A7CDAC000D16528 /* tabbar_setting.png in Resources */,
@@ -1764,6 +1795,7 @@
 				3A386ED51DE5539C000F3D8E /* EMVideoInfoViewController.xib in Resources */,
 				3A386F071DE5539C000F3D8E /* Button_Stats disabled@2x.png in Resources */,
 				3A386EF31DE5539C000F3D8E /* Button_Minimize@3x.png in Resources */,
+				3AB08AF81E71455800DF1162 /* group_add@2x.png in Resources */,
 				D2A910821C83E7890025AD0A /* 29.png in Resources */,
 				EBD2ABBB1A7CDAC000D16528 /* tabbarSelectBg.png in Resources */,
 				3A386F031DE5539C000F3D8E /* Button_Speaker.png in Resources */,
@@ -1771,9 +1803,11 @@
 				D2B3DAD11BF1D7B700913BD5 /* icon_019_cover.png in Resources */,
 				3A386EF11DE5539C000F3D8E /* Button_Minimize.png in Resources */,
 				EBD2ABA01A7CDAC000D16528 /* add@2x.png in Resources */,
+				3AB08AF31E71415900DF1162 /* shape_right@2x.png in Resources */,
 				D2A910851C83E7890025AD0A /* 80.png in Resources */,
 				EBD2ABB41A7CDAC000D16528 /* tabbar_contactsHL@2x.png in Resources */,
 				EBD2AB8F1A7CDAC000D16528 /* chat_receiver_bg@2x.png in Resources */,
+				3AB08AF11E713B4A00DF1162 /* shape_left@2x.png in Resources */,
 				EBD2ABA91A7CDAC000D16528 /* groupPrivateHeader@2x.png in Resources */,
 				EBD2AB8E1A7CDAC000D16528 /* chat_receiver_bg.png in Resources */,
 				3A386F011DE5539C000F3D8E /* Button_Speaker disabled@2x.png in Resources */,
@@ -1828,6 +1862,7 @@
 				EBD2ABAF1A7CDAC000D16528 /* tabbar_chatsHL.png in Resources */,
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
 				EBD2ABB81A7CDAC000D16528 /* tabbar_settingHL@2x.png in Resources */,
+				3AB08AFD1E71761200DF1162 /* check@2x.png in Resources */,
 				EBD2ABAA1A7CDAC000D16528 /* groupPublicHeader@2x.png in Resources */,
 				90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */,
 				3A386F0C1DE5539C000F3D8E /* default_avatar.png in Resources */,
@@ -1844,6 +1879,7 @@
 				D2B3DACE1BF1D7B700913BD5 /* icon_013.gif in Resources */,
 				EBD2AB561A7CDAC000D16528 /* faceDelete@2x.png in Resources */,
 				D2B3DAC61BF1D7B700913BD5 /* icon_002.gif in Resources */,
+				3AB08AEF1E70FF7600DF1162 /* EMMemberCell.xib in Resources */,
 				3A386EF81DE5539C000F3D8E /* Button_Mute disabled@2x.png in Resources */,
 				EBD2AB3C1A7CDAC000D16528 /* call_out_h@2x.png in Resources */,
 				D2B3DAC51BF1D7B700913BD5 /* icon_002_cover.png in Resources */,
@@ -1889,7 +1925,6 @@
 				3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */,
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
-				3A6764B11E5D2C4F00ABF196 /* ChatGroupDetailViewController.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,
 				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
@@ -1925,17 +1960,20 @@
 				3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */,
 				9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */,
 				3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */,
+				3AB08AFB1E71726A00DF1162 /* EMGroupTransferOwnerViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */,
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
 				3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */,
+				3AD76A741E6FC5BF001CB429 /* EMGroupInfoViewController.m in Sources */,
 				D2B61E361BC7C76B007CB53E /* ContactListViewController.m in Sources */,
 				90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */,
 				3AD0FB841E1E0962001F3957 /* EaseRedBagCell.m in Sources */,
 				3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */,
 				9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */,
+				3AB08AEE1E70FF7600DF1162 /* EMMemberCell.m in Sources */,
 				3AD0FB851E1E0962001F3957 /* RedPacketLuckView.m in Sources */,
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
