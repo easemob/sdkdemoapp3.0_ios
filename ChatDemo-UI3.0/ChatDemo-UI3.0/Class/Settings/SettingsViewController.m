@@ -149,6 +149,9 @@
 #ifdef REDPACKET_AVALABLE
     if (indexPath.section == 0) {
         cell.textLabel.text = @"零钱";
+#ifdef AliAuthPay
+        cell.textLabel.text = @"红包记录";
+#endif
     }else if (indexPath.section == 1) {
 #else
     if (indexPath.section == 0) {
@@ -212,9 +215,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 #ifdef REDPACKET_AVALABLE
     if (indexPath.section == 0) {
-        UIViewController *controller = [RedpacketViewControl changeMoneyController];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-        [self presentViewController:nav animated:YES completion:nil];
+        [RedpacketViewControl presentChangePocketViewControllerFromeController:self];
         return;
     }
 #endif
