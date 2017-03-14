@@ -40,7 +40,12 @@
     if ([self.chatToolbar isKindOfClass:[EaseChatToolbar class]]) {
         /** 红包按钮 */
         [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket_high"] title:@"红包"];
+        if (self.conversation.type == EMConversationTypeChat) {
+            [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket"] highlightedImage:[UIImage imageNamed:@"RedpacketCellResource.bundle/redpacket_redpacket_high"] title:@"随机"];
+        }
+        
     }
+    [RedPacketUserConfig sharedConfig].chatVC =self;
 }
 
 #pragma mark - Delegate RedpacketViewControlDelegate
@@ -114,7 +119,7 @@
             return cell;
         }
         RedpacketTakenMessageTipCell *cell =  [[RedpacketTakenMessageTipCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        [cell configWithRedpacketMessageModel:[RedpacketMessageModel redpacketMessageModelWithDic:ext]];
+        [cell configWithText:messageModel.text];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -155,9 +160,13 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
     RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
     userInfo = [self profileEntityWith:self.conversation.conversationId];
     NSArray *groupArray = [EMGroup groupWithId:self.conversation.conversationId].occupants;
-    if (index == 5 || index == 3) {
+    if (index == 5 || index == 3 || index == 6 ) {
         if (self.conversation.type == EMConversationTypeChat) {
-            redpacketVCType = RPRedpacketControllerTypeRand;
+            if (index == 6) {
+                redpacketVCType = RPRedpacketControllerTypeRand;
+            } else {
+                redpacketVCType = RPRedpacketControllerTypeSingle;
+            }
         }else {
             redpacketVCType = RPRedpacketControllerTypeGroup;
         }
@@ -267,7 +276,7 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
                                                         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"点击「分享」按钮，红包SDK将该红包素材内配置的分享链接传递给商户APP，由商户APP自行定义分享渠道完成分享动作。" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
                                                         [alert show];
                                                     }
-                                                        break;
+                                                        break;                                                                                                                                                                             
                                                     default:
                                                         break;
                                                 }
