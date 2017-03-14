@@ -13,7 +13,7 @@
 #import "ChatDemoHelper.h"
 
 /** 环信IMToken过期 */
-#define RedpacketEaseMobTokenOutDate  20304
+NSInteger const RedpacketEaseMobTokenOutDate = 20304;
 
 static RedPacketUserConfig *__sharedConfig__ = nil;
 
@@ -22,8 +22,9 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                                     YZHRedpacketBridgeDataSource,
                                     YZHRedpacketBridgeDelegate>
 {
+    /** 环信商户APPKey*/
     NSString *_dealerAppKey;
-    /** 是否已经注册了消息代理 */
+    /** 是否已经注册了消息代理, 重复注册会导致消息重复接收 */
     BOOL _isRegeistMessageDelegate;
 }
 
@@ -31,6 +32,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
 
 @implementation RedPacketUserConfig
 
+/** 获取聊天消息和Cmd消息*/
 - (void)beginObserveMessage
 {
     if (!_isRegeistMessageDelegate && [EMClient sharedClient].chatManager) {
@@ -70,8 +72,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     _dealerAppKey = appKey;
 }
 
-#pragma mark - YZHRedpacketBridgeDataSource
-/** 获取当前用户登陆信息，YZHRedpacketBridgeDataSource */
+/** MARK:获取当前用户登陆信息*/
 - (RedpacketUserInfo *)redpacketUserInfo
 {
     RedpacketUserInfo *userInfo = [RedpacketUserInfo new];
@@ -83,7 +84,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     return userInfo;
 }
 
-#pragma mark - YZHRedpacketBridgeDelegate
+/* MARK:红包Token注册回调**/
 - (void)redpacketFetchRegisitParam:(FetchRegisitParamBlock)fetchBlock withError:(NSError *)error
 {
     NSString *userToken = nil;
@@ -104,8 +105,7 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
     }
 }
 
-#pragma mark  红包被抢消息监控
-
+/** MARK:红包被抢消息处理*/
 - (void)didReceiveMessages:(NSArray *)aMessages
 {
     /** 收到红包被抢的 */
@@ -134,12 +134,8 @@ static RedPacketUserConfig *__sharedConfig__ = nil;
                     receiver = [dict valueForKey:RedpacketKeyRedpacketReceiverId];
                 }
                 text = [NSString stringWithFormat:@"%@领取了你的红包",receiver];
-            }else if ([RedpacketMessageModel isRedpacketTransferMessage:message.ext]) {
-                /** 转账且不是转账发送方，则需要修改文案 */
-                if (!isSender) {
-                    text = [NSString stringWithFormat:@"[转账]向你转账%@元", [dict valueForKey:RedpacketKeyRedpacketTransferAmout]];
-                }
             }
+            
             if (text && text.length > 0) {
                 EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
                 message.body = body;
