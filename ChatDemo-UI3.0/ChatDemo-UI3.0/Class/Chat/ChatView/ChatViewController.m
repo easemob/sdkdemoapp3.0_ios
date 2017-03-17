@@ -59,8 +59,7 @@
 
 - (void)dealloc
 {
-    if (self.conversation.type == EMConversationTypeChatRoom)
-    {
+    if (self.conversation.type == EMConversationTypeChatRoom) {
         //退出聊天室，删除会话
         if (self.isJoinedChatroom) {
             NSString *chatter = [self.conversation.conversationId copy];

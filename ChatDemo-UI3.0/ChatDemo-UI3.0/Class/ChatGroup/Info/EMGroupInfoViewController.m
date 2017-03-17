@@ -17,6 +17,7 @@
 #import "EMGroupMembersViewController.h"
 #import "EMGroupTransferOwnerViewController.h"
 #import "ContactSelectionViewController.h"
+#import "GroupSettingViewController.h"
 
 @interface EMGroupInfoViewController ()<EMChooseViewDelegate>
 
@@ -157,9 +158,9 @@
         self.moreCellIndex = count - 1;
     } else if (section == 2) {
         if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
-            count = 6;
+            count = 7;
         } else {
-            count = 4;
+            count = 5;
         }
     }
     
@@ -187,22 +188,26 @@
                 cell.detailTextLabel.text = self.groupId;
                 break;
             case 1:
-                cell.textLabel.text = @"转让群主";
+                cell.textLabel.text = @"群组设置";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 2:
-                cell.textLabel.text = @"改变群名称";
+                cell.textLabel.text = @"转让群主";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 3:
-                cell.textLabel.text = @"管理员列表";
+                cell.textLabel.text = @"改变群名称";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 4:
-                cell.textLabel.text = @"黑名单列表";
+                cell.textLabel.text = @"管理员列表";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 5:
+                cell.textLabel.text = @"黑名单列表";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 6:
                 cell.textLabel.text = @"禁言列表";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
@@ -234,17 +239,6 @@
     }
     
     return cell;
-}
-
-- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return @"  群主/管理员";
-    } else if (section == 1) {
-        return @"  群成员";
-    }
-    
-    return @" ";
 }
 
 #pragma mark - UITableViewDelegate
@@ -279,6 +273,13 @@
     switch (row) {
         case 1:
         {
+            
+            GroupSettingViewController *settingController = [[GroupSettingViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:settingController animated:YES];
+        }
+            break;
+        case 2:
+        {
             if (self.group.permissionType == EMGroupPermissionTypeOwner) {
                 EMGroupTransferOwnerViewController *transferController = [[EMGroupTransferOwnerViewController alloc] initWithGroup:self.group];
                 [self.navigationController pushViewController:transferController animated:YES];
@@ -287,26 +288,26 @@
             }
         }
             break;
-        case 2:
+        case 3:
         {
             GroupSubjectChangingViewController *changingController = [[GroupSubjectChangingViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:changingController animated:YES];
         }
             break;
-        case 3:
+        case 4:
         {
             EMGroupAdminsViewController *adminController = [[EMGroupAdminsViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:adminController animated:YES];
 
         }
             break;
-        case 4:
+        case 5:
         {
             EMGroupBansViewController *bansController = [[EMGroupBansViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:bansController animated:YES];
         }
             break;
-        case 5:
+        case 6:
         {
             EMGroupMutesViewController *mutesController = [[EMGroupMutesViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:mutesController animated:YES];
@@ -389,7 +390,7 @@
                             message:NSLocalizedString(@"sureToDelete", @"please make sure to delete")
                     completionBlock:^(NSUInteger buttonIndex, EMAlertView *alertView) {
                         if (buttonIndex == 1) {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveAllMessages" object:weakSelf.groupId];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATIONNAME_DELETEALLMESSAGE object:weakSelf.groupId];
                         }
                     } cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel")
                   otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
