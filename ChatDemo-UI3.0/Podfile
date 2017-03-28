@@ -13,7 +13,7 @@ pod 'RedpacketAliAuthLib'
 
 end
 
-target 'ChatDemo-UI3.0-jdpay' do
+target 'ChatDemo-UI3.0-JDPay' do
     
     pod 'Hyphenate'
     
