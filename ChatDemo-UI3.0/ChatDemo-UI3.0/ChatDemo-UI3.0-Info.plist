@@ -36,7 +36,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>alipayredpacket</string>
+				<string>com.easemob.enterprise.demo.ui</string>
 			</array>
 		</dict>
 	</array>

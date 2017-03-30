@@ -11,7 +11,7 @@
 
 @interface RedpacketTakenMessageTipCell : UITableViewCell
 
-- (void)configWithRedpacketMessageModel:(RedpacketMessageModel *)model;
+- (void)configWithText:(NSString *)text;
 
 + (CGFloat)heightForRedpacketMessageTipCell;
 

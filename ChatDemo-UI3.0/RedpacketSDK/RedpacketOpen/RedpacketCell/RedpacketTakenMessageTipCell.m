@@ -64,18 +64,10 @@
     [self.bgView addSubview:self.iconView];
 }
 
-- (void)configWithRedpacketMessageModel:(RedpacketMessageModel *)redpacketModel
-{
-    NSString *message;
-    if (redpacketModel.isRedacketSender) {
-        message = [NSString stringWithFormat:@"%@领取了你的红包", redpacketModel.redpacketReceiver.userNickname];
-       
-    }else {
-        message = [NSString stringWithFormat:@"你领取了%@的红包", redpacketModel.redpacketSender.userNickname];
-    }
-    
+- (void)configWithText:(NSString *)text
+{    
     self.bgView.hidden = NO;
-    self.tipMessageLabel.text = message;
+    self.tipMessageLabel.text = text;
     
     [self setNeedsLayout];
 }
