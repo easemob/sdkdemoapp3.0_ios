@@ -8,10 +8,11 @@
 
 #import "EMGroupMembersViewController.h"
 
-@interface EMGroupMembersViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
+#import "EMMemberCell.h"
+
+@interface EMGroupMembersViewController ()
 
 @property (nonatomic, strong) EMGroup *group;
-@property (nonatomic, strong) NSIndexPath *currentLongPressIndex;
 @property (nonatomic, strong) NSString *cursor;
 
 @end
@@ -60,33 +61,61 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *CellIdentifier = @"GroupOccupantCell";
-    EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
     if (cell == nil) {
-        cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.delegate = self;
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
+        cell.showAccessoryViewInDelete = YES;
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    cell.titleLabel.text = [self.dataArray objectAtIndex:indexPath.row];
-    cell.indexPath = indexPath;
+    cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
+    cell.leftLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     
     return cell;
 }
 
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
-        return;
+    if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
+        return YES;
     }
     
-    NSIndexPath *indexPath = _currentLongPressIndex;
-    NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
-    _currentLongPressIndex = nil;
+    return NO;
+}
+
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"移除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [self editActionsForRowAtIndexPath:indexPath actionIndex:0];
+    }];
+    deleteAction.backgroundColor = [UIColor redColor];
     
-    [self hideHud];
+    UITableViewRowAction *blackAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"拉黑" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [self editActionsForRowAtIndexPath:indexPath actionIndex:1];
+    }];
+    blackAction.backgroundColor = [UIColor colorWithRed: 50 / 255.0 green: 63 / 255.0 blue: 72 / 255.0 alpha:1.0];
+    
+    UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"禁言" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [self editActionsForRowAtIndexPath:indexPath actionIndex:2];
+    }];
+    muteAction.backgroundColor = [UIColor colorWithRed: 116 / 255.0 green: 134 / 255.0 blue: 147 / 255.0 alpha:1.0];
+    
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+        UITableViewRowAction *adminAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"升权" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self editActionsForRowAtIndexPath:indexPath actionIndex:3];
+        }];
+        adminAction.backgroundColor = [UIColor blackColor];
+        
+        return @[deleteAction, blackAction, muteAction, adminAction];
+    }
+    
+    return @[deleteAction, blackAction, muteAction];
+}
+
+#pragma mark - Action
+
+- (void)editActionsForRowAtIndexPath:(NSIndexPath *)indexPath actionIndex:(NSInteger)buttonIndex
+{
+    NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
     
     __weak typeof(self) weakSelf = self;
@@ -119,27 +148,6 @@
             }
         });
     });
-}
-
-#pragma mark - EaseUserCellDelegate
-
-- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.group.permissionType != EMGroupPermissionTypeOwner && self.group.permissionType != EMGroupPermissionTypeAdmin) {
-        return;
-    }
-    
-    self.currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = nil;
-    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeMember", @"Remove from group"), NSLocalizedString(@"friend.block", @"Add to black list"), NSLocalizedString(@"group.toMute", @"Mute"), NSLocalizedString(@"group.addAdmin", @"Add to admin"), nil];
-    } else if (self.group.permissionType == EMGroupPermissionTypeAdmin) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.removeMember", @"Remove from group"), NSLocalizedString(@"friend.block", @"Add to black list"), NSLocalizedString(@"group.toMute", @"Mute"), nil];
-    }
-    
-    if (actionSheet) {
-        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-    }
 }
 
 #pragma mark - data

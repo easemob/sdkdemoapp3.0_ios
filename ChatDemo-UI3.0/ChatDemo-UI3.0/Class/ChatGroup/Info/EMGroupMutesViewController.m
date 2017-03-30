@@ -8,10 +8,11 @@
 
 #import "EMGroupMutesViewController.h"
 
-@interface EMGroupMutesViewController ()<UIActionSheetDelegate, EaseUserCellDelegate>
+#import "EMMemberCell.h"
+
+@interface EMGroupMutesViewController ()
 
 @property (nonatomic, strong) EMGroup *group;
-@property (nonatomic, strong) NSIndexPath *currentLongPressIndex;
 
 @end
 
@@ -60,69 +61,60 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *CellIdentifier = @"GroupOccupantCell";
-    EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
     if (cell == nil) {
-        cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.delegate = self;
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
+        
+        cell.showAccessoryViewInDelete = YES;
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    cell.titleLabel.text = [self.dataArray objectAtIndex:indexPath.row];
-    cell.indexPath = indexPath;
+    cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
+    cell.leftLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     
     return cell;
 }
 
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (buttonIndex == actionSheet.cancelButtonIndex || _currentLongPressIndex == nil) {
-        return;
-    }
-    
-    NSIndexPath *indexPath = _currentLongPressIndex;
-    NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
-    _currentLongPressIndex = nil;
-    
-    [self hideHud];
-    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        if (buttonIndex == 0) { //移除
-            weakSelf.group = [[EMClient sharedClient].groupManager unmuteMembers:@[userName] fromGroup:weakSelf.group.groupId error:&error];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-            if (!error) {
-                [weakSelf.dataArray removeObject:userName];
-                [weakSelf.tableView reloadData];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];
-            }
-            else {
-                [weakSelf showHint:error.errorDescription];
-            }
-        });
-    });
+    return YES;
 }
 
-#pragma mark - EaseUserCellDelegate
-
-- (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.group.permissionType != EMGroupPermissionTypeOwner && self.group.permissionType != EMGroupPermissionTypeAdmin) {
-        return;
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"移除";
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
+
+        [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
+        
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            EMError *error = nil;
+            weakSelf.group = [[EMClient sharedClient].groupManager unmuteMembers:@[userName] fromGroup:weakSelf.group.groupId error:&error];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hideHud];
+                if (!error) {
+                    [weakSelf.dataArray removeObject:userName];
+                    [weakSelf.tableView reloadData];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];
+                }
+                else {
+                    [weakSelf showHint:error.errorDescription];
+                }
+            });
+        });
     }
-    
-    self.currentLongPressIndex = indexPath;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") destructiveButtonTitle:nil  otherButtonTitles:NSLocalizedString(@"group.unmute", @"Remove from mutes"), nil];;
-    
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
 #pragma mark - data

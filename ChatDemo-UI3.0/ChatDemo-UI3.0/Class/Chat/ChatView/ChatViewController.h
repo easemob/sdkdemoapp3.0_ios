@@ -10,8 +10,6 @@
  * from Hyphenate Inc.
  */
 
-#define KNOTIFICATIONNAME_DELETEALLMESSAGE @"RemoveAllMessages"
-
 @interface ChatViewController : EaseMessageViewController <EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource>
 
 
