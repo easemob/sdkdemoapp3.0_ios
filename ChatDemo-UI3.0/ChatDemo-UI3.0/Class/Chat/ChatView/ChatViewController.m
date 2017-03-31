@@ -12,7 +12,6 @@
 
 #import "ChatViewController.h"
 
-#import "ChatGroupDetailViewController.h"
 #import "ChatroomDetailViewController.h"
 #import "UserProfileViewController.h"
 #import "UserProfileManager.h"
@@ -20,6 +19,7 @@
 #import "ChatDemoHelper.h"
 #import "EMChooseViewController.h"
 #import "ContactSelectionViewController.h"
+#import "EMGroupInfoViewController.h"
 
 @interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate, EMChooseViewDelegate>
 {
@@ -59,8 +59,7 @@
 
 - (void)dealloc
 {
-    if (self.conversation.type == EMConversationTypeChatRoom)
-    {
+    if (self.conversation.type == EMConversationTypeChatRoom) {
         //退出聊天室，删除会话
         if (self.isJoinedChatroom) {
             NSString *chatter = [self.conversation.conversationId copy];
@@ -368,8 +367,8 @@
 {
     [self.view endEditing:YES];
     if (self.conversation.type == EMConversationTypeGroupChat) {
-        ChatGroupDetailViewController *detailController = [[ChatGroupDetailViewController alloc] initWithGroupId:self.conversation.conversationId];
-        [self.navigationController pushViewController:detailController animated:YES];
+        EMGroupInfoViewController *infoController = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversation.conversationId];
+        [self.navigationController pushViewController:infoController animated:YES];
     }
     else if (self.conversation.type == EMConversationTypeChatRoom)
     {
