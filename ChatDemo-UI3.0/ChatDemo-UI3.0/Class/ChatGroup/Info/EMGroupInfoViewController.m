@@ -23,8 +23,9 @@
 
 @property (nonatomic, strong) EMGroup *group;
 @property (nonatomic, strong) NSString *groupId;
-
 @property (nonatomic, strong) NSArray *showMembers;
+
+@property (nonatomic, strong) UIBarButtonItem *addItem;
 
 @property (nonatomic) NSInteger moreCellIndex;
 @property (nonatomic, strong) UITableViewCell *moreCell;
@@ -58,9 +59,9 @@
     self.tableView.sectionIndexBackgroundColor = [UIColor redColor];
     self.tableView.tableFooterView = self.footerView;
     
-    [self.tableView reloadData];
-    
     [self fetchGroupInfo];
+    
+    [self reloadUI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -84,8 +85,7 @@
     [addButton setTitle:@"+" forState:UIControlStateNormal];
     addButton.titleLabel.font = [UIFont boldSystemFontOfSize:30];
     [addButton addTarget:self action:@selector(addMemberAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
-    self.navigationItem.rightBarButtonItem = addItem;
+    self.addItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
 }
 
 #pragma mark - Subviews
@@ -445,6 +445,11 @@
 
 - (void)reloadUI
 {
+    self.navigationItem.rightBarButtonItem = nil;
+    if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin || self.group.setting.style == EMGroupStylePrivateMemberCanInvite) {
+        self.navigationItem.rightBarButtonItem = self.addItem;
+    }
+    
     if (self.group.permissionType == EMGroupPermissionTypeOwner) {
         [self.leaveButton setTitle:NSLocalizedString(@"group.destroy", @"dissolution of the group") forState:UIControlStateNormal];
     } else {
