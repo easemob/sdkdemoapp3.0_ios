@@ -139,12 +139,14 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
             EMError *error = nil;
             weakSelf.group = [[EMClient sharedClient].groupManager updateGroupOwner:self.group.groupId newOwner:newOwner error:&error];
-            [weakSelf hideHud];
-            if (error) {
-                [weakSelf showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
-            } else {
-                [weakSelf backAction];
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hideHud];
+                if (error) {
+                    [weakSelf showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
+                } else {
+                    [weakSelf backAction];
+                }
+            });
         });
     }
 }
@@ -160,22 +162,18 @@
         EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.group.groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
-        });
-        
-        if (!error) {
-            weakSelf.group = group;
-            [weakSelf.dataArray removeAllObjects];
-            [weakSelf.dataArray addObjectsFromArray:weakSelf.group.adminList];
-            dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (!error) {
+                weakSelf.group = group;
+                [weakSelf.dataArray removeAllObjects];
+                [weakSelf.dataArray addObjectsFromArray:weakSelf.group.adminList];
                 weakSelf.cursor = @"";
                 [weakSelf fetchMembersWithPage:weakSelf.page isHeader:YES];
-            });
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(), ^{
+            }
+            else{
                 [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
-            });
-        }
+            }
+        });
     });
 }
 
