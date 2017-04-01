@@ -439,6 +439,7 @@
         self.group = (EMGroup *)obj;
     }
     
+    self.showMembers = self.group.memberList;
     [self reloadUI];
 }
 
