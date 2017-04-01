@@ -102,7 +102,7 @@ static ChatDemoHelper *helper = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[EMClient sharedClient].groupManager getJoinedGroups];
         EMError *error = nil;
-        [[EMClient sharedClient].groupManager getMyGroupsFromServerWithError:&error];
+        [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:-1 error:&error];
         if (!error) {
             if (weakself.contactViewVC) {
                 dispatch_async(dispatch_get_main_queue(), ^{
