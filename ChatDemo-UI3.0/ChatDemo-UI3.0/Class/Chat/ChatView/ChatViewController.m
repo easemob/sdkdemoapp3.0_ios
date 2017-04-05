@@ -195,7 +195,7 @@
             [self showHudInView:self.view hint:@"Fetching group members..."];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 EMError *error = nil;
-                EMGroup *group = [[EMClient sharedClient].groupManager fetchGroupInfo:chatGroup.groupId includeMembersList:YES error:&error];
+                EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:chatGroup.groupId error:&error];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     __strong ChatViewController *strongSelf = weakSelf;
                     if (strongSelf) {

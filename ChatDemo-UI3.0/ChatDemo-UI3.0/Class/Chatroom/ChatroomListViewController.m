@@ -202,7 +202,7 @@
         [self showHudInView:self.view hint:NSLocalizedString(@"searching", @"Searching")];
         dispatch_async(dispatch_get_main_queue(), ^{
             EMError *error = nil;
-            EMChatroom *chatroom = [[EMClient sharedClient].roomManager fetchChatroomInfo:searchBar.text includeMembersList:false error:&error];
+            EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:searchBar.text error:&error];
             [weakSelf hideHud];
             
             if (weakSelf)
