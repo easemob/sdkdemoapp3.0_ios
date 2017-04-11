@@ -269,7 +269,6 @@
         cell.textLabel.text = NSLocalizedString(@"group.members", @"Members");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%i / %i", (int)(self.chatGroup.occupantsCount - 1 - [self.chatGroup.adminList count]), (int)self.chatGroup.setting.maxUsersCount];
-        NSLog([NSString stringWithFormat:@"111111=========%ld", (long)self.chatGroup.occupantsCount]);
     }
     else if (indexPath.row == 7) {
         cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");
