@@ -112,7 +112,6 @@
 		3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
 		418F4913EB642E473922BD57 /* libPods-ChatDemo-UI3.0-JDPay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6E3F8F563A890669766AA3C /* libPods-ChatDemo-UI3.0-JDPay.a */; };
-		74E590F124CC835B27C15DCE /* libPods-ChatDemo-UI3.0-jdpay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C63AFA13E65D7A990D76BFD /* libPods-ChatDemo-UI3.0-jdpay.a */; };
 		7D7579E52B49C2AECE231C09 /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */; };
 		833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */; };
 		846D77051E6FA4DD0091DC94 /* EMCreateChatroomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D77041E6FA4DD0091DC94 /* EMCreateChatroomController.m */; };
@@ -446,6 +445,9 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
+		D227D1AA1E9CCFE600FC1B86 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA34E1E8D29C8006BF820 /* EMGroupInfoViewController.m */; };
+		D227D1AB1E9CCFE600FC1B86 /* EMGroupTransferOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3501E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m */; };
+		D227D1AC1E9CCFE600FC1B86 /* EMMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3521E8D29C8006BF820 /* EMMemberCell.m */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
@@ -1046,7 +1048,6 @@
 				846D77791E6FB52A0091DC94 /* UIKit.framework in Frameworks */,
 				846D777A1E6FB52A0091DC94 /* Parse.framework in Frameworks */,
 				846D777B1E6FB52A0091DC94 /* Foundation.framework in Frameworks */,
-				74E590F124CC835B27C15DCE /* libPods-ChatDemo-UI3.0-jdpay.a in Frameworks */,
 				418F4913EB642E473922BD57 /* libPods-ChatDemo-UI3.0-JDPay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2521,6 +2522,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D227D1AA1E9CCFE600FC1B86 /* EMGroupInfoViewController.m in Sources */,
+				D227D1AB1E9CCFE600FC1B86 /* EMGroupTransferOwnerViewController.m in Sources */,
+				D227D1AC1E9CCFE600FC1B86 /* EMMemberCell.m in Sources */,
 				846D77091E6FB52A0091DC94 /* AppDelegate.m in Sources */,
 				846D770A1E6FB52A0091DC94 /* RobotListViewController.m in Sources */,
 				846D770B1E6FB52A0091DC94 /* SRSlimeView.m in Sources */,
