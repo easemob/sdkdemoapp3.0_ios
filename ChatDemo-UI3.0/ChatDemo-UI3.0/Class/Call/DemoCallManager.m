@@ -257,7 +257,9 @@ static DemoCallManager *callManager = nil;
 - (void)callStateDidChange:(EMCallSession *)aSession
                       type:(EMCallStreamingStatus)aType
 {
-    
+    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
+        [self.currentController setStreamType:aType];
+    }
 }
 
 - (void)callNetworkDidChange:(EMCallSession *)aSession

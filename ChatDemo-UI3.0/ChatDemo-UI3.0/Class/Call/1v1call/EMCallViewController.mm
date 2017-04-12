@@ -374,8 +374,11 @@
 
 - (void)setStreamType:(EMCallStreamingStatus)aType
 {
-    NSString *str = @"Audio Mute";
+    NSString *str = @"Unkonw";
     switch (aType) {
+        case EMCallStreamStatusVoicePause:
+            str = @"Audio Mute";
+            break;
         case EMCallStreamStatusVoiceResume:
             str = @"Audio Unmute";
             break;
@@ -387,7 +390,6 @@
             break;
             
         default:
-            str = @"Unkonw";
             break;
     }
     
