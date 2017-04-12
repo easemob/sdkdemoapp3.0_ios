@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *remoteImgView;
 
+@property (weak, nonatomic) IBOutlet UILabel *networkLabel;
+
 @property (weak, nonatomic) IBOutlet UIView *actionView;
 @property (weak, nonatomic) IBOutlet UIButton *speakerOutButton;
 @property (weak, nonatomic) IBOutlet UIButton *silenceButton;
@@ -357,6 +359,39 @@
 //                            error:nil];
 //    }
 //    [[EMVideoRecorderPlugin sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
+}
+
+- (void)setNetwork:(EMCallNetworkStatus)aStatus
+{
+    if (aStatus == EMCallNetworkStatusUnstable) {
+        self.networkLabel.text = @"网络不稳定";
+    } else if (aStatus == EMCallNetworkStatusNoData) {
+        self.networkLabel.text = @"无数据";
+    } else {
+        self.networkLabel.text = @"";
+    }
+}
+
+- (void)setStreamType:(EMCallStreamingStatus)aType
+{
+    NSString *str = @"Audio Mute";
+    switch (aType) {
+        case EMCallStreamStatusVoiceResume:
+            str = @"Audio Unmute";
+            break;
+        case EMCallStreamStatusVideoPause:
+            str = @"Video Pause";
+            break;
+        case EMCallStreamStatusVideoResume:
+            str = @"Video Resume";
+            break;
+            
+        default:
+            str = @"Unkonw";
+            break;
+    }
+    
+    [self showHint:str];
 }
 
 - (void)clearData

@@ -254,10 +254,17 @@ static DemoCallManager *callManager = nil;
     }
 }
 
-- (void)didReceiveCallNetworkChanged:(EMCallSession *)aSession status:(EMCallNetworkStatus)aStatus
+- (void)callStateDidChange:(EMCallSession *)aSession
+                      type:(EMCallStreamingStatus)aType
+{
+    
+}
+
+- (void)callNetworkDidChange:(EMCallSession *)aSession
+                      status:(EMCallNetworkStatus)aStatus
 {
     if ([aSession.callId isEqualToString:self.currentSession.callId]) {
-//        [self.callController setNetwork:aStatus];
+        [self.currentController setNetwork:aStatus];
     }
 }
 
