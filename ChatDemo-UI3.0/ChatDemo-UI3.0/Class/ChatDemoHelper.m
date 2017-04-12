@@ -43,6 +43,7 @@ static ChatDemoHelper *helper = nil;
 - (void)dealloc
 {
     [[EMClient sharedClient] removeDelegate:self];
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[EMClient sharedClient].roomManager removeDelegate:self];
@@ -78,6 +79,7 @@ static ChatDemoHelper *helper = nil;
 #endif
     
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
@@ -200,6 +202,35 @@ static ChatDemoHelper *helper = nil;
 //    [self _clearHelper];
 //    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 //}
+
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesEventDidReceive:(EMMultiDevicesEvent)aEvent
+                             target:(NSString *)aTarget
+                                ext:(NSString *)aExt
+{
+    NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    [alertView show];
+    
+    switch (aEvent) {
+        case EMMultiDevicesEventContactRemoved:
+            [self.mainVC.contactsVC reloadDataSource];
+            break;
+        case EMMultiDevicesEventContactAccepted:
+            [[ApplyViewController shareController] removeApply:aTarget];
+            [self.mainVC setupUntreatedApplyCount];
+            [self.mainVC.contactsVC reloadDataSource];
+            break;
+        case EMMultiDevicesEventContactDeclined:
+            [[ApplyViewController shareController] removeApply:aTarget];
+            [self.mainVC setupUntreatedApplyCount];
+            break;
+            
+        default:
+            break;
+    }
+}
 
 #pragma mark - EMChatManagerDelegate
 
