@@ -99,7 +99,7 @@
 - (UIView *)footerView
 {
     if (_footerView == nil) {
-        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
+        _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 180)];
         _footerView.backgroundColor = [UIColor whiteColor];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _footerView.frame.size.width, 0.5)];

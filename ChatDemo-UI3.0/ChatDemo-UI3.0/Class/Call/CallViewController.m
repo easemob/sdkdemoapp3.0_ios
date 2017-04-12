@@ -30,6 +30,8 @@
     NSTimer *_propertyTimer;
 }
 
+@property (nonatomic, strong) UILabel *networkLabel;
+
 @end
 
 @implementation CallViewController
@@ -92,13 +94,20 @@
         _callSession.displayView = _openGLView;
     }
     
+    if (_callSession.status == eCallSessionStatusConnected) {
+        _statusLabel.text = NSLocalizedString(@"call.connected", @"Connected...");
+    } else {
+        if (_isIncoming) {
+            _statusLabel.text = NSLocalizedString(@"call.waiting", @"Waiting to answer...");
+        } else {
+            _statusLabel.text = NSLocalizedString(@"call.connecting", @"Connecting...");
+        }
+    }
+    
     if (_isIncoming) {
-        _statusLabel.text = NSLocalizedString(@"call.waiting", @"Waiting to answer...");
         [_actionView addSubview:_answerButton];
         [_actionView addSubview:_rejectButton];
-    }
-    else{
-        _statusLabel.text = NSLocalizedString(@"call.connecting", @"Connecting...");
+    } else {
         [_actionView addSubview:_hangupButton];
     }
 }
@@ -177,8 +186,7 @@
 
 - (void)_setupSubviews
 {
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
     self.navigationController.navigationBarHidden = YES;
@@ -189,7 +197,7 @@
     bgImageView.image = [UIImage imageNamed:@"callBg.png"];
     [self.view addSubview:bgImageView];
     
-    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 150)];
+    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 185)];
     _topView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_topView];
     
@@ -218,6 +226,13 @@
     _nameLabel.textAlignment = NSTextAlignmentCenter;
     _nameLabel.text = _chatter;
     [_topView addSubview:_nameLabel];
+    
+    _networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_nameLabel.frame) + 5, _topView.frame.size.width - 40, 20)];
+    _networkLabel.font = [UIFont systemFontOfSize:14.0];
+    _networkLabel.backgroundColor = [UIColor clearColor];
+    _networkLabel.textColor = [UIColor whiteColor];
+    _networkLabel.textAlignment = NSTextAlignmentCenter;
+    [_topView addSubview:_networkLabel];
     
     _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 180, self.view.frame.size.width, 180)];
     _actionView.backgroundColor = [UIColor clearColor];
@@ -286,10 +301,8 @@
     //4.创建、配置输入设备
     AVCaptureDevice *device;
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    for (AVCaptureDevice *tmp in devices)
-    {
-        if (tmp.position == AVCaptureDevicePositionFront)
-        {
+    for (AVCaptureDevice *tmp in devices) {
+        if (tmp.position == AVCaptureDevicePositionFront) {
             device = tmp;
             break;
         }
@@ -623,6 +636,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         }
         [self _insertMessageWithStr:str];
         [self _close];
+    } else if (callSession.status == eCallSessionStatusConnected) {
+        _statusLabel.text = NSLocalizedString(@"call.connected", @"Connected...");
     }
     else if (callSession.status == eCallSessionStatusAccepted)
     {
@@ -654,6 +669,42 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             _propertyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(_reloadPropertyData) userInfo:nil repeats:YES];
         }
     }
+}
+
+- (void)callSessionNetWorkStatusChanged:(EMCallSession *)callSession
+                           changeReason:(EMCallStatusNetWorkChangedReason)reason
+                                  error:(EMError *)error
+{
+    if (reason == eCallReasonNetworkUnstable) {
+        self.networkLabel.text = @"网络不稳定";
+    } else {
+        self.networkLabel.text = @"";
+    }
+}
+
+- (void)callSessionDataStatusChanged:(EMCallSession *)callSession
+                              status:(EMCallDataChangeStatus)status
+{
+    NSString *str = @"Unknow";
+    switch (status) {
+        case eAudioMute:
+            str = @"Audio Mute";
+            break;
+        case eAudioUnmute:
+            str = @"Audio Unmute";
+            break;
+        case eVideoPause:
+            str = @"Video Pause";
+            break;
+        case eVideoResume:
+            str = @"Video Resume";
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self showHint:str];
 }
 
 #pragma mark - UITapGestureRecognizer
