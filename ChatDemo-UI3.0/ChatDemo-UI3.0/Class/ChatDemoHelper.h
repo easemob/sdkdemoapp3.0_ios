@@ -21,7 +21,7 @@
 #define kAtYouMessage           1
 #define kAtAllMessage           2
 
-@interface ChatDemoHelper : NSObject <EMClientDelegate, EMMultiDevicesDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate>
+@interface ChatDemoHelper : NSObject <EMClientDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate>
 
 @property (nonatomic, weak) ContactListViewController *contactViewVC;
 
