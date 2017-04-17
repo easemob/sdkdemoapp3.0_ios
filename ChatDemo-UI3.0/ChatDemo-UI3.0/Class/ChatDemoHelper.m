@@ -223,8 +223,26 @@ static ChatDemoHelper *helper = nil;
             [self.mainVC.contactsVC reloadDataSource];
             break;
         case EMMultiDevicesEventContactDeclined:
+        case EMMultiDevicesEventGroupInviteDecline:
+        case EMMultiDevicesEventGroupApplyDecline:
             [[ApplyViewController shareController] removeApply:aTarget];
             [self.mainVC setupUntreatedApplyCount];
+            break;
+        case EMMultiDevicesEventGroupJoin:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:nil];
+            break;
+        case EMMultiDevicesEventGroupLeave:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:nil];
+            break;
+        case EMMultiDevicesEventGroupApplyAccept:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:nil];
+            [[ApplyViewController shareController] removeApply:aTarget];
+            [self.mainVC setupUntreatedApplyCount];
+            break;
+        case EMMultiDevicesEventGroupInviteAccept:
+            [[ApplyViewController shareController] removeApply:aTarget];
+            [self.mainVC setupUntreatedApplyCount];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:nil];
             break;
             
         default:
