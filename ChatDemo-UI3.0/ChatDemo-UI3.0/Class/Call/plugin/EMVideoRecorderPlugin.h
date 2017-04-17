@@ -41,7 +41,7 @@
  *  @param aPath  图片存储路径
  *
  *  \~english
- *  Get a snapshot of current video screen as jpeg picture and save to the local file system.
+ *  Get a snapshot of current video screen in jpeg and save it to the local database.
  *
  *  @param aPath  Saved path of picture
  */
