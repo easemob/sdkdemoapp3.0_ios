@@ -205,7 +205,7 @@
     __weak PublicGroupDetailViewController *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
-        EMGroup *group = [[EMClient sharedClient].groupManager fetchGroupInfo:weakSelf.groupId includeMembersList:NO error:&error];
+        EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.groupId error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 weakSelf.group = group;
