@@ -173,6 +173,7 @@
 "group.admins" = "管理员列表";
 "group.members" = "普通成员";
 "group.mutes" = "禁言列表";
+"group.sharefiles" = "群共享列表";
 "group.occupantCount" = "群组人数";
 "group.addingOccupant" = "添加组成员...";
 "group.fetchInfoFail" = "获取群组详情失败，请稍后重试";
@@ -188,7 +189,14 @@
 "group.removeAdmin" = "移除管理员权限";
 "group.toMute" = "禁言";
 "group.unmute" = "解除禁言";
+"group.upload" = "上传";
+"group.download" = "下载 ...";
+"group.downloadFail" = "下载群共享文件失败";
 "group.fetchMuteFail" = "获取禁言列表失败: %@";
+"group.fetchShareFileFail" = "获取群共享文件列表失败: %@";
+"group.fetchAnnouncementFail" = "获取群公告失败";
+"group.changeAnnouncementFail" = "修改群公告失败";
+"group.changeExtFail" = "修改群扩展信息失败";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "接收并提示群消息";
@@ -198,6 +206,8 @@
 "group.setting.success" = "设置成功";
 "group.setting.fail" = "设置失败";
 "group.setting.subject" = "请输入群组名称";
+"group.setting.announcement" = "请输入群公告";
+"group.setting.ext" = "请输入群扩展信息";
 
 //Chatroom detail
 "chatroom.somebodyInvite" = "%@ 邀请你加入聊天室\'%@\'";
@@ -209,6 +219,7 @@
 "chatroom.mutes" = "被禁言成员";
 "chatroom.occupantCount" = "聊天室人数";
 "chatroom.description" = "描述";
+"chatroom.announcement" = "聊天室公告";
 "chatroom.joining" = "正在加入...";
 "chatroom.fetchInfoFail" = "获取聊天室详情失败";
 "chatroom.joinFailed" = "加入聊天室\'%@\'失败";
@@ -220,6 +231,8 @@
 "chatroom.create.ongoing" = "创建聊天室...";
 "chatroom.create.success" = "创建聊天室成功";
 "chatroom.create.fail" = "创建聊天室失败，请重新操作";
+"chatroom.changeAnnouncementFail" = "修改公告失败";
+"chatroom.fetchAnnouncementFail" = "获取公告失败";
 
 "chatroom.destroy" = "解散聊天室";
 "chatroom.leave" = "退出聊天室";
@@ -325,6 +338,8 @@
 "title.apply" = "申请与通知";
 "title.groupApply" = "群组通知";
 "title.groupSubjectChanging" = "修改群名称";
+"title.groupAnnouncementChanging" = "修改群公告";
+"title.groupExtChanging" = "修改群扩展信息";
 "title.groupSearchMessage" = "查找聊天记录";
 "title.chatroom" = "聊天室";
 "title.robotlist" = "环信助手";
