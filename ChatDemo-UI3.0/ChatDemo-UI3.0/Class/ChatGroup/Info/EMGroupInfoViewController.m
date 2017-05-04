@@ -18,6 +18,7 @@
 #import "EMGroupTransferOwnerViewController.h"
 #import "ContactSelectionViewController.h"
 #import "GroupSettingViewController.h"
+#import "EMGroupShareFilesViewController.h"
 
 @interface EMGroupInfoViewController ()<EMChooseViewDelegate>
 
@@ -158,9 +159,9 @@
         self.moreCellIndex = count - 1;
     } else if (section == 2) {
         if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
-            count = 7;
+            count = 10;
         } else {
-            count = 5;
+            count = 8;
         }
     }
     
@@ -204,10 +205,24 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 5:
-                cell.textLabel.text = @"黑名单列表";
+                cell.textLabel.text = @"群公告";
+                cell.detailTextLabel.text = _group.announcement;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 6:
+                cell.textLabel.text = @"群扩展信息";
+                cell.detailTextLabel.text = _group.setting.ext;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 7:
+                cell.textLabel.text = @"群共享";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 8:
+                cell.textLabel.text = @"黑名单列表";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 9:
                 cell.textLabel.text = @"禁言列表";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
@@ -303,11 +318,96 @@
             break;
         case 5:
         {
+            if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") message:nil preferredStyle:UIAlertControllerStyleAlert];
+                
+                __weak typeof(self) weakSelf = self;
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    NSString *announcement = nil;
+                    if ([alert.textFields count] > 0) {
+                        announcement = alert.textFields.firstObject.text;
+                    }
+                    [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement")]];
+                    [[EMClient sharedClient].groupManager changeGroupAnnouncementWithId:weakSelf.groupId
+                                                                           announcement:announcement
+                                                                             completion:^(EMGroup *aGroup, EMError *aError) {
+                                                                                 [weakSelf hideHud];
+                                                                                 if (aError) {
+                                                                                     [weakSelf showHint:NSLocalizedString(@"group.changeAnnouncementFail", @"fail to change announcement")];
+                                                                                 } else {
+                                                                                     [weakSelf.tableView reloadData];
+                                                                                 }
+                                                                             }];
+                }];
+                
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                }];
+                
+                [alert addAction:ok];
+                [alert addAction:cancel];
+                
+                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+                    textField.placeholder = NSLocalizedString(@"group.setting.announcement", @"Please input announcement");
+                    textField.text = self->_group.announcement;
+                }];
+                
+                [self presentViewController:alert animated:YES completion:NULL];
+            }
+        }
+            break;
+        case 6:
+        {
+            if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupExtChanging", @"Change Ext") message:nil preferredStyle:UIAlertControllerStyleAlert];
+                
+                __weak typeof(self) weakSelf = self;
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    NSString *announcement = nil;
+                    if ([alert.textFields count] > 0) {
+                        announcement = alert.textFields.firstObject.text;
+                    }
+                    [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupExtChanging", @"Change Announcement")]];
+                    [[EMClient sharedClient].groupManager changeGroupExtWithId:weakSelf.groupId
+                                                                           ext:announcement
+                                                                    completion:^(EMGroup *aGroup, EMError *aError) {
+                                                                        [weakSelf hideHud];
+                                                                        if (aError) {
+                                                                            [weakSelf showHint:NSLocalizedString(@"group.changeExtFail", @"fail to change ext")];
+                                                                        } else {
+                                                                            [weakSelf.tableView reloadData];
+                                                                        }
+                                                                    }];
+                }];
+                
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                }];
+                
+                [alert addAction:ok];
+                [alert addAction:cancel];
+                
+                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+                    textField.placeholder = NSLocalizedString(@"group.setting.ext", @"Please input ext");
+                    textField.text = self->_group.setting.ext;
+                }];
+                
+                [self presentViewController:alert animated:YES completion:NULL];
+            }
+        }
+            break;
+        case 7:
+        {
+            EMGroupShareFilesViewController *shareFileController = [[EMGroupShareFilesViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:shareFileController animated:YES];
+            
+        }
+            break;
+        case 8:
+        {
             EMGroupBansViewController *bansController = [[EMGroupBansViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:bansController animated:YES];
         }
             break;
-        case 6:
+        case 9:
         {
             EMGroupMutesViewController *mutesController = [[EMGroupMutesViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:mutesController animated:YES];
@@ -492,6 +592,15 @@
             });
         }
     });
+    
+    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:_groupId
+                                                          completion:^(NSString *aAnnouncement, EMError *aError) {
+                                                              if (!aError) {
+                                                                  [weakSelf.tableView reloadData];
+                                                              } else {
+                                                                  [weakSelf showHint:NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement")];
+                                                              }
+                                                          }];
 }
 
 - (void)fetchGroupMembers
