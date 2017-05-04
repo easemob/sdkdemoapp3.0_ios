@@ -39,6 +39,8 @@
 @property (nonatomic) int timeLength;
 @property (strong, nonatomic) NSTimer *timeTimer;
 
+@property (strong, nonatomic) EMVideoInfoViewController *videoInfoController;
+
 @end
 
 #endif
@@ -279,11 +281,14 @@
 
 - (IBAction)showVideoInfoAction:(id)sender
 {
-    EMVideoInfoViewController *videoInfoController = [[EMVideoInfoViewController alloc] initWithNibName:@"EMVideoInfoViewController" bundle:nil];
-    videoInfoController.callSession = self.callSession;
-    videoInfoController.currentTime = self.timeLabel.text;
-    [videoInfoController startTimer:self.timeLength];
-    [self presentViewController:videoInfoController animated:YES completion:nil];
+    if (self.videoInfoController == nil) {
+        self.videoInfoController = [[EMVideoInfoViewController alloc] initWithNibName:@"EMVideoInfoViewController" bundle:nil];
+        self.videoInfoController.callSession = self.callSession;
+    }
+    
+    self.videoInfoController.currentTime = self.timeLabel.text;
+    [self.videoInfoController startTimer:self.timeLength];
+    [self presentViewController:self.videoInfoController animated:YES completion:nil];
 }
 
 - (IBAction)answerAction:(id)sender
@@ -399,6 +404,8 @@
 - (void)clearData
 {
 //    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
+    
+    [self.videoInfoController dismissViewControllerAnimated:NO completion:nil];
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
