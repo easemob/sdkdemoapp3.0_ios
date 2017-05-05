@@ -245,11 +245,10 @@
     [data writeToFile:filePath atomically:YES];
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"Uploading...")];
-    [[EMClient sharedClient].groupManager uploadGroupShareFileWithId:_group.groupId filePath:filePath progress:nil completion:^(EMGroup *aGroup, EMError *aError) {
+    [[EMClient sharedClient].groupManager uploadGroupShareFileWithId:_group.groupId filePath:filePath progress:nil completion:^(EMGroupShareFile *aShareFile, EMError *aError) {
         [weakSelf hideHud];
         if (!aError) {
-            [weakSelf.dataArray removeAllObjects];
-            [weakSelf.dataArray addObjectsFromArray:aGroup.shareFileList];
+            [weakSelf.dataArray addObject:aShareFile];
             [weakSelf.tableView reloadData];
         } else {
             [weakSelf showHint:NSLocalizedString(@"setting.uploadFail", @"Failed to upload")];
