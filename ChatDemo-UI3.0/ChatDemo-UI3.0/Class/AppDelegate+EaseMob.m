@@ -79,15 +79,17 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     }
     
 #if !TARGET_IPHONE_SIMULATOR
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     //iOS8 注册APNS
     if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
         [application registerForRemoteNotifications];
-    }else{
-        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
-        UIRemoteNotificationTypeSound |
-        UIRemoteNotificationTypeAlert;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
     }
+#else
+    UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
+    UIRemoteNotificationTypeSound |
+    UIRemoteNotificationTypeAlert;
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+#endif
 #endif
 }
 
@@ -173,6 +175,8 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     
     if (reason == eGroupLeaveReason_BeRemoved) {
         str = [NSString stringWithFormat:NSLocalizedString(@"group.beKicked", @"you have been kicked out from the group of \'%@\'"), tmpStr];
+    } else if (reason == eGroupLeaveReason_Destroyed) {
+        str = [NSString stringWithFormat:NSLocalizedString(@"group.beDestroyed", @"the group of \'%@\' is destroyed"), group.groupId];
     }
     if (str.length > 0) {
         TTAlertNoTitle(str);
