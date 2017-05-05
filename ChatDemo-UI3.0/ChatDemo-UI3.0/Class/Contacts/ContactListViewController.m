@@ -19,6 +19,7 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
+#import "RedPacketChatViewController.h"
 
 @implementation EMBuddy (search)
 
@@ -150,10 +151,16 @@
 //            }
             
             [weakSelf.searchController.searchBar endEditing:YES];
-            ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy.username
-                                                                                conversationType:eConversationTypeChat];
-            chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy.username];
-            [weakSelf.navigationController pushViewController:chatVC animated:YES];
+#ifdef REDPACKET_AVALABLE
+            /**
+             *  TODO:联系人列表-红包聊天窗口
+             */
+            RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy.username conversationType:eConversationTypeChat];
+#else
+            ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:buddy.username conversationType:eConversationTypeChat];
+#endif
+            chatController.title = buddy.username;
+            [weakSelf.navigationController pushViewController:chatController animated:YES];
         }];
     }
     
@@ -330,9 +337,16 @@
         }
     }
     else{
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy.username conversationType:eConversationTypeChat];
-        chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy.username;
+        EaseUserModel *userModel = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
+#ifdef REDPACKET_AVALABLE
+        /**
+         *  TODO:联系人列表-红包聊天窗口
+         */
+        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+#else
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy.username conversationType:eConversationTypeChat];
+#endif
+        chatController.title = userModel.nickname;
         [self.navigationController pushViewController:chatController animated:YES];
     }
 }
