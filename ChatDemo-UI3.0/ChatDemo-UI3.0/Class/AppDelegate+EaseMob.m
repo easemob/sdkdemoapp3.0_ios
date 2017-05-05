@@ -171,12 +171,16 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                 break;
             }
         }
+        
+        if (tmpStr.length == 0) {
+            tmpStr = group.groupId;
+        }
     }
     
     if (reason == eGroupLeaveReason_BeRemoved) {
         str = [NSString stringWithFormat:NSLocalizedString(@"group.beKicked", @"you have been kicked out from the group of \'%@\'"), tmpStr];
     } else if (reason == eGroupLeaveReason_Destroyed) {
-        str = [NSString stringWithFormat:NSLocalizedString(@"group.beDestroyed", @"the group of \'%@\' is destroyed"), group.groupId];
+        str = [NSString stringWithFormat:NSLocalizedString(@"group.beDestroyed", @"the group of \'%@\' is destroyed"), tmpStr];
     }
     if (str.length > 0) {
         TTAlertNoTitle(str);
