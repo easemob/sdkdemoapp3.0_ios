@@ -130,7 +130,7 @@
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
-            weakSelf.group = [[EMClient sharedClient].groupManager removeGroupShareFileWithId:weakSelf.group.groupId shareFile:file error:&error];
+            weakSelf.group = [[EMClient sharedClient].groupManager removeGroupShareFileWithId:weakSelf.group.groupId shareFileId:file.fileId error:&error];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf hideHud];
