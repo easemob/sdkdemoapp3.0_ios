@@ -295,7 +295,7 @@
 - (void)fetchBansWithPage:(NSInteger)aPage
                  isHeader:(BOOL)aIsHeader
 {
-    NSInteger pageSize = 15;
+    NSInteger pageSize = 10;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     [[EMClient sharedClient].groupManager getGroupFileListWithId:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aList, EMError *aError) {
