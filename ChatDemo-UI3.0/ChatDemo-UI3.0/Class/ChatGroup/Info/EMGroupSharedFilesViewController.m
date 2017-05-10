@@ -1,19 +1,19 @@
 //
-//  EMGroupShareFilesViewController.m
+//  EMGroupSharedFilesViewController.m
 //  ChatDemo-UI3.0
 //
 //  Created by EaseMob on 2017/4/26.
 //  Copyright © 2017年 EaseMob. All rights reserved.
 //
 
-#import "EMGroupShareFilesViewController.h"
+#import "EMGroupSharedFilesViewController.h"
 
 #import <Photos/Photos.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "EMMemberCell.h"
 
-@interface EMGroupShareFilesViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface EMGroupSharedFilesViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) EMGroup *group;
 
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation EMGroupShareFilesViewController
+@implementation EMGroupSharedFilesViewController
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup
 {
@@ -36,9 +36,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"group.sharefiles", @"Share File");
+    self.title = NSLocalizedString(@"group.sharedfiles", @"Share File");
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUI:) name:@"UpdateGroupShareFile" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUI:) name:@"UpdateGroupSharedFile" object:nil];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
@@ -96,7 +96,7 @@
         cell.showAccessoryViewInDelete = YES;
     }
     
-    EMGroupShareFile *file = [self.dataArray objectAtIndex:indexPath.row];
+    EMGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
     cell.leftLabel.text = file.fileName;
     if (file.fileName.length == 0) {
         cell.leftLabel.text = file.fileId;
@@ -123,14 +123,14 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        EMGroupShareFile *file = [self.dataArray objectAtIndex:indexPath.row];
+        EMGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
         
         [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
         
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             EMError *error = nil;
-            weakSelf.group = [[EMClient sharedClient].groupManager removeGroupShareFileWithId:weakSelf.group.groupId shareFileId:file.fileId error:&error];
+            weakSelf.group = [[EMClient sharedClient].groupManager removeGroupSharedFileWithId:weakSelf.group.groupId sharedFileId:file.fileId error:&error];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf hideHud];
@@ -152,7 +152,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    EMGroupShareFile *file = [self.dataArray objectAtIndex:indexPath.row];
+    EMGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
     
     NSString *filePath = NSHomeDirectory();
     filePath = [NSString stringWithFormat:@"%@/Library/appdata/download",filePath];
@@ -174,7 +174,7 @@
     } else {
         __weak typeof(self) weakSelf = self;
         [self showHudInView:self.view hint:NSLocalizedString(@"group.download", @"Downloading ...")];
-        [[EMClient sharedClient].groupManager downloadGroupShareFileWithId:_group.groupId filePath:filePath shareFile:file progress:^(int progress) {
+        [[EMClient sharedClient].groupManager downloadGroupSharedFileWithId:_group.groupId filePath:filePath sharedFileId:file.fileId progress:^(int progress) {
             NSLog(@"%d",progress);
         } completion:^(EMGroup *aGroup, EMError *aError) {
             [weakSelf hideHud];
@@ -245,10 +245,10 @@
     [data writeToFile:filePath atomically:YES];
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"Uploading...")];
-    [[EMClient sharedClient].groupManager uploadGroupShareFileWithId:_group.groupId filePath:filePath progress:nil completion:^(EMGroupShareFile *aShareFile, EMError *aError) {
+    [[EMClient sharedClient].groupManager uploadGroupSharedFileWithId:_group.groupId filePath:filePath progress:nil completion:^(EMGroupSharedFile *aSharedFile, EMError *aError) {
         [weakSelf hideHud];
         if (!aError) {
-            [weakSelf.dataArray addObject:aShareFile];
+            [weakSelf.dataArray addObject:aSharedFile];
             [weakSelf.tableView reloadData];
         } else {
             [weakSelf showHint:NSLocalizedString(@"setting.uploadFail", @"Failed to upload")];
@@ -270,9 +270,11 @@
     id obj = aNotif.object;
     if (obj && [obj isKindOfClass:[EMGroup class]]) {
         EMGroup *retGroup = (EMGroup *)obj;
-        [self.dataArray removeAllObjects];
-        [self.dataArray addObjectsFromArray:retGroup.shareFileList];
-        [self.tableView reloadData];
+        if ([retGroup.groupId isEqualToString:_group.groupId]) {
+            [self.dataArray removeAllObjects];
+            [self.dataArray addObjectsFromArray:retGroup.sharedFileList];
+            [self.tableView reloadData];
+        }
     }
 }
 
@@ -293,10 +295,10 @@
 - (void)fetchBansWithPage:(NSInteger)aPage
                  isHeader:(BOOL)aIsHeader
 {
-    NSInteger pageSize = 10;
+    NSInteger pageSize = 15;
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    [[EMClient sharedClient].groupManager getGroupShareFilesWithId:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aList, EMError *aError) {
+    [[EMClient sharedClient].groupManager getGroupFileListWithId:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aList, EMError *aError) {
         [weakSelf hideHud];
         [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (!aError) {
@@ -307,7 +309,7 @@
             [weakSelf.dataArray addObjectsFromArray:aList];
             [weakSelf.tableView reloadData];
         } else {
-            NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.fetchShareFileFail", @"fail to get share files: %@"), aError.errorDescription];
+            NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.fetchSharedFileFail", @"fail to get share files: %@"), aError.errorDescription];
             [weakSelf showHint:errorStr];
         }
         

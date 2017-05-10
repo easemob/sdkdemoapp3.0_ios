@@ -173,7 +173,7 @@
 "group.admins" = "管理员列表";
 "group.members" = "普通成员";
 "group.mutes" = "禁言列表";
-"group.sharefiles" = "群共享列表";
+"group.sharedfiles" = "群共享列表";
 "group.occupantCount" = "群组人数";
 "group.addingOccupant" = "添加组成员...";
 "group.fetchInfoFail" = "获取群组详情失败，请稍后重试";
@@ -193,7 +193,7 @@
 "group.download" = "下载 ...";
 "group.downloadFail" = "下载群共享文件失败";
 "group.fetchMuteFail" = "获取禁言列表失败: %@";
-"group.fetchShareFileFail" = "获取群共享文件列表失败: %@";
+"group.fetchSharedFileFail" = "获取群共享文件列表失败: %@";
 "group.fetchAnnouncementFail" = "获取群公告失败";
 "group.changeAnnouncementFail" = "修改群公告失败";
 "group.changeExtFail" = "修改群扩展信息失败";

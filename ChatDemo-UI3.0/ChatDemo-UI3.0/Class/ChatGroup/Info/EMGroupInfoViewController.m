@@ -18,7 +18,7 @@
 #import "EMGroupTransferOwnerViewController.h"
 #import "ContactSelectionViewController.h"
 #import "GroupSettingViewController.h"
-#import "EMGroupShareFilesViewController.h"
+#import "EMGroupSharedFilesViewController.h"
 
 @interface EMGroupInfoViewController ()<EMChooseViewDelegate>
 
@@ -328,7 +328,7 @@
                         announcement = alert.textFields.firstObject.text;
                     }
                     [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement")]];
-                    [[EMClient sharedClient].groupManager changeGroupAnnouncementWithId:weakSelf.groupId
+                    [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakSelf.groupId
                                                                            announcement:announcement
                                                                              completion:^(EMGroup *aGroup, EMError *aError) {
                                                                                  [weakSelf hideHud];
@@ -367,7 +367,7 @@
                         announcement = alert.textFields.firstObject.text;
                     }
                     [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupExtChanging", @"Change Announcement")]];
-                    [[EMClient sharedClient].groupManager changeGroupExtWithId:weakSelf.groupId
+                    [[EMClient sharedClient].groupManager updateGroupExtWithId:weakSelf.groupId
                                                                            ext:announcement
                                                                     completion:^(EMGroup *aGroup, EMError *aError) {
                                                                         [weakSelf hideHud];
@@ -396,8 +396,8 @@
             break;
         case 7:
         {
-            EMGroupShareFilesViewController *shareFileController = [[EMGroupShareFilesViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:shareFileController animated:YES];
+            EMGroupSharedFilesViewController *sharedFileController = [[EMGroupSharedFilesViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:sharedFileController animated:YES];
             
         }
             break;
@@ -536,7 +536,12 @@
 {
     id obj = aNotif.object;
     if (obj && [obj isKindOfClass:[EMGroup class]]) {
-        self.group = (EMGroup *)obj;
+        EMGroup *retGroup = (EMGroup *)obj;
+        if ([self.group.groupId isEqualToString:retGroup.groupId]) {
+            self.group = (EMGroup *)obj;
+        } else {
+            return;
+        }
     }
     
     self.showMembers = self.group.memberList;

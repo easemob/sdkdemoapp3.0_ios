@@ -493,20 +493,20 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
-- (void)groupShareFileDidUpdate:(EMGroup *)aGroup
-                 addedShareFile:(EMGroupShareFile *)aShareFile
+- (void)groupFileListDidUpdate:(EMGroup *)aGroup
+               addedSharedFile:(EMGroupSharedFile *)aSharedFile
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupShareFile" object:aGroup];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupSharedFile" object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:@"群组:%@ 上传文件ID: %@", aGroup.subject, aShareFile.fileId];
+    NSString *msg = [NSString stringWithFormat:@"群组:%@ 上传文件ID: %@", aGroup.subject, aSharedFile.fileId];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群文件更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)groupShareFileDidUpdate:(EMGroup *)aGroup
-               removedShareFile:(NSString *)aFileId
+- (void)groupFileListDidUpdate:(EMGroup *)aGroup
+             removedSharedFile:(NSString *)aFileId
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupShareFile" object:aGroup];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupSharedFile" object:aGroup];
     
     NSString *msg = [NSString stringWithFormat:@"群组:%@ 删除文件ID: %@", aGroup.subject, aFileId];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群文件更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];

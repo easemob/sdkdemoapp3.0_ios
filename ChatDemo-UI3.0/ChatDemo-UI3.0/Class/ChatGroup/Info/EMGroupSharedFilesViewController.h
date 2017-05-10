@@ -1,5 +1,5 @@
 //
-//  EMGroupShareFilesViewController.h
+//  EMGroupSharedFilesViewController.h
 //  ChatDemo-UI3.0
 //
 //  Created by EaseMob on 2017/4/26.
@@ -8,7 +8,7 @@
 
 #import "EaseRefreshTableViewController.h"
 
-@interface EMGroupShareFilesViewController : EaseRefreshTableViewController
+@interface EMGroupSharedFilesViewController : EaseRefreshTableViewController
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup;
 

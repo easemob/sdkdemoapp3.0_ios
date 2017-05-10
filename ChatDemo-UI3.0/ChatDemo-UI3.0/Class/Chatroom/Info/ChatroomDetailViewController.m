@@ -273,7 +273,7 @@
         NSString *announcement = textField.text;
         [self showHudInView:self.view hint:@"Hold on ..."];
         __weak typeof(self) weakSelf = self;
-        [[EMClient sharedClient].roomManager changeChatroomAnnouncementWithId:_chatroom.chatroomId announcement:announcement completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[EMClient sharedClient].roomManager updateChatroomAnnouncementWithId:_chatroom.chatroomId announcement:announcement completion:^(EMChatroom *aChatroom, EMError *aError) {
             [weakSelf hideHud];
             if (aError) {
                 [self showHint:NSLocalizedString(@"chatroom.changeAnnouncementFail", @"Fail to change announcement")];
@@ -290,8 +290,11 @@
 {
     id obj = aNotif.object;
     if (obj && [obj isKindOfClass:[EMChatroom class]]) {
-        self.chatroom = (EMChatroom *)obj;
-        [self reloadDataSource];
+        EMChatroom *retChatroom = (EMChatroom *)obj;
+        if ([self.chatroom.chatroomId isEqualToString:retChatroom.chatroomId]) {
+            self.chatroom = (EMChatroom *)obj;
+            [self reloadDataSource];
+        }
     }
 }
 
