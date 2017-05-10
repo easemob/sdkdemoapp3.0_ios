@@ -173,6 +173,7 @@
 "group.admins" = "Admin List";
 "group.members" = "Member List";
 "group.mutes" = "Mutes";
+"group.sharedfiles" = "Share Files";
 "group.occupantCount" = "Members count";
 "group.addingOccupant" = "Add a group member...";
 "group.fetchInfoFail" = "Failed to get the group details, please try again later";
@@ -188,7 +189,14 @@
 "group.removeAdmin" = "Remove from Admin";
 "group.toMute" = "Mute";
 "group.unmute" = "Unmute";
+"group.upload" = "Upload";
+"group.download" = "Downloading ...";
+"group.downloadFail" = "fail to download share file";
 "group.fetchMuteFail" = "fail to get mutes: %@";
+"group.fetchSharedFileFail" = "fail to get share files: %@";
+"group.fetchAnnouncementFail" = "fail to get announcement";
+"group.changeAnnouncementFail" = "fail to change announcement";
+"group.changeExtFail" = "fail to change ext";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "Receive notifications of group message";
@@ -198,6 +206,8 @@
 "group.setting.success" = "Group setting saved";
 "group.setting.fail" = "Failed to save";
 "group.setting.subject" = "Please enter group name";
+"group.setting.announcement" = "Please input announcement";
+"group.setting.ext" = "Please input ext";
 
 //Chatroom detail
 "chatroom.somebodyInvite" = "%@ invite you to join chatroom \'%@\'";
@@ -209,6 +219,7 @@
 "chatroom.mutes" = "Mute List";
 "chatroom.onlineMembers" = "members count";
 "chatroom.description" = "Description";
+"chatroom.announcement" = "Announcement";
 "chatroom.joining" = "Joining...";
 "chatroom.fetchInfoFail" = "Failed to get the chatroom info, please try again later.";
 "chatroom.joinFailed" = "Failed to join chatroom \'%@\', please try again later.";
@@ -220,6 +231,8 @@
 "chatroom.create.ongoing" = "create a chatroom...";
 "chatroom.create.success" = "create chatroom success";
 "chatroom.create.fail" = "Failed to create a chatroom, please operate again";
+"chatroom.changeAnnouncementFail" = "Fail to change announcement";
+"chatroom.fetchAnnouncementFail" = "fail to get announcement";
 
 "chatroom.destroy" = "Destroy the chatroom";
 "chatroom.leave" = "Leave the chatroom";
@@ -327,6 +340,8 @@
 "title.apply" = "Application and Notification";
 "title.groupApply" = "Group Notification";
 "title.groupSubjectChanging" = "Change Group Name";
+"title.groupAnnouncementChanging" = "Change Announcement";
+"title.groupExtChanging" = "Change Ext";
 "title.groupSearchMessage" = "Search Message from History";
 "title.chatroom" = "Chatroom";
 "title.robotlist" = "Robot List";

@@ -25,6 +25,7 @@
 #define kColOfRow 5
 #define kContactSize 60
 #define ALERTVIEW_CHANGEOWNER 100
+#define ALERTVIEW_CHANGEANNOUNCEMENT 101
 
 @interface ChatroomDetailViewController ()<UIAlertViewDelegate>
 
@@ -110,10 +111,10 @@
 {
     // Return the number of rows in the section.
     if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
-        return 8;
+        return 9;
     }
     else {
-        return 6;
+        return 7;
     }
 }
 
@@ -167,10 +168,22 @@
         cell.detailTextLabel.text = @(self.chatroom.occupantsCount).stringValue;
     }
     else if (indexPath.row == 6) {
+        cell.textLabel.text = NSLocalizedString(@"chatroom.announcement", @"Announcement");
+        
+        cell.detailTextLabel.text = self.chatroom.announcement;
+        
+        if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+    }
+    else if (indexPath.row == 7) {
         cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mutes");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    else if (indexPath.row == 7) {
+    else if (indexPath.row == 8) {
         cell.textLabel.text = NSLocalizedString(@"title.groupBlackList", @"Black list");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -209,11 +222,23 @@
         EMChatroomMembersViewController *membersController = [[EMChatroomMembersViewController alloc] initWithChatroom:self.chatroom];
         [self.navigationController pushViewController:membersController animated:YES];
     }
-    else if (indexPath.row == 6) { //展示被禁言列表
+    else if (indexPath.row == 6) { //修改聊天室公告
+        if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+            alert.tag = ALERTVIEW_CHANGEANNOUNCEMENT;
+            
+            UITextField *textField = [alert textFieldAtIndex:0];
+            textField.text = self.chatroom.announcement;
+            
+            [alert show];
+        }
+    }
+    else if (indexPath.row == 7) { //展示被禁言列表
         EMChatroomMutesViewController *mutesController = [[EMChatroomMutesViewController alloc] initWithChatroom:self.chatroom];
         [self.navigationController pushViewController:mutesController animated:YES];
     }
-    else if (indexPath.row == 7) { //展示黑名单
+    else if (indexPath.row == 8) { //展示黑名单
         EMChatroomBansViewController *bansController = [[EMChatroomBansViewController alloc] initWithChatroom:self.chatroom];
         [self.navigationController pushViewController:bansController animated:YES];
     }
@@ -243,6 +268,19 @@
             }
         }
         
+    } else if (alertView.tag == ALERTVIEW_CHANGEANNOUNCEMENT) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        NSString *announcement = textField.text;
+        [self showHudInView:self.view hint:@"Hold on ..."];
+        __weak typeof(self) weakSelf = self;
+        [[EMClient sharedClient].roomManager updateChatroomAnnouncementWithId:_chatroom.chatroomId announcement:announcement completion:^(EMChatroom *aChatroom, EMError *aError) {
+            [weakSelf hideHud];
+            if (aError) {
+                [self showHint:NSLocalizedString(@"chatroom.changeAnnouncementFail", @"Fail to change announcement")];
+            } else {
+                [self.tableView reloadData];
+            }
+        }];
     }
 }
 
@@ -252,8 +290,11 @@
 {
     id obj = aNotif.object;
     if (obj && [obj isKindOfClass:[EMChatroom class]]) {
-        self.chatroom = (EMChatroom *)obj;
-        [self reloadDataSource];
+        EMChatroom *retChatroom = (EMChatroom *)obj;
+        if ([self.chatroom.chatroomId isEqualToString:retChatroom.chatroomId]) {
+            self.chatroom = (EMChatroom *)obj;
+            [self reloadDataSource];
+        }
     }
 }
 
@@ -311,6 +352,14 @@
             else {
                 [strongSelf showHint:NSLocalizedString(@"chatroom.fetchInfoFail", @"failed to get the chatroom details, please try again later")];
             }
+        }
+    }];
+    
+    [[EMClient sharedClient].roomManager getChatroomAnnouncementWithId:_chatroom.chatroomId completion:^(NSString *aAnnouncement, EMError *aError) {
+        if (!aError) {
+            [weakSelf reloadDataSource];
+        } else {
+            [weakSelf showHint:NSLocalizedString(@"chatroom.fetchAnnouncementFail", @"failed to get announcement")];
         }
     }];
 }
