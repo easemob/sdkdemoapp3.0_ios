@@ -12,12 +12,9 @@
 
 #import "MainViewController.h"
 
-#import "SettingsViewController.h"
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
-#import "ConversationListController.h"
-#import "ContactListViewController.h"
 #import "ChatDemoHelper.h"
 #import "RedPacketChatViewController.h"
 #import <UserNotifications/UserNotifications.h>
@@ -36,12 +33,8 @@ static NSString *kGroupName = @"GroupName";
 @interface MainViewController () <UIAlertViewDelegate>
 #endif
 {
-    ConversationListController *_chatListVC;
-    ContactListViewController *_contactsVC;
-    SettingsViewController *_settingsVC;
-//    __weak CallViewController *_callController;
-    
     UIBarButtonItem *_addFriendItem;
+    EMConnectionState _connectionState;
 }
 
 @property (strong, nonatomic) NSDate *lastPlaySoundDate;
@@ -203,6 +196,8 @@ static NSString *kGroupName = @"GroupName";
             _contactsVC.tabBarItem.badgeValue = nil;
         }
     }
+    
+    [self.contactsVC reloadApplyView];
 }
 
 - (void)networkChanged:(EMConnectionState)connectionState

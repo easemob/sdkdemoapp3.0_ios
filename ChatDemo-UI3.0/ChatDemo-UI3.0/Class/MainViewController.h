@@ -13,10 +13,15 @@
 #import <UIKit/UIKit.h>
 #import <UserNotifications/UserNotifications.h>
 
+#import "ConversationListController.h"
+#import "ContactListViewController.h"
+#import "SettingsViewController.h"
+
 @interface MainViewController : UITabBarController
-{
-    EMConnectionState _connectionState;
-}
+
+@property (nonatomic, strong) ConversationListController *chatListVC;
+@property (nonatomic, strong) ContactListViewController *contactsVC;
+@property (nonatomic, strong) SettingsViewController *settingsVC;
 
 - (void)jumpToChatList;
 

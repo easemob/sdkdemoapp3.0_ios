@@ -270,7 +270,7 @@ static ApplyViewController *controller = nil;
             }
             
             //new apply
-            ApplyEntity * newEntity= [[ApplyEntity alloc] init];
+            ApplyEntity *newEntity= [[ApplyEntity alloc] init];
             newEntity.applicantUsername = [dictionary objectForKey:@"username"];
             newEntity.style = [dictionary objectForKey:@"applyStyle"];
             newEntity.reason = [dictionary objectForKey:@"applyMessage"];
@@ -290,6 +290,23 @@ static ApplyViewController *controller = nil;
             [_dataSource insertObject:newEntity atIndex:0];
             [self.tableView reloadData];
 
+        }
+    }
+}
+
+- (void)removeApply:(NSString *)aTarget
+{
+    if ([aTarget length] == 0) {
+        return ;
+    }
+    
+    for (ApplyEntity *entity in self.dataSource) {
+        if ([entity.applicantUsername isEqualToString:aTarget] || [entity.groupId isEqualToString:aTarget]) {
+            NSString *loginUsername = [[EMClient sharedClient] currentUsername];
+            [[InvitationManager sharedInstance] removeInvitation:entity loginUser:loginUsername];
+            [self.dataSource removeObject:entity];
+            [self.tableView reloadData];
+            break;
         }
     }
 }

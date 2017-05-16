@@ -29,6 +29,8 @@ typedef enum{
 
 - (void)addNewApply:(NSDictionary *)dictionary;
 
+- (void)removeApply:(NSString *)aTarget;
+
 - (void)loadDataSourceFromLocalDB;
 
 - (void)clear;
