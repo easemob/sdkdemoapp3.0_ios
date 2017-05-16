@@ -222,8 +222,6 @@
     EMGroupOptions *setting = [[EMGroupOptions alloc] init];
     setting.maxUsersCount = maxUsersCount;
     
-    setting.ext = @"123456";
-    
     if (_isPublic) {
         if(_isMemberOn)
         {
