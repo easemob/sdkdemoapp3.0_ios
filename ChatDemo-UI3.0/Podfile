@@ -5,20 +5,20 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'ChatDemo-UI3.0' do
 
-#pod 'Hyphenate'
+pod 'Hyphenate'
 
-#pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
+pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
 
 pod 'RedpacketAliAuthLib'
 
 end
 
-#target 'ChatDemo-UI3.0-JDPay' do
+target 'ChatDemo-UI3.0-JDPay' do
     
-    #pod 'Hyphenate'
+    pod 'Hyphenate'
     
-    #pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
+    pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
     
-    #pod 'RedpacketLib'
+    pod 'RedpacketLib'
 
-#end
+end
