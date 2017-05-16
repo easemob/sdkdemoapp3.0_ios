@@ -223,16 +223,14 @@
         [self.navigationController pushViewController:membersController animated:YES];
     }
     else if (indexPath.row == 6) { //修改聊天室公告
-        if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
-            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-            alert.tag = ALERTVIEW_CHANGEANNOUNCEMENT;
-            
-            UITextField *textField = [alert textFieldAtIndex:0];
-            textField.text = self.chatroom.announcement;
-            
-            [alert show];
-        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        alert.tag = ALERTVIEW_CHANGEANNOUNCEMENT;
+        
+        UITextField *textField = [alert textFieldAtIndex:0];
+        textField.text = self.chatroom.announcement;
+        
+        [alert show];
     }
     else if (indexPath.row == 7) { //展示被禁言列表
         EMChatroomMutesViewController *mutesController = [[EMChatroomMutesViewController alloc] initWithChatroom:self.chatroom];
@@ -273,7 +271,7 @@
         NSString *announcement = textField.text;
         [self showHudInView:self.view hint:@"Hold on ..."];
         __weak typeof(self) weakSelf = self;
-        [[EMClient sharedClient].roomManager changeChatroomAnnouncementWithId:_chatroom.chatroomId announcement:announcement completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[EMClient sharedClient].roomManager updateChatroomAnnouncementWithId:_chatroom.chatroomId announcement:announcement completion:^(EMChatroom *aChatroom, EMError *aError) {
             [weakSelf hideHud];
             if (aError) {
                 [self showHint:NSLocalizedString(@"chatroom.changeAnnouncementFail", @"Fail to change announcement")];
@@ -290,8 +288,11 @@
 {
     id obj = aNotif.object;
     if (obj && [obj isKindOfClass:[EMChatroom class]]) {
-        self.chatroom = (EMChatroom *)obj;
-        [self reloadDataSource];
+        EMChatroom *retChatroom = (EMChatroom *)obj;
+        if ([self.chatroom.chatroomId isEqualToString:retChatroom.chatroomId]) {
+            self.chatroom = (EMChatroom *)obj;
+            [self reloadDataSource];
+        }
     }
 }
 

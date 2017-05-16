@@ -173,7 +173,7 @@
 "group.admins" = "Admin List";
 "group.members" = "Member List";
 "group.mutes" = "Mutes";
-"group.sharefiles" = "Share Files";
+"group.sharedfiles" = "Share Files";
 "group.occupantCount" = "Members count";
 "group.addingOccupant" = "Add a group member...";
 "group.fetchInfoFail" = "Failed to get the group details, please try again later";
@@ -193,7 +193,7 @@
 "group.download" = "Downloading ...";
 "group.downloadFail" = "fail to download share file";
 "group.fetchMuteFail" = "fail to get mutes: %@";
-"group.fetchShareFileFail" = "fail to get share files: %@";
+"group.fetchSharedFileFail" = "fail to get share files: %@";
 "group.fetchAnnouncementFail" = "fail to get announcement";
 "group.changeAnnouncementFail" = "fail to change announcement";
 "group.changeExtFail" = "fail to change ext";
