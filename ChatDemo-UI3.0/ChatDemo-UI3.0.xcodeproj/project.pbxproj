@@ -446,6 +446,8 @@
 		D227D1AA1E9CCFE600FC1B86 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA34E1E8D29C8006BF820 /* EMGroupInfoViewController.m */; };
 		D227D1AB1E9CCFE600FC1B86 /* EMGroupTransferOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3501E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m */; };
 		D227D1AC1E9CCFE600FC1B86 /* EMMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3521E8D29C8006BF820 /* EMMemberCell.m */; };
+		D24B831A1EBB1A5100AE75C5 /* EMGroupShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D24B83191EBB1A5100AE75C5 /* EMGroupShareFilesViewController.m */; };
+		D24B831B1EBB1A7800AE75C5 /* EMGroupShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D24B83191EBB1A5100AE75C5 /* EMGroupShareFilesViewController.m */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
@@ -848,6 +850,8 @@
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
+		D24B83181EBB1A5100AE75C5 /* EMGroupShareFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupShareFilesViewController.h; sourceTree = "<group>"; };
+		D24B83191EBB1A5100AE75C5 /* EMGroupShareFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupShareFilesViewController.m; sourceTree = "<group>"; };
 		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
 		D257873B1B43EC7000B0E69F /* RobotListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RobotListViewController.m; sourceTree = "<group>"; };
 		D259789F1BCD072100148BF6 /* ContactListSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListSelectViewController.h; sourceTree = "<group>"; };
@@ -1246,6 +1250,8 @@
 				3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */,
 				3AF6A65B1E1F84360022E835 /* EMGroupMutesViewController.h */,
 				3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */,
+				D24B83181EBB1A5100AE75C5 /* EMGroupShareFilesViewController.h */,
+				D24B83191EBB1A5100AE75C5 /* EMGroupShareFilesViewController.m */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -2513,6 +2519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D24B831B1EBB1A7800AE75C5 /* EMGroupShareFilesViewController.m in Sources */,
 				D227D1AA1E9CCFE600FC1B86 /* EMGroupInfoViewController.m in Sources */,
 				D227D1AB1E9CCFE600FC1B86 /* EMGroupTransferOwnerViewController.m in Sources */,
 				D227D1AC1E9CCFE600FC1B86 /* EMMemberCell.m in Sources */,
@@ -2682,6 +2689,7 @@
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
+				D24B831A1EBB1A5100AE75C5 /* EMGroupShareFilesViewController.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
 				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,

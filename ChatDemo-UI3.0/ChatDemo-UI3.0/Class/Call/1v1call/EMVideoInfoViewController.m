@@ -100,6 +100,8 @@
 
 - (void)startTimer:(int)currentTimeLength
 {
+    [self _startShowInfo];
+    
     _timeLength = currentTimeLength;
     _timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
 }
