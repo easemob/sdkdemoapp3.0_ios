@@ -175,11 +175,11 @@
         __weak typeof(self) weakSelf = self;
         [self showHudInView:self.view hint:NSLocalizedString(@"group.download", @"Downloading ...")];
         [[EMClient sharedClient].groupManager downloadGroupSharedFileWithId:_group.groupId filePath:filePath sharedFileId:file.fileId progress:^(int progress) {
-            NSLog(@"%d",progress);
+            // NSLog(@"%d",progress);
         } completion:^(EMGroup *aGroup, EMError *aError) {
             [weakSelf hideHud];
             if (aError) {
-                [weakSelf showHint:NSLocalizedString(@"group.downloadFail", @"fail to download share file")];
+                [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.downloadFail", @"fail to download share file"), aError.errorDescription]];
             }
         }];
     }
@@ -193,7 +193,7 @@
     if (url == nil) {
         UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
         NSData *data = UIImageJPEGRepresentation(orgImage, 1.0f);
-        [self _uploadData:data];
+        [self _uploadData:data filename:nil];
     } else {
         if ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0f) {
             PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
@@ -201,7 +201,12 @@
                 if (asset) {
                     [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *data, NSString *uti, UIImageOrientation orientation, NSDictionary *dic){
                         if (data != nil) {
-                            [self _uploadData:data];
+                            NSURL *path = [dic objectForKey:@"PHImageFileURLKey"];
+                            NSString *fileName = nil;
+                            if (path) {
+                                fileName = [[path absoluteString] lastPathComponent];
+                            }
+                            [self _uploadData:data filename:fileName];
                         }
                     }];
                 }
@@ -214,7 +219,7 @@
                     Byte* buffer = (Byte*)malloc((size_t)[assetRepresentation size]);
                     NSUInteger bufferSize = [assetRepresentation getBytes:buffer fromOffset:0.0 length:(NSUInteger)[assetRepresentation size] error:nil];
                     NSData* data = [NSData dataWithBytesNoCopy:buffer length:bufferSize freeWhenDone:YES];
-                    [self _uploadData:data];
+                    [self _uploadData:data filename:nil];
                 }
             } failureBlock:NULL];
         }
@@ -229,7 +234,7 @@
 
 #pragma mark - private
 
-- (void)_uploadData:(NSData *)data
+- (void)_uploadData:(NSData *)data filename:(NSString *)filename
 {
     NSString *filePath = NSHomeDirectory();
     filePath = [NSString stringWithFormat:@"%@/Library/appdata/files",filePath];
@@ -241,17 +246,24 @@
                             error:nil];
     }
     
-    filePath = [NSString stringWithFormat:@"%@/%d%d.jpg", filePath, (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
+    if (filename.length > 0) {
+        filePath = [NSString stringWithFormat:@"%@/%d%@", filePath, (int)[[NSDate date] timeIntervalSince1970], filename];
+    } else {
+        filePath = [NSString stringWithFormat:@"%@/%d%d.jpg", filePath, (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
+    }
+    
     [data writeToFile:filePath atomically:YES];
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"Uploading...")];
-    [[EMClient sharedClient].groupManager uploadGroupSharedFileWithId:_group.groupId filePath:filePath progress:nil completion:^(EMGroupSharedFile *aSharedFile, EMError *aError) {
+    [[EMClient sharedClient].groupManager uploadGroupSharedFileWithId:_group.groupId filePath:filePath progress:^(int progress){
+        // NSLog(@"%d",progress);
+    } completion:^(EMGroupSharedFile *aSharedFile, EMError *aError) {
         [weakSelf hideHud];
         if (!aError) {
-            [weakSelf.dataArray addObject:aSharedFile];
+            [weakSelf.dataArray insertObject:aSharedFile atIndex:0];
             [weakSelf.tableView reloadData];
         } else {
-            [weakSelf showHint:NSLocalizedString(@"setting.uploadFail", @"Failed to upload")];
+            [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"setting.uploadFail", @"Failed to upload"), aError.errorDescription]];
         }
     }];
 }

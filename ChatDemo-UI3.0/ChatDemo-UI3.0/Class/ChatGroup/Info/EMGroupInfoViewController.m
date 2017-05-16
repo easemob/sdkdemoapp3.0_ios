@@ -318,80 +318,76 @@
             break;
         case 5:
         {
-            if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") message:nil preferredStyle:UIAlertControllerStyleAlert];
-                
-                __weak typeof(self) weakSelf = self;
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    NSString *announcement = nil;
-                    if ([alert.textFields count] > 0) {
-                        announcement = alert.textFields.firstObject.text;
-                    }
-                    [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement")]];
-                    [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakSelf.groupId
-                                                                           announcement:announcement
-                                                                             completion:^(EMGroup *aGroup, EMError *aError) {
-                                                                                 [weakSelf hideHud];
-                                                                                 if (aError) {
-                                                                                     [weakSelf showHint:NSLocalizedString(@"group.changeAnnouncementFail", @"fail to change announcement")];
-                                                                                 } else {
-                                                                                     [weakSelf.tableView reloadData];
-                                                                                 }
-                                                                             }];
-                }];
-                
-                UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                }];
-                
-                [alert addAction:ok];
-                [alert addAction:cancel];
-                
-                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
-                    textField.placeholder = NSLocalizedString(@"group.setting.announcement", @"Please input announcement");
-                    textField.text = self->_group.announcement;
-                }];
-                
-                [self presentViewController:alert animated:YES completion:NULL];
-            }
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") message:nil preferredStyle:UIAlertControllerStyleAlert];
+            
+            __weak typeof(self) weakSelf = self;
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSString *announcement = nil;
+                if ([alert.textFields count] > 0) {
+                    announcement = alert.textFields.firstObject.text;
+                }
+                [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement")]];
+                [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakSelf.groupId
+                                                                       announcement:announcement
+                                                                         completion:^(EMGroup *aGroup, EMError *aError) {
+                                                                             [weakSelf hideHud];
+                                                                             if (aError) {
+                                                                                 [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.changeAnnouncementFail", @"fail to change announcement"), aError.errorDescription]];
+                                                                             } else {
+                                                                                 [weakSelf.tableView reloadData];
+                                                                             }
+                                                                         }];
+            }];
+            
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            }];
+            
+            [alert addAction:ok];
+            [alert addAction:cancel];
+            
+            [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+                textField.placeholder = NSLocalizedString(@"group.setting.announcement", @"Please input announcement");
+                textField.text = self->_group.announcement;
+            }];
+            
+            [self presentViewController:alert animated:YES completion:NULL];
         }
             break;
         case 6:
         {
-            if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupExtChanging", @"Change Ext") message:nil preferredStyle:UIAlertControllerStyleAlert];
-                
-                __weak typeof(self) weakSelf = self;
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    NSString *announcement = nil;
-                    if ([alert.textFields count] > 0) {
-                        announcement = alert.textFields.firstObject.text;
-                    }
-                    [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupExtChanging", @"Change Announcement")]];
-                    [[EMClient sharedClient].groupManager updateGroupExtWithId:weakSelf.groupId
-                                                                           ext:announcement
-                                                                    completion:^(EMGroup *aGroup, EMError *aError) {
-                                                                        [weakSelf hideHud];
-                                                                        if (aError) {
-                                                                            [weakSelf showHint:NSLocalizedString(@"group.changeExtFail", @"fail to change ext")];
-                                                                        } else {
-                                                                            [weakSelf.tableView reloadData];
-                                                                        }
-                                                                    }];
-                }];
-                
-                UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                }];
-                
-                [alert addAction:ok];
-                [alert addAction:cancel];
-                
-                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
-                    textField.placeholder = NSLocalizedString(@"group.setting.ext", @"Please input ext");
-                    textField.text = self->_group.setting.ext;
-                }];
-                
-                [self presentViewController:alert animated:YES completion:NULL];
-            }
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupExtChanging", @"Change Ext") message:nil preferredStyle:UIAlertControllerStyleAlert];
+            
+            __weak typeof(self) weakSelf = self;
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSString *announcement = nil;
+                if ([alert.textFields count] > 0) {
+                    announcement = alert.textFields.firstObject.text;
+                }
+                [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupExtChanging", @"Change Announcement")]];
+                [[EMClient sharedClient].groupManager updateGroupExtWithId:weakSelf.groupId
+                                                                       ext:announcement
+                                                                completion:^(EMGroup *aGroup, EMError *aError) {
+                                                                    [weakSelf hideHud];
+                                                                    if (aError) {
+                                                                        [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.changeExtFail", @"fail to change ext"), aError.errorDescription]];
+                                                                    } else {
+                                                                        [weakSelf.tableView reloadData];
+                                                                    }
+                                                                }];
+            }];
+            
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            }];
+            
+            [alert addAction:ok];
+            [alert addAction:cancel];
+            
+            [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+                textField.placeholder = NSLocalizedString(@"group.setting.ext", @"Please input ext");
+                textField.text = self->_group.setting.ext;
+            }];
+            
+            [self presentViewController:alert animated:YES completion:NULL];
         }
             break;
         case 7:
