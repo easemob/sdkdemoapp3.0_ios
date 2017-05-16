@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *remoteImgView;
 
+@property (weak, nonatomic) IBOutlet UILabel *networkLabel;
+
 @property (weak, nonatomic) IBOutlet UIView *actionView;
 @property (weak, nonatomic) IBOutlet UIButton *speakerOutButton;
 @property (weak, nonatomic) IBOutlet UIButton *silenceButton;
@@ -36,6 +38,8 @@
 @property (strong, nonatomic) AVAudioPlayer *ringPlayer;
 @property (nonatomic) int timeLength;
 @property (strong, nonatomic) NSTimer *timeTimer;
+
+@property (strong, nonatomic) EMVideoInfoViewController *videoInfoController;
 
 @end
 
@@ -277,11 +281,14 @@
 
 - (IBAction)showVideoInfoAction:(id)sender
 {
-    EMVideoInfoViewController *videoInfoController = [[EMVideoInfoViewController alloc] initWithNibName:@"EMVideoInfoViewController" bundle:nil];
-    videoInfoController.callSession = self.callSession;
-    videoInfoController.currentTime = self.timeLabel.text;
-    [videoInfoController startTimer:self.timeLength];
-    [self presentViewController:videoInfoController animated:YES completion:nil];
+    if (self.videoInfoController == nil) {
+        self.videoInfoController = [[EMVideoInfoViewController alloc] initWithNibName:@"EMVideoInfoViewController" bundle:nil];
+        self.videoInfoController.callSession = self.callSession;
+    }
+    
+    self.videoInfoController.currentTime = self.timeLabel.text;
+    [self.videoInfoController startTimer:self.timeLength];
+    [self presentViewController:self.videoInfoController animated:YES completion:nil];
 }
 
 - (IBAction)answerAction:(id)sender
@@ -359,9 +366,46 @@
 //    [[EMVideoRecorderPlugin sharedInstance] startVideoRecordingToFilePath:recordPath error:nil];
 }
 
+- (void)setNetwork:(EMCallNetworkStatus)aStatus
+{
+    if (aStatus == EMCallNetworkStatusUnstable) {
+        self.networkLabel.text = @"网络不稳定";
+    } else if (aStatus == EMCallNetworkStatusNoData) {
+        self.networkLabel.text = @"无数据";
+    } else {
+        self.networkLabel.text = @"";
+    }
+}
+
+- (void)setStreamType:(EMCallStreamingStatus)aType
+{
+    NSString *str = @"Unkonw";
+    switch (aType) {
+        case EMCallStreamStatusVoicePause:
+            str = @"Audio Mute";
+            break;
+        case EMCallStreamStatusVoiceResume:
+            str = @"Audio Unmute";
+            break;
+        case EMCallStreamStatusVideoPause:
+            str = @"Video Pause";
+            break;
+        case EMCallStreamStatusVideoResume:
+            str = @"Video Resume";
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self showHint:str];
+}
+
 - (void)clearData
 {
 //    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
+    
+    [self.videoInfoController dismissViewControllerAnimated:NO completion:nil];
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];

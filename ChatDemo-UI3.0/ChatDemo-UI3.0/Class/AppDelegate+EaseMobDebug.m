@@ -93,7 +93,10 @@
         options.enableConsoleLog = YES;
         options.usingHttpsOnly = isHttpsOnly;
         
-        [[EMClient sharedClient] initializeSDKWithOptions:options];
+        EMError *error = [[EMClient sharedClient] initializeSDKWithOptions:options];
+        if (!error) {
+            NSLog(@"1");
+        }
         return YES;
     }
     

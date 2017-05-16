@@ -483,6 +483,36 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
+- (void)groupAnnouncementDidUpdate:(EMGroup *)aGroup
+                      announcement:(NSString *)aAnnouncement
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
+
+    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:@"群组:%@ 公告被删除", aGroup.subject] : [NSString stringWithFormat:@"群组:%@ 公告内容: %@", aGroup.subject, aAnnouncement];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群公告更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupShareFileDidUpdate:(EMGroup *)aGroup
+                 addedShareFile:(EMGroupShareFile *)aShareFile
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupShareFile" object:aGroup];
+    
+    NSString *msg = [NSString stringWithFormat:@"群组:%@ 上传文件ID: %@", aGroup.subject, aShareFile.fileId];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群文件更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)groupShareFileDidUpdate:(EMGroup *)aGroup
+               removedShareFile:(NSString *)aFileId
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupShareFile" object:aGroup];
+    
+    NSString *msg = [NSString stringWithFormat:@"群组:%@ 删除文件ID: %@", aGroup.subject, aFileId];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群文件更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
 #pragma mark - EMContactManagerDelegate
 
 - (void)didReceiveAgreedFromUsername:(NSString *)aUsername
@@ -641,6 +671,16 @@ static ChatDemoHelper *helper = nil;
     
     NSString *msg = [NSString stringWithFormat:@"聊天室创建者由 %@ 变为 %@", aOldOwner, aNewOwner];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"聊天室创建者更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)chatroomAnnouncementDidUpdate:(EMChatroom *)aChatroom
+                         announcement:(NSString *)aAnnouncement
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateChatroomDetail" object:aChatroom];
+    
+    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:@"聊天室:%@ 公告被删除", aChatroom.subject] : [NSString stringWithFormat:@"聊天室:%@ 公告内容: %@", aChatroom.subject, aAnnouncement];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"聊天室公告更新" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alertView show];
 }
 

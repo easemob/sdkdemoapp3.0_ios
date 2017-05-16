@@ -24,6 +24,10 @@
 
 - (void)stateToAnswered;
 
+- (void)setNetwork:(EMCallNetworkStatus)aStatus;
+
+- (void)setStreamType:(EMCallStreamingStatus)aType;
+
 - (void)clearData;
 
 #endif

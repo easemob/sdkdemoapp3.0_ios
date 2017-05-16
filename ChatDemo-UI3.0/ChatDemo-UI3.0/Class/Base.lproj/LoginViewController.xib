@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -75,12 +75,9 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7n-mh-wjo">
-                    <rect key="frame" x="170" y="183" width="160" height="35"/>
+                    <rect key="frame" x="135" y="183" width="195" height="35"/>
                     <color key="backgroundColor" red="0.001408990123309195" green="0.39510649442672729" blue="0.48307663202285767" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="login"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="160" id="ucs-TS-VzY"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="登录">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -168,6 +165,7 @@
                 <constraint firstItem="NV9-e3-pcC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="72" id="tJb-a6-8nC"/>
                 <constraint firstItem="g7n-mh-wjo" firstAttribute="top" secondItem="NV9-e3-pcC" secondAttribute="bottom" constant="30" id="tk5-4M-5OY"/>
                 <constraint firstItem="zwd-Iq-OEG" firstAttribute="firstBaseline" secondItem="HP1-ku-0fl" secondAttribute="baseline" id="vLv-Mj-QRu"/>
+                <constraint firstItem="g7n-mh-wjo" firstAttribute="leading" secondItem="HP1-ku-0fl" secondAttribute="trailing" constant="10" id="zjz-qO-uqS"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="54.5"/>
         </view>
