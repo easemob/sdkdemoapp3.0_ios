@@ -84,7 +84,6 @@
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */; };
-		3AECBAA01E1BAD2C0044D1B2 /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */; };
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
 		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
 		3AF6A65D1E1F84360022E835 /* EMGroupMutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */; };
@@ -112,7 +111,6 @@
 		3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
 		418F4913EB642E473922BD57 /* libPods-ChatDemo-UI3.0-JDPay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6E3F8F563A890669766AA3C /* libPods-ChatDemo-UI3.0-JDPay.a */; };
-		74E590F124CC835B27C15DCE /* libPods-ChatDemo-UI3.0-jdpay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C63AFA13E65D7A990D76BFD /* libPods-ChatDemo-UI3.0-jdpay.a */; };
 		7D7579E52B49C2AECE231C09 /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */; };
 		833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */; };
 		846D77051E6FA4DD0091DC94 /* EMCreateChatroomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D77041E6FA4DD0091DC94 /* EMCreateChatroomController.m */; };
@@ -198,7 +196,6 @@
 		846D77611E6FB52A0091DC94 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F131DE557BA000F3D8E /* Crashlytics.framework */; };
 		846D77621E6FB52A0091DC94 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F141DE557BA000F3D8E /* Fabric.framework */; };
 		846D77631E6FB52A0091DC94 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
-		846D77641E6FB52A0091DC94 /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */; };
 		846D77651E6FB52A0091DC94 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		846D77661E6FB52A0091DC94 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		846D77671E6FB52A0091DC94 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
@@ -446,6 +443,9 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
+		D227D1AA1E9CCFE600FC1B86 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA34E1E8D29C8006BF820 /* EMGroupInfoViewController.m */; };
+		D227D1AB1E9CCFE600FC1B86 /* EMGroupTransferOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3501E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m */; };
+		D227D1AC1E9CCFE600FC1B86 /* EMMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3521E8D29C8006BF820 /* EMMemberCell.m */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
@@ -512,6 +512,7 @@
 		D2BF97511AEB566B009E0D5C /* group_joinpublicgroup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF974E1AEB566B009E0D5C /* group_joinpublicgroup@2x.png */; };
 		D2BF98B31AEDD780009E0D5C /* EditNicknameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BF98B21AEDD780009E0D5C /* EditNicknameViewController.m */; };
 		D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CB225B1B60CB08001BC741 /* UserProfileViewController.m */; };
+		D2D6881E1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6881D1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.m */; };
 		D2F7691C1CBF3F26009778FB /* SearchMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F7691B1CBF3F26009778FB /* SearchMessageViewController.m */; };
 		D2F7691F1CBF42DB009778FB /* SearchChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F7691E1CBF42DB009778FB /* SearchChatViewController.m */; };
 		D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FFDB911C1687A30031425A /* ChatDemoHelper.m */; };
@@ -696,7 +697,6 @@
 		3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
 		3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HyphenateVideoRecorder_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Release-iphoneos/HyphenateVideoRecorder_CN.framework"; sourceTree = "<group>"; };
 		3AECBA8E1E1BA7E40044D1B2 /* libHyphenateVideoRecorder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateVideoRecorder.a; path = "../../emclient-ios/newSDK/build/Release-iphoneos/libHyphenateVideoRecorder.a"; sourceTree = "<group>"; };
-		3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3AF6A6551E1F5BD40022E835 /* EMGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMembersViewController.h; sourceTree = "<group>"; };
 		3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMembersViewController.m; sourceTree = "<group>"; };
 		3AF6A6581E1F80570022E835 /* EMGroupBansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupBansViewController.h; sourceTree = "<group>"; };
@@ -927,6 +927,8 @@
 		D2BF98B21AEDD780009E0D5C /* EditNicknameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNicknameViewController.m; sourceTree = "<group>"; };
 		D2CB225A1B60CB08001BC741 /* UserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileViewController.h; sourceTree = "<group>"; };
 		D2CB225B1B60CB08001BC741 /* UserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileViewController.m; sourceTree = "<group>"; };
+		D2D6881C1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupSharedFilesViewController.h; sourceTree = "<group>"; };
+		D2D6881D1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupSharedFilesViewController.m; sourceTree = "<group>"; };
 		D2F7691A1CBF3F26009778FB /* SearchMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchMessageViewController.h; sourceTree = "<group>"; };
 		D2F7691B1CBF3F26009778FB /* SearchMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchMessageViewController.m; sourceTree = "<group>"; };
 		D2F7691D1CBF42DB009778FB /* SearchChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchChatViewController.h; sourceTree = "<group>"; };
@@ -1022,7 +1024,6 @@
 				846D77611E6FB52A0091DC94 /* Crashlytics.framework in Frameworks */,
 				846D77621E6FB52A0091DC94 /* Fabric.framework in Frameworks */,
 				846D77631E6FB52A0091DC94 /* CoreTelephony.framework in Frameworks */,
-				846D77641E6FB52A0091DC94 /* libffmpeg-ios-full.a in Frameworks */,
 				846D77651E6FB52A0091DC94 /* libbz2.tbd in Frameworks */,
 				846D77661E6FB52A0091DC94 /* CoreMotion.framework in Frameworks */,
 				846D77671E6FB52A0091DC94 /* Social.framework in Frameworks */,
@@ -1046,7 +1047,6 @@
 				846D77791E6FB52A0091DC94 /* UIKit.framework in Frameworks */,
 				846D777A1E6FB52A0091DC94 /* Parse.framework in Frameworks */,
 				846D777B1E6FB52A0091DC94 /* Foundation.framework in Frameworks */,
-				74E590F124CC835B27C15DCE /* libPods-ChatDemo-UI3.0-jdpay.a in Frameworks */,
 				418F4913EB642E473922BD57 /* libPods-ChatDemo-UI3.0-JDPay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1060,7 +1060,6 @@
 				3A386F151DE557BA000F3D8E /* Crashlytics.framework in Frameworks */,
 				3A386F161DE557BA000F3D8E /* Fabric.framework in Frameworks */,
 				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
-				3AECBAA01E1BAD2C0044D1B2 /* libffmpeg-ios-full.a in Frameworks */,
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
@@ -1135,7 +1134,6 @@
 		3A386E881DE5539C000F3D8E /* Call */ = {
 			isa = PBXGroup;
 			children = (
-				3AECBA9C1E1BAD2C0044D1B2 /* plugin */,
 				3A2858121DF856AD0062B7F0 /* CallResolutionViewController.h */,
 				3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */,
 				3A635C131DF696AC005C995E /* CallSettingViewController.h */,
@@ -1222,6 +1220,8 @@
 		3AD0FB8E1E1E5CE2001F3957 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				D2D6881C1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.h */,
+				D2D6881D1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.m */,
 				D25AA34B1E8D29C8006BF820 /* check@2x.png */,
 				D25AA34C1E8D29C8006BF820 /* default_avatar@2x.png */,
 				D25AA34D1E8D29C8006BF820 /* EMGroupInfoViewController.h */,
@@ -1248,14 +1248,6 @@
 				3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */,
 			);
 			path = Info;
-			sourceTree = "<group>";
-		};
-		3AECBA9C1E1BAD2C0044D1B2 /* plugin */ = {
-			isa = PBXGroup;
-			children = (
-				3AECBA9E1E1BAD2C0044D1B2 /* libffmpeg-ios-full.a */,
-			);
-			path = plugin;
 			sourceTree = "<group>";
 		};
 		3C16149C1973D1A600564BF5 /* Core Data */ = {
@@ -2521,6 +2513,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D227D1AA1E9CCFE600FC1B86 /* EMGroupInfoViewController.m in Sources */,
+				D227D1AB1E9CCFE600FC1B86 /* EMGroupTransferOwnerViewController.m in Sources */,
+				D227D1AC1E9CCFE600FC1B86 /* EMMemberCell.m in Sources */,
 				846D77091E6FB52A0091DC94 /* AppDelegate.m in Sources */,
 				846D770A1E6FB52A0091DC94 /* RobotListViewController.m in Sources */,
 				846D770B1E6FB52A0091DC94 /* SRSlimeView.m in Sources */,
@@ -2655,6 +2650,7 @@
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
 				3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */,
 				3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */,
+				D2D6881E1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.m in Sources */,
 				9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */,
 				3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
@@ -3007,6 +3003,7 @@
 				CODE_SIGN_ENTITLEMENTS = "ChatDemo-UI3.0/ChatDemo-UI3.0.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
