@@ -73,25 +73,21 @@
     NSString *from = [EMClient sharedClient].currentUsername;
     EMMessage *newMsg = [[EMMessage alloc] initWithConversationID:userModel.buddy from:from to:userModel.buddy body:body ext:nil];
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].chatManager sendMessage:newMsg progress:nil completion:^(EMMessage *message, EMError *error) {
-        if (error) {
-            [weakSelf showHudInView:self.view hint:@"发送失败"];
-            [weakSelf performSelector:@selector(backAction) withObject:nil afterDelay:1];
-            
-            return ;
-        }
-        
-        NSMutableArray *array = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
+
+    
+    NSMutableArray *array = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
 #ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
 #else
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
 #endif
-        chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
-        [array removeLastObject];
-        [array addObject:chatController];
-        [weakSelf.navigationController setViewControllers:array animated:YES];
-    }];
+    
+    chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
+    [array removeLastObject];
+    [array addObject:chatController];
+    [weakSelf.navigationController setViewControllers:array animated:YES];
+    [chatController viewDidLoad];
+    [chatController sendFileMessageWith:newMsg];
 }
 
 #pragma mark - EMUserListViewControllerDataSource
