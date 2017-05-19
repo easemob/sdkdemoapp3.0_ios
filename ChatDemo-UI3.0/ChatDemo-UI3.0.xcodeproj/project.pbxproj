@@ -429,6 +429,12 @@
 		90911145192EEE6E008A48AA /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911143192EEE6E008A48AA /* MainViewController.m */; };
 		90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90985E471A8A08D400976DD6 /* InvitationManager.m */; };
 		909E89C21A6E7A270064B20F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 909E89C41A6E7A270064B20F /* LoginViewController.xib */; };
+		90AFCFD81ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD31ECE9B45007BBD33 /* AppDelegate+ShareFiles.m */; };
+		90AFCFD91ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD31ECE9B45007BBD33 /* AppDelegate+ShareFiles.m */; };
+		90AFCFDA1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD51ECE9B45007BBD33 /* ChatViewController+ShareFile.m */; };
+		90AFCFDB1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD51ECE9B45007BBD33 /* ChatViewController+ShareFile.m */; };
+		90AFCFDC1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD71ECE9B45007BBD33 /* ShareFilesViewController.m */; };
+		90AFCFDD1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD71ECE9B45007BBD33 /* ShareFilesViewController.m */; };
 		90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A341B65E62C00968342 /* RobotChatViewController.m */; };
 		90B42A381B65E62C00968342 /* RobotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A361B65E62C00968342 /* RobotManager.m */; };
 		90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CE5C111B43C8E500810187 /* AppDelegate+EaseMobDebug.m */; };
@@ -826,6 +832,12 @@
 		909E89C31A6E7A270064B20F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginViewController.xib; sourceTree = "<group>"; };
 		909E89C61A6E7A2A0064B20F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LoginViewController.strings; sourceTree = "<group>"; };
 		909E89C71A6E7A2B0064B20F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LoginViewController.strings"; sourceTree = "<group>"; };
+		90AFCFD21ECE9B45007BBD33 /* AppDelegate+ShareFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ShareFiles.h"; sourceTree = "<group>"; };
+		90AFCFD31ECE9B45007BBD33 /* AppDelegate+ShareFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ShareFiles.m"; sourceTree = "<group>"; };
+		90AFCFD41ECE9B45007BBD33 /* ChatViewController+ShareFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatViewController+ShareFile.h"; sourceTree = "<group>"; };
+		90AFCFD51ECE9B45007BBD33 /* ChatViewController+ShareFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ChatViewController+ShareFile.m"; sourceTree = "<group>"; };
+		90AFCFD61ECE9B45007BBD33 /* ShareFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareFilesViewController.h; sourceTree = "<group>"; };
+		90AFCFD71ECE9B45007BBD33 /* ShareFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareFilesViewController.m; sourceTree = "<group>"; };
 		90B42A331B65E62C00968342 /* RobotChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotChatViewController.h; sourceTree = "<group>"; };
 		90B42A341B65E62C00968342 /* RobotChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RobotChatViewController.m; sourceTree = "<group>"; };
 		90B42A351B65E62C00968342 /* RobotManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotManager.h; sourceTree = "<group>"; };
@@ -1612,6 +1624,7 @@
 		909110E4192EEAED008A48AA /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				90AFCFD11ECE9B45007BBD33 /* ShareFiles */,
 				D29A6BA71B7208DF002324BB /* UIImageView+HeadImage.h */,
 				D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */,
 				909110E9192EEAED008A48AA /* UIResponder+Router.h */,
@@ -1670,6 +1683,19 @@
 				3C6FFA2319A2F5560003EB25 /* DebugViewController.m */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		90AFCFD11ECE9B45007BBD33 /* ShareFiles */ = {
+			isa = PBXGroup;
+			children = (
+				90AFCFD21ECE9B45007BBD33 /* AppDelegate+ShareFiles.h */,
+				90AFCFD31ECE9B45007BBD33 /* AppDelegate+ShareFiles.m */,
+				90AFCFD41ECE9B45007BBD33 /* ChatViewController+ShareFile.h */,
+				90AFCFD51ECE9B45007BBD33 /* ChatViewController+ShareFile.m */,
+				90AFCFD61ECE9B45007BBD33 /* ShareFilesViewController.h */,
+				90AFCFD71ECE9B45007BBD33 /* ShareFilesViewController.m */,
+			);
+			path = ShareFiles;
 			sourceTree = "<group>";
 		};
 		90EF2CE4192F2B4E00BDC549 /* SlimeRefresh */ = {
@@ -2561,6 +2587,7 @@
 				846D77381E6FB52A0091DC94 /* main.m in Sources */,
 				846D77391E6FB52A0091DC94 /* PushNotificationViewController.m in Sources */,
 				846D773A1E6FB52A0091DC94 /* UserProfileViewController.m in Sources */,
+				90AFCFD91ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */,
 				846D773B1E6FB52A0091DC94 /* EMChatroomMembersViewController.m in Sources */,
 				846D773C1E6FB52A0091DC94 /* InvitationManager.m in Sources */,
 				846D773D1E6FB52A0091DC94 /* EMGroupBansViewController.m in Sources */,
@@ -2568,6 +2595,7 @@
 				846D773F1E6FB52A0091DC94 /* ContactListViewController.m in Sources */,
 				846D77401E6FB52A0091DC94 /* AppDelegate+UMeng.m in Sources */,
 				846D77411E6FB52A0091DC94 /* BlackListViewController.m in Sources */,
+				90AFCFDB1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */,
 				846D77421E6FB52A0091DC94 /* SettingsViewController.m in Sources */,
 				846D77431E6FB52A0091DC94 /* AppDelegate+Parse.m in Sources */,
 				846D7BC11E7805530091DC94 /* RedPacketUserConfig.m in Sources */,
@@ -2581,6 +2609,7 @@
 				846D774B1E6FB52A0091DC94 /* EMCallViewController.mm in Sources */,
 				846D774C1E6FB52A0091DC94 /* EMSearchBar.m in Sources */,
 				846D774D1E6FB52A0091DC94 /* CreateGroupViewController.m in Sources */,
+				90AFCFDD1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */,
 				846D7BB91E7805530091DC94 /* RedpacketView.m in Sources */,
 				846D774E1E6FB52A0091DC94 /* RealtimeSearchUtil.m in Sources */,
 				846D774F1E6FB52A0091DC94 /* TTGlobalUICommon.m in Sources */,
@@ -2655,6 +2684,7 @@
 				3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
+				90AFCFD81ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */,
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
@@ -2668,6 +2698,7 @@
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				846D7BC01E7805530091DC94 /* RedPacketUserConfig.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
+				90AFCFDC1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
 				3A386EDB1DE5539C000F3D8E /* EMCallOptions+NSCoding.m in Sources */,
 				3C6FFA2419A2F5560003EB25 /* DebugViewController.m in Sources */,
@@ -2684,6 +2715,7 @@
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
+				90AFCFDA1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */,
 				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,
 				3C13D94E1A120BA200903622 /* ContactView.m in Sources */,
 				D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */,
