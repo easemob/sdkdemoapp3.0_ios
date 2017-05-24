@@ -74,7 +74,7 @@
 
 - (void)_setupNavigationBar
 {
-    self.title = @"群详情";
+    self.title = NSLocalizedString(@"title.groupInfo", @"Group Info");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [backButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
@@ -98,7 +98,7 @@
         _moreCell.contentView.backgroundColor = [UIColor colorWithRed: 249 / 255.0 green: 250 / 255.0 blue: 251 / 255.0 alpha:1.0];
         
         UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60)];
-        [moreButton setTitle:@"查看更多" forState:UIControlStateNormal];
+        [moreButton setTitle:NSLocalizedString(@"group.more", @"Load More") forState:UIControlStateNormal];
         [moreButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [moreButton addTarget:self action:@selector(moreMemberAction) forControlEvents:UIControlEventTouchUpInside];
         [_moreCell.contentView addSubview:moreButton];
@@ -185,45 +185,45 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
         switch (row) {
             case 0:
-                cell.textLabel.text = @"群ID";
+                cell.textLabel.text = NSLocalizedString(@"group.id", @"GroupID");
                 cell.detailTextLabel.text = self.groupId;
                 break;
             case 1:
-                cell.textLabel.text = @"群组设置";
+                cell.textLabel.text = NSLocalizedString(@"title.groupSetting", @"Group Setting");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 2:
-                cell.textLabel.text = @"转让群主";
+                cell.textLabel.text = NSLocalizedString(@"group.changeOwner", @"Change Owner");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 3:
-                cell.textLabel.text = @"改变群名称";
+                cell.textLabel.text = NSLocalizedString(@"title.groupSubjectChanging", @"Change group name");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 4:
-                cell.textLabel.text = @"管理员列表";
+                cell.textLabel.text = NSLocalizedString(@"group.admins", @"Admin List");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 5:
-                cell.textLabel.text = @"群公告";
+                cell.textLabel.text = NSLocalizedString(@"group.announcement", @"Group Announcement");
                 cell.detailTextLabel.text = _group.announcement;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 6:
-                cell.textLabel.text = @"群扩展信息";
+                cell.textLabel.text = NSLocalizedString(@"group.ext", @"Group Extension");
                 cell.detailTextLabel.text = _group.setting.ext;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 7:
-                cell.textLabel.text = @"群共享";
+                cell.textLabel.text = NSLocalizedString(@"group.sharedfiles", @"Share Files");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 8:
-                cell.textLabel.text = @"黑名单列表";
+                cell.textLabel.text = NSLocalizedString(@"title.groupBlackList", @"Black List");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 9:
-                cell.textLabel.text = @"禁言列表";
+                cell.textLabel.text = NSLocalizedString(@"group.mutes", @"Mute List");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
@@ -265,11 +265,11 @@
     headerLabel.textColor = [UIColor whiteColor];
     headerLabel.font = [UIFont boldSystemFontOfSize:15];
     if (section == 0) {
-        headerLabel.text = @"  群主 / 管理员";
+        headerLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedString(@"group.ownerAdmin", @"Owner / Admin")];
     } else if (section == 1) {
-        headerLabel.text = @"  群成员";
+        headerLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedString(@"group.members", @"Members List")];
     } else if (section == 2) {
-        headerLabel.text = @"  设置";
+        headerLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedString(@"title.setting", @"Settings")];
     }
     
     return headerLabel;
