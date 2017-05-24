@@ -174,6 +174,15 @@
 "group.members" = "普通成员";
 "group.mutes" = "禁言列表";
 "group.sharedfiles" = "群共享列表";
+"group.announcement" = "群公告";
+"group.ext" = "群扩展信息";
+"group.ownerAdmin" = "群主 / 管理员";
+"group.more" = "查看更多";
+"group.remove" = "移除";
+"group.block" = "拉黑";
+"group.mute" = "禁言";
+"group.upgrade" = "升权";
+"group.degrade" = "降权";
 "group.occupantCount" = "群组人数";
 "group.addingOccupant" = "添加组成员...";
 "group.fetchInfoFail" = "获取群组详情失败，请稍后重试";
@@ -197,6 +206,22 @@
 "group.fetchAnnouncementFail" = "获取群公告失败";
 "group.changeAnnouncementFail" = "修改群公告失败";
 "group.changeExtFail" = "修改群扩展信息失败";
+
+//Group Delegate
+
+"group.update" = "群组更新";
+"group.adminUpdate" = "管理员更新";
+"group.becomeAdmin" = "变为管理员";
+"group.beRemovedAdmin" = "被移出管理员";
+"group.ownerUpdate" = "群主更新";
+"group.membersUpdate" = "群成员更新";
+"group.announcementUpdate" = "群公告更新";
+"group.sharedFileUpdate" = "群文件更新";
+"group.changeOwnerTo" = "群主由 %@ 变为 %@";
+"group.clearAnnouncement" = "群组:%@ 公告被删除";
+"group.updateAnnouncement" = "群组:%@ 公告内容: %@";
+"group.uploadSharedFile" = "群组:%@ 上传文件ID: %@";
+"group.removeSharedFile" = "群组:%@ 删除文件ID: %@";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "接收并提示群消息";
@@ -238,6 +263,20 @@
 "chatroom.leave" = "退出聊天室";
 "chatroom.destroyFail" = "解散聊天室失败";
 "chatroom.leaveFail" = "退出聊天室失败";
+
+//chatroom delegate
+
+"chatroom.update" = "聊天室更新";
+"chatroom.mute" = "禁言成员";
+"chatroom.unmute" = "解除禁言";
+"chatroom.adminUpdate" = "管理员更新";
+"chatroom.becomeAdmin" = "%@ 变为管理员";
+"chatroom.beRemovedAdmin" = "%@ 被移出管理员";
+"chatroom.changeOwnerTo" = "聊天室创建者由 %@ 变为 %@";
+"chatroom.ownerUpdate" = "聊天室创建者更新";
+"chatroom.announcementUpdate" = "聊天室公告更新";
+"chatroom.clearAnnouncement" = "聊天室:%@ 公告被删除";
+"chatroom.updateAnnouncement" = "聊天室:%@ 公告内容: %@";
 
 //call
 "call.initFailed"="创建实时通话失败，请稍后重试";
@@ -342,6 +381,7 @@
 "title.groupAnnouncementChanging" = "修改群公告";
 "title.groupExtChanging" = "修改群扩展信息";
 "title.groupSearchMessage" = "查找聊天记录";
+"title.groupInfo" = "群详情";
 "title.chatroom" = "聊天室";
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";
