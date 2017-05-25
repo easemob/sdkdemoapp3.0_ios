@@ -512,13 +512,31 @@
         _transpondMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"transpond", @"Transpond") action:@selector(transpondMenuAction:)];
     }
     
-    if (messageType == EMMessageBodyTypeText) {
-        [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
-    } else if (messageType == EMMessageBodyTypeImage){
-        [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
-    } else {
-        [self.menuController setMenuItems:@[_deleteMenuItem]];
+    NSMutableArray *items = [NSMutableArray array];
+    switch (messageType) {
+        case EMMessageBodyTypeText:
+        {
+            [items addObject:_copyMenuItem];
+        }
+        case EMMessageBodyTypeImage:
+        case EMMessageBodyTypeVideo:
+        {
+            [items addObject:_transpondMenuItem];
+        }
+        case EMMessageBodyTypeVoice:
+        case EMMessageBodyTypeFile:
+        case EMMessageBodyTypeLocation:
+        {
+            
+        }
+            break;
+        default:
+            break;
     }
+
+    [items addObject:_deleteMenuItem];
+
+    [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
 }

@@ -75,8 +75,9 @@
         [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transponding...")];
         
         __weak typeof(self) weakSelf = self;
-        NSString *localPath = [(EMImageMessageBody *)self.messageModel.message.body thumbnailLocalPath];
-        UIImage *image = [UIImage imageWithContentsOfFile:localPath];
+        NSString *thumbnailLocalPath = [(EMImageMessageBody *)self.messageModel.message.body thumbnailLocalPath];
+        NSString *localPath = [(EMImageMessageBody *)self.messageModel.message.body localPath];
+        UIImage *image = [UIImage imageWithContentsOfFile:(thumbnailLocalPath && thumbnailLocalPath.length > 0) ? thumbnailLocalPath:localPath];
         
         void (^block)() = ^(EMMessage *message){
             EMImageMessageBody *imgBody = (EMImageMessageBody *)message.body;
@@ -86,7 +87,7 @@
             newBody.thumbnailRemotePath = imgBody.thumbnailRemotePath;
             newBody.remotePath = imgBody.remotePath;
             EMMessage *newMsg = [[EMMessage alloc] initWithConversationID:userModel.buddy from:from to:userModel.buddy body:newBody ext:message.ext];
-            newMsg.chatType = message.chatType;
+            newMsg.chatType = EMChatTypeChat;
             
             [[EMClient sharedClient].chatManager sendMessage:newMsg progress:nil completion:^(EMMessage *message, EMError *error) {
                 if (error) {
@@ -128,6 +129,64 @@
         } else {
             block(self.messageModel.message);
         }
+    } else if (self.messageModel.bodyType == EMMessageBodyTypeVideo) {
+        [self showHudInView:self.view hint:NSLocalizedString(@"transponding", @"transponding...")];
+        
+        __weak typeof(self) weakSelf = self;
+        NSString *localPath = [(EMVideoMessageBody *)self.messageModel.message.body localPath];
+        EMDownloadStatus downloadStatus = [(EMVideoMessageBody *)self.messageModel.message.body downloadStatus];
+        
+        void (^block)() = ^(EMMessage *message){
+            EMVideoMessageBody *videoBody = (EMVideoMessageBody *)message.body;
+            NSString *from = [[EMClient sharedClient] currentUsername];
+            EMVideoMessageBody *newBody = [[EMVideoMessageBody alloc] initWithLocalPath:[videoBody localPath]
+                                                                            displayName:@"video.mp4"];
+            newBody.thumbnailLocalPath = videoBody.thumbnailLocalPath;
+            EMMessage *newMsg = [[EMMessage alloc] initWithConversationID:userModel.buddy from:from to:userModel.buddy body:newBody ext:message.ext];
+            newMsg.chatType = EMChatTypeChat;
+            
+            [[EMClient sharedClient].chatManager sendMessage:newMsg progress:nil completion:^(EMMessage *message, EMError *error) {
+                if (error) {
+                    [weakSelf showHudInView:self.view hint:NSLocalizedString(@"transpondFail", @"transpond Fail")];
+                    [weakSelf performSelector:@selector(backAction) withObject:nil afterDelay:1];
+                    return ;
+                }
+                
+                [(EMImageMessageBody *)message.body setLocalPath:videoBody.localPath];
+                [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
+                
+                NSMutableArray *array = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
+                
+#ifdef REDPACKET_AVALABLE
+                RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+#else
+                ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
+#endif
+                chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
+                if ([array count] >= 3) {
+                    [array removeLastObject];
+                    [array removeLastObject];
+                }
+                [array addObject:chatController];
+                [weakSelf.navigationController setViewControllers:array animated:YES];
+            }];
+        };
+        
+        if (!localPath || downloadStatus != EMDownloadStatusSuccessed) {
+            [[EMClient sharedClient].chatManager downloadMessageAttachment:self.messageModel.message progress:nil completion:^(EMMessage *message, EMError *error) {
+                if (error) {
+                    [weakSelf showHudInView:self.view hint:NSLocalizedString(@"transpondFail", @"transpond Fail")];
+                    [weakSelf performSelector:@selector(backAction) withObject:nil afterDelay:1];
+                    return ;
+                }
+                
+                block(message);
+            }];
+        } else {
+            block(self.messageModel.message);
+        }
+    } else if (self.messageModel.bodyType == EMMessageBodyTypeFile) {
+        
     }
 }
 
