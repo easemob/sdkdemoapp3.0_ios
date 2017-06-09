@@ -75,6 +75,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self cancelSearch];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
