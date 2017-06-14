@@ -214,15 +214,15 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
     
     switch (aEvent) {
-        case EMMultiDevicesEventContactRemoved:
+        case EMMultiDevicesEventContactRemove:
             [self.mainVC.contactsVC reloadDataSource];
             break;
-        case EMMultiDevicesEventContactAccepted:
+        case EMMultiDevicesEventContactAccept:
             [[ApplyViewController shareController] removeApply:aTarget];
             [self.mainVC setupUntreatedApplyCount];
             [self.mainVC.contactsVC reloadDataSource];
             break;
-        case EMMultiDevicesEventContactDeclined:
+        case EMMultiDevicesEventContactDecline:
         case EMMultiDevicesEventGroupInviteDecline:
         case EMMultiDevicesEventGroupApplyDecline:
             [[ApplyViewController shareController] removeApply:aTarget];
