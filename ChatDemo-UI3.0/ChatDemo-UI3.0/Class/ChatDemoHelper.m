@@ -205,15 +205,17 @@ static ChatDemoHelper *helper = nil;
 
 #pragma mark - EMMultiDevicesDelegate
 
-- (void)multiDevicesEventDidReceive:(EMMultiDevicesEvent)aEvent
-                             target:(NSString *)aTarget
-                                ext:(NSString *)aExt
+- (void)multiDevicesContactEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                    target:(NSString *)aTarget
+                                       ext:(NSString *)aExt
 {
     NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"好友多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
     
     switch (aEvent) {
+        case EMMultiDevicesEventContactAdd:
+            break;
         case EMMultiDevicesEventContactRemove:
             [self.mainVC.contactsVC reloadDataSource];
             break;
@@ -223,6 +225,29 @@ static ChatDemoHelper *helper = nil;
             [self.mainVC.contactsVC reloadDataSource];
             break;
         case EMMultiDevicesEventContactDecline:
+            [[ApplyViewController shareController] removeApply:aTarget];
+            [self.mainVC setupUntreatedApplyCount];
+            break;
+        case EMMultiDevicesEventContactBan:
+        case EMMultiDevicesEventContactAllow:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateBlacklist" object:nil];
+            [self.mainVC.contactsVC reloadDataSource];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                  target:(NSString *)aTarget
+                                     ext:(NSString *)aExt
+{
+    NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群组多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    [alertView show];
+    
+    switch (aEvent) {
         case EMMultiDevicesEventGroupInviteDecline:
         case EMMultiDevicesEventGroupApplyDecline:
             [[ApplyViewController shareController] removeApply:aTarget];
