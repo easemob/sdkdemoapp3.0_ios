@@ -348,6 +348,8 @@
 "setting.uploadLog" = "上传运行日志";
 "setting.sdkVersion" = "SDK 版本";
 "setting.emailLog" = "邮件发送日志";
+"setting.deviceResources" = "登录设备列表";
+"setting.kickAllDevices" = "踢掉所有";
 "setting.uploading" = "正在上传...";
 "setting.uploadSuccess" = "上传成功";
 "setting.uploadFail" = "上传失败";
