@@ -61,6 +61,7 @@
 "noMore" = "No more data";
 "hasRead" = "Read";
 "servingIsBanned" = "Service disabled";
+"getPermission" = "Get Permission";
 
 //app
 "AppName" = "EaseMobDemo";

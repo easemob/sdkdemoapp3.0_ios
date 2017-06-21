@@ -61,6 +61,7 @@
 "noMore" = "没有更多数据了";
 "hasRead" = "已读";
 "servingIsBanned" = "服务被禁用";
+"getPermission" = "获取权限";
 
 //app
 "AppName" = "环信Demo";

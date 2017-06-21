@@ -8,9 +8,16 @@
 
 #import "EMDevicesViewController.h"
 
+#define KALERT_GET_ALL 1
+#define KALERT_KICK_ALL 2
+#define KALERT_KICK_ONE 3
+
 @interface EMDevicesViewController ()
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSIndexPath *willKickDeviceIndex;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
 
 @end
 
@@ -21,18 +28,27 @@
     
     self.title = NSLocalizedString(@"setting.deviceResources", @"List of logged devices");
     
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"setting.kickAllDevices", @"KickAll") style:UIBarButtonItemStylePlain target:self action:@selector(kickAllDevices)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"setting.kickAllDevices", @"KickAll") style:UIBarButtonItemStylePlain target:self action:@selector(kickAllAction)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
     self.tableView.rowHeight = 50;
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    [self setupRefresh];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_showTextFieldAlertView:) name:@"showAlertController" object:nil];
+    
+    [self _setupRefresh];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_GET_ALL]];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSMutableArray *)dataSource
@@ -44,13 +60,51 @@
     return _dataSource;
 }
 
-- (void)setupRefresh
+- (void)_setupRefresh
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(fetchDataFromServer) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(_headerRefreshAction) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
-    [self.refreshControl beginRefreshing];
-    [self fetchDataFromServer];
+}
+
+- (void)_showTextFieldAlertView:(NSNotification *)aNotif
+{
+    int tag = 0;
+    if (aNotif && aNotif.object) {
+        tag = [aNotif.object intValue];
+    }
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"getPermission", @"Get Permission") message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = NSLocalizedString(@"username", @"Username");
+    }];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = NSLocalizedString(@"password", @"Password");
+        textField.secureTextEntry = YES;
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:cancelAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UITextField *usernameField = alertController.textFields.firstObject;
+        self.username = usernameField.text;
+        
+        UITextField *passwordField = alertController.textFields.lastObject;
+        self.password = passwordField.text;
+        
+        if (tag == KALERT_GET_ALL) {
+            [self fetchDataFromServer];
+        } else if (tag == KALERT_KICK_ALL) {
+            [self kickAllDevices];
+        } else if (tag == KALERT_KICK_ONE) {
+            [self kickOneDevice];
+        }
+    }];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -75,7 +129,7 @@
     EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
     cell.textLabel.text = options.deviceName;
     if ([options.deviceName length] == 0) {
-        cell.textLabel.text = options.osVersion;
+        cell.textLabel.text = options.deviceUUID;
     }
     
     return cell;
@@ -96,66 +150,73 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        
-        [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
-        __weak typeof(self) weakself = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMDeviceConfig *option = [weakself.dataSource objectAtIndex:indexPath.row];
-            EMError *error = [[EMClient sharedClient] kickDevice:option];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself hideHud];
-                if (!error) {
-                    [weakself.dataSource removeObjectAtIndex:indexPath.row];
-                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                } else {
-                    [weakself showHint:error.errorDescription];
-                }
-            });
-        });
+        self.willKickDeviceIndex = indexPath;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_KICK_ONE]];
     }   
 }
 
 #pragma mark - Action
 
+- (void)kickAllAction
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_KICK_ALL]];
+}
+
 - (void)kickAllDevices
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient] kickAllDevices];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself hideHud];
-            if (!error) {
-                [weakself.dataSource removeAllObjects];
-                [weakself.tableView reloadData];
-            } else {
-                [weakself showHint:error.errorDescription];
-            }
-        });
-    });
+    [[EMClient sharedClient] kickAllDevicesWithUsername:self.username password:self.password completion:^(EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            [weakself.dataSource removeAllObjects];
+            [weakself.tableView reloadData];
+        } else {
+            [weakself showHint:aError.errorDescription];
+        }
+    }];
+}
+
+- (void)kickOneDevice
+{
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
+    __weak typeof(self) weakself = self;
+    
+    EMDeviceConfig *device = [self.dataSource objectAtIndex:self.willKickDeviceIndex.row];
+    [[EMClient sharedClient] kickDevice:device username:self.username password:self.password completion:^(EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            [weakself.dataSource removeObjectAtIndex:weakself.willKickDeviceIndex.row];
+            [weakself.tableView deleteRowsAtIndexPaths:@[weakself.willKickDeviceIndex] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [weakself showHint:aError.errorDescription];
+        }
+        weakself.willKickDeviceIndex = nil;
+    }];
 }
 
 #pragma mark - Data
+
+- (void)_headerRefreshAction
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_GET_ALL]];
+}
 
 - (void)fetchDataFromServer
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        NSArray *array = [[EMClient sharedClient] getLoggedInDevicesFromServerWithError:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself hideHud];
-            [weakself.refreshControl endRefreshing];
-            if (!error) {
-                [weakself.dataSource removeAllObjects];
-                [weakself.dataSource addObjectsFromArray:array];
-                [weakself.tableView reloadData];
-            } else {
-                [weakself showHint:error.errorDescription];
-            }
-        });
-    });
+    [[EMClient sharedClient] getLoggedInDevicesFromServerWithUsername:self.username password:self.password completion:^(NSArray *aList, EMError *aError) {
+        [weakself hideHud];
+        [weakself.refreshControl endRefreshing];
+        if (!aError) {
+            [weakself.dataSource removeAllObjects];
+            [weakself.dataSource addObjectsFromArray:aList];
+            [weakself.tableView reloadData];
+        } else {
+            [weakself showHint:aError.errorDescription];
+        }
+    }];
 }
 
 @end
