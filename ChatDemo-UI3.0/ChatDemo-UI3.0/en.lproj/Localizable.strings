@@ -172,8 +172,17 @@
 "group.owner" = "Owner";
 "group.admins" = "Admin List";
 "group.members" = "Member List";
-"group.mutes" = "Mutes";
+"group.mutes" = "Mute List";
 "group.sharedfiles" = "Share Files";
+"group.announcement" = "Group Announcement";
+"group.ext" = "Group Extension";
+"group.ownerAdmin" = "Owner / Admin";
+"group.more" = "Load More";
+"group.remove" = "Remove";
+"group.block" = "Block";
+"group.mute" = "Mute";
+"group.upgrade" = "Upgrade";
+"group.degrade" = "Degrade";
 "group.occupantCount" = "Members count";
 "group.addingOccupant" = "Add a group member...";
 "group.fetchInfoFail" = "Failed to get the group details, please try again later";
@@ -197,6 +206,22 @@
 "group.fetchAnnouncementFail" = "fail to get announcement";
 "group.changeAnnouncementFail" = "fail to change announcement";
 "group.changeExtFail" = "fail to change ext";
+
+//Group Delegate
+
+"group.update" = "Group Update";
+"group.adminUpdate" = "Group Admin Update";
+"group.becomeAdmin" = "Become Admin";
+"group.beRemovedAdmin" = "is removed from admin list";
+"group.ownerUpdate" = "Group Owner Update";
+"group.membersUpdate" = "Group Members Update";
+"group.announcementUpdate" = "Group Announcement Update";
+"group.sharedFileUpdate" = "Group SharedFile Update";
+"group.changeOwnerTo" = "Change group owner %@ to %@";
+"group.clearAnnouncement" = "Group:%@ Announcement is clear";
+"group.updateAnnouncement" = "Group:%@ Announcement: %@";
+"group.uploadSharedFile" = "Group:%@ Upload file ID: %@";
+"group.removeSharedFile" = "Group:%@ Remove file ID: %@";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "Receive notifications of group message";
@@ -238,6 +263,20 @@
 "chatroom.leave" = "Leave the chatroom";
 "chatroom.destroyFail" = "Destroy the chatroom failure";
 "chatroom.leaveFail" = "Leave the chatroom failure";
+
+//chatroom delegate
+
+"chatroom.update" = "Chatroom Update";
+"chatroom.mute" = "Mute";
+"chatroom.unmute" = "Unmute";
+"chatroom.adminUpdate" = "Admin Update";
+"chatroom.becomeAdmin" = "%@ become admin";
+"chatroom.beRemovedAdmin" = "%@ is removed from admin list";
+"chatroom.changeOwnerTo" = "Change Chatroom Owner %@ to %@";
+"chatroom.ownerUpdate" = "Chatroom Owner Update";
+"chatroom.announcementUpdate" = "Chatroom Announcement Update";
+"chatroom.clearAnnouncement" = "Chatroom:%@ Announcement is clear";
+"chatroom.updateAnnouncement" = "Chatroom:%@ Announcement: %@";
 
 //call
 "call.initFailed"="Failed to establish call";
@@ -344,6 +383,7 @@
 "title.groupAnnouncementChanging" = "Change Announcement";
 "title.groupExtChanging" = "Change Ext";
 "title.groupSearchMessage" = "Search Message from History";
+"title.groupInfo" = "Group Info";
 "title.chatroom" = "Chatroom";
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";

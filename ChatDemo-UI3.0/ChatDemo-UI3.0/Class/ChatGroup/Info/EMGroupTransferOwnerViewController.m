@@ -56,7 +56,7 @@
 
 - (void)_setupNavigationBar
 {
-    self.title = @"转让群主";
+    self.title = NSLocalizedString(@"group.changeOwner", @"Change Owner");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     [backButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
@@ -65,7 +65,7 @@
     self.navigationItem.leftBarButtonItem = backItem;
     
     UIButton *doneButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 50)];
-    [doneButton setTitle:@"保存" forState:UIControlStateNormal];
+    [doneButton setTitle:NSLocalizedString(@"save", @"Save") forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(doneAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
     self.navigationItem.rightBarButtonItem = doneItem;
