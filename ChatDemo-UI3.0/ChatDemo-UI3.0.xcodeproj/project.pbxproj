@@ -79,7 +79,6 @@
 		3A4D65DE1E9B633400162542 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A4D65DC1E9B633400162542 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A635C141DF696AC005C995E /* CallSettingViewController.m */; };
-		3A6764B11E5D2C4F00ABF196 /* ChatGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */; };
 		3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */; };
 		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
@@ -129,7 +128,6 @@
 		846D770E1E6FB52A0091DC94 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */; };
 		846D770F1E6FB52A0091DC94 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D85E1939D8D000DC38A4 /* AddFriendCell.m */; };
 		846D77101E6FB52A0091DC94 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
-		846D77111E6FB52A0091DC94 /* ChatGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */; };
 		846D77121E6FB52A0091DC94 /* GroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C914D7819514BBD0002DAD3 /* GroupListViewController.m */; };
 		846D77131E6FB52A0091DC94 /* EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90011F911AE4BF090088D549 /* EMAlertView.m */; };
 		846D77141E6FB52A0091DC94 /* RobotChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A341B65E62C00968342 /* RobotChatViewController.m */; };
@@ -701,8 +699,6 @@
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A635C131DF696AC005C995E /* CallSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallSettingViewController.h; sourceTree = "<group>"; };
 		3A635C141DF696AC005C995E /* CallSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallSettingViewController.m; sourceTree = "<group>"; };
-		3A6764AF1E5D2C4F00ABF196 /* ChatGroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatGroupDetailViewController.h; sourceTree = "<group>"; };
-		3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatGroupDetailViewController.m; sourceTree = "<group>"; };
 		3A6764B21E5D2C6800ABF196 /* GroupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSettingViewController.h; sourceTree = "<group>"; };
 		3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSettingViewController.m; sourceTree = "<group>"; };
 		3A6764B51E5D3FB300ABF196 /* ChatroomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomDetailViewController.h; sourceTree = "<group>"; };
@@ -1395,8 +1391,6 @@
 				D25AA3561E8D29C8006BF820 /* shape_right@2x.png */,
 				3A6764B21E5D2C6800ABF196 /* GroupSettingViewController.h */,
 				3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */,
-				3A6764AF1E5D2C4F00ABF196 /* ChatGroupDetailViewController.h */,
-				3A6764B01E5D2C4F00ABF196 /* ChatGroupDetailViewController.m */,
 				3AD0FB981E1E7267001F3957 /* EMGroupAdminsViewController.h */,
 				3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */,
 				3AF6A6551E1F5BD40022E835 /* EMGroupMembersViewController.h */,
@@ -2974,7 +2968,6 @@
 				846D770E1E6FB52A0091DC94 /* CallResolutionViewController.m in Sources */,
 				846D770F1E6FB52A0091DC94 /* AddFriendCell.m in Sources */,
 				846D77101E6FB52A0091DC94 /* SRRefreshView.m in Sources */,
-				846D77111E6FB52A0091DC94 /* ChatGroupDetailViewController.m in Sources */,
 				846D77121E6FB52A0091DC94 /* GroupListViewController.m in Sources */,
 				846D77131E6FB52A0091DC94 /* EMAlertView.m in Sources */,
 				846D77141E6FB52A0091DC94 /* RobotChatViewController.m in Sources */,
@@ -3065,7 +3058,6 @@
 				3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */,
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
-				3A6764B11E5D2C4F00ABF196 /* ChatGroupDetailViewController.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,
 				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
