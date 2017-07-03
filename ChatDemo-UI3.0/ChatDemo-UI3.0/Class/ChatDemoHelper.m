@@ -172,6 +172,7 @@ static ChatDemoHelper *helper = nil;
     [self _clearHelper];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"loginAtOtherDevice", @"your login account has been in other places") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
@@ -180,6 +181,7 @@ static ChatDemoHelper *helper = nil;
     [self _clearHelper];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"loginUserRemoveFromServer", @"your account has been removed from the server side") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
@@ -188,6 +190,7 @@ static ChatDemoHelper *helper = nil;
     [self _clearHelper];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"servingIsBanned", @"Serving is banned") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
@@ -197,6 +200,7 @@ static ChatDemoHelper *helper = nil;
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:aError.errorDescription delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
 }
 
@@ -262,21 +266,45 @@ static ChatDemoHelper *helper = nil;
             [[ApplyViewController shareController] removeApply:aTarget];
             [self.mainVC setupUntreatedApplyCount];
             break;
+        case EMMultiDevicesEventGroupCreate:
         case EMMultiDevicesEventGroupJoin:
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:nil];
             break;
+        case EMMultiDevicesEventGroupDestroy:
         case EMMultiDevicesEventGroupLeave:
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:nil];
             break;
         case EMMultiDevicesEventGroupApplyAccept:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:nil];
-            [[ApplyViewController shareController] removeApply:aTarget];
-            [self.mainVC setupUntreatedApplyCount];
-            break;
         case EMMultiDevicesEventGroupInviteAccept:
             [[ApplyViewController shareController] removeApply:aTarget];
             [self.mainVC setupUntreatedApplyCount];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:aTarget];
+            break;
+        case EMMultiDevicesEventGroupApply:
+        case EMMultiDevicesEventGroupInvite:
+            break;
+        case EMMultiDevicesEventGroupRemoveMember:
+        case EMMultiDevicesEventGroupBan:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMembers" object:aTarget];
+            break;
+        case EMMultiDevicesEventGroupAllow:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aTarget];
+            break;
+        case EMMultiDevicesEventGroupBlock:
+        case EMMultiDevicesEventGroupUnBlock:
+            break;
+        case EMMultiDevicesEventGroupAssignOwner:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aTarget];
+            break;
+        case EMMultiDevicesEventGroupAddAdmin:
+        case EMMultiDevicesEventGroupRemoveAdmin:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupAdmins" object:aTarget];
+            break;
+        case EMMultiDevicesEventGroupAddMute:
+        case EMMultiDevicesEventGroupRemoveMute:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMutes" object:aTarget];
             break;
             
         default:

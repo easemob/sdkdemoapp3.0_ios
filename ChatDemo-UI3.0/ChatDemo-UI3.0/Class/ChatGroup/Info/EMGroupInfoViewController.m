@@ -435,8 +435,18 @@
 - (void)updateUI:(NSNotification *)aNotif
 {
     id obj = aNotif.object;
-    if (obj && [obj isKindOfClass:[EMGroup class]]) {
+    if ([obj isKindOfClass:[EMGroup class]]) {
+        EMGroup *group = (EMGroup *)obj;
+        if (![group.groupId isEqualToString:self.group.groupId]) {
+            return;
+        }
         self.group = (EMGroup *)obj;
+        
+    } else if ([obj isKindOfClass:[NSString class]]) {
+        NSString *groupId = (NSString *)obj;
+        if (![groupId isEqualToString:self.group.groupId]) {
+            return;
+        }
     }
     
     self.showMembers = self.group.memberList;
