@@ -253,17 +253,17 @@ static ChatDemoHelper *helper = nil;
 }
 
 - (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
-                                  target:(NSString *)aTarget
-                                     ext:(NSString *)aExt
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
 {
-    NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
+    NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aGroupId, aExt];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群组多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
     
     switch (aEvent) {
         case EMMultiDevicesEventGroupInviteDecline:
         case EMMultiDevicesEventGroupApplyDecline:
-            [[ApplyViewController shareController] removeApply:aTarget];
+            [[ApplyViewController shareController] removeApply:aGroupId];
             [self.mainVC setupUntreatedApplyCount];
             break;
         case EMMultiDevicesEventGroupCreate:
@@ -277,34 +277,35 @@ static ChatDemoHelper *helper = nil;
             break;
         case EMMultiDevicesEventGroupApplyAccept:
         case EMMultiDevicesEventGroupInviteAccept:
-            [[ApplyViewController shareController] removeApply:aTarget];
+            [[ApplyViewController shareController] removeApply:aGroupId];
             [self.mainVC setupUntreatedApplyCount];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:aGroupId];
             break;
         case EMMultiDevicesEventGroupApply:
         case EMMultiDevicesEventGroupInvite:
             break;
-        case EMMultiDevicesEventGroupRemoveMember:
+        case EMMultiDevicesEventGroupKick:
         case EMMultiDevicesEventGroupBan:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aTarget];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMembers" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aGroupId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMembers" object:aGroupId];
             break;
         case EMMultiDevicesEventGroupAllow:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aGroupId];
             break;
         case EMMultiDevicesEventGroupBlock:
         case EMMultiDevicesEventGroupUnBlock:
             break;
         case EMMultiDevicesEventGroupAssignOwner:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroupId];
             break;
         case EMMultiDevicesEventGroupAddAdmin:
         case EMMultiDevicesEventGroupRemoveAdmin:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupAdmins" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroupId];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupAdmins" object:aGroupId];
             break;
         case EMMultiDevicesEventGroupAddMute:
         case EMMultiDevicesEventGroupRemoveMute:
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMutes" object:aTarget];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMutes" object:aGroupId];
             break;
             
         default:
