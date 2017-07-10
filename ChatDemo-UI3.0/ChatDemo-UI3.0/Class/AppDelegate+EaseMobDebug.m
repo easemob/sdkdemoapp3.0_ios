@@ -18,7 +18,8 @@
 
 @implementation AppDelegate (EaseMobDebug)
 
--(BOOL)isSpecifyServer{
+-(BOOL)isSpecifyServer
+{
     
     EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
 
@@ -88,7 +89,7 @@
             options.chatServer = [ud stringForKey:@"identifier_imserver"];
             options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
-        //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+        //     EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
         options.apnsCertName = @"chatdemoui_dev";
         options.enableConsoleLog = YES;
         options.usingHttpsOnly = isHttpsOnly;
@@ -99,4 +100,5 @@
     
     return NO;
 }
+
 @end

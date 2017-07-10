@@ -94,6 +94,12 @@
         UITextField *passwordField = alertController.textFields.lastObject;
         self.password = passwordField.text;
         
+        if ([EMClient sharedClient].isLoggedIn && ![self.username isEqualToString:[EMClient sharedClient].currentUsername]) {
+            [self.refreshControl endRefreshing];
+            [self showHint:@"请输入当前登录账号"];
+            return ;
+        }
+        
         if (tag == KALERT_GET_ALL) {
             [self fetchDataFromServer];
         } else if (tag == KALERT_KICK_ALL) {
@@ -169,8 +175,7 @@
     [[EMClient sharedClient] kickAllDevicesWithUsername:self.username password:self.password completion:^(EMError *aError) {
         [weakself hideHud];
         if (!aError) {
-            [weakself.dataSource removeAllObjects];
-            [weakself.tableView reloadData];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
         } else {
             [weakself showHint:aError.errorDescription];
         }
@@ -186,8 +191,13 @@
     [[EMClient sharedClient] kickDevice:device username:self.username password:self.password completion:^(EMError *aError) {
         [weakself hideHud];
         if (!aError) {
-            [weakself.dataSource removeObjectAtIndex:weakself.willKickDeviceIndex.row];
-            [weakself.tableView deleteRowsAtIndexPaths:@[weakself.willKickDeviceIndex] withRowAnimation:UITableViewRowAnimationFade];
+            NSString *deviceName = [UIDevice currentDevice].name;
+            if ([deviceName isEqualToString:device.deviceName]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+            } else {
+                [weakself.dataSource removeObjectAtIndex:weakself.willKickDeviceIndex.row];
+                [weakself.tableView deleteRowsAtIndexPaths:@[weakself.willKickDeviceIndex] withRowAnimation:UITableViewRowAnimationFade];
+            }
         } else {
             [weakself showHint:aError.errorDescription];
         }
