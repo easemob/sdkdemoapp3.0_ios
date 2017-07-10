@@ -219,7 +219,7 @@ static ChatDemoHelper *helper = nil;
 #pragma mark - EMMultiDevicesDelegate
 
 - (void)multiDevicesContactEventDidReceive:(EMMultiDevicesEvent)aEvent
-                                    target:(NSString *)aTarget
+                                  username:(NSString *)aTarget
                                        ext:(NSString *)aExt
 {
     NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
