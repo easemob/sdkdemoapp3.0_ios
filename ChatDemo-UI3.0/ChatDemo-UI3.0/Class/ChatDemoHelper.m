@@ -227,8 +227,6 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
     
     switch (aEvent) {
-        case EMMultiDevicesEventContactAdd:
-            break;
         case EMMultiDevicesEventContactRemove:
             [self.mainVC.contactsVC reloadDataSource];
             break;
@@ -286,6 +284,7 @@ static ChatDemoHelper *helper = nil;
             break;
         case EMMultiDevicesEventGroupKick:
         case EMMultiDevicesEventGroupBan:
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroupId];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupBans" object:aGroupId];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupMembers" object:aGroupId];
             break;
