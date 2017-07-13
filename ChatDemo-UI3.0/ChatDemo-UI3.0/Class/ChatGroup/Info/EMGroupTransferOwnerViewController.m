@@ -144,6 +144,7 @@
                 if (error) {
                     [weakSelf showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
                 } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:nil];
                     [weakSelf backAction];
                 }
             });

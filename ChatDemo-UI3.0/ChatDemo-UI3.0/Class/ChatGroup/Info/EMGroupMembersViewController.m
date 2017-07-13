@@ -34,6 +34,8 @@
     
     self.title = NSLocalizedString(@"group.members", @"Members");
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:@"UpdateGroupMembers" object:nil];
+    
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
     backButton.accessibilityIdentifier = @"back";
     [backButton setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
@@ -48,6 +50,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -148,6 +155,22 @@
             }
         });
     });
+}
+
+#pragma mark - notification
+
+- (void)handleNotification:(NSNotification *)aNotif
+{
+    if (aNotif == nil || aNotif.object == nil || ![aNotif.object isKindOfClass:[NSString class]]) {
+        return;
+    }
+    
+    NSString *groupId = (NSString *)aNotif.object;
+    if (![groupId isEqualToString:self.group.groupId]) {
+        return;
+    }
+    
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 #pragma mark - data

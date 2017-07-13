@@ -72,6 +72,8 @@
     _slimeView.slime.shadowColor = [UIColor grayColor];
     [self.tableView addSubview:_slimeView];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource) name:@"UpdateBlacklist" object:nil];
+    
     [self.slimeView setLoadingWithExpansion];
 }
 
@@ -83,6 +85,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UpdateBlacklist" object:nil];
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
     _slimeView.delegate = nil;
