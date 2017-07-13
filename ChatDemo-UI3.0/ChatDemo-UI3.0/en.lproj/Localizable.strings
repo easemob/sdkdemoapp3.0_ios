@@ -458,3 +458,7 @@
 "NSDateCategory.text12" = "aa hh:mm";
 "NSDateCategory.text13" = "M-d HH:mm";
 "NSDateCategory.text14" = "today %@";
+
+//multi devices
+"alert.multi.contact" = "Contact Multi-devices";
+"alert.multi.group" = "Group Multi-devices";

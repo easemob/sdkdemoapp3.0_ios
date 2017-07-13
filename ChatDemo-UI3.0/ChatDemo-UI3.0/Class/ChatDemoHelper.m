@@ -223,7 +223,7 @@ static ChatDemoHelper *helper = nil;
                                        ext:(NSString *)aExt
 {
     NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"好友多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.multi.contact", @"Contact Multi-devices") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
     
     switch (aEvent) {
@@ -255,7 +255,7 @@ static ChatDemoHelper *helper = nil;
                                      ext:(id)aExt
 {
     NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aGroupId, aExt];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"群组多设备通知" message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.multi.group", @"Group Multi-devices") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
     
     switch (aEvent) {

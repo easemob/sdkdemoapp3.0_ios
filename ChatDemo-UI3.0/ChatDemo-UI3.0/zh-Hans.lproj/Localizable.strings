@@ -457,3 +457,7 @@
 "NSDateCategory.text12" = "晚上hh:mm";
 "NSDateCategory.text13" = "昨天HH:mm";
 "NSDateCategory.text14" = "今天 %@";
+
+//multi devices
+"alert.multi.contact" = "好友多设备通知";
+"alert.multi.group" = "群组多设备通知";
