@@ -188,8 +188,8 @@
     if(_textField.text.length > 0)
     {
 #warning Test code, by default, the user system has a user with the same name.
-        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-        if ([_textField.text isEqualToString:loginUsername]) {
+        NSString *loginUsername = [[[EMClient sharedClient] currentUsername] lowercaseString];
+        if ([[_textField.text lowercaseString] isEqualToString:loginUsername]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notAddSelf", @"can't add yourself as a friend") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
             

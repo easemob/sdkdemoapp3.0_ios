@@ -15,6 +15,7 @@
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
 #import "RedPacketUserConfig.h"
+#import "EMDevicesViewController.h"
 
 //#import <HyphenateIDFAPlugin/EMIDFAPlugin.h>
 
@@ -75,6 +76,14 @@
     _rightItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     _rightItem.tag = 0;
     self.navigationItem.rightBarButtonItem = _rightItem;
+    
+    UIButton *deviceButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+    [deviceButton setTitle:@"设备" forState:UIControlStateNormal];
+    [deviceButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [deviceButton addTarget:self action:@selector(deviceAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:deviceButton];
+    leftItem.tag = 1;
+    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -151,6 +160,12 @@
         self.registerButton.hidden = NO;
         self.loginButton.hidden = NO;
     }
+}
+
+- (void)deviceAction
+{
+    EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
+    [self.navigationController pushViewController:devicesController animated:YES];
 }
 
 //判断账号和密码是否为空

@@ -60,6 +60,8 @@
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource) name:@"reloadGroupList" object:nil];
+    
     [self reloadDataSource];
 }
 
@@ -73,6 +75,13 @@
 {
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self cancelSearch];
 }
 
 #pragma mark - Table view data source

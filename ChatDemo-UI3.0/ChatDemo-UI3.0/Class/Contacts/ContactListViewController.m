@@ -290,38 +290,29 @@
     EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
     self.indexPath = nil;
     
-    if (buttonIndex == alertView.cancelButtonIndex)
-    {
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isDeleteConversation:NO];
-        if (!error) {
-            [self.tableView beginUpdates];
-            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
-            [self.contactsSource removeObject:model.buddy];
-            [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isDeleteConversation:NO];
+        } else {
+            error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isDeleteConversation:YES];
         }
-        else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
-            [self.tableView reloadData];
-        }
-    }
-    else
-    {
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:model.buddy isDeleteConversation:YES];
-        if (!error) {
-            [[EMClient sharedClient].chatManager deleteConversation:model.buddy isDeleteMessages:YES completion:nil];
-            
-            [self.tableView beginUpdates];
-            [[self.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
-            [self.contactsSource removeObject:model.buddy];
-            [self.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
-        }
-        else{
-            [self showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
-            [self.tableView reloadData];
-        }
-    }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                [weakSelf.tableView beginUpdates];
+                [[weakSelf.dataArray objectAtIndex:(indexPath.section - 1)] removeObjectAtIndex:indexPath.row];
+                [weakSelf.contactsSource removeObject:model.buddy];
+                [weakSelf.tableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [weakSelf.tableView endUpdates];
+            }
+            else{
+                [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
+                [weakSelf.tableView reloadData];
+            }
+        });
+    });
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -338,15 +329,22 @@
     
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
-    [self hideHud];
-    if (!error) {
-        //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
-        [self reloadDataSource];
-    }
-    else {
-        [self showHint:error.errorDescription];
-    }
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient].contactManager addUserToBlackList:model.buddy relationshipBoth:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                //由于加入黑名单成功后会刷新黑名单，所以此处不需要再更改好友列表
+                [weakSelf reloadDataSource];
+            }
+            else {
+                [weakSelf showHint:error.errorDescription];
+            }
+        });
+    });
+    
 }
                                                        
 #pragma mark - EaseUserCellDelegate
