@@ -284,6 +284,9 @@
                     case EMErrorServerServingForbidden:
                         TTAlertNoTitle(NSLocalizedString(@"servingIsBanned", @"Serving is banned"));
                         break;
+                    case EMErrorUserLoginTooManyDevices:
+                        TTAlertNoTitle(NSLocalizedString(@"alert.multi.tooManyDevices", @"Login too many devices"));
+                        break;
                     default:
                         TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
                         break;
