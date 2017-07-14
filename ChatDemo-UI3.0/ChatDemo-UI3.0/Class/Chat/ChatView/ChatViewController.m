@@ -166,7 +166,7 @@
 }
 
 - (void)messageViewController:(EaseMessageViewController *)viewController
-   didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
+  didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
 {
     UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
@@ -360,6 +360,12 @@
         }
     }
     
+    EMConversation *conver = [EMClient.sharedClient.chatManager getConversation:@"du001" type:EMConversationTypeChat createIfNotExist:YES];
+    EMTextMessageBody *txt = [[EMTextMessageBody alloc] initWithText:@"testMessage"];
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:conver.conversationId from:EMClient.sharedClient.currentUsername to:@"du001" body:txt ext:nil];
+    [conver insertMessage:msg error:nil];
+    
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -493,8 +499,8 @@
 #pragma mark - private
 
 - (void)showMenuViewController:(UIView *)showInView
-                   andIndexPath:(NSIndexPath *)indexPath
-                    messageType:(EMMessageBodyType)messageType
+                  andIndexPath:(NSIndexPath *)indexPath
+                   messageType:(EMMessageBodyType)messageType
 {
     if (self.menuController == nil) {
         self.menuController = [UIMenuController sharedMenuController];
@@ -513,29 +519,18 @@
     }
     
     NSMutableArray *items = [NSMutableArray array];
-    switch (messageType) {
-        case EMMessageBodyTypeText:
-        {
-            [items addObject:_copyMenuItem];
-        }
-        case EMMessageBodyTypeImage:
-        case EMMessageBodyTypeVideo:
-        {
-            [items addObject:_transpondMenuItem];
-        }
-        case EMMessageBodyTypeVoice:
-        case EMMessageBodyTypeFile:
-        case EMMessageBodyTypeLocation:
-        {
-            
-        }
-            break;
-        default:
-            break;
+    
+    if (messageType == EMMessageBodyTypeText) {
+        [items addObject:_copyMenuItem];
+        [items addObject:_transpondMenuItem];
+        [items addObject:_deleteMenuItem];
+    } else if (messageType == EMMessageBodyTypeImage || messageType == EMMessageBodyTypeVideo) {
+        [items addObject:_transpondMenuItem];
+        [items addObject:_deleteMenuItem];
+    } else {
+        [items addObject:_deleteMenuItem];
     }
-
-    [items addObject:_deleteMenuItem];
-
+    
     [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
