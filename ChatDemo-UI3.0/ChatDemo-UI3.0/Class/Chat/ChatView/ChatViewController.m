@@ -360,12 +360,6 @@
         }
     }
     
-    EMConversation *conver = [EMClient.sharedClient.chatManager getConversation:@"du001" type:EMConversationTypeChat createIfNotExist:YES];
-    EMTextMessageBody *txt = [[EMTextMessageBody alloc] initWithText:@"testMessage"];
-    EMMessage *msg = [[EMMessage alloc] initWithConversationID:conver.conversationId from:EMClient.sharedClient.currentUsername to:@"du001" body:txt ext:nil];
-    [conver insertMessage:msg error:nil];
-    
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
