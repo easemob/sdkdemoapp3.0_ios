@@ -61,6 +61,7 @@
 "noMore" = "No more data";
 "hasRead" = "Read";
 "servingIsBanned" = "Service disabled";
+"getPermission" = "Get Permission";
 
 //app
 "AppName" = "EaseMobDemo";
@@ -405,6 +406,8 @@
 "setting.uploadLog" = "Upload Log";
 "setting.sdkVersion" = "SDK Version";
 "setting.emailLog" = "Email log";
+"setting.deviceResources" = "List of logged devices";
+"setting.kickAllDevices" = "KickAll";
 "setting.uploading" = "Uploading...";
 "setting.uploadSuccess" = "Uploaded successfully";
 "setting.uploadFail" = "Failed to upload";
@@ -455,3 +458,8 @@
 "NSDateCategory.text12" = "aa hh:mm";
 "NSDateCategory.text13" = "M-d HH:mm";
 "NSDateCategory.text14" = "today %@";
+
+//multi devices
+"alert.multi.contact" = "Contact Multi-devices";
+"alert.multi.group" = "Group Multi-devices";
+"alert.multi.tooManyDevices" = "Login too many devices";

@@ -319,7 +319,6 @@
         case 5:
         {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement") message:nil preferredStyle:UIAlertControllerStyleAlert];
-            
             __weak typeof(self) weakSelf = self;
             UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 NSString *announcement = nil;
@@ -327,21 +326,18 @@
                     announcement = alert.textFields.firstObject.text;
                 }
                 [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupAnnouncementChanging", @"Change Announcement")]];
-                [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakSelf.groupId
-                                                                       announcement:announcement
-                                                                         completion:^(EMGroup *aGroup, EMError *aError) {
-                                                                             [weakSelf hideHud];
-                                                                             if (aError) {
-                                                                                 [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.changeAnnouncementFail", @"fail to change announcement"), aError.errorDescription]];
-                                                                             } else {
-                                                                                 [weakSelf.tableView reloadData];
-                                                                             }
-                                                                         }];
+                [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakSelf.groupId announcement:announcement completion:^(EMGroup *aGroup, EMError *aError) {
+                    [weakSelf hideHud];
+                    if (aError) {
+                        [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.changeAnnouncementFail", @"fail to change announcement"), aError.errorDescription]];
+                    } else {
+                        [weakSelf.tableView reloadData];
+                    }
+                }];
             }];
             
             UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             }];
-            
             [alert addAction:ok];
             [alert addAction:cancel];
             
@@ -349,7 +345,6 @@
                 textField.placeholder = NSLocalizedString(@"group.setting.announcement", @"Please input announcement");
                 textField.text = self->_group.announcement;
             }];
-            
             [self presentViewController:alert animated:YES completion:NULL];
         }
             break;
@@ -364,21 +359,17 @@
                     announcement = alert.textFields.firstObject.text;
                 }
                 [weakSelf showHudInView:weakSelf.view hint:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"title.groupExtChanging", @"Change Announcement")]];
-                [[EMClient sharedClient].groupManager updateGroupExtWithId:weakSelf.groupId
-                                                                       ext:announcement
-                                                                completion:^(EMGroup *aGroup, EMError *aError) {
-                                                                    [weakSelf hideHud];
-                                                                    if (aError) {
-                                                                        [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.changeExtFail", @"fail to change ext"), aError.errorDescription]];
-                                                                    } else {
-                                                                        [weakSelf.tableView reloadData];
-                                                                    }
-                                                                }];
+                [[EMClient sharedClient].groupManager updateGroupExtWithId:weakSelf.groupId ext:announcement completion:^(EMGroup *aGroup, EMError *aError) {
+                    [weakSelf hideHud];
+                    if (aError) {
+                        [weakSelf showHint:[NSString stringWithFormat:@"%@%@",NSLocalizedString(@"group.changeExtFail", @"fail to change ext"), aError.errorDescription]];
+                    } else {
+                        [weakSelf.tableView reloadData];
+                    }
+                }];
             }];
             
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            }];
-            
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }];
             [alert addAction:ok];
             [alert addAction:cancel];
             
@@ -386,7 +377,6 @@
                 textField.placeholder = NSLocalizedString(@"group.setting.ext", @"Please input ext");
                 textField.text = self->_group.setting.ext;
             }];
-            
             [self presentViewController:alert animated:YES completion:NULL];
         }
             break;
@@ -394,7 +384,6 @@
         {
             EMGroupSharedFilesViewController *sharedFileController = [[EMGroupSharedFilesViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:sharedFileController animated:YES];
-            
         }
             break;
         case 8:
@@ -531,11 +520,16 @@
 - (void)updateUI:(NSNotification *)aNotif
 {
     id obj = aNotif.object;
-    if (obj && [obj isKindOfClass:[EMGroup class]]) {
-        EMGroup *retGroup = (EMGroup *)obj;
-        if ([self.group.groupId isEqualToString:retGroup.groupId]) {
-            self.group = (EMGroup *)obj;
-        } else {
+    if ([obj isKindOfClass:[EMGroup class]]) {
+        EMGroup *group = (EMGroup *)obj;
+        if (![group.groupId isEqualToString:self.group.groupId]) {
+            return;
+        }
+        self.group = (EMGroup *)obj;
+        
+    } else if ([obj isKindOfClass:[NSString class]]) {
+        NSString *groupId = (NSString *)obj;
+        if (![groupId isEqualToString:self.group.groupId]) {
             return;
         }
     }
@@ -592,16 +586,16 @@
                 [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
             });
         }
+        
     });
     
-    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:_groupId
-                                                          completion:^(NSString *aAnnouncement, EMError *aError) {
-                                                              if (!aError) {
-                                                                  [weakSelf.tableView reloadData];
-                                                              } else {
-                                                                  [weakSelf showHint:NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement")];
-                                                              }
-                                                          }];
+    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:_groupId completion:^(NSString *aAnnouncement, EMError *aError) {
+        if (!aError) {
+            [weakSelf.tableView reloadData];
+        } else {
+            NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement");
+        }
+    }];
 }
 
 - (void)fetchGroupMembers

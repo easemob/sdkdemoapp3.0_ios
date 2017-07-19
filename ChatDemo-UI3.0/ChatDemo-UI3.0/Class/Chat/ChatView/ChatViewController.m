@@ -26,6 +26,7 @@
     UIMenuItem *_copyMenuItem;
     UIMenuItem *_deleteMenuItem;
     UIMenuItem *_transpondMenuItem;
+    UIMenuItem *_recallItem;
 }
 
 @property (nonatomic) BOOL isPlayingAudio;
@@ -146,6 +147,37 @@
 
 #pragma mark - EaseMessageViewControllerDelegate
 
+- (UITableViewCell *)messageViewController:(UITableView *)tableView
+                       cellForMessageModel:(id<IMessageModel>)messageModel
+{
+    NSDictionary *ext = messageModel.message.ext;
+    if ([ext objectForKey:@"em_recall"]) {
+        NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
+        EaseMessageTimeCell *timeCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
+        
+        if (timeCell == nil) {
+            timeCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
+            timeCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        EMTextMessageBody *body = (EMTextMessageBody*)messageModel.message.body;
+        timeCell.title = body.text;
+        return timeCell;
+    }
+    return nil;
+}
+
+- (CGFloat)messageViewController:(EaseMessageViewController *)viewController
+           heightForMessageModel:(id<IMessageModel>)messageModel
+                   withCellWidth:(CGFloat)cellWidth
+{
+    NSDictionary *ext = messageModel.message.ext;
+    if ([ext objectForKey:@"em_recall"]) {
+        return self.timeCellHeight;
+    }
+    return 0;
+}
+
 - (BOOL)messageViewController:(EaseMessageViewController *)viewController
    canLongPressRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -166,7 +198,7 @@
 }
 
 - (void)messageViewController:(EaseMessageViewController *)viewController
-   didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
+  didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
 {
     UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
@@ -344,6 +376,42 @@
     }
 }
 
+#pragma mark - EMChatManagerDelegate
+
+- (void)messagesDidRecall:(NSArray *)aMessages
+{
+    for (EMMessage *msg in aMessages) {
+        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:msg.to messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+        message.isRead = YES;
+        [message setTimestamp:msg.timestamp];
+        [message setLocalTime:msg.localTime];
+        [self.conversation insertMessage:message error:nil];
+        id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
+        BOOL isChatting = [msg.conversationId isEqualToString:self.conversation.conversationId];
+        if (isChatting) {
+            if (newModel) {
+                __block NSUInteger index = NSNotFound;
+                [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
+                    if ([model conformsToProtocol:@protocol(IMessageModel)]) {
+                        if ([msg.messageId isEqualToString:model.message.messageId])
+                        {
+                            index = idx;
+                            *stop = YES;
+                        }
+                    }
+                }];
+                if (index != NSNotFound)
+                {
+                    [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+                    [self.tableView beginUpdates];
+                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    [self.tableView endUpdates];
+                }
+            }
+        }
+    }
+}
+
 #pragma mark - action
 
 - (void)backAction
@@ -400,6 +468,33 @@
     else if ([sender isKindOfClass:[UIButton class]]){
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"sureToDelete", @"please make sure to delete") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
         [alertView show];
+    }
+}
+
+- (void)recallMenuAction:(id)sender
+{
+    if (self.menuIndexPath && self.menuIndexPath.row > 0) {
+        id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:model.message.to messageType:model.message.chatType messageExt:@{@"em_recall":@(YES)}];
+        message.isRead = YES;
+        [message setTimestamp:model.message.timestamp];
+        [message setLocalTime:model.message.localTime];
+        [self.conversation insertMessage:message error:nil];
+        id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
+        [self.dataArray replaceObjectAtIndex:self.menuIndexPath.row withObject:newModel];
+        [self.conversation deleteMessageWithId:model.message.messageId error:nil];
+        [self.messsagesSource removeObject:model.message];
+        [self.tableView reloadData];
+//        __weak typeof(self) weakSelf = self;
+//        id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+//        [[EMClient sharedClient].chatManager recallMessage:model.message
+//                                                completion:^(EMMessage *aMessage, EMError *aError) {
+//                                                    if (!aError) {
+//                                                        [weakSelf deleteMenuAction:nil];
+//                                                    } else {
+//                                                        weakSelf.menuIndexPath = nil;
+//                                                    }
+//                                                }];
     }
 }
 
@@ -493,8 +588,8 @@
 #pragma mark - private
 
 - (void)showMenuViewController:(UIView *)showInView
-                   andIndexPath:(NSIndexPath *)indexPath
-                    messageType:(EMMessageBodyType)messageType
+                  andIndexPath:(NSIndexPath *)indexPath
+                   messageType:(EMMessageBodyType)messageType
 {
     if (self.menuController == nil) {
         self.menuController = [UIMenuController sharedMenuController];
@@ -512,13 +607,29 @@
         _transpondMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"transpond", @"Transpond") action:@selector(transpondMenuAction:)];
     }
     
-    if (messageType == EMMessageBodyTypeText) {
-        [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
-    } else if (messageType == EMMessageBodyTypeImage){
-        [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
-    } else {
-        [self.menuController setMenuItems:@[_deleteMenuItem]];
+    if (_recallItem == nil) {
+        _recallItem = [[UIMenuItem alloc] initWithTitle:@"撤回" action:@selector(recallMenuAction:)];
     }
+    
+    NSMutableArray *items = [NSMutableArray array];
+    
+    if (messageType == EMMessageBodyTypeText) {
+        [items addObject:_copyMenuItem];
+        [items addObject:_transpondMenuItem];
+        [items addObject:_deleteMenuItem];
+    } else if (messageType == EMMessageBodyTypeImage || messageType == EMMessageBodyTypeVideo) {
+        [items addObject:_transpondMenuItem];
+        [items addObject:_deleteMenuItem];
+    } else {
+        [items addObject:_deleteMenuItem];
+    }
+    
+    id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    if (model.isSender) {
+        [items addObject:_recallItem];
+    }
+    
+    [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
 }

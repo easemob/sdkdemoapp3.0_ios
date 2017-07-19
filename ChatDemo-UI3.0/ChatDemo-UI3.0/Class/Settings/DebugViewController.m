@@ -14,6 +14,7 @@
 
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MessageUI/MessageUI.h>
+#import "EMDevicesViewController.h"
 
 @interface DebugViewController ()<MFMailComposeViewControllerDelegate>
 
@@ -53,6 +54,7 @@
         line.backgroundColor = [UIColor lightGrayColor];
         [footerView addSubview:line];
     }
+    self.tableView.tableFooterView = footerView;
     
 //    UIButton *uploadLogButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 20, footerView.frame.size.width - 80, 40)];
 //    [uploadLogButton setBackgroundColor:[UIColor colorWithRed:87 / 255.0 green:186 / 255.0 blue:205 / 255.0 alpha:1.0]];
@@ -80,7 +82,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -97,6 +99,8 @@
         cell.detailTextLabel.text = ver;
     } else if (indexPath.row == 1) {
         cell.textLabel.text = NSLocalizedString(@"setting.emailLog", @"Email send logs");
+    } else if (indexPath.row == 2) {
+        cell.textLabel.text = NSLocalizedString(@"setting.deviceResources", @"List of logged devices");
     }
     
     return cell;
@@ -146,6 +150,9 @@
                 }
             }
         }];
+    } else if (indexPath.row == 2) {
+        EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
+        [self.navigationController pushViewController:devicesController animated:YES];
     }
 }
 
