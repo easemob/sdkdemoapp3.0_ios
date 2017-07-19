@@ -301,11 +301,13 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
-                NSMutableArray *tmp = [weakSelf.dataArray objectAtIndex:(indexPath.section - 1)];
-                [tmp removeObject:model.buddy];
-                [weakSelf.contactsSource removeObject:model.buddy];
-                
-                [weakSelf.tableView reloadData];
+                if ([weakSelf.dataArray count] >= indexPath.section) {
+                    NSMutableArray *tmp = [weakSelf.dataArray objectAtIndex:(indexPath.section - 1)];
+                    [tmp removeObject:model.buddy];
+                    [weakSelf.contactsSource removeObject:model.buddy];
+    
+                    [weakSelf.tableView reloadData];
+                }
             }
             else{
                 [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"deleteFailed", @"Delete failed:%@"), error.errorDescription]];
