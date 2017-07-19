@@ -462,3 +462,4 @@
 //multi devices
 "alert.multi.contact" = "Contact Multi-devices";
 "alert.multi.group" = "Group Multi-devices";
+"alert.multi.tooManyDevices" = "Login too many devices";

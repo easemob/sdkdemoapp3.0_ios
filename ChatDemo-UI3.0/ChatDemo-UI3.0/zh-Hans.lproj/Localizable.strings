@@ -461,3 +461,4 @@
 //multi devices
 "alert.multi.contact" = "好友多设备通知";
 "alert.multi.group" = "群组多设备通知";
+"alert.multi.tooManyDevices" = "登录设备数已达上限";
