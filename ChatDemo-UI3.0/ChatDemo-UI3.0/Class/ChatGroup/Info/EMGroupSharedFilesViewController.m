@@ -101,6 +101,7 @@
     if (file.fileName.length == 0) {
         cell.leftLabel.text = file.fileId;
     }
+    cell.rightLabel.text = [NSString stringWithFormat:@"%.2lf MB",(float)file.fileSize/(1024*1024)];
     
     return cell;
 }
