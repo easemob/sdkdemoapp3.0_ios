@@ -115,18 +115,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
-    } else     if ([ext objectForKey:@"em_recall"]) {
+    } else if ([ext objectForKey:@"em_recall"]) {
         NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
-        EaseMessageTimeCell *timeCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
+        EaseMessageTimeCell *recallCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
         
-        if (timeCell == nil) {
-            timeCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
-            timeCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (recallCell == nil) {
+            recallCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
+            recallCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
         EMTextMessageBody *body = (EMTextMessageBody*)messageModel.message.body;
-        timeCell.title = body.text;
-        return timeCell;
+        recallCell.title = body.text;
+        return recallCell;
     }
     
     return nil;

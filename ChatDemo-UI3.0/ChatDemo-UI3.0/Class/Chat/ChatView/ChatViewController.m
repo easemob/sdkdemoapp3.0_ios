@@ -153,16 +153,16 @@
     NSDictionary *ext = messageModel.message.ext;
     if ([ext objectForKey:@"em_recall"]) {
         NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
-        EaseMessageTimeCell *timeCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
+        EaseMessageTimeCell *recallCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
         
-        if (timeCell == nil) {
-            timeCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
-            timeCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (recallCell == nil) {
+            recallCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
+            recallCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
         EMTextMessageBody *body = (EMTextMessageBody*)messageModel.message.body;
-        timeCell.title = body.text;
-        return timeCell;
+        recallCell.title = body.text;
+        return recallCell;
     }
     return nil;
 }
@@ -190,9 +190,11 @@
     id object = [self.dataArray objectAtIndex:indexPath.row];
     if (![object isKindOfClass:[NSString class]]) {
         EaseMessageCell *cell = (EaseMessageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        [cell becomeFirstResponder];
-        self.menuIndexPath = indexPath;
-        [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.model.bodyType];
+        if ([cell isKindOfClass:[EaseMessageCell class]]) {
+            [cell becomeFirstResponder];
+            self.menuIndexPath = indexPath;
+            [self showMenuViewController:cell.bubbleView andIndexPath:indexPath messageType:cell.model.bodyType];
+        }
     }
     return YES;
 }
@@ -381,33 +383,32 @@
 - (void)messagesDidRecall:(NSArray *)aMessages
 {
     for (EMMessage *msg in aMessages) {
-        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:msg.to messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+        if (![self.conversation.conversationId isEqualToString:msg.conversationId]){
+            continue;
+        }
+        
+        EMMessage *message = [EaseSDKHelper sendTextMessage:[NSString stringWithFormat:@"%@撤回了一条消息",msg.from] to:msg.from messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
         message.isRead = YES;
         [message setTimestamp:msg.timestamp];
         [message setLocalTime:msg.localTime];
-        [self.conversation insertMessage:message error:nil];
         id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
-        BOOL isChatting = [msg.conversationId isEqualToString:self.conversation.conversationId];
-        if (isChatting) {
-            if (newModel) {
-                __block NSUInteger index = NSNotFound;
-                [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
-                    if ([model conformsToProtocol:@protocol(IMessageModel)]) {
-                        if ([msg.messageId isEqualToString:model.message.messageId])
-                        {
-                            index = idx;
-                            *stop = YES;
-                        }
-                    }
-                }];
-                if (index != NSNotFound)
+        __block NSUInteger index = NSNotFound;
+        [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
+            if ([model conformsToProtocol:@protocol(IMessageModel)]) {
+                if ([msg.messageId isEqualToString:model.message.messageId])
                 {
-                    [self.dataArray replaceObjectAtIndex:index withObject:newModel];
-                    [self.tableView beginUpdates];
-                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                    [self.tableView endUpdates];
+                    index = idx;
+                    *stop = YES;
                 }
             }
+        }];
+        if (index != NSNotFound)
+        {
+            id<IMessageModel> model = [self.dataArray objectAtIndex:index];
+            NSInteger sourceIndex = [self.messsagesSource indexOfObject:model.message];
+            [self.messsagesSource replaceObjectAtIndex:sourceIndex withObject:newModel.message];
+            [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+            [self.tableView reloadData];
         }
     }
 }
@@ -474,27 +475,28 @@
 - (void)recallMenuAction:(id)sender
 {
     if (self.menuIndexPath && self.menuIndexPath.row > 0) {
+        __weak typeof(self) weakSelf = self;
         id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:model.message.to messageType:model.message.chatType messageExt:@{@"em_recall":@(YES)}];
-        message.isRead = YES;
-        [message setTimestamp:model.message.timestamp];
-        [message setLocalTime:model.message.localTime];
-        [self.conversation insertMessage:message error:nil];
-        id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
-        [self.dataArray replaceObjectAtIndex:self.menuIndexPath.row withObject:newModel];
-        [self.conversation deleteMessageWithId:model.message.messageId error:nil];
-        [self.messsagesSource removeObject:model.message];
-        [self.tableView reloadData];
-//        __weak typeof(self) weakSelf = self;
-//        id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-//        [[EMClient sharedClient].chatManager recallMessage:model.message
-//                                                completion:^(EMMessage *aMessage, EMError *aError) {
-//                                                    if (!aError) {
-//                                                        [weakSelf deleteMenuAction:nil];
-//                                                    } else {
-//                                                        weakSelf.menuIndexPath = nil;
-//                                                    }
-//                                                }];
+        [[EMClient sharedClient].chatManager recallMessage:model.message
+                                                completion:^(EMMessage *aMessage, EMError *aError) {
+                                                    if (!aError) {
+                                                        id<IMessageModel> model = [weakSelf.dataArray objectAtIndex:weakSelf.menuIndexPath.row];
+                                                        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:model.message.to messageType:model.message.chatType messageExt:@{@"em_recall":@(YES)}];
+                                                        message.isRead = YES;
+                                                        [message setTimestamp:model.message.timestamp];
+                                                        [message setLocalTime:model.message.localTime];
+                                                        [weakSelf.conversation insertMessage:message error:nil];
+                                                        id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
+                                                        [weakSelf.dataArray replaceObjectAtIndex:weakSelf.menuIndexPath.row withObject:newModel];
+                                                        [weakSelf.conversation deleteMessageWithId:model.message.messageId error:nil];
+                                                        NSInteger index = [weakSelf.messsagesSource indexOfObject:model.message];
+                                                        [weakSelf.messsagesSource replaceObjectAtIndex:index withObject:newModel.message];
+                                                        [weakSelf.tableView reloadData];
+                                                    } else {
+                                                        [weakSelf showHint:@"消息撤回失败"];
+                                                    }
+                                                    weakSelf.menuIndexPath = nil;
+                                                }];
     }
 }
 

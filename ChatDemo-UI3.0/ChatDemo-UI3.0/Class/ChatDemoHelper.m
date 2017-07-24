@@ -397,7 +397,7 @@ static ChatDemoHelper *helper = nil;
 - (void)messagesDidRecall:(NSArray *)aMessages
 {
     for (EMMessage *msg in aMessages) {
-        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:msg.to messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+        EMMessage *message = [EaseSDKHelper sendTextMessage:[NSString stringWithFormat:@"%@撤回了一条消息",msg.from] to:msg.from messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
         message.isRead = YES;
         [message setTimestamp:msg.timestamp];
         [message setLocalTime:msg.localTime];
@@ -417,6 +417,14 @@ static ChatDemoHelper *helper = nil;
         }
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:conversatinType createIfNotExist:NO];
         [conversation insertMessage:message error:nil];
+    }
+    
+    if (self.conversationListVC) {
+        [_conversationListVC refresh];
+    }
+    
+    if (self.mainVC) {
+        [_mainVC setupUnreadMessageCount];
     }
 }
 
