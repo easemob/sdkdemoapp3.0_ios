@@ -387,29 +387,7 @@
             continue;
         }
         
-        EMMessage *message = [EaseSDKHelper sendTextMessage:[NSString stringWithFormat:@"%@撤回了一条消息",msg.from] to:msg.from messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
-        message.isRead = YES;
-        [message setTimestamp:msg.timestamp];
-        [message setLocalTime:msg.localTime];
-        id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
-        __block NSUInteger index = NSNotFound;
-        [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
-            if ([model conformsToProtocol:@protocol(IMessageModel)]) {
-                if ([msg.messageId isEqualToString:model.message.messageId])
-                {
-                    index = idx;
-                    *stop = YES;
-                }
-            }
-        }];
-        if (index != NSNotFound)
-        {
-            id<IMessageModel> model = [self.dataArray objectAtIndex:index];
-            NSInteger sourceIndex = [self.messsagesSource indexOfObject:model.message];
-            [self.messsagesSource replaceObjectAtIndex:sourceIndex withObject:newModel.message];
-            [self.dataArray replaceObjectAtIndex:index withObject:newModel];
-            [self.tableView reloadData];
-        }
+        [self _recallWithMessage:msg text:[NSString stringWithFormat:@"%@撤回了一条消息",msg.from] isSave:NO];
     }
 }
 
@@ -480,18 +458,7 @@
         [[EMClient sharedClient].chatManager recallMessage:model.message
                                                 completion:^(EMMessage *aMessage, EMError *aError) {
                                                     if (!aError) {
-                                                        id<IMessageModel> model = [weakSelf.dataArray objectAtIndex:weakSelf.menuIndexPath.row];
-                                                        EMMessage *message = [EaseSDKHelper sendTextMessage:@"您撤回了一条消息" to:model.message.to messageType:model.message.chatType messageExt:@{@"em_recall":@(YES)}];
-                                                        message.isRead = YES;
-                                                        [message setTimestamp:model.message.timestamp];
-                                                        [message setLocalTime:model.message.localTime];
-                                                        [weakSelf.conversation insertMessage:message error:nil];
-                                                        id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
-                                                        [weakSelf.dataArray replaceObjectAtIndex:weakSelf.menuIndexPath.row withObject:newModel];
-                                                        [weakSelf.conversation deleteMessageWithId:model.message.messageId error:nil];
-                                                        NSInteger index = [weakSelf.messsagesSource indexOfObject:model.message];
-                                                        [weakSelf.messsagesSource replaceObjectAtIndex:index withObject:newModel.message];
-                                                        [weakSelf.tableView reloadData];
+                                                        [weakSelf _recallWithMessage:aMessage text:@"您撤回了一条消息" isSave:YES];
                                                     } else {
                                                         [weakSelf showHint:@"消息撤回失败"];
                                                     }
@@ -634,6 +601,47 @@
     [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
+}
+
+- (void)_recallWithMessage:(EMMessage *)msg text:(NSString *)text isSave:(BOOL)isSave
+{
+    EMMessage *message = [EaseSDKHelper sendTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+    message.isRead = YES;
+    [message setTimestamp:msg.timestamp];
+    [message setLocalTime:msg.localTime];
+    id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
+    __block NSUInteger index = NSNotFound;
+    [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
+        if ([model conformsToProtocol:@protocol(IMessageModel)]) {
+            if ([msg.messageId isEqualToString:model.message.messageId])
+            {
+                index = idx;
+                *stop = YES;
+            }
+        }
+    }];
+    if (index != NSNotFound)
+    {
+        __block NSUInteger sourceIndex = NSNotFound;
+        [self.messsagesSource enumerateObjectsUsingBlock:^(EMMessage *message, NSUInteger idx, BOOL *stop){
+            if ([message isKindOfClass:[EMMessage class]]) {
+                if ([msg.messageId isEqualToString:message.messageId])
+                {
+                    sourceIndex = idx;
+                    *stop = YES;
+                }
+            }
+        }];
+        if (sourceIndex != NSNotFound) {
+            [self.messsagesSource replaceObjectAtIndex:sourceIndex withObject:newModel.message];
+        }
+        [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+        [self.tableView reloadData];
+    }
+    
+    if (isSave) {
+        [self.conversation insertMessage:message error:nil];
+    }
 }
 
 
