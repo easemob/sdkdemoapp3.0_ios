@@ -8,6 +8,8 @@
 
 #import "EMDevicesViewController.h"
 
+#import "ChatViewController.h"
+
 #define KALERT_GET_ALL 1
 #define KALERT_KICK_ALL 2
 #define KALERT_KICK_ONE 3
@@ -138,6 +140,10 @@
         cell.textLabel.text = options.deviceUUID;
     }
     
+    if ([cell.textLabel.text length] == 0) {
+        cell.textLabel.text = options.resource;
+    }
+    
     return cell;
 }
 
@@ -159,6 +165,20 @@
         self.willKickDeviceIndex = indexPath;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_KICK_ONE]];
     }   
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if ([EMClient sharedClient].isLoggedIn) {
+        EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
+        NSString *chatter = [NSString stringWithFormat:@"%@/%@", [EMClient sharedClient].currentUsername, options.resource];
+        ChatViewController *controller = [[ChatViewController alloc] initWithConversationChatter:chatter conversationType:EMConversationTypeChat];
+        controller.title = chatter;
+        //controller.from = [NSString stringWithFormat:@"%@/%@", [EMClient sharedClient].currentUsername, [EMClient sharedClient].resource];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 #pragma mark - Action
