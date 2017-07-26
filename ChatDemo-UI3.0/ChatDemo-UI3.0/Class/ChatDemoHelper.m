@@ -416,6 +416,15 @@ static ChatDemoHelper *helper = nil;
                 break;
         }
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:conversatinType createIfNotExist:NO];
+        NSDictionary *dict = msg.ext;
+        if (dict && [dict objectForKey:@"em_at_list"]) {
+            NSArray *atList = [dict objectForKey:@"em_at_list"];
+            if ([atList containsObject:[EMClient sharedClient].currentUsername]) {
+                NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+                [conversationExt removeObjectForKey:kHaveUnreadAtMessage];
+                conversation.ext = conversationExt;
+            }
+        }
         [conversation insertMessage:message error:nil];
     }
     
