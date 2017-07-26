@@ -43,13 +43,13 @@
     self.showRefreshHeader = YES;
     self.delegate = self;
     self.dataSource = self;
-    
     [self _setupBarButtonItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteAllMessages:) name:KNOTIFICATIONNAME_DELETEALLMESSAGE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitChat) name:@"ExitChat" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertCallMessage:) name:@"insertCallMessage" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callOutWithChatter" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callControllerClose" object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,6 +101,21 @@
     }
 }
 
+- (void)tableViewDidTriggerHeaderRefresh {
+    if ([[ChatDemoHelper shareHelper] isFetchHistoryChange]) {
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:self.conversation.conversationId
+                                                              conversationType:self.conversation.type
+                                                                startMessageId:self.conversation.latestMessage.messageId ? self.conversation.latestMessage.messageId :((EMMessage *)self.messsagesSource.firstObject).messageId
+                                                                         count:10
+                                                                    complation:^(NSArray *messages, BOOL isLast, EMError *error)
+         {
+             [super tableViewDidTriggerHeaderRefresh];
+         }];
+    } else {
+        [super tableViewDidTriggerHeaderRefresh];
+    }
+}
+
 #pragma mark - setup subviews
 
 - (void)_setupBarButtonItem
@@ -118,6 +133,8 @@
         clearButton.accessibilityIdentifier = @"clear_message";
         [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(deleteAllMessages:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *clearItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
+
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
     }
     else{//群聊
