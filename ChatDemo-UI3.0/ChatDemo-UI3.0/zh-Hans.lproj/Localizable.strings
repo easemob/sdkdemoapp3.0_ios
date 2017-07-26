@@ -61,6 +61,7 @@
 "noMore" = "没有更多数据了";
 "hasRead" = "已读";
 "servingIsBanned" = "服务被禁用";
+"getPermission" = "获取权限";
 
 //app
 "AppName" = "环信Demo";
@@ -404,6 +405,8 @@
 "setting.uploadLog" = "上传运行日志";
 "setting.sdkVersion" = "SDK 版本";
 "setting.emailLog" = "邮件发送日志";
+"setting.deviceResources" = "登录设备列表";
+"setting.kickAllDevices" = "踢掉所有";
 "setting.uploading" = "正在上传...";
 "setting.uploadSuccess" = "上传成功";
 "setting.uploadFail" = "上传失败";
@@ -454,3 +457,8 @@
 "NSDateCategory.text12" = "晚上hh:mm";
 "NSDateCategory.text13" = "昨天HH:mm";
 "NSDateCategory.text14" = "今天 %@";
+
+//multi devices
+"alert.multi.contact" = "好友多设备通知";
+"alert.multi.group" = "群组多设备通知";
+"alert.multi.tooManyDevices" = "登录设备数已达上限";

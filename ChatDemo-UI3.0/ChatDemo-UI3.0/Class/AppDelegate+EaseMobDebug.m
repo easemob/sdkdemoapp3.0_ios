@@ -18,22 +18,23 @@
 
 @implementation AppDelegate (EaseMobDebug)
 
--(BOOL)isSpecifyServer{
+-(BOOL)isSpecifyServer
+{
     
-//        EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+//    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+//
+//    options.enableDnsConfig = NO;
+//    options.chatPort = 31297;
+//    options.chatServer = @"118.193.28.212";
+//    options.restServer = @"118.193.28.212:31083";
+//
+//    options.apnsCertName = @"chatdemoui_dev";
+//    options.enableConsoleLog = YES;
+//
+//    [[EMClient sharedClient] initializeSDKWithOptions:options];
+//
 //    
-//        options.enableDnsConfig = NO;
-//        options.chatPort = 6717;
-//        options.chatServer = @"120.26.4.73";
-//        options.restServer = @"120.26.4.73:8080";
-//    
-//        options.apnsCertName = @"chatdemoui_dev";
-//        options.enableConsoleLog = YES;
-//    
-//        [[EMClient sharedClient] initializeSDKWithOptions:options];
-//    
-//        
-//        return YES;
+//    return YES;
     
 
     
@@ -88,7 +89,7 @@
             options.chatServer = [ud stringForKey:@"identifier_imserver"];
             options.restServer = [ud stringForKey:@"identifier_restserver"];
         }
-        //    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+        //     EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
         options.apnsCertName = @"chatdemoui_dev";
         options.enableConsoleLog = YES;
         options.usingHttpsOnly = isHttpsOnly;
@@ -99,4 +100,5 @@
     
     return NO;
 }
+
 @end
