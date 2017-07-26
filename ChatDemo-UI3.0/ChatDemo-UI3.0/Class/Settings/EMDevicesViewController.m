@@ -171,14 +171,14 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if ([EMClient sharedClient].isLoggedIn) {
+    /*if ([EMClient sharedClient].isLoggedIn) {
         EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
         NSString *chatter = [NSString stringWithFormat:@"%@/%@", [EMClient sharedClient].currentUsername, options.resource];
         ChatViewController *controller = [[ChatViewController alloc] initWithConversationChatter:chatter conversationType:EMConversationTypeChat];
         controller.title = chatter;
         //controller.from = [NSString stringWithFormat:@"%@/%@", [EMClient sharedClient].currentUsername, [EMClient sharedClient].resource];
         [self.navigationController pushViewController:controller animated:YES];
-    }
+    }*/
 }
 
 #pragma mark - Action
