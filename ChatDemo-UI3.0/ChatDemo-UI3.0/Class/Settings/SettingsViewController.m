@@ -213,7 +213,7 @@
             cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 10) {
-            cell.textLabel.text = @"优先服务器获取消息记录";
+            cell.textLabel.text = NSLocalizedString(@"setting.messageRource", @"The priority server gets the message");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
             [cell.contentView addSubview:self.historySwitch];
