@@ -34,7 +34,6 @@
 @property (strong, nonatomic) UISwitch *groupInviteSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
 @property (strong, nonatomic) UISwitch *historySwitch;
-@property (strong, nonatomic) UILabel *historyLabel;
 
 @end
 
