@@ -206,13 +206,13 @@
             self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
             [cell.contentView addSubview:self.sortMethodSwitch];
         } else if (indexPath.row == 9) {
+            cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (indexPath.row == 10) {
             cell.textLabel.text = NSLocalizedString(@"setting.enableDeliveryAck", @"Whether to send delivery ack");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.deliveryAckSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.deliveryAckSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.deliveryAckSwitch.frame.size.height) / 2, self.deliveryAckSwitch.frame.size.width, self.deliveryAckSwitch.frame.size.height);
             [cell.contentView addSubview:self.deliveryAckSwitch];
-        } else if (indexPath.row == 10) {
-            cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
     
