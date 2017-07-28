@@ -48,6 +48,8 @@
 
 @property (nonatomic) NSIndexPath *indexPath;
 
+@property (nonatomic, strong) NSArray *otherPlatformIds;
+
 @end
 
 @implementation ContactListViewController
@@ -98,7 +100,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [self.dataArray count] + 1;
+    return [self.dataArray count] + 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -106,9 +108,11 @@
     // Return the number of rows in the section.
     if (section == 0) {
         return 3;
+    } else if (section == 1) {
+        return [self.otherPlatformIds count];
     }
     
-    return [[self.dataArray objectAtIndex:(section - 1)] count];
+    return [[self.dataArray objectAtIndex:(section - 2)] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,8 +149,19 @@
             cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
         }
         return cell;
-    }
-    else{
+    } else if (indexPath.section == 1) {
+        NSString *CellIdentifier = @"OtherPlatformIdCell";
+        EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        cell.titleLabel.text = [self.otherPlatformIds objectAtIndex:indexPath.row];
+        
+        return cell;
+        
+    } else {
         NSString *CellIdentifier = [EaseUserCell cellIdentifierWithModel:nil];
         EaseUserCell *cell = (EaseUserCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
@@ -155,7 +170,7 @@
             cell = [[EaseUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         
-        NSArray *userSection = [self.dataArray objectAtIndex:(indexPath.section - 1)];
+        NSArray *userSection = [self.dataArray objectAtIndex:(indexPath.section - 2)];
         EaseUserModel *model = [userSection objectAtIndex:indexPath.row];
         UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
         if (profileEntity) {
@@ -167,7 +182,8 @@
         cell.model = model;
         
         return cell;
-    }}
+    }
+}
 
 #pragma mark - Table view delegate
 
@@ -178,7 +194,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0 || section == 1)
     {
         return 0;
     }
@@ -189,7 +205,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0 || section == 1)
     {
         return nil;
     }
@@ -198,7 +214,7 @@
     [contentView setBackgroundColor:[UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 22)];
     label.backgroundColor = [UIColor clearColor];
-    [label setText:[self.sectionTitles objectAtIndex:(section - 1)]];
+    [label setText:[self.sectionTitles objectAtIndex:(section - 2)]];
     [contentView addSubview:label];
     return contentView;
 }
@@ -238,9 +254,12 @@
             RobotListViewController *robot = [[RobotListViewController alloc] init];
             [self.navigationController pushViewController:robot animated:YES];
         }
+    } else if (section == 1) {
+       ChatViewController * chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
+        [self.navigationController pushViewController:chatController animated:YES];
     }
     else{
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 1)] objectAtIndex:row];
+        EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 2)] objectAtIndex:row];
         UIViewController *chatController = nil;
 #ifdef REDPACKET_AVALABLE
         chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
@@ -255,7 +274,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0 || indexPath.section == 1) {
         return NO;
     }
     return YES;
@@ -265,7 +284,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+        EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 2)] objectAtIndex:indexPath.row];
         if ([model.buddy isEqualToString:loginUsername]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
@@ -287,7 +306,7 @@
     }
     
     NSIndexPath *indexPath = self.indexPath;
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 2)] objectAtIndex:indexPath.row];
     self.indexPath = nil;
     
     __weak typeof(self) weakSelf = self;
@@ -302,7 +321,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([weakSelf.dataArray count] >= indexPath.section) {
-                    NSMutableArray *tmp = [weakSelf.dataArray objectAtIndex:(indexPath.section - 1)];
+                    NSMutableArray *tmp = [weakSelf.dataArray objectAtIndex:(indexPath.section - 2)];
                     [tmp removeObject:model.buddy];
                     [weakSelf.contactsSource removeObject:model.buddy];
     
@@ -326,7 +345,7 @@
     }
     
     NSIndexPath *indexPath = _currentLongPressIndex;
-    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 1)] objectAtIndex:indexPath.row];
+    EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 2)] objectAtIndex:indexPath.row];
     _currentLongPressIndex = nil;
     
     [self hideHud];
@@ -353,7 +372,7 @@
                                                        
 - (void)cellLongPressAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row >= 1) {
+    if (indexPath.section == 0 || indexPath.section == 1) {
         return;
     }
     
@@ -526,6 +545,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
         NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromServerWithError:&error];
+        
+        weakself.otherPlatformIds = [[EMClient sharedClient].contactManager getSelfIdsOnOtherPlatformWithError:nil];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideHud];
         });
