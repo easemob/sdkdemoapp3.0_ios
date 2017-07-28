@@ -395,6 +395,7 @@
 "setting.loginUser" = "Log out(%@)";
 "setting.logoutOngoing" = "Logging out...";
 "setting.sortbyservertime" = "Sort Message by Server Time";
+"setting.enableDeliveryAck" = "Whether to send delivery ack";
 
 "setting.notDisturb" = "Do Not Disturb";
 "setting.showDetail" = "Show Message Details on Lock Screen";

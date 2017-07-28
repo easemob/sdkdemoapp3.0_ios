@@ -32,6 +32,7 @@
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
 @property (strong, nonatomic) UISwitch *groupInviteSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
+@property (strong, nonatomic) UISwitch *deliveryAckSwitch;
 
 @end
 
@@ -108,6 +109,16 @@
     return _sortMethodSwitch;
 }
 
+- (UISwitch *)deliveryAckSwitch
+{
+    if (_deliveryAckSwitch == nil) {
+        _deliveryAckSwitch = [[UISwitch alloc] init];
+        [_deliveryAckSwitch addTarget:self action:@selector(deliveryAckChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    
+    return _deliveryAckSwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -127,10 +138,10 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 10;
+    return 11;
 #endif
 
-    return 9;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -195,6 +206,11 @@
             self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
             [cell.contentView addSubview:self.sortMethodSwitch];
         } else if (indexPath.row == 9) {
+            cell.textLabel.text = NSLocalizedString(@"setting.enableDeliveryAck", @"Whether to send delivery ack");
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.deliveryAckSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.deliveryAckSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.deliveryAckSwitch.frame.size.height) / 2, self.deliveryAckSwitch.frame.size.width, self.deliveryAckSwitch.frame.size.height);
+            [cell.contentView addSubview:self.deliveryAckSwitch];
+        } else if (indexPath.row == 10) {
             cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -293,11 +309,17 @@
 {
     [[EMClient sharedClient].options setSortMessageByServerTime:control.on];
 }
+    
+- (void)deliveryAckChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setEnableDeliveryAck:control.on];
+}
 
 - (void)refreshConfig
 {
     [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:NO];
     [self.sortMethodSwitch setOn:[[EMClient sharedClient].options sortMessageByServerTime] animated:NO];
+    [self.deliveryAckSwitch setOn:[EMClient sharedClient].options.enableDeliveryAck animated:NO];
     
     [self.tableView reloadData];
 }

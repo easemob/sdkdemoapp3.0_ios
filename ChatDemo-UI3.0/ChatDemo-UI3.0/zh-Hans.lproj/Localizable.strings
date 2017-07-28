@@ -394,6 +394,7 @@
 "setting.loginUser" = "退出登录(%@)";
 "setting.logoutOngoing" = "正在退出...";
 "setting.sortbyservertime" = "消息根据服务器时间排序";
+"setting.enableDeliveryAck" = "是否自动发送消息送达回执";
 
 "setting.notDisturb" = "功能消息免打扰";
 "setting.showDetail" = "通知显示消息详情";
