@@ -133,8 +133,6 @@
         clearButton.accessibilityIdentifier = @"clear_message";
         [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(deleteAllMessages:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *clearItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
-
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
     }
     else{//群聊
