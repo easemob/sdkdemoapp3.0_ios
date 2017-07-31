@@ -398,6 +398,7 @@
 "setting.loginUser" = "退出登录(%@)";
 "setting.logoutOngoing" = "正在退出...";
 "setting.sortbyservertime" = "消息根据服务器时间排序";
+"setting.enableDeliveryAck" = "是否自动发送消息送达回执";
 
 "setting.notDisturb" = "功能消息免打扰";
 "setting.showDetail" = "通知显示消息详情";
@@ -405,6 +406,7 @@
 "setting.nightOpen" = "只在夜间开启 (22:00 - 7:00)";
 "setting.close" = "关闭";
 "setting.sureNotDisturb" = "此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?";
+"setting.messageRource" = "优先服务器获取消息";
 
 "setting.uploadLog" = "上传运行日志";
 "setting.sdkVersion" = "SDK 版本";

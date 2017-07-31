@@ -400,6 +400,7 @@
 "setting.loginUser" = "Log out(%@)";
 "setting.logoutOngoing" = "Logging out...";
 "setting.sortbyservertime" = "Sort Message by Server Time";
+"setting.enableDeliveryAck" = "Whether to send delivery ack";
 
 "setting.notDisturb" = "Do Not Disturb";
 "setting.showDetail" = "Show Message Details on Lock Screen";
@@ -407,6 +408,7 @@
 "setting.nightOpen" = "Only Enable From 10pm to 7am";
 "setting.close" = "Off";
 "setting.sureNotDisturb" = "You will no longer receive push notification by turning it on, are you sure?";
+"setting.messageRource" = "The priority server gets the message";
 
 "setting.uploadLog" = "Upload Log";
 "setting.sdkVersion" = "SDK Version";
