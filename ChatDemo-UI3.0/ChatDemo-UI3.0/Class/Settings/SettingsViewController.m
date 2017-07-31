@@ -19,6 +19,7 @@
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
 #import "RedpacketViewControl.h"
+#import "ChatDemoHelper.h"
 
 #if DEMO_CALL == 1
 #import "CallSettingViewController.h"
@@ -32,6 +33,7 @@
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
 @property (strong, nonatomic) UISwitch *groupInviteSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
+@property (strong, nonatomic) UISwitch *historySwitch;
 
 @end
 
@@ -108,6 +110,18 @@
     return _sortMethodSwitch;
 }
 
+- (UISwitch *)historySwitch
+{
+    if (_historySwitch == nil) {
+        _historySwitch = [[UISwitch alloc] init];
+        NSUserDefaults *uDefaults = [NSUserDefaults standardUserDefaults];
+        _historySwitch.on = [uDefaults boolForKey:@"isFetchHistory"];
+        [_historySwitch addTarget:self action:@selector(historySrouceChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    
+    return _historySwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -127,10 +141,10 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 10;
+    return 11;
 #endif
 
-    return 9;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -197,6 +211,11 @@
         } else if (indexPath.row == 9) {
             cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (indexPath.row == 10) {
+            cell.textLabel.text = NSLocalizedString(@"setting.messageRource", @"The priority server gets the message");
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
+            [cell.contentView addSubview:self.historySwitch];
         }
     }
     
@@ -294,6 +313,11 @@
     [[EMClient sharedClient].options setSortMessageByServerTime:control.on];
 }
 
+- (void)historySrouceChanged:(UISwitch *)control {
+    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
+    [udefaults setBool:control.isOn forKey:@"isFetchHistory"];
+}
+    
 - (void)refreshConfig
 {
     [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:NO];

@@ -39,4 +39,6 @@
 
 - (void)asyncConversationFromDB;
 
+- (BOOL)isFetchHistoryChange;
+
 @end

@@ -402,6 +402,7 @@
 "setting.nightOpen" = "Only Enable From 10pm to 7am";
 "setting.close" = "Off";
 "setting.sureNotDisturb" = "You will no longer receive push notification by turning it on, are you sure?";
+"setting.messageRource" = "The priority server gets the message";
 
 "setting.uploadLog" = "Upload Log";
 "setting.sdkVersion" = "SDK Version";
