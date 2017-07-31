@@ -119,6 +119,7 @@
     }
     
     return _deliveryAckSwitch;
+}
 
 - (UISwitch *)historySwitch
 {

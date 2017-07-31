@@ -115,6 +115,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
+    } else if ([ext objectForKey:@"em_recall"]) {
+        NSString *TimeCellIdentifier = [EaseMessageTimeCell cellIdentifier];
+        EaseMessageTimeCell *recallCell = (EaseMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:TimeCellIdentifier];
+        
+        if (recallCell == nil) {
+            recallCell = [[EaseMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TimeCellIdentifier];
+            recallCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        EMTextMessageBody *body = (EMTextMessageBody*)messageModel.message.body;
+        recallCell.title = body.text;
+        return recallCell;
     }
     
     return nil;
@@ -129,6 +141,8 @@
         return [EaseRedBagCell cellHeightWithModel:messageModel];
     }else if ([RedpacketMessageModel isRedpacketTakenMessage:ext]) {
         return [RedpacketTakenMessageTipCell heightForRedpacketMessageTipCell];
+    }else if ([ext objectForKey:@"em_recall"]) {
+        return self.timeCellHeight;
     }
     return 0;
 }
