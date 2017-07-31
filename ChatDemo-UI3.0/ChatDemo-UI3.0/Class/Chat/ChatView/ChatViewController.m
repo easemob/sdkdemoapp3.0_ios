@@ -43,13 +43,13 @@
     self.showRefreshHeader = YES;
     self.delegate = self;
     self.dataSource = self;
-    
     [self _setupBarButtonItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteAllMessages:) name:KNOTIFICATIONNAME_DELETEALLMESSAGE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitChat) name:@"ExitChat" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertCallMessage:) name:@"insertCallMessage" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callOutWithChatter" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callControllerClose" object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,6 +98,25 @@
             [newExt removeObjectForKey:kHaveUnreadAtMessage];
             self.conversation.ext = newExt;
         }
+    }
+}
+
+- (void)tableViewDidTriggerHeaderRefresh {
+    if ([[ChatDemoHelper shareHelper] isFetchHistoryChange]) {
+        NSString *startMessageId = self.conversation.latestMessage.messageId ? self.conversation.latestMessage.messageId :((EMMessage *)self.messsagesSource.firstObject).messageId;
+        
+        NSLog(@"startMessageID ------- %@",startMessageId);
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:self.conversation.conversationId
+                                                              conversationType:self.conversation.type
+                                                                startMessageId:startMessageId
+                                                                      pageSize:10
+                                                                    complation:^(EMCursorResult *aResult, EMError *aError)
+        {
+            [super tableViewDidTriggerHeaderRefresh];
+        }];
+       
+    } else {
+        [super tableViewDidTriggerHeaderRefresh];
     }
 }
 
@@ -166,7 +185,7 @@
 }
 
 - (void)messageViewController:(EaseMessageViewController *)viewController
-   didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
+  didSelectAvatarMessageModel:(id<IMessageModel>)messageModel
 {
     UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
@@ -493,8 +512,8 @@
 #pragma mark - private
 
 - (void)showMenuViewController:(UIView *)showInView
-                   andIndexPath:(NSIndexPath *)indexPath
-                    messageType:(EMMessageBodyType)messageType
+                  andIndexPath:(NSIndexPath *)indexPath
+                   messageType:(EMMessageBodyType)messageType
 {
     if (self.menuController == nil) {
         self.menuController = [UIMenuController sharedMenuController];
@@ -512,13 +531,20 @@
         _transpondMenuItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"transpond", @"Transpond") action:@selector(transpondMenuAction:)];
     }
     
+    NSMutableArray *items = [NSMutableArray array];
+    
     if (messageType == EMMessageBodyTypeText) {
-        [self.menuController setMenuItems:@[_copyMenuItem, _deleteMenuItem,_transpondMenuItem]];
-    } else if (messageType == EMMessageBodyTypeImage){
-        [self.menuController setMenuItems:@[_deleteMenuItem,_transpondMenuItem]];
+        [items addObject:_copyMenuItem];
+        [items addObject:_transpondMenuItem];
+        [items addObject:_deleteMenuItem];
+    } else if (messageType == EMMessageBodyTypeImage || messageType == EMMessageBodyTypeVideo) {
+        [items addObject:_transpondMenuItem];
+        [items addObject:_deleteMenuItem];
     } else {
-        [self.menuController setMenuItems:@[_deleteMenuItem]];
+        [items addObject:_deleteMenuItem];
     }
+    
+    [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:showInView.frame inView:showInView.superview];
     [self.menuController setMenuVisible:YES animated:YES];
 }

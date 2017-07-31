@@ -402,6 +402,7 @@
 "setting.nightOpen" = "只在夜间开启 (22:00 - 7:00)";
 "setting.close" = "关闭";
 "setting.sureNotDisturb" = "此设置会导致全天都处于免打扰模式, 不会再收到推送消息. 是否继续?";
+"setting.messageRource" = "优先服务器获取消息";
 
 "setting.uploadLog" = "上传运行日志";
 "setting.sdkVersion" = "SDK 版本";
