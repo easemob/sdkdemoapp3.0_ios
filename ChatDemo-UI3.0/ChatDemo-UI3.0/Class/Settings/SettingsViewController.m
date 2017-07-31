@@ -33,6 +33,7 @@
 @property (strong, nonatomic) UISwitch *delConversationSwitch;
 @property (strong, nonatomic) UISwitch *groupInviteSwitch;
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
+@property (strong, nonatomic) UISwitch *deliveryAckSwitch;
 @property (strong, nonatomic) UISwitch *historySwitch;
 
 @end
@@ -110,6 +111,15 @@
     return _sortMethodSwitch;
 }
 
+- (UISwitch *)deliveryAckSwitch
+{
+    if (_deliveryAckSwitch == nil) {
+        _deliveryAckSwitch = [[UISwitch alloc] init];
+        [_deliveryAckSwitch addTarget:self action:@selector(deliveryAckChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    
+    return _deliveryAckSwitch;
+
 - (UISwitch *)historySwitch
 {
     if (_historySwitch == nil) {
@@ -141,10 +151,10 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 11;
+    return 12;
 #endif
 
-    return 10;
+    return 9;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -212,6 +222,11 @@
             cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 10) {
+            cell.textLabel.text = NSLocalizedString(@"setting.enableDeliveryAck", @"Whether to send delivery ack");
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            self.deliveryAckSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.deliveryAckSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.deliveryAckSwitch.frame.size.height) / 2, self.deliveryAckSwitch.frame.size.width, self.deliveryAckSwitch.frame.size.height);
+            [cell.contentView addSubview:self.deliveryAckSwitch];
+        } else if (indexPath.row == 11) {
             cell.textLabel.text = NSLocalizedString(@"setting.messageRource", @"The priority server gets the message");
             cell.accessoryType = UITableViewCellAccessoryNone;
             self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
@@ -312,6 +327,11 @@
 {
     [[EMClient sharedClient].options setSortMessageByServerTime:control.on];
 }
+    
+- (void)deliveryAckChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setEnableDeliveryAck:control.on];
+}
 
 - (void)historySrouceChanged:(UISwitch *)control {
     NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
@@ -322,6 +342,7 @@
 {
     [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:NO];
     [self.sortMethodSwitch setOn:[[EMClient sharedClient].options sortMessageByServerTime] animated:NO];
+    [self.deliveryAckSwitch setOn:[EMClient sharedClient].options.enableDeliveryAck animated:NO];
     
     [self.tableView reloadData];
 }
