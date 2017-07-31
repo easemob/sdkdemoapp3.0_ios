@@ -387,7 +387,14 @@
             continue;
         }
         
-        [self _recallWithMessage:msg text:[NSString stringWithFormat:@"%@撤回了一条消息",msg.from] isSave:NO];
+        NSString *text;
+        if ([msg.from isEqualToString:[EMClient sharedClient].currentUsername]) {
+            text = [NSString stringWithFormat:NSLocalizedString(@"message.recall", @"You recall a message")];
+        } else {
+            text = [NSString stringWithFormat:NSLocalizedString(@"message.recallByOthers", @"%@ recall a message"),msg.from];
+        }
+        
+        [self _recallWithMessage:msg text:text isSave:NO];
     }
 }
 
@@ -458,9 +465,9 @@
         [[EMClient sharedClient].chatManager recallMessage:model.message
                                                 completion:^(EMMessage *aMessage, EMError *aError) {
                                                     if (!aError) {
-                                                        [weakSelf _recallWithMessage:aMessage text:@"您撤回了一条消息" isSave:YES];
+                                                        [weakSelf _recallWithMessage:aMessage text:NSLocalizedString(@"message.recall", @"You recall a message") isSave:YES];
                                                     } else {
-                                                        [weakSelf showHint:@"消息撤回失败"];
+                                                        [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"recallFailed", @"Recall failed:%@"), aError.errorDescription]];
                                                     }
                                                     weakSelf.menuIndexPath = nil;
                                                 }];
@@ -577,7 +584,7 @@
     }
     
     if (_recallItem == nil) {
-        _recallItem = [[UIMenuItem alloc] initWithTitle:@"撤回" action:@selector(recallMenuAction:)];
+        _recallItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"recall", @"Recall") action:@selector(recallMenuAction:)];
     }
     
     NSMutableArray *items = [NSMutableArray array];

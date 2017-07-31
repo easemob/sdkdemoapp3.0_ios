@@ -397,7 +397,13 @@ static ChatDemoHelper *helper = nil;
 - (void)messagesDidRecall:(NSArray *)aMessages
 {
     for (EMMessage *msg in aMessages) {
-        EMMessage *message = [EaseSDKHelper sendTextMessage:[NSString stringWithFormat:@"%@撤回了一条消息",msg.from] to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+        NSString *text;
+        if ([msg.from isEqualToString:[EMClient sharedClient].currentUsername]) {
+            text = [NSString stringWithFormat:NSLocalizedString(@"message.recall", @"You recall a message")];
+        } else {
+            text = [NSString stringWithFormat:NSLocalizedString(@"message.recallByOthers", @"%@ recall a message"),msg.from];
+        }
+        EMMessage *message = [EaseSDKHelper sendTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
         message.isRead = YES;
         [message setTimestamp:msg.timestamp];
         [message setLocalTime:msg.localTime];

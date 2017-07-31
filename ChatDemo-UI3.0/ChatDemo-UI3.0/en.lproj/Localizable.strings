@@ -29,6 +29,7 @@
 "delete" = "Delete";
 "copy" = "Copy";
 "transpond" = "Transpond";
+"recall" = "Recall";
 "save" = "Save";
 "prompt" = "Prompt";
 "add" = "Add";
@@ -62,6 +63,7 @@
 "hasRead" = "Read";
 "servingIsBanned" = "Service disabled";
 "getPermission" = "Get Permission";
+"recallFailed" = "Recall failed:%@";
 
 //app
 "AppName" = "EaseMobDemo";
@@ -344,6 +346,9 @@
 "message.startRecordFail" = "Failed to start recording";
 "message.noMessage" = "All messages are cleared";
 "message.forbiddenWords" = "Your message contains forbidden words";
+"message.recall" = "You recall a message";
+"message.recallByOthers" = "%@ recall a message";
+
 
 //media
 "media.timeShort" = "The recording time is too short";
