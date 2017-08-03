@@ -104,7 +104,10 @@
 
 - (void)tableViewDidTriggerHeaderRefresh {
     if ([[ChatDemoHelper shareHelper] isFetchHistoryChange]) {
-        NSString *startMessageId = self.conversation.latestMessage.messageId ? self.conversation.latestMessage.messageId :((EMMessage *)self.messsagesSource.firstObject).messageId;
+        NSString *startMessageId = nil;
+        if ([self.messsagesSource count] > 0) {
+            startMessageId = [(EMMessage *)self.messsagesSource.firstObject messageId];
+        }
         
         NSLog(@"startMessageID ------- %@",startMessageId);
         [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:self.conversation.conversationId
