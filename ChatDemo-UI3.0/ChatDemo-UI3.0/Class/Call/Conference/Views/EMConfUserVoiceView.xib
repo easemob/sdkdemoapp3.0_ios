@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Ubz-Ma-Rz1" customClass="EMConfUserView">
+            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czM-gE-cTn">
+                    <rect key="frame" x="18" y="0.0" width="84" height="84"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="wNK-gG-cnG">
+                            <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="wNK-gG-cnG" secondAttribute="height" multiplier="1:1" id="hfd-au-q82"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conf_ring.png" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-Gu-s37">
+                            <rect key="frame" x="62" y="62" width="17" height="17"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="SJf-Gu-s37" secondAttribute="height" multiplier="1:1" id="dGB-mz-L7a"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="wNK-gG-cnG" firstAttribute="centerY" secondItem="czM-gE-cTn" secondAttribute="centerY" id="IEk-Wq-35S"/>
+                        <constraint firstItem="SJf-Gu-s37" firstAttribute="width" secondItem="czM-gE-cTn" secondAttribute="width" multiplier="0.2" id="MgX-6y-De9"/>
+                        <constraint firstItem="wNK-gG-cnG" firstAttribute="centerX" secondItem="czM-gE-cTn" secondAttribute="centerX" id="RVe-EX-6z9"/>
+                        <constraint firstAttribute="bottom" secondItem="SJf-Gu-s37" secondAttribute="bottom" constant="5" id="V1Y-Hc-Axc"/>
+                        <constraint firstAttribute="bottom" secondItem="wNK-gG-cnG" secondAttribute="bottom" id="mto-Ed-JB9"/>
+                        <constraint firstAttribute="width" secondItem="czM-gE-cTn" secondAttribute="height" multiplier="1:1" id="ooW-tc-zpC"/>
+                        <constraint firstAttribute="trailing" secondItem="SJf-Gu-s37" secondAttribute="trailing" constant="5" id="ySP-Vd-VjR"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jfr-vT-kmP">
+                    <rect key="frame" x="0.0" y="84" width="120" height="36"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Jfr-vT-kmP" secondAttribute="bottom" id="1cD-tf-YAi"/>
+                <constraint firstItem="czM-gE-cTn" firstAttribute="centerX" secondItem="Ubz-Ma-Rz1" secondAttribute="centerX" id="7JC-8v-SSQ"/>
+                <constraint firstItem="czM-gE-cTn" firstAttribute="height" secondItem="Ubz-Ma-Rz1" secondAttribute="height" multiplier="0.7" id="EQV-x7-8Yy"/>
+                <constraint firstAttribute="trailing" secondItem="Jfr-vT-kmP" secondAttribute="trailing" id="SfI-oO-mdS"/>
+                <constraint firstItem="Jfr-vT-kmP" firstAttribute="top" secondItem="czM-gE-cTn" secondAttribute="bottom" id="SzJ-5A-HrW"/>
+                <constraint firstItem="czM-gE-cTn" firstAttribute="top" secondItem="Ubz-Ma-Rz1" secondAttribute="top" id="eaW-9L-1zd"/>
+                <constraint firstItem="Jfr-vT-kmP" firstAttribute="leading" secondItem="Ubz-Ma-Rz1" secondAttribute="leading" id="rVd-NB-LQY"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="imgView" destination="wNK-gG-cnG" id="wCb-Ij-w8z"/>
+                <outlet property="nameLabel" destination="Jfr-vT-kmP" id="RsZ-e7-OBU"/>
+                <outlet property="statusImgView" destination="SJf-Gu-s37" id="M7O-2q-u3O"/>
+                <outlet property="topView" destination="czM-gE-cTn" id="ME2-8v-Oz5"/>
+            </connections>
+            <point key="canvasLocation" x="-293" y="-343"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="conf_ring.png" width="14" height="14"/>
+        <image name="default_avatar.png" width="50" height="50"/>
+    </resources>
+</document>

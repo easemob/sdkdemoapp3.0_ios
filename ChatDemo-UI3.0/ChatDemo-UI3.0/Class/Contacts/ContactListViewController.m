@@ -25,6 +25,9 @@
 #import "BaseTableViewCell.h"
 #import "UIViewController+SearchController.h"
 
+#if DEMO_CALL == 1
+#import "DemoConfManager.h"
+#endif
 
 @implementation NSString (search)
 
@@ -107,7 +110,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 3;
+        return 5;
     } else if (section == 1) {
         return [self.otherPlatformIds count];
     }
@@ -236,12 +239,6 @@
         }
         else if (row == 1)
         {
-//            if (_groupController == nil) {
-//                _groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-//            }
-//            else{
-//                [_groupController reloadDataSource];
-//            }
             GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:groupController animated:YES];
         }
@@ -250,10 +247,19 @@
             ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         }
+//        else if (row == 3) {
+//            RobotListViewController *robot = [[RobotListViewController alloc] init];
+//            [self.navigationController pushViewController:robot animated:YES];
+//        }
+        
+#if DEMO_CALL == 1
         else if (row == 3) {
-            RobotListViewController *robot = [[RobotListViewController alloc] init];
-            [self.navigationController pushViewController:robot animated:YES];
+            [[DemoConfManager sharedManager] chooseUsersToConference:EMCallTypeVoice];
         }
+        else if (row == 4) {
+            [[DemoConfManager sharedManager] chooseUsersToConference:EMCallTypeVideo];
+        }
+#endif
     } else if (section == 1) {
        ChatViewController * chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
         [self.navigationController pushViewController:chatController animated:YES];
