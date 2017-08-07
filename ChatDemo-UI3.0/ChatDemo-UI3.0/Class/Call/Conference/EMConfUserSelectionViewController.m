@@ -199,9 +199,30 @@
     
     NSString *username = [self.dataArray objectAtIndex:indexPath.row];
     cell.nameLabel.text = username;
-    cell.checkButton.selected = [self.selectedNames containsObject:username];
+//    cell.checkButton.selected = [self.selectedNames containsObject:username];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *username = [self.dataArray objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    BOOL isChecked = [self.selectedNames containsObject:username];
+    if (isChecked) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self.selectedNames removeObject:username];
+        [self _removeUserView:username];
+    } else {
+        if ([self.selectedNames count] == 6) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            return;
+        }
+        
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [self.selectedNames addObject:username];
+        [self _setupUserView:username];
+    }
 }
 
 #pragma mark - EMSearchControllerDelegate
@@ -210,29 +231,33 @@
 
 - (void)cell:(EMConfAddUserCell *)aCell checkUserAction:(NSString *)aUsername
 {
-    if ([self.selectedNames containsObject:aUsername]) {
-        [self.selectedNames removeObject:aUsername];
-        [self _removeUserView:aUsername];
-    } else {
-        if ([self.selectedNames count] == 6) {
-            aCell.checkButton.selected = NO;
-            return;
-        }
-        [self.selectedNames addObject:aUsername];
-        [self _setupUserView:aUsername];
-    }
+//    if ([self.selectedNames containsObject:aUsername]) {
+//        [self.selectedNames removeObject:aUsername];
+//        [self _removeUserView:aUsername];
+//    } else {
+//        if ([self.selectedNames count] == 6) {
+//            aCell.checkButton.selected = NO;
+//            return;
+//        }
+//        [self.selectedNames addObject:aUsername];
+//        [self _setupUserView:aUsername];
+//    }
 }
 
 #pragma mark - EMConfSelectionUserViewDelegate
 
 - (void)deselectUser:(NSString *)aUserName
 {
+    if (aUserName == [EMClient sharedClient].currentUsername) {
+        return;
+    }
+    
     [self.selectedNames removeObject:aUserName];
     [self _removeUserView:aUserName];
     
     NSInteger index = [self.dataArray indexOfObject:aUserName];
     EMConfAddUserCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    cell.checkButton.selected = NO;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 }
 
 #pragma mark - action

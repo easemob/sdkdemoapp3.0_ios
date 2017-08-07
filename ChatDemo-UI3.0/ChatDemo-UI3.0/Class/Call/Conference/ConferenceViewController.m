@@ -226,16 +226,16 @@
 - (void)_setupSubviews
 {
     if (_isConnected == NO) {
-        self.statusLabel.text = @"正在连接...";
+        self.statusLabel.text = @"正在建立连接...";
     }
     
-    [self.silenceButton setImage:[UIImage imageNamed:@"Button_Mute active"] forState:UIControlStateSelected];
+    [self.silenceButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     
     CGSize boundSize = [[UIScreen mainScreen] bounds].size;
     int maxHeight = 0;
     _top = 0;
     if (self.type == EMCallTypeVoice) {
-        [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker active"] forState:UIControlStateSelected];
+        [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker_active"] forState:UIControlStateSelected];
         
         _border = 20;
         maxHeight = (self.remotesView.frame.size.height - _border) / 2;
@@ -250,7 +250,7 @@
         
         [self _layoutVoiceAddButton];
     } else if (self.type == EMCallTypeVideo) {
-        [self.switchCameraButton setImage:[UIImage imageNamed:@"Button_Camera switch active"] forState:UIControlStateSelected];
+        [self.switchCameraButton setImage:[UIImage imageNamed:@"Button_Camera_active"] forState:UIControlStateSelected];
         self.speakerOutButton.hidden = YES;
         self.switchCameraButton.hidden = NO;
         

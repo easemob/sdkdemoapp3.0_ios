@@ -116,7 +116,7 @@
 
 - (void)_layoutSubviews
 {
-    [self.silenceButton setImage:[UIImage imageNamed:@"Button_Mute active"] forState:UIControlStateSelected];
+    [self.silenceButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     self.timeLabel.hidden = YES;
     self.remoteNameLabel.text = self.callSession.remoteName;
     
@@ -124,7 +124,7 @@
     switch (self.callSession.type) {
         case EMCallTypeVoice:
         {
-            [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker active"] forState:UIControlStateSelected];
+            [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker_active"] forState:UIControlStateSelected];
             if (isCaller) {
                 self.rejectButton.hidden = YES;
                 self.answerButton.hidden = YES;

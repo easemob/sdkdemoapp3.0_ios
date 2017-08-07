@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="3Zr-MT-aud">
@@ -27,37 +27,21 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFp-4j-u4W">
-                        <rect key="frame" x="65" y="8" width="186" height="33.5"/>
+                        <rect key="frame" x="65" y="8" width="42" height="33.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HnH-T7-38H">
-                        <rect key="frame" x="271" y="6" width="37" height="37"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="37" id="MGb-vC-4XK"/>
-                            <constraint firstAttribute="height" constant="37" id="RpB-RV-F5Z"/>
-                        </constraints>
-                        <state key="normal" image="conf_uncheck.png"/>
-                        <connections>
-                            <action selector="checkAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="4Dy-Yd-gka"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="3Zr-MT-aud" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="3IM-uR-0xQ"/>
-                    <constraint firstItem="HnH-T7-38H" firstAttribute="leading" secondItem="OFp-4j-u4W" secondAttribute="trailing" constant="20" id="F1k-n3-EDZ"/>
                     <constraint firstAttribute="bottomMargin" secondItem="OFp-4j-u4W" secondAttribute="bottom" id="Q7w-sY-zQG"/>
                     <constraint firstItem="OFp-4j-u4W" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="beP-MF-IVR"/>
-                    <constraint firstItem="HnH-T7-38H" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="qhd-Lu-OlW"/>
-                    <constraint firstAttribute="trailing" secondItem="HnH-T7-38H" secondAttribute="trailing" constant="12" id="rEm-dh-TPe"/>
-                    <constraint firstAttribute="bottom" secondItem="HnH-T7-38H" secondAttribute="bottom" constant="6" id="uqA-k1-h9n"/>
                     <constraint firstItem="OFp-4j-u4W" firstAttribute="leading" secondItem="3Zr-MT-aud" secondAttribute="trailing" constant="15" id="weg-Fp-q8g"/>
                     <constraint firstItem="3Zr-MT-aud" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="yTE-go-c8K"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="checkButton" destination="HnH-T7-38H" id="vmB-pM-eFP"/>
                 <outlet property="imgView" destination="3Zr-MT-aud" id="eZP-Ys-OvK"/>
                 <outlet property="nameLabel" destination="OFp-4j-u4W" id="ww3-t9-Kmw"/>
             </connections>
@@ -65,7 +49,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="conf_uncheck.png" width="20" height="20"/>
         <image name="default_avatar.png" width="50" height="50"/>
     </resources>
 </document>
