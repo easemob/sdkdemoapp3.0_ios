@@ -27,6 +27,7 @@ static NSString *kGroupName = @"GroupName";
 
 #if DEMO_CALL == 1
 #import <Hyphenate/Hyphenate.h>
+#import "DemoConfManager.h"
 
 @interface MainViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
 #else
@@ -80,6 +81,10 @@ static NSString *kGroupName = @"GroupName";
     
     [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
     [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
+    
+#if DEMO_CALL == 1
+    [DemoConfManager sharedManager].mainController = self;
+#endif
 }
 
 - (void)didReceiveMemoryWarning

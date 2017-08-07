@@ -147,10 +147,19 @@
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.chatroom",@"chatroom");
         }
+//        else if (indexPath.row == 3) {
+//            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
+//            cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
+//        }
         else if (indexPath.row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
-            cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
+            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_audioCall"];
+            cell.titleLabel.text = NSLocalizedString(@"title.conference.voice",@"mutil voice conference");
         }
+        else if (indexPath.row == 4) {
+            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
+            cell.titleLabel.text = NSLocalizedString(@"title.conference.video",@"mutil video conference");
+        }
+        
         return cell;
     } else if (indexPath.section == 1) {
         NSString *CellIdentifier = @"OtherPlatformIdCell";

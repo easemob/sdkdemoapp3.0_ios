@@ -8,9 +8,7 @@
 
 #import "ConferenceViewController.h"
 
-#import "EMClient+Conference.h"
-#import "IEMChatManager.h"
-#import "IEMConferenceManager.h"
+#import <Hyphenate/Hyphenate.h>
 
 #import "DemoConfManager.h"
 #import "EMConfUserSelectionViewController.h"
@@ -36,7 +34,7 @@
 
 @end
 
-@interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConferenceBuilderDelegate, EMConfUserViewDelegate>
+@interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConfUserViewDelegate>
 {
     float _top;
     float _width;
@@ -65,7 +63,7 @@
 @property (weak, nonatomic) IBOutlet UIView *voiceAddButton;
 @property (weak, nonatomic) IBOutlet UIView *videoAddButton;
 
-@property (strong, nonatomic) EMCallConference *conference;
+@property (strong, nonatomic) __block EMCallConference *conference;
 @property (strong, nonatomic) NSMutableArray *memberNames;
 @property (strong, nonatomic) EMCallLocalView *localView;
 @property (strong, nonatomic) NSMutableDictionary *userViews;
@@ -74,6 +72,8 @@
 @property (strong, nonatomic) NSString *currentMaxUserName;
 @property (nonatomic) int timeLength;
 @property (strong, nonatomic) NSTimer *timeTimer;
+
+@property (strong, nonatomic) NSString *creater;
 
 @end
 
@@ -139,7 +139,7 @@
     
     [self _setupSubviews];
     
-    [[EMClient sharedClient].conferenceManager setBuilder:self];
+//    [[EMClient sharedClient].conferenceManager setBuilder:self];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
     EMError *error = nil;
@@ -148,29 +148,38 @@
         EMConfUserView *userView = [self.userViews objectForKey:[EMClient sharedClient].currentUsername];
         localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
     }
+    __weak typeof(self) weakSelf = self;
+    void (^block)() = ^(EMError *aError){
+        if (aError) {
+            weakSelf.conference = nil;
+            self.navigationController.navigationBarHidden = NO;
+            [self.navigationController popViewControllerAnimated:NO];
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+        } else {
+            for (NSString *userName in weakSelf.memberNames) {
+                [weakSelf _inviteUser:userName];
+            }
+            
+            //订阅
+            [weakSelf _subUserStream:weakSelf.creater];
+            for (NSString *userName in self.memberNames) {
+                [weakSelf _subUserStream:userName];
+            }
+        }
+    };
+    
     if (_isCreater) {
-        self.conference = [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:nil localVideoView:localView error:&error];
+        EMCallPubConfig *pubConfig = [[EMCallPubConfig alloc] init];
+        pubConfig.username = [EMClient sharedClient].currentUsername;
+        pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
+        [[EMClient sharedClient].conferenceManager createAndJoinConferencePassword:@"" pubConfig:pubConfig localVideoView:localView completion:^(EMCallConference *aCall, EMError *aError) {
+            weakSelf.conference = aCall;
+            block(aError);
+        }];
     } else {
         self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" localVideoView:localView error:&error];
-    }
-    
-    if (error) {
-        self.conference = nil;
-        self.navigationController.navigationBarHidden = NO;
-        [self.navigationController popViewControllerAnimated:NO];
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertView show];
-    } else {
-        for (NSString *userName in self.memberNames) {
-            [self _inviteUser:userName];
-        }
-        
-        //订阅
-        [self _subUserStream:_creater];
-        for (NSString *userName in self.memberNames) {
-            [self _subUserStream:userName];
-        }
     }
 }
 
@@ -195,7 +204,7 @@
 
 - (void)dealloc
 {
-    [[EMClient sharedClient].conferenceManager setBuilder:nil];
+//    [[EMClient sharedClient].conferenceManager setBuilder:nil];
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
 }
 
@@ -410,7 +419,7 @@
         frame = tmpFrame;
     }
     
-    if (self.conference.type == EMCallTypeVoice) {
+    if (self.type == EMCallTypeVoice) {
         [self _layoutVoiceAddButton];
     } else {
         [self _layoutVideoAddButton];
@@ -423,7 +432,7 @@
 {
     NSMutableDictionary *ext = [[NSMutableDictionary alloc] init];
     [ext setObject:[EMClient sharedClient].currentUsername forKey:@"creater"];
-    [ext setObject:[NSNumber numberWithInteger:self.conference.type] forKey:@"type"];
+    [ext setObject:[NSNumber numberWithInteger:self.type] forKey:@"type"];
     NSMutableArray *members = [[NSMutableArray alloc] init];
     [members addObjectsFromArray:self.memberNames];
     [members removeObject:[EMClient sharedClient].currentUsername];
@@ -450,15 +459,15 @@
         remoteView = (EMCallRemoteView *)[userView.topView viewWithTag:100];
     }
     
-    EMCallStream *stream = [self.conference getSubscribableStreamForUserName:aUserName];
-    if (stream) {
-        EMError *error = nil;
-        [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:stream remoteVideoView:remoteView error:&error];
-        if (error) {
-            NSString *message = [NSString stringWithFormat:@"订阅 %@ 失败", _creater];
-            [self showHint:message];
-        }
-    }
+//    EMCallStream *stream = [self.conference getSubscribableStreamForUserName:aUserName];
+//    if (stream) {
+//        EMError *error = nil;
+//        [[EMClient sharedClient].conferenceManager subscribeConferenceStream:self.conference.callId stream:stream remoteVideoView:remoteView error:&error];
+//        if (error) {
+//            NSString *message = [NSString stringWithFormat:@"订阅 %@ 失败", _creater];
+//            [self showHint:message];
+//        }
+//    }
 }
 
 #pragma mark - private timer
@@ -520,19 +529,20 @@
 #pragma mark - EMConferenceManagerDelegate
 
 - (void)userDidJoinConference:(EMCallConference *)aConference
-                         user:(NSString *)aUsername
+                         user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", aUsername];
+        NSString *username = aMember.username;
+        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", username];
         [self showHint:message];
         
-        if (![self.memberNames containsObject:aUsername]) {
-            [self.memberNames addObject:aUsername];
-            if (self.conference.type == EMCallTypeVoice) {
-                [self _setupUserVoiceView:aUsername];
+        if (![self.memberNames containsObject:username]) {
+            [self.memberNames addObject:username];
+            if (self.type == EMCallTypeVoice) {
+                [self _setupUserVoiceView:username];
                 [self _layoutVoiceAddButton];
             } else {
-                [self _setupUserVideoView:aUsername];
+                [self _setupUserVideoView:username];
                 [self _layoutVideoAddButton];
             }
         }
@@ -540,24 +550,26 @@
 }
 
 - (void)userDidLeaveConference:(EMCallConference *)aConference
-                          user:(NSString *)aUsername
+                          user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", aUsername];
+        NSString *username = aMember.username;
+        NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", username];
         [self showHint:message];
         
-        [self _removeUser:aUsername];
+        [self _removeUser:username];
     }
 }
 
 - (void)userDidPubConferenceStream:(EMCallConference *)aConference
-                              user:(NSString *)aUsername
+                              user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", aUsername];
+        NSString *username = aMember.username;
+        NSString *message = [NSString stringWithFormat:@"%@ 已上传数据流", username];
         [self showHint:message];
         
-        [self _subUserStream:aUsername];
+        [self _subUserStream:username];
     }
 }
 
@@ -584,24 +596,24 @@
 - (void)conferenceStreamBeginTransmite:(EMCallConference *)aConference
                                 stream:(EMCallStream *)aStream
 {
-    if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *userName = aStream.userName;
-        if ([userName length] == 0) {
-            return;
-        }
-        
-        if (!_isConnected) {
-            [self _startTimeTimer];
-        }
-        
-        EMConfUserView *userView = [self.userViews objectForKey:userName];
-        if (userView) {
-            userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
-            if (self.type == EMCallTypeVideo) {
-                [userView.imgView removeFromSuperview];
-            }
-        }
-    }
+//    if ([aConference.callId isEqualToString:self.conference.callId]) {
+//        NSString *userName = aStream.userName;
+//        if ([userName length] == 0) {
+//            return;
+//        }
+//        
+//        if (!_isConnected) {
+//            [self _startTimeTimer];
+//        }
+//        
+//        EMConfUserView *userView = [self.userViews objectForKey:userName];
+//        if (userView) {
+//            userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
+//            if (self.type == EMCallTypeVideo) {
+//                [userView.imgView removeFromSuperview];
+//            }
+//        }
+//    }
 }
 
 #pragma mark - EMConfUserViewDelegate
@@ -663,18 +675,18 @@
 
 - (IBAction)switchCameraAction:(id)sender
 {
-    [self.conference switchCameraPosition:self.switchCameraButton.selected];
-    self.switchCameraButton.selected = !self.switchCameraButton.selected;
+//    [self.conference switchCameraPosition:self.switchCameraButton.selected];
+//    self.switchCameraButton.selected = !self.switchCameraButton.selected;
 }
 
 - (IBAction)silenceAction:(id)sender
 {
-    self.silenceButton.selected = !self.silenceButton.selected;
-    if (self.silenceButton.selected) {
-        [self.conference pauseLocalVoice];
-    } else {
-        [self.conference resumeLocalVoice];
-    }
+//    self.silenceButton.selected = !self.silenceButton.selected;
+//    if (self.silenceButton.selected) {
+//        [self.conference pauseLocalVoice];
+//    } else {
+//        [self.conference resumeLocalVoice];
+//    }
 }
 
 - (void)minAction

@@ -10,9 +10,7 @@
 
 #if DEMO_CALL == 1
 
-#import "EMSDKFull.h"
-#import "EMClient+Conference.h"
-#import "IEMConferenceManager.h"
+#import <Hyphenate/Hyphenate.h>
 
 #import "MainViewController.h"
 #import "EMConfUserSelectionViewController.h"

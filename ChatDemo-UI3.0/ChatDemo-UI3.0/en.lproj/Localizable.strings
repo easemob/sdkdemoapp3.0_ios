@@ -465,3 +465,7 @@
 "alert.multi.contact" = "Contact Multi-devices";
 "alert.multi.group" = "Group Multi-devices";
 "alert.multi.tooManyDevices" = "Login too many devices";
+
+//multi call
+"title.conference.voice" = "Mutil Voice Conference";
+"title.conference.video" = "Mutil Video Conference";

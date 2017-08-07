@@ -10,6 +10,15 @@
 		283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283403081A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m */; };
 		28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFD6331B01D40500D0ADEC /* ChatroomListViewController.m */; };
 		3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B1B9EE1C3B80290087A74F /* MessageUI.framework */; };
+		3A1D2ED61F3815D3004929BD /* ConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D2EC91F3815D3004929BD /* ConferenceViewController.m */; };
+		3A1D2ED71F3815D3004929BD /* ConferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D2ECA1F3815D3004929BD /* ConferenceViewController.xib */; };
+		3A1D2ED81F3815D3004929BD /* DemoConfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D2ECC1F3815D3004929BD /* DemoConfManager.m */; };
+		3A1D2ED91F3815D3004929BD /* EMConfUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D2ECE1F3815D3004929BD /* EMConfUserSelectionViewController.m */; };
+		3A1D2EDA1F3815D3004929BD /* EMConfAddUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1D2ED11F3815D3004929BD /* EMConfAddUserCell.m */; };
+		3A1D2EDB1F3815D3004929BD /* EMConfAddUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D2ED21F3815D3004929BD /* EMConfAddUserCell.xib */; };
+		3A1D2EDC1F3815D3004929BD /* EMConfSelectionUserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D2ED31F3815D3004929BD /* EMConfSelectionUserView.xib */; };
+		3A1D2EDD1F3815D3004929BD /* EMConfUserVideoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D2ED41F3815D3004929BD /* EMConfUserVideoView.xib */; };
+		3A1D2EDE1F3815D3004929BD /* EMConfUserVoiceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D2ED51F3815D3004929BD /* EMConfUserVoiceView.xib */; };
 		3A22B1B71E2F7D8F0001D791 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */; };
 		3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */; };
@@ -1113,6 +1122,34 @@
 			path = Chatroom;
 			sourceTree = "<group>";
 		};
+		3A1D2EC71F3815D3004929BD /* Conference */ = {
+			isa = PBXGroup;
+			children = (
+				3A1D2EC81F3815D3004929BD /* ConferenceViewController.h */,
+				3A1D2EC91F3815D3004929BD /* ConferenceViewController.m */,
+				3A1D2ECA1F3815D3004929BD /* ConferenceViewController.xib */,
+				3A1D2ECB1F3815D3004929BD /* DemoConfManager.h */,
+				3A1D2ECC1F3815D3004929BD /* DemoConfManager.m */,
+				3A1D2ECD1F3815D3004929BD /* EMConfUserSelectionViewController.h */,
+				3A1D2ECE1F3815D3004929BD /* EMConfUserSelectionViewController.m */,
+				3A1D2ECF1F3815D3004929BD /* Views */,
+			);
+			path = Conference;
+			sourceTree = "<group>";
+		};
+		3A1D2ECF1F3815D3004929BD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A1D2ED01F3815D3004929BD /* EMConfAddUserCell.h */,
+				3A1D2ED11F3815D3004929BD /* EMConfAddUserCell.m */,
+				3A1D2ED21F3815D3004929BD /* EMConfAddUserCell.xib */,
+				3A1D2ED31F3815D3004929BD /* EMConfSelectionUserView.xib */,
+				3A1D2ED41F3815D3004929BD /* EMConfUserVideoView.xib */,
+				3A1D2ED51F3815D3004929BD /* EMConfUserVoiceView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		3A2C3A1C1E23AF5000DCD9BE /* Info */ = {
 			isa = PBXGroup;
 			children = (
@@ -1145,6 +1182,7 @@
 		3A386E881DE5539C000F3D8E /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				3A1D2EC71F3815D3004929BD /* Conference */,
 				3A2858121DF856AD0062B7F0 /* CallResolutionViewController.h */,
 				3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */,
 				3A635C131DF696AC005C995E /* CallSettingViewController.h */,
@@ -2240,6 +2278,7 @@
 				3A386F081DE5539C000F3D8E /* Button_Stats disabled@3x.png in Resources */,
 				EBD2AB541A7CDAC000D16528 /* chat_location_preview@2x.png in Resources */,
 				D2B3DAD01BF1D7B700913BD5 /* icon_018.gif in Resources */,
+				3A1D2EDE1F3815D3004929BD /* EMConfUserVoiceView.xib in Resources */,
 				3A386EF21DE5539C000F3D8E /* Button_Minimize@2x.png in Resources */,
 				D2B3DAE01BF1D7B700913BD5 /* icon_030.gif in Resources */,
 				EBD2ABB91A7CDAC000D16528 /* tabbarBackground.png in Resources */,
@@ -2336,6 +2375,7 @@
 				3A386EDF1DE5539C000F3D8E /* Button_Camera switch active.png in Resources */,
 				D2B3DADC1BF1D7B700913BD5 /* icon_027.gif in Resources */,
 				3A386ED31DE5539C000F3D8E /* EMCallViewController.xib in Resources */,
+				3A1D2EDC1F3815D3004929BD /* EMConfSelectionUserView.xib in Resources */,
 				EBD2ABB31A7CDAC000D16528 /* tabbar_contactsHL.png in Resources */,
 				D2B3DADA1BF1D7B700913BD5 /* icon_024.gif in Resources */,
 				D2B3DAC71BF1D7B700913BD5 /* icon_007_cover.png in Resources */,
@@ -2347,9 +2387,11 @@
 				EBD2AB851A7CDAC000D16528 /* chat_receiver_audio_playing000@2x.png in Resources */,
 				3A386EFE1DE5539C000F3D8E /* Button_Speaker active@2x.png in Resources */,
 				D25AA35D1E8D29C8006BF820 /* group_add@2x.png in Resources */,
+				3A1D2EDB1F3815D3004929BD /* EMConfAddUserCell.xib in Resources */,
 				D25AA3581E8D29C8006BF820 /* default_avatar@2x.png in Resources */,
 				EBD2ABA41A7CDAC000D16528 /* titleBar.png in Resources */,
 				D2B3DAC91BF1D7B700913BD5 /* icon_010_cover.png in Resources */,
+				3A1D2EDD1F3815D3004929BD /* EMConfUserVideoView.xib in Resources */,
 				3A386F061DE5539C000F3D8E /* Button_Stats disabled.png in Resources */,
 				3A386EFB1DE5539C000F3D8E /* Button_Mute@2x.png in Resources */,
 				EBD2ABB61A7CDAC000D16528 /* tabbar_setting@2x.png in Resources */,
@@ -2671,6 +2713,7 @@
 				3A2C3A281E23AF5000DCD9BE /* EMChatroomMutesViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
+				3A1D2ED91F3815D3004929BD /* EMConfUserSelectionViewController.m in Sources */,
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
 				3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
@@ -2679,11 +2722,13 @@
 				D2D6881E1EC2F4E600CA1905 /* EMGroupSharedFilesViewController.m in Sources */,
 				9003D9161939D8D000DC38A4 /* ApplyViewController.m in Sources */,
 				3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */,
+				3A1D2EDA1F3815D3004929BD /* EMConfAddUserCell.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
 				90AFCFD81ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */,
+				3A1D2ED81F3815D3004929BD /* DemoConfManager.m in Sources */,
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
 				3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */,
 				D25AA35B1E8D29C8006BF820 /* EMMemberCell.m in Sources */,
@@ -2712,6 +2757,7 @@
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
+				3A1D2ED61F3815D3004929BD /* ConferenceViewController.m in Sources */,
 				90AFCFDA1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */,
 				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,
 				3C13D94E1A120BA200903622 /* ContactView.m in Sources */,
