@@ -148,6 +148,7 @@
         EMConfUserView *userView = [self.userViews objectForKey:[EMClient sharedClient].currentUsername];
         localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
     }
+    
     __weak typeof(self) weakSelf = self;
     void (^block)() = ^(EMError *aError){
         if (aError) {
@@ -155,9 +156,10 @@
             self.navigationController.navigationBarHidden = NO;
             [self.navigationController popViewControllerAnimated:NO];
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建或加入会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
         } else {
+            [self _userViewDidConnected:[EMClient sharedClient].currentUsername];
             for (NSString *userName in weakSelf.memberNames) {
                 [weakSelf _inviteUser:userName];
             }
@@ -170,16 +172,19 @@
         }
     };
     
+    EMCallPubConfig *pubConfig = [[EMCallPubConfig alloc] init];
+    pubConfig.username = [EMClient sharedClient].currentUsername;
+    pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
     if (_isCreater) {
-        EMCallPubConfig *pubConfig = [[EMCallPubConfig alloc] init];
-        pubConfig.username = [EMClient sharedClient].currentUsername;
-        pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
         [[EMClient sharedClient].conferenceManager createAndJoinConferencePassword:@"" pubConfig:pubConfig localVideoView:localView completion:^(EMCallConference *aCall, EMError *aError) {
             weakSelf.conference = aCall;
             block(aError);
         }];
     } else {
-        self.conference = [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" localVideoView:localView error:&error];
+        [[EMClient sharedClient].conferenceManager joinConferenceWithId:_callId password:@"" pubConfig:pubConfig localVideoView:localView completion:^(EMCallConference *aCall, EMError *aError) {
+            weakSelf.conference = aCall;
+            block(aError);
+        }];
     }
 }
 
@@ -442,7 +447,7 @@
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     EMError *error = nil;
-    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference.callId userName:aUserName ext:jsonString error:&error];
+    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
     if (error) {
         [self showHint:@"邀请发送失败，请重新发送"];
     }
@@ -468,6 +473,17 @@
 //            [self showHint:message];
 //        }
 //    }
+}
+
+- (void)_userViewDidConnected:(NSString *)aUsername
+{
+    EMConfUserView *userView = [self.userViews objectForKey:aUsername];
+    if (userView) {
+        userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
+        if (self.type == EMCallTypeVideo) {
+            [userView.imgView removeFromSuperview];
+        }
+    }
 }
 
 #pragma mark - private timer
@@ -593,29 +609,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)conferenceStreamBeginTransmite:(EMCallConference *)aConference
-                                stream:(EMCallStream *)aStream
-{
-//    if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        NSString *userName = aStream.userName;
-//        if ([userName length] == 0) {
-//            return;
-//        }
-//        
-//        if (!_isConnected) {
-//            [self _startTimeTimer];
-//        }
-//        
-//        EMConfUserView *userView = [self.userViews objectForKey:userName];
-//        if (userView) {
-//            userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
-//            if (self.type == EMCallTypeVideo) {
-//                [userView.imgView removeFromSuperview];
-//            }
-//        }
-//    }
-}
-
 #pragma mark - EMConfUserViewDelegate
 
 - (void)tapUserView:(NSString *)aUserName
@@ -720,7 +713,7 @@
         [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
         
     } else {
-        [[EMClient sharedClient].conferenceManager leaveConferenceWithId:self.conference.callId error:nil];
+        [[EMClient sharedClient].conferenceManager leaveConference:self.conference completion:nil];
     }
     
     self.conference = nil;
