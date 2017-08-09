@@ -30,14 +30,10 @@
 
 @property (nonatomic, readonly) EMCallType type;
 
-- (instancetype)initWithCallId:(NSString *)aCallId
-                       creater:(NSString *)aCreater
-                    otherUsers:(NSArray *)aOthers
-                          type:(EMCallType)aType
-conversationId:(NSString *)aConversationId;
+- (instancetype)initWithConferenceId:(NSString *)aConfId
+                             creater:(NSString *)aCreater
+                                type:(EMCallType)aType;
 
-- (instancetype)initWithUsers:(NSArray *)aUserNams
-                         type:(EMCallType)aType
-               conversationId:(NSString *)aConversationId;
+- (instancetype)initWithType:(EMCallType)aType;
 
 @end
