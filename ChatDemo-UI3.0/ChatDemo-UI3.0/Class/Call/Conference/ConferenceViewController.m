@@ -49,7 +49,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
-@property (weak, nonatomic) IBOutlet UIView *remotesView;
+@property (weak, nonatomic) IBOutlet UIView *displayCallView;
 
 @property (weak, nonatomic) IBOutlet UIView *actionView;
 @property (weak, nonatomic) IBOutlet UIButton *speakerOutButton;
@@ -61,13 +61,16 @@
 @property (weak, nonatomic) IBOutlet UIView *videoAddButton;
 
 @property (strong, nonatomic) UIButton *minButton;
-@property (strong, nonatomic) NSString *currentMaxUserName;
+@property (strong, nonatomic) NSString *currentMaxStreamId;
 @property (nonatomic) int timeLength;
 @property (strong, nonatomic) NSTimer *timeTimer;
 
-@property (strong, nonatomic) __block EMCallConference *conference;
 @property (strong, nonatomic) NSString *creater;
+@property (strong, nonatomic) NSString *pubStreamId;
+
+@property (strong, nonatomic) __block EMCallConference *conference;
 @property (strong, nonatomic) EMCallLocalView *localView;
+@property (strong, nonatomic) NSMutableArray *streamIdList;
 @property (strong, nonatomic) NSMutableDictionary *streamViews;
 @property (strong, nonatomic) NSMutableDictionary *streamsDic;
 
@@ -96,6 +99,7 @@
     if (self) {
         _type = aType;
         _isCreater = YES;
+        _creater = [EMClient sharedClient].currentUsername;
     }
     
     return self;
@@ -108,6 +112,7 @@
     
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
+    self.streamIdList = [[NSMutableArray alloc] init];
     self.streamViews = [[NSMutableDictionary alloc] init];
     self.streamsDic = [[NSMutableDictionary alloc] init];
     
@@ -165,13 +170,10 @@
         [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker_active"] forState:UIControlStateSelected];
         
         _border = 20;
-        maxHeight = (self.remotesView.frame.size.height - _border) / 2;
+        maxHeight = (self.displayCallView.frame.size.height - _border) / 2;
         _width = (boundSize.width - _border * 4) / 3;
         _height = MIN(_width, maxHeight);
         _width = _height;
-        
-        [self _setupUserVoiceView:_creater];
-        [self _layoutVoiceAddButton];
         
     } else if (self.type == EMCallTypeVideo) {
         [self.switchCameraButton setImage:[UIImage imageNamed:@"Button_Camera_active"] forState:UIControlStateSelected];
@@ -184,17 +186,24 @@
         
         
         _border = 5;
-        maxHeight = (self.remotesView.frame.size.height - 5) / 2;
+        maxHeight = (self.displayCallView.frame.size.height - 5) / 2;
         _width = (boundSize.width - _border * 2) / 3;
         _height = MIN(_width, maxHeight);
         _width = _height;
-        
-        [self _setupUserVideoView:_creater];
+    }
+    
+    NSString *loginUser = [EMClient sharedClient].currentUsername;
+    if (self.type == EMCallTypeVoice) {
+        [self _setupUserVoiceViewWithUserName:loginUser streamId:loginUser];
+        [self _layoutVoiceAddButton];
+    } else {
+        [self _setupUserVideoViewWithUserName:loginUser streamId:loginUser];
         [self _layoutVideoAddButton];
     }
 }
 
-- (EMConfUserView *)_setupUserVoiceView:(NSString *)aUserName
+- (EMConfUserView *)_setupUserVoiceViewWithUserName:(NSString *)aUserName
+                                           streamId:(NSString *)aStreamId
 {
     int count = (int )[self.streamViews count] + 1;
     int row = count < 4 ? 0 : 1;
@@ -213,8 +222,8 @@
     userView.frame = CGRectMake(ox, oy, _width, _height);
     userView.nameLabel.text = aUserName;
     
-    [self.remotesView addSubview:userView];
-    [self.streamViews setObject:userView forKey:aUserName];
+    [self.displayCallView addSubview:userView];
+    [self.streamViews setObject:userView forKey:aStreamId];
     
     return userView;
 }
@@ -242,13 +251,14 @@
         self.voiceAddButton.frame = CGRectMake(ox, oy, _width, _height);
         
         if (self.voiceAddButton.hidden == YES) {
-            [self.remotesView addSubview:self.voiceAddButton];
+            [self.displayCallView addSubview:self.voiceAddButton];
             self.voiceAddButton.hidden = NO;
         }
     }
 }
 
-- (EMConfUserView *)_setupUserVideoView:(NSString *)aUserName
+- (EMConfUserView *)_setupUserVideoViewWithUserName:(NSString *)aUserName
+                                           streamId:(NSString *)aStreamId
 {
     int count = (int )[self.streamViews count] + 1;
     int row = count < 4 ? 0 : 1;
@@ -268,8 +278,8 @@
     userView.frame = CGRectMake(ox, oy, _width, _height);
     userView.nameLabel.text = aUserName;
     
-    [self.remotesView addSubview:userView];
-    [self.streamViews setObject:userView forKey:aUserName];
+    [self.displayCallView addSubview:userView];
+    [self.streamViews setObject:userView forKey:aStreamId];
     
     if (isLocal) {
         [userView.imgView removeFromSuperview];
@@ -315,50 +325,20 @@
         self.videoAddButton.frame = CGRectMake(ox, oy, _width, _height);
         
         if (self.videoAddButton.hidden == YES) {
-            [self.remotesView addSubview:self.videoAddButton];
+            [self.displayCallView addSubview:self.videoAddButton];
             self.videoAddButton.hidden = NO;
         }
     }
-}
-
-- (void)_removeUser:(NSString *)aUserName
-{
-//    UIView *userView = [self.userViews objectForKey:aUserName];
-//    [self.userViews removeObjectForKey:aUserName];
-//    
-//    NSInteger index = [self.memberList indexOfObject:aUserName];
-//    [self.memberList removeObject:aUserName];
-//    
-//    CGRect frame = userView.frame;
-//    [userView removeFromSuperview];
-//    
-//    for (; index < [self.memberList count]; index++) {
-//        NSString *name = [self.memberList objectAtIndex:index];
-//        UIView *view = [self.userViews objectForKey:name];
-//        CGRect tmpFrame = view.frame;
-//        view.frame = frame;
-//        frame = tmpFrame;
-//    }
-//    
-//    if (self.type == EMCallTypeVoice) {
-//        [self _layoutVoiceAddButton];
-//    } else {
-//        [self _layoutVideoAddButton];
-//    }
 }
 
 #pragma mark - private EMConferenceManager
 
 - (void)_createOrJoinConference
 {
-    EMCallLocalView *localView = nil;
-    if (self.type == EMCallTypeVideo) {
-        EMConfUserView *userView = [self.streamViews objectForKey:[EMClient sharedClient].currentUsername];
-        localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
-    }
+    NSString *loginUser = [EMClient sharedClient].currentUsername;
     
     EMCallPubConfig *pubConfig = [[EMCallPubConfig alloc] init];
-    pubConfig.username = [EMClient sharedClient].currentUsername;
+    pubConfig.streamName = loginUser;
     pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
     
     __weak typeof(self) weakSelf = self;
@@ -373,12 +353,21 @@
         } else {
             weakSelf.conference = aCall;
             //上传自己的数据流
+            EMCallLocalView *localView = nil;
+            EMConfUserView *userView = [self.streamViews objectForKey:loginUser];
+            if (self.type == EMCallTypeVideo) {
+                localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
+            }
             [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference pubConfig:pubConfig localView:localView completion:^(NSString *pubStreamId, EMError *aError) {
                 if (aError) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"上传数据流失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                     [alertView show];
                 } else {
-                    [self _userViewDidConnected:[EMClient sharedClient].currentUsername];
+                    weakSelf.pubStreamId = pubStreamId;
+                    [weakSelf.streamIdList removeObject:loginUser];
+                    [weakSelf.streamIdList addObject:pubStreamId];
+                    [weakSelf.streamViews removeObjectForKey:loginUser];
+                    [weakSelf.streamViews setObject:userView forKey:pubStreamId];
                 }
             }];
         }
@@ -399,24 +388,35 @@
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:ext options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    EMError *error = nil;
-    __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
-    if (error) {
-        [weakSelf showHint:@"邀请发送失败，请重新发送"];
-    }
-    else {
-        [weakSelf showHint:@"邀请发送成功"];
-    }
+//    EMError *error = nil;
+//    __weak typeof(self) weakSelf = self;
+//    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
+//    if (error) {
+//        [weakSelf showHint:@"邀请发送失败，请重新发送"];
+//    }
+//    else {
+//        [weakSelf showHint:@"邀请发送成功"];
+//    }
+    
+    NSString *currentUser = [EMClient sharedClient].currentUsername;
+    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:@"inviteToJoinConference"];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:cmdChat ext:@{@"confId":[self.conference privateId], @"creater":currentUser, @"type":[NSNumber numberWithInteger:self.type]}];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
 
-- (void)_subUserStream:(EMCallStream *)aStream
+- (void)_subStream:(EMCallStream *)aStream
 {
-    NSString *username = @"";
+    [self.streamIdList addObject:aStream.streamId];
+    
     EMCallRemoteView *remoteView = nil;
     if (self.type == EMCallTypeVideo) {
-        EMConfUserView *userView = [self.streamViews objectForKey:username];
+        EMConfUserView *userView = [self _setupUserVideoViewWithUserName:aStream.userName streamId:aStream.streamId];
+        [self _layoutVideoAddButton];
         remoteView = (EMCallRemoteView *)[userView.topView viewWithTag:100];
+    } else {
+        [self _setupUserVoiceViewWithUserName:aStream.userName streamId:aStream.streamId];
+        [self _layoutVoiceAddButton];
     }
     
     __weak typeof(self) weakSelf = self;
@@ -428,9 +428,35 @@
     }];
 }
 
-- (void)_userViewDidConnected:(NSString *)aUsername
+- (void)_removeStream:(EMCallStream *)aStream
 {
-    EMConfUserView *userView = [self.streamViews objectForKey:aUsername];
+    NSInteger index = [self.streamIdList indexOfObject:aStream.streamId];
+    [self.streamIdList removeObject:aStream.streamId];
+    
+    EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
+    [self.streamViews removeObjectForKey:aStream.streamId];
+
+    CGRect frame = userView.frame;
+    [userView removeFromSuperview];
+    
+    for (; index < [self.streamIdList count]; index++) {
+        NSString *sId = [self.streamIdList objectAtIndex:index];
+        UIView *view = [self.streamViews objectForKey:sId];
+        CGRect tmpFrame = view.frame;
+        view.frame = frame;
+        frame = tmpFrame;
+    }
+
+    if (self.type == EMCallTypeVoice) {
+        [self _layoutVoiceAddButton];
+    } else {
+        [self _layoutVideoAddButton];
+    }
+}
+
+- (void)_userViewDidConnectedWithStreamId:(NSString *)aStreamId
+{
+    EMConfUserView *userView = [self.streamViews objectForKey:aStreamId];
     if (userView) {
         userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
         if (self.type == EMCallTypeVideo) {
@@ -479,7 +505,7 @@
                          user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *username = aMember.username;
+        NSString *username = aMember.userName;
         NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", username];
         [self showHint:message];
     }
@@ -489,11 +515,9 @@
                           user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *username = aMember.username;
+        NSString *username = aMember.userName;
         NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", username];
         [self showHint:message];
-        
-        [self _removeUser:username];
     }
 }
 
@@ -502,7 +526,7 @@
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic setObject:aStream forKey:aStream.streamId];
-        [self _subUserStream:aStream];
+        [self _subStream:aStream];
     }
 }
 
@@ -511,6 +535,7 @@
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic removeObjectForKey:aStream.streamId];
+        [self _removeStream:aStream];
     }
 }
 
@@ -529,18 +554,28 @@
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"会议通知" message:@"会议已关闭" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
+        
+        self.conference = nil;
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    
-    self.conference = nil;
-    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)conferenceStreamDidConnected:(EMCallConference *)aConference
+                            streamId:(NSString *)aStreamId
+{
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
+        if ([aStreamId isEqualToString:self.pubStreamId]) {
+            [self _userViewDidConnectedWithStreamId:aStreamId];
+        }
+    }
 }
 
 #pragma mark - EMConfUserViewDelegate
 
-- (void)tapUserView:(NSString *)aUserName
+- (void)tapUserViewWithStreamId:(NSString *)aStreamId
 {
-    self.currentMaxUserName = aUserName;
-    EMConfUserView *userView = [self.streamViews objectForKey:aUserName];
+    self.currentMaxStreamId = aStreamId;
+    EMConfUserView *userView = [self.streamViews objectForKey:aStreamId];
     UIView *displayView = [userView.topView viewWithTag:100];
     if (displayView) {
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -555,30 +590,24 @@
 
 - (IBAction)addUserAction:(id)sender
 {
-//    NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-//    NSMutableArray *usernames = [[NSMutableArray alloc] init];
-//    for (NSString *username in contacts) {
-//        if (![self.memberList containsObject:username]) {
-//            [usernames addObject:username];
-//        }
-//    }
-//    
-//    NSMutableArray *selectedUsers = [[NSMutableArray alloc] init];
-//    [selectedUsers addObject:[EMClient sharedClient].currentUsername];
-//    [selectedUsers addObjectsFromArray:self.memberList];
-//    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:usernames selectedUsers:selectedUsers];
-//    [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
-//        [self.memberList addObjectsFromArray:selectedUsers];
-//        
-//        for (NSString *userName in selectedUsers) {
-//            [self _setupUserVoiceView:userName];
-//            [self _inviteUser:userName];
-//        }
-//        
-//        [self _layoutVoiceAddButton];
-//    }];
-//    
-//    [self.navigationController pushViewController:controller animated:YES];
+    NSMutableArray *usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContacts]];
+    NSArray *streams = [self.streamsDic allValues];
+    for (EMCallStream *stream in streams) {
+        if ([usernames containsObject:stream.userName]) {
+            [usernames removeObject:stream.userName];
+        }
+    }
+    
+    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:usernames selectedUsers:nil];
+    [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
+        for (NSString *userName in selectedUsers) {
+            [self _inviteUser:userName];
+        }
+        
+        [self _layoutVoiceAddButton];
+    }];
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)speakerOutAction:(id)sender
@@ -611,8 +640,8 @@
 
 - (void)minAction
 {
-    EMConfUserView *userView = [self.streamViews objectForKey:self.currentMaxUserName];
-    self.currentMaxUserName = nil;
+    EMConfUserView *userView = [self.streamViews objectForKey:self.currentMaxStreamId];
+    self.currentMaxStreamId = nil;
     
     UIView *displayView = self.minButton.superview;
     [self.minButton removeFromSuperview];

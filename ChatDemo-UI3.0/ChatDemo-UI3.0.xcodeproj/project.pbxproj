@@ -82,7 +82,6 @@
 		3A1D31551F389355004929BD /* conf_uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31161F389355004929BD /* conf_uncheck@2x.png */; };
 		3A1D31561F389355004929BD /* conf_uncheck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31171F389355004929BD /* conf_uncheck@3x.png */; };
 		3A1D31571F389355004929BD /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31181F389355004929BD /* default_avatar.png */; };
-		3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */; };
 		3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */; };
 		3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A201E23AF5000DCD9BE /* EMChatroomBansViewController.m */; };
 		3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A221E23AF5000DCD9BE /* EMChatroomMembersViewController.m */; };
@@ -92,14 +91,15 @@
 		3A386ED31DE5539C000F3D8E /* EMCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A386E8C1DE5539C000F3D8E /* EMCallViewController.xib */; };
 		3A386ED41DE5539C000F3D8E /* EMVideoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E8E1DE5539C000F3D8E /* EMVideoInfoViewController.m */; };
 		3A386ED51DE5539C000F3D8E /* EMVideoInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A386E8F1DE5539C000F3D8E /* EMVideoInfoViewController.xib */; };
-		3A386EDA1DE5539C000F3D8E /* DemoCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E991DE5539C000F3D8E /* DemoCallManager.m */; };
-		3A386EDB1DE5539C000F3D8E /* EMCallOptions+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E9B1DE5539C000F3D8E /* EMCallOptions+NSCoding.m */; };
 		3A386F151DE557BA000F3D8E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F131DE557BA000F3D8E /* Crashlytics.framework */; };
 		3A386F161DE557BA000F3D8E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A386F141DE557BA000F3D8E /* Fabric.framework */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
-		3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A635C141DF696AC005C995E /* CallSettingViewController.m */; };
 		3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */; };
 		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
+		3A7E5ED81F3C630900FE82CE /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED11F3C630900FE82CE /* CallResolutionViewController.m */; };
+		3A7E5ED91F3C630900FE82CE /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED31F3C630900FE82CE /* CallSettingViewController.m */; };
+		3A7E5EDA1F3C630900FE82CE /* DemoCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED51F3C630900FE82CE /* DemoCallManager.m */; };
+		3A7E5EDB1F3C630900FE82CE /* EMCallOptions+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED71F3C630900FE82CE /* EMCallOptions+NSCoding.m */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
@@ -139,7 +139,6 @@
 		846D770A1E6FB52A0091DC94 /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		846D770B1E6FB52A0091DC94 /* SRSlimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CEB192F2B4E00BDC549 /* SRSlimeView.m */; };
 		846D770D1E6FB52A0091DC94 /* EMCreateChatroomController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D77041E6FA4DD0091DC94 /* EMCreateChatroomController.m */; };
-		846D770E1E6FB52A0091DC94 /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */; };
 		846D770F1E6FB52A0091DC94 /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D85E1939D8D000DC38A4 /* AddFriendCell.m */; };
 		846D77101E6FB52A0091DC94 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
 		846D77121E6FB52A0091DC94 /* GroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C914D7819514BBD0002DAD3 /* GroupListViewController.m */; };
@@ -159,10 +158,8 @@
 		846D77211E6FB52A0091DC94 /* EMRobotChatTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */; };
 		846D77221E6FB52A0091DC94 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBF90BF19302F5000AD68AE /* BaseViewController.m */; };
 		846D77231E6FB52A0091DC94 /* PublicGroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3EB2FB19545FFD00E1AE9E /* PublicGroupListViewController.m */; };
-		846D77241E6FB52A0091DC94 /* DemoCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E991DE5539C000F3D8E /* DemoCallManager.m */; };
 		846D77251E6FB52A0091DC94 /* EMRotbotChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */; };
 		846D77281E6FB52A0091DC94 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
-		846D77291E6FB52A0091DC94 /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A635C141DF696AC005C995E /* CallSettingViewController.m */; };
 		846D772A1E6FB52A0091DC94 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8601939D8D000DC38A4 /* AddFriendViewController.m */; };
 		846D772C1E6FB52A0091DC94 /* EMGroupMutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */; };
 		846D772D1E6FB52A0091DC94 /* SearchMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F7691B1CBF3F26009778FB /* SearchMessageViewController.m */; };
@@ -189,7 +186,6 @@
 		846D77431E6FB52A0091DC94 /* AppDelegate+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */; };
 		846D77441E6FB52A0091DC94 /* PublicGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3EB2FE195465D100E1AE9E /* PublicGroupDetailViewController.m */; };
 		846D77451E6FB52A0091DC94 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911135192EEC91008A48AA /* LoginViewController.m */; };
-		846D77461E6FB52A0091DC94 /* EMCallOptions+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E9B1DE5539C000F3D8E /* EMCallOptions+NSCoding.m */; };
 		846D77481E6FB52A0091DC94 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6FFA2319A2F5560003EB25 /* DebugViewController.m */; };
 		846D77491E6FB52A0091DC94 /* RobotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A361B65E62C00968342 /* RobotManager.m */; };
 		846D774A1E6FB52A0091DC94 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
@@ -655,8 +651,6 @@
 		3A1D31181F389355004929BD /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
 		3A27807A1DDB270200362CA7 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		3A27807C1DDB271400362CA7 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateFullSDK.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libHyphenateFullSDK.a"; sourceTree = "<group>"; };
-		3A2858121DF856AD0062B7F0 /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
-		3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallResolutionViewController.m; sourceTree = "<group>"; };
 		3A2C3A1D1E23AF5000DCD9BE /* EMChatroomAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatroomAdminsViewController.h; sourceTree = "<group>"; };
 		3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatroomAdminsViewController.m; sourceTree = "<group>"; };
 		3A2C3A1F1E23AF5000DCD9BE /* EMChatroomBansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatroomBansViewController.h; sourceTree = "<group>"; };
@@ -674,20 +668,22 @@
 		3A386E8D1DE5539C000F3D8E /* EMVideoInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMVideoInfoViewController.h; sourceTree = "<group>"; };
 		3A386E8E1DE5539C000F3D8E /* EMVideoInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMVideoInfoViewController.m; sourceTree = "<group>"; };
 		3A386E8F1DE5539C000F3D8E /* EMVideoInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMVideoInfoViewController.xib; sourceTree = "<group>"; };
-		3A386E981DE5539C000F3D8E /* DemoCallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoCallManager.h; sourceTree = "<group>"; };
-		3A386E991DE5539C000F3D8E /* DemoCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCallManager.m; sourceTree = "<group>"; };
-		3A386E9A1DE5539C000F3D8E /* EMCallOptions+NSCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EMCallOptions+NSCoding.h"; sourceTree = "<group>"; };
-		3A386E9B1DE5539C000F3D8E /* EMCallOptions+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EMCallOptions+NSCoding.m"; sourceTree = "<group>"; };
 		3A386F131DE557BA000F3D8E /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3A386F141DE557BA000F3D8E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		3A635C131DF696AC005C995E /* CallSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallSettingViewController.h; sourceTree = "<group>"; };
-		3A635C141DF696AC005C995E /* CallSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallSettingViewController.m; sourceTree = "<group>"; };
 		3A6764B21E5D2C6800ABF196 /* GroupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupSettingViewController.h; sourceTree = "<group>"; };
 		3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSettingViewController.m; sourceTree = "<group>"; };
 		3A6764B51E5D3FB300ABF196 /* ChatroomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomDetailViewController.h; sourceTree = "<group>"; };
 		3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
+		3A7E5ED01F3C630900FE82CE /* CallResolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallResolutionViewController.h; sourceTree = "<group>"; };
+		3A7E5ED11F3C630900FE82CE /* CallResolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallResolutionViewController.m; sourceTree = "<group>"; };
+		3A7E5ED21F3C630900FE82CE /* CallSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallSettingViewController.h; sourceTree = "<group>"; };
+		3A7E5ED31F3C630900FE82CE /* CallSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallSettingViewController.m; sourceTree = "<group>"; };
+		3A7E5ED41F3C630900FE82CE /* DemoCallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoCallManager.h; sourceTree = "<group>"; };
+		3A7E5ED51F3C630900FE82CE /* DemoCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCallManager.m; sourceTree = "<group>"; };
+		3A7E5ED61F3C630900FE82CE /* EMCallOptions+NSCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EMCallOptions+NSCoding.h"; sourceTree = "<group>"; };
+		3A7E5ED71F3C630900FE82CE /* EMCallOptions+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EMCallOptions+NSCoding.m"; sourceTree = "<group>"; };
 		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
 		3A807B0D1D951301004D18CB /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
 		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
@@ -1245,15 +1241,7 @@
 			children = (
 				3A1D30D91F389355004929BD /* imgs */,
 				3A1D2EC71F3815D3004929BD /* Conference */,
-				3A2858121DF856AD0062B7F0 /* CallResolutionViewController.h */,
-				3A2858131DF856AD0062B7F0 /* CallResolutionViewController.m */,
-				3A635C131DF696AC005C995E /* CallSettingViewController.h */,
-				3A635C141DF696AC005C995E /* CallSettingViewController.m */,
 				3A386E891DE5539C000F3D8E /* 1v1call */,
-				3A386E981DE5539C000F3D8E /* DemoCallManager.h */,
-				3A386E991DE5539C000F3D8E /* DemoCallManager.m */,
-				3A386E9A1DE5539C000F3D8E /* EMCallOptions+NSCoding.h */,
-				3A386E9B1DE5539C000F3D8E /* EMCallOptions+NSCoding.m */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1261,6 +1249,14 @@
 		3A386E891DE5539C000F3D8E /* 1v1call */ = {
 			isa = PBXGroup;
 			children = (
+				3A7E5ED01F3C630900FE82CE /* CallResolutionViewController.h */,
+				3A7E5ED11F3C630900FE82CE /* CallResolutionViewController.m */,
+				3A7E5ED21F3C630900FE82CE /* CallSettingViewController.h */,
+				3A7E5ED31F3C630900FE82CE /* CallSettingViewController.m */,
+				3A7E5ED41F3C630900FE82CE /* DemoCallManager.h */,
+				3A7E5ED51F3C630900FE82CE /* DemoCallManager.m */,
+				3A7E5ED61F3C630900FE82CE /* EMCallOptions+NSCoding.h */,
+				3A7E5ED71F3C630900FE82CE /* EMCallOptions+NSCoding.m */,
 				3A386E8A1DE5539C000F3D8E /* EMCallViewController.h */,
 				3A386E8B1DE5539C000F3D8E /* EMCallViewController.mm */,
 				3A386E8C1DE5539C000F3D8E /* EMCallViewController.xib */,
@@ -2558,7 +2554,6 @@
 				846D770A1E6FB52A0091DC94 /* RobotListViewController.m in Sources */,
 				846D770B1E6FB52A0091DC94 /* SRSlimeView.m in Sources */,
 				846D770D1E6FB52A0091DC94 /* EMCreateChatroomController.m in Sources */,
-				846D770E1E6FB52A0091DC94 /* CallResolutionViewController.m in Sources */,
 				846D770F1E6FB52A0091DC94 /* AddFriendCell.m in Sources */,
 				846D77101E6FB52A0091DC94 /* SRRefreshView.m in Sources */,
 				846D77121E6FB52A0091DC94 /* GroupListViewController.m in Sources */,
@@ -2578,10 +2573,8 @@
 				846D77211E6FB52A0091DC94 /* EMRobotChatTextBubbleView.m in Sources */,
 				846D77221E6FB52A0091DC94 /* BaseViewController.m in Sources */,
 				846D77231E6FB52A0091DC94 /* PublicGroupListViewController.m in Sources */,
-				846D77241E6FB52A0091DC94 /* DemoCallManager.m in Sources */,
 				846D77251E6FB52A0091DC94 /* EMRotbotChatViewCell.m in Sources */,
 				846D77281E6FB52A0091DC94 /* UIViewController+SearchController.m in Sources */,
-				846D77291E6FB52A0091DC94 /* CallSettingViewController.m in Sources */,
 				846D772A1E6FB52A0091DC94 /* AddFriendViewController.m in Sources */,
 				846D772C1E6FB52A0091DC94 /* EMGroupMutesViewController.m in Sources */,
 				846D772D1E6FB52A0091DC94 /* SearchMessageViewController.m in Sources */,
@@ -2612,7 +2605,6 @@
 				846D7BC11E7805530091DC94 /* RedPacketUserConfig.m in Sources */,
 				846D77441E6FB52A0091DC94 /* PublicGroupDetailViewController.m in Sources */,
 				846D77451E6FB52A0091DC94 /* LoginViewController.m in Sources */,
-				846D77461E6FB52A0091DC94 /* EMCallOptions+NSCoding.m in Sources */,
 				846D77481E6FB52A0091DC94 /* DebugViewController.m in Sources */,
 				846D77491E6FB52A0091DC94 /* RobotManager.m in Sources */,
 				846D7BBF1E7805530091DC94 /* AppDelegate+Redpacket.m in Sources */,
@@ -2650,12 +2642,13 @@
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
+				3A7E5ED91F3C630900FE82CE /* CallSettingViewController.m in Sources */,
 				846D77051E6FA4DD0091DC94 /* EMCreateChatroomController.m in Sources */,
-				3A2858141DF856AD0062B7F0 /* CallResolutionViewController.m in Sources */,
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,
+				3A7E5EDB1F3C630900FE82CE /* EMCallOptions+NSCoding.m in Sources */,
 				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
 				3A1D2F561F3852B6004929BD /* EMConfUserSelectionViewController.m in Sources */,
 				D2B61E331BC7BEA6007CB53E /* ConversationListController.m in Sources */,
@@ -2672,11 +2665,9 @@
 				906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */,
 				3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */,
 				3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */,
-				3A386EDA1DE5539C000F3D8E /* DemoCallManager.m in Sources */,
 				906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */,
 				3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */,
 				846D7BB01E7805530091DC94 /* AppDelegate+Redpacket.m in Sources */,
-				3A635C151DF696AC005C995E /* CallSettingViewController.m in Sources */,
 				9003D9141939D8D000DC38A4 /* AddFriendViewController.m in Sources */,
 				D25AA3591E8D29C8006BF820 /* EMGroupInfoViewController.m in Sources */,
 				3AF6A65D1E1F84360022E835 /* EMGroupMutesViewController.m in Sources */,
@@ -2709,9 +2700,9 @@
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				846D7BC01E7805530091DC94 /* RedPacketUserConfig.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
+				3A7E5EDA1F3C630900FE82CE /* DemoCallManager.m in Sources */,
 				90AFCFDC1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
-				3A386EDB1DE5539C000F3D8E /* EMCallOptions+NSCoding.m in Sources */,
 				3C6FFA2419A2F5560003EB25 /* DebugViewController.m in Sources */,
 				3A1D2F5D1F3852C0004929BD /* EMConfAddUserCell.m in Sources */,
 				90B42A381B65E62C00968342 /* RobotManager.m in Sources */,
@@ -2731,6 +2722,7 @@
 				90AFCFDA1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */,
 				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,
 				3C13D94E1A120BA200903622 /* ContactView.m in Sources */,
+				3A7E5ED81F3C630900FE82CE /* CallResolutionViewController.m in Sources */,
 				D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */,
 				D2BF98B31AEDD780009E0D5C /* EditNicknameViewController.m in Sources */,
 				3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */,

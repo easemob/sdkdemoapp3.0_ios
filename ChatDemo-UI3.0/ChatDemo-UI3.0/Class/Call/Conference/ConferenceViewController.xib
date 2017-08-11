@@ -14,9 +14,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConferenceViewController">
             <connections>
                 <outlet property="actionView" destination="e1u-C8-42j" id="28O-Po-7qV"/>
+                <outlet property="displayCallView" destination="X5y-0K-Qcw" id="kts-a4-g4b"/>
                 <outlet property="hangupButton" destination="WgY-62-EJl" id="e3C-g4-mv2"/>
                 <outlet property="nameLabel" destination="rws-WI-wfs" id="LG0-Uj-1yS"/>
-                <outlet property="remotesView" destination="X5y-0K-Qcw" id="TLD-tr-Wif"/>
                 <outlet property="silenceButton" destination="9nU-Ls-Abk" id="NqN-1L-D9b"/>
                 <outlet property="speakerOutButton" destination="heX-yV-Wdd" id="IgY-lB-18x"/>
                 <outlet property="statusLabel" destination="au8-LE-BYZ" id="VmB-Zy-WXP"/>

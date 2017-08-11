@@ -19,7 +19,7 @@
 
 static DemoConfManager *confManager = nil;
 
-@interface DemoConfManager()<EMConferenceManagerDelegate>
+@interface DemoConfManager()<EMConferenceManagerDelegate, EMChatManagerDelegate>
 
 @property (strong, nonatomic) ConferenceViewController *currentController;
 
@@ -54,6 +54,7 @@ static DemoConfManager *confManager = nil;
 - (void)dealloc
 {
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -64,6 +65,28 @@ static DemoConfManager *confManager = nil;
     _currentController = nil;
     
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+}
+
+#pragma mark - EMChatManagerDelegate
+
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    for (EMMessage *message in aCmdMessages) {
+        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
+        NSString *action = cmdBody.action;
+        if ([action isEqualToString:@"inviteToJoinConference"]) {
+            NSString *confId = [message.ext objectForKey:@"confId"];
+            EMCallType type = (EMCallType)[[message.ext objectForKey:@"type"] integerValue];
+            NSString *creater = [message.ext objectForKey:@"creater"];
+            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:confId creater:creater type:type];
+            [self.mainController.navigationController pushViewController:confController animated:NO];
+            
+        } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"已转为会议模式" delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
+        }
+    }
 }
 
 #pragma mark - EMConferenceManagerDelegate
