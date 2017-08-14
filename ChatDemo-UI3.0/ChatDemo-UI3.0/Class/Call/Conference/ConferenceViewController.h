@@ -11,13 +11,14 @@
 @protocol EMConfUserViewDelegate <NSObject>
 
 @optional
-- (void)tapUserView:(NSString *)aUserName;
+- (void)tapUserViewWithStreamId:(NSString *)aStreamId;
 
 @end
 
 @interface EMConfUserView : UIView
 
 @property (weak, nonatomic) id<EMConfUserViewDelegate> delegate;
+@property (strong, nonatomic) NSString *viewId;
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;

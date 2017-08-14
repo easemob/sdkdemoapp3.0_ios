@@ -26,8 +26,8 @@
 - (void)tapAction:(UITapGestureRecognizer *)aTap
 {
     if (aTap.state == UIGestureRecognizerStateEnded) {
-        if (_delegate && [_delegate respondsToSelector:@selector(tapUserView:)]) {
-            [_delegate tapUserView:self.nameLabel.text];
+        if (_delegate && [_delegate respondsToSelector:@selector(tapUserViewWithStreamId:)]) {
+            [_delegate tapUserViewWithStreamId:self.viewId];
         }
     }
 }
@@ -218,6 +218,7 @@
     
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EMConfUserVoiceView" owner:self options:nil];
     EMConfUserView *userView = [nib objectAtIndex:0];
+    userView.viewId = aStreamId;
     
     userView.frame = CGRectMake(ox, oy, _width, _height);
     userView.nameLabel.text = aUserName;
@@ -274,6 +275,7 @@
     BOOL isLocal = [[EMClient sharedClient].currentUsername isEqualToString:aUserName];
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EMConfUserVideoView" owner:self options:nil];
     EMConfUserView *userView = [nib objectAtIndex:0];
+    userView.viewId = aStreamId;
     userView.delegate = self;
     userView.frame = CGRectMake(ox, oy, _width, _height);
     userView.nameLabel.text = aUserName;
@@ -388,21 +390,21 @@
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:ext options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-//    EMError *error = nil;
-//    __weak typeof(self) weakSelf = self;
-//    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
-//    if (error) {
-//        [weakSelf showHint:@"邀请发送失败，请重新发送"];
-//    }
-//    else {
-//        [weakSelf showHint:@"邀请发送成功"];
-//    }
+    EMError *error = nil;
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
+    if (error) {
+        [weakSelf showHint:@"邀请发送失败，请重新发送"];
+    }
+    else {
+        [weakSelf showHint:@"邀请发送成功"];
+    }
     
-    NSString *currentUser = [EMClient sharedClient].currentUsername;
-    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:@"inviteToJoinConference"];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:cmdChat ext:@{@"confId":[self.conference privateId], @"creater":currentUser, @"type":[NSNumber numberWithInteger:self.type]}];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+//    NSString *currentUser = [EMClient sharedClient].currentUsername;
+//    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:@"inviteToJoinConference"];
+//    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:cmdChat ext:@{@"confId":[self.conference getInviteCallId], @"creater":currentUser, @"type":[NSNumber numberWithInteger:self.type]}];
+//    message.chatType = EMChatTypeChat;
+//    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
 
 - (void)_subStream:(EMCallStream *)aStream
@@ -430,7 +432,7 @@
 
 - (void)_removeStream:(EMCallStream *)aStream
 {
-    NSInteger index = [self.streamIdList indexOfObject:aStream.streamId];
+    NSInteger index = [self.streamIdList indexOfObject:aStream.streamId] + 1;
     [self.streamIdList removeObject:aStream.streamId];
     
     EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
@@ -566,6 +568,8 @@
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         if ([aStreamId isEqualToString:self.pubStreamId]) {
             [self _userViewDidConnectedWithStreamId:aStreamId];
+        } else if ([self.streamIdList containsObject:aStreamId]) {
+            [self _userViewDidConnectedWithStreamId:aStreamId];
         }
     }
 }
@@ -624,18 +628,14 @@
 
 - (IBAction)switchCameraAction:(id)sender
 {
-//    [self.conference switchCameraPosition:self.switchCameraButton.selected];
-//    self.switchCameraButton.selected = !self.switchCameraButton.selected;
+    self.switchCameraButton.selected = !self.switchCameraButton.selected;
+    [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
 }
 
 - (IBAction)silenceAction:(id)sender
 {
-//    self.silenceButton.selected = !self.silenceButton.selected;
-//    if (self.silenceButton.selected) {
-//        [self.conference pauseLocalVoice];
-//    } else {
-//        [self.conference resumeLocalVoice];
-//    }
+    self.silenceButton.selected = !self.silenceButton.selected;
+    [[EMClient sharedClient].conferenceManager updateConference:self.conference isMute:self.silenceButton.selected];
 }
 
 - (void)minAction
