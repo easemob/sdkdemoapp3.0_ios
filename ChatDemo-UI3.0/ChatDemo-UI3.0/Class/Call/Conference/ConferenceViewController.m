@@ -47,7 +47,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *displayCallView;
 
@@ -62,8 +62,8 @@
 
 @property (strong, nonatomic) UIButton *minButton;
 @property (strong, nonatomic) NSString *currentMaxStreamId;
-@property (nonatomic) int timeLength;
-@property (strong, nonatomic) NSTimer *timeTimer;
+//@property (nonatomic) int timeLength;
+//@property (strong, nonatomic) NSTimer *timeTimer;
 
 @property (strong, nonatomic) NSString *creater;
 @property (strong, nonatomic) NSString *pubStreamId;
@@ -350,7 +350,7 @@
             self.navigationController.navigationBarHidden = NO;
             [self.navigationController popViewControllerAnimated:NO];
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建或加入会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.createFail", @"Create or Join conference failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
         } else {
             weakSelf.conference = aCall;
@@ -362,7 +362,7 @@
             }
             [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference pubConfig:pubConfig localView:localView completion:^(NSString *pubStreamId, EMError *aError) {
                 if (aError) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"上传数据流失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
                     [alertView show];
                 } else {
                     weakSelf.pubStreamId = pubStreamId;
@@ -394,10 +394,10 @@
     __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
     if (error) {
-        [weakSelf showHint:@"邀请发送失败，请重新发送"];
+        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteFail", @"Invite failed!")];
     }
     else {
-        [weakSelf showHint:@"邀请发送成功"];
+        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteSuccess", @"Invite successful!")];
     }
     
 //    NSString *currentUser = [EMClient sharedClient].currentUsername;
@@ -424,7 +424,7 @@
     __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(id retObj, EMError *aError) {
         if (aError) {
-            NSString *message = [NSString stringWithFormat:@"订阅 %@ 失败", weakSelf.creater];
+            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"alert.conference.subFail", @"Sub stream-%@ failed!"), weakSelf.creater];
             [weakSelf showHint:message];
         }
     }];
@@ -464,6 +464,29 @@
         if (self.type == EMCallTypeVideo) {
             [userView.imgView removeFromSuperview];
         }
+    }
+}
+
+- (void)conferenceNetworkDidChange:(EMCallConference *)aSession
+                            status:(EMCallNetworkStatus)aStatus
+{
+    NSString *str = @"";
+    switch (aStatus) {
+        case EMCallNetworkStatusNormal:
+            str = NSLocalizedString(@"network.conference.normal", @"Network changes: the network is normal");
+            break;
+        case EMCallNetworkStatusUnstable:
+            str = NSLocalizedString(@"network.conference.unstable", @"Network changes: the network is unstable");
+            break;
+        case EMCallNetworkStatusNoData:
+            str = NSLocalizedString(@"network.conference.dis", @"Network changes: the network is disconnect");
+            break;
+            
+        default:
+            break;
+    }
+    if ([str length] > 0) {
+        [self showHint:str];
     }
 }
 
@@ -508,7 +531,7 @@
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
         NSString *username = aMember.userName;
-        NSString *message = [NSString stringWithFormat:@"%@ 已加入会议", username];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), username];
         [self showHint:message];
     }
 }
@@ -518,7 +541,7 @@
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         NSString *username = aMember.userName;
-        NSString *message = [NSString stringWithFormat:@"%@ 已退出会议", username];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), username];
         [self showHint:message];
     }
 }
@@ -554,7 +577,7 @@
                    error:(EMError *)aError
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"会议通知" message:@"会议已关闭" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.closed", @"Conference has been closed") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
         [alertView show];
         
         self.conference = nil;

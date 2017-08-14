@@ -468,3 +468,15 @@
 //multi call
 "title.conference.voice" = "多人语音会议";
 "title.conference.video" = "多人视频会议";
+"alert.conference.createFail" = "创建或者加入会议失败!";
+"alert.conference.pubFail" = "上传数据流失败!";
+"alert.conference.inviteFail" = "发送邀请失败!";
+"alert.conference.inviteSuccess" = "发送邀请成功!";
+"alert.conference.subFail" = "订阅数据流 %@ 失败!";
+"hint.conference.userJoin" = "%@ 已经加入会议";
+"hint.conference.userLeave" = "%@ 已经离开会议";
+"alert.conference.closed" = "会议已经关闭";
+"network.conference.normal" = "网络变化：网络正常";
+"network.conference.unstable" = "网络变化：数据不稳定";
+"network.conference.dis" = "网络变化：网络已经断开";
+"title.conference.addUser" = "添加成员";
