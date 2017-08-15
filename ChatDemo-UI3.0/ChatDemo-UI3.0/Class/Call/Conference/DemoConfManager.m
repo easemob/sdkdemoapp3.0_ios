@@ -91,9 +91,9 @@ static DemoConfManager *confManager = nil;
 
 #pragma mark - EMConferenceManagerDelegate
 
-- (void)userDidRecvConferenceInvite:(NSString *)aConfId
-                           password:(NSString *)aPassword
-                                ext:(NSString *)aExt
+- (void)userDidRecvInvite:(NSString *)aConfId
+                 password:(NSString *)aPassword
+                      ext:(NSString *)aExt
 {
     NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];

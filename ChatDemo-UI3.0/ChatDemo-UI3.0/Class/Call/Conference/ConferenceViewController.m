@@ -434,7 +434,7 @@
 
 - (void)_removeStream:(EMCallStream *)aStream
 {
-    NSInteger index = [self.streamIdList indexOfObject:aStream.streamId] + 1;
+    NSInteger index = [self.streamIdList indexOfObject:aStream.streamId];
     [self.streamIdList removeObject:aStream.streamId];
     
     EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
@@ -443,7 +443,7 @@
     CGRect frame = userView.frame;
     [userView removeFromSuperview];
     
-    for (index; index < [self.streamIdList count]; index++) {
+    for (; index < [self.streamIdList count]; index++) {
         NSString *sId = [self.streamIdList objectAtIndex:index];
         UIView *view = [self.streamViews objectForKey:sId];
         CGRect tmpFrame = view.frame;
