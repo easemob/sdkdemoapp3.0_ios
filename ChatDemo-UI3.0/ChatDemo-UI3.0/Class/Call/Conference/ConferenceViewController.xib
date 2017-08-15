@@ -19,7 +19,6 @@
                 <outlet property="nameLabel" destination="rws-WI-wfs" id="LG0-Uj-1yS"/>
                 <outlet property="silenceButton" destination="9nU-Ls-Abk" id="NqN-1L-D9b"/>
                 <outlet property="speakerOutButton" destination="heX-yV-Wdd" id="IgY-lB-18x"/>
-                <outlet property="statusLabel" destination="au8-LE-BYZ" id="VmB-Zy-WXP"/>
                 <outlet property="switchCameraButton" destination="xk1-zM-duE" id="kJh-dT-aNW"/>
                 <outlet property="topView" destination="g6Z-ui-5RU" id="3eF-8m-zw1"/>
                 <outlet property="videoAddButton" destination="S3c-fJ-bIl" id="P0J-5R-y0e"/>

@@ -344,7 +344,7 @@
     pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
     
     __weak typeof(self) weakSelf = self;
-    void (^block)() = ^(EMCallConference *aCall, EMError *aError){
+    void (^block)() = ^(EMCallConference *aCall, NSString *aPassword, EMError *aError){
         if (aError) {
             weakSelf.conference = nil;
             self.navigationController.navigationBarHidden = NO;
@@ -376,9 +376,11 @@
     };
     
     if (_isCreater) {
-        [[EMClient sharedClient].conferenceManager createConferenceWithPassword:@"" completion:block];
+        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithPassword:@"" completion:block];
     } else {
-        [[EMClient sharedClient].conferenceManager joinConferenceWithId:_conferenceId password:@"" completion:block];
+        [[EMClient sharedClient].conferenceManager joinConferenceWithId:_conferenceId password:@"" completion:^(EMCallConference *aCall, EMError *aError) {
+            block(aCall, @"", aError);
+        }];
     }
 }
 
@@ -441,7 +443,7 @@
     CGRect frame = userView.frame;
     [userView removeFromSuperview];
     
-    for (; index < [self.streamIdList count]; index++) {
+    for (index; index < [self.streamIdList count]; index++) {
         NSString *sId = [self.streamIdList objectAtIndex:index];
         UIView *view = [self.streamViews objectForKey:sId];
         CGRect tmpFrame = view.frame;
@@ -526,8 +528,8 @@
 
 #pragma mark - EMConferenceManagerDelegate
 
-- (void)userDidJoinConference:(EMCallConference *)aConference
-                         user:(EMCallMember *)aMember
+- (void)userDidJoin:(EMCallConference *)aConference
+               user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
         NSString *username = aMember.userName;
@@ -536,8 +538,8 @@
     }
 }
 
-- (void)userDidLeaveConference:(EMCallConference *)aConference
-                          user:(EMCallMember *)aMember
+- (void)userDidLeave:(EMCallConference *)aConference
+                user:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         NSString *username = aMember.userName;
@@ -546,8 +548,8 @@
     }
 }
 
-- (void)conferenceStreamDidUpdate:(EMCallConference *)aConference
-                        addStream:(EMCallStream *)aStream
+- (void)streamDidUpdate:(EMCallConference *)aConference
+              addStream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic setObject:aStream forKey:aStream.streamId];
@@ -555,8 +557,8 @@
     }
 }
 
-- (void)conferenceStreamDidUpdate:(EMCallConference *)aConference
-                     removeStream:(EMCallStream *)aStream
+- (void)streamDidUpdate:(EMCallConference *)aConference
+           removeStream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic removeObjectForKey:aStream.streamId];
@@ -564,8 +566,8 @@
     }
 }
 
-- (void)conferenceStreamDidUpdate:(EMCallConference *)aConference
-                           stream:(EMCallStream *)aStream
+- (void)streamDidUpdate:(EMCallConference *)aConference
+                 stream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic setObject:aStream forKey:aStream.streamId];
@@ -585,8 +587,8 @@
     }
 }
 
-- (void)conferenceStreamDidConnected:(EMCallConference *)aConference
-                            streamId:(NSString *)aStreamId
+- (void)streamDidConnected:(EMCallConference *)aConference
+                  streamId:(NSString *)aStreamId
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         if ([aStreamId isEqualToString:self.pubStreamId]) {
