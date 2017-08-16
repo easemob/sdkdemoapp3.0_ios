@@ -369,7 +369,7 @@
                 } else {
                     weakSelf.pubStreamId = pubStreamId;
                     [weakSelf.streamIdList removeObject:loginUser];
-                    [weakSelf.streamIdList addObject:pubStreamId];
+                    [weakSelf.streamIdList insertObject:pubStreamId atIndex:0];
                     [weakSelf.streamViews removeObjectForKey:loginUser];
                     [weakSelf.streamViews setObject:userView forKey:pubStreamId];
                 }
