@@ -12,6 +12,7 @@
 
 #import <Hyphenate/Hyphenate.h>
 
+#import "DemoCallManager.h"
 #import "MainViewController.h"
 #import "EMConfUserSelectionViewController.h"
 #import "ConferenceViewController.h"
@@ -76,6 +77,10 @@ static DemoConfManager *confManager = nil;
         EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
         NSString *action = cmdBody.action;
         if ([action isEqualToString:@"inviteToJoinConference"]) {
+            if ([DemoCallManager sharedManager].isCalling) {
+                return;
+            }
+            
             NSString *confId = [message.ext objectForKey:@"confId"];
             EMCallType type = (EMCallType)[[message.ext objectForKey:@"type"] integerValue];
             NSString *creater = [message.ext objectForKey:@"creater"];
@@ -95,6 +100,10 @@ static DemoConfManager *confManager = nil;
                  password:(NSString *)aPassword
                       ext:(NSString *)aExt
 {
+    if ([DemoCallManager sharedManager].isCalling) {
+        return;
+    }
+    
     NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
     EMCallType type = (EMCallType)[[dic objectForKey:@"type"] integerValue];
@@ -107,6 +116,8 @@ static DemoConfManager *confManager = nil;
 
 - (void)createConferenceWithType:(EMCallType)aType
 {
+    [[DemoCallManager sharedManager] setIsCalling:YES];
+    
     ConferenceViewController *confController = [[ConferenceViewController alloc] initWithType:aType];
     [self.mainController.navigationController pushViewController:confController animated:NO];
     

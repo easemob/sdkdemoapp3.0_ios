@@ -141,11 +141,12 @@ static DemoCallManager *callManager = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
     
-    if(self.currentSession && self.currentSession.status != EMCallSessionStatusDisconnected){
+    if(self.isCalling || (self.currentSession && self.currentSession.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
     
+    [[DemoCallManager sharedManager] setIsCalling:YES];
     @synchronized (_callLock) {
         [self _startCallTimer];
         
@@ -181,6 +182,7 @@ static DemoCallManager *callManager = nil;
              error:(EMError *)aError
 {
     if ([aSession.callId isEqualToString:self.currentSession.callId]) {
+        self.isCalling = NO;
         
         [self _stopCallTimer];
         

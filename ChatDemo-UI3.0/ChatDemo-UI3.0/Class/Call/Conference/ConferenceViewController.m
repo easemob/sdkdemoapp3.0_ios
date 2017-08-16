@@ -10,6 +10,7 @@
 
 #import <Hyphenate/Hyphenate.h>
 
+#import "DemoCallManager.h"
 #import "DemoConfManager.h"
 #import "EMConfUserSelectionViewController.h"
 
@@ -110,6 +111,7 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBarHidden = YES;
     
+    [[DemoCallManager sharedManager] setIsCalling:YES];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
     self.streamIdList = [[NSMutableArray alloc] init];
@@ -424,7 +426,7 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(id retObj, EMError *aError) {
+    [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
         if (aError) {
             NSString *message = [NSString stringWithFormat:NSLocalizedString(@"alert.conference.subFail", @"Sub stream-%@ failed!"), weakSelf.creater];
             [weakSelf showHint:message];
@@ -579,6 +581,8 @@
                    error:(EMError *)aError
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
+        [[DemoCallManager sharedManager] setIsCalling:NO];
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.closed", @"Conference has been closed") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
         [alertView show];
         
@@ -678,6 +682,8 @@
 
 - (IBAction)hangupAction:(id)sender
 {
+    [[DemoCallManager sharedManager] setIsCalling:NO];
+    
     if (self.conference == nil) {
         self.navigationController.navigationBarHidden = NO;
         [self.navigationController popViewControllerAnimated:NO];
