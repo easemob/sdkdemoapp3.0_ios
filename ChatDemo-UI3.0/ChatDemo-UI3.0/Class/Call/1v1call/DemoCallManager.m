@@ -352,6 +352,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)hangupCallWithReason:(EMCallEndReason)aReason
 {
+    self.isCalling = NO;
     [self _stopCallTimer];
     
     if (self.currentSession) {

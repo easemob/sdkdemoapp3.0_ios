@@ -362,7 +362,8 @@
             if (self.type == EMCallTypeVideo) {
                 localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
             }
-            [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference pubConfig:pubConfig localView:localView completion:^(NSString *pubStreamId, EMError *aError) {
+            pubConfig.localView = localView;
+            [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference pubConfig:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
                 if (aError) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
                     [alertView show];
