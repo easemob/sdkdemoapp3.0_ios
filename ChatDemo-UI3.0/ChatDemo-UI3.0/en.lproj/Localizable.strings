@@ -126,6 +126,7 @@
 "group.sendApplyFail" = "send application failure:%@\nreason：%@";
 "group.beRefusedToJoin" = "be refused to join the group\'%@\'";
 "group.beKicked" = "you have been kicked out from the group of \'%@\'";
+"group.beDestroyed" = "the group of \'%@\' is destroyed";
 "group.agreedAndJoined" = "agreed and joined the group of \'%@\'";
 "group.join" = "join the group";
 "group.joined" = "joined";

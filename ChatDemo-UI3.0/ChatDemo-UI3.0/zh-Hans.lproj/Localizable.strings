@@ -126,6 +126,7 @@
 "group.sendApplyFail" = "发送申请失败:%@\n原因：%@";
 "group.beRefusedToJoin" = "被拒绝加入群组\'%@\'";
 "group.beKicked" = "你被从群组\'%@\'中踢出";
+"group.beDestroyed" = "群组\'%@\'已解散";
 "group.agreedAndJoined" = "同意并已加入群组\'%@\'";
 "group.join" = "加入群组";
 "group.joined" = "已加入";
