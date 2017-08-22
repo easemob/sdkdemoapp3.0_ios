@@ -381,7 +381,7 @@
     if (_isCreater) {
         [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithPassword:@"" completion:block];
     } else {
-        [[EMClient sharedClient].conferenceManager joinConferenceWithId:_conferenceId password:@"" completion:^(EMCallConference *aCall, EMError *aError) {
+        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:_conferenceId password:@"" completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, @"", aError);
         }];
     }
@@ -407,7 +407,7 @@
     
 //    NSString *currentUser = [EMClient sharedClient].currentUsername;
 //    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:@"inviteToJoinConference"];
-//    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:cmdChat ext:@{@"confId":[self.conference getInviteCallId], @"creater":currentUser, @"type":[NSNumber numberWithInteger:self.type]}];
+//    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:cmdChat ext:@{@"confId":self.conference.confId, @"creater":currentUser, @"type":[NSNumber numberWithInteger:self.type]}];
 //    message.chatType = EMChatTypeChat;
 //    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
