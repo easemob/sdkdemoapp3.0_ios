@@ -341,7 +341,7 @@
 {
     NSString *loginUser = [EMClient sharedClient].currentUsername;
     
-    EMCallPubConfig *pubConfig = [[EMCallPubConfig alloc] init];
+    EMStreamParam *pubConfig = [[EMStreamParam alloc] init];
     pubConfig.streamName = loginUser;
     pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
     
@@ -363,7 +363,7 @@
                 localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
             }
             pubConfig.localView = localView;
-            [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference pubConfig:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
+            [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference streamParam:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
                 if (aError) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
                     [alertView show];
@@ -532,21 +532,19 @@
 #pragma mark - EMConferenceManagerDelegate
 
 - (void)userDidJoin:(EMCallConference *)aConference
-               user:(EMCallMember *)aMember
+               user:(NSString *)aUserName
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *username = aMember.userName;
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), username];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aUserName];
         [self showHint:message];
     }
 }
 
 - (void)userDidLeave:(EMCallConference *)aConference
-                user:(EMCallMember *)aMember
+                user:(NSString *)aUserName
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *username = aMember.userName;
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), username];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aUserName];
         [self showHint:message];
     }
 }
@@ -569,14 +567,6 @@
     }
 }
 
-- (void)streamDidUpdate:(EMCallConference *)aConference
-                 stream:(EMCallStream *)aStream
-{
-    if ([aConference.callId isEqualToString:self.conference.callId]) {
-        [self.streamsDic setObject:aStream forKey:aStream.streamId];
-    }
-}
-
 - (void)conferenceDidEnd:(EMCallConference *)aConference
                   reason:(EMCallEndReason)aReason
                    error:(EMError *)aError
@@ -592,15 +582,23 @@
     }
 }
 
-- (void)streamDidConnected:(EMCallConference *)aConference
-                  streamId:(NSString *)aStreamId
+- (void)streamDidUpdate:(EMCallConference *)aConference
+                 status:(EMStreamStatus)aStatus
+               streamId:(NSString *)aStreamId
+                 stream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        if ([aStreamId isEqualToString:self.pubStreamId]) {
-            [self _userViewDidConnectedWithStreamId:aStreamId];
-        } else if ([self.streamIdList containsObject:aStreamId]) {
-            [self _userViewDidConnectedWithStreamId:aStreamId];
+        if (aStatus == EMStreamStatusNone && aStream != nil) {
+            [self.streamsDic setObject:aStream forKey:aStream.streamId];
         }
+        if (aStatus == EMStreamStatusStartTransmitting) {
+            if ([aStreamId isEqualToString:self.pubStreamId]) {
+                [self _userViewDidConnectedWithStreamId:aStreamId];
+            } else if ([self.streamIdList containsObject:aStreamId]) {
+                [self _userViewDidConnectedWithStreamId:aStreamId];
+            }
+        }
+        
     }
 }
 
