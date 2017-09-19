@@ -584,8 +584,7 @@
 
 - (void)streamDidUpdate:(EMCallConference *)aConference
                  status:(EMStreamStatus)aStatus
-               streamId:(NSString *)aStreamId
-                 stream:(EMCallStream *)aStream
+             streamOrId:(id)aStreamOrId
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         if (aStatus == EMStreamStatusNone && aStream != nil) {
