@@ -401,6 +401,55 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
+- (void)messagesDidRecall:(NSArray *)aMessages
+{
+    for (EMMessage *msg in aMessages) {
+        NSString *text;
+        if ([msg.from isEqualToString:[EMClient sharedClient].currentUsername]) {
+            text = [NSString stringWithFormat:NSLocalizedString(@"message.recall", @"You recall a message")];
+        } else {
+            text = [NSString stringWithFormat:NSLocalizedString(@"message.recallByOthers", @"%@ recall a message"),msg.from];
+        }
+        EMMessage *message = [EaseSDKHelper sendTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+        message.isRead = YES;
+        [message setTimestamp:msg.timestamp];
+        [message setLocalTime:msg.localTime];
+        EMConversationType conversatinType = EMConversationTypeChat;
+        switch (msg.chatType) {
+            case EMChatTypeChat:
+                conversatinType = EMConversationTypeChat;
+                break;
+            case EMChatTypeGroupChat:
+                conversatinType = EMConversationTypeGroupChat;
+                break;
+            case EMChatTypeChatRoom:
+                conversatinType = EMConversationTypeChatRoom;
+                break;
+            default:
+                break;
+        }
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:conversatinType createIfNotExist:NO];
+        NSDictionary *dict = msg.ext;
+        if (dict && [dict objectForKey:@"em_at_list"]) {
+            NSArray *atList = [dict objectForKey:@"em_at_list"];
+            if ([atList containsObject:[EMClient sharedClient].currentUsername]) {
+                NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+                [conversationExt removeObjectForKey:kHaveUnreadAtMessage];
+                conversation.ext = conversationExt;
+            }
+        }
+        [conversation insertMessage:message error:nil];
+    }
+    
+    if (self.conversationListVC) {
+        [_conversationListVC refresh];
+    }
+    
+    if (self.mainVC) {
+        [_mainVC setupUnreadMessageCount];
+    }
+}
+
 #pragma mark - EMGroupManagerDelegate
 
 - (void)didReceiveLeavedGroup:(EMGroup *)aGroup
