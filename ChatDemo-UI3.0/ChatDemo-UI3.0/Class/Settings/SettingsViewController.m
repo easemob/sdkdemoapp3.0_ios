@@ -35,6 +35,7 @@
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
 @property (strong, nonatomic) UISwitch *deliveryAckSwitch;
 @property (strong, nonatomic) UISwitch *historySwitch;
+@property (strong, nonatomic) UISwitch *uploadFileSwitch;
 
 @end
 
@@ -42,29 +43,14 @@
 
 @synthesize autoLoginSwitch = _autoLoginSwitch;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.title = NSLocalizedString(@"title.setting", @"Setting");
-    self.view.backgroundColor = [UIColor colorWithRed:0.88 green:0.88 blue:0.88 alpha:1.0];
     self.navigationItem.backBarButtonItem.accessibilityIdentifier = @"back";
     
-    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.tableFooterView = self.footerView;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - getter
@@ -133,14 +119,31 @@
     return _historySwitch;
 }
 
+- (UISwitch *)uploadFileSwitch
+{
+    if (_uploadFileSwitch == nil) {
+        _uploadFileSwitch = [[UISwitch alloc] init];
+        _uploadFileSwitch.on = ![[EMClient sharedClient].options isAutoUploadMessageAttachments];
+        [_uploadFileSwitch addTarget:self action:@selector(uploadMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    
+    return _uploadFileSwitch;
+}
+
 #pragma mark - Table view datasource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#ifdef REDPACKET_AVALABLE
-    return 2;
+    NSInteger count = 1;
+#if DEMO_CALL == 1
+    count += 1;
 #endif
-    return 1;
+    
+#ifdef REDPACKET_AVALABLE
+    count += 1;
+#endif
+    
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -152,10 +155,12 @@
 #endif
     
 #if DEMO_CALL == 1
-    return 12;
+    if (section == 2) {
+        return 1;
+    }
 #endif
 
-    return 9;
+    return 12;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,69 +175,78 @@
             [subView removeFromSuperview];
         }];
     }
-
+   
 #ifdef REDPACKET_AVALABLE
+    
     if (indexPath.section == 0) {
         cell.textLabel.text = @"零钱";
 #ifdef AliAuthPay
         cell.textLabel.text = @"红包记录";
 #endif
-    }else if (indexPath.section == 1) {
+        return cell;
+    }
 #else
-    if (indexPath.section == 0) {
+    
 #endif
-        if (indexPath.row == 0) {
-            cell.textLabel.text = NSLocalizedString(@"setting.autoLogin", @"automatic login");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
-            [cell.contentView addSubview:self.autoLoginSwitch];
-        } else if (indexPath.row == 1)
-        {
-            cell.textLabel.text = NSLocalizedString(@"title.apnsSetting", @"Apns Settings");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 2)
-        {
-            cell.textLabel.text = NSLocalizedString(@"title.buddyBlock", @"Black List");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 3)
-        {
-            cell.textLabel.text = NSLocalizedString(@"title.debug", @"Debug");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 4){
-            cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
-            [cell.contentView addSubview:self.delConversationSwitch];
-        } else if (indexPath.row == 5) {
-            cell.textLabel.text = NSLocalizedString(@"setting.autoAcceptGrupInvite", @"Auto accept group invite");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.groupInviteSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.groupInviteSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.groupInviteSwitch.frame.size.height) / 2, self.groupInviteSwitch.frame.size.width, self.groupInviteSwitch.frame.size.height);
-            [cell.contentView addSubview:self.groupInviteSwitch];
-        } else if (indexPath.row == 6) {
-            cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 7) {
-            cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 8) {
-            cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
-            [cell.contentView addSubview:self.sortMethodSwitch];
-        } else if (indexPath.row == 9) {
-            cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 10) {
-            cell.textLabel.text = NSLocalizedString(@"setting.enableDeliveryAck", @"Whether to send delivery ack");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.deliveryAckSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.deliveryAckSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.deliveryAckSwitch.frame.size.height) / 2, self.deliveryAckSwitch.frame.size.width, self.deliveryAckSwitch.frame.size.height);
-            [cell.contentView addSubview:self.deliveryAckSwitch];
-        } else if (indexPath.row == 11) {
-            cell.textLabel.text = NSLocalizedString(@"setting.messageRource", @"The priority server gets the message");
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
-            [cell.contentView addSubview:self.historySwitch];
-        }
+    
+#if DEMO_CALL == 1
+    if (indexPath.section == 2) {
+        cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        return cell;
+    }
+#endif
+    
+    if (indexPath.row == 0) {
+        cell.textLabel.text = NSLocalizedString(@"setting.autoLogin", @"automatic login");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.autoLoginSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoLoginSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoLoginSwitch.frame.size.height) / 2, self.autoLoginSwitch.frame.size.width, self.autoLoginSwitch.frame.size.height);
+        [cell.contentView addSubview:self.autoLoginSwitch];
+    } else if (indexPath.row == 1) {
+        cell.textLabel.text = NSLocalizedString(@"title.apnsSetting", @"Apns Settings");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 2) {
+        cell.textLabel.text = NSLocalizedString(@"title.buddyBlock", @"Black List");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 3) {
+        cell.textLabel.text = NSLocalizedString(@"title.debug", @"Debug");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 4) {
+        cell.textLabel.text = NSLocalizedString(@"setting.deleteConWhenLeave", @"Delete conversation when leave a group");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.delConversationSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.delConversationSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.delConversationSwitch.frame.size.height) / 2, self.delConversationSwitch.frame.size.width, self.delConversationSwitch.frame.size.height);
+        [cell.contentView addSubview:self.delConversationSwitch];
+    } else if (indexPath.row == 5) {
+        cell.textLabel.text = NSLocalizedString(@"setting.autoAcceptGrupInvite", @"Auto accept group invite");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.groupInviteSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.groupInviteSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.groupInviteSwitch.frame.size.height) / 2, self.groupInviteSwitch.frame.size.width, self.groupInviteSwitch.frame.size.height);
+        [cell.contentView addSubview:self.groupInviteSwitch];
+    } else if (indexPath.row == 6) {
+        cell.textLabel.text = NSLocalizedString(@"setting.iospushname", @"iOS push nickname");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 7) {
+        cell.textLabel.text = NSLocalizedString(@"setting.personalInfo", nil);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 8) {
+        cell.textLabel.text = NSLocalizedString(@"setting.sortbyservertime", @"Sort message by server time");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.sortMethodSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.sortMethodSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.sortMethodSwitch.frame.size.height) / 2, self.sortMethodSwitch.frame.size.width, self.sortMethodSwitch.frame.size.height);
+        [cell.contentView addSubview:self.sortMethodSwitch];
+    } else if (indexPath.row == 9) {
+        cell.textLabel.text = NSLocalizedString(@"setting.enableDeliveryAck", @"Whether to send delivery ack");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.deliveryAckSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.deliveryAckSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.deliveryAckSwitch.frame.size.height) / 2, self.deliveryAckSwitch.frame.size.width, self.deliveryAckSwitch.frame.size.height);
+        [cell.contentView addSubview:self.deliveryAckSwitch];
+    } else if (indexPath.row == 10) {
+        cell.textLabel.text = NSLocalizedString(@"setting.messageRource", @"The priority server gets the message");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
+        [cell.contentView addSubview:self.historySwitch];
+    } else if (indexPath.row == 11) {
+        cell.textLabel.text = NSLocalizedString(@"title.customAttachments",@"The message attachment is uploaded to your own server");
+        self.uploadFileSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.uploadFileSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.uploadFileSwitch.frame.size.height) / 2, self.uploadFileSwitch.frame.size.width, self.uploadFileSwitch.frame.size.height);
+        [cell.contentView addSubview:self.uploadFileSwitch];
     }
     
     return cell;
@@ -248,10 +262,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
 #ifdef REDPACKET_AVALABLE
     if (indexPath.section == 0) {
         [RedpacketViewControl presentChangePocketViewControllerFromeController:self];
         return;
+    }
+#endif
+    
+#if DEMO_CALL == 1
+    if (indexPath.section == 2) {
+        CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:callSettingController animated:YES];
     }
 #endif
     
@@ -271,13 +293,10 @@
     } else if (indexPath.row == 6) {
         EditNicknameViewController *editName = [[EditNicknameViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:editName animated:YES];
-    } else if (indexPath.row == 7){
+    } else if (indexPath.row == 7) {
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
         
-    } else if (indexPath.row == 9) {
-        CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController pushViewController:callSettingController animated:YES];
     }
 }
 
@@ -288,10 +307,6 @@
     if (_footerView == nil) {
         _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
         _footerView.backgroundColor = [UIColor clearColor];
-        
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(10, 0, _footerView.frame.size.width - 10, 0.5)];
-        line.backgroundColor = [UIColor lightGrayColor];
-        [_footerView addSubview:line];
         
         UIButton *logoutButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, _footerView.frame.size.width - 20, 45)];
         logoutButton.accessibilityIdentifier = @"logoff";
@@ -337,6 +352,11 @@
 - (void)historySrouceChanged:(UISwitch *)control {
     NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
     [udefaults setBool:control.isOn forKey:@"isFetchHistory"];
+}
+
+- (void)uploadMessageFileChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setIsAutoUploadMessageAttachments:!control.on];
 }
     
 - (void)refreshConfig

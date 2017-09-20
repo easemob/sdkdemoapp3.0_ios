@@ -394,6 +394,7 @@
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
 "title.createChatroom" = "Create a chatroom";
+"title.customAttachments" = "The message attachment is uploaded to your own server";
 
 //setting
 "setting.autoLogin" = "Automatic Login";

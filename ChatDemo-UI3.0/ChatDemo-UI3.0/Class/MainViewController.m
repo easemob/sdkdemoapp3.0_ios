@@ -141,7 +141,7 @@ static NSString *kGroupName = @"GroupName";
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
-    _settingsVC = [[SettingsViewController alloc] init];
+    _settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];

@@ -147,10 +147,6 @@
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
             cell.titleLabel.text = NSLocalizedString(@"title.chatroom",@"chatroom");
         }
-//        else if (indexPath.row == 3) {
-//            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/group"];
-//            cell.titleLabel.text = NSLocalizedString(@"title.robotlist",@"robot list");
-//        }
         else if (indexPath.row == 3) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_audioCall"];
             cell.titleLabel.text = NSLocalizedString(@"title.conference.voice",@"mutil voice conference");
@@ -270,7 +266,7 @@
         }
 #endif
     } else if (section == 1) {
-       ChatViewController * chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
+       ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
         [self.navigationController pushViewController:chatController animated:YES];
     }
     else{

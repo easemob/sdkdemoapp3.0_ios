@@ -391,6 +391,7 @@
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";
 "title.createChatroom" = "创建聊天室";
+"title.customAttachments" = "消息附件上传到自己服务器";
 
 
 //setting
