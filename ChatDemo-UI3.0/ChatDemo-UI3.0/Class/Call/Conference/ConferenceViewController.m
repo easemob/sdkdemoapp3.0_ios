@@ -583,21 +583,22 @@
 }
 
 - (void)streamDidUpdate:(EMCallConference *)aConference
-                 status:(EMStreamStatus)aStatus
-             streamOrId:(id)aStreamOrId
+                 stream:(EMCallStream *)aStream
+{
+    if ([aConference.callId isEqualToString:self.conference.callId] && aStream != nil) {
+        [self.streamsDic setObject:aStream forKey:aStream.streamId];
+    }
+}
+
+- (void)streamStartTransmitting:(EMCallConference *)aConference
+                       streamId:(NSString *)aStreamId
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        if (aStatus == EMStreamStatusNone && aStream != nil) {
-            [self.streamsDic setObject:aStream forKey:aStream.streamId];
+        if ([aStreamId isEqualToString:self.pubStreamId]) {
+            [self _userViewDidConnectedWithStreamId:aStreamId];
+        } else if ([self.streamIdList containsObject:aStreamId]) {
+            [self _userViewDidConnectedWithStreamId:aStreamId];
         }
-        if (aStatus == EMStreamStatusStartTransmitting) {
-            if ([aStreamId isEqualToString:self.pubStreamId]) {
-                [self _userViewDidConnectedWithStreamId:aStreamId];
-            } else if ([self.streamIdList containsObject:aStreamId]) {
-                [self _userViewDidConnectedWithStreamId:aStreamId];
-            }
-        }
-        
     }
 }
 
