@@ -410,7 +410,7 @@ static ChatDemoHelper *helper = nil;
         } else {
             text = [NSString stringWithFormat:NSLocalizedString(@"message.recallByOthers", @"%@ recall a message"),msg.from];
         }
-        EMMessage *message = [EaseSDKHelper sendTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+        EMMessage *message = [EaseSDKHelper getTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
         message.isRead = YES;
         [message setTimestamp:msg.timestamp];
         [message setLocalTime:msg.localTime];
