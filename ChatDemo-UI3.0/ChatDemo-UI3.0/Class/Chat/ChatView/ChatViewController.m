@@ -114,7 +114,7 @@
                                                               conversationType:self.conversation.type
                                                                 startMessageId:startMessageId
                                                                       pageSize:10
-                                                                    complation:^(EMCursorResult *aResult, EMError *aError)
+                                                                    completion:^(EMCursorResult *aResult, EMError *aError)
         {
             [super tableViewDidTriggerHeaderRefresh];
         }];
