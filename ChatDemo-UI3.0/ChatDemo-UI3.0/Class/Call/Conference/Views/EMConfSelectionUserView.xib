@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EMConfSelectionUserView">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gb5-eJ-Ipw">
+                    <rect key="frame" x="0.0" y="0.0" width="100" height="70"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="ad2-n8-yHk">
+                            <rect key="frame" x="18" y="5" width="65" height="65"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="ad2-n8-yHk" secondAttribute="height" multiplier="1:1" id="Hgh-se-cVI"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conf_delete.png" translatesAutoresizingMaskIntoConstraints="NO" id="PET-zv-pJm">
+                            <rect key="frame" x="62" y="0.0" width="33" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="PET-zv-pJm" secondAttribute="height" multiplier="1:1" id="dra-PT-flb"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="PET-zv-pJm" firstAttribute="width" secondItem="Gb5-eJ-Ipw" secondAttribute="width" multiplier="0.33" id="DFz-J0-L5m"/>
+                        <constraint firstItem="PET-zv-pJm" firstAttribute="top" secondItem="Gb5-eJ-Ipw" secondAttribute="top" id="LRB-Yz-V6i"/>
+                        <constraint firstAttribute="trailing" secondItem="PET-zv-pJm" secondAttribute="trailing" constant="5" id="gJL-3s-PZ7"/>
+                        <constraint firstItem="ad2-n8-yHk" firstAttribute="top" secondItem="Gb5-eJ-Ipw" secondAttribute="top" constant="5" id="kgh-NN-dKH"/>
+                        <constraint firstItem="ad2-n8-yHk" firstAttribute="centerX" secondItem="Gb5-eJ-Ipw" secondAttribute="centerX" id="rhM-i8-kcE"/>
+                        <constraint firstAttribute="bottom" secondItem="ad2-n8-yHk" secondAttribute="bottom" id="tsS-yb-3Fg"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5e4-vx-KVr">
+                    <rect key="frame" x="0.0" y="70" width="100" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Gb5-eJ-Ipw" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.7" id="1Mv-s7-wvI"/>
+                <constraint firstItem="Gb5-eJ-Ipw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="6tL-dz-tfL"/>
+                <constraint firstAttribute="bottom" secondItem="5e4-vx-KVr" secondAttribute="bottom" id="KvC-Bo-TWn"/>
+                <constraint firstAttribute="trailing" secondItem="5e4-vx-KVr" secondAttribute="trailing" id="LpZ-B4-b3c"/>
+                <constraint firstItem="5e4-vx-KVr" firstAttribute="top" secondItem="Gb5-eJ-Ipw" secondAttribute="bottom" id="SiL-bF-Sf4"/>
+                <constraint firstItem="5e4-vx-KVr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="otV-l7-aVM"/>
+                <constraint firstItem="Gb5-eJ-Ipw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tCi-Us-tVM"/>
+                <constraint firstAttribute="trailing" secondItem="Gb5-eJ-Ipw" secondAttribute="trailing" id="xH1-6F-Jix"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="deleteImgView" destination="PET-zv-pJm" id="Ra8-bZ-Qkh"/>
+                <outlet property="imgView" destination="ad2-n8-yHk" id="Mho-pu-T7N"/>
+                <outlet property="nameLabel" destination="5e4-vx-KVr" id="xJq-hN-taL"/>
+                <outlet property="topView" destination="Gb5-eJ-Ipw" id="N17-Wf-wjZ"/>
+            </connections>
+            <point key="canvasLocation" x="33" y="-69"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="conf_delete.png" width="20" height="20"/>
+        <image name="default_avatar.png" width="50" height="50"/>
+    </resources>
+</document>

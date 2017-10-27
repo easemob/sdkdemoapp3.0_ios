@@ -394,6 +394,7 @@
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
 "title.createChatroom" = "Create a chatroom";
+"title.customAttachments" = "The message attachment is uploaded to your own server";
 
 //setting
 "setting.autoLogin" = "Automatic Login";
@@ -470,3 +471,19 @@
 "alert.multi.contact" = "Contact Multi-devices";
 "alert.multi.group" = "Group Multi-devices";
 "alert.multi.tooManyDevices" = "Login too many devices";
+
+//multi call
+"title.conference.voice" = "Mutil Voice Conference";
+"title.conference.video" = "Mutil Video Conference";
+"alert.conference.createFail" = "Create or Join conference failed!";
+"alert.conference.pubFail" = "Pub stream failed!";
+"alert.conference.inviteFail" = "Invite failed!";
+"alert.conference.inviteSuccess" = "Invite successful!";
+"alert.conference.subFail" = "Sub stream-%@ failed!";
+"hint.conference.userJoin" = "User %@ has been joined to the conference";
+"hint.conference.userLeave" = "User %@ has been leaved from the conference";
+"alert.conference.closed" = "Conference has been closed";
+"network.conference.normal" = "Network changes: the network is normal";
+"network.conference.unstable" = "Network changes: the network is unstable";
+"network.conference.dis" = "Network changes: the network is disconnect";
+"title.conference.addUser" = "Add User";

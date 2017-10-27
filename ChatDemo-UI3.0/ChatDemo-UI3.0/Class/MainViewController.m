@@ -27,6 +27,7 @@ static NSString *kGroupName = @"GroupName";
 
 #if DEMO_CALL == 1
 #import <Hyphenate/Hyphenate.h>
+#import "DemoConfManager.h"
 
 @interface MainViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
 #else
@@ -80,6 +81,10 @@ static NSString *kGroupName = @"GroupName";
     
     [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
     [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
+    
+#if DEMO_CALL == 1
+    [DemoConfManager sharedManager].mainController = self;
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -136,7 +141,7 @@ static NSString *kGroupName = @"GroupName";
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
-    _settingsVC = [[SettingsViewController alloc] init];
+    _settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];

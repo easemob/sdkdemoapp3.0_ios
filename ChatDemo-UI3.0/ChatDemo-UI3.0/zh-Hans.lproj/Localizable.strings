@@ -391,6 +391,7 @@
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";
 "title.createChatroom" = "创建聊天室";
+"title.customAttachments" = "消息附件上传到自己服务器";
 
 
 //setting
@@ -468,3 +469,19 @@
 "alert.multi.contact" = "好友多设备通知";
 "alert.multi.group" = "群组多设备通知";
 "alert.multi.tooManyDevices" = "登录设备数已达上限";
+
+//multi call
+"title.conference.voice" = "多人语音会议";
+"title.conference.video" = "多人视频会议";
+"alert.conference.createFail" = "创建或者加入会议失败!";
+"alert.conference.pubFail" = "上传数据流失败!";
+"alert.conference.inviteFail" = "发送邀请失败!";
+"alert.conference.inviteSuccess" = "发送邀请成功!";
+"alert.conference.subFail" = "订阅数据流 %@ 失败!";
+"hint.conference.userJoin" = "%@ 已经加入会议";
+"hint.conference.userLeave" = "%@ 已经离开会议";
+"alert.conference.closed" = "会议已经关闭";
+"network.conference.normal" = "网络变化：网络正常";
+"network.conference.unstable" = "网络变化：数据不稳定";
+"network.conference.dis" = "网络变化：网络已经断开";
+"title.conference.addUser" = "添加成员";

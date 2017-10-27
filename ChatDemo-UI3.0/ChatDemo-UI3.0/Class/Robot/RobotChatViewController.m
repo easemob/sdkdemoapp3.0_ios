@@ -20,10 +20,7 @@
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    EMMessage *message = [EaseSDKHelper sendTextMessage:text
-                                                   to:self.conversation.conversationId
-                                          messageType:[self _messageTypeFromConversationType]
-                                           messageExt:ext];
+    EMMessage *message = [EaseSDKHelper getTextMessage:text to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -32,10 +29,7 @@
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    EMMessage *message = [EaseSDKHelper sendImageMessageWithImage:image
-                                                               to:self.conversation.conversationId
-                                                      messageType:[self _messageTypeFromConversationType]
-                                                         messageExt:ext];
+    EMMessage *message = [EaseSDKHelper getImageMessageWithImage:image to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -44,11 +38,7 @@
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    EMMessage *message = [EaseSDKHelper sendVoiceMessageWithLocalPath:localPath
-                                                             duration:duration
-                                                                   to:self.conversation.conversationId
-                                                          messageType:[self _messageTypeFromConversationType]
-                                                             messageExt:ext];
+    EMMessage *message = [EaseSDKHelper getVoiceMessageWithLocalPath:localPath duration:duration to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -57,10 +47,7 @@
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    EMMessage *message = [EaseSDKHelper sendVideoMessageWithURL:url
-                                                             to:self.conversation.conversationId
-                                                    messageType:[self _messageTypeFromConversationType]
-                                                       messageExt:ext];
+    EMMessage *message = [EaseSDKHelper getVideoMessageWithURL:url to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
@@ -71,12 +58,7 @@
 {
     NSDictionary *ext = nil;
     ext = @{kRobot_Message_Ext:[NSNumber numberWithBool:YES]};
-    EMMessage *message = [EaseSDKHelper sendLocationMessageWithLatitude:latitude
-                                                              longitude:longitude
-                                                                address:address
-                                                                     to:self.conversation.conversationId
-                                                            messageType:[self _messageTypeFromConversationType]
-                                                             messageExt:ext];
+    EMMessage *message = [EaseSDKHelper getLocationMessageWithLatitude:latitude longitude:longitude address:address to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:ext];
     [self addMessageToDataSource:message
                         progress:nil];
 }
