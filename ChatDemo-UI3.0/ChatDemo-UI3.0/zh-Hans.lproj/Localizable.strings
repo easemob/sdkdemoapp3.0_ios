@@ -346,6 +346,7 @@
 "message.forbiddenWords" = "你的消息包含不当言论";
 "message.recall" = "您撤回了一条消息";
 "message.recallByOthers" = "%@撤回了一条消息";
+"message.autoTransfer" = "请自定义上传或者下载附件方法";
 
 //media
 "media.timeShort" = "录音时间太短了";

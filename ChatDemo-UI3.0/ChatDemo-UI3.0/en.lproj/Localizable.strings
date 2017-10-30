@@ -348,7 +348,7 @@
 "message.forbiddenWords" = "Your message contains forbidden words";
 "message.recall" = "You recall a message";
 "message.recallByOthers" = "%@ recall a message";
-
+"message.autoTransfer" = "Please customize the transfer attachment method";
 
 //media
 "media.timeShort" = "The recording time is too short";
