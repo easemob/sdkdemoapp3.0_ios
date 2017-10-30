@@ -123,7 +123,7 @@
 {
     if (_uploadFileSwitch == nil) {
         _uploadFileSwitch = [[UISwitch alloc] init];
-        _uploadFileSwitch.on = ![[EMClient sharedClient].options isAutoUploadMessageAttachments];
+        _uploadFileSwitch.on = ![[EMClient sharedClient].options isAutoTransferMessageAttachments];
         [_uploadFileSwitch addTarget:self action:@selector(uploadMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
@@ -356,7 +356,7 @@
 
 - (void)uploadMessageFileChanged:(UISwitch *)control
 {
-    [[EMClient sharedClient].options setIsAutoUploadMessageAttachments:!control.on];
+    [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:!control.on];
 }
     
 - (void)refreshConfig

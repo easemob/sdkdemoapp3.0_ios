@@ -90,6 +90,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.tableView.tag != 1) {
+        self.tableView.tag = 1;
+        CGFloat oY = CGRectGetMaxY(self.selectedView.frame) + 13;
+        self.tableView.frame = CGRectMake(0, oY, self.view.frame.size.width, self.view.frame.size.height - oY);
+    }
+}
+
+
 #pragma mark - Subviewa
 
 - (void)_setupSubviews

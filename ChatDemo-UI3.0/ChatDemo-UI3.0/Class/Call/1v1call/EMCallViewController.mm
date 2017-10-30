@@ -116,6 +116,7 @@
 
 - (void)_layoutSubviews
 {
+    [self.switchCameraButton setImage:[UIImage imageNamed:@"Button_Camera_active"] forState:UIControlStateSelected];
     [self.silenceButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     self.timeLabel.hidden = YES;
     self.remoteNameLabel.text = self.callSession.remoteName;
