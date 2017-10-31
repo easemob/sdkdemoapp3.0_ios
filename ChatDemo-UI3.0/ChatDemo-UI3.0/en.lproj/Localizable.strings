@@ -395,6 +395,7 @@
 "title.profile" = "Profile";
 "title.createChatroom" = "Create a chatroom";
 "title.customAttachments" = "The message attachment is uploaded to your own server";
+"title.autoDownloadThumbnail" = "Weather to Automatic download thumbnail";
 
 //setting
 "setting.autoLogin" = "Automatic Login";
