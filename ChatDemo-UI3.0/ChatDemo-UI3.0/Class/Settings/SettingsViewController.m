@@ -125,7 +125,7 @@
     if (_uploadFileSwitch == nil) {
         _uploadFileSwitch = [[UISwitch alloc] init];
         _uploadFileSwitch.on = ![[EMClient sharedClient].options isAutoTransferMessageAttachments];
-        [_uploadFileSwitch addTarget:self action:@selector(uploadMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
+        [_uploadFileSwitch addTarget:self action:@selector(autoDownloadChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
     return _uploadFileSwitch;
@@ -369,6 +369,11 @@
 - (void)historySrouceChanged:(UISwitch *)control {
     NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
     [udefaults setBool:control.isOn forKey:@"isFetchHistory"];
+}
+
+- (void)uploadMessageFileChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:!control.on];
 }
 
 - (void)autoDownloadChanged:(UISwitch *)control
