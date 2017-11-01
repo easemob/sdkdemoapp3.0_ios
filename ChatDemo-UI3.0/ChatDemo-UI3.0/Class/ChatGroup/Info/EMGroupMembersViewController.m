@@ -147,7 +147,7 @@
         
         UISwipeActionsConfiguration *config = nil;
         if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-            UIContextualAction *adminAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"delete",@"Delete") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            UIContextualAction *adminAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.upgrade", @"Upgrade" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
                 [self editActionsForRowAtIndexPath:aIndexPath actionIndex:3];
             }];
             adminAction.backgroundColor = [UIColor blackColor];
