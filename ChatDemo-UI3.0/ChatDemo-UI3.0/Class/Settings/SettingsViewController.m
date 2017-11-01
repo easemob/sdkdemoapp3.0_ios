@@ -35,7 +35,7 @@
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
 @property (strong, nonatomic) UISwitch *deliveryAckSwitch;
 @property (strong, nonatomic) UISwitch *historySwitch;
-@property (strong, nonatomic) UISwitch *uploadFileSwitch;
+@property (strong, nonatomic) UISwitch *autoTransferMessageFileSwitch;
 @property (strong, nonatomic) UISwitch *thumbnailSwitch;
 
 @end
@@ -120,15 +120,15 @@
     return _historySwitch;
 }
 
-- (UISwitch *)uploadFileSwitch
+- (UISwitch *)autoTransferMessageFileSwitch
 {
-    if (_uploadFileSwitch == nil) {
-        _uploadFileSwitch = [[UISwitch alloc] init];
-        _uploadFileSwitch.on = ![[EMClient sharedClient].options isAutoTransferMessageAttachments];
-        [_uploadFileSwitch addTarget:self action:@selector(uploadMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
+    if (_autoTransferMessageFileSwitch == nil) {
+        _autoTransferMessageFileSwitch = [[UISwitch alloc] init];
+        _autoTransferMessageFileSwitch.on = ![[EMClient sharedClient].options isAutoTransferMessageAttachments];
+        [_autoTransferMessageFileSwitch addTarget:self action:@selector(autoTransferMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
-    return _uploadFileSwitch;
+    return _autoTransferMessageFileSwitch;
 }
 
 - (UISwitch *)thumbnailSwitch
@@ -257,8 +257,8 @@
     } else if (indexPath.row == 11) {
         cell.textLabel.text = NSLocalizedString(@"title.customAttachments",@"The message attachment is uploaded to your own server");
         cell.accessoryType = UITableViewCellAccessoryNone;
-        self.uploadFileSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.uploadFileSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.uploadFileSwitch.frame.size.height) / 2, self.uploadFileSwitch.frame.size.width, self.uploadFileSwitch.frame.size.height);
-        [cell.contentView addSubview:self.uploadFileSwitch];
+        self.autoTransferMessageFileSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoTransferMessageFileSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoTransferMessageFileSwitch.frame.size.height) / 2, self.autoTransferMessageFileSwitch.frame.size.width, self.autoTransferMessageFileSwitch.frame.size.height);
+        [cell.contentView addSubview:self.autoTransferMessageFileSwitch];
     } else if (indexPath.row == 12) {
         cell.textLabel.text = NSLocalizedString(@"title.autoDownloadThumbnail", @"Weather to Automatic download thumbnail");
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -371,14 +371,20 @@
     [udefaults setBool:control.isOn forKey:@"isFetchHistory"];
 }
 
-- (void)uploadMessageFileChanged:(UISwitch *)control
+- (void)autoTransferMessageFileChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:!control.on];
+    
+    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
+    [udefaults setBool:control.isOn forKey:@"uploadMessageFile"];
 }
 
 - (void)autoDownloadChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setIsAutoDownloadThumbnail:control.on];
+    
+    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
+    [udefaults setBool:control.isOn forKey:@"autoDownloadMessageThumbnail"];
 }
     
 - (void)refreshConfig
