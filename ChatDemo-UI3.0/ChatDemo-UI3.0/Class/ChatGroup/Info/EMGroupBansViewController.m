@@ -87,20 +87,38 @@
     return YES;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewCellEditingStyleDelete;
+    return [self setupCellEditActions:indexPath];
 }
 
-- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NSLocalizedString(@"group.remove", @"Remove");
+    return [self setupCellEditActions:indexPath];
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
+#pragma mark - notification
 
+- (void)handleNotification:(NSNotification *)aNotif
+{
+    if (aNotif == nil || aNotif.object == nil || ![aNotif.object isKindOfClass:[NSString class]]) {
+        return;
+    }
+    
+    NSString *groupId = (NSString *)aNotif.object;
+    if (![groupId isEqualToString:self.group.groupId]) {
+        return;
+    }
+    
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+#pragma mark - Action
+
+- (void)deleteCellAction:(NSIndexPath *)aIndexPath
+{
+    NSString *userName = [self.dataArray objectAtIndex:aIndexPath.row];
+    
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
     
     __weak typeof(self) weakSelf = self;
@@ -123,20 +141,24 @@
     });
 }
 
-#pragma mark - notification
-
-- (void)handleNotification:(NSNotification *)aNotif
+- (id)setupCellEditActions:(NSIndexPath *)aIndexPath
 {
-    if (aNotif == nil || aNotif.object == nil || ![aNotif.object isKindOfClass:[NSString class]]) {
-        return;
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self deleteCellAction:indexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        return @[deleteAction];
+    } else {
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self deleteCellAction:aIndexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+        config.performsFirstActionWithFullSwipe = NO;
+        return config;
     }
-    
-    NSString *groupId = (NSString *)aNotif.object;
-    if (![groupId isEqualToString:self.group.groupId]) {
-        return;
-    }
-    
-    [self tableViewDidTriggerHeaderRefresh];
 }
 
 #pragma mark - data

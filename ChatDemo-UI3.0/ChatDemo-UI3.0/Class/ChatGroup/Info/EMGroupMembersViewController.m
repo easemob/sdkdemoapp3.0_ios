@@ -89,36 +89,78 @@
     return NO;
 }
 
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self setupCellEditActions:indexPath];
+}
+
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        [self editActionsForRowAtIndexPath:indexPath actionIndex:0];
-    }];
-    deleteAction.backgroundColor = [UIColor redColor];
-    
-    UITableViewRowAction *blackAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.block", @"Block") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        [self editActionsForRowAtIndexPath:indexPath actionIndex:1];
-    }];
-    blackAction.backgroundColor = [UIColor colorWithRed: 50 / 255.0 green: 63 / 255.0 blue: 72 / 255.0 alpha:1.0];
-    
-    UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.mute", @"Mute") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        [self editActionsForRowAtIndexPath:indexPath actionIndex:2];
-    }];
-    muteAction.backgroundColor = [UIColor colorWithRed: 116 / 255.0 green: 134 / 255.0 blue: 147 / 255.0 alpha:1.0];
-    
-    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-        UITableViewRowAction *adminAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.upgrade", @"Upgrade") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-            [self editActionsForRowAtIndexPath:indexPath actionIndex:3];
-        }];
-        adminAction.backgroundColor = [UIColor blackColor];
-        
-        return @[deleteAction, blackAction, muteAction, adminAction];
-    }
-    
-    return @[deleteAction, blackAction, muteAction];
+    return [self setupCellEditActions:indexPath];
 }
 
 #pragma mark - Action
+
+- (id)setupCellEditActions:(NSIndexPath *)aIndexPath
+{
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self editActionsForRowAtIndexPath:indexPath actionIndex:0];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UITableViewRowAction *blackAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.block", @"Block") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self editActionsForRowAtIndexPath:indexPath actionIndex:1];
+        }];
+        blackAction.backgroundColor = [UIColor colorWithRed: 50 / 255.0 green: 63 / 255.0 blue: 72 / 255.0 alpha:1.0];
+        
+        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.mute", @"Mute") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self editActionsForRowAtIndexPath:indexPath actionIndex:2];
+        }];
+        muteAction.backgroundColor = [UIColor colorWithRed: 116 / 255.0 green: 134 / 255.0 blue: 147 / 255.0 alpha:1.0];
+        
+        if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+            UITableViewRowAction *adminAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.upgrade", @"Upgrade") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                [self editActionsForRowAtIndexPath:indexPath actionIndex:3];
+            }];
+            adminAction.backgroundColor = [UIColor blackColor];
+            
+            return @[deleteAction, blackAction, muteAction, adminAction];
+        }
+        
+        return @[deleteAction, blackAction, muteAction];
+    } else {
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+             [self editActionsForRowAtIndexPath:aIndexPath actionIndex:0];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UIContextualAction *blackAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.block", @"Block") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self editActionsForRowAtIndexPath:aIndexPath actionIndex:1];
+        }];
+        blackAction.backgroundColor = [UIColor colorWithRed: 50 / 255.0 green: 63 / 255.0 blue: 72 / 255.0 alpha:1.0];
+        
+        UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.mute", @"Mute") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self editActionsForRowAtIndexPath:aIndexPath actionIndex:2];
+        }];
+        muteAction.backgroundColor = [UIColor colorWithRed: 116 / 255.0 green: 134 / 255.0 blue: 147 / 255.0 alpha:1.0];
+        
+        UISwipeActionsConfiguration *config = nil;
+        if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+            UIContextualAction *adminAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"delete",@"Delete") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+                [self editActionsForRowAtIndexPath:aIndexPath actionIndex:3];
+            }];
+            adminAction.backgroundColor = [UIColor blackColor];
+            
+            config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, blackAction, muteAction, adminAction]];
+        } else {
+            config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction, blackAction, muteAction]];
+        }
+        
+        config.performsFirstActionWithFullSwipe = NO;
+        return config;
+    }
+}
 
 - (void)editActionsForRowAtIndexPath:(NSIndexPath *)indexPath actionIndex:(NSInteger)buttonIndex
 {
