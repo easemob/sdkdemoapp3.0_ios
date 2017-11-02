@@ -147,7 +147,7 @@
         
         UISwipeActionsConfiguration *config = nil;
         if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-            UIContextualAction *adminAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.upgrade", @"Upgrade" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            UIContextualAction *adminAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.upgrade", @"Upgrade") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
                 [self editActionsForRowAtIndexPath:aIndexPath actionIndex:3];
             }];
             adminAction.backgroundColor = [UIColor blackColor];
@@ -166,7 +166,7 @@
 {
     NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
     [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-    
+
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = nil;
@@ -179,7 +179,7 @@
         } else if (buttonIndex == 3) {  //升为管理员
             weakSelf.group = [[EMClient sharedClient].groupManager addAdmin:userName toGroup:weakSelf.group.groupId error:&error];
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf hideHud];
             if (!error) {
@@ -189,7 +189,7 @@
                 } else {
                     [weakSelf showHint:@"禁言成功"];
                 }
-                
+
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];
             }
             else {
