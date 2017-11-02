@@ -124,7 +124,7 @@
 {
     if (_autoTransferMessageFileSwitch == nil) {
         _autoTransferMessageFileSwitch = [[UISwitch alloc] init];
-        _autoTransferMessageFileSwitch.on = ![[EMClient sharedClient].options isAutoTransferMessageAttachments];
+        _autoTransferMessageFileSwitch.on = [EMClient sharedClient].options.isAutoTransferMessageAttachments;
         [_autoTransferMessageFileSwitch addTarget:self action:@selector(autoTransferMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
@@ -255,7 +255,7 @@
         self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
         [cell.contentView addSubview:self.historySwitch];
     } else if (indexPath.row == 11) {
-        cell.textLabel.text = NSLocalizedString(@"title.customAttachments",@"The message attachment is uploaded to your own server");
+        cell.textLabel.text = NSLocalizedString(@"title.autoTransferAttachments",@"The message attachment is uploaded to Hyphenate");
         cell.accessoryType = UITableViewCellAccessoryNone;
         self.autoTransferMessageFileSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoTransferMessageFileSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoTransferMessageFileSwitch.frame.size.height) / 2, self.autoTransferMessageFileSwitch.frame.size.width, self.autoTransferMessageFileSwitch.frame.size.height);
         [cell.contentView addSubview:self.autoTransferMessageFileSwitch];
@@ -373,10 +373,10 @@
 
 - (void)autoTransferMessageFileChanged:(UISwitch *)control
 {
-    [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:!control.on];
+    [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:control.on];
     
     NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
-    [udefaults setBool:control.isOn forKey:@"uploadMessageFile"];
+    [udefaults setBool:control.isOn forKey:@"autoTransferMessageFile"];
 }
 
 - (void)autoDownloadChanged:(UISwitch *)control
@@ -392,6 +392,7 @@
     [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:NO];
     [self.sortMethodSwitch setOn:[[EMClient sharedClient].options sortMessageByServerTime] animated:NO];
     [self.deliveryAckSwitch setOn:[EMClient sharedClient].options.enableDeliveryAck animated:NO];
+    [self.autoTransferMessageFileSwitch setOn:[[EMClient sharedClient].options isAutoTransferMessageAttachments] animated:NO];
     
     [self.tableView reloadData];
 }
