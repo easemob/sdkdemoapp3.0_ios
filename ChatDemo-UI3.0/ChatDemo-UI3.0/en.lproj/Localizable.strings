@@ -394,7 +394,7 @@
 "title.robotlist" = "Robot List";
 "title.profile" = "Profile";
 "title.createChatroom" = "Create a chatroom";
-"title.customAttachments" = "The message attachment is uploaded to your own server";
+"title.autoTransferAttachments" = "The message attachment is uploaded to Hyphenate";
 "title.autoDownloadThumbnail" = "Weather to Automatic download thumbnail";
 
 //setting
