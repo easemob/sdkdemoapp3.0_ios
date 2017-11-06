@@ -12,6 +12,8 @@
 #import "RedPacketLuckView.h"
 #import "RedpacketMessageModel.h"
 
+#import "ChatDemoHelper.h"
+
 @interface EaseRedBagCell()
 @property (nonatomic, strong) RedpacketView *redpacketView;
 @property (nonatomic, strong) RedPacketLuckView *repacketLuckView;
@@ -41,13 +43,13 @@
 {
     UIImage *image = model.image;
     if (!image) {
-        [self.bubbleView.imageView sd_setImageWithURL:[NSURL URLWithString:model.fileURLPath] placeholderImage:[UIImage imageNamed:model.failImageName]];
+        [[ChatDemoHelper shareHelper] didShowImageWithView:self.bubbleView.imageView imageUrl:model.fileURLPath defaultImage:[UIImage imageNamed:model.failImageName]];
     } else {
         _bubbleView.imageView.image = image;
     }
     
     if (model.avatarURLPath) {
-        [self.avatarView sd_setImageWithURL:[NSURL URLWithString:model.avatarURLPath] placeholderImage:model.avatarImage];
+        [[ChatDemoHelper shareHelper] didShowImageWithView:self.imageView imageUrl:model.avatarURLPath defaultImage:model.avatarImage];
     } else {
         self.avatarView.image = model.avatarImage;
     }

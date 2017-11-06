@@ -11,6 +11,12 @@ target 'ChatDemo-UI3.0' do
 
     pod 'RedpacketAliAuthLib', '~> 1.1.4'
 
+    pod 'Masonry'
+
+    pod 'SDWebImage', '~> 4.0'
+
+    pod 'XLPhotoBrowser+CoderXL'
+
 end
 
 target 'ChatDemo-UI3.0-JDPay' do
