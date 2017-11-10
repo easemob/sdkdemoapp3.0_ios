@@ -353,7 +353,7 @@
     return flag;
 }
 
-- (EaseEmotion*)emotionURLFormessageViewController:(EaseMessageViewController *)viewController
+- (EaseEmotion*)emotionURLForMessageViewController:(EaseMessageViewController *)viewController
                                       messageModel:(id<IMessageModel>)messageModel
 {
     NSString *emotionId = [messageModel.message.ext objectForKey:MESSAGE_ATTR_EXPRESSION_ID];

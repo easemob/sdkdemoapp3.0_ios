@@ -14,6 +14,7 @@
 #import "UIImageView+HeadImage.h"
 
 #import "UserProfileManager.h"
+#import "ChatDemoHelper.h"
 
 @implementation UIImageView (HeadImage)
 
@@ -24,9 +25,9 @@
     }
     UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:username];
     if (profileEntity) {
-        [self sd_setImageWithURL:[NSURL URLWithString:profileEntity.imageUrl] placeholderImage:placeholderImage];
+        [[ChatDemoHelper shareHelper] didShowImageWithView:self imageUrl:profileEntity.imageUrl defaultImage:placeholderImage];
     } else {
-        [self sd_setImageWithURL:nil placeholderImage:placeholderImage];
+        [[ChatDemoHelper shareHelper] didShowImageWithView:self imageUrl:nil defaultImage:placeholderImage];
     }
 }
 

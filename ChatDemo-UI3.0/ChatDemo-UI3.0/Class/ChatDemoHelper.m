@@ -12,9 +12,13 @@
 
 #import "ChatDemoHelper.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/UIView+WebCache.h>
+#import "XLPhotoBrowser.h"
+#import "MBProgressHUD.h"
+
 #import "AppDelegate.h"
 #import "ApplyViewController.h"
-#import "MBProgressHUD.h"
 
 #import "EaseSDKHelper.h"
 
@@ -48,6 +52,8 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[EMClient sharedClient].roomManager removeDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
+    
+    [[EMImageManager sharedManager] setDelegate:nil];
 }
 
 - (id)init
@@ -88,6 +94,8 @@ static ChatDemoHelper *helper = nil;
 #if DEMO_CALL == 1
     [DemoCallManager sharedManager];
 #endif
+    
+    [[EMImageManager sharedManager] setDelegate:self];
 }
 
 - (void)asyncPushOptions
@@ -852,7 +860,30 @@ static ChatDemoHelper *helper = nil;
     [alertView show];
 }
 
-#pragma mark - public
+#pragma mark - EMImageManagerDelegate
+
+- (void)didShowImageWithView:(UIImageView *)aImgView
+                    imageUrl:(NSString *)aUrl
+                defaultImage:(UIImage *)aDefaultImg
+{
+    if (aImgView) {
+        [aImgView sd_setImageWithURL:[NSURL URLWithString:aUrl] placeholderImage:aDefaultImg];
+    }
+}
+
+// UIImage, NSString, NSURL
+- (void)didShowBrowserWithImages:(NSArray *)aImages
+                    currentIndex:(NSInteger)aIndex
+{
+    if ([aImages count] > 0) {
+        [XLPhotoBrowser showPhotoBrowserWithImages:aImages currentImageIndex:aIndex];
+    }
+}
+
+- (UIImage *)getGIFImageWithEmotion:(EaseEmotion *)aEmotion
+{
+    return nil;
+}
 
 #pragma mark - private
 - (BOOL)_needShowNotification:(NSString *)fromChatter
