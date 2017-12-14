@@ -432,6 +432,7 @@
 		D25AA35E1E8D29C8006BF820 /* shape_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3551E8D29C8006BF820 /* shape_left@2x.png */; };
 		D25AA35F1E8D29C8006BF820 /* shape_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3561E8D29C8006BF820 /* shape_right@2x.png */; };
 		D26CE39B1C2BD37700697F48 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE39A1C2BD37700697F48 /* Settings.bundle */; };
+		D2714BA91FE24E1600D4CB38 /* EMServiceCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */; };
 		D28AE8D31F22123C0028C18A /* EMDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */; };
 		D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */; };
 		D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BAB1B72090F002324BB /* UserProfileManager.m */; };
@@ -870,6 +871,8 @@
 		D25AA3551E8D29C8006BF820 /* shape_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_left@2x.png"; sourceTree = "<group>"; };
 		D25AA3561E8D29C8006BF820 /* shape_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_right@2x.png"; sourceTree = "<group>"; };
 		D26CE39A1C2BD37700697F48 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D2714BA71FE24E1500D4CB38 /* EMServiceCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMServiceCheckViewController.h; sourceTree = "<group>"; };
+		D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMServiceCheckViewController.m; sourceTree = "<group>"; };
 		D28AE8D11F22123C0028C18A /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
 		D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDevicesViewController.m; sourceTree = "<group>"; };
 		D29A6BA71B7208DF002324BB /* UIImageView+HeadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+HeadImage.h"; sourceTree = "<group>"; };
@@ -1705,6 +1708,8 @@
 		90911125192EEBB8008A48AA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D2714BA71FE24E1500D4CB38 /* EMServiceCheckViewController.h */,
+				D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */,
 				D28AE8D11F22123C0028C18A /* EMDevicesViewController.h */,
 				D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */,
 				D29A6BAD1B720960002324BB /* UserProfileEditViewController.h */,
@@ -2696,6 +2701,7 @@
 				D2B61E361BC7C76B007CB53E /* ContactListViewController.m in Sources */,
 				90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */,
 				3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */,
+				D2714BA91FE24E1600D4CB38 /* EMServiceCheckViewController.m in Sources */,
 				9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */,
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				846D7BC01E7805530091DC94 /* RedPacketUserConfig.m in Sources */,
