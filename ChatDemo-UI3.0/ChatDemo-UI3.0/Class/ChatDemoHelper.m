@@ -17,6 +17,7 @@
 #import "MBProgressHUD.h"
 
 #import "EaseSDKHelper.h"
+#import "EMDingMessageHelper.h"
 
 #ifdef REDPACKET_AVALABLE
 #import "RedpacketOpenConst.h"
@@ -42,6 +43,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)dealloc
 {
+    [[EMDingMessageHelper sharedHelper] save];
     [[EMClient sharedClient] removeDelegate:self];
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
@@ -332,10 +334,17 @@ static ChatDemoHelper *helper = nil;
     }
 }
 
-- (void)didReceiveMessages:(NSArray *)aMessages
+- (void)messagesDidReceive:(NSArray *)aMessages
 {
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
+        if ([EMDingMessageHelper isDingMessage:message]) {
+            EMMessage *ack = [[EMDingMessageHelper sharedHelper] createDingAckForMessage:message];
+            if (ack) {
+                [[EMClient sharedClient].chatManager sendMessage:ack progress:nil completion:nil];
+            }
+        }
+        
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
         
 #ifdef REDPACKET_AVALABLE
@@ -447,6 +456,18 @@ static ChatDemoHelper *helper = nil;
     
     if (self.mainVC) {
         [_mainVC setupUnreadMessageCount];
+    }
+}
+
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    for (EMMessage *message in aCmdMessages) {
+        if ([EMDingMessageHelper isDingMessageAck:message]) {
+            NSString *msgId = [[EMDingMessageHelper sharedHelper] addDingMessageAck:message];
+            if (_chatVC) {
+                [_chatVC reloadDingCellWithAckMessageId:msgId];
+            }
+        }
     }
 }
 

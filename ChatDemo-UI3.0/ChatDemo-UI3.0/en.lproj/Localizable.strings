@@ -396,6 +396,10 @@
 "title.createChatroom" = "Create a chatroom";
 "title.autoTransferAttachments" = "The message attachment is uploaded to Hyphenate";
 "title.autoDownloadThumbnail" = "Weather to Automatic download thumbnail";
+"title.extensions" = "Extensions";
+"title.sendNotifMsg" = "Send notification message";
+"title.notifMsg" = "Notification message";
+"title.readList" = "Read Users";
 
 //setting
 "setting.autoLogin" = "Automatic Login";

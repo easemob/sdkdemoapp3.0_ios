@@ -21,6 +21,10 @@
 #import "ContactSelectionViewController.h"
 #import "EMGroupInfoViewController.h"
 
+#import "EMDingMessageHelper.h"
+#import "DingViewController.h"
+#import "DingAcksViewController.h"
+
 @interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate, EMChooseViewDelegate>
 {
     UIMenuItem *_copyMenuItem;
@@ -41,15 +45,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [ChatDemoHelper shareHelper].chatVC = self;
+    
     self.showRefreshHeader = YES;
     self.delegate = self;
     self.dataSource = self;
     [self _setupBarButtonItem];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteAllMessages:) name:KNOTIFICATIONNAME_DELETEALLMESSAGE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callControllerClose" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitChat) name:@"ExitChat" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertCallMessage:) name:@"insertCallMessage" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callOutWithChatter" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callControllerClose" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dingAction) name:kNotification_DingAction object:nil];
     
 }
 
@@ -102,7 +109,8 @@
     }
 }
 
-- (void)tableViewDidTriggerHeaderRefresh {
+- (void)tableViewDidTriggerHeaderRefresh
+{
     if ([[ChatDemoHelper shareHelper] isFetchHistoryChange]) {
         NSString *startMessageId = nil;
         if ([self.messsagesSource count] > 0) {
@@ -144,11 +152,10 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
     }
     else{//群聊
-        UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+        UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         detailButton.accessibilityIdentifier = @"detail";
         [detailButton setImage:[UIImage imageNamed:@"group_detail"] forState:UIControlStateNormal];
         [detailButton addTarget:self action:@selector(showGroupDetailAction) forControlEvents:UIControlEventTouchUpInside];
-        
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
     }
 }
@@ -164,6 +171,19 @@
         [self.messsagesSource removeAllObjects];
         
         [self.tableView reloadData];
+    }
+}
+
+#pragma mark - EaseMessageCellDelegate
+
+- (void)messageCellSelected:(id<IMessageModel>)model
+{
+    EMMessage *message = model.message;
+    if (model.isDing) {
+        DingAcksViewController *controller = [[DingAcksViewController alloc] initWithMessageId:message.messageId];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else {
+        [super messageCellSelected:model];
     }
 }
 
@@ -315,6 +335,9 @@
         model.nickname = profileEntity.nickname;
     }
     model.failImageName = @"imageDownloadFail";
+    
+    model.isDing = [EMDingMessageHelper isDingMessage:message];
+    model.dingReadCount = [[EMDingMessageHelper sharedHelper] dingAckCount:message];
     return model;
 }
 
@@ -375,8 +398,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
 }
 
-#pragma mark - EaseMob
-
 #pragma mark - EMClientDelegate
 
 - (void)userAccountDidLoginFromOtherDevice
@@ -420,13 +441,43 @@
     }
 }
 
+#pragma mark - EMChooseViewDelegate
+
+- (BOOL)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
+{
+    if ([selectedSources count]) {
+        EaseAtTarget *target = [[EaseAtTarget alloc] init];
+        target.userId = selectedSources.firstObject;
+        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:target.userId];
+        if (profileEntity) {
+            target.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+        }
+        if (_selectedCallback) {
+            _selectedCallback(target);
+        }
+    }
+    else {
+        if (_selectedCallback) {
+            _selectedCallback(nil);
+        }
+    }
+    return YES;
+}
+
+- (void)viewControllerDidSelectBack:(EMChooseViewController *)viewController
+{
+    if (_selectedCallback) {
+        _selectedCallback(nil);
+    }
+}
+
 #pragma mark - action
 
 - (void)backAction
 {
+    [ChatDemoHelper shareHelper].chatVC = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].roomManager removeDelegate:self];
-    [[ChatDemoHelper shareHelper] setChatVC:nil];
     
     if (self.deleteConversationIfNull) {
         //判断当前会话是否为空，若符合则删除该会话
@@ -451,6 +502,15 @@
         ChatroomDetailViewController *detailController = [[ChatroomDetailViewController alloc] initWithChatroomId:self.conversation.conversationId];
         [self.navigationController pushViewController:detailController animated:YES];
     }
+}
+
+- (void)dingAction
+{
+    [self.view endEditing:YES];
+    DingViewController *controller = [[DingViewController alloc] initWithConversationId:self.conversation.conversationId to:self.conversation.conversationId chatType:EMChatTypeGroupChat finishCompletion:^(EMMessage *aMessage) {
+        [self sendMessage:aMessage isNeedUploadFile:NO];
+    }];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)deleteAllMessages:(id)sender
@@ -554,7 +614,8 @@
     self.menuIndexPath = nil;
 }
 
-#pragma mark - notification
+#pragma mark - NSNotification
+
 - (void)exitChat
 {
     [self.navigationController popToViewController:self animated:NO];
@@ -584,6 +645,48 @@
 }
 
 #pragma mark - private
+
+- (void)_recallWithMessage:(EMMessage *)msg text:(NSString *)text isSave:(BOOL)isSave
+{
+    EMMessage *message = [EaseSDKHelper getTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+    message.isRead = YES;
+    [message setTimestamp:msg.timestamp];
+    [message setLocalTime:msg.localTime];
+    id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
+    __block NSUInteger index = NSNotFound;
+    [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
+        if ([model conformsToProtocol:@protocol(IMessageModel)]) {
+            if ([msg.messageId isEqualToString:model.message.messageId])
+            {
+                index = idx;
+                *stop = YES;
+            }
+        }
+    }];
+    if (index != NSNotFound) {
+        __block NSUInteger sourceIndex = NSNotFound;
+        [self.messsagesSource enumerateObjectsUsingBlock:^(EMMessage *message, NSUInteger idx, BOOL *stop){
+            if ([message isKindOfClass:[EMMessage class]]) {
+                if ([msg.messageId isEqualToString:message.messageId])
+                {
+                    sourceIndex = idx;
+                    *stop = YES;
+                }
+            }
+        }];
+        if (sourceIndex != NSNotFound) {
+            [self.messsagesSource replaceObjectAtIndex:sourceIndex withObject:newModel.message];
+        }
+        [self.dataArray replaceObjectAtIndex:index withObject:newModel];
+        [self.tableView reloadData];
+    }
+    
+    if (isSave) {
+        [self.conversation insertMessage:message error:nil];
+    }
+}
+
+#pragma mark - Public
 
 - (void)showMenuViewController:(UIView *)showInView
                   andIndexPath:(NSIndexPath *)indexPath
@@ -632,75 +735,27 @@
     [self.menuController setMenuVisible:YES animated:YES];
 }
 
-- (void)_recallWithMessage:(EMMessage *)msg text:(NSString *)text isSave:(BOOL)isSave
+- (void)reloadDingCellWithAckMessageId:(NSString *)aMessageId
 {
-    EMMessage *message = [EaseSDKHelper getTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
-    message.isRead = YES;
-    [message setTimestamp:msg.timestamp];
-    [message setLocalTime:msg.localTime];
-    id<IMessageModel> newModel = [[EaseMessageModel alloc] initWithMessage:message];
-    __block NSUInteger index = NSNotFound;
-    [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
-        if ([model conformsToProtocol:@protocol(IMessageModel)]) {
-            if ([msg.messageId isEqualToString:model.message.messageId])
-            {
-                index = idx;
-                *stop = YES;
-            }
-        }
-    }];
-    if (index != NSNotFound)
-    {
-        __block NSUInteger sourceIndex = NSNotFound;
-        [self.messsagesSource enumerateObjectsUsingBlock:^(EMMessage *message, NSUInteger idx, BOOL *stop){
-            if ([message isKindOfClass:[EMMessage class]]) {
-                if ([msg.messageId isEqualToString:message.messageId])
-                {
-                    sourceIndex = idx;
-                    *stop = YES;
-                }
-            }
-        }];
-        if (sourceIndex != NSNotFound) {
-            [self.messsagesSource replaceObjectAtIndex:sourceIndex withObject:newModel.message];
-        }
-        [self.dataArray replaceObjectAtIndex:index withObject:newModel];
-        [self.tableView reloadData];
+    if ([aMessageId length] == 0) {
+        return;
     }
     
-    if (isSave) {
-        [self.conversation insertMessage:message error:nil];
-    }
-}
-
-
-#pragma mark - EMChooseViewDelegate
-
-- (BOOL)viewController:(EMChooseViewController *)viewController didFinishSelectedSources:(NSArray *)selectedSources
-{
-    if ([selectedSources count]) {
-        EaseAtTarget *target = [[EaseAtTarget alloc] init];
-        target.userId = selectedSources.firstObject;
-        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:target.userId];
-        if (profileEntity) {
-            target.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+    __block NSUInteger index = NSNotFound;
+    __block EaseMessageModel *msgModel = nil;
+    [self.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *model, NSUInteger idx, BOOL *stop){
+        if ([model conformsToProtocol:@protocol(IMessageModel)] && [aMessageId isEqualToString:model.message.messageId]) {
+            msgModel = model;
+            index = idx;
+            *stop = YES;
         }
-        if (_selectedCallback) {
-            _selectedCallback(target);
-        }
-    }
-    else {
-        if (_selectedCallback) {
-            _selectedCallback(nil);
-        }
-    }
-    return YES;
-}
-
-- (void)viewControllerDidSelectBack:(EMChooseViewController *)viewController
-{
-    if (_selectedCallback) {
-        _selectedCallback(nil);
+    }];
+    
+    if (index != NSNotFound) {
+        msgModel.dingReadCount += 1;
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView endUpdates];
     }
 }
 
