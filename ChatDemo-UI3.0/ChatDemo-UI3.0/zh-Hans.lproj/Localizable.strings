@@ -64,6 +64,7 @@
 "servingIsBanned" = "服务被禁用";
 "getPermission" = "获取权限";
 "recallFailed" = "消息撤回失败:%@";
+"error.exceedServiceLimit" = "超过服务器上限";
 
 //app
 "AppName" = "环信Demo";
