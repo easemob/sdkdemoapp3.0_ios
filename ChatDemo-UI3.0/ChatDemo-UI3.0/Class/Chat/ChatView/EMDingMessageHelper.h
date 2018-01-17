@@ -10,10 +10,6 @@
 
 #define kNotification_DingAction @"DingAction"
 
-static const NSString *kDingKey = @"EMDingMessage";
-static const NSString *kDingAckKey = @"EMDingMessageAck";
-static const NSString *kDingAcksKey = @"EMDingMessageAcks";
-
 @interface EMDingMessageHelper : NSObject
 
 @property (nonatomic, strong, readonly) NSMutableDictionary *dingAcks;
@@ -25,6 +21,11 @@ static const NSString *kDingAcksKey = @"EMDingMessageAcks";
 + (BOOL)isDingMessageAck:(EMMessage *)aMessage;
 
 - (NSInteger)dingAckCount:(EMMessage *)aMessage;
+
+- (EMMessage *)createDingMessageWithText:(NSString *)aText
+                          conversationId:(NSString *)aConversationId
+                                      to:(NSString *)aTo
+                                chatType:(EMChatType)aChatType;
 
 - (EMMessage *)createDingAckForMessage:(EMMessage *)aMessage;
 

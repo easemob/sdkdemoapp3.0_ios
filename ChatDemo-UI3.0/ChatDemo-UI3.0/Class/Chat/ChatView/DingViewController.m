@@ -72,10 +72,7 @@
     }
     
     if (self.finishCompletion) {
-        NSString *from = [[EMClient sharedClient] currentUsername];
-        EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:self.textView.text];
-        EMMessage *message = [[EMMessage alloc] initWithConversationID:self.conversationId from:from to:self.to body:body ext:@{kDingKey:@(1)}];
-        message.chatType = self.chatType;
+        EMMessage *message = [[EMDingMessageHelper sharedHelper] createDingMessageWithText:self.textView.text conversationId:self.conversationId to:self.to chatType:self.chatType];
         self.finishCompletion(message);
         [self.navigationController popViewControllerAnimated:YES];
     }

@@ -8,6 +8,10 @@
 
 #import "EMDingMessageHelper.h"
 
+static const NSString *kDingKey = @"EMDingMessage";
+static const NSString *kDingAckKey = @"EMDingMessageAck";
+static const NSString *kDingAcksKey = @"EMDingMessageAcks";
+
 static EMDingMessageHelper *sharedInstance = nil;
 
 @implementation EMDingMessageHelper
@@ -107,6 +111,19 @@ static EMDingMessageHelper *sharedInstance = nil;
     NSArray *array = [self.dingAcks objectForKey:aMessage.messageId];
     NSInteger retCount = [array count];
     return retCount;
+}
+
+- (EMMessage *)createDingMessageWithText:(NSString *)aText
+                          conversationId:(NSString *)aConversationId
+                                      to:(NSString *)aTo
+                                chatType:(EMChatType)aChatType
+{
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
+    EMMessage *retMsg = [[EMMessage alloc] initWithConversationID:aConversationId from:from to:aTo body:body ext:@{kDingKey:@(1)}];
+    retMsg.chatType = aChatType;
+    
+    return retMsg;
 }
 
 - (EMMessage *)createDingAckForMessage:(EMMessage *)aMessage
