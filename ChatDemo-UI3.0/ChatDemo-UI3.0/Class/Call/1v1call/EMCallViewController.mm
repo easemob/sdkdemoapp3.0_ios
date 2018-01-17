@@ -334,10 +334,10 @@
 {
     [self _startTimeTimer];
     
-    if (self.callSession.type == EMCallTypeVideo) {
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    }
+//    if (self.callSession.type == EMCallTypeVideo) {
+//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+//    }
     
     NSString *connectStr = @"None";
     if (_callSession.connectType == EMCallConnectTypeRelay) {
@@ -354,6 +354,12 @@
     self.answerButton.hidden = YES;
     
     [self _setupRemoteVideoView];
+    
+    if (self.speakerOutButton.selected) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
+    }
     
 //    NSString *recordPath = NSHomeDirectory();
 //    recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
