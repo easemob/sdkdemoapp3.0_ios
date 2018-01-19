@@ -64,6 +64,7 @@
 "servingIsBanned" = "Service disabled";
 "getPermission" = "Get Permission";
 "recallFailed" = "Recall failed:%@";
+"error.exceedServiceLimit" = "Exceed Service Limit";
 
 //app
 "AppName" = "EaseMobDemo";
