@@ -417,6 +417,8 @@
 "setting.sdkVersion" = "SDK Version";
 "setting.emailLog" = "Email log";
 "setting.deviceResources" = "List of logged devices";
+"setting.serviceDiagnose" = "Make a diagnose for service";
+"setting.serviceCheck" = "Check";
 "setting.kickAllDevices" = "KickAll";
 "setting.uploading" = "Uploading...";
 "setting.uploadSuccess" = "Uploaded successfully";
