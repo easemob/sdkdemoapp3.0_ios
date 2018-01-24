@@ -73,6 +73,7 @@
 "error.connectServerFail" = "连接服务器失败!";
 "error.connectServerTimeout" = "连接服务器超时!";
 "error.connectNetworkFail" = "网络未连接!";
+"error.usernotExist" = "用户不存在!";
 "error.notFound" = "文件路径不存在";
 "error.initPlayerFail" = "初始化AVAudioPlayer失败!";
 "error.palyFail" = "播放失败!";
