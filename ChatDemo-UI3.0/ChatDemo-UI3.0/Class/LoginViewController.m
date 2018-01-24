@@ -234,6 +234,9 @@
                     case EMErrorServerServingForbidden:
                         TTAlertNoTitle(NSLocalizedString(@"servingIsBanned", @"Serving is banned"));
                         break;
+                    case EMErrorExceedServiceLimit:
+                        TTAlertNoTitle(NSLocalizedString(@"error.exceedServiceLimit", @"Exceed Service Limit"));
+                        break;
                     default:
                         TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));
                         break;
@@ -286,9 +289,6 @@
                         break;
                     case EMErrorUserLoginTooManyDevices:
                         TTAlertNoTitle(NSLocalizedString(@"alert.multi.tooManyDevices", @"Login too many devices"));
-                        break;
-                    case EMErrorExceedServiceLimit:
-                        TTAlertNoTitle(NSLocalizedString(@"error.exceedServiceLimit", @"Exceed Service Limit"));
                         break;
                     default:
                         TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
