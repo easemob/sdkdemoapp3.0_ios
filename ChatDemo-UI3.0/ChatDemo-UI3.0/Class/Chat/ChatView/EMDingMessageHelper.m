@@ -11,6 +11,7 @@
 static const NSString *kDingKey = @"EMDingMessage";
 static const NSString *kDingAckKey = @"EMDingMessageAck";
 static const NSString *kDingAcksKey = @"EMDingMessageAcks";
+static const NSString *kDingConversationIdKey = @"EMConversationID";
 
 static EMDingMessageHelper *sharedInstance = nil;
 
@@ -108,8 +109,13 @@ static EMDingMessageHelper *sharedInstance = nil;
 
 - (NSInteger)dingAckCount:(EMMessage *)aMessage
 {
-    NSArray *array = [self.dingAcks objectForKey:aMessage.messageId];
-    NSInteger retCount = [array count];
+    NSInteger retCount = 0;
+    NSDictionary *dic = [self.dingAcks objectForKey:aMessage.conversationId];
+    if ([dic count] > 0) {
+        NSArray *array = [dic objectForKey:aMessage.messageId];
+        retCount = [array count];
+    }
+
     return retCount;
 }
 
@@ -128,47 +134,78 @@ static EMDingMessageHelper *sharedInstance = nil;
 
 - (EMMessage *)createDingAckForMessage:(EMMessage *)aMessage
 {
-    NSString *msgId = aMessage.messageId;
-    NSMutableArray *array = [self.dingAcks objectForKey:msgId];
-    if ([array containsObject:aMessage.from]) {
-        return nil;
-    }
-    
     NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = aMessage.from;
     EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:aMessage.messageId];
-    EMMessage *retMessage = [[EMMessage alloc] initWithConversationID:aMessage.conversationId from:from to:aMessage.from body:body ext:@{kDingAckKey:@(1)}];
+    EMMessage *retMessage = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:@{kDingAckKey:@(1), kDingConversationIdKey:aMessage.conversationId}];
     return retMessage;
 }
 
-- (NSString *)addDingMessageAck:(EMMessage *)aMessage
+- (NSString *)addDingMessageAck:(EMMessage *)aAckMessage
 {
-    NSString *retId = @"";
-    if (aMessage == nil) {
-        return retId;
+    if (aAckMessage == nil) {
+        return nil;
     }
     
-    EMCmdMessageBody *body = (EMCmdMessageBody *)aMessage.body;
-    retId = body.action;
-    NSMutableArray *array = [self.dingAcks objectForKey:retId];
-    if (![array containsObject:aMessage.from]) {
-        NSMutableArray *tmpArray = [[NSMutableArray alloc] initWithArray:array];
-        [tmpArray addObject:aMessage.from];
-        [self.dingAcks setValue:tmpArray forKey:retId];
+    EMCmdMessageBody *body = (EMCmdMessageBody *)aAckMessage.body;
+    NSString *retMessageId = body.action;
+    
+    NSString *conversationId = [aAckMessage.ext objectForKey:kDingConversationIdKey];
+    
+    NSMutableDictionary *dic = [self.dingAcks objectForKey:conversationId];
+    NSMutableArray *array = nil;
+    if (dic == nil) {
+        dic = [[NSMutableDictionary alloc] init];
+        [self.dingAcks setObject:dic forKey:conversationId];
+        
+        array = [[NSMutableArray alloc] init];
+    } else {
+        array = [dic objectForKey:retMessageId];
+        if ([array containsObject:aAckMessage.from]) {
+            return nil;
+        }
+        
+        array = [[NSMutableArray alloc] initWithArray:array];
     }
     
-    return retId;
+    [array addObject:aAckMessage.from];
+    [dic setObject:array forKey:retMessageId];
+    
+    return retMessageId;
 }
 
-- (NSArray *)acksWithMessageId:(NSString *)aMessageId
+- (NSArray *)acksWithMessage:(EMMessage *)aMessage
 {
-    NSArray *retArray = nil;
-    if ([aMessageId length] == 0) {
-        return retArray;
+    if (aMessage == nil) {
+        return nil;
     }
     
-    retArray = [self.dingAcks objectForKey:aMessageId];
+    NSDictionary *dic = [self.dingAcks objectForKey:aMessage.conversationId];
+    NSArray *retArray = [dic objectForKey:aMessage.messageId];
     
     return retArray;
+}
+
+- (void)deleteConversation:(NSString *)aConversationId
+{
+    if ([aConversationId length] == 0) {
+        return;
+    }
+    
+    [self.dingAcks removeObjectForKey:aConversationId];
+}
+
+- (void)deleteConversation:(NSString *)aConversationId
+                   message:(NSString *)aMessageId
+{
+    if ([aConversationId length] == 0 || [aMessageId length] == 0) {
+        return;
+    }
+    
+    NSMutableDictionary *dic = [self.dingAcks objectForKey:aConversationId];
+    if ([dic count] > 0) {
+        [dic removeObjectForKey:aMessageId];
+    }
 }
 
 - (void)save

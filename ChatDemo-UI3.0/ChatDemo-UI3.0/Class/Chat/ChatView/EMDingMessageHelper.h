@@ -29,9 +29,14 @@
 
 - (EMMessage *)createDingAckForMessage:(EMMessage *)aMessage;
 
-- (NSString *)addDingMessageAck:(EMMessage *)aMessage;
+- (NSString *)addDingMessageAck:(EMMessage *)aAckMessage;
 
-- (NSArray *)acksWithMessageId:(NSString *)aMessageId;
+- (NSArray *)acksWithMessage:(EMMessage *)aMessage;
+
+- (void)deleteConversation:(NSString *)aConversationId;
+
+- (void)deleteConversation:(NSString *)aConversationId
+                   message:(NSString *)aMessageId;
 
 - (void)save;
 

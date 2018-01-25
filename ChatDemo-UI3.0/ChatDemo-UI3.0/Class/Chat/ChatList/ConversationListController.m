@@ -19,6 +19,7 @@
 #import "RealtimeSearchUtil.h"
 #import "RedPacketChatViewController.h"
 #import "ChatDemoHelper.h"
+#import "EMDingMessageHelper.h"
 
 #import "UIViewController+SearchController.h"
 
@@ -117,6 +118,14 @@
     }
     
     return _networkStateView;
+}
+
+- (void)deleteCellAction:(NSIndexPath *)aIndexPath
+{
+    [super deleteCellAction:aIndexPath];
+    
+    EaseConversationModel *model = [self.dataArray objectAtIndex:aIndexPath.row];
+    [[EMDingMessageHelper sharedHelper] deleteConversation:model.conversation.conversationId];
 }
 
 #pragma mark - EaseConversationListViewControllerDelegate

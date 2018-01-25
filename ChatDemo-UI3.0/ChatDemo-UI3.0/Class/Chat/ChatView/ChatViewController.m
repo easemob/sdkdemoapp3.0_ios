@@ -180,7 +180,7 @@
 {
     EMMessage *message = model.message;
     if (model.isDing) {
-        DingAcksViewController *controller = [[DingAcksViewController alloc] initWithMessageId:message.messageId];
+        DingAcksViewController *controller = [[DingAcksViewController alloc] initWithMessage:message];
         [self.navigationController pushViewController:controller animated:YES];
     } else {
         [super messageCellSelected:model];
@@ -493,6 +493,7 @@
 - (void)showGroupDetailAction
 {
     [self.view endEditing:YES];
+    
     if (self.conversation.type == EMConversationTypeGroupChat) {
         EMGroupInfoViewController *infoController = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversation.conversationId];
         [self.navigationController pushViewController:infoController animated:YES];
@@ -515,6 +516,8 @@
 
 - (void)deleteAllMessages:(id)sender
 {
+    [[EMDingMessageHelper sharedHelper] deleteConversation:self.conversation.conversationId];
+    
     if (self.dataArray.count == 0) {
         [self showHint:NSLocalizedString(@"message.noMessage", @"no messages")];
         return;
@@ -588,6 +591,8 @@
         
         [self.conversation deleteMessageWithId:model.message.messageId error:nil];
         [self.messsagesSource removeObject:model.message];
+        
+        [[EMDingMessageHelper sharedHelper] deleteConversation:self.conversation.conversationId message:model.message.messageId];
         
         if (self.menuIndexPath.row - 1 >= 0) {
             id nextMessage = nil;

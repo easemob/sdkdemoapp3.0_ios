@@ -12,7 +12,7 @@
 
 @interface DingAcksViewController ()
 
-@property (nonatomic, strong) NSString *messageId;
+@property (nonatomic, strong) EMMessage *message;
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
@@ -20,11 +20,11 @@
 
 @implementation DingAcksViewController
 
-- (instancetype)initWithMessageId:(NSString *)aMessageId
+- (instancetype)initWithMessage:(EMMessage *)aMessage
 {
     self = [super init];
     if (self) {
-        _messageId = aMessageId;
+        _message = aMessage;
     }
     
     return self;
@@ -37,7 +37,7 @@
     self.title = NSLocalizedString(@"title.readList", @"Read Users");
     
     self.dataArray = [[NSMutableArray alloc] init];
-    NSArray *array = [[EMDingMessageHelper sharedHelper] acksWithMessageId:self.messageId];
+    NSArray *array = [[EMDingMessageHelper sharedHelper] acksWithMessage:self.message];
     [self.dataArray addObjectsFromArray:array];
     
     self.tableView.tableFooterView = [[UIView alloc] init];

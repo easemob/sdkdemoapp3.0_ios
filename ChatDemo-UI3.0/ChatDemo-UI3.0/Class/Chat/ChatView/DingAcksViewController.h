@@ -10,6 +10,6 @@
 
 @interface DingAcksViewController : UITableViewController
 
-- (instancetype)initWithMessageId:(NSString *)aMessageId;
+- (instancetype)initWithMessage:(EMMessage *)aMessage;
 
 @end
