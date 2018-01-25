@@ -17,7 +17,7 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+UMeng.h"
 #import "AppDelegate+Parse.h"
-#import "RedPacketUserConfig.h"
+
 #import <UserNotifications/UserNotifications.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
@@ -38,13 +38,6 @@
     }
 
     [Fabric with:@[[Crashlytics class]]];
-
-#ifdef REDPACKET_AVALABLE
-    /**
-     *  TODO: 通过环信的AppKey注册红包
-     */
-    [[RedPacketUserConfig sharedConfig] configWithAppKey:EaseMobAppKey];
-#endif
 
     _connectionState = EMConnectionConnected;
     

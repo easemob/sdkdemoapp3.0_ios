@@ -10,7 +10,6 @@
 #import "ShareFilesViewController.h"
 #import "EMNavigationController.h"
 #import "LoginViewController.h"
-#import "RedPacketChatViewController.h"
 
 
 @implementation AppDelegate (ShareFiles)

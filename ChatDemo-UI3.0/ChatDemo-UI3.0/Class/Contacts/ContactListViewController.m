@@ -20,7 +20,6 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
-#import "RedPacketChatViewController.h"
 
 #import "BaseTableViewCell.h"
 #import "UIViewController+SearchController.h"
@@ -266,12 +265,7 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 2)] objectAtIndex:row];
-        UIViewController *chatController = nil;
-#ifdef REDPACKET_AVALABLE
-        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
-#else
-        chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
-#endif
+        UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -471,12 +465,8 @@
         NSString *buddy = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
         [weakSelf.searchController.searchBar endEditing:YES];
         
-#ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy conversationType:EMConversationTypeChat];
-#else
         ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
                                      conversationType:EMConversationTypeChat];
-#endif
         chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
                                                
