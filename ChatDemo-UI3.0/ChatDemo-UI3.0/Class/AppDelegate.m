@@ -17,6 +17,7 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+Parse.h"
 
+#import <Bugly/Bugly.h>。
 #import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
@@ -44,6 +45,9 @@
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
+    
+    // 环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
+    [Bugly startWithAppId:@"3e7704ec60"];
     
     // 环信UIdemo中有用到Parse，您的项目中不需要添加，可忽略此处。
     [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
