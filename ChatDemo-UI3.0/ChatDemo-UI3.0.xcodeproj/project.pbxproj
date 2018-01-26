@@ -94,8 +94,6 @@
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */; };
 		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
-		3A7354492019F42900AB6CDB /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7354472019F42900AB6CDB /* Fabric.framework */; };
-		3A73544A2019F42900AB6CDB /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7354482019F42900AB6CDB /* Crashlytics.framework */; };
 		3A7E5ED81F3C630900FE82CE /* CallResolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED11F3C630900FE82CE /* CallResolutionViewController.m */; };
 		3A7E5ED91F3C630900FE82CE /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED31F3C630900FE82CE /* CallSettingViewController.m */; };
 		3A7E5EDA1F3C630900FE82CE /* DemoCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7E5ED51F3C630900FE82CE /* DemoCallManager.m */; };
@@ -142,7 +140,6 @@
 		9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D8671939D8D000DC38A4 /* RealtimeSearchUtil.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
 		90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */; };
-		90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */; };
 		905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 905325CE1932ED8B00F064D7 /* EMSearchBar.m */; };
 		906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */; };
 		906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */; };
@@ -175,7 +172,6 @@
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
 		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
-		D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C18CAED1A0B556D00FEB270 /* libMobClickLibrary.a */; };
 		D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25978A01BCD072100148BF6 /* ContactListSelectViewController.m */; };
 		D25AA3571E8D29C8006BF820 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA34B1E8D29C8006BF820 /* check@2x.png */; };
 		D25AA3581E8D29C8006BF820 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA34C1E8D29C8006BF820 /* default_avatar@2x.png */; };
@@ -532,8 +528,6 @@
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		90517D651A5C3C1F008F1315 /* AppDelegate+EaseMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+EaseMob.h"; sourceTree = "<group>"; };
 		90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+EaseMob.m"; sourceTree = "<group>"; };
-		90517D681A5C3DB0008F1315 /* AppDelegate+UMeng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+UMeng.h"; sourceTree = "<group>"; };
-		90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+UMeng.m"; sourceTree = "<group>"; };
 		905325CD1932ED8B00F064D7 /* EMSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchBar.h; sourceTree = "<group>"; };
 		905325CE1932ED8B00F064D7 /* EMSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchBar.m; sourceTree = "<group>"; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
@@ -766,10 +760,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A7354492019F42900AB6CDB /* Fabric.framework in Frameworks */,
-				3A73544A2019F42900AB6CDB /* Crashlytics.framework in Frameworks */,
 				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
-				D25972881BCBBFA100148BF6 /* libMobClickLibrary.a in Frameworks */,
 				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
@@ -1319,8 +1310,6 @@
 				90911122192EEBB8008A48AA /* AppDelegate.m */,
 				D29A6BB71B720A62002324BB /* AppDelegate+Parse.h */,
 				D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */,
-				90517D681A5C3DB0008F1315 /* AppDelegate+UMeng.h */,
-				90517D691A5C3DB0008F1315 /* AppDelegate+UMeng.m */,
 				90517D651A5C3C1F008F1315 /* AppDelegate+EaseMob.h */,
 				90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */,
 				90CE5C101B43C8E500810187 /* AppDelegate+EaseMobDebug.h */,
@@ -1642,7 +1631,6 @@
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
-				28B2239B1D549488006FA0C6 /* ShellScript */,
 				1FAE2C03F754239016BFDFC0 /* [CP] Embed Pods Frameworks */,
 				E03EC4A615E9E692AE82001B /* [CP] Copy Pods Resources */,
 			);
@@ -1936,19 +1924,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		28B2239B1D549488006FA0C6 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./ChatDemo-UI3.0/3rdparty/Fabric.framework/run 6b54bd4edc63eba3ef59d69f8e0a5070bea384e2 f3a2c9f94cf05e0339623383ac05ceb747bcd51a0b03c4ba0295170ac524e894";
-		};
 		E03EC4A615E9E692AE82001B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2024,7 +1999,6 @@
 				3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */,
 				D25AA35B1E8D29C8006BF820 /* EMMemberCell.m in Sources */,
 				D2B61E361BC7C76B007CB53E /* ContactListViewController.m in Sources */,
-				90517D6A1A5C3DB0008F1315 /* AppDelegate+UMeng.m in Sources */,
 				3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */,
 				D2714BA91FE24E1600D4CB38 /* EMServiceCheckViewController.m in Sources */,
 				9091112F192EEC0F008A48AA /* SettingsViewController.m in Sources */,
