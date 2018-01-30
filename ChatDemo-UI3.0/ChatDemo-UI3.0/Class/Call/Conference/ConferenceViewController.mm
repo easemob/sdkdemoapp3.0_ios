@@ -14,9 +14,13 @@
 #import "DemoConfManager.h"
 #import "EMConfUserSelectionViewController.h"
 
+//3.3.9 new 自定义视频数据
+#import "VideoCustomCamera.h"
+
 @implementation EMConfUserView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     // Initialization code
     
@@ -35,7 +39,7 @@
 
 @end
 
-@interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConfUserViewDelegate>
+@interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConfUserViewDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 {
     float _top;
     float _width;
@@ -75,6 +79,13 @@
 @property (strong, nonatomic) NSMutableDictionary *streamViews;
 @property (strong, nonatomic) NSMutableDictionary *streamsDic;
 
+//3.3.9 new 自定义视频数据
+@property (weak, nonatomic) IBOutlet UIView *videoFormatView;
+@property (weak, nonatomic) IBOutlet UIButton *videoMoreButton;
+
+@property (nonatomic) VideoInputModeType videoModel;
+@property (strong, nonatomic) VideoCustomCamera *videoCamera;
+
 @end
 
 @implementation ConferenceViewController
@@ -101,6 +112,20 @@
         _type = aType;
         _isCreater = YES;
         _creater = [EMClient sharedClient].currentUsername;
+    }
+    
+    return self;
+}
+
+//3.3.9 new 自定义视频数据
+- (instancetype)initVideoCallWithIsCustomData:(BOOL)aIsCustom
+{
+    self = [self initWithType:EMCallTypeVideo];
+    if (self) {
+        _videoModel = VIDEO_INPUT_MODE_NONE;
+        if (aIsCustom) {
+            _videoModel = VIDEO_INPUT_MODE_SAMPLE_BUFFER;
+        }
     }
     
     return self;
@@ -143,6 +168,7 @@
 
 - (void)dealloc
 {
+    [self closeVideoCamera];
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
 }
 
@@ -201,6 +227,10 @@
     } else {
         [self _setupUserVideoViewWithUserName:loginUser streamId:loginUser];
         [self _layoutVideoAddButton];
+    }
+    
+    if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
+        self.videoMoreButton.hidden = NO;
     }
 }
 
@@ -346,12 +376,12 @@
     pubConfig.enableVideo = self.type == EMCallTypeVideo ? YES : NO;
     
     __weak typeof(self) weakSelf = self;
-    void (^block)() = ^(EMCallConference *aCall, NSString *aPassword, EMError *aError){
+    void (^block)(EMCallConference *aCall, NSString *aPassword, EMError *aError) = ^(EMCallConference *aCall, NSString *aPassword, EMError *aError) {
         if (aError) {
             weakSelf.conference = nil;
             self.navigationController.navigationBarHidden = NO;
             [self.navigationController popViewControllerAnimated:NO];
-            
+
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.createFail", @"Create or Join conference failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
         } else {
@@ -363,6 +393,12 @@
                 localView = (EMCallLocalView *)[userView.topView viewWithTag:100];
             }
             pubConfig.localView = localView;
+
+            //3.3.9 new 自定义视频数据
+            if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
+                pubConfig.enableCustomizeVideoData = YES;
+            }
+
             [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference streamParam:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
                 if (aError) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
@@ -371,8 +407,15 @@
                     weakSelf.pubStreamId = pubStreamId;
                     [weakSelf.streamIdList removeObject:loginUser];
                     [weakSelf.streamIdList insertObject:pubStreamId atIndex:0];
+
+                    userView.viewId = pubStreamId;
                     [weakSelf.streamViews removeObjectForKey:loginUser];
                     [weakSelf.streamViews setObject:userView forKey:pubStreamId];
+
+                    //3.3.9 new 自定义视频数据
+                    if (weakSelf.videoModel != VIDEO_INPUT_MODE_NONE) {
+                        [weakSelf openVideoCamera];
+                    }
                 }
             }];
         }
@@ -656,8 +699,13 @@
 
 - (IBAction)switchCameraAction:(id)sender
 {
+    //3.3.9 new 自定义视频数据
     self.switchCameraButton.selected = !self.switchCameraButton.selected;
-    [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
+    if (self.videoModel == VIDEO_INPUT_MODE_NONE) {
+        [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
+    } else {
+        [self.videoCamera swapCameraWithPosition:(self.switchCameraButton.selected ? AVCaptureDevicePositionBack : AVCaptureDevicePositionFront)];
+    }
 }
 
 - (IBAction)silenceAction:(id)sender
@@ -681,6 +729,9 @@
 
 - (IBAction)hangupAction:(id)sender
 {
+    //3.3.9 new 自定义视频数据
+    [self closeVideoCamera];
+    
     [[DemoCallManager sharedManager] setIsCalling:NO];
     
     if (self.conference == nil) {
@@ -702,6 +753,107 @@
     self.conference = nil;
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+#pragma mark - 3.3.9 new 自定义视频数据
+
+#pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
+
+- (void)captureOutput:(AVCaptureOutput*)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
+       fromConnection:(AVCaptureConnection*)connection
+{
+    if(!self.conference || [self.pubStreamId length] == 0 || self.videoModel == VIDEO_INPUT_MODE_NONE){
+        return;
+    }
+
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    if (imageBuffer == NULL) {
+        return ;
+    }
+    
+    CVOptionFlags lockFlags = kCVPixelBufferLock_ReadOnly;
+    CVReturn ret = CVPixelBufferLockBaseAddress(imageBuffer, lockFlags);
+    if (ret != kCVReturnSuccess) {
+        return ;
+    }
+    
+    static size_t const kYPlaneIndex = 0;
+    static size_t const kUVPlaneIndex = 1;
+    uint8_t* yPlaneAddress = (uint8_t*)CVPixelBufferGetBaseAddressOfPlane(imageBuffer, kYPlaneIndex);
+    size_t yPlaneHeight = CVPixelBufferGetHeightOfPlane(imageBuffer, kYPlaneIndex);
+    size_t yPlaneWidth = CVPixelBufferGetWidthOfPlane(imageBuffer, kYPlaneIndex);
+    size_t yPlaneBytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, kYPlaneIndex);
+    size_t uvPlaneHeight = CVPixelBufferGetHeightOfPlane(imageBuffer, kUVPlaneIndex);
+    size_t uvPlaneBytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, kUVPlaneIndex);
+    size_t frameSize = yPlaneBytesPerRow * yPlaneHeight + uvPlaneBytesPerRow * uvPlaneHeight;
+    
+    // set uv for gray color
+    uint8_t * uvPlaneAddress = yPlaneAddress + yPlaneBytesPerRow * yPlaneHeight;
+    memset(uvPlaneAddress, 0x7F, uvPlaneBytesPerRow * uvPlaneHeight);
+    if(self.videoModel == VIDEO_INPUT_MODE_DATA){
+        [[EMClient sharedClient].conferenceManager inputVideoData:[NSData dataWithBytes:yPlaneAddress length:frameSize] conference:self.conference publishedStreamId:self.pubStreamId widthInPixels:yPlaneWidth heightInPixels:yPlaneHeight format:EMCallVideoFormatNV12 rotation:0 completion:nil];
+    }
+    
+    CVPixelBufferUnlockBaseAddress(imageBuffer, lockFlags);
+    
+    if(self.videoModel == VIDEO_INPUT_MODE_SAMPLE_BUFFER) {
+        [[EMClient sharedClient].conferenceManager inputVideoSampleBuffer:sampleBuffer conference:self.conference publishedStreamId:self.pubStreamId format:EMCallVideoFormatNV12 rotation:0 completion:nil];
+    } else if(self.videoModel == VIDEO_INPUT_MODE_PIXEL_BUFFER) {
+        [[EMClient sharedClient].conferenceManager inputVideoPixelBuffer:imageBuffer conference:self.conference publishedStreamId:self.pubStreamId format:EMCallVideoFormatNV12 rotation:0 completion:nil];
+    }
+}
+
+- (IBAction)moreAction:(id)sender
+{
+    self.videoFormatView.hidden = NO;
+}
+
+- (IBAction)videoModelValueChanged:(UISegmentedControl *)sender
+{
+    NSInteger index = sender.selectedSegmentIndex;
+    switch (index) {
+        case 0:
+            self.videoModel = VIDEO_INPUT_MODE_SAMPLE_BUFFER;
+            break;
+        case 1:
+            self.videoModel = VIDEO_INPUT_MODE_PIXEL_BUFFER;
+            break;
+        case 2:
+            self.videoModel = VIDEO_INPUT_MODE_DATA;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (IBAction)closeVideoFormatViewAction:(id)sender
+{
+    self.videoFormatView.hidden = YES;
+}
+
+- (void)openVideoCamera
+{
+    if(self.videoCamera){
+        return ;
+    }
+    
+    self.videoCamera = [[VideoCustomCamera alloc] initWithQueue:dispatch_get_main_queue()];
+    [self.videoCamera syncSetDataDelegate:self onDone:nil];
+    BOOL ok = [self.videoCamera syncOpenWithWidth:640 height:480 onDone:nil];
+    if(!ok){
+        [self.videoCamera syncClose:nil];
+        self.videoCamera = nil;
+    }
+    
+}
+
+- (void)closeVideoCamera
+{
+    if(self.videoCamera){
+        [self.videoCamera syncClose:^(id obj, NSError *error) {}];
+        self.videoCamera = nil;
+    }
 }
 
 @end

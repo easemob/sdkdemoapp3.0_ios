@@ -491,3 +491,6 @@
 "network.conference.unstable" = "网络变化：数据不稳定";
 "network.conference.dis" = "网络变化：网络已经断开";
 "title.conference.addUser" = "添加成员";
+
+"title.conference.default" = "默认";
+"title.conference.custom" = "自定义";
