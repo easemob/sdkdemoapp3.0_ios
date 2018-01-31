@@ -14,7 +14,6 @@
 #import <Hyphenate/EMError.h>
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
-#import "RedPacketUserConfig.h"
 #import "EMDevicesViewController.h"
 
 //#import <HyphenateIDFAPlugin/EMIDFAPlugin.h>

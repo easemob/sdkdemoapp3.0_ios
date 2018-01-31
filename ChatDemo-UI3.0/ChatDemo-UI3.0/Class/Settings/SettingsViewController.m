@@ -18,7 +18,6 @@
 #import "DebugViewController.h"
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
-#import "RedpacketViewControl.h"
 #import "ChatDemoHelper.h"
 
 #if DEMO_CALL == 1
@@ -150,23 +149,13 @@
     count += 1;
 #endif
     
-#ifdef REDPACKET_AVALABLE
-    count += 1;
-#endif
-    
     return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#ifdef REDPACKET_AVALABLE
-    if (section == 0) {
-        return 1;
-    }
-#endif
-    
 #if DEMO_CALL == 1
-    if (section == 2) {
+    if (section == 1) {
         return 1;
     }
 #endif
@@ -186,22 +175,9 @@
             [subView removeFromSuperview];
         }];
     }
-   
-#ifdef REDPACKET_AVALABLE
-    
-    if (indexPath.section == 0) {
-        cell.textLabel.text = @"零钱";
-#ifdef AliAuthPay
-        cell.textLabel.text = @"红包记录";
-#endif
-        return cell;
-    }
-#else
-    
-#endif
     
 #if DEMO_CALL == 1
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -280,15 +256,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-#ifdef REDPACKET_AVALABLE
-    if (indexPath.section == 0) {
-        [RedpacketViewControl presentChangePocketViewControllerFromeController:self];
-        return;
-    }
-#endif
-    
 #if DEMO_CALL == 1
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:callSettingController animated:YES];
     }
@@ -297,14 +266,10 @@
     if (indexPath.row == 1) {
         PushNotificationViewController *pushController = [[PushNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:pushController animated:YES];
-    }
-    else if (indexPath.row == 2)
-    {
+    } else if (indexPath.row == 2) {
         BlackListViewController *blackController = [[BlackListViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:blackController animated:YES];
-    }
-    else if (indexPath.row == 3)
-    {
+    } else if (indexPath.row == 3) {
         DebugViewController *debugController = [[DebugViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:debugController animated:YES];
     } else if (indexPath.row == 6) {

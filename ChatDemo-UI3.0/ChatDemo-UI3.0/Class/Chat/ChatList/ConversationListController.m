@@ -17,7 +17,6 @@
 #import "RobotChatViewController.h"
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
-#import "RedPacketChatViewController.h"
 #import "ChatDemoHelper.h"
 
 #import "UIViewController+SearchController.h"
@@ -132,12 +131,7 @@
                 chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
                 [self.navigationController pushViewController:chatController animated:YES];
             } else {
-                UIViewController *chatController = nil;
-#ifdef REDPACKET_AVALABLE
-                chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-#else
-                chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-#endif
+                UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
                 chatController.title = conversationModel.title;
                 [self.navigationController pushViewController:chatController animated:YES];
             }
@@ -324,11 +318,7 @@
             chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
             chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
         }else {
-#ifdef REDPACKET_AVALABLE
-            chatController = [[RedPacketChatViewController alloc]  initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-#else
             chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-#endif
             chatController.title = [conversation showName];
         }
         [weakSelf.navigationController pushViewController:chatController animated:YES];

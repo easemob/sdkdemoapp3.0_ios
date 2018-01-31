@@ -9,16 +9,4 @@ target 'ChatDemo-UI3.0' do
 
     pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
 
-    pod 'RedpacketAliAuthLib', '~> 1.1.4'
-
-end
-
-target 'ChatDemo-UI3.0-JDPay' do
-    
-    pod 'Hyphenate'
-    
-    pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
-    
-    pod 'RedpacketLib'
-
 end

@@ -14,7 +14,6 @@
 
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
-#import "RedPacketChatViewController.h"
 
 @interface ContactListSelectViewController () <EMUserListViewControllerDelegate,EMUserListViewControllerDataSource>
 
@@ -62,13 +61,8 @@
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *aMessage, EMError *aError) {
         if (!aError) {
             NSMutableArray *array = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-            UIViewController *chatController = nil;
-#ifdef REDPACKET_AVALABLE
-            chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#else
-            chatController = [[ChatViewController alloc]
+            UIViewController *chatController = [[ChatViewController alloc]
                               initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#endif
             chatController.title = userModel.nickname.length != 0 ? [userModel.nickname copy] : [userModel.buddy copy];
             if ([array count] >= 3) {
                 [array removeLastObject];
@@ -112,11 +106,7 @@
             
             NSMutableArray *array = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
             
-#ifdef REDPACKET_AVALABLE
-            RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#else
             ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#endif
             chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
             if ([array count] >= 3) {
                 [array removeLastObject];
@@ -171,11 +161,7 @@
             
             NSMutableArray *array = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
             
-#ifdef REDPACKET_AVALABLE
-            RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#else
             ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#endif
             chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
             if ([array count] >= 3) {
                 [array removeLastObject];

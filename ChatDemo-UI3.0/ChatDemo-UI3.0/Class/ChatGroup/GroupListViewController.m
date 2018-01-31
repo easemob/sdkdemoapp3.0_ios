@@ -17,7 +17,6 @@
 #import "CreateGroupViewController.h"
 #import "PublicGroupListViewController.h"
 #import "RealtimeSearchUtil.h"
-#import "RedPacketChatViewController.h"
 
 #import "UIViewController+SearchController.h"
 
@@ -165,12 +164,7 @@
     } else {
         EMGroup *group = [self.dataSource objectAtIndex:indexPath.row];
         
-        UIViewController *chatController = nil;
-#ifdef REDPACKET_AVALABLE
-        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
-#else
-        chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
-#endif
+        UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
         chatController.title = group.subject;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -266,12 +260,7 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
         EMGroup *group = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
-        UIViewController *chatVC = nil;
-#ifdef REDPACKET_AVALABLE
-        chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
-#else
-        chatVC = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
-#endif
+        UIViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
         chatVC.title = group.subject;
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
                                                

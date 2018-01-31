@@ -16,7 +16,6 @@
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
 #import "ChatDemoHelper.h"
-#import "RedPacketChatViewController.h"
 #import <UserNotifications/UserNotifications.h>
 
 //两次提示的默认间隔
@@ -435,11 +434,7 @@ static NSString *kGroupName = @"GroupName";
                     {
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
-#ifdef REDPACKET_AVALABLE
-                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#else
                         chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#endif
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -450,11 +445,7 @@ static NSString *kGroupName = @"GroupName";
                 ChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
-#ifdef REDPACKET_AVALABLE
-                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#else
                 chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#endif
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];
@@ -492,11 +483,7 @@ static NSString *kGroupName = @"GroupName";
                     {
                         [self.navigationController popViewControllerAnimated:NO];
                         EMChatType messageType = [userInfo[kMessageType] intValue];
-#ifdef REDPACKET_AVALABLE
-                        chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#else
                         chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#endif
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
@@ -507,11 +494,7 @@ static NSString *kGroupName = @"GroupName";
                 ChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 EMChatType messageType = [userInfo[kMessageType] intValue];
-#ifdef REDPACKET_AVALABLE
-                chatViewController = [[RedPacketChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#else
                 chatViewController = [[ChatViewController alloc] initWithConversationChatter:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
-#endif
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];

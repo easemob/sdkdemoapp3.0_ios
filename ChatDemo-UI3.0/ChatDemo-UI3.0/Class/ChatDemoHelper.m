@@ -18,11 +18,6 @@
 
 #import "EaseSDKHelper.h"
 
-#ifdef REDPACKET_AVALABLE
-#import "RedpacketOpenConst.h"
-#import "RedPacketUserConfig.h"
-#endif
-
 #if DEMO_CALL == 1
 #import "DemoCallManager.h"
 #endif
@@ -74,10 +69,6 @@ static ChatDemoHelper *helper = nil;
 
 - (void)initHelper
 {
-#ifdef REDPACKET_AVALABLE
-    [[RedPacketUserConfig sharedConfig] beginObserveMessage];
-#endif
-    
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
@@ -337,14 +328,6 @@ static ChatDemoHelper *helper = nil;
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
-        
-#ifdef REDPACKET_AVALABLE
-        /**
-         *  屏蔽红包被抢消息的提示
-         */
-        NSDictionary *dict = message.ext;
-        needShowNotification = (dict && [dict valueForKey:RedpacketKeyRedpacketTakenMessageSign]) ? NO : needShowNotification;
-#endif
 
         UIApplicationState state = [[UIApplication sharedApplication] applicationState];
         if (needShowNotification) {

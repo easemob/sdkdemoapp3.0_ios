@@ -8,9 +8,7 @@
 
 #import "ShareFilesViewController.h"
 #import "ChatViewController.h"
-#import "RedPacketChatViewController.h"
 #import "UserProfileManager.h"
-
 
 @interface ShareFilesViewController () <EMUserListViewControllerDelegate,EMUserListViewControllerDataSource>
 {
@@ -76,12 +74,7 @@
 
     
     NSMutableArray *array = [NSMutableArray arrayWithArray:[weakSelf.navigationController viewControllers]];
-#ifdef REDPACKET_AVALABLE
-    RedPacketChatViewController *chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#else
     ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:userModel.buddy conversationType:EMConversationTypeChat];
-#endif
-    
     chatController.title = userModel.nickname.length != 0 ? userModel.nickname : userModel.buddy;
     [array removeLastObject];
     [array addObject:chatController];
