@@ -227,10 +227,11 @@
     } else {
         [self _setupUserVideoViewWithUserName:loginUser streamId:loginUser];
         [self _layoutVideoAddButton];
-    }
-    
-    if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
-        self.videoMoreButton.hidden = NO;
+        
+        self.videoMoreButton.hidden = YES;
+        if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
+            self.videoMoreButton.hidden = NO;
+        }
     }
 }
 

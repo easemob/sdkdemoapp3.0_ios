@@ -273,9 +273,33 @@ static DemoCallManager *callManager = nil;
 
 - (void)makeCall:(NSNotification*)notify
 {
-    if (notify.object) {
-        EMCallType type = (EMCallType)[[notify.object objectForKey:@"type"] integerValue];
-        [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type];
+    if (!notify.object) {
+        return;
+    }
+    
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    options.enableCustomizeVideoData = NO;
+    
+    EMCallType type = (EMCallType)[[notify.object objectForKey:@"type"] integerValue];
+    if (type == EMCallTypeVideo) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
+        }];
+        [alertController addAction:defaultAction];
+        
+        UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            options.enableCustomizeVideoData = YES;
+            [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
+        }];
+        [alertController addAction:customAction];
+        
+        [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
+        
+        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
+    } else {
+        [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
     }
 }
 
@@ -290,6 +314,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)makeCallWithUsername:(NSString *)aUsername
                         type:(EMCallType)aType
+           isCustomVideoData:(BOOL)aIsCustomVideo
 {
     if ([aUsername length] == 0) {
         return;
@@ -307,10 +332,15 @@ static DemoCallManager *callManager = nil;
             
             @synchronized (self.callLock) {
                 strongSelf.currentSession = aCallSession;
-                strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession];
+                if (aType == EMCallTypeVideo) {
+                    strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession isCustomData:aIsCustomVideo];
+                } else {
+                    strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession];
+                }
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (strongSelf.currentController) {
-                        [strongSelf.mainController presentViewController:self.currentController animated:NO completion:nil];
+                        [strongSelf.mainController presentViewController:strongSelf.currentController animated:NO completion:nil];
                     }
                 });
             }
@@ -358,6 +388,7 @@ static DemoCallManager *callManager = nil;
     if (self.currentSession) {
         [[EMClient sharedClient].callManager endCall:self.currentSession.callId reason:aReason];
     }
+    
     [self _clearCurrentCallViewAndData];
 }
 
