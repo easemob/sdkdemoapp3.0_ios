@@ -10,7 +10,6 @@
 
 static const NSString *kDingKey = @"EMDingMessage";
 static const NSString *kDingAckKey = @"EMDingMessageAck";
-static const NSString *kDingAcksKey = @"EMDingMessageAcks";
 static const NSString *kDingConversationIdKey = @"EMConversationID";
 
 static EMDingMessageHelper *sharedInstance = nil;
@@ -174,7 +173,7 @@ static EMDingMessageHelper *sharedInstance = nil;
     return retMessageId;
 }
 
-- (NSArray *)acksWithMessage:(EMMessage *)aMessage
+- (NSArray *)usersHasReadMessage:(EMMessage *)aMessage
 {
     if (aMessage == nil) {
         return nil;

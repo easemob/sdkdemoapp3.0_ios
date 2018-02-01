@@ -31,7 +31,7 @@
 
 - (NSString *)addDingMessageAck:(EMMessage *)aAckMessage;
 
-- (NSArray *)acksWithMessage:(EMMessage *)aMessage;
+- (NSArray *)usersHasReadMessage:(EMMessage *)aMessage;
 
 - (void)deleteConversation:(NSString *)aConversationId;
 

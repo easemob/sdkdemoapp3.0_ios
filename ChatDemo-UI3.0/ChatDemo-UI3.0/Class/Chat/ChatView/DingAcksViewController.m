@@ -37,7 +37,7 @@
     self.title = NSLocalizedString(@"title.readList", @"Read Users");
     
     self.dataArray = [[NSMutableArray alloc] init];
-    NSArray *array = [[EMDingMessageHelper sharedHelper] acksWithMessage:self.message];
+    NSArray *array = [[EMDingMessageHelper sharedHelper] usersHasReadMessage:self.message];
     [self.dataArray addObjectsFromArray:array];
     
     self.tableView.tableFooterView = [[UIView alloc] init];
