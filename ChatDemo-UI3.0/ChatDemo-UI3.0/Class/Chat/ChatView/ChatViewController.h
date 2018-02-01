@@ -17,4 +17,6 @@
                   andIndexPath:(NSIndexPath *)indexPath
                    messageType:(EMMessageBodyType)messageType;
 
+- (void)reloadDingCellWithAckMessageId:(NSString *)aMessageId;
+
 @end

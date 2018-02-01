@@ -20,6 +20,8 @@
 #import "GroupSettingViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 
+#import "EMDingMessageHelper.h"
+
 @interface EMGroupInfoViewController ()<EMChooseViewDelegate>
 
 @property (nonatomic, strong) EMGroup *group;
@@ -136,7 +138,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -163,6 +165,8 @@
         } else {
             count = 8;
         }
+    } else if (section == 3) {
+        count = 1;
     }
     
     return count;
@@ -171,18 +175,41 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 1 && row == self.moreCellIndex) {
-        return self.moreCell;
+    if (section == 1) {
+        if (row == self.moreCellIndex) {
+            return self.moreCell;
+        } else {
+            EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
+            }
+            
+            cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
+            cell.rightLabel.text = @"";
+            if (section == 0) {
+                if (row == 0) {
+                    cell.leftLabel.text = self.group.owner;
+                    cell.rightLabel.text = @"owner";
+                } else {
+                    cell.leftLabel.text = [self.group.adminList objectAtIndex:(row - 1)];
+                    cell.rightLabel.text = @"admin";
+                }
+            } else if (section == 1) {
+                cell.leftLabel.text = [self.showMembers objectAtIndex:row];
+            }
+            
+            return cell;
+        }
     }
     
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+    }
+    
+    cell.detailTextLabel.text = nil;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     if (section == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
-        }
-        
-        cell.detailTextLabel.text = nil;
-        cell.accessoryType = UITableViewCellAccessoryNone;
         switch (row) {
             case 0:
                 cell.textLabel.text = NSLocalizedString(@"group.id", @"GroupID");
@@ -230,27 +257,9 @@
             default:
                 break;
         }
-        
-        return cell;
-    }
-    
-    EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
-    if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
-    }
-    
-    cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
-    cell.rightLabel.text = @"";
-    if (section == 0) {
-        if (row == 0) {
-            cell.leftLabel.text = self.group.owner;
-            cell.rightLabel.text = @"owner";
-        } else {
-            cell.leftLabel.text = [self.group.adminList objectAtIndex:(row - 1)];
-            cell.rightLabel.text = @"admin";
-        }
-    } else if (section == 1) {
-        cell.leftLabel.text = [self.showMembers objectAtIndex:row];
+    } else if (section == 3 && row == 0) {
+        cell.textLabel.text = NSLocalizedString(@"title.sendNotifMsg", @"Send notification message");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     return cell;
@@ -270,6 +279,8 @@
         headerLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedString(@"group.members", @"Members List")];
     } else if (section == 2) {
         headerLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedString(@"title.setting", @"Settings")];
+    } else if (section == 3) {
+        headerLabel.text = [NSString stringWithFormat:@"  %@", NSLocalizedString(@"title.extensions", @"Extensions")];
     }
     
     return headerLabel;
@@ -280,7 +291,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger section = indexPath.section;
-    if (section != 2) {
+    if (section == 0) {
+        return;
+    }
+    
+    if (section == 3 && indexPath.row == 0) {
+        [self.navigationController popViewControllerAnimated:NO];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_DingAction object:nil];
         return;
     }
     

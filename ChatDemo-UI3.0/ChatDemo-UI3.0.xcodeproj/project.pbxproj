@@ -102,6 +102,9 @@
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
+		3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6920088E4E0087CE2D /* DingViewController.m */; };
+		3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */; };
+		3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */; };
 		3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */; };
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
 		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
@@ -448,6 +451,12 @@
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		3AB62A121D926375000776F0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		3ACC7F6820088E4E0087CE2D /* DingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingViewController.h; sourceTree = "<group>"; };
+		3ACC7F6920088E4E0087CE2D /* DingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingViewController.m; sourceTree = "<group>"; };
+		3ACC7F6B20089A5D0087CE2D /* DingAcksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingAcksViewController.h; sourceTree = "<group>"; };
+		3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingAcksViewController.m; sourceTree = "<group>"; };
+		3ACC7F6E20089BA20087CE2D /* EMDingMessageHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMDingMessageHelper.h; sourceTree = "<group>"; };
+		3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMDingMessageHelper.m; sourceTree = "<group>"; };
 		3AD0FB981E1E7267001F3957 /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
 		3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
 		3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HyphenateVideoRecorder_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Release-iphoneos/HyphenateVideoRecorder_CN.framework"; sourceTree = "<group>"; };
@@ -1121,6 +1130,12 @@
 			children = (
 				9003D7851939D8D000DC38A4 /* ChatViewController.h */,
 				9003D7861939D8D000DC38A4 /* ChatViewController.m */,
+				3ACC7F6820088E4E0087CE2D /* DingViewController.h */,
+				3ACC7F6920088E4E0087CE2D /* DingViewController.m */,
+				3ACC7F6B20089A5D0087CE2D /* DingAcksViewController.h */,
+				3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */,
+				3ACC7F6E20089BA20087CE2D /* EMDingMessageHelper.h */,
+				3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */,
 			);
 			path = ChatView;
 			sourceTree = "<group>";
@@ -1987,6 +2002,7 @@
 				3A2C3A281E23AF5000DCD9BE /* EMChatroomMutesViewController.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
+				3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */,
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
 				3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */,
 				9003D9151939D8D000DC38A4 /* ApplyFriendCell.m in Sources */,
@@ -2011,6 +2027,7 @@
 				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
 				3A7E5EDA1F3C630900FE82CE /* DemoCallManager.m in Sources */,
+				3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */,
 				90AFCFDC1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */,
 				90911137192EEC91008A48AA /* LoginViewController.m in Sources */,
 				3C6FFA2419A2F5560003EB25 /* DebugViewController.m in Sources */,
@@ -2025,6 +2042,7 @@
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
+				3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */,
 				90CE5C121B43C8E500810187 /* AppDelegate+EaseMobDebug.m in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
