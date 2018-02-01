@@ -14,7 +14,6 @@
 #import <Hyphenate/EMError.h>
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
-#import "RedPacketUserConfig.h"
 #import "EMDevicesViewController.h"
 
 //#import <HyphenateIDFAPlugin/EMIDFAPlugin.h>
@@ -233,6 +232,9 @@
                         break;
                     case EMErrorServerServingForbidden:
                         TTAlertNoTitle(NSLocalizedString(@"servingIsBanned", @"Serving is banned"));
+                        break;
+                    case EMErrorExceedServiceLimit:
+                        TTAlertNoTitle(NSLocalizedString(@"error.exceedServiceLimit", @"Exceed Service Limit"));
                         break;
                     default:
                         TTAlertNoTitle(NSLocalizedString(@"register.fail", @"Registration failed"));

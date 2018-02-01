@@ -147,24 +147,20 @@
     return cell;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        self.willKickDeviceIndex = indexPath;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_KICK_ONE]];
-    }   
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self setupCellEditActions:indexPath];
+}
+
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self setupCellEditActions:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -182,6 +178,32 @@
 }
 
 #pragma mark - Action
+
+- (void)deleteCellAction:(NSIndexPath *)aIndexPath
+{
+    self.willKickDeviceIndex = aIndexPath;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAlertController" object:[NSNumber numberWithInt:KALERT_KICK_ONE]];
+}
+
+- (id)setupCellEditActions:(NSIndexPath *)aIndexPath
+{
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"delete",@"Delete") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self deleteCellAction:indexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        return @[deleteAction];
+    } else {
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"delete",@"Delete") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self deleteCellAction:aIndexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+        config.performsFirstActionWithFullSwipe = NO;
+        return config;
+    }
+}
 
 - (void)kickAllAction
 {

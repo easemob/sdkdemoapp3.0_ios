@@ -114,37 +114,36 @@ static DemoConfManager *confManager = nil;
 
 #pragma mark - conference
 
-- (void)createConferenceWithType:(EMCallType)aType
+- (void)pushConferenceControllerWithType:(EMCallType)aType
 {
     [[DemoCallManager sharedManager] setIsCalling:YES];
     
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithType:aType];
-    [self.mainController.navigationController pushViewController:confController animated:NO];
+    if (aType == EMCallTypeVoice) {
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithType:aType];
+        [self.mainController.navigationController pushViewController:confController animated:NO];
+        return;
+    }
     
-//    NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-//    EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:contacts selectedUsers:@[[EMClient sharedClient].currentUsername]];
-//    [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
-//        EMGroupOptions *options = [[EMGroupOptions alloc] init];
-//        options.style = EMGroupStylePublicOpenJoin;
-//        options.maxUsersCount = 6;
-//        EMError *error = nil;
-//        EMGroup *group = [[EMClient sharedClient].groupManager createGroupWithSubject:@"多人会议" description:nil invitees:selectedUsers message:nil setting:options error:&error];
-//        if (error) {
-//            NSLog(@"创建多人会议群组失败");
-//        } else {
-//            NSString *localName = [EMClient sharedClient].currentUsername;
-//            EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"%@ 发起了多人会议", localName]];
-//            EMMessage *message = [[EMMessage alloc] initWithConversationID:group.groupId from:localName to:group.groupId body:body ext:nil];
-//            message.chatType = EMChatTypeGroupChat;
-//            [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
-//        }
-//        
-//        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithUsers:selectedUsers type:aType conversationId:group.groupId];
-//        [self.mainController.navigationController pushViewController:confController animated:NO];
-//    }];
-//    [self.mainController.navigationController pushViewController:controller animated:YES];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:NO];
+        [self.mainController.navigationController pushViewController:confController animated:NO];
+    }];
+    [alertController addAction:defaultAction];
+    
+    UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:YES];
+        [self.mainController.navigationController pushViewController:confController animated:NO];
+    }];
+    [alertController addAction:customAction];
+    
+    [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [[DemoCallManager sharedManager] setIsCalling:NO];
+    }]];
+    
+    [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
 }
-
 
 #endif
 

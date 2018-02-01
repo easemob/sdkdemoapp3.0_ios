@@ -20,7 +20,6 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 #import "UserProfileManager.h"
-#import "RedPacketChatViewController.h"
 
 #import "BaseTableViewCell.h"
 #import "UIViewController+SearchController.h"
@@ -226,11 +225,6 @@
     [contentView addSubview:label];
     return contentView;
 }
-         
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -259,10 +253,10 @@
         
 #if DEMO_CALL == 1
         else if (row == 3) {
-            [[DemoConfManager sharedManager] createConferenceWithType:EMCallTypeVoice];
+            [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMCallTypeVoice];
         }
         else if (row == 4) {
-            [[DemoConfManager sharedManager] createConferenceWithType:EMCallTypeVideo];
+            [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMCallTypeVideo];
         }
 #endif
     } else if (section == 1) {
@@ -271,12 +265,7 @@
     }
     else{
         EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 2)] objectAtIndex:row];
-        UIViewController *chatController = nil;
-#ifdef REDPACKET_AVALABLE
-        chatController = [[RedPacketChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
-#else
-        chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
-#endif
+        UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
         chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
         [self.navigationController pushViewController:chatController animated:YES];
     }
@@ -290,24 +279,18 @@
     }
     return YES;
 }
-                                                       
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *loginUsername = [[EMClient sharedClient] currentUsername];
-        EaseUserModel *model = [[self.dataArray objectAtIndex:(indexPath.section - 2)] objectAtIndex:indexPath.row];
-        if ([model.buddy isEqualToString:loginUsername]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notDeleteSelf", @"can't delete self") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
-            
-            return;
-        }
-        
-        self.indexPath = indexPath;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"delete conversation", @"Delete conversation") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
-        [alertView show];
-    }
+    return [self setupCellEditActions:indexPath];
 }
+
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self setupCellEditActions:indexPath];
+}
+
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -415,6 +398,33 @@
 
 #pragma mark - action
 
+- (void)deleteCellAction:(NSIndexPath *)aIndexPath
+{
+    self.indexPath = aIndexPath;
+    UIAlertView *alertView = [[ UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"delete conversation", @"Delete conversation") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+    [alertView show];
+}
+
+- (id)setupCellEditActions:(NSIndexPath *)aIndexPath
+{
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"delete",@"Delete") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self deleteCellAction:indexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        return @[deleteAction];
+    } else {
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"delete",@"Delete") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self deleteCellAction:aIndexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+        config.performsFirstActionWithFullSwipe = NO;
+        return config;
+    }
+}
+
 - (void)addContactAction
 {
     AddFriendViewController *addController = [[AddFriendViewController alloc] init];
@@ -455,12 +465,8 @@
         NSString *buddy = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
         [weakSelf.searchController.searchBar endEditing:YES];
         
-#ifdef REDPACKET_AVALABLE
-        RedPacketChatViewController *chatVC = [[RedPacketChatViewController alloc] initWithConversationChatter:buddy conversationType:EMConversationTypeChat];
-#else
         ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
                                      conversationType:EMConversationTypeChat];
-#endif
         chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
         [weakSelf.navigationController pushViewController:chatVC animated:YES];
                                                

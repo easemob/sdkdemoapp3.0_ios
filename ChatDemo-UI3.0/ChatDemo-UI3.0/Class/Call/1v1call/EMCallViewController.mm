@@ -15,7 +15,10 @@
 #import "DemoCallManager.h"
 #import "EMVideoInfoViewController.h"
 
-@interface EMCallViewController ()
+//3.3.9 new 自定义视频数据
+#import "VideoCustomCamera.h"
+
+@interface EMCallViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UILabel *remoteNameLabel;
@@ -41,6 +44,13 @@
 
 @property (strong, nonatomic) EMVideoInfoViewController *videoInfoController;
 
+//3.3.9 new 自定义视频数据
+@property (weak, nonatomic) IBOutlet UIView *videoFormatView;
+@property (weak, nonatomic) IBOutlet UIButton *videoMoreButton;
+
+@property (nonatomic) VideoInputModeType videoModel;
+@property (strong, nonatomic) VideoCustomCamera *videoCamera;
+
 @end
 
 #endif
@@ -64,6 +74,21 @@
             if (!ret) {
                 NSLog(@"1234567");
             }
+        }
+    }
+    
+    return self;
+}
+
+//3.3.9 new 自定义视频数据
+- (instancetype)initWithCallSession:(EMCallSession *)aCallSession
+                       isCustomData:(BOOL)aIsCustom
+{
+    self = [self initWithCallSession:aCallSession];
+    if (self) {
+        _videoModel = VIDEO_INPUT_MODE_NONE;
+        if (aIsCustom) {
+            _videoModel = VIDEO_INPUT_MODE_SAMPLE_BUFFER;
         }
     }
     
@@ -148,8 +173,12 @@
             }
             
             [self _setupLocalVideoView];
-//            [self.view bringSubviewToFront:self.topView];
-//            [self.view bringSubviewToFront:self.actionView];
+            
+            self.videoMoreButton.hidden = YES;
+            if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
+                self.videoMoreButton.hidden = NO;
+                [self openVideoCamera];
+            }
         }
             break;
             
@@ -186,6 +215,10 @@
     self.callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(size.width - width - 20, 20, width, height)];
     [self.view addSubview:self.callSession.localVideoView];
     [self.view bringSubviewToFront:self.callSession.localVideoView];
+    
+    if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
+        self.callSession.localVideoView.previewDirectly = NO;
+    }
 }
 
 #pragma mark - private ring
@@ -247,11 +280,6 @@
 
 #pragma mark - action
 
-//- (IBAction)minimizeAction:(id)sender
-//{
-//    
-//}
-
 - (IBAction)speakerOutAction:(id)sender
 {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -276,8 +304,13 @@
 
 - (IBAction)switchCameraAction:(id)sender
 {
-    [self.callSession switchCameraPosition:self.switchCameraButton.selected];
+    //3.3.9 new 自定义视频数据
     self.switchCameraButton.selected = !self.switchCameraButton.selected;
+    if (self.videoModel == VIDEO_INPUT_MODE_NONE) {
+        [self.callSession switchCameraPosition:!self.switchCameraButton.selected];
+    } else {
+        [self.videoCamera swapCameraWithPosition:(self.switchCameraButton.selected ? AVCaptureDevicePositionBack : AVCaptureDevicePositionFront)];
+    }
 }
 
 - (IBAction)showVideoInfoAction:(id)sender
@@ -334,10 +367,10 @@
 {
     [self _startTimeTimer];
     
-    if (self.callSession.type == EMCallTypeVideo) {
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    }
+//    if (self.callSession.type == EMCallTypeVideo) {
+//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+//    }
     
     NSString *connectStr = @"None";
     if (_callSession.connectType == EMCallConnectTypeRelay) {
@@ -354,6 +387,12 @@
     self.answerButton.hidden = YES;
     
     [self _setupRemoteVideoView];
+    
+    if (self.speakerOutButton.selected) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
+    }
     
 //    NSString *recordPath = NSHomeDirectory();
 //    recordPath = [NSString stringWithFormat:@"%@/Library/appdata/chatbuffer",recordPath];
@@ -404,8 +443,10 @@
 
 - (void)clearData
 {
-//    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
+    //3.3.9 new 自定义视频数据
+    [self closeVideoCamera];
     
+//    [[EMVideoRecorderPlugin sharedInstance] stopVideoRecording:nil];
     [self.videoInfoController dismissViewControllerAnimated:NO completion:nil];
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -418,6 +459,108 @@
     
     [self _stopTimeTimer];
     [self _stopRing];
+}
+
+#pragma mark - 3.3.9 new 自定义视频数据
+
+#pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
+
+- (void)captureOutput:(AVCaptureOutput*)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
+       fromConnection:(AVCaptureConnection*)connection
+{
+    if(!self.callSession || self.videoModel == VIDEO_INPUT_MODE_NONE){
+        return;
+    }
+    
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    if (imageBuffer == NULL) {
+        return ;
+    }
+    
+    CVOptionFlags lockFlags = kCVPixelBufferLock_ReadOnly;
+    CVReturn ret = CVPixelBufferLockBaseAddress(imageBuffer, lockFlags);
+    if (ret != kCVReturnSuccess) {
+        return ;
+    }
+    
+    static size_t const kYPlaneIndex = 0;
+    static size_t const kUVPlaneIndex = 1;
+    uint8_t* yPlaneAddress = (uint8_t*)CVPixelBufferGetBaseAddressOfPlane(imageBuffer, kYPlaneIndex);
+    size_t yPlaneHeight = CVPixelBufferGetHeightOfPlane(imageBuffer, kYPlaneIndex);
+    size_t yPlaneWidth = CVPixelBufferGetWidthOfPlane(imageBuffer, kYPlaneIndex);
+    size_t yPlaneBytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, kYPlaneIndex);
+    size_t uvPlaneHeight = CVPixelBufferGetHeightOfPlane(imageBuffer, kUVPlaneIndex);
+    size_t uvPlaneBytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, kUVPlaneIndex);
+    size_t frameSize = yPlaneBytesPerRow * yPlaneHeight + uvPlaneBytesPerRow * uvPlaneHeight;
+    
+    // set uv for gray color
+    uint8_t * uvPlaneAddress = yPlaneAddress + yPlaneBytesPerRow * yPlaneHeight;
+    memset(uvPlaneAddress, 0x7F, uvPlaneBytesPerRow * uvPlaneHeight);
+    if(self.videoModel == VIDEO_INPUT_MODE_DATA){
+        [[EMClient sharedClient].callManager inputVideoData:[NSData dataWithBytes:yPlaneAddress length:frameSize] callId:self.callSession.callId widthInPixels:yPlaneWidth heightInPixels:yPlaneHeight format:EMCallVideoFormatNV12 rotation:0 completion:nil];
+    }
+    
+    CVPixelBufferUnlockBaseAddress(imageBuffer, lockFlags);
+    
+    if(self.videoModel == VIDEO_INPUT_MODE_SAMPLE_BUFFER) {
+        [[EMClient sharedClient].callManager inputVideoSampleBuffer:sampleBuffer callId:self.callSession.callId format:EMCallVideoFormatNV12 rotation:0 completion:nil];
+    } else if(self.videoModel == VIDEO_INPUT_MODE_PIXEL_BUFFER) {
+        [[EMClient sharedClient].callManager inputVideoPixelBuffer:imageBuffer callId:self.callSession.callId format:EMCallVideoFormatNV12 rotation:0 completion:nil];
+    }
+}
+
+- (IBAction)moreAction:(id)sender
+{
+    self.videoFormatView.hidden = NO;
+}
+
+- (IBAction)videoModelValueChanged:(UISegmentedControl *)sender
+{
+    
+    NSInteger index = sender.selectedSegmentIndex;
+    switch (index) {
+        case 0:
+            self.videoModel = VIDEO_INPUT_MODE_SAMPLE_BUFFER;
+            break;
+        case 1:
+            self.videoModel = VIDEO_INPUT_MODE_PIXEL_BUFFER;
+            break;
+        case 2:
+            self.videoModel = VIDEO_INPUT_MODE_DATA;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (IBAction)closeVideoFormatViewAction:(id)sender
+{
+    self.videoFormatView.hidden = YES;
+}
+
+- (void)openVideoCamera
+{
+    if(self.videoCamera){
+        return ;
+    }
+    
+    self.videoCamera = [[VideoCustomCamera alloc] initWithQueue:dispatch_get_main_queue()];
+    [self.videoCamera syncSetDataDelegate:self onDone:nil];
+    BOOL ok = [self.videoCamera syncOpenWithWidth:640 height:480 onDone:nil];
+    if(!ok){
+        [self.videoCamera syncClose:nil];
+        self.videoCamera = nil;
+    }
+    
+}
+
+- (void)closeVideoCamera
+{
+    if(self.videoCamera){
+        [self.videoCamera syncClose:^(id obj, NSError *error) {}];
+        self.videoCamera = nil;
+    }
 }
 
 #endif

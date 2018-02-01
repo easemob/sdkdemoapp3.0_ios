@@ -129,21 +129,14 @@
     return YES;
 }
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *username = [[self.dataSource objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
-        if (!error)
-        {
-            [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
-            [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
-            [tableView reloadData];
-        } else {
-            [self showHint:error.errorDescription];
-        }
-    }
+    return [self setupCellEditActions:indexPath];
+}
+
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self setupCellEditActions:indexPath];
 }
 
 #pragma mark - Table view delegate
@@ -190,11 +183,6 @@
         }
     }
     return existTitles;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
 }
 
 #pragma mark - scrollView delegate
@@ -279,6 +267,42 @@
             [weakself.tableView reloadData];
         });
     });
+}
+
+#pragma mark - action
+
+- (void)deleteCellAction:(NSIndexPath *)aIndexPath
+{
+    NSString *username = [[self.dataSource objectAtIndex:aIndexPath.section] objectAtIndex:aIndexPath.row];
+    EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
+    if (!error)
+    {
+        [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
+        [[self.dataSource objectAtIndex:aIndexPath.section] removeObjectAtIndex:aIndexPath.row];
+        [self.tableView reloadData];
+    } else {
+        [self showHint:error.errorDescription];
+    }
+}
+
+- (id)setupCellEditActions:(NSIndexPath *)aIndexPath
+{
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"delete",@"Delete") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self deleteCellAction:indexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        return @[deleteAction];
+    } else {
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"delete",@"Delete") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self deleteCellAction:aIndexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+        config.performsFirstActionWithFullSwipe = NO;
+        return config;
+    }
 }
 
 @end

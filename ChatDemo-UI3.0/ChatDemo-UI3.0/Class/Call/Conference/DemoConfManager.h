@@ -19,7 +19,7 @@
 
 + (instancetype)sharedManager;
 
-- (void)createConferenceWithType:(EMCallType)aType;
+- (void)pushConferenceControllerWithType:(EMCallType)aType;
 
 #endif
 

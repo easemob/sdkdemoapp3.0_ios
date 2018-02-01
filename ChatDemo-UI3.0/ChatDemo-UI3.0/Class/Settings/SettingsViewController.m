@@ -18,7 +18,6 @@
 #import "DebugViewController.h"
 #import "EditNicknameViewController.h"
 #import "UserProfileEditViewController.h"
-#import "RedpacketViewControl.h"
 #import "ChatDemoHelper.h"
 
 #if DEMO_CALL == 1
@@ -35,7 +34,8 @@
 @property (strong, nonatomic) UISwitch *sortMethodSwitch;
 @property (strong, nonatomic) UISwitch *deliveryAckSwitch;
 @property (strong, nonatomic) UISwitch *historySwitch;
-@property (strong, nonatomic) UISwitch *uploadFileSwitch;
+@property (strong, nonatomic) UISwitch *autoTransferMessageFileSwitch;
+@property (strong, nonatomic) UISwitch *thumbnailSwitch;
 
 @end
 
@@ -119,15 +119,25 @@
     return _historySwitch;
 }
 
-- (UISwitch *)uploadFileSwitch
+- (UISwitch *)autoTransferMessageFileSwitch
 {
-    if (_uploadFileSwitch == nil) {
-        _uploadFileSwitch = [[UISwitch alloc] init];
-        _uploadFileSwitch.on = ![[EMClient sharedClient].options isAutoTransferMessageAttachments];
-        [_uploadFileSwitch addTarget:self action:@selector(uploadMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
+    if (_autoTransferMessageFileSwitch == nil) {
+        _autoTransferMessageFileSwitch = [[UISwitch alloc] init];
+        _autoTransferMessageFileSwitch.on = [EMClient sharedClient].options.isAutoTransferMessageAttachments;
+        [_autoTransferMessageFileSwitch addTarget:self action:@selector(autoTransferMessageFileChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
-    return _uploadFileSwitch;
+    return _autoTransferMessageFileSwitch;
+}
+
+- (UISwitch *)thumbnailSwitch
+{
+    if (_thumbnailSwitch == nil) {
+        _thumbnailSwitch = [[UISwitch alloc] init];
+        _thumbnailSwitch.on = [[EMClient sharedClient].options isAutoDownloadThumbnail];
+        [_thumbnailSwitch addTarget:self action:@selector(autoDownloadChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    return _thumbnailSwitch;
 }
 
 #pragma mark - Table view datasource
@@ -139,28 +149,18 @@
     count += 1;
 #endif
     
-#ifdef REDPACKET_AVALABLE
-    count += 1;
-#endif
-    
     return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#ifdef REDPACKET_AVALABLE
-    if (section == 0) {
-        return 1;
-    }
-#endif
-    
 #if DEMO_CALL == 1
-    if (section == 2) {
+    if (section == 1) {
         return 1;
     }
 #endif
 
-    return 12;
+    return 13;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -175,22 +175,9 @@
             [subView removeFromSuperview];
         }];
     }
-   
-#ifdef REDPACKET_AVALABLE
-    
-    if (indexPath.section == 0) {
-        cell.textLabel.text = @"零钱";
-#ifdef AliAuthPay
-        cell.textLabel.text = @"红包记录";
-#endif
-        return cell;
-    }
-#else
-    
-#endif
     
 #if DEMO_CALL == 1
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -244,9 +231,15 @@
         self.historySwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.historySwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.historySwitch.frame.size.height) / 2, self.historySwitch.frame.size.width, self.historySwitch.frame.size.height);
         [cell.contentView addSubview:self.historySwitch];
     } else if (indexPath.row == 11) {
-        cell.textLabel.text = NSLocalizedString(@"title.customAttachments",@"The message attachment is uploaded to your own server");
-        self.uploadFileSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.uploadFileSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.uploadFileSwitch.frame.size.height) / 2, self.uploadFileSwitch.frame.size.width, self.uploadFileSwitch.frame.size.height);
-        [cell.contentView addSubview:self.uploadFileSwitch];
+        cell.textLabel.text = NSLocalizedString(@"title.autoTransferAttachments",@"The message attachment is uploaded to Hyphenate");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.autoTransferMessageFileSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.autoTransferMessageFileSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.autoTransferMessageFileSwitch.frame.size.height) / 2, self.autoTransferMessageFileSwitch.frame.size.width, self.autoTransferMessageFileSwitch.frame.size.height);
+        [cell.contentView addSubview:self.autoTransferMessageFileSwitch];
+    } else if (indexPath.row == 12) {
+        cell.textLabel.text = NSLocalizedString(@"title.autoDownloadThumbnail", @"Weather to Automatic download thumbnail");
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.thumbnailSwitch.frame = CGRectMake(self.tableView.frame.size.width - (self.thumbnailSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - self.thumbnailSwitch.frame.size.height) / 2, self.thumbnailSwitch.frame.size.width, self.thumbnailSwitch.frame.size.height);
+        [cell.contentView addSubview:self.thumbnailSwitch];
     }
     
     return cell;
@@ -263,15 +256,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-#ifdef REDPACKET_AVALABLE
-    if (indexPath.section == 0) {
-        [RedpacketViewControl presentChangePocketViewControllerFromeController:self];
-        return;
-    }
-#endif
-    
 #if DEMO_CALL == 1
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:callSettingController animated:YES];
     }
@@ -280,14 +266,10 @@
     if (indexPath.row == 1) {
         PushNotificationViewController *pushController = [[PushNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:pushController animated:YES];
-    }
-    else if (indexPath.row == 2)
-    {
+    } else if (indexPath.row == 2) {
         BlackListViewController *blackController = [[BlackListViewController alloc] initWithNibName:nil bundle:nil];
         [self.navigationController pushViewController:blackController animated:YES];
-    }
-    else if (indexPath.row == 3)
-    {
+    } else if (indexPath.row == 3) {
         DebugViewController *debugController = [[DebugViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:debugController animated:YES];
     } else if (indexPath.row == 6) {
@@ -354,9 +336,20 @@
     [udefaults setBool:control.isOn forKey:@"isFetchHistory"];
 }
 
-- (void)uploadMessageFileChanged:(UISwitch *)control
+- (void)autoTransferMessageFileChanged:(UISwitch *)control
 {
-    [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:!control.on];
+    [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:control.on];
+    
+    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
+    [udefaults setBool:control.isOn forKey:@"autoTransferMessageFile"];
+}
+
+- (void)autoDownloadChanged:(UISwitch *)control
+{
+    [[EMClient sharedClient].options setIsAutoDownloadThumbnail:control.on];
+    
+    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
+    [udefaults setBool:control.isOn forKey:@"autoDownloadMessageThumbnail"];
 }
     
 - (void)refreshConfig
@@ -364,6 +357,7 @@
     [self.autoLoginSwitch setOn:[[EMClient sharedClient].options isAutoLogin] animated:NO];
     [self.sortMethodSwitch setOn:[[EMClient sharedClient].options sortMessageByServerTime] animated:NO];
     [self.deliveryAckSwitch setOn:[EMClient sharedClient].options.enableDeliveryAck animated:NO];
+    [self.autoTransferMessageFileSwitch setOn:[[EMClient sharedClient].options isAutoTransferMessageAttachments] animated:NO];
     
     [self.tableView reloadData];
 }

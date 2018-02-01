@@ -64,6 +64,7 @@
 "servingIsBanned" = "服务被禁用";
 "getPermission" = "获取权限";
 "recallFailed" = "消息撤回失败:%@";
+"error.exceedServiceLimit" = "超过服务器上限";
 
 //app
 "AppName" = "环信Demo";
@@ -72,6 +73,7 @@
 "error.connectServerFail" = "连接服务器失败!";
 "error.connectServerTimeout" = "连接服务器超时!";
 "error.connectNetworkFail" = "网络未连接!";
+"error.usernotExist" = "用户不存在!";
 "error.notFound" = "文件路径不存在";
 "error.initPlayerFail" = "初始化AVAudioPlayer失败!";
 "error.palyFail" = "播放失败!";
@@ -392,7 +394,8 @@
 "title.robotlist" = "环信助手";
 "title.profile" = "详细资料";
 "title.createChatroom" = "创建聊天室";
-"title.customAttachments" = "消息附件上传到自己服务器";
+"title.autoTransferAttachments" = "消息附件上传到环信服务器";
+"title.autoDownloadThumbnail" = "是否自动下载缩略图";
 
 
 //setting
@@ -414,6 +417,8 @@
 "setting.sdkVersion" = "SDK 版本";
 "setting.emailLog" = "邮件发送日志";
 "setting.deviceResources" = "登录设备列表";
+"setting.serviceDiagnose" = "服务诊断";
+"setting.serviceCheck" = "诊断";
 "setting.kickAllDevices" = "踢掉所有";
 "setting.uploading" = "正在上传...";
 "setting.uploadSuccess" = "上传成功";
@@ -486,3 +491,6 @@
 "network.conference.unstable" = "网络变化：数据不稳定";
 "network.conference.dis" = "网络变化：网络已经断开";
 "title.conference.addUser" = "添加成员";
+
+"title.conference.default" = "默认";
+"title.conference.custom" = "自定义";

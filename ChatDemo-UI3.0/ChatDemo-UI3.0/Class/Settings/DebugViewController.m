@@ -15,6 +15,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MessageUI/MessageUI.h>
 #import "EMDevicesViewController.h"
+#import "EMServiceCheckViewController.h"
 
 @interface DebugViewController ()<MFMailComposeViewControllerDelegate>
 
@@ -82,7 +83,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -101,6 +102,8 @@
         cell.textLabel.text = NSLocalizedString(@"setting.emailLog", @"Email send logs");
     } else if (indexPath.row == 2) {
         cell.textLabel.text = NSLocalizedString(@"setting.deviceResources", @"List of logged devices");
+    } else if (indexPath.row == 3) {
+        cell.textLabel.text = NSLocalizedString(@"setting.serviceDiagnose", @"Make a diagnose for service");
     }
     
     return cell;
@@ -153,6 +156,9 @@
     } else if (indexPath.row == 2) {
         EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:devicesController animated:YES];
+    } else if (indexPath.row == 3) {
+        EMServiceCheckViewController *serviceCheckViewController = [[EMServiceCheckViewController alloc] init];
+        [self.navigationController pushViewController:serviceCheckViewController animated:YES];
     }
 }
 

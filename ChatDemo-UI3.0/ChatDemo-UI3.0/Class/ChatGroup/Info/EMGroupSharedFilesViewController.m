@@ -111,40 +111,14 @@
     return YES;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewCellEditingStyleDelete;
+    return [self setupCellEditActions:indexPath];
 }
 
-- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NSLocalizedString(@"group.remove", @"Remove");
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        EMGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
-        
-        [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
-        
-        __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            EMError *error = nil;
-            weakSelf.group = [[EMClient sharedClient].groupManager removeGroupSharedFileWithId:weakSelf.group.groupId sharedFileId:file.fileId error:&error];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf hideHud];
-                if (!error) {
-                    [weakSelf.dataArray removeObject:file];
-                    [weakSelf.tableView reloadData];
-                }
-                else {
-                    [weakSelf showHint:error.errorDescription];
-                }
-            });
-        });
-    }
+    return [self setupCellEditActions:indexPath];
 }
 
 #pragma mark - UITableViewDelegate
@@ -234,6 +208,50 @@
 }
 
 #pragma mark - private
+
+- (void)deleteCellAction:(NSIndexPath *)aIndexPath
+{
+    EMGroupSharedFile *file = [self.dataArray objectAtIndex:aIndexPath.row];
+    
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Pleae wait...")];
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = nil;
+        weakSelf.group = [[EMClient sharedClient].groupManager removeGroupSharedFileWithId:weakSelf.group.groupId sharedFileId:file.fileId error:&error];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (!error) {
+                [weakSelf.dataArray removeObject:file];
+                [weakSelf.tableView reloadData];
+            }
+            else {
+                [weakSelf showHint:error.errorDescription];
+            }
+        });
+    });
+}
+
+- (id)setupCellEditActions:(NSIndexPath *)aIndexPath
+{
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self deleteCellAction:indexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        return @[deleteAction];
+    } else {
+        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"group.remove", @"Remove") handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self deleteCellAction:aIndexPath];
+        }];
+        deleteAction.backgroundColor = [UIColor redColor];
+        
+        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+        config.performsFirstActionWithFullSwipe = NO;
+        return config;
+    }
+}
 
 - (void)_uploadData:(NSData *)data filename:(NSString *)filename
 {
