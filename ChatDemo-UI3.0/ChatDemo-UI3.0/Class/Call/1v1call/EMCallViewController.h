@@ -20,6 +20,9 @@
 
 - (instancetype)initWithCallSession:(EMCallSession *)aCallSession;
 
+- (instancetype)initWithCallSession:(EMCallSession *)aCallSession
+                       isCustomData:(BOOL)aIsCustom;
+
 - (void)stateToConnected;
 
 - (void)stateToAnswered;

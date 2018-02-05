@@ -37,4 +37,6 @@
 
 - (instancetype)initWithType:(EMCallType)aType;
 
+- (instancetype)initVideoCallWithIsCustomData:(BOOL)aIsCustom;
+
 @end

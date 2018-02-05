@@ -496,3 +496,6 @@
 "network.conference.unstable" = "Network changes: the network is unstable";
 "network.conference.dis" = "Network changes: the network is disconnect";
 "title.conference.addUser" = "Add User";
+
+"title.conference.default" = "Default";
+"title.conference.custom" = "Custom";

@@ -253,10 +253,10 @@
         
 #if DEMO_CALL == 1
         else if (row == 3) {
-            [[DemoConfManager sharedManager] createConferenceWithType:EMCallTypeVoice];
+            [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMCallTypeVoice];
         }
         else if (row == 4) {
-            [[DemoConfManager sharedManager] createConferenceWithType:EMCallTypeVideo];
+            [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMCallTypeVideo];
         }
 #endif
     } else if (section == 1) {
