@@ -351,6 +351,7 @@
 "message.recall" = "You recall a message";
 "message.recallByOthers" = "%@ recall a message";
 "message.autoTransfer" = "Please customize the transfer attachment method";
+"message.deleteConversation" = "Whether to delete the conversation?";
 
 //media
 "media.timeShort" = "The recording time is too short";

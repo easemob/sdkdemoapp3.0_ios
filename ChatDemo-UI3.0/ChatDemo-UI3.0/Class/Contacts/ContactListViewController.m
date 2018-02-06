@@ -401,7 +401,7 @@
 - (void)deleteCellAction:(NSIndexPath *)aIndexPath
 {
     self.indexPath = aIndexPath;
-    UIAlertView *alertView = [[ UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"delete conversation", @"Delete conversation") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+    UIAlertView *alertView = [[ UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"message.deleteConversation", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
     [alertView show];
 }
 

@@ -213,7 +213,6 @@
 "group.changeExtFail" = "修改群扩展信息失败";
 
 //Group Delegate
-
 "group.update" = "群组更新";
 "group.adminUpdate" = "管理员更新";
 "group.becomeAdmin" = "变为管理员";
@@ -270,7 +269,6 @@
 "chatroom.leaveFail" = "退出聊天室失败";
 
 //chatroom delegate
-
 "chatroom.update" = "聊天室更新";
 "chatroom.mute" = "禁言成员";
 "chatroom.unmute" = "解除禁言";
@@ -349,6 +347,7 @@
 "message.recall" = "您撤回了一条消息";
 "message.recallByOthers" = "%@撤回了一条消息";
 "message.autoTransfer" = "请自定义上传或者下载附件方法";
+"message.deleteConversation" = "是否删除对应的会话?";
 
 //media
 "media.timeShort" = "录音时间太短了";
