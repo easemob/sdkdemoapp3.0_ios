@@ -474,9 +474,13 @@
     }];
         
     UISearchBar *searchBar = self.searchController.searchBar;
+    CGFloat height = searchBar.frame.size.height;
+    if (height == 0) {
+        height = 50;
+    }
+    searchBar.frame = CGRectMake(0, 0, self.tableView.frame.size.width, height);
     self.tableView.tableHeaderView = searchBar;
-    [searchBar sizeToFit];
-
+    [self.tableView reloadData];
 }
 
 - (void)_sortDataArray:(NSArray *)buddyList
