@@ -121,9 +121,11 @@
 
 - (void)deleteCellAction:(NSIndexPath *)aIndexPath
 {
-    [super deleteCellAction:aIndexPath];
-    
     EaseConversationModel *model = [self.dataArray objectAtIndex:aIndexPath.row];
+    [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId isDeleteMessages:YES completion:nil];
+    [self.dataArray removeObjectAtIndex:aIndexPath.row];
+    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:aIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
     [[EMDingMessageHelper sharedHelper] deleteConversation:model.conversation.conversationId];
 }
 
