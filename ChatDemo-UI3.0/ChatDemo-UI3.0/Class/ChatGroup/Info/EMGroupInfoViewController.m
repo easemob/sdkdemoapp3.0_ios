@@ -317,7 +317,7 @@
                 EMGroupTransferOwnerViewController *transferController = [[EMGroupTransferOwnerViewController alloc] initWithGroup:self.group];
                 [self.navigationController pushViewController:transferController animated:YES];
             } else {
-                [self showHint:@"只有Owner能进行此操作"];
+                [self showHint:NSLocalizedString(@"group.onlyOwner", nil)];
             }
         }
             break;
@@ -611,7 +611,7 @@
         if (!aError) {
             [weakSelf.tableView reloadData];
         } else {
-            NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement");
+            [weakSelf showHint:NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement")];
         }
     }];
 }

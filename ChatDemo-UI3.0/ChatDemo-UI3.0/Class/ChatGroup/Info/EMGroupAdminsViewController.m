@@ -145,7 +145,7 @@
                     [weakSelf.dataArray removeObject:userName];
                     [weakSelf.tableView reloadData];
                 } else {
-                    [weakSelf showHint:@"禁言成功"];
+                    [weakSelf showHint:NSLocalizedString(@"group.muteSuccess", nil)];
                 }
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];

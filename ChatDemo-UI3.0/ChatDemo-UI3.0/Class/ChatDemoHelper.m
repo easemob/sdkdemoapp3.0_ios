@@ -459,7 +459,7 @@ static ChatDemoHelper *helper = nil;
 - (void)didReceiveLeavedGroup:(EMGroup *)aGroup
                        reason:(EMGroupLeaveReason)aReason
 {
-    NSString *str = @"从群组中离开";
+    NSString *str = NSLocalizedString(@"group.leaved", nil);
     if (aReason == EMGroupLeaveReasonBeRemoved) {
         str = [NSString stringWithFormat:NSLocalizedString(@"group.kicked", nil), aGroup.subject, aGroup.groupId];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
@@ -524,7 +524,7 @@ static ChatDemoHelper *helper = nil;
                inviter:(NSString *)aInviter
                message:(NSString *)aMessage
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:@"%@ invite you to group: %@ [%@]", aInviter, aGroup.subject, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:NSLocalizedString(@"group.inviteSomeone", nil), aInviter, aGroup.subject, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -532,7 +532,7 @@ static ChatDemoHelper *helper = nil;
                           invitee:(NSString *)aInvitee
                            reason:(NSString *)aReason
 {
-    NSString *message = [NSString stringWithFormat:@"%@ 拒绝群组\"%@\"的入群邀请", aInvitee, aGroup.subject];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declinedInvite", nil), aInvitee, aGroup.subject];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -540,7 +540,7 @@ static ChatDemoHelper *helper = nil;
 - (void)groupInvitationDidAccept:(EMGroup *)aGroup
                          invitee:(NSString *)aInvitee
 {
-    NSString *message = [NSString stringWithFormat:@"%@ 已同意群组\"%@\"的入群邀请", aInvitee, aGroup.subject];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptedInvite", nil), aInvitee, aGroup.subject, aGroup.groupId];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -688,14 +688,14 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveAgreedFromUsername:(NSString *)aUsername
 {
-    NSString *msgstr = [NSString stringWithFormat:@"%@同意了加好友申请", aUsername];
+    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"friend.acceptedToAdd", nil), aUsername];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
 - (void)didReceiveDeclinedFromUsername:(NSString *)aUsername
 {
-    NSString *msgstr = [NSString stringWithFormat:@"%@拒绝了加好友申请", aUsername];
+    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"friend.declinedToAdd", nil), aUsername];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msgstr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }

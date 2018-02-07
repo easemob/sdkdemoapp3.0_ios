@@ -108,7 +108,8 @@
 //friend
 "friend.add" = "添加好友";
 "friend.somebodyAddWithName" = "%@ 添加你为好友";
-"friend.beRefusedToAdd" = "'%@'拒绝了你的好友请求";
+"friend.declinedToAdd" = "'%@'拒绝了你的好友请求";
+"friend.acceptedToAdd" = "'%@'同意了你的好友请求";
 "friend.inputNameToSearch" = "输入要查找的好友";
 "friend.repeat" = "'%@'已经是你的好友了!";
 "friend.repeatApply" = "您已向'%@'发送好友请求了!";
@@ -211,6 +212,7 @@
 "group.fetchAnnouncementFail" = "获取群公告失败";
 "group.changeAnnouncementFail" = "修改群公告失败";
 "group.changeExtFail" = "修改群扩展信息失败";
+"group.onlyOwner" = "只有Owner能进行此操作";
 
 //Group Delegate
 "group.update" = "群组更新";
@@ -226,8 +228,13 @@
 "group.updateAnnouncement" = "群组:%@ 公告内容: %@";
 "group.uploadSharedFile" = "群组:%@ 上传文件ID: %@";
 "group.removeSharedFile" = "群组:%@ 删除文件ID: %@";
+"group.leaved" = "从群组中离开";
 "group.kicked" = "你被踢出群组: %@ [%@]";
 "group.destroyed" = "群组被销毁: %@ [%@]";
+"group.muteSuccess" = "禁言成功";
+"group.inviteSomeone" = "%@ 邀请你加入群组: %@ [%@]";
+"group.declinedInvite" = "%@ 拒绝群组 %@ [%@] 的入群邀请";
+"group.acceptedInvite" = "%@ 已同意群组 %@ [%@] 的入群邀请";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "接收并提示群消息";
