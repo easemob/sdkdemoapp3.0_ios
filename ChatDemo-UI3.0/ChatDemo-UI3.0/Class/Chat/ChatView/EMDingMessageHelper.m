@@ -134,6 +134,9 @@ static EMDingMessageHelper *sharedInstance = nil;
 - (EMMessage *)createDingAckForMessage:(EMMessage *)aMessage
 {
     NSString *from = [[EMClient sharedClient] currentUsername];
+    if ([aMessage.from isEqualToString:from]) {
+        return nil;
+    }
     NSString *to = aMessage.from;
     EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:aMessage.messageId];
     EMMessage *retMessage = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:@{kDingAckKey:@(1), kDingConversationIdKey:aMessage.conversationId}];
@@ -169,6 +172,7 @@ static EMDingMessageHelper *sharedInstance = nil;
     
     [array addObject:aAckMessage.from];
     [dic setObject:array forKey:retMessageId];
+    [self save];
     
     return retMessageId;
 }
@@ -192,6 +196,7 @@ static EMDingMessageHelper *sharedInstance = nil;
     }
     
     [self.dingAcks removeObjectForKey:aConversationId];
+    [self save];
 }
 
 - (void)deleteConversation:(NSString *)aConversationId
@@ -204,6 +209,7 @@ static EMDingMessageHelper *sharedInstance = nil;
     NSMutableDictionary *dic = [self.dingAcks objectForKey:aConversationId];
     if ([dic count] > 0) {
         [dic removeObjectForKey:aMessageId];
+        [self save];
     }
 }
 
