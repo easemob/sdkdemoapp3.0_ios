@@ -461,9 +461,9 @@ static ChatDemoHelper *helper = nil;
 {
     NSString *str = @"从群组中离开";
     if (aReason == EMGroupLeaveReasonBeRemoved) {
-        str = [NSString stringWithFormat:@"You are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
+        str = [NSString stringWithFormat:NSLocalizedString(@"group.kicked", nil), aGroup.subject, aGroup.groupId];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
-        str = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.subject, aGroup.groupId];
+        str = [NSString stringWithFormat:NSLocalizedString(@"group.destroyed", nil), aGroup.subject, aGroup.groupId];
     }
     
     if (str.length > 0) {

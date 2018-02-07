@@ -226,6 +226,8 @@
 "group.updateAnnouncement" = "群组:%@ 公告内容: %@";
 "group.uploadSharedFile" = "群组:%@ 上传文件ID: %@";
 "group.removeSharedFile" = "群组:%@ 删除文件ID: %@";
+"group.kicked" = "你被踢出群组: %@ [%@]";
+"group.destroyed" = "群组被销毁: %@ [%@]";
 
 //Group Setting
 "group.setting.receiveAndPrompt" = "接收并提示群消息";

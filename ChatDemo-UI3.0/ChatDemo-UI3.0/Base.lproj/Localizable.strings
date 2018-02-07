@@ -211,9 +211,10 @@
 "group.fetchAnnouncementFail" = "fail to get announcement";
 "group.changeAnnouncementFail" = "fail to change announcement";
 "group.changeExtFail" = "fail to change ext";
+"group.kicked" = "You are kicked out from group: %@ [%@]";
+"group.destroyed" = "Group: %@ [%@] is destroyed";
 
 //Group Delegate
-
 "group.update" = "Group Update";
 "group.adminUpdate" = "Group Admin Update";
 "group.becomeAdmin" = "Become Admin";
@@ -500,3 +501,4 @@
 
 "title.conference.default" = "Default";
 "title.conference.custom" = "Custom";
+
