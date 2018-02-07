@@ -71,7 +71,9 @@
     EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
-        cell.showAccessoryViewInDelete = YES;
+        if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+            cell.showAccessoryViewInDelete = YES;
+        }
     }
     
     cell.imgView.image = [UIImage imageNamed:@"default_avatar"];

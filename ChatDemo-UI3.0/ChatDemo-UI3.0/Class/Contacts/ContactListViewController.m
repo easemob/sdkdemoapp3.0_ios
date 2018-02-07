@@ -280,6 +280,11 @@
     return YES;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //在iOS8.0上，必须加上这个方法才能出发左划操作
+}
+
 - (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self setupCellEditActions:indexPath];
