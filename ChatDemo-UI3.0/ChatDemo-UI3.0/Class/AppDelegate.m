@@ -17,7 +17,7 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+Parse.h"
 
-#import <Bugly/Bugly.h>。
+#import <Bugly/Bugly.h>
 #import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
