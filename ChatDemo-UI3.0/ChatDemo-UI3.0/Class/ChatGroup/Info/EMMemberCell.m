@@ -43,6 +43,8 @@
         if (showAccessoryViewInDelete) {
             self.accessoryDefaultView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shape_left"]];
             self.accessoryDeleteView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shape_right"]];
+            self.accessoryDefaultView.userInteractionEnabled = YES;
+            self.accessoryDeleteView.userInteractionEnabled = YES;
             self.accessoryView = self.accessoryDefaultView;
         } else {
             self.accessoryDefaultView = nil;

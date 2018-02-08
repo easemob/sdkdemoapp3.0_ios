@@ -71,7 +71,9 @@
     EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
-        cell.showAccessoryViewInDelete = YES;
+        if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+            cell.showAccessoryViewInDelete = YES;
+        }
     }
     
     cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
@@ -145,7 +147,7 @@
                     [weakSelf.dataArray removeObject:userName];
                     [weakSelf.tableView reloadData];
                 } else {
-                    [weakSelf showHint:@"禁言成功"];
+                    [weakSelf showHint:NSLocalizedString(@"group.muteSuccess", nil)];
                 }
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];

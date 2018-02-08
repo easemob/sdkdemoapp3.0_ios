@@ -175,31 +175,32 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 1) {
-        if (row == self.moreCellIndex) {
-            return self.moreCell;
-        } else {
-            EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
-            if (cell == nil) {
-                cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
-            }
-            
-            cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
-            cell.rightLabel.text = @"";
-            if (section == 0) {
-                if (row == 0) {
-                    cell.leftLabel.text = self.group.owner;
-                    cell.rightLabel.text = @"owner";
-                } else {
-                    cell.leftLabel.text = [self.group.adminList objectAtIndex:(row - 1)];
-                    cell.rightLabel.text = @"admin";
-                }
-            } else if (section == 1) {
-                cell.leftLabel.text = [self.showMembers objectAtIndex:row];
-            }
-            
-            return cell;
+    if (section == 1 && row == self.moreCellIndex) {
+        return self.moreCell;
+    }
+    
+    if (section == 0 || section == 1) {
+        EMMemberCell *memberCell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
+        if (memberCell == nil) {
+            memberCell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
         }
+        
+        memberCell.imgView.image = [UIImage imageNamed:@"default_avatar"];
+        memberCell.rightLabel.text = @"";
+        
+        if (section == 0) {
+            if (row == 0) {
+                memberCell.leftLabel.text = self.group.owner;
+                memberCell.rightLabel.text = @"owner";
+            } else {
+                memberCell.leftLabel.text = [self.group.adminList objectAtIndex:(row - 1)];
+                memberCell.rightLabel.text = @"admin";
+            }
+        } else if (section == 1) {
+            memberCell.leftLabel.text = [self.showMembers objectAtIndex:row];
+        }
+        
+        return memberCell;
     }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
@@ -316,7 +317,7 @@
                 EMGroupTransferOwnerViewController *transferController = [[EMGroupTransferOwnerViewController alloc] initWithGroup:self.group];
                 [self.navigationController pushViewController:transferController animated:YES];
             } else {
-                [self showHint:@"只有Owner能进行此操作"];
+                [self showHint:NSLocalizedString(@"group.onlyOwner", nil)];
             }
         }
             break;
@@ -610,7 +611,7 @@
         if (!aError) {
             [weakSelf.tableView reloadData];
         } else {
-            NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement");
+            [weakSelf showHint:NSLocalizedString(@"group.fetchAnnouncementFail", @"fail to get announcement")];
         }
     }];
 }

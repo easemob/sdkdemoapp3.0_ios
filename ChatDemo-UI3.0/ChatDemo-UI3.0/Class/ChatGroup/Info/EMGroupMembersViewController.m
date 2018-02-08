@@ -71,7 +71,11 @@
     EMMemberCell *cell = (EMMemberCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMemberCell"];
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"EMMemberCell" owner:self options:nil] lastObject];
-        cell.showAccessoryViewInDelete = YES;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
+            cell.showAccessoryViewInDelete = YES;
+        }
     }
     
     cell.imgView.image = [UIImage imageNamed:@"default_avatar"];
@@ -85,8 +89,13 @@
     if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
         return YES;
     }
-    
+
     return NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //在iOS8.0上，必须加上这个方法才能出发左划操作
 }
 
 - (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -187,7 +196,7 @@
                     [weakSelf.dataArray removeObject:userName];
                     [weakSelf.tableView reloadData];
                 } else {
-                    [weakSelf showHint:@"禁言成功"];
+                    [weakSelf showHint:NSLocalizedString(@"group.muteSuccess", nil)];
                 }
 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:weakSelf.group];

@@ -280,6 +280,11 @@
     return YES;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //在iOS8.0上，必须加上这个方法才能出发左划操作
+}
+
 - (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self setupCellEditActions:indexPath];
@@ -401,7 +406,7 @@
 - (void)deleteCellAction:(NSIndexPath *)aIndexPath
 {
     self.indexPath = aIndexPath;
-    UIAlertView *alertView = [[ UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"delete conversation", @"Delete conversation") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+    UIAlertView *alertView = [[ UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"message.deleteConversation", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
     [alertView show];
 }
 
@@ -474,9 +479,13 @@
     }];
         
     UISearchBar *searchBar = self.searchController.searchBar;
+    CGFloat height = searchBar.frame.size.height;
+    if (height == 0) {
+        height = 50;
+    }
+    searchBar.frame = CGRectMake(0, 0, self.tableView.frame.size.width, height);
     self.tableView.tableHeaderView = searchBar;
-    [searchBar sizeToFit];
-
+    [self.tableView reloadData];
 }
 
 - (void)_sortDataArray:(NSArray *)buddyList

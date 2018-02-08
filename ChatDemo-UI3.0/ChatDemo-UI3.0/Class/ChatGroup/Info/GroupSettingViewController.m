@@ -119,15 +119,13 @@
         
         if (_pushSwitch.isOn) {
             cell.textLabel.text = NSLocalizedString(@"group.setting.receiveAndPrompt", @"receive and prompt group of messages");
-        }
-        else{
+        } else {
             cell.textLabel.text = NSLocalizedString(@"group.setting.receiveAndUnprompt", @"receive not only hint of messages");
         }
         
         [cell.contentView addSubview:_pushSwitch];
         [cell.contentView bringSubviewToFront:_pushSwitch];
-    }
-    else if(indexPath.row == 0){
+    } else if(indexPath.row == 0) {
         _blockSwitch.frame = CGRectMake(self.tableView.frame.size.width - (_blockSwitch.frame.size.width + 10), (cell.contentView.frame.size.height - _blockSwitch.frame.size.height) / 2, _blockSwitch.frame.size.width, _blockSwitch.frame.size.height);
         
         cell.textLabel.text = NSLocalizedString(@"group.setting.blockMessage", @"shielding of the message");

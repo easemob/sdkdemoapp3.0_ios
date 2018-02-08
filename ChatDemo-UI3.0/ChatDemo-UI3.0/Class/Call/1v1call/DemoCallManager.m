@@ -183,8 +183,10 @@ static DemoCallManager *callManager = nil;
 {
     if ([aSession.callId isEqualToString:self.currentSession.callId]) {
         self.isCalling = NO;
-        
         [self _stopCallTimer];
+        
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+        options.enableCustomizeVideoData = NO;
         
         @synchronized (_callLock) {
             self.currentSession = nil;
@@ -277,9 +279,6 @@ static DemoCallManager *callManager = nil;
         return;
     }
     
-    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
-    options.enableCustomizeVideoData = NO;
-    
     EMCallType type = (EMCallType)[[notify.object objectForKey:@"type"] integerValue];
     if (type == EMCallTypeVideo) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -290,7 +289,6 @@ static DemoCallManager *callManager = nil;
         [alertController addAction:defaultAction];
         
         UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            options.enableCustomizeVideoData = YES;
             [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
         }];
         [alertController addAction:customAction];
@@ -321,7 +319,7 @@ static DemoCallManager *callManager = nil;
     }
     
     __weak typeof(self) weakSelf = self;
-    void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError){
+    void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError) {
         DemoCallManager *strongSelf = weakSelf;
         if (strongSelf) {
             if (aError || aCallSession == nil) {
@@ -332,25 +330,29 @@ static DemoCallManager *callManager = nil;
             
             @synchronized (self.callLock) {
                 strongSelf.currentSession = aCallSession;
-                if (aType == EMCallTypeVideo) {
-                    strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession isCustomData:aIsCustomVideo];
-                } else {
-                    strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession];
-                }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if (aType == EMCallTypeVideo) {
+                        strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession isCustomData:aIsCustomVideo];
+                    } else {
+                        strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession];
+                    }
+                    
                     if (strongSelf.currentController) {
                         [strongSelf.mainController presentViewController:strongSelf.currentController animated:NO completion:nil];
                     }
                 });
             }
             
-            [self _startCallTimer];
+            [weakSelf _startCallTimer];
         }
         else {
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
+    
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    options.enableCustomizeVideoData = aIsCustomVideo;
     
     [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
         completionBlock(aCallSession, aError);
@@ -384,6 +386,9 @@ static DemoCallManager *callManager = nil;
 {
     self.isCalling = NO;
     [self _stopCallTimer];
+    
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    options.enableCustomizeVideoData = NO;
     
     if (self.currentSession) {
         [[EMClient sharedClient].callManager endCall:self.currentSession.callId reason:aReason];

@@ -108,7 +108,8 @@
 //friend
 "friend.add" = "Add friend";
 "friend.somebodyAddWithName" = "%@ sent a friend request to you";
-"friend.beRefusedToAdd" = "'%@' rejected your friend request";
+"friend.declinedToAdd" = "'%@' rejected your friend request";
+"friend.acceptedToAdd" = "'%@' accepted your friend request";
 "friend.inputNameToSearch" = "Enter your friend's name";
 "friend.repeat" = "'%@' is already your friend!";
 "friend.repeatApply" = "You have already sent friend request to '%@'!";
@@ -211,9 +212,16 @@
 "group.fetchAnnouncementFail" = "fail to get announcement";
 "group.changeAnnouncementFail" = "fail to change announcement";
 "group.changeExtFail" = "fail to change ext";
+"group.leaved" = "Leave from group";
+"group.kicked" = "You are kicked out from group: %@ [%@]";
+"group.destroyed" = "Group: %@ [%@] is destroyed";
+"group.muteSuccess" = "Mute success";
+"group.inviteSomeone" = "%@ invite you to group: %@ [%@]";
+"group.declinedInvite" = "%@ reject group invitation: %@ [%@]";
+"group.acceptedInvite" = "%@ accepted group invitation: %@ [%@]";
+"group.onlyOwner" = "Owner permission required";
 
 //Group Delegate
-
 "group.update" = "Group Update";
 "group.adminUpdate" = "Group Admin Update";
 "group.becomeAdmin" = "Become Admin";
@@ -351,6 +359,7 @@
 "message.recall" = "You recall a message";
 "message.recallByOthers" = "%@ recall a message";
 "message.autoTransfer" = "Please customize the transfer attachment method";
+"message.deleteConversation" = "Whether to delete the conversation?";
 
 //media
 "media.timeShort" = "The recording time is too short";
@@ -499,3 +508,4 @@
 
 "title.conference.default" = "Default";
 "title.conference.custom" = "Custom";
+
