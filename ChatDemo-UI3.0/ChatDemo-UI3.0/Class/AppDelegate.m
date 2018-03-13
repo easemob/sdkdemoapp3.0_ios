@@ -46,10 +46,6 @@
          [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
     }
     
-    //环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
-    //如果你自己的项目也要使用bugly，请按照bugly官方教程自行配置
-    [Bugly startWithAppId:nil];
-    
     // 环信UIdemo中有用到Parse，您的项目中不需要添加，可忽略此处。
     [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
     
@@ -60,6 +56,10 @@
     apnsCertName = @"chatdemoui_dev";
 #else
     apnsCertName = @"chatdemoui";
+    
+    //环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
+    //如果你自己的项目也要使用bugly，请按照bugly官方教程自行配置
+    [Bugly startWithAppId:nil];
 #endif
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
