@@ -18,14 +18,14 @@
     #import "EMAlertView.h"
     #import "TTGlobalUICommon.h"
 
-    #import "EaseUI.h"
-
 #define DEMO_CALL 1
 
 #if DEMO_CALL == 1
-#import <Hyphenate/Hyphenate.h>
+    #import <Hyphenate/Hyphenate.h>
 #else
-#import <HyphenateLite/HyphenateLite.h>
+    #import <HyphenateLite/HyphenateLite.h>
 #endif
+
+    #import "EaseUI.h"
 
 #endif

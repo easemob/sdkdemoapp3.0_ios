@@ -8,8 +8,6 @@
 
 #import "ConferenceViewController.h"
 
-#import <Hyphenate/Hyphenate.h>
-
 #import "DemoCallManager.h"
 #import "DemoConfManager.h"
 #import "EMConfUserSelectionViewController.h"

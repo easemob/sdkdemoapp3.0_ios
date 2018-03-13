@@ -10,6 +10,8 @@
 
 #if DEMO_CALL == 1
 
+#import <Hyphenate/EMCallLocalView.h>
+
 //#import "EMVideoRecorderPlugin.h"
 
 #import "DemoCallManager.h"

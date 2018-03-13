@@ -78,7 +78,7 @@ static DemoCallManager *callManager = nil;
 //    [EMVideoRecorderPlugin initGlobalConfig];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
-    EMCallOptions *options = nil;
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
         options = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
     } else {
