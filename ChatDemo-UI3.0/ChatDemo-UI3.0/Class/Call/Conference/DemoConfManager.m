@@ -84,7 +84,7 @@ static DemoConfManager *confManager = nil;
             NSString *confId = [message.ext objectForKey:@"confId"];
             EMCallType type = (EMCallType)[[message.ext objectForKey:@"type"] integerValue];
             NSString *creater = [message.ext objectForKey:@"creater"];
-            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:confId creater:creater type:type];
+            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:confId creater:creater];
             [self.mainController.navigationController pushViewController:confController animated:NO];
             
         } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
@@ -108,41 +108,26 @@ static DemoConfManager *confManager = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
     EMCallType type = (EMCallType)[[dic objectForKey:@"type"] integerValue];
     NSString *creater = [dic objectForKey:@"creater"];
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater type:type];
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater];
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
 #pragma mark - conference
 
-- (void)pushConferenceControllerWithType:(EMCallType)aType
+- (void)pushConferenceController
 {
     [[DemoCallManager sharedManager] setIsCalling:YES];
     
-    if (aType == EMCallTypeVoice) {
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithType:aType];
-        [self.mainController.navigationController pushViewController:confController animated:NO];
-        return;
-    }
+    ConferenceViewController *confController = [[ConferenceViewController alloc] init];
+    [self.mainController.navigationController pushViewController:confController animated:NO];
+}
+
+- (void)pushCustomVideoConferenceController
+{
+    [[DemoCallManager sharedManager] setIsCalling:YES];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:NO];
-        [self.mainController.navigationController pushViewController:confController animated:NO];
-    }];
-    [alertController addAction:defaultAction];
-    
-    UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:YES];
-        [self.mainController.navigationController pushViewController:confController animated:NO];
-    }];
-    [alertController addAction:customAction];
-    
-    [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [[DemoCallManager sharedManager] setIsCalling:NO];
-    }]];
-    
-    [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:YES];
+    [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
 #endif

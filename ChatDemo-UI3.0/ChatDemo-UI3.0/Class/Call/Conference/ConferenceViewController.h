@@ -20,8 +20,8 @@
 @property (weak, nonatomic) id<EMConfUserViewDelegate> delegate;
 @property (strong, nonatomic) NSString *viewId;
 
-@property (weak, nonatomic) IBOutlet UIView *topView;
-@property (weak, nonatomic) IBOutlet UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet UIView *videoView;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarView;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImgView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 
@@ -29,13 +29,8 @@
 
 @interface ConferenceViewController : UIViewController
 
-@property (nonatomic, readonly) EMCallType type;
-
 - (instancetype)initWithConferenceId:(NSString *)aConfId
-                             creater:(NSString *)aCreater
-                                type:(EMCallType)aType;
-
-- (instancetype)initWithType:(EMCallType)aType;
+                             creater:(NSString *)aCreater;
 
 - (instancetype)initVideoCallWithIsCustomData:(BOOL)aIsCustom;
 

@@ -147,12 +147,12 @@
             cell.titleLabel.text = NSLocalizedString(@"title.chatroom",@"chatroom");
         }
         else if (indexPath.row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_audioCall"];
-            cell.titleLabel.text = NSLocalizedString(@"title.conference.voice",@"mutil voice conference");
+            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
+            cell.titleLabel.text = NSLocalizedString(@"title.conference",@"Mutil Conference");
         }
         else if (indexPath.row == 4) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
-            cell.titleLabel.text = NSLocalizedString(@"title.conference.video",@"mutil video conference");
+            cell.titleLabel.text = NSLocalizedString(@"title.customConference",@"Custom Video Conference");
         }
         
         return cell;
@@ -253,10 +253,10 @@
         
 #if DEMO_CALL == 1
         else if (row == 3) {
-            [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMCallTypeVoice];
+            [[DemoConfManager sharedManager] pushConferenceController];
         }
         else if (row == 4) {
-            [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMCallTypeVideo];
+            [[DemoConfManager sharedManager] pushCustomVideoConferenceController];
         }
 #endif
     } else if (section == 1) {

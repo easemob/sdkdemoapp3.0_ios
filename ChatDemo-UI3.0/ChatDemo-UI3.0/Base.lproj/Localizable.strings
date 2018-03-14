@@ -35,7 +35,7 @@
 "add" = "Add";
 "send" = "Send";
 "open" = "Open";
-"down" = "Down";
+"done" = "Done";
 "choose" = "Choose";
 "accept" = "Accept";
 "reject" = "Reject";
@@ -491,8 +491,8 @@
 "alert.multi.tooManyDevices" = "Login too many devices";
 
 //multi call
-"title.conference.voice" = "Mutil Voice Conference";
-"title.conference.video" = "Mutil Video Conference";
+"title.conference" = "Mutil Conference";
+"title.customConference" = "Custom Video Conference";
 "alert.conference.createFail" = "Create or Join conference failed!";
 "alert.conference.pubFail" = "Pub stream failed!";
 "alert.conference.inviteFail" = "Invite failed!";

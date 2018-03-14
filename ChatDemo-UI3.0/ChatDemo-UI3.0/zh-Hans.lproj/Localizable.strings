@@ -35,7 +35,7 @@
 "add" = "添加";
 "send" = "发送";
 "open" = "打开";
-"down" = "完成";
+"done" = "完成";
 "choose" = "选择";
 "accept" = "接受";
 "reject" = "拒绝";
@@ -489,8 +489,8 @@
 "alert.multi.tooManyDevices" = "登录设备数已达上限";
 
 //multi call
-"title.conference.voice" = "多人语音会议";
-"title.conference.video" = "多人视频会议";
+"title.conference" = "多人音视频会议";
+"title.customConference" = "自定义多人视频会议";
 "alert.conference.createFail" = "创建或者加入会议失败!";
 "alert.conference.pubFail" = "上传数据流失败!";
 "alert.conference.inviteFail" = "发送邀请失败!";

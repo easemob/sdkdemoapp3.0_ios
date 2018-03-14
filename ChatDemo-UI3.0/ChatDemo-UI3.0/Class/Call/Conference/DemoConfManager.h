@@ -19,7 +19,9 @@
 
 + (instancetype)sharedManager;
 
-- (void)pushConferenceControllerWithType:(EMCallType)aType;
+- (void)pushConferenceController;
+
+- (void)pushCustomVideoConferenceController;
 
 #endif
 
