@@ -182,8 +182,11 @@
     [self.muteButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     
     self.videoMoreButton.hidden = YES;
+    //3.3.9 new 自定义视频数据
     if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
         self.videoMoreButton.hidden = NO;
+        self.enableCameraButton.hidden = YES;
+        self.switchCameraButton.hidden = NO;
     }
     
     NSString *loginUser = [EMClient sharedClient].currentUsername;
