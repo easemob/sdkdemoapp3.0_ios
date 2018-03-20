@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    EMAudioStatusNone = 0,
+    EMAudioStatusConnected,
+    EMAudioStatusTalking,
+} EMAudioStatus;
+
 @protocol EMConfUserViewDelegate <NSObject>
 
 @optional
@@ -24,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *avatarView;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImgView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+
+@property (nonatomic) EMAudioStatus status;
 
 @end
 

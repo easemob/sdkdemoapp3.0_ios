@@ -65,8 +65,9 @@ static DemoConfManager *confManager = nil;
 {
     _currentController = nil;
     
-    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].conferenceManager setMode:EMConferenceModeLarge];
 }
 
 #pragma mark - EMChatManagerDelegate

@@ -37,6 +37,27 @@
     }
 }
 
+- (void)setStatus:(EMAudioStatus)status
+{
+    if (_status != status) {
+        _status = status;
+        switch (_status) {
+            case EMAudioStatusNone:
+                self.statusImgView.image = [UIImage imageNamed:@"conf_ring"];
+                break;
+            case EMAudioStatusConnected:
+                self.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
+                break;
+            case EMAudioStatusTalking:
+                self.statusImgView.image = [UIImage imageNamed:@"conf_talking"];
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
 @end
 
 @interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConfUserViewDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
@@ -67,6 +88,7 @@
 @property (strong, nonatomic) EMCallLocalView *localView;
 @property (strong, nonatomic) NSMutableDictionary *streamViews;
 @property (strong, nonatomic) NSMutableDictionary *streamsDic;
+@property (strong, nonatomic) NSMutableArray *talkingStreamIds;
 
 //3.3.9 new 自定义视频数据
 @property (weak, nonatomic) IBOutlet UIView *videoFormatView;
@@ -127,6 +149,7 @@
     
     self.streamViews = [[NSMutableDictionary alloc] init];
     self.streamsDic = [[NSMutableDictionary alloc] init];
+    self.talkingStreamIds = [[NSMutableArray alloc] init];
     
     self.itemBorder = 10;
     CGSize boundSize = [[UIScreen mainScreen] bounds].size;
@@ -159,6 +182,7 @@
 - (void)dealloc
 {
     [self closeVideoCamera];
+    [[EMClient sharedClient].conferenceManager endAudioTalker:self.conference];
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
 }
 
@@ -246,7 +270,8 @@
             self.localView.backgroundColor = [UIColor blackColor];
             self.localView.scaleMode = EMCallViewScaleModeAspectFill;
             pubConfig.localView = self.localView;
-            pubConfig.enableVideo = NO;
+            pubConfig.enableVideo = YES;
+            [userView.videoView addSubview:self.localView];
             
             //3.3.9 new 自定义视频数据
             if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
@@ -271,6 +296,8 @@
                     if (weakSelf.videoModel != VIDEO_INPUT_MODE_NONE) {
                         [weakSelf openVideoCamera];
                     }
+                    
+                    [[EMClient sharedClient].conferenceManager startAudioTalker:self.conference timeInterval:300 completion:nil];
                 }
             }];
         }
@@ -353,9 +380,8 @@
 - (void)_userViewDidConnectedWithStreamId:(NSString *)aStreamId
 {
     EMConfUserView *userView = [self.streamViews objectForKey:aStreamId];
-//    EMCallStream *stream = [self.streamsDic objectForKey:aStreamId];
     if (userView) {
-        userView.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
+        userView.status = EMAudioStatusConnected;
     }
 }
 
@@ -470,6 +496,29 @@
     if ([str length] > 0) {
         [self showHint:str];
     }
+}
+
+- (void)conferenceTalkerDidChange:(EMCallConference *)aConference
+                 talkingStreamIds:(NSArray *)aStreamIds
+{
+    if (![aConference.callId isEqualToString:self.conference.callId]) {
+        return;
+    }
+    
+    for (NSString *streamId in aStreamIds) {
+        EMConfUserView *userView = [self.streamViews objectForKey:streamId];
+        userView.status = EMAudioStatusTalking;
+        
+        [self.talkingStreamIds removeObject:streamId];
+    }
+    
+    for (NSString *streamId in self.talkingStreamIds) {
+        EMConfUserView *userView = [self.streamViews objectForKey:streamId];
+        userView.status = EMAudioStatusConnected;
+    }
+    
+    [self.talkingStreamIds removeAllObjects];
+    [self.talkingStreamIds addObjectsFromArray:aStreamIds];
 }
 
 #pragma mark - EMConfUserViewDelegate
@@ -594,6 +643,7 @@
 //        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 //    }
     
+    [[EMClient sharedClient].conferenceManager endAudioTalker:self.conference];
     [[EMClient sharedClient].conferenceManager leaveConference:self.conference completion:nil];
     
     self.conference = nil;
