@@ -102,7 +102,7 @@
                                 <constraint firstAttribute="width" constant="40" id="n9H-qu-oP6"/>
                                 <constraint firstAttribute="height" constant="40" id="zPg-AQ-RR5"/>
                             </constraints>
-                            <state key="normal" image="Button_Camera.png"/>
+                            <state key="normal" image="conf_camera_off.png"/>
                             <connections>
                                 <action selector="enableCameraAction:" destination="-1" eventType="touchUpInside" id="Aq1-9c-nfA"/>
                                 <action selector="switchCameraAction:" destination="-1" eventType="touchUpInside" id="tkS-50-JUM"/>
@@ -228,5 +228,6 @@
         <image name="Button_End.png" width="65" height="65"/>
         <image name="Button_Mute.png" width="16" height="25"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
+        <image name="conf_camera_off.png" width="64" height="64"/>
     </resources>
 </document>
