@@ -182,7 +182,7 @@
 - (void)dealloc
 {
     [self closeVideoCamera];
-    [[EMClient sharedClient].conferenceManager endAudioTalker:self.conference];
+    [[EMClient sharedClient].conferenceManager stopAudioSpeaker:self.conference];
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
 }
 
@@ -203,7 +203,9 @@
 
 - (void)_setupSubviews
 {
+    [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker_active"] forState:UIControlStateSelected];
     [self.muteButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
+    [self.enableCameraButton setImage:[UIImage imageNamed:@"Button_Camera_active"] forState:UIControlStateSelected];
     
     self.videoMoreButton.hidden = YES;
     //3.3.9 new 自定义视频数据
@@ -296,7 +298,7 @@
                         [weakSelf openVideoCamera];
                     }
                     
-                    [[EMClient sharedClient].conferenceManager startAudioTalker:self.conference timeInterval:300 completion:nil];
+                    [[EMClient sharedClient].conferenceManager startAudioSpeaker:self.conference timeInterval:300 completion:nil];
                 }
             }];
         }
@@ -497,8 +499,8 @@
     }
 }
 
-- (void)conferenceTalkerDidChange:(EMCallConference *)aConference
-                 talkingStreamIds:(NSArray *)aStreamIds
+- (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
+                 speakingStreamIds:(NSArray *)aStreamIds
 {
     if (![aConference.callId isEqualToString:self.conference.callId]) {
         return;
@@ -642,7 +644,7 @@
 //        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 //    }
     
-    [[EMClient sharedClient].conferenceManager endAudioTalker:self.conference];
+    [[EMClient sharedClient].conferenceManager stopAudioSpeaker:self.conference];
     [[EMClient sharedClient].conferenceManager leaveConference:self.conference completion:nil];
     
     self.conference = nil;
