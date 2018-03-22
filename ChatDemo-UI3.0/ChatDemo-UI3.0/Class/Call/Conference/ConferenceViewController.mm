@@ -270,8 +270,7 @@
             self.localView.backgroundColor = [UIColor blackColor];
             self.localView.scaleMode = EMCallViewScaleModeAspectFill;
             pubConfig.localView = self.localView;
-            pubConfig.enableVideo = YES;
-            [userView.videoView addSubview:self.localView];
+            pubConfig.enableVideo = NO;
             
             //3.3.9 new 自定义视频数据
             if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
