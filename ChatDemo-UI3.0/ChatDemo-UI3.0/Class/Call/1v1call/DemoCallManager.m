@@ -10,6 +10,9 @@
 
 #if DEMO_CALL == 1
 
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTCall.h>
+
 #import "EaseSDKHelper.h"
 //#import "EMVideoRecorderPlugin.h"
 
@@ -27,6 +30,8 @@ static DemoCallManager *callManager = nil;
 @property (strong, nonatomic) EMCallSession *currentSession;
 
 @property (strong, nonatomic) EMCallViewController *currentController;
+
+@property (nonatomic, strong) CTCallCenter *callCenter;
 
 @end
 
@@ -58,6 +63,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)dealloc
 {
+    self.callCenter = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_CALL object:nil];
@@ -90,6 +96,14 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
+    
+    __weak typeof(self) weakSelf = self;
+    self.callCenter = [[CTCallCenter alloc] init];
+    self.callCenter.callEventHandler = ^(CTCall* call) {
+        if(call.callState == CTCallStateConnected) {
+            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
+        }
+    };
 }
 
 - (void)_clearCurrentCallViewAndData
