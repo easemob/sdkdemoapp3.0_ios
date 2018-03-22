@@ -88,6 +88,7 @@
 @property (strong, nonatomic) EMCallLocalView *localView;
 @property (strong, nonatomic) NSMutableDictionary *streamViews;
 @property (strong, nonatomic) NSMutableDictionary *streamsDic;
+@property (strong, nonatomic) NSMutableArray *streamIds;
 @property (strong, nonatomic) NSMutableArray *talkingStreamIds;
 
 //3.3.9 new 自定义视频数据
@@ -149,6 +150,7 @@
     
     self.streamViews = [[NSMutableDictionary alloc] init];
     self.streamsDic = [[NSMutableDictionary alloc] init];
+    self.streamIds = [[NSMutableArray alloc] init];
     self.talkingStreamIds = [[NSMutableArray alloc] init];
     
     self.itemBorder = 10;
@@ -339,6 +341,7 @@
 
 - (void)_subStream:(EMCallStream *)aStream
 {
+    [self.streamIds addObject:aStream.streamId];
     EMConfUserView *userView = [self _setupUserViewWithUserName:aStream.userName streamId:aStream.streamId];
     
     EMCallRemoteView *remoteView = nil;
@@ -361,16 +364,16 @@
 
 - (void)_removeStream:(EMCallStream *)aStream
 {
-    NSArray *streamIds = self.streamViews.allKeys;
-    NSInteger index = [streamIds indexOfObject:aStream.streamId];
+    NSInteger index = [self.streamIds indexOfObject:aStream.streamId];
     EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
     [self.streamViews removeObjectForKey:aStream.streamId];
 
     CGRect frame = userView.frame;
     [userView removeFromSuperview];
+    [self.streamIds removeObject:aStream.streamId];
 
-    for (; index < [streamIds count]; index++) {
-        NSString *sId = [streamIds objectAtIndex:index];
+    for (; index < [self.streamIds count]; index++) {
+        NSString *sId = [self.streamIds objectAtIndex:index];
         UIView *view = [self.streamViews objectForKey:sId];
         CGRect tmpFrame = view.frame;
         view.frame = frame;
