@@ -468,6 +468,7 @@
 "setting.call.maxFramerate" = "Video Max Framerate";
 "setting.call.minKbps" = "Video Min Kbps";
 "setting.call.showInfo" = "Show Video Call Info";
+"setting.call.audioMix" = "Enable Audio Mix";
 
 //NSDateCategory
 "NSDateCategory.text1" = "one minute";

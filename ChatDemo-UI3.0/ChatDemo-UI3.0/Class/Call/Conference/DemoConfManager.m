@@ -67,7 +67,14 @@ static DemoConfManager *confManager = nil;
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient].conferenceManager setMode:EMConferenceModeLarge];
+    
+    EMConferenceMode model = EMConferenceModeNormal;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    id obj = [userDefaults objectForKey:@"audioMix"];
+    if (obj) {
+        model = (EMConferenceMode)[obj integerValue];
+    }
+    [[EMClient sharedClient].conferenceManager setMode:model];
 }
 
 #pragma mark - EMChatManagerDelegate
