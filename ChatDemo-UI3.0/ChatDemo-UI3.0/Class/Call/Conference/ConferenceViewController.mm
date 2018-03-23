@@ -184,7 +184,7 @@
 - (void)dealloc
 {
     [self closeVideoCamera];
-    [[EMClient sharedClient].conferenceManager stopAudioSpeaker:self.conference];
+    [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:self.conference];
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
 }
 
@@ -300,7 +300,7 @@
                         [weakSelf openVideoCamera];
                     }
                     
-                    [[EMClient sharedClient].conferenceManager startAudioSpeaker:self.conference timeInterval:300 completion:nil];
+                    [[EMClient sharedClient].conferenceManager startMonitorSpeaker:weakSelf.conference timeInterval:300 completion:nil];
                 }
             }];
         }
@@ -647,7 +647,7 @@
 //        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 //    }
     
-    [[EMClient sharedClient].conferenceManager stopAudioSpeaker:self.conference];
+    [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:self.conference];
     [[EMClient sharedClient].conferenceManager leaveConference:self.conference completion:nil];
     
     self.conference = nil;
