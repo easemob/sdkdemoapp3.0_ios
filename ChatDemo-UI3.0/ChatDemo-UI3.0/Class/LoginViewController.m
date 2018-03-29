@@ -57,7 +57,7 @@
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"AppName", @"EaseMobDemo");
+    self.title = NSLocalizedString(@"AppName", nil);
     
     [self setupForDismissKeyboard];
     _usernameTextField.delegate = self;
