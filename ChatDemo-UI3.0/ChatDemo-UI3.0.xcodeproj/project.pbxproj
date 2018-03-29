@@ -191,7 +191,6 @@
 		D25AA35D1E8D29C8006BF820 /* group_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3541E8D29C8006BF820 /* group_add@2x.png */; };
 		D25AA35E1E8D29C8006BF820 /* shape_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3551E8D29C8006BF820 /* shape_left@2x.png */; };
 		D25AA35F1E8D29C8006BF820 /* shape_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3561E8D29C8006BF820 /* shape_right@2x.png */; };
-		D26CE39B1C2BD37700697F48 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D26CE39A1C2BD37700697F48 /* Settings.bundle */; };
 		D2714BA91FE24E1600D4CB38 /* EMServiceCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */; };
 		D28AE8D31F22123C0028C18A /* EMDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */; };
 		D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */; };
@@ -620,7 +619,6 @@
 		D25AA3541E8D29C8006BF820 /* group_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_add@2x.png"; sourceTree = "<group>"; };
 		D25AA3551E8D29C8006BF820 /* shape_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_left@2x.png"; sourceTree = "<group>"; };
 		D25AA3561E8D29C8006BF820 /* shape_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_right@2x.png"; sourceTree = "<group>"; };
-		D26CE39A1C2BD37700697F48 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D2714BA71FE24E1500D4CB38 /* EMServiceCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMServiceCheckViewController.h; sourceTree = "<group>"; };
 		D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMServiceCheckViewController.m; sourceTree = "<group>"; };
 		D28AE8D11F22123C0028C18A /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
@@ -1277,7 +1275,6 @@
 		9091102E192EEA70008A48AA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D26CE39A1C2BD37700697F48 /* Settings.bundle */,
 				EBD2AA341A7CDABF00D16528 /* Resources */,
 				3C9B158D1A6D157E00D09FD6 /* InfoPlist.strings */,
 				90911033192EEA70008A48AA /* main.m */,
@@ -1822,7 +1819,6 @@
 				3A1D31221F389355004929BD /* Button_Camera_disabled.png in Resources */,
 				EBD2AB8E1A7CDAC000D16528 /* chat_receiver_bg.png in Resources */,
 				D2B3DAD71BF1D7B700913BD5 /* icon_022_cover.png in Resources */,
-				D26CE39B1C2BD37700697F48 /* Settings.bundle in Resources */,
 				3A1D31521F389355004929BD /* conf_plus@3x.png in Resources */,
 				3A2DBA6B2058E1870066EFB8 /* EMConfUserView.xib in Resources */,
 				3A1D31351F389355004929BD /* Button_Mute_active@2x.png in Resources */,
