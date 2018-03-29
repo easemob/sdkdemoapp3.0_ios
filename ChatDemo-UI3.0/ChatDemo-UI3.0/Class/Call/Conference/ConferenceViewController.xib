@@ -105,7 +105,6 @@
                             <state key="normal" image="conf_camera_off.png"/>
                             <connections>
                                 <action selector="enableCameraAction:" destination="-1" eventType="touchUpInside" id="Aq1-9c-nfA"/>
-                                <action selector="switchCameraAction:" destination="-1" eventType="touchUpInside" id="tkS-50-JUM"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nU-Ls-Abk">
