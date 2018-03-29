@@ -6,6 +6,8 @@
 //  Copyright © 2016 dxstudio.com. All rights reserved.
 //
 
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTCall.h>
 #import "ConferenceViewController.h"
 
 #import "DemoCallManager.h"
@@ -61,6 +63,8 @@
 @end
 
 @interface ConferenceViewController ()<EMConferenceManagerDelegate, EMConfUserViewDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
+
+@property (nonatomic, strong) CTCallCenter *callCenter;
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -160,6 +164,16 @@
     
     [self _setupSubviews];
     [self _createOrJoinConference];
+    
+    __weak typeof(self) weakSelf = self;
+    self.callCenter = [[CTCallCenter alloc] init];
+    self.callCenter.callEventHandler = ^(CTCall* call) {
+        if(call.callState == CTCallStateConnected) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hangupAction:nil];
+            });
+        }
+    };
 }
 
 - (void)didReceiveMemoryWarning {
