@@ -647,6 +647,10 @@
     
     [[DemoCallManager sharedManager] setIsCalling:NO];
     
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    [audioSession setActive:YES error:nil];
+    
     if (self.conference == nil) {
         self.navigationController.navigationBarHidden = NO;
         [self.navigationController popViewControllerAnimated:NO];
