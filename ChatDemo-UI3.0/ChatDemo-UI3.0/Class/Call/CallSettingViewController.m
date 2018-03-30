@@ -49,13 +49,18 @@
     self.audioMixSwitch.frame = frame;
     [self.audioMixSwitch addTarget:self action:@selector(audioMixSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     self.audioMixSwitch.on = NO;
+    
+    EMConferenceMode model = EMConferenceModeLarge;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     id obj = [userDefaults objectForKey:@"audioMix"];
     if (obj) {
-        EMConferenceMode model = (EMConferenceMode)[obj integerValue];
-        if (model == EMConferenceModeLarge) {
-            self.audioMixSwitch.on = YES;
-        }
+        model = (EMConferenceMode)[obj integerValue];
+    } else {
+        [userDefaults setObject:[NSNumber numberWithInteger:model] forKey:@"audioMix"];
+        [userDefaults synchronize];
+    }
+    if (model == EMConferenceModeLarge) {
+        self.audioMixSwitch.on = YES;
     }
     
     self.callPushSwitch = [[UISwitch alloc] init];
