@@ -48,10 +48,13 @@
                 self.statusImgView.image = [UIImage imageNamed:@"conf_ring"];
                 break;
             case EMAudioStatusConnected:
-                self.statusImgView.image = [UIImage imageNamed:@"conf_connected"];
+                self.statusImgView.image = nil;
                 break;
             case EMAudioStatusTalking:
                 self.statusImgView.image = [UIImage imageNamed:@"conf_talking"];
+                break;
+            case EMAudioStatusMuted:
+                self.statusImgView.image = [UIImage imageNamed:@"conf_mute"];
                 break;
                 
             default:
@@ -283,6 +286,10 @@
             weakSelf.conference = aCall;
             
             EMConfUserView *userView = [weakSelf.streamViews objectForKey:loginUser];
+            if ([EMClient sharedClient].conferenceManager.mode == EMConferenceModeLarge) {
+                userView.mixLabel.hidden = NO;
+            }
+            
             self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
             self.localView.tag = 100;
             self.localView.backgroundColor = [UIColor blackColor];
@@ -474,6 +481,13 @@
                     [[EMClient sharedClient].conferenceManager updateConference:self.conference streamId:aStream.streamId remoteVideoView:displayView completion:nil];
                 }
                 displayView.hidden = !aStream.enableVideo;
+            } else if (oldStream.enableVoice != aStream.enableVoice) {
+                EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
+                if (aStream.enableVoice) {
+                    userView.status = EMAudioStatusConnected;
+                } else {
+                    userView.status = EMAudioStatusMuted;
+                }
             }
             
             [self.streamsDic setObject:aStream forKey:aStream.streamId];

@@ -62,8 +62,6 @@
 		3A1D314A1F389355004929BD /* conf_add@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D310B1F389355004929BD /* conf_add@3x.png */; };
 		3A1D314B1F389355004929BD /* conf_check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D310C1F389355004929BD /* conf_check@2x.png */; };
 		3A1D314C1F389355004929BD /* conf_check@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D310D1F389355004929BD /* conf_check@3x.png */; };
-		3A1D314D1F389355004929BD /* conf_connected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D310E1F389355004929BD /* conf_connected@2x.png */; };
-		3A1D314E1F389355004929BD /* conf_connected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D310F1F389355004929BD /* conf_connected@3x.png */; };
 		3A1D314F1F389355004929BD /* conf_delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31101F389355004929BD /* conf_delete@2x.png */; };
 		3A1D31501F389355004929BD /* conf_delete@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31111F389355004929BD /* conf_delete@3x.png */; };
 		3A1D31511F389355004929BD /* conf_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31121F389355004929BD /* conf_plus@2x.png */; };
@@ -106,6 +104,8 @@
 		3AB11E5820529B9F0061FD88 /* ConferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */; };
 		3AB11E5920529B9F0061FD88 /* ConferenceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
+		3AC44A40206E3250009A9A5C /* conf_mute@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AC44A3E206E3250009A9A5C /* conf_mute@3x.png */; };
+		3AC44A41206E3250009A9A5C /* conf_mute@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AC44A3F206E3250009A9A5C /* conf_mute@2x.png */; };
 		3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6920088E4E0087CE2D /* DingViewController.m */; };
 		3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */; };
 		3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */; };
@@ -385,8 +385,6 @@
 		3A1D310B1F389355004929BD /* conf_add@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_add@3x.png"; sourceTree = "<group>"; };
 		3A1D310C1F389355004929BD /* conf_check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_check@2x.png"; sourceTree = "<group>"; };
 		3A1D310D1F389355004929BD /* conf_check@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_check@3x.png"; sourceTree = "<group>"; };
-		3A1D310E1F389355004929BD /* conf_connected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_connected@2x.png"; sourceTree = "<group>"; };
-		3A1D310F1F389355004929BD /* conf_connected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_connected@3x.png"; sourceTree = "<group>"; };
 		3A1D31101F389355004929BD /* conf_delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@2x.png"; sourceTree = "<group>"; };
 		3A1D31111F389355004929BD /* conf_delete@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_delete@3x.png"; sourceTree = "<group>"; };
 		3A1D31121F389355004929BD /* conf_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_plus@2x.png"; sourceTree = "<group>"; };
@@ -461,6 +459,8 @@
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		3AB62A121D926375000776F0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		3AC44A3E206E3250009A9A5C /* conf_mute@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_mute@3x.png"; sourceTree = "<group>"; };
+		3AC44A3F206E3250009A9A5C /* conf_mute@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_mute@2x.png"; sourceTree = "<group>"; };
 		3ACC7F6820088E4E0087CE2D /* DingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingViewController.h; sourceTree = "<group>"; };
 		3ACC7F6920088E4E0087CE2D /* DingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingViewController.m; sourceTree = "<group>"; };
 		3ACC7F6B20089A5D0087CE2D /* DingAcksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingAcksViewController.h; sourceTree = "<group>"; };
@@ -825,6 +825,8 @@
 		3A1D30D91F389355004929BD /* imgs */ = {
 			isa = PBXGroup;
 			children = (
+				3AC44A3F206E3250009A9A5C /* conf_mute@2x.png */,
+				3AC44A3E206E3250009A9A5C /* conf_mute@3x.png */,
 				3A8DC51D2063A6BB002CD774 /* conf_camera_off@2x.png */,
 				3A8DC51C2063A6BA002CD774 /* conf_camera_on@2x.png */,
 				3ACCB118206109EF0028F40A /* conf_talking@2x.png */,
@@ -881,8 +883,6 @@
 				3A1D310B1F389355004929BD /* conf_add@3x.png */,
 				3A1D310C1F389355004929BD /* conf_check@2x.png */,
 				3A1D310D1F389355004929BD /* conf_check@3x.png */,
-				3A1D310E1F389355004929BD /* conf_connected@2x.png */,
-				3A1D310F1F389355004929BD /* conf_connected@3x.png */,
 				3A1D31101F389355004929BD /* conf_delete@2x.png */,
 				3A1D31111F389355004929BD /* conf_delete@3x.png */,
 				3A1D31121F389355004929BD /* conf_plus@2x.png */,
@@ -1719,7 +1719,6 @@
 				D2B3DAD01BF1D7B700913BD5 /* icon_018.gif in Resources */,
 				3A1D31381F389355004929BD /* Button_Mute_disabled@2x.png in Resources */,
 				D2B3DAE01BF1D7B700913BD5 /* icon_030.gif in Resources */,
-				3A1D314E1F389355004929BD /* conf_connected@3x.png in Resources */,
 				EBD2ABB91A7CDAC000D16528 /* tabbarBackground.png in Resources */,
 				EBD2AB3B1A7CDAC000D16528 /* call_out_h.png in Resources */,
 				EBD2AB081A7CDAC000D16528 /* chatListCellHead@2x.png in Resources */,
@@ -1787,6 +1786,7 @@
 				D2A910801C83E7890025AD0A /* 114.png in Resources */,
 				3A1D31481F389355004929BD /* Button_Stats_disabled@3x.png in Resources */,
 				3A6D5AA4206CDF640081DAC4 /* Localizable.strings in Resources */,
+				3AC44A41206E3250009A9A5C /* conf_mute@2x.png in Resources */,
 				3A1D31281F389355004929BD /* Button_End.png in Resources */,
 				EBD2AB4F1A7CDAC000D16528 /* chat_location_detail_disclosure.png in Resources */,
 				3A1D311F1F389355004929BD /* Button_Camera_active.png in Resources */,
@@ -1817,6 +1817,7 @@
 				3A1D312E1F389355004929BD /* Button_Minimize_disabled.png in Resources */,
 				3A1D31221F389355004929BD /* Button_Camera_disabled.png in Resources */,
 				EBD2AB8E1A7CDAC000D16528 /* chat_receiver_bg.png in Resources */,
+				3AC44A40206E3250009A9A5C /* conf_mute@3x.png in Resources */,
 				D2B3DAD71BF1D7B700913BD5 /* icon_022_cover.png in Resources */,
 				3A1D31521F389355004929BD /* conf_plus@3x.png in Resources */,
 				3A2DBA6B2058E1870066EFB8 /* EMConfUserView.xib in Resources */,
@@ -1831,7 +1832,6 @@
 				EBD2ABA31A7CDAC000D16528 /* group_detail@2x.png in Resources */,
 				3A1D31431F389355004929BD /* Button_Stats.png in Resources */,
 				EBD2ABA21A7CDAC000D16528 /* delete@2x.png in Resources */,
-				3A1D314D1F389355004929BD /* conf_connected@2x.png in Resources */,
 				EBD2AB851A7CDAC000D16528 /* chat_receiver_audio_playing000@2x.png in Resources */,
 				D25AA35D1E8D29C8006BF820 /* group_add@2x.png in Resources */,
 				D25AA3581E8D29C8006BF820 /* default_avatar@2x.png in Resources */,
