@@ -546,7 +546,9 @@
     
     for (NSString *streamId in self.talkingStreamIds) {
         EMConfUserView *userView = [self.streamViews objectForKey:streamId];
-        userView.status = EMAudioStatusConnected;
+        if (userView.status != EMAudioStatusMuted) {
+            userView.status = EMAudioStatusConnected;
+        }
     }
     
     [self.talkingStreamIds removeAllObjects];
