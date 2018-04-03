@@ -374,6 +374,10 @@
         [userView.videoView addSubview:remoteView];
     }
     
+    if (!aStream.enableVoice) {
+        userView.status = EMAudioStatusMuted;
+    }
+    
     __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
         if (aError) {
