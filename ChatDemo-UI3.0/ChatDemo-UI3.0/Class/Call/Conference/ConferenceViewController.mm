@@ -409,7 +409,7 @@
 - (void)_userViewDidConnectedWithStreamId:(NSString *)aStreamId
 {
     EMConfUserView *userView = [self.streamViews objectForKey:aStreamId];
-    if (userView) {
+    if (userView && userView.status != EMAudioStatusMuted) {
         userView.status = EMAudioStatusConnected;
     }
 }
