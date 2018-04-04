@@ -268,6 +268,12 @@
     }];
     
     UISearchBar *searchBar = self.searchController.searchBar;
+    CGRect frame = searchBar.frame;
+    if (frame.size.width == 0) {
+        frame.size.width = [UIScreen mainScreen].bounds.size.width;
+        frame.size.height = 45;
+        searchBar.frame = frame;
+    }
     self.tableView.tableHeaderView = searchBar;
 }
                                                        
