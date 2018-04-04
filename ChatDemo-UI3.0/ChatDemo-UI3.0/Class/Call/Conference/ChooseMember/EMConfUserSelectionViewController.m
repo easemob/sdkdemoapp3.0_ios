@@ -77,7 +77,7 @@
     
     self.title = NSLocalizedString(@"title.conference.addUser", @"Add User");
     
-    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"down", @"Down") style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done", @"Done") style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     self.navigationItem.rightBarButtonItem = doneItem;
     
     [self _setupSubviews];

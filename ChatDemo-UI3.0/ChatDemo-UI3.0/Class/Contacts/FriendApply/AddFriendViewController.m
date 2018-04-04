@@ -185,37 +185,41 @@
 - (void)searchAction
 {
     [_textField resignFirstResponder];
-    if(_textField.text.length > 0)
-    {
+    
+    NSString *searchName = _textField.text;
+    if ([searchName length] == 0) {
+        return;
+    }
+    
 #warning Test code, by default, the user system has a user with the same name.
-        NSString *loginUsername = [[[EMClient sharedClient] currentUsername] lowercaseString];
-        if ([[_textField.text lowercaseString] isEqualToString:loginUsername]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notAddSelf", @"can't add yourself as a friend") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
-            
-            return;
-        }
+    searchName = [searchName lowercaseString];
+    NSString *loginUsername = [[[EMClient sharedClient] currentUsername] lowercaseString];
+    if ([searchName isEqualToString:loginUsername]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:NSLocalizedString(@"friend.notAddSelf", @"can't add yourself as a friend") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+        [alertView show];
         
-        //判断是否已发来申请
-        NSArray *applyArray = [[ApplyViewController shareController] dataSource];
-        if (applyArray && [applyArray count] > 0) {
-            for (ApplyEntity *entity in applyArray) {
-                ApplyStyle style = [entity.style intValue];
-                BOOL isGroup = style == ApplyStyleFriend ? NO : YES;
-                if (!isGroup && [entity.applicantUsername isEqualToString:_textField.text]) {
-                    NSString *str = [NSString stringWithFormat:NSLocalizedString(@"friend.repeatInvite", @"%@ have sent the application to you"), _textField.text];
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:str delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                    [alertView show];
-                    
-                    return;
-                }
+        return;
+    }
+    
+    //判断是否已发来申请
+    NSArray *applyArray = [[ApplyViewController shareController] dataSource];
+    if (applyArray && [applyArray count] > 0) {
+        for (ApplyEntity *entity in applyArray) {
+            ApplyStyle style = [entity.style intValue];
+            BOOL isGroup = style == ApplyStyleFriend ? NO : YES;
+            if (!isGroup && [entity.applicantUsername isEqualToString:searchName]) {
+                NSString *str = [NSString stringWithFormat:NSLocalizedString(@"friend.repeatInvite", @"%@ have sent the application to you"), searchName];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:str delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
+                
+                return;
             }
         }
-        
-        [self.dataSource removeAllObjects];
-        [self.dataSource addObject:_textField.text];
-        [self.tableView reloadData];
     }
+    
+    [self.dataSource removeAllObjects];
+    [self.dataSource addObject:searchName];
+    [self.tableView reloadData];
 }
 
 - (BOOL)hasSendBuddyRequest:(NSString *)buddyName

@@ -19,6 +19,8 @@
 
 @property (nonatomic, strong) UISwitch *fixedSwitch;
 @property (strong, nonatomic) UISwitch *showCallInfoSwitch;
+@property (strong, nonatomic) UISwitch *audioMixSwitch;
+
 @property (strong, nonatomic) UISwitch *callPushSwitch;
 
 @end
@@ -43,6 +45,24 @@
     self.showCallInfoSwitch.on = [[[NSUserDefaults standardUserDefaults] objectForKey:@"showCallInfo"] boolValue];
     [self.showCallInfoSwitch addTarget:self action:@selector(showCallInfoChanged:) forControlEvents:UIControlEventValueChanged];
     
+    self.audioMixSwitch = [[UISwitch alloc] init];
+    self.audioMixSwitch.frame = frame;
+    [self.audioMixSwitch addTarget:self action:@selector(audioMixSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+    self.audioMixSwitch.on = NO;
+    
+    EMConferenceMode model = EMConferenceModeLarge;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    id obj = [userDefaults objectForKey:@"audioMix"];
+    if (obj) {
+        model = (EMConferenceMode)[obj integerValue];
+    } else {
+        [userDefaults setObject:[NSNumber numberWithInteger:model] forKey:@"audioMix"];
+        [userDefaults synchronize];
+    }
+    if (model == EMConferenceModeLarge) {
+        self.audioMixSwitch.on = YES;
+    }
+    
     self.callPushSwitch = [[UISwitch alloc] init];
     self.callPushSwitch.frame = frame;
     [self.callPushSwitch addTarget:self action:@selector(callPushChanged:) forControlEvents:UIControlEventValueChanged];
@@ -65,7 +85,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 2;
+        return 3;
     }
     
     return 3;
@@ -88,6 +108,10 @@
             cell.textLabel.text = NSLocalizedString(@"setting.call.showInfo", nil);
             cell.accessoryType = UITableViewCellAccessoryNone;
             [cell.contentView addSubview:self.showCallInfoSwitch];
+        } else if (indexPath.row == 2) {
+            cell.textLabel.text = NSLocalizedString(@"setting.call.audioMix", nil);
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [cell.contentView addSubview:self.audioMixSwitch];
         }
         
     } else {
@@ -223,6 +247,19 @@
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[NSNumber numberWithBool:control.isOn] forKey:@"showCallInfo"];
+    [userDefaults synchronize];
+}
+
+- (void)audioMixSwitchChanged:(UISwitch *)control
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+#if DEMO_CALL == 1
+    EMConferenceMode model = control.isOn ? EMConferenceModeLarge : EMConferenceModeNormal;
+    [userDefaults setObject:[NSNumber numberWithInteger:model] forKey:@"audioMix"];
+    [[EMClient sharedClient].conferenceManager setMode:model];
+#endif
+    
     [userDefaults synchronize];
 }
 
