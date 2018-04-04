@@ -12,7 +12,6 @@ typedef enum {
     EMAudioStatusNone = 0,
     EMAudioStatusConnected,
     EMAudioStatusTalking,
-    EMAudioStatusMuted,
 } EMAudioStatus;
 
 @protocol EMConfUserViewDelegate <NSObject>
@@ -33,6 +32,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mixLabel;
 
+@property (nonatomic) BOOL isMuted;
 @property (nonatomic) EMAudioStatus status;
 
 @end

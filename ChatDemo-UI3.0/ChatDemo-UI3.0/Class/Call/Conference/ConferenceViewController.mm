@@ -39,8 +39,22 @@
     }
 }
 
+- (void)setIsMuted:(BOOL)isMuted
+{
+    _isMuted = isMuted;
+    if (isMuted) {
+        self.statusImgView.image = [UIImage imageNamed:@"conf_mute"];
+    } else {
+        self.statusImgView.image = nil;
+    }
+}
+
 - (void)setStatus:(EMAudioStatus)status
 {
+    if (self.isMuted) {
+        return;
+    }
+    
     if (_status != status) {
         _status = status;
         switch (_status) {
@@ -52,9 +66,6 @@
                 break;
             case EMAudioStatusTalking:
                 self.statusImgView.image = [UIImage imageNamed:@"conf_talking"];
-                break;
-            case EMAudioStatusMuted:
-                self.statusImgView.image = [UIImage imageNamed:@"conf_mute"];
                 break;
                 
             default:
@@ -364,6 +375,7 @@
 {
     [self.streamIds addObject:aStream.streamId];
     EMConfUserView *userView = [self _setupUserViewWithUserName:aStream.userName streamId:aStream.streamId];
+    userView.isMuted = !aStream.enableVoice;
     
     EMCallRemoteView *remoteView = nil;
     if (aStream.enableVideo) {
@@ -372,10 +384,6 @@
         remoteView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         remoteView.scaleMode = EMCallViewScaleModeAspectFill;
         [userView.videoView addSubview:remoteView];
-    }
-    
-    if (!aStream.enableVoice) {
-        userView.status = EMAudioStatusMuted;
     }
     
     __weak typeof(self) weakSelf = self;
@@ -409,7 +417,7 @@
 - (void)_userViewDidConnectedWithStreamId:(NSString *)aStreamId
 {
     EMConfUserView *userView = [self.streamViews objectForKey:aStreamId];
-    if (userView && userView.status != EMAudioStatusMuted) {
+    if (userView) {
         userView.status = EMAudioStatusConnected;
     }
 }
@@ -487,10 +495,9 @@
                 displayView.hidden = !aStream.enableVideo;
             } else if (oldStream.enableVoice != aStream.enableVoice) {
                 EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
+                userView.isMuted = !aStream.enableVoice;
                 if (aStream.enableVoice) {
                     userView.status = EMAudioStatusConnected;
-                } else {
-                    userView.status = EMAudioStatusMuted;
                 }
             }
             
@@ -550,9 +557,7 @@
     
     for (NSString *streamId in self.talkingStreamIds) {
         EMConfUserView *userView = [self.streamViews objectForKey:streamId];
-        if (userView.status != EMAudioStatusMuted) {
-            userView.status = EMAudioStatusConnected;
-        }
+        userView.status = EMAudioStatusConnected;
     }
     
     [self.talkingStreamIds removeAllObjects];

@@ -145,7 +145,7 @@
                     [mailCompose setMessageBody:emailBody isHTML:NO];
                     
                     //设置邮件附件{mimeType:文件格式|fileName:文件名}
-                    NSData* pData = [[NSData alloc]initWithContentsOfFile:aPath];
+                    NSData *pData = [[NSData alloc]initWithContentsOfFile:aPath];
                     [mailCompose addAttachmentData:pData mimeType:@"" fileName:@"log.gz"];
                     
                     //设置邮件视图在当前视图上显示方式
