@@ -596,6 +596,22 @@
     
     __weak typeof(self) weakself = self;
     EMConfUserSelectionViewController *controller = [[EMConfUserSelectionViewController alloc] initWithDataSource:usernames selectedUsers:nil];
+    [controller setGetContactsCompletion:^NSArray *{
+        NSMutableArray *usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContacts]];
+        if ([usernames count] == 0) {
+            usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContactsFromServerWithError:nil]];
+        }
+        
+        NSArray *streams = [self.streamsDic allValues];
+        for (EMCallStream *stream in streams) {
+            if ([usernames containsObject:stream.userName]) {
+                [usernames removeObject:stream.userName];
+            }
+        }
+
+        return usernames;
+    }];
+    
     [controller setSelecteUserFinishedCompletion:^(NSArray *selectedUsers) {
         for (NSString *userName in selectedUsers) {
             [weakself _inviteUser:userName];

@@ -82,6 +82,9 @@
     
     [self _setupSubviews];
     
+    if ([self.dataArray count] == 0) {
+        self.dataArray = self.getContactsCompletion();
+    }
     [self.tableView reloadData];
 }
 
