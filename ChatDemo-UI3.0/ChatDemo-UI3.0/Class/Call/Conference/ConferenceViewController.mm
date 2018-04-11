@@ -163,6 +163,8 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBarHidden = YES;
     
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    
     [[DemoCallManager sharedManager] setIsCalling:YES];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
@@ -696,6 +698,8 @@
     self.conference = nil;
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController popViewControllerAnimated:NO];
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
 #pragma mark - 3.3.9 new 自定义视频数据

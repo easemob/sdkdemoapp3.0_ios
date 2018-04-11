@@ -108,6 +108,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)_clearCurrentCallViewAndData
 {
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     @synchronized (_callLock) {
         self.currentSession = nil;
         
