@@ -226,11 +226,6 @@
         [self.selectedNames removeObject:username];
         [self _removeUserView:username];
     } else {
-        if ([self.selectedNames count] == 6) {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            return;
-        }
-        
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         [self.selectedNames addObject:username];
         [self _setupUserView:username];
