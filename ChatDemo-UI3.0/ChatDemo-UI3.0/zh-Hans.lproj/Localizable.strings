@@ -248,6 +248,7 @@
 "group.setting.ext" = "请输入群扩展信息";
 
 //Chatroom detail
+"chatroom.join" = "加入";
 "chatroom.somebodyInvite" = "%@ 邀请你加入聊天室\'%@\'";
 "chatroom.id" = "聊天室Id";
 "chatroom.owner" = "创建者";
@@ -264,6 +265,7 @@
 "chatroom.join" = "\'%@\'加入聊天室\'%@\'";
 "chatroom.leave.hint" = "\'%@\'离开聊天室\'%@\'";
 "chatroom.remove" = "被踢出聊天室\'%@\'";
+"chatroom.removeForOffline" = "离开聊天室\'%@\', 原因：账号离线. 是否重新加入聊天室？";
 "chatroom.create.inputName" = "请输入聊天室名称";
 "chatroom.create.inputDescribe" = "请输入聊天室简介";
 "chatroom.create.ongoing" = "创建聊天室...";
