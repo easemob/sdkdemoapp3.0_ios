@@ -292,7 +292,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger section = indexPath.section;
-    if (section == 0) {
+    if (section == 0 || section == 1) {
         return;
     }
     
@@ -306,7 +306,6 @@
     switch (row) {
         case 1:
         {
-            
             GroupSettingViewController *settingController = [[GroupSettingViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:settingController animated:YES];
         }
