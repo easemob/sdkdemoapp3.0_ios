@@ -47,6 +47,16 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 
 #pragma mark - App Delegate
 
+- (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application
+{
+    [[EaseMob sharedInstance] applicationProtectedDataWillBecomeUnavailable:application];
+}
+
+- (void)applicationProtectedDataDidBecomeAvailable:(UIApplication *)application
+{
+    [[EaseMob sharedInstance] applicationProtectedDataDidBecomeAvailable:application];
+}
+
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {

@@ -201,6 +201,7 @@
 "call.initFailed"="通话建立失败";
 "call.waiting"="等待接听...";
 "call.connecting"="正在建立连接...";
+"call.connected"="已建立连接";
 "call.silence"="静音";
 "call.speaker"="免提";
 "call.reject"="拒接";

@@ -201,6 +201,7 @@
 "call.initFailed"="Establish call failure";
 "call.waiting"="Waiting to answer...";
 "call.connecting"="Connecting...";
+"call.connected"="Connected...";
 "call.silence"="Silence";
 "call.speaker"="Speaker";
 "call.reject"="Reject";
