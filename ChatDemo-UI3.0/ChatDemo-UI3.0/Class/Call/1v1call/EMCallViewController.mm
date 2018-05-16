@@ -72,10 +72,7 @@
         if (aCallSession.type == EMCallTypeVideo) {
             AVAudioSession *audioSession = [AVAudioSession sharedInstance];
             [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-            BOOL ret = [audioSession setActive:NO error:nil];
-            if (!ret) {
-                NSLog(@"1234567");
-            }
+            [audioSession setActive:NO error:nil];
         }
     }
     
@@ -107,10 +104,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 #if DEMO_CALL == 1
-    
     [self _layoutSubviews];
-    
 #endif
 }
 

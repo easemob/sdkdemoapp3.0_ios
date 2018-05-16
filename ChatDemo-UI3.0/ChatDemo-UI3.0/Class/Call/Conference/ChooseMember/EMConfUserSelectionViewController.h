@@ -29,6 +29,8 @@
 
 @property (copy) void (^selecteUserFinishedCompletion)(NSArray *selectedUsers);
 
+@property (copy) NSArray* (^getContactsCompletion)();
+
 - (instancetype)initWithDataSource:(NSArray *)aDataSource
                      selectedUsers:(NSArray *)aSelectedUsers;
 

@@ -785,14 +785,10 @@ static ChatDemoHelper *helper = nil;
     
 }
 
-- (void)didReceiveKickedFromChatroom:(EMChatroom *)aChatroom
-                              reason:(EMChatroomBeKickedReason)aReason
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason
 {
-    NSString *roomId = nil;
-    if (aReason == EMChatroomBeKickedReasonDestroyed) {
-        roomId = aChatroom.chatroomId;
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ExitChat" object:roomId];
+    
 }
 
 - (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom

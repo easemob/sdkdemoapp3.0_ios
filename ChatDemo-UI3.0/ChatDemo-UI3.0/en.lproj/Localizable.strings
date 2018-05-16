@@ -248,6 +248,7 @@
 "group.setting.ext" = "Please input ext";
 
 //Chatroom detail
+"chatroom.join" = "Join";
 "chatroom.somebodyInvite" = "%@ invite you to join chatroom \'%@\'";
 "chatroom.id" = "ChatroomId";
 "chatroom.owner" = "Owner";
@@ -264,6 +265,7 @@
 "chatroom.join" = "\'%@\'join chatroom\'%@\'";
 "chatroom.leave.hint" = "\'%@\'left chatroom\'%@\'";
 "chatroom.remove" = "Removed from chatroom \'%@\'";
+"chatroom.removeForOffline" = "Removed from chatroom \'%@\', reason:Account offline. Whether to rejoin？";
 "chatroom.create.inputName" = "Please input chatroom name";
 "chatroom.create.inputDescribe" = "Please input chatroom description";
 "chatroom.create.ongoing" = "create a chatroom...";
