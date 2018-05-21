@@ -23,6 +23,8 @@
 
 - (void)pushCustomVideoConferenceController;
 
+- (void)handleMessageToJoinConference:(EMMessage *)aMessage;
+
 #endif
 
 @end

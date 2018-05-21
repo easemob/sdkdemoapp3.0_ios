@@ -351,26 +351,25 @@
 
 - (void)_inviteUser:(NSString *)aUserName
 {
-    NSMutableDictionary *ext = [[NSMutableDictionary alloc] init];
-    [ext setObject:[EMClient sharedClient].currentUsername forKey:@"creater"];
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:ext options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString *currentUser = [EMClient sharedClient].currentUsername;
+    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"Invite %@ to join conference", aUserName]];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"conferenceId":self.conference.confId, @"password":@""}];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
-    EMError *error = nil;
-    __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
-    if (error) {
-        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteFail", @"Invite failed!")];
-    } else {
-        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteSuccess", @"Invite successful!")];
-    }
-    
-    //建议用户自定义
-//    NSString *currentUser = [EMClient sharedClient].currentUsername;
-//    EMCmdMessageBody *cmdChat = [[EMCmdMessageBody alloc] initWithAction:@"inviteToJoinConference"];
-//    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:cmdChat ext:@{@"confId":self.conference.confId, @"creater":currentUser, @"type":[NSNumber numberWithInteger:self.type]}];
-//    message.chatType = EMChatTypeChat;
-//    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+//    NSMutableDictionary *ext = [[NSMutableDictionary alloc] init];
+//    [ext setObject:[EMClient sharedClient].currentUsername forKey:@"creater"];
+//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:ext options:NSJSONWritingPrettyPrinted error:nil];
+//    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//
+//    EMError *error = nil;
+//    __weak typeof(self) weakSelf = self;
+//    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
+//    if (error) {
+//        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteFail", @"Invite failed!")];
+//    } else {
+//        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteSuccess", @"Invite successful!")];
+//    }
 }
 
 - (void)_subStream:(EMCallStream *)aStream
@@ -391,7 +390,7 @@
     __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
         if (aError) {
-            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"alert.conference.subFail", @"Sub stream-%@ failed!"), weakSelf.createrName];
+            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"alert.conference.subFail", @"Sub stream-%@ failed!"), aStream.userName];
             [weakSelf showHint:message];
         }
     }];
