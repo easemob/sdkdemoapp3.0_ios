@@ -107,6 +107,8 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 #if DEMO_CALL == 1
     [self _layoutSubviews];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAudioRouteChanged:)   name:AVAudioSessionRouteChangeNotification object:[AVAudioSession sharedInstance]];
 #endif
 }
 
@@ -143,6 +145,7 @@
     [self.silenceButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     self.timeLabel.hidden = YES;
     self.remoteNameLabel.text = self.callSession.remoteName;
+    self.speakerOutButton.enabled = ![self _isHeadphone];
     
     BOOL isCaller = self.callSession.isCaller;
     switch (self.callSession.type) {
@@ -217,6 +220,17 @@
     if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
         self.callSession.localVideoView.previewDirectly = NO;
     }
+}
+
+- (BOOL)_isHeadphone
+{
+    AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
+    for (AVAudioSessionPortDescription* desc in [route outputs]) {
+        if ([[desc portType] isEqualToString:AVAudioSessionPortHeadphones])
+            return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - private ring
@@ -345,6 +359,37 @@
     [[DemoCallManager sharedManager] hangupCallWithReason:EMCallEndReasonHangup];
 }
 
+- (void)handleAudioRouteChanged:(NSNotification *)aNotif
+{
+    NSDictionary *interuptionDict = aNotif.userInfo;
+    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    switch (routeChangeReason) {
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+        {
+            //插入耳机
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.speakerOutButton.enabled = NO;
+            });
+        }
+            break;
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.speakerOutButton.enabled = YES;
+            });
+            
+            //拔出耳机
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+            [audioSession setActive:YES error:nil];
+        }
+            break;
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            // called at start - also when other audio wants to play
+            break;
+    }
+}
+
 #pragma mark - public
 
 - (void)stateToConnecting
@@ -364,11 +409,6 @@
 - (void)stateToAnswered
 {
     [self _startTimeTimer];
-    
-//    if (self.callSession.type == EMCallTypeVideo) {
-//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-//    }
     
     NSString *connectStr = @"None";
     if (_callSession.connectType == EMCallConnectTypeRelay) {
