@@ -292,6 +292,7 @@
             weakSelf.conference = nil;
             self.navigationController.navigationBarHidden = NO;
             [self.navigationController popViewControllerAnimated:NO];
+            [DemoCallManager sharedManager].isCalling = NO;
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.createFail", @"Create or Join conference failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
