@@ -619,9 +619,7 @@
         }
         
         [self.dataArray removeObjectsAtIndexes:indexs];
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
+        [self.tableView reloadData];
         
         if ([self.dataArray count] == 0) {
             self.messageTimeIntervalTag = -1;
