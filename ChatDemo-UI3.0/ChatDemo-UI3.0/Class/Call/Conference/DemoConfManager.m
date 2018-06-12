@@ -142,6 +142,20 @@ static DemoConfManager *confManager = nil;
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
+- (void)handleMessageToJoinConference:(EMMessage *)aMessage
+{
+    EMTextMessageBody *textBody = (EMTextMessageBody *)aMessage.body;
+    NSString *conferenceId = [aMessage.ext objectForKey:@"conferenceId"];
+    if ([conferenceId length] > 0) {
+        if ([DemoCallManager sharedManager].isCalling) {
+            return;
+        }
+        
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId creater:@""];
+        [self.mainController.navigationController pushViewController:confController animated:NO];
+    }
+}
+
 #endif
 
 @end

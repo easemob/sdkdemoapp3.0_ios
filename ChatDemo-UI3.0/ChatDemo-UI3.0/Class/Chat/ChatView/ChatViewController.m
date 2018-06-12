@@ -25,6 +25,10 @@
 #import "DingViewController.h"
 #import "DingAcksViewController.h"
 
+#if DEMO_CALL == 1
+#import "DemoConfManager.h"
+#endif
+
 @interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate, EMChooseViewDelegate>
 {
     UIMenuItem *_copyMenuItem;
@@ -246,6 +250,14 @@
 {
     UserProfileViewController *userprofile = [[UserProfileViewController alloc] initWithUsername:messageModel.message.from];
     [self.navigationController pushViewController:userprofile animated:YES];
+}
+
+- (void)messageViewController:(EaseMessageViewController *)viewController
+    didSelectCallMessageModel:(id<IMessageModel>)messageModel
+{
+#if DEMO_CALL == 1
+    [[DemoConfManager sharedManager] handleMessageToJoinConference:messageModel.message];
+#endif
 }
 
 - (void)messageViewController:(EaseMessageViewController *)viewController
@@ -607,9 +619,7 @@
         }
         
         [self.dataArray removeObjectsAtIndexes:indexs];
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
+        [self.tableView reloadData];
         
         if ([self.dataArray count] == 0) {
             self.messageTimeIntervalTag = -1;
