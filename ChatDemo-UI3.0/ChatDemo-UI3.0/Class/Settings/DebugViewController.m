@@ -116,43 +116,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 1) {
-        if ([MFMailComposeViewController canSendMail] == false) {
-            return;
-        }
-        
-        EMError *error = nil;
-        [self showHudInView:self.view hint:@"获取压缩路径..."];
-        __weak typeof(self) weakSelf = self;
-        [[EMClient sharedClient] getLogFilesPathWithCompletion:^(NSString *aPath, EMError *aError) {
-            [weakSelf hideHud];
-            
-            if (error == nil) {
-                weakSelf.logPath = aPath;
-                MFMailComposeViewController *mailCompose = [[MFMailComposeViewController alloc] init];
-                if(mailCompose) {
-                    //设置代理
-                    [mailCompose setMailComposeDelegate:self];
-                    
-                    //设置收件人
-//                    NSArray *toAddress = [NSArray arrayWithObject:@""];
-//                    [mailCompose setToRecipients:toAddress];
-                    
-                    //设置邮件主题
-                    [mailCompose setSubject:@"这是Log文件"];
-                    
-                    //设置邮件内容
-                    NSString *emailBody = @"测试发送log压缩文件";
-                    [mailCompose setMessageBody:emailBody isHTML:NO];
-                    
-                    //设置邮件附件{mimeType:文件格式|fileName:文件名}
-                    NSData *pData = [[NSData alloc]initWithContentsOfFile:aPath];
-                    [mailCompose addAttachmentData:pData mimeType:@"" fileName:@"log.gz"];
-                    
-                    //设置邮件视图在当前视图上显示方式
-                    [self presentViewController:mailCompose animated:YES completion:nil];
-                }
-            }
-        }];
+        [self emailSendLogAction];
     } else if (indexPath.row == 2) {
         EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:devicesController animated:YES];
@@ -202,6 +166,49 @@
 - (void)back
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)emailSendLogAction
+{
+    if ([MFMailComposeViewController canSendMail] == false) {
+        return;
+    }
+    
+    EMError *error = nil;
+    [self showHudInView:self.view hint:@"获取压缩路径..."];
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient] getLogFilesPathWithCompletion:^(NSString *aPath, EMError *aError) {
+        [weakSelf hideHud];
+        
+        if (error == nil) {
+            weakSelf.logPath = aPath;
+            MFMailComposeViewController *mailCompose = [[MFMailComposeViewController alloc] init];
+            if(mailCompose) {
+                //设置代理
+                [mailCompose setMailComposeDelegate:self];
+                
+                //设置收件人
+                //                    NSArray *toAddress = [NSArray arrayWithObject:@""];
+                //                    [mailCompose setToRecipients:toAddress];
+                
+                //设置邮件主题
+                [mailCompose setSubject:@"这是Log文件"];
+                
+                //设置邮件内容
+                NSString *emailBody = @"测试发送log压缩文件";
+                [mailCompose setMessageBody:emailBody isHTML:NO];
+                
+                //设置邮件附件{mimeType:文件格式|fileName:文件名}
+                NSData *pData = [[NSData alloc] initWithContentsOfFile:aPath];
+                NSString *type = [aPath pathExtension];
+                NSString *name = [aPath lastPathComponent];
+                [mailCompose addAttachmentData:pData mimeType:type fileName:name];
+                
+                //设置邮件视图在当前视图上显示方式
+                [self presentViewController:mailCompose animated:YES completion:nil];
+            }
+        }
+    }];
 }
 
 - (void)uploadLogAction
