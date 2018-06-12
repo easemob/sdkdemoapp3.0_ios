@@ -278,6 +278,8 @@
 
 - (void)_startTimeTimer
 {
+    [self _stopTimeTimer];
+    
     self.timeLength = 0;
     self.timeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timeTimerAction:) userInfo:nil repeats:YES];
 }
@@ -403,6 +405,7 @@
 
 - (void)stateToConnected
 {
+    self.answerButton.enabled = YES;
     self.statusLabel.text = NSLocalizedString(@"call.finished", "Establish call finished");
 }
 
