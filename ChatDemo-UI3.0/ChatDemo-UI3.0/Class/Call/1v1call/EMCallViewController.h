@@ -33,6 +33,10 @@
 
 - (void)clearData;
 
+- (void)muteCall;
+
+- (void)resumeCall;
+
 #endif
 
 @end
