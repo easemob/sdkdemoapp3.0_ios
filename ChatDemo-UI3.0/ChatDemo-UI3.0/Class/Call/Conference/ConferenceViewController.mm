@@ -165,6 +165,10 @@
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange) name:UIDeviceOrientationDidChangeNotification object:nil];
+
+    
     [[DemoCallManager sharedManager] setIsCalling:YES];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
@@ -582,6 +586,16 @@
     }
 }
 
+#pragma mark - NSNotification
+
+- (void)deviceOrientationDidChange
+{
+    UIView *displayView = [self.minButton superview];
+    if (displayView) {
+        displayView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    }
+}
+
 #pragma mark - action
 
 - (IBAction)inviteMemberAction:(id)sender
@@ -685,6 +699,7 @@
 
 - (IBAction)hangupAction:(id)sender
 {
+    [self minAction];
     //3.3.9 new 自定义视频数据
     [self closeVideoCamera];
     
