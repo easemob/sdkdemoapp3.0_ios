@@ -118,9 +118,8 @@ static DemoConfManager *confManager = nil;
     
     NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-    EMCallType type = (EMCallType)[[dic objectForKey:@"type"] integerValue];
     NSString *creater = [dic objectForKey:@"creater"];
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater password:@""];
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater password:aPassword];
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
