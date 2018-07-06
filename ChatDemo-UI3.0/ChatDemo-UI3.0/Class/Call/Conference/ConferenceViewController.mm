@@ -99,6 +99,7 @@
 
 @property (nonatomic) BOOL isCreater;
 @property (strong, nonatomic) NSString *createrName;
+@property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) NSString *pubStreamId;
 @property (strong, nonatomic) NSString *conferenceId;
 @property (strong, nonatomic) __block EMCallConference *conference;
@@ -126,6 +127,7 @@
     if (self) {
         _isCreater = YES;
         _createrName = [EMClient sharedClient].currentUsername;
+        _password = @([[NSDate date] timeIntervalSince1970]).stringValue;
     }
     
     return self;
@@ -133,12 +135,14 @@
 
 - (instancetype)initWithConferenceId:(NSString *)aConfId
                              creater:(NSString *)aCreater
+                            password:(NSString *)aPassword
 {
     self = [super init];
     if (self) {
         _conferenceId = aConfId;
         _isCreater = NO;
         _createrName = aCreater;
+        _password = aPassword;
     }
     
     return self;
@@ -243,6 +247,12 @@
     [self.muteButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     [self.enableCameraButton setImage:[UIImage imageNamed:@"conf_camera_on"] forState:UIControlStateSelected];
     
+    if (self.isCreater) {
+        self.muteButton.selected = NO;
+    } else {
+        self.muteButton.selected = YES;
+    }
+    
     self.videoMoreButton.hidden = YES;
     //3.3.9 new 自定义视频数据
     if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
@@ -322,6 +332,10 @@
                 [userView.videoView addSubview:self.localView];
             }
             
+            if (!self.isCreater) {
+                pubConfig.isMute = YES;
+            }
+            
             [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference streamParam:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
                 if (aError) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
@@ -346,9 +360,9 @@
     };
     
     if (self.isCreater) {
-        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithPassword:@"" completion:block];
+        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithPassword:weakSelf.password completion:block];
     } else {
-        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:_conferenceId password:@"" completion:^(EMCallConference *aCall, EMError *aError) {
+        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:_conferenceId password:weakSelf.password completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, @"", aError);
         }];
     }
@@ -358,7 +372,7 @@
 {
     NSString *currentUser = [EMClient sharedClient].currentUsername;
     EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"Invite %@ to join conference: %@", aUserName, self.conference.confId]];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"conferenceId":self.conference.confId, @"password":@"", @"msg_extension":@{@"inviter":currentUser, @"group_id":@""}}];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"conferenceId":self.conference.confId, @"password":self.password, @"msg_extension":@{@"inviter":currentUser, @"group_id":@""}}];
     message.chatType = EMChatTypeChat;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
@@ -382,7 +396,7 @@
     [self.streamIds addObject:aStream.streamId];
     EMConfUserView *userView = [self _setupUserViewWithUserName:aStream.userName streamId:aStream.streamId];
     userView.isMuted = !aStream.enableVoice;
-    
+
     EMCallRemoteView *remoteView = nil;
     if (aStream.enableVideo) {
         remoteView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
@@ -391,7 +405,7 @@
         remoteView.scaleMode = EMCallViewScaleModeAspectFill;
         [userView.videoView addSubview:remoteView];
     }
-    
+
     __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
         if (aError) {
@@ -451,10 +465,14 @@
 - (void)streamDidUpdate:(EMCallConference *)aConference
               addStream:(EMCallStream *)aStream
 {
-    if ([aConference.callId isEqualToString:self.conference.callId]) {
+    if (self.isCreater && [aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic setObject:aStream forKey:aStream.streamId];
         [self _subStream:aStream];
     }
+//    if ([aConference.callId isEqualToString:self.conference.callId]) {
+//        [self.streamsDic setObject:aStream forKey:aStream.streamId];
+//        [self _subStream:aStream];
+//    }
 }
 
 - (void)streamDidUpdate:(EMCallConference *)aConference

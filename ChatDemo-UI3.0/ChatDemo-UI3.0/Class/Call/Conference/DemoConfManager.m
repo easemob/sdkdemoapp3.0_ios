@@ -96,7 +96,7 @@ static DemoConfManager *confManager = nil;
             NSString *confId = [message.ext objectForKey:@"confId"];
             EMCallType type = (EMCallType)[[message.ext objectForKey:@"type"] integerValue];
             NSString *creater = [message.ext objectForKey:@"creater"];
-            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:confId creater:creater];
+            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:confId creater:creater password:@""];
             [self.mainController.navigationController pushViewController:confController animated:NO];
             
         } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
@@ -120,7 +120,7 @@ static DemoConfManager *confManager = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
     EMCallType type = (EMCallType)[[dic objectForKey:@"type"] integerValue];
     NSString *creater = [dic objectForKey:@"creater"];
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater];
+    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater password:@""];
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
@@ -146,12 +146,13 @@ static DemoConfManager *confManager = nil;
 {
     EMTextMessageBody *textBody = (EMTextMessageBody *)aMessage.body;
     NSString *conferenceId = [aMessage.ext objectForKey:@"conferenceId"];
+    NSString *password = [aMessage.ext objectForKey:@"password"];
     if ([conferenceId length] > 0) {
         if ([DemoCallManager sharedManager].isCalling) {
             return;
         }
         
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId creater:@""];
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId creater:@"" password:password];
         [self.mainController.navigationController pushViewController:confController animated:NO];
     }
 }
