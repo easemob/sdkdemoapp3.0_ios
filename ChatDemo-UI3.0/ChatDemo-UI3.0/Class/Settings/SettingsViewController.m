@@ -20,6 +20,7 @@
 #import "UserProfileEditViewController.h"
 #import "ChatDemoHelper.h"
 
+#import "MessageSettingsViewController.h"
 #if DEMO_CALL == 1
 #import "CallSettingViewController.h"
 #endif
@@ -144,7 +145,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger count = 1;
+    NSInteger count = 2;
 #if DEMO_CALL == 1
     count += 1;
 #endif
@@ -155,7 +156,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #if DEMO_CALL == 1
-    if (section == 1) {
+    if (section != 0) {
         return 1;
     }
 #endif
@@ -176,8 +177,15 @@
         }];
     }
     
-#if DEMO_CALL == 1
     if (indexPath.section == 1) {
+        cell.textLabel.text = NSLocalizedString(@"setting.message", nil);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        return cell;
+    }
+    
+#if DEMO_CALL == 1
+    if (indexPath.section == 2) {
         cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -256,10 +264,18 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-#if DEMO_CALL == 1
     if (indexPath.section == 1) {
+        MessageSettingsViewController *controller = [[MessageSettingsViewController alloc] initWithStyle:UITableViewStylePlain];
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
+    
+#if DEMO_CALL == 1
+    if (indexPath.section == 2) {
         CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:callSettingController animated:YES];
+        
+        return;
     }
 #endif
     
@@ -278,7 +294,6 @@
     } else if (indexPath.row == 7) {
         UserProfileEditViewController *userProfile = [[UserProfileEditViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:userProfile animated:YES];
-        
     }
 }
 

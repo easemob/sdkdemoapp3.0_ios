@@ -458,6 +458,9 @@
 "setting.saving" = "修改中...";
 "setting.saveFailed" = "修改失败";
 
+"setting.message" = "消息设置";
+"setting.message.showTyping" = "单聊显示\"正在输入\"";
+
 "setting.call" = "音视频设置";
 "setting.call.fixedResolution" = "固定视频分辨率";
 "setting.call.autoResolution" = "自动调配视频分辨率";

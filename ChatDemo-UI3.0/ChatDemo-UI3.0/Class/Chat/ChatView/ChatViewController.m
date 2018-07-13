@@ -63,7 +63,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dingAction) name:kNotification_DingAction object:nil];
     
     if (self.conversation.type == EMConversationTypeChat) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        NSUserDefaults *uDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL isTyping = [uDefaults boolForKey:@"MessageShowTyping"];
+        if (isTyping) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        }
     }
 }
 
