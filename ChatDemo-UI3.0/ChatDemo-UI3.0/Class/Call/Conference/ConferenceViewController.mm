@@ -360,7 +360,11 @@
     };
     
     if (self.isCreater) {
-        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithPassword:weakSelf.password completion:block];
+        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMMediaConferenceTypeCommunication password:@"123" completion:^(EMCallConference *aCall, NSString *aPassword, EMError *aError) {
+            [[EMClient sharedClient].conferenceManager makeInviteConfigWithConfId:aCall.confId password:@"123" role:EMMediaRoleTalker usernames:@[@"xyj999"] completion:^(NSDictionary *aInviteConfigs, EMError *aError) {
+                //
+            }];
+        }];
     } else {
         [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:_conferenceId password:weakSelf.password completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, @"", aError);
