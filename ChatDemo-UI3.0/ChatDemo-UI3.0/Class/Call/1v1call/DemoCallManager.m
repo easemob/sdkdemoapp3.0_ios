@@ -103,6 +103,12 @@ static DemoCallManager *callManager = nil;
         if(call.callState == CTCallStateConnected) {
             [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
         }
+        
+//        if(call.callState == CTCallStateConnected) {
+//            [weakSelf.currentController muteCall];
+//        } else if(call.callState == CTCallStateDisconnected) {
+//            [weakSelf.currentController resumeCall];
+//        }
     };
 }
 

@@ -45,7 +45,9 @@ static InvitationManager *sharedInstance = nil;
     NSMutableArray *appleys = [[NSMutableArray alloc] initWithArray:ary];
     [appleys addObject:applyEntity];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:appleys];
-    [_defaults setObject:data forKey:username];
+    if (data) {
+        [_defaults setObject:data forKey:username];
+    }
 }
 
 -(void)removeInvitation:(ApplyEntity *)applyEntity loginUser:(NSString *)username{
@@ -62,10 +64,14 @@ static InvitationManager *sharedInstance = nil;
     }
     [appleys removeObject:needDelete];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:appleys];
-    [_defaults setObject:data forKey:username];
+    if (data) {
+        [_defaults setObject:data forKey:username];
+    } else {
+        [_defaults removeObjectForKey:username];
+    }
 }
 
--(NSArray *)applyEmtitiesWithloginUser:(NSString *)username{
+- (NSArray *)applyEmtitiesWithloginUser:(NSString *)username{
     NSData *defalutData = [_defaults objectForKey:username];
     NSArray *ary = [NSKeyedUnarchiver unarchiveObjectWithData:defalutData];
     return ary;
@@ -80,7 +86,7 @@ static InvitationManager *sharedInstance = nil;
 
 @implementation ApplyEntity
 
--(void)encodeWithCoder:(NSCoder *)aCoder{
+- (void)encodeWithCoder:(NSCoder *)aCoder{
     [aCoder encodeObject:_applicantUsername forKey:@"applicantUsername"];
     [aCoder encodeObject:_applicantNick forKey:@"applicantNick"];
     [aCoder encodeObject:_reason forKey:@"reason"];
@@ -91,7 +97,7 @@ static InvitationManager *sharedInstance = nil;
     [aCoder encodeObject:_groupSubject forKey:@"subject"];
 }
 
--(id)initWithCoder:(NSCoder *)aDecoder{
+- (id)initWithCoder:(NSCoder *)aDecoder{
     if(self = [super init]){
         _applicantUsername = [aDecoder decodeObjectForKey:@"applicantUsername"];
         _applicantNick = [aDecoder decodeObjectForKey:@"applicantNick"];

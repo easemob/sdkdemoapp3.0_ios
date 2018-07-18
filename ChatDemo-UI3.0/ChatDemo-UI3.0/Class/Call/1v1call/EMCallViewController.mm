@@ -502,6 +502,18 @@
     [self _stopRing];
 }
 
+- (void)muteCall
+{
+    [self.callSession pauseVoice];
+    [self.callSession pauseVideo];
+}
+
+- (void)resumeCall
+{
+    [self.callSession resumeVoice];
+    [self.callSession resumeVideo];
+}
+
 #pragma mark - 3.3.9 new 自定义视频数据
 
 #pragma mark AVCaptureVideoDataOutputSampleBufferDelegate

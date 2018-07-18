@@ -460,6 +460,9 @@
 "setting.saving" = "Saving...";
 "setting.saveFailed" = "Failed to save";
 
+"setting.message" = "Message Setting";
+"setting.message.showTyping" = "Single chat shows \"Typing\"";
+
 "setting.call" = "Call Setting";
 "setting.call.fixedResolution" = "Fixed Resolution";
 "setting.call.autoResolution" = "Auto Resolution";

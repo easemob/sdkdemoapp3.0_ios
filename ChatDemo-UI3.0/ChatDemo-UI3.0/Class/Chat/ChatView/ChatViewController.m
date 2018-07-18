@@ -62,6 +62,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCallNotification:) name:@"callOutWithChatter" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dingAction) name:kNotification_DingAction object:nil];
     
+    if (self.conversation.type == EMConversationTypeChat) {
+        NSUserDefaults *uDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL isTyping = [uDefaults boolForKey:@"MessageShowTyping"];
+        if (isTyping) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -481,6 +488,18 @@
     if (_selectedCallback) {
         _selectedCallback(nil);
     }
+}
+
+#pragma mark - KeyBoard
+
+- (void)keyBoardWillHide:(NSNotification *)note
+{
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@"TypingEnd"];
+    body.isDeliverOnlineOnly = YES;
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:self.conversation.conversationId from:from to:self.conversation.conversationId body:body ext:nil];
+    [[EMClient sharedClient].chatManager sendMessage:msg progress:nil completion:nil];
 }
 
 #pragma mark - action

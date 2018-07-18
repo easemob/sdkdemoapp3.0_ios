@@ -94,6 +94,9 @@ static EMDingMessageHelper *sharedInstance = nil;
 - (void)_archiveDingAcks:(NSDictionary *)aDic
 {
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"emding_acks.data"];
+    if (aDic == nil) {
+        aDic = [[NSDictionary alloc] init];
+    }
     [NSKeyedArchiver archiveRootObject:aDic toFile:file];
 }
 
