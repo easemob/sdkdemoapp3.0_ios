@@ -157,7 +157,7 @@
     if (indexPath.section == 1) {
         if (self.fixedSwitch.isOn) {
             if (indexPath.row == 1) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"setting.setBitrate", @"Set Bitrate") delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"设置视频比特率" delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"ok", @"OK"), nil];
                 [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
                 alert.tag = FIXED_BITRATE_ALERTVIEW_TAG;
         

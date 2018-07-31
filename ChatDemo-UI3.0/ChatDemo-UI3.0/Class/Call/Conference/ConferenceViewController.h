@@ -39,9 +39,11 @@ typedef enum {
 
 @interface ConferenceViewController : UIViewController
 
+- (instancetype)initWithConferenceType:(EMConferenceType)aType;
+
 - (instancetype)initWithConferenceId:(NSString *)aConfId
-                             creater:(NSString *)aCreater
-                            password:(NSString *)aPassword;
+                            password:(NSString *)aPassword
+                           confrType:(EMConferenceType)aType;
 
 - (instancetype)initVideoCallWithIsCustomData:(BOOL)aIsCustom;
 

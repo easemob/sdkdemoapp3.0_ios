@@ -109,7 +109,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 5;
+        return 6;
     } else if (section == 1) {
         return [self.otherPlatformIds count];
     }
@@ -153,6 +153,10 @@
         else if (indexPath.row == 4) {
             cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
             cell.titleLabel.text = NSLocalizedString(@"title.customConference",@"Custom Video Conference");
+        }
+        else if (indexPath.row == 5) {
+            cell.avatarView.image = [UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_videoCall"];
+            cell.titleLabel.text = @"创建直播";
         }
         
         return cell;
@@ -246,17 +250,46 @@
             ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         }
-//        else if (row == 3) {
-//            RobotListViewController *robot = [[RobotListViewController alloc] init];
-//            [self.navigationController pushViewController:robot animated:YES];
-//        }
         
 #if DEMO_CALL == 1
         else if (row == 3) {
-            [[DemoConfManager sharedManager] pushConferenceController];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeCommunication];
+            }];
+            [alertController addAction:defaultAction];
+            
+            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeLargeCommunication];
+            }];
+            [alertController addAction:mixAction];
+            
+            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            
         }
         else if (row == 4) {
             [[DemoConfManager sharedManager] pushCustomVideoConferenceController];
+        }
+        else if (row == 5) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"直播间密码" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.placeholder = @"请输入直播间密码";
+            }];
+
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"创建" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                UITextField *textField = alertController.textFields.firstObject;
+                [[DemoConfManager sharedManager] pushLiveControllerWithPassword:textField.text];
+            }];
+            [alertController addAction:okAction];
+            
+            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
         }
 #endif
     } else if (section == 1) {

@@ -16,7 +16,7 @@
 #import "MainViewController.h"
 #import "EMConfUserSelectionViewController.h"
 #import "ConferenceViewController.h"
-
+#import "LiveViewController.h"
 
 static DemoConfManager *confManager = nil;
 
@@ -81,56 +81,62 @@ static DemoConfManager *confManager = nil;
     [[EMClient sharedClient].conferenceManager setMode:model];
 }
 
-#pragma mark - EMChatManagerDelegate
-
-- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
-{
-    for (EMMessage *message in aCmdMessages) {
-        EMCmdMessageBody *cmdBody = (EMCmdMessageBody *)message.body;
-        NSString *action = cmdBody.action;
-        if ([action isEqualToString:@"inviteToJoinConference"]) {
-            if ([DemoCallManager sharedManager].isCalling) {
-                return;
-            }
-            
-            NSString *confId = [message.ext objectForKey:@"confId"];
-            EMCallType type = (EMCallType)[[message.ext objectForKey:@"type"] integerValue];
-            NSString *creater = [message.ext objectForKey:@"creater"];
-            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:confId creater:creater password:@""];
-            [self.mainController.navigationController pushViewController:confController animated:NO];
-            
-        } else if ([action isEqualToString:@"__Call_ReqP2P_ConferencePattern"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"已转为会议模式" delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-            [alertView show];
-        }
-    }
-}
-
 #pragma mark - EMConferenceManagerDelegate
 
 - (void)userDidRecvInvite:(NSString *)aConfId
                  password:(NSString *)aPassword
                       ext:(NSString *)aExt
 {
-    if ([DemoCallManager sharedManager].isCalling) {
-        return;
+//    if ([DemoCallManager sharedManager].isCalling) {
+//        return;
+//    }
+//    
+//    NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
+//    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+//    NSString *creater = [dic objectForKey:@"creater"];
+//    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater password:aPassword];
+//    [self.mainController.navigationController pushViewController:confController animated:NO];
+}
+
+#pragma mark - EMChatManagerDelegate
+
+- (void)messagesDidReceive:(NSArray *)aMessages
+{
+    for (EMMessage *message in aMessages) {
+        NSString *conferenceId = [message.ext objectForKey:@"em_conference_id"];
+        if ([conferenceId length] == 0) {
+            continue;
+        }
+        
+        NSString *op = [message.ext objectForKey:@"em_conference_op"];
+        if ([op isEqualToString:@"request_tobe_speaker"] || [op isEqualToString:@"request_tobe_audience"]) {
+            UIViewController *controller = self.mainController.navigationController.topViewController;
+            if ([controller isKindOfClass:[LiveViewController class]]) {
+                LiveViewController *liveController = (LiveViewController *)controller;
+                [liveController handleMessage:message];
+            }
+        }
     }
-    
-    NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-    NSString *creater = [dic objectForKey:@"creater"];
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater password:aPassword];
-    [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
 #pragma mark - conference
 
-- (void)pushConferenceController
+- (void)pushConferenceControllerWithType:(EMConferenceType)aType
 {
     [[DemoCallManager sharedManager] setIsCalling:YES];
     
-    ConferenceViewController *confController = [[ConferenceViewController alloc] init];
-    [self.mainController.navigationController pushViewController:confController animated:NO];
+    if (aType != EMConferenceTypeLive) {
+        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceType:aType];
+        [self.mainController.navigationController pushViewController:confController animated:NO];
+    }
+}
+
+- (void)pushLiveControllerWithPassword:(NSString *)aPassword
+{
+    [[DemoCallManager sharedManager] setIsCalling:YES];
+    
+    LiveViewController *controller = [[LiveViewController alloc] initWithPassword:aPassword];
+    [self.mainController.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)pushCustomVideoConferenceController
@@ -143,16 +149,29 @@ static DemoConfManager *confManager = nil;
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage
 {
-    EMTextMessageBody *textBody = (EMTextMessageBody *)aMessage.body;
     NSString *conferenceId = [aMessage.ext objectForKey:@"conferenceId"];
     NSString *password = [aMessage.ext objectForKey:@"password"];
+    if ([conferenceId length] == 0) {
+        conferenceId = [aMessage.ext objectForKey:@"em_conference_id"];
+        password = [aMessage.ext objectForKey:@"em_conference_password"];
+    }
     if ([conferenceId length] > 0) {
         if ([DemoCallManager sharedManager].isCalling) {
             return;
         }
         
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId creater:@"" password:password];
-        [self.mainController.navigationController pushViewController:confController animated:NO];
+        NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
+        if ([op isEqualToString:@"invite"]) {
+            [[DemoCallManager sharedManager] setIsCalling:YES];
+            EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
+            if (type == EMConferenceTypeLive) {
+                LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
+                [self.mainController.navigationController pushViewController:controller animated:NO];
+            } else {
+                ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId password:password confrType:type];
+                [self.mainController.navigationController pushViewController:confController animated:NO];
+            }
+        }
     }
 }
 

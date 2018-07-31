@@ -99,6 +99,7 @@
 		3A8DC37A20636761002CD774 /* CallSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A8DC37920636761002CD774 /* CallSettingViewController.m */; };
 		3A8DC51E2063A6BB002CD774 /* conf_camera_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8DC51C2063A6BA002CD774 /* conf_camera_on@2x.png */; };
 		3A8DC51F2063A6BB002CD774 /* conf_camera_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8DC51D2063A6BB002CD774 /* conf_camera_off@2x.png */; };
+		3A9E54812108278D009D946A /* LiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A9E54802108278D009D946A /* LiveViewController.xib */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
 		3AB11E5620529B9F0061FD88 /* DemoConfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB11E4820529B9F0061FD88 /* DemoConfManager.m */; };
 		3AB11E5820529B9F0061FD88 /* ConferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */; };
@@ -117,6 +118,7 @@
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
 		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
 		3AF6A65D1E1F84360022E835 /* EMGroupMutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */; };
+		3AFC3C0321073DB60055A6A1 /* LiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC3C0221073DB60055A6A1 /* LiveViewController.m */; };
 		3AFDAE64201AE5780088D44E /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AFDAE63201AE5780088D44E /* Bugly.framework */; };
 		3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527401931D32C00385240 /* Security.framework */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
@@ -450,6 +452,7 @@
 		3A8DC37920636761002CD774 /* CallSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallSettingViewController.m; sourceTree = "<group>"; };
 		3A8DC51C2063A6BA002CD774 /* conf_camera_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_camera_on@2x.png"; sourceTree = "<group>"; };
 		3A8DC51D2063A6BB002CD774 /* conf_camera_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_camera_off@2x.png"; sourceTree = "<group>"; };
+		3A9E54802108278D009D946A /* LiveViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveViewController.xib; sourceTree = "<group>"; };
 		3AA412E61DDEDB2600317D72 /* EMSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchResultController.h; sourceTree = "<group>"; };
 		3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchResultController.m; sourceTree = "<group>"; };
 		3AB11E4820529B9F0061FD88 /* DemoConfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoConfManager.m; sourceTree = "<group>"; };
@@ -484,6 +487,8 @@
 		3AF6A65B1E1F84360022E835 /* EMGroupMutesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMutesViewController.h; sourceTree = "<group>"; };
 		3AF6A65C1E1F84360022E835 /* EMGroupMutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMutesViewController.m; sourceTree = "<group>"; };
 		3AF848211DD07A7B00CB8BE9 /* Hyphenate_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hyphenate_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/Hyphenate_CN.framework"; sourceTree = "<group>"; };
+		3AFC3C0121073DB60055A6A1 /* LiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveViewController.h; sourceTree = "<group>"; };
+		3AFC3C0221073DB60055A6A1 /* LiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveViewController.m; sourceTree = "<group>"; };
 		3AFDAE63201AE5780088D44E /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = "ChatDemo-UI3.0/3rdparty/Bugly.framework"; sourceTree = "<group>"; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -984,6 +989,9 @@
 				3AB11E4B20529B9F0061FD88 /* ConferenceViewController.h */,
 				3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */,
 				3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */,
+				3AFC3C0121073DB60055A6A1 /* LiveViewController.h */,
+				3AFC3C0221073DB60055A6A1 /* LiveViewController.m */,
+				3A9E54802108278D009D946A /* LiveViewController.xib */,
 			);
 			path = Conference;
 			sourceTree = "<group>";
@@ -1783,6 +1791,7 @@
 				3A1D312D1F389355004929BD /* Button_Minimize@3x.png in Resources */,
 				3A1D312F1F389355004929BD /* Button_Minimize_disabled@2x.png in Resources */,
 				D25AA35C1E8D29C8006BF820 /* EMMemberCell.xib in Resources */,
+				3A9E54812108278D009D946A /* LiveViewController.xib in Resources */,
 				D2B3DAD81BF1D7B700913BD5 /* icon_022.gif in Resources */,
 				EBD2AB911A7CDAC000D16528 /* chat_sender_audio_playing_000@2x.png in Resources */,
 				EBD2AB9D1A7CDAC000D16528 /* account@2x.png in Resources */,
@@ -2046,6 +2055,7 @@
 				3A386ED21DE5539C000F3D8E /* EMCallViewController.mm in Sources */,
 				3A8DC37A20636761002CD774 /* CallSettingViewController.m in Sources */,
 				D25AA35A1E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m in Sources */,
+				3AFC3C0321073DB60055A6A1 /* LiveViewController.m in Sources */,
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,

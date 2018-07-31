@@ -19,7 +19,9 @@
 
 + (instancetype)sharedManager;
 
-- (void)pushConferenceController;
+- (void)pushConferenceControllerWithType:(EMConferenceType)aType;
+
+- (void)pushLiveControllerWithPassword:(NSString *)aPassword;
 
 - (void)pushCustomVideoConferenceController;
 
