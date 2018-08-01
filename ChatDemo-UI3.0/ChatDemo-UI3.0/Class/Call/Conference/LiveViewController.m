@@ -509,6 +509,16 @@
         } else {
             op = @"request_tobe_audience";
             msg = [[NSString alloc] initWithFormat:@"%@ 申请下麦直播间'%@'", currentUser, self.conference.confId];
+            
+            __weak typeof(self) weakself = self;
+            [[EMClient sharedClient].conferenceManager unpublishConference:self.conference streamId:self.pubStreamId completion:^(EMError *aError) {
+                weakself.pubStreamId = nil;
+                weakself.talkerButton.enabled = YES;
+                weakself.talkerButton.selected = NO;
+                weakself.muteButton.hidden = YES;
+    
+                [weakself _removeStream:nil];
+            }];
         }
         
         NSString *applyUid = [[EMClient sharedClient].conferenceManager getUidWithAppkey:[EMClient sharedClient].options.appkey username:currentUser];

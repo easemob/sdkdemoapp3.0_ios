@@ -261,12 +261,6 @@
     [self.muteButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     [self.enableCameraButton setImage:[UIImage imageNamed:@"conf_camera_on"] forState:UIControlStateSelected];
     
-    if (self.isCreater) {
-        self.muteButton.selected = NO;
-    } else {
-        self.muteButton.selected = YES;
-    }
-    
     self.videoMoreButton.hidden = YES;
     //3.3.9 new 自定义视频数据
     if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
