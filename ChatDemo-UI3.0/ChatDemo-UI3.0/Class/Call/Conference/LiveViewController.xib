@@ -106,7 +106,7 @@
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qjg-TN-OTP">
-                            <rect key="frame" x="100" y="0.0" width="40" height="40"/>
+                            <rect key="frame" x="175" y="0.0" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="j6q-4q-aJX"/>
                                 <constraint firstAttribute="height" constant="40" id="zp5-qV-vcA"/>
@@ -123,12 +123,12 @@
                         <constraint firstItem="aaY-CJ-NBP" firstAttribute="top" secondItem="41e-L0-0B0" secondAttribute="top" id="85O-Hp-BRw"/>
                         <constraint firstItem="OCp-Ja-olY" firstAttribute="leading" secondItem="41e-L0-0B0" secondAttribute="leading" constant="20" id="9jn-uG-8YW"/>
                         <constraint firstItem="qjg-TN-OTP" firstAttribute="top" secondItem="41e-L0-0B0" secondAttribute="top" id="Ayc-Rh-fxa"/>
+                        <constraint firstItem="brh-Qb-Iqi" firstAttribute="leading" secondItem="qjg-TN-OTP" secondAttribute="trailing" constant="30" id="HAX-NX-gms"/>
                         <constraint firstItem="brh-Qb-Iqi" firstAttribute="top" secondItem="41e-L0-0B0" secondAttribute="top" id="HBj-JA-otq"/>
                         <constraint firstItem="VLE-f2-IIu" firstAttribute="centerX" secondItem="41e-L0-0B0" secondAttribute="centerX" id="LGh-mv-GbO"/>
                         <constraint firstAttribute="trailing" secondItem="aaY-CJ-NBP" secondAttribute="trailing" constant="20" id="PT7-ok-BBD"/>
                         <constraint firstAttribute="bottom" secondItem="VLE-f2-IIu" secondAttribute="bottom" constant="20" id="QeD-Px-VBG"/>
                         <constraint firstItem="aaY-CJ-NBP" firstAttribute="leading" secondItem="brh-Qb-Iqi" secondAttribute="trailing" constant="30" id="RQr-51-xmv"/>
-                        <constraint firstItem="qjg-TN-OTP" firstAttribute="leading" secondItem="OCp-Ja-olY" secondAttribute="trailing" constant="30" id="khV-oJ-lSE"/>
                         <constraint firstAttribute="height" constant="150" id="q22-5d-QAz"/>
                     </constraints>
                 </view>
