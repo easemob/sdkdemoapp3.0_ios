@@ -464,12 +464,12 @@
 "setting.call" = "音视频设置";
 "setting.call.fixedResolution" = "固定视频分辨率";
 "setting.call.autoResolution" = "自动调配视频分辨率";
-"setting.call.bitrate" = "视频码率";
-"setting.call.bitrateTips" = "设置视频码率范围在150-1000";
+"setting.call.maxVKbps" = "视频最大码率";
+"setting.call.maxVKbpsTips" = "视频码率范围在150-1000";
 "setting.call.push" = "是否发送离线推送";
 "setting.call.resolution" = "视频分辨率";
 "setting.call.maxFramerate" = "视频最大帧率";
-"setting.call.minKbps" = "视频最小码率";
+"setting.call.minVKbps" = "视频最小码率";
 "setting.call.showInfo" = "显示视频通话信息";
 "setting.call.audioMix" = "是否使用混音";
 

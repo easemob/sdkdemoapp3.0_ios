@@ -23,7 +23,6 @@
 @property (nonatomic, strong) NSString *confrId;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *admin;
-@property (nonatomic) EMConferenceRole role;
 
 @property (nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) IBOutlet UIView *buttonsView;
@@ -51,7 +50,6 @@
     self = [super initWithNibName:@"LiveViewController" bundle:nil];
     if (self) {
         _isCreater = YES;
-        _role = EMConferenceRoleAdmin;
     }
     
     return self;
@@ -63,7 +61,6 @@
     if (self) {
         _isCreater = YES;
         _password = aPassword;
-        _role = EMConferenceRoleAdmin;
     }
     
     return self;
@@ -79,7 +76,6 @@
         _confrId = aConfId;
         _password = aPassword;
         _admin = aAdmin;
-        _role = EMConferenceRoleAudience;
     }
     
     return self;
@@ -155,20 +151,14 @@
 }
 
 - (void)roleDidChanged:(EMCallConference *)aConference
-                  role:(EMConferenceRole)aRole
 {
-    if (self.role == aRole) {
-        return;
-    }
-    
-    self.role = aRole;
     __weak typeof(self) weakself = self;
-    if (aRole == EMConferenceRoleSpeaker && [self.pubStreamId length] == 0) {
+    if (aConference.role == EMConferenceRoleSpeaker && [self.pubStreamId length] == 0) {
         [self _pubLocalStreamWithEnableVideo:NO completion:^(NSString *aPubStreamId) {
-            weakself.talkerButton.selected = aRole == EMConferenceRoleSpeaker ? YES : NO;
+            weakself.talkerButton.selected = aConference.role == EMConferenceRoleSpeaker ? YES : NO;
             [weakself _addLocalVideoView];
         }];
-    } else if (aRole == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
+    } else if (aConference.role == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
 //        [[EMClient sharedClient].conferenceManager unpublishConference:self.conference streamId:self.pubStreamId completion:^(EMError *aError) {
 //            weakself.pubStreamId = nil;
 //            weakself.talkerButton.enabled = YES;
@@ -358,7 +348,7 @@
 - (void)_reloadSubviews
 {
     self.talkerButton.hidden = self.isCreater;
-    if (self.role == EMConferenceRoleAudience) {
+    if (self.conference.role == EMConferenceRoleAudience) {
         self.talkerButton.hidden = NO;
     }
 }
@@ -432,6 +422,14 @@
     pubConfig.enableVideo = aEnableVideo;
     pubConfig.localView = self.localVideoView;
     
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    pubConfig.isFixedVideoResolution = options.isFixedVideoResolution;
+    pubConfig.maxVideoKbps = (int)options.maxVideoKbps;
+    pubConfig.maxAudioKbps = (int)options.maxAudioKbps;
+    pubConfig.videoResolution = options.videoResolution;
+    
+    pubConfig.isBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+    
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
         weakself.talkerButton.enabled = YES;
@@ -490,7 +488,7 @@
     if (!self.isCreater) {
         self.talkerButton.enabled = NO;
         
-        if (!self.talkerButton.selected && self.role != EMConferenceRoleAudience && [self.pubStreamId length] == 0) {
+        if (!self.talkerButton.selected && self.conference.role != EMConferenceRoleAudience && [self.pubStreamId length] == 0) {
             __weak typeof(self) weakself = self;
             [self _pubLocalStreamWithEnableVideo:NO completion:^(NSString *aPubStreamId) {
                 weakself.talkerButton.selected = YES;
@@ -591,9 +589,10 @@
     EMTextMessageBody *textBody = (EMTextMessageBody *)aMessage.body;
     NSString *text = textBody.text;
     
+    NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:text message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"同意" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
         NSString *applyer = [aMessage.ext objectForKey:@"em_member_name"];
         if ([op isEqualToString:@"request_tobe_speaker"]) {
             [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberIds:@[applyer] role:EMConferenceRoleSpeaker completion:^(EMError *aError) {
@@ -606,7 +605,9 @@
         }
     }];
     
-    [alertController addAction: [UIAlertAction actionWithTitle:@"忽略" style: UIAlertActionStyleCancel handler:nil]];
+    if ([op isEqualToString:@"request_tobe_speaker"]) {
+        [alertController addAction: [UIAlertAction actionWithTitle:@"忽略" style: UIAlertActionStyleCancel handler:nil]];
+    }
     
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];

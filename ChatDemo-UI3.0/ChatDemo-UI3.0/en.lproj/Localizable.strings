@@ -466,12 +466,12 @@
 "setting.call" = "Call Setting";
 "setting.call.fixedResolution" = "Fixed Resolution";
 "setting.call.autoResolution" = "Auto Resolution";
-"setting.call.bitrate" = "Set Bitrate";
-"setting.call.bitrateTips" = "Set Bitrate should be 150-1000";
+"setting.call.maxVKbps" = "Video Max Kbps";
+"setting.call.maxVKbpsTips" = "Set Bitrate should be 150-1000";
 "setting.call.push" = "Enable Offline Notification";
 "setting.call.resolution" = "Video Call Resolution";
 "setting.call.maxFramerate" = "Video Max Framerate";
-"setting.call.minKbps" = "Video Min Kbps";
+"setting.call.minVKbps" = "Video Min Kbps";
 "setting.call.showInfo" = "Show Video Call Info";
 "setting.call.audioMix" = "Enable Audio Mix";
 

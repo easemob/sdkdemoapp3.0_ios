@@ -155,13 +155,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSInteger count = 0;
+    if (section == 0) {
+        count = 13;
+    } else if (section == 1) {
+        count = 1;
+    }
 #if DEMO_CALL == 1
-    if (section != 0) {
+    else if (section == 2) {
         return 1;
     }
 #endif
 
-    return 13;
+    return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -186,8 +192,10 @@
     
 #if DEMO_CALL == 1
     if (indexPath.section == 2) {
-        cell.textLabel.text = NSLocalizedString(@"setting.call", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"音视频设置";
+        }
         
         return cell;
     }
@@ -272,8 +280,10 @@
     
 #if DEMO_CALL == 1
     if (indexPath.section == 2) {
-        CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController pushViewController:callSettingController animated:YES];
+        if (indexPath.row == 0) {
+            CallSettingViewController *callSettingController = [[CallSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            [self.navigationController pushViewController:callSettingController animated:YES];
+        }
         
         return;
     }
