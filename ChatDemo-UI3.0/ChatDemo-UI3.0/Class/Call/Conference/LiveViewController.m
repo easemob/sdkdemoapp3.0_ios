@@ -519,7 +519,7 @@
             }];
         }
         
-        NSString *applyUid = [[EMClient sharedClient].conferenceManager getUidWithAppkey:[EMClient sharedClient].options.appkey username:currentUser];
+        NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:currentUser];
         EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:msg];
         EMMessage *message = [[EMMessage alloc] initWithConversationID:self.admin from:currentUser to:self.admin body:textBody ext:@{@"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_member_name":applyUid, @"em_conference_op":op}];
         message.chatType = EMChatTypeChat;
@@ -595,11 +595,11 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"同意" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *applyer = [aMessage.ext objectForKey:@"em_member_name"];
         if ([op isEqualToString:@"request_tobe_speaker"]) {
-            [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberIds:@[applyer] role:EMConferenceRoleSpeaker completion:^(EMError *aError) {
+            [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleSpeaker completion:^(EMError *aError) {
                 //
             }];
         } else if ([op isEqualToString:@"request_tobe_audience"]) {
-            [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberIds:@[applyer] role:EMConferenceRoleAudience completion:^(EMError *aError) {
+            [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleAudience completion:^(EMError *aError) {
                 //
             }];
         }
