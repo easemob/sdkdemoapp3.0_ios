@@ -68,15 +68,13 @@
                                 <action selector="leaveAction:" destination="-1" eventType="touchUpInside" id="Jna-TE-XXg"/>
                             </connections>
                         </button>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCp-Ja-olY">
-                            <rect key="frame" x="20" y="0.0" width="50" height="35"/>
-                            <color key="backgroundColor" red="0.4620994329" green="0.74751693009999998" blue="0.22449454669999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCp-Ja-olY">
+                            <rect key="frame" x="20" y="0.0" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="50" id="bsM-gh-Ipd"/>
-                                <constraint firstAttribute="height" constant="35" id="hXV-Su-WQN"/>
+                                <constraint firstAttribute="width" constant="40" id="bsM-gh-Ipd"/>
+                                <constraint firstAttribute="height" constant="40" id="hXV-Su-WQN"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <state key="normal" title="上麦">
+                            <state key="normal" image="confr_link.png">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
@@ -117,7 +115,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.84304517509999999" green="0.84319037200000002" blue="0.84303599600000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="OCp-Ja-olY" firstAttribute="top" secondItem="41e-L0-0B0" secondAttribute="top" id="6TH-e2-WKb"/>
                         <constraint firstItem="aaY-CJ-NBP" firstAttribute="top" secondItem="41e-L0-0B0" secondAttribute="top" id="85O-Hp-BRw"/>
@@ -134,7 +131,6 @@
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWb-cg-4xL">
                     <rect key="frame" x="0.0" y="65" width="375" height="452"/>
-                    <color key="backgroundColor" red="0.66799789669999998" green="0.47512125970000002" blue="0.25860109930000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </scrollView>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4M-ea-uEA">
                     <rect key="frame" x="20" y="20" width="40" height="40"/>
@@ -173,5 +169,6 @@
         <image name="Button_Mute.png" width="16" height="25"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
         <image name="conf_camera_off.png" width="25" height="25"/>
+        <image name="confr_link.png" width="50" height="50"/>
     </resources>
 </document>

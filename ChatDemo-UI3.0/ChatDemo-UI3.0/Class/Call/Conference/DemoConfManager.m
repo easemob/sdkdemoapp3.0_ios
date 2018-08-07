@@ -15,8 +15,6 @@
 #import "DemoCallManager.h"
 #import "MainViewController.h"
 #import "EMConfUserSelectionViewController.h"
-#import "ConferenceViewController.h"
-#import "LiveViewController.h"
 
 static DemoConfManager *confManager = nil;
 
@@ -121,22 +119,27 @@ static DemoConfManager *confManager = nil;
 
 #pragma mark - conference
 
-- (void)pushConferenceControllerWithType:(EMConferenceType)aType
+- (ConferenceViewController *)pushConferenceControllerWithType:(EMConferenceType)aType
 {
     [[DemoCallManager sharedManager] setIsCalling:YES];
     
+    ConferenceViewController *controller = nil;
     if (aType != EMConferenceTypeLive) {
-        ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceType:aType];
-        [self.mainController.navigationController pushViewController:confController animated:NO];
+        controller = [[ConferenceViewController alloc] initWithConferenceType:aType];
+        [self.mainController.navigationController pushViewController:controller animated:NO];
     }
+    
+    return controller;
 }
 
-- (void)pushLiveControllerWithPassword:(NSString *)aPassword
+- (LiveViewController *)pushLiveControllerWithPassword:(NSString *)aPassword
 {
     [[DemoCallManager sharedManager] setIsCalling:YES];
     
     LiveViewController *controller = [[LiveViewController alloc] initWithPassword:aPassword];
     [self.mainController.navigationController pushViewController:controller animated:NO];
+    
+    return controller;
 }
 
 - (void)pushCustomVideoConferenceController

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ConferenceViewController.h"
+#import "LiveViewController.h"
+
 #define KNOTIFICATION_CONFERENCE @"conference"
 
 @class MainViewController;
@@ -19,9 +22,9 @@
 
 + (instancetype)sharedManager;
 
-- (void)pushConferenceControllerWithType:(EMConferenceType)aType;
+- (ConferenceViewController *)pushConferenceControllerWithType:(EMConferenceType)aType;
 
-- (void)pushLiveControllerWithPassword:(NSString *)aPassword;
+- (LiveViewController *)pushLiveControllerWithPassword:(NSString *)aPassword;
 
 - (void)pushCustomVideoConferenceController;
 

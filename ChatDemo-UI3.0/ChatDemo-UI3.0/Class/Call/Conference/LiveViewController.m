@@ -132,20 +132,20 @@
 
 #pragma mark - EMConferenceManagerDelegate
 
-- (void)userDidJoin:(EMCallConference *)aConference
-               user:(NSString *)aUserName
+- (void)memberDidJoin:(EMCallConference *)aConference
+               member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aUserName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aMember.memberName];
         [self showHint:message];
     }
 }
 
-- (void)userDidLeave:(EMCallConference *)aConference
-                user:(NSString *)aUserName
+- (void)memberDidLeave:(EMCallConference *)aConference
+                member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aUserName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aMember.memberName];
         [self showHint:message];
     }
 }
@@ -330,8 +330,7 @@
     self.leaveButton.clipsToBounds = YES;
     self.leaveButton.layer.cornerRadius = 25;
     
-    [self.talkerButton setTitle:@"上麦" forState:UIControlStateNormal];
-    [self.talkerButton setTitle:@"下麦" forState:UIControlStateSelected];
+    [self.talkerButton setImage:[UIImage imageNamed:@"confr_unlink"] forState:UIControlStateSelected];
     
     [self.muteButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     [self.outButton setImage:[UIImage imageNamed:@"Button_Speaker_active"] forState:UIControlStateSelected];
@@ -450,6 +449,17 @@
 
 - (IBAction)inviteMemberAction:(id)sender
 {
+    if ([self.conversationId length] > 0) {
+        NSString *currentUser = [EMClient sharedClient].currentUsername;
+        EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入直播室: %@", currentUser, self.conference.confId]];
+        EMMessage *message = [[EMMessage alloc] initWithConversationID:self.conversationId from:currentUser to:self.conversationId body:textBody ext:@{@"em_conference_op":@"invite", @"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_conference_type":@(EMConferenceTypeLive)}];
+        message.chatType = self.chatType;
+        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+        
+        [self showHint:@"已在群中发送邀请消息"];
+        return;
+    }
+    
     NSMutableArray *usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContacts]];
     for (LiveVideoItem *item in self.streams) {
         if ([usernames containsObject:item.stream.userName]) {

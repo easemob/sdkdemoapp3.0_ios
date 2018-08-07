@@ -71,6 +71,8 @@
 		3A1D31551F389355004929BD /* conf_uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31161F389355004929BD /* conf_uncheck@2x.png */; };
 		3A1D31561F389355004929BD /* conf_uncheck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31171F389355004929BD /* conf_uncheck@3x.png */; };
 		3A1D31571F389355004929BD /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1D31181F389355004929BD /* default_avatar.png */; };
+		3A1FAA46211455E7004C7EC0 /* confr_link@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1FAA44211455E7004C7EC0 /* confr_link@2x.png */; };
+		3A1FAA47211455E7004C7EC0 /* confr_unlink@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1FAA45211455E7004C7EC0 /* confr_unlink@2x.png */; };
 		3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */; };
 		3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A201E23AF5000DCD9BE /* EMChatroomBansViewController.m */; };
 		3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A221E23AF5000DCD9BE /* EMChatroomMembersViewController.m */; };
@@ -397,6 +399,8 @@
 		3A1D31161F389355004929BD /* conf_uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_uncheck@2x.png"; sourceTree = "<group>"; };
 		3A1D31171F389355004929BD /* conf_uncheck@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_uncheck@3x.png"; sourceTree = "<group>"; };
 		3A1D31181F389355004929BD /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
+		3A1FAA44211455E7004C7EC0 /* confr_link@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "confr_link@2x.png"; sourceTree = "<group>"; };
+		3A1FAA45211455E7004C7EC0 /* confr_unlink@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "confr_unlink@2x.png"; sourceTree = "<group>"; };
 		3A27807A1DDB270200362CA7 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		3A27807C1DDB271400362CA7 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateFullSDK.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libHyphenateFullSDK.a"; sourceTree = "<group>"; };
 		3A2C3A1D1E23AF5000DCD9BE /* EMChatroomAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatroomAdminsViewController.h; sourceTree = "<group>"; };
@@ -833,6 +837,8 @@
 		3A1D30D91F389355004929BD /* imgs */ = {
 			isa = PBXGroup;
 			children = (
+				3A1FAA44211455E7004C7EC0 /* confr_link@2x.png */,
+				3A1FAA45211455E7004C7EC0 /* confr_unlink@2x.png */,
 				3AC44A3F206E3250009A9A5C /* conf_mute@2x.png */,
 				3AC44A3E206E3250009A9A5C /* conf_mute@3x.png */,
 				3A8DC51D2063A6BB002CD774 /* conf_camera_off@2x.png */,
@@ -1812,6 +1818,7 @@
 				3A1D31361F389355004929BD /* Button_Mute_active@3x.png in Resources */,
 				D2BF974F1AEB566B009E0D5C /* group_creategroup@2x.png in Resources */,
 				3A1D311D1F389355004929BD /* Button_Camera@2x.png in Resources */,
+				3A1FAA47211455E7004C7EC0 /* confr_unlink@2x.png in Resources */,
 				3A1D31401F389355004929BD /* Button_Speaker_disabled.png in Resources */,
 				3A386ED51DE5539C000F3D8E /* EMVideoInfoViewController.xib in Resources */,
 				3A1D313A1F389355004929BD /* Button_Speaker.png in Resources */,
@@ -1862,6 +1869,7 @@
 				EBD2AB3A1A7CDAC000D16528 /* call_out@2x.png in Resources */,
 				EBD2AB571A7CDAC000D16528 /* imageDownloadFail@2x.png in Resources */,
 				D2B3DACD1BF1D7B700913BD5 /* icon_013_cover.png in Resources */,
+				3A1FAA46211455E7004C7EC0 /* confr_link@2x.png in Resources */,
 				EBD2AB931A7CDAC000D16528 /* chat_sender_audio_playing_001@2x.png in Resources */,
 				3A1D31261F389355004929BD /* Button_Cancel_Call@2x.png in Resources */,
 				D2B3DAE11BF1D7B700913BD5 /* icon_035_cover.png in Resources */,

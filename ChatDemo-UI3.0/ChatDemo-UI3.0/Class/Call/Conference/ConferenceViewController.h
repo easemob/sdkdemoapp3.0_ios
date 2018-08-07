@@ -30,7 +30,6 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIImageView *avatarView;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImgView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *mixLabel;
 
 @property (nonatomic) BOOL isMuted;
 @property (nonatomic) EMAudioStatus status;
@@ -38,6 +37,9 @@ typedef enum {
 @end
 
 @interface ConferenceViewController : UIViewController
+
+@property (nonatomic, strong) NSString *conversationId;
+@property (nonatomic) EMChatType chatType;
 
 - (instancetype)initWithConferenceType:(EMConferenceType)aType;
 

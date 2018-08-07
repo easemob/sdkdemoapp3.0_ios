@@ -18,6 +18,9 @@
 
 @interface LiveViewController : UIViewController
 
+@property (nonatomic, strong) NSString *conversationId;
+@property (nonatomic) EMChatType chatType;
+
 - (instancetype)initWithPassword:(NSString *)aPassword;
 
 - (instancetype)initWithConfrId:(NSString *)aConfId

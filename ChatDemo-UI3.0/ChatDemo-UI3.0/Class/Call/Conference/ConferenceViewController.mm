@@ -39,16 +39,6 @@
     }
 }
 
-- (void)setIsMuted:(BOOL)isMuted
-{
-    _isMuted = isMuted;
-    if (isMuted) {
-        self.statusImgView.image = [UIImage imageNamed:@"conf_mute"];
-    } else {
-        self.statusImgView.image = nil;
-    }
-}
-
 - (void)setStatus:(EMAudioStatus)status
 {
     if (self.isMuted) {
@@ -323,10 +313,6 @@
             weakSelf.conference = aCall;
             
             EMConfUserView *userView = [weakSelf.streamViews objectForKey:loginUser];
-            if ([EMClient sharedClient].conferenceManager.mode == EMConferenceModeLarge) {
-                userView.mixLabel.hidden = NO;
-            }
-            
             self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
             self.localView.tag = 100;
             self.localView.backgroundColor = [UIColor blackColor];
@@ -623,6 +609,17 @@
 
 - (IBAction)inviteMemberAction:(id)sender
 {
+    if ([self.conversationId length] > 0) {
+        NSString *currentUser = [EMClient sharedClient].currentUsername;
+        EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入会议: %@", currentUser, self.conference.confId]];
+        EMMessage *message = [[EMMessage alloc] initWithConversationID:self.conversationId from:currentUser to:self.conversationId body:textBody ext:@{@"em_conference_op":@"invite", @"conferenceId":self.conference.confId, @"password":self.password, @"em_conference_type":@(self.conferenceType), @"msg_extension":@{@"inviter":currentUser, @"group_id":self.conversationId}}];
+        message.chatType = self.chatType;
+        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+        
+        [self showHint:@"已在群中发送邀请消息"];
+        return;
+    }
+    
     NSMutableArray *usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContacts]];
     NSArray *streams = [self.streamsDic allValues];
     for (EMCallStream *stream in streams) {
