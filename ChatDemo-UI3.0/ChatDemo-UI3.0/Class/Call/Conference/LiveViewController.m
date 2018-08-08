@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *admin;
 
+@property (nonatomic) IBOutlet UIButton *inviteButton;
 @property (nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic) IBOutlet UIView *buttonsView;
 @property (nonatomic) IBOutlet UIButton *leaveButton;
@@ -342,6 +343,10 @@
         self.enableVideoButton.selected = YES;
         self.switchCameraButton.hidden = NO;
     }
+    
+    if ([self.conversationId length] > 0) {
+        self.inviteButton.hidden = YES;
+    }
 }
 
 - (void)_reloadSubviews
@@ -371,12 +376,22 @@
         
         weakself.conference = aCall;
         weakself.password = aPassword;
-        [weakself _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
-            LiveVideoItem *item = [[LiveVideoItem alloc] init];
-            weakself.localVideoView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.scrollView.frame));
-            item.videoView = weakself.localVideoView;
-            [weakself.streams addObject:item];
-        }];
+        
+        if (weakself.isCreater && [weakself.conversationId length] > 0) {
+            NSString *currentUser = [EMClient sharedClient].currentUsername;
+            EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入直播室: %@", currentUser, weakself.conference.confId]];
+            EMMessage *message = [[EMMessage alloc] initWithConversationID:weakself.conversationId from:currentUser to:self.conversationId body:textBody ext:@{@"em_conference_op":@"invite", @"em_conference_id":weakself.conference.confId, @"em_conference_password":weakself.password, @"em_conference_type":@(EMConferenceTypeLive)}];
+            message.chatType = weakself.chatType;
+            [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+            [weakself showHint:@"已在群中发送邀请消息"];
+            
+            [weakself _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
+                LiveVideoViewItem *item = [LiveVideoViewItem createWithStream:nil];
+                weakself.localVideoView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.scrollView.frame));
+                item.videoView = weakself.localVideoView;
+                [weakself.streams addObject:item];
+            }];
+        }
     };
     
     [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMConferenceTypeLive password:self.password completion:block];
@@ -450,13 +465,6 @@
 - (IBAction)inviteMemberAction:(id)sender
 {
     if ([self.conversationId length] > 0) {
-        NSString *currentUser = [EMClient sharedClient].currentUsername;
-        EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入直播室: %@", currentUser, self.conference.confId]];
-        EMMessage *message = [[EMMessage alloc] initWithConversationID:self.conversationId from:currentUser to:self.conversationId body:textBody ext:@{@"em_conference_op":@"invite", @"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_conference_type":@(EMConferenceTypeLive)}];
-        message.chatType = self.chatType;
-        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
-        
-        [self showHint:@"已在群中发送邀请消息"];
         return;
     }
     

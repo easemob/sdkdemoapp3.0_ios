@@ -202,23 +202,9 @@
     // Hide the keyboard
     [self.chatToolbar endEditing:YES];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"直播间密码" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"请输入直播间密码";
-    }];
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"创建" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UITextField *textField = alertController.textFields.firstObject;
-        LiveViewController *controller = [[DemoConfManager sharedManager] pushLiveControllerWithPassword:textField.text];
-        controller.conversationId = self.conversation.conversationId;
-        controller.chatType = (EMChatType)self.conversation.type;
-    }];
-    [alertController addAction:okAction];
-    
-    [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    LiveViewController *controller = [[DemoConfManager sharedManager] pushLiveControllerWithPassword:@""];
+    controller.conversationId = self.conversation.conversationId;
+    controller.chatType = (EMChatType)self.conversation.type;
 }
 
 #pragma mark - EaseMessageCellDelegate

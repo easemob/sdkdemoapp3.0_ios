@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,6 +15,7 @@
                 <outlet property="displayView" destination="XNW-CM-ZzG" id="cyY-ha-77d"/>
                 <outlet property="enableCameraButton" destination="xk1-zM-duE" id="ojJ-KK-2Xb"/>
                 <outlet property="hangupButton" destination="WgY-62-EJl" id="e3C-g4-mv2"/>
+                <outlet property="inviteButton" destination="9sm-IU-gC3" id="mv8-QA-IJ9"/>
                 <outlet property="muteButton" destination="9nU-Ls-Abk" id="Sc4-9U-FFR"/>
                 <outlet property="nameLabel" destination="rws-WI-wfs" id="LG0-Uj-1yS"/>
                 <outlet property="speakerOutButton" destination="heX-yV-Wdd" id="IgY-lB-18x"/>
@@ -227,6 +228,6 @@
         <image name="Button_End.png" width="65" height="65"/>
         <image name="Button_Mute.png" width="16" height="25"/>
         <image name="Button_Speaker.png" width="25" height="20"/>
-        <image name="conf_camera_off.png" width="64" height="64"/>
+        <image name="conf_camera_off.png" width="25" height="25"/>
     </resources>
 </document>
