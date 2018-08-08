@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="buttonsView" destination="41e-L0-0B0" id="HuB-dF-Ge4"/>
                 <outlet property="enableVideoButton" destination="qjg-TN-OTP" id="dOx-zz-DJu"/>
+                <outlet property="inviteButton" destination="v0d-ES-HQ2" id="fyo-Nw-vhV"/>
                 <outlet property="leaveButton" destination="VLE-f2-IIu" id="NcB-WR-rc8"/>
                 <outlet property="muteButton" destination="brh-Qb-Iqi" id="OHg-MH-2FR"/>
                 <outlet property="outButton" destination="aaY-CJ-NBP" id="1nR-nB-USm"/>

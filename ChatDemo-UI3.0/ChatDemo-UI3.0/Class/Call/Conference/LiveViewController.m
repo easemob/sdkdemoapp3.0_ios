@@ -123,7 +123,6 @@
 {
     if (_localVideoView == nil) {
         _localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.scrollView.frame))];
-        _localVideoView.tag = 100;
         _localVideoView.backgroundColor = [UIColor blackColor];
         _localVideoView.scaleMode = EMCallViewScaleModeAspectFill;
     }
@@ -226,12 +225,14 @@
     }
     
     EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] initWithFrame:frame];
-    remoteView.tag = 100;
     remoteView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+    item.videoView = remoteView;
     [self.scrollView addSubview:remoteView];
     
-    item.videoView = remoteView;
+    if (!aStream.enableVideo) {
+        [self _resetVideoOffViewWithSuperView:remoteView isHidden:aStream.enableVideo];
+    }
     
     __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
@@ -275,6 +276,7 @@
     if ([self.streams count] == 1) {
         LiveVideoItem *item = [self.streams objectAtIndex:0];
         item.videoView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.scrollView.frame));
+        [self _resetVideoOffViewFrameWithSuperView:item.videoView];
     }
 }
 
@@ -284,6 +286,28 @@
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self _removeStream:aStream];
     }
+}
+
+- (void)streamDidUpdate:(EMCallConference *)aConference
+                 stream:(EMCallStream *)aStream
+{
+    if (![aConference.callId isEqualToString:self.conference.callId]) {
+        return;
+    }
+    
+    LiveVideoItem *updateItem = nil;
+    for (NSInteger i = 0; i < [self.streams count]; i++) {
+        LiveVideoItem *item = [self.streams objectAtIndex:i];
+        if ([item.stream.streamId isEqualToString:aStream.streamId] || (aStream == nil && item.stream == nil)) {
+            updateItem = item;
+            break;
+        }
+    }
+    
+    if (updateItem.stream.enableVideo != aStream.enableVideo) {
+        [self _resetVideoOffViewWithSuperView:updateItem.videoView isHidden:aStream.enableVideo];
+    }
+    updateItem.stream = aStream;
 }
 
 - (void)conferenceDidEnd:(EMCallConference *)aConference
@@ -357,6 +381,42 @@
     }
 }
 
+- (void)_resetVideoOffViewFrameWithSuperView:(UIView *)aSuperView
+{
+    UIImageView *imgView = [aSuperView viewWithTag:100];
+    imgView.frame = CGRectMake(0, 0, CGRectGetWidth(aSuperView.frame), CGRectGetHeight(aSuperView.frame));
+    [imgView layoutIfNeeded];
+}
+
+- (void)_resetVideoOffViewWithSuperView:(UIView *)aSuperView
+                               isHidden:(BOOL)aIsHidden
+{
+    if (!aSuperView) {
+        return;
+    }
+    
+    UIImageView *imgView = [aSuperView viewWithTag:100];
+    if ((aIsHidden && !imgView)) {
+        return;
+    }
+    
+    imgView.frame = CGRectMake(0, 0, CGRectGetWidth(aSuperView.frame), CGRectGetHeight(aSuperView.frame));
+    if (imgView && imgView.hidden == aIsHidden) {
+        return;
+    }
+    
+    if (imgView == nil) {
+        imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(aSuperView.frame), CGRectGetHeight(aSuperView.frame))];
+        imgView.tag = 100;
+        imgView.image = [UIImage imageNamed:@"confr_video_off"];
+        imgView.contentMode = UIViewContentModeScaleAspectFill;
+        imgView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [aSuperView addSubview:imgView];
+    }
+    
+    imgView.hidden = aIsHidden;
+}
+
 #pragma mark - Action
 
 - (void)_createConference
@@ -386,7 +446,7 @@
             [weakself showHint:@"已在群中发送邀请消息"];
             
             [weakself _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
-                LiveVideoViewItem *item = [LiveVideoViewItem createWithStream:nil];
+                LiveVideoItem *item = [[LiveVideoItem alloc] init];
                 weakself.localVideoView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.scrollView.frame));
                 item.videoView = weakself.localVideoView;
                 [weakself.streams addObject:item];
@@ -443,6 +503,10 @@
     pubConfig.videoResolution = options.videoResolution;
     
     pubConfig.isBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+    
+    if (!aEnableVideo) {
+        [self _resetVideoOffViewWithSuperView:self.localVideoView isHidden:aEnableVideo];
+    }
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
@@ -569,6 +633,8 @@
     self.switchCameraButton.hidden = !self.enableVideoButton.selected;
     
     [[EMClient sharedClient].conferenceManager updateConference:self.conference enableVideo:self.enableVideoButton.selected];
+    
+    [self _resetVideoOffViewWithSuperView:self.localVideoView isHidden:self.enableVideoButton.selected];
 }
 
 - (IBAction)switchCameraAction:(id)sender
