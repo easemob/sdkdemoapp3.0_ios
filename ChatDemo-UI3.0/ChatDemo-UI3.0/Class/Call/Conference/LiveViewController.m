@@ -419,7 +419,7 @@
             [weakself.navigationController popViewControllerAnimated:YES];
             [DemoCallManager sharedManager].isCalling = NO;
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.createFail", @"Create or Join conference failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"创建会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
             
             return ;
@@ -594,6 +594,8 @@
         EMMessage *message = [[EMMessage alloc] initWithConversationID:self.admin from:currentUser to:self.admin body:textBody ext:@{@"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_member_name":applyUid, @"em_conference_op":op}];
         message.chatType = EMChatTypeChat;
         [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+        
+        [self showHint:@"已经向管理员发送申请信息"];
     }
 }
 
