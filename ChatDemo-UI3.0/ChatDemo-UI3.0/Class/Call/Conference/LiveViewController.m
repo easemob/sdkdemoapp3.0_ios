@@ -161,7 +161,6 @@
     } else if (aConference.role == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
         
         self.pubStreamId = nil;
-        self.talkerButton.enabled = YES;
         self.talkerButton.selected = NO;
         self.muteButton.hidden = YES;
         self.enableVideoButton.hidden = YES;
@@ -431,7 +430,7 @@
         
         if (weakself.isCreater && [weakself.conversationId length] > 0) {
             NSString *currentUser = [EMClient sharedClient].currentUsername;
-            EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入直播室: %@", currentUser, weakself.conference.confId]];
+            EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入互动视频会议: %@", currentUser, weakself.conference.confId]];
             EMMessage *message = [[EMMessage alloc] initWithConversationID:weakself.conversationId from:currentUser to:self.conversationId body:textBody ext:@{@"em_conference_op":@"invite", @"em_conference_id":weakself.conference.confId, @"em_conference_password":weakself.password, @"em_conference_type":@(EMConferenceTypeLive)}];
             message.chatType = weakself.chatType;
             [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
@@ -458,7 +457,7 @@
             [weakself.navigationController popViewControllerAnimated:YES];
             [DemoCallManager sharedManager].isCalling = NO;
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"进入直播间失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"进入互动视频会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
             
             return ;
@@ -474,7 +473,7 @@
 - (void)_inviteUser:(NSString *)aUserName
 {
     NSString *currentUser = [EMClient sharedClient].currentUsername;
-    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请你加入直播室: %@", currentUser, self.conference.confId]];
+    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请你加入互动视频会议: %@", currentUser, self.conference.confId]];
     EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"em_conference_op":@"invite", @"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_conference_type":@(EMConferenceTypeLive)}];
     message.chatType = EMChatTypeChat;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
@@ -502,7 +501,6 @@
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
-        weakself.talkerButton.enabled = YES;
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"上传本地视频流失败，请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
@@ -561,8 +559,6 @@
 - (IBAction)talkerAction:(id)sender
 {
     if (!self.isCreater) {
-        self.talkerButton.enabled = NO;
-        
         if (!self.talkerButton.selected && self.conference.role != EMConferenceRoleAudience && [self.pubStreamId length] == 0) {
             __weak typeof(self) weakself = self;
             [self _pubLocalStreamWithEnableVideo:NO completion:^(NSString *aPubStreamId) {
@@ -578,15 +574,14 @@
         NSString *currentUser = [EMClient sharedClient].currentUsername;
         if (!self.talkerButton.selected) {
             op = @"request_tobe_speaker";
-            msg = [[NSString alloc] initWithFormat:@"%@ 申请成为直播间'%@'的主播", currentUser, self.conference.confId];
+            msg = [[NSString alloc] initWithFormat:@"%@ 申请成为互动视频会议'%@'的主播", currentUser, self.conference.confId];
         } else {
             op = @"request_tobe_audience";
-            msg = [[NSString alloc] initWithFormat:@"%@ 申请下麦直播间'%@'", currentUser, self.conference.confId];
+            msg = [[NSString alloc] initWithFormat:@"%@ 申请下麦互动视频会议'%@'", currentUser, self.conference.confId];
             
             __weak typeof(self) weakself = self;
             [[EMClient sharedClient].conferenceManager unpublishConference:self.conference streamId:self.pubStreamId completion:^(EMError *aError) {
                 weakself.pubStreamId = nil;
-                weakself.talkerButton.enabled = YES;
                 weakself.talkerButton.selected = NO;
                 weakself.muteButton.hidden = YES;
     
