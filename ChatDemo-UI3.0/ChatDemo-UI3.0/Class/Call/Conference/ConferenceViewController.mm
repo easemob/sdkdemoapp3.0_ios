@@ -451,20 +451,20 @@
 
 #pragma mark - EMConferenceManagerDelegate
 
-- (void)userDidJoin:(EMCallConference *)aConference
-               user:(NSString *)aUserName
+- (void)memberDidJoin:(EMCallConference *)aConference
+               member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aUserName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aMember.memberName];
         [self showHint:message];
     }
 }
 
-- (void)userDidLeave:(EMCallConference *)aConference
-                user:(NSString *)aUserName
+- (void)memberDidLeave:(EMCallConference *)aConference
+                member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aUserName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aMember.memberName];
         [self showHint:message];
     }
 }
@@ -472,10 +472,6 @@
 - (void)streamDidUpdate:(EMCallConference *)aConference
               addStream:(EMCallStream *)aStream
 {
-//    if (self.isCreater && [aConference.callId isEqualToString:self.conference.callId]) {
-//        [self.streamsDic setObject:aStream forKey:aStream.streamId];
-//        [self _subStream:aStream];
-//    }
     if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic setObject:aStream forKey:aStream.streamId];
         [self _subStream:aStream];

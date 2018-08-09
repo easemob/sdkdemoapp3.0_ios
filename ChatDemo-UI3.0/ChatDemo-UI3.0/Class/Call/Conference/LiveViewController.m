@@ -495,9 +495,8 @@
     
     pubConfig.isBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
     
-    if (!aEnableVideo) {
-        [self _resetVideoOffViewWithSuperView:self.localVideoView isHidden:aEnableVideo];
-    }
+    self.enableVideoButton.selected = aEnableVideo;
+    [self _resetVideoOffViewWithSuperView:self.localVideoView isHidden:aEnableVideo];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
@@ -508,7 +507,6 @@
             weakself.pubStreamId = aPubStreamId;
             weakself.muteButton.hidden = NO;
             weakself.enableVideoButton.hidden = NO;
-            weakself.enableVideoButton.selected = aEnableVideo;
             
             if (aCompletionBlock) {
                 aCompletionBlock(aPubStreamId);
@@ -561,7 +559,7 @@
     if (!self.isCreater) {
         if (!self.talkerButton.selected && self.conference.role != EMConferenceRoleAudience && [self.pubStreamId length] == 0) {
             __weak typeof(self) weakself = self;
-            [self _pubLocalStreamWithEnableVideo:NO completion:^(NSString *aPubStreamId) {
+            [self _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
                 weakself.talkerButton.selected = YES;
                 [weakself _addLocalVideoView];
             }];
@@ -584,6 +582,7 @@
                 weakself.pubStreamId = nil;
                 weakself.talkerButton.selected = NO;
                 weakself.muteButton.hidden = YES;
+                weakself.enableVideoButton.hidden = YES;
     
                 [weakself _removeStream:nil];
             }];
