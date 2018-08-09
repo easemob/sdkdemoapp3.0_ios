@@ -154,19 +154,11 @@
 {
     __weak typeof(self) weakself = self;
     if (aConference.role == EMConferenceRoleSpeaker && [self.pubStreamId length] == 0) {
-        [self _pubLocalStreamWithEnableVideo:NO completion:^(NSString *aPubStreamId) {
+        [self _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
             weakself.talkerButton.selected = aConference.role == EMConferenceRoleSpeaker ? YES : NO;
             [weakself _addLocalVideoView];
         }];
     } else if (aConference.role == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
-//        [[EMClient sharedClient].conferenceManager unpublishConference:self.conference streamId:self.pubStreamId completion:^(EMError *aError) {
-//            weakself.pubStreamId = nil;
-//            weakself.talkerButton.enabled = YES;
-//            weakself.talkerButton.selected = NO;
-//            weakself.muteButton.hidden = YES;
-//
-//            [weakself _removeStream:nil];
-//        }];
         
         self.pubStreamId = nil;
         self.talkerButton.enabled = YES;
@@ -518,6 +510,7 @@
             weakself.pubStreamId = aPubStreamId;
             weakself.muteButton.hidden = NO;
             weakself.enableVideoButton.hidden = NO;
+            weakself.enableVideoButton.selected = aEnableVideo;
             
             if (aCompletionBlock) {
                 aCompletionBlock(aPubStreamId);
