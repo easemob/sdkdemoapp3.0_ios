@@ -39,6 +39,16 @@
     }
 }
 
+- (void)setIsMuted:(BOOL)isMuted
+{
+    _isMuted = isMuted;
+    if (isMuted) {
+        self.statusImgView.image = [UIImage imageNamed:@"conf_mute"];
+    } else {
+        self.statusImgView.image = nil;
+    }
+}
+
 - (void)setStatus:(EMAudioStatus)status
 {
     if (self.isMuted) {
