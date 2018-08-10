@@ -164,16 +164,21 @@ static DemoConfManager *confManager = nil;
         }
         
         NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
-        if ([op isEqualToString:@"invite"]) {
-            [[DemoCallManager sharedManager] setIsCalling:YES];
-            EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
-            if (type == EMConferenceTypeLive) {
-                LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
-                [self.mainController.navigationController pushViewController:controller animated:NO];
-            } else {
-                ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId password:password confrType:type];
-                [self.mainController.navigationController pushViewController:confController animated:NO];
+        if ([op length] > 0) {
+            if ([op isEqualToString:@"invite"]) {
+                [[DemoCallManager sharedManager] setIsCalling:YES];
+                EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
+                if (type == EMConferenceTypeLive) {
+                    LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
+                    [self.mainController.navigationController pushViewController:controller animated:NO];
+                } else {
+                    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId password:password confrType:type];
+                    [self.mainController.navigationController pushViewController:confController animated:NO];
+                }
             }
+        } else {
+            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId password:password confrType:EMConferenceTypeLargeCommunication];
+            [self.mainController.navigationController pushViewController:confController animated:NO];
         }
     }
 }
