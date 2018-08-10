@@ -155,7 +155,6 @@
     __weak typeof(self) weakself = self;
     if (aConference.role == EMConferenceRoleSpeaker && [self.pubStreamId length] == 0) {
         [self _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
-            weakself.talkerButton.selected = aConference.role == EMConferenceRoleSpeaker ? YES : NO;
             [weakself _addLocalVideoView];
         }];
     } else if (aConference.role == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
@@ -202,6 +201,14 @@
     }
     self.localVideoView.frame = frame;
     [self.scrollView addSubview:self.localVideoView];
+    
+    if (!self.isCreater) {
+        if ([self.pubStreamId length] > 0) {
+            self.talkerButton.selected = YES;
+        } else {
+            self.talkerButton.selected = NO;
+        }
+    }
 }
 
 - (void)_addStream:(EMCallStream *)aStream
@@ -366,9 +373,9 @@
 
 - (void)_reloadSubviews
 {
-    self.talkerButton.hidden = YES;
-    if (self.conference.role == EMConferenceRoleAudience) {
-        self.talkerButton.hidden = NO;
+    self.talkerButton.hidden = NO;
+    if (self.isCreater) {
+        self.talkerButton.hidden = YES;
     }
 }
 
@@ -566,7 +573,6 @@
         if (!self.talkerButton.selected && self.conference.role != EMConferenceRoleAudience && [self.pubStreamId length] == 0) {
             __weak typeof(self) weakself = self;
             [self _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
-                weakself.talkerButton.selected = YES;
                 [weakself _addLocalVideoView];
             }];
             
