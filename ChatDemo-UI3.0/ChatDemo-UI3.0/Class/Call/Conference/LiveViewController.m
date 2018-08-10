@@ -163,6 +163,7 @@
         self.talkerButton.selected = NO;
         self.muteButton.hidden = YES;
         self.enableVideoButton.hidden = YES;
+        self.switchCameraButton.hidden = YES;
         
         [self _removeStream:nil];
     }
@@ -201,14 +202,6 @@
     }
     self.localVideoView.frame = frame;
     [self.scrollView addSubview:self.localVideoView];
-    
-    if (!self.isCreater) {
-        if ([self.pubStreamId length] > 0) {
-            self.talkerButton.selected = YES;
-        } else {
-            self.talkerButton.selected = NO;
-        }
-    }
 }
 
 - (void)_addStream:(EMCallStream *)aStream
@@ -227,6 +220,12 @@
     remoteView.scaleMode = EMCallViewScaleModeAspectFill;
     item.videoView = remoteView;
     [self.scrollView addSubview:remoteView];
+    
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 60, 30)];
+    nameLabel.font = [UIFont systemFontOfSize:15];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.text = aStream.userName;
+    [remoteView addSubview:nameLabel];
     
     if (!aStream.enableVideo) {
         [self _resetVideoOffViewWithSuperView:remoteView isHidden:aStream.enableVideo];
@@ -513,6 +512,8 @@
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
+        weakself.switchCameraButton.hidden = YES;
+        weakself.talkerButton.selected = NO;
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"上传本地视频流失败，请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
@@ -520,6 +521,13 @@
             weakself.pubStreamId = aPubStreamId;
             weakself.muteButton.hidden = NO;
             weakself.enableVideoButton.hidden = NO;
+            
+            weakself.switchCameraButton.hidden = !aEnableVideo;
+            weakself.switchCameraButton.selected = pubConfig.isBackCamera;
+            
+            if (!weakself.isCreater) {
+                weakself.talkerButton.selected = YES;
+            }
             
             if (aCompletionBlock) {
                 aCompletionBlock(aPubStreamId);
@@ -595,6 +603,7 @@
                 weakself.talkerButton.selected = NO;
                 weakself.muteButton.hidden = YES;
                 weakself.enableVideoButton.hidden = YES;
+                weakself.switchCameraButton.hidden = YES;
     
                 [weakself _removeStream:nil];
             }];
