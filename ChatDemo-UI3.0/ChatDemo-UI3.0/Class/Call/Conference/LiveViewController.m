@@ -366,7 +366,7 @@
 
 - (void)_reloadSubviews
 {
-    self.talkerButton.hidden = self.isCreater;
+    self.talkerButton.hidden = YES;
     if (self.conference.role == EMConferenceRoleAudience) {
         self.talkerButton.hidden = NO;
     }
@@ -465,6 +465,12 @@
         
         weakself.conference = aCall;
         [weakself _reloadSubviews];
+        
+        if (aCall.role != EMConferenceRoleAudience) {
+            [weakself _pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId) {
+                [weakself _addLocalVideoView];
+            }];
+        }
     };
     
     [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.confrId password:self.password completion:block];
