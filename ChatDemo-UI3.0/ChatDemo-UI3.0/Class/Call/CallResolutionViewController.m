@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Video Resolution";
+    self.title = @"视频分辨率";
     
 #if DEMO_CALL == 1
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];

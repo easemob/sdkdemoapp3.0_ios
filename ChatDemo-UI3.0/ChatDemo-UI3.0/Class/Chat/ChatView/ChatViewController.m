@@ -185,6 +185,28 @@
     }
 }
 
+#pragma mark - EaseChatBarMoreViewDelegate
+
+- (void)moreViewCommunicationAction:(EaseChatBarMoreView *)moreView
+{
+    // Hide the keyboard
+    [self.chatToolbar endEditing:YES];
+    
+    ConferenceViewController *controller = [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeLargeCommunication];
+    controller.conversationId = self.conversation.conversationId;
+    controller.chatType = (EMChatType)self.conversation.type;
+}
+
+- (void)moreViewLiveAction:(EaseChatBarMoreView *)moreView
+{
+    // Hide the keyboard
+    [self.chatToolbar endEditing:YES];
+    
+    LiveViewController *controller = [[DemoConfManager sharedManager] pushLiveControllerWithPassword:@""];
+    controller.conversationId = self.conversation.conversationId;
+    controller.chatType = (EMChatType)self.conversation.type;
+}
+
 #pragma mark - EaseMessageCellDelegate
 
 - (void)messageCellSelected:(id<IMessageModel>)model

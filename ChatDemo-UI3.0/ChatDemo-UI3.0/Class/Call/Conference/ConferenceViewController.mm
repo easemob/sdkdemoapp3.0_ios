@@ -81,6 +81,7 @@
 @property (nonatomic, strong) CTCallCenter *callCenter;
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UIButton *inviteButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *displayView;
 
@@ -98,10 +99,13 @@
 @property (nonatomic) CGSize itemSize;
 
 @property (nonatomic) BOOL isCreater;
-@property (strong, nonatomic) NSString *createrName;
-@property (strong, nonatomic) NSString *password;
-@property (strong, nonatomic) NSString *pubStreamId;
 @property (strong, nonatomic) NSString *conferenceId;
+@property (strong, nonatomic) NSString *password;
+@property (nonatomic) EMConferenceType conferenceType;
+@property (strong, nonatomic) NSString *joinConfigs;
+
+@property (strong, nonatomic) NSString *pubStreamId;
+
 @property (strong, nonatomic) __block EMCallConference *conference;
 
 @property (strong, nonatomic) EMCallLocalView *localView;
@@ -126,23 +130,34 @@
     self = [super init];
     if (self) {
         _isCreater = YES;
-        _createrName = [EMClient sharedClient].currentUsername;
         _password = @([[NSDate date] timeIntervalSince1970]).stringValue;
     }
     
     return self;
 }
 
+- (instancetype)initWithConferenceType:(EMConferenceType)aType
+{
+    self = [super init];
+    if (self) {
+        _isCreater = YES;
+        _password = @([[NSDate date] timeIntervalSince1970]).stringValue;
+        _conferenceType = aType;
+    }
+    
+    return self;
+}
+
 - (instancetype)initWithConferenceId:(NSString *)aConfId
-                             creater:(NSString *)aCreater
                             password:(NSString *)aPassword
+                           confrType:(EMConferenceType)aType
 {
     self = [super init];
     if (self) {
         _conferenceId = aConfId;
         _isCreater = NO;
-        _createrName = aCreater;
         _password = aPassword;
+        _conferenceType = aType;
     }
     
     return self;
@@ -243,15 +258,13 @@
 
 - (void)_setupSubviews
 {
+    if ([self.conversationId length] > 0) {
+        self.inviteButton.hidden = YES;
+    }
+    
     [self.speakerOutButton setImage:[UIImage imageNamed:@"Button_Speaker_active"] forState:UIControlStateSelected];
     [self.muteButton setImage:[UIImage imageNamed:@"Button_Mute_active"] forState:UIControlStateSelected];
     [self.enableCameraButton setImage:[UIImage imageNamed:@"conf_camera_on"] forState:UIControlStateSelected];
-    
-    if (self.isCreater) {
-        self.muteButton.selected = NO;
-    } else {
-        self.muteButton.selected = YES;
-    }
     
     self.videoMoreButton.hidden = YES;
     //3.3.9 new 自定义视频数据
@@ -310,59 +323,63 @@
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.createFail", @"Create or Join conference failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
-        } else {
-            weakSelf.conference = aCall;
             
-            EMConfUserView *userView = [weakSelf.streamViews objectForKey:loginUser];
-            if ([EMClient sharedClient].conferenceManager.mode == EMConferenceModeLarge) {
-                userView.mixLabel.hidden = NO;
-            }
-            
-            self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
-            self.localView.tag = 100;
-            self.localView.backgroundColor = [UIColor blackColor];
-            self.localView.scaleMode = EMCallViewScaleModeAspectFill;
-            pubConfig.localView = self.localView;
-            pubConfig.enableVideo = NO;
-            
-            //3.3.9 new 自定义视频数据
-            if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
-                pubConfig.enableCustomizeVideoData = YES;
-                pubConfig.enableVideo = YES;
-                [userView.videoView addSubview:self.localView];
-            }
-            
-            if (!self.isCreater) {
-                pubConfig.isMute = YES;
-            }
-            
-            [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference streamParam:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
-                if (aError) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
-                    [alertView show];
-                } else {
-                    weakSelf.pubStreamId = pubStreamId;
-                    
-                    EMConfUserView *resetView = [weakSelf.streamViews objectForKey:loginUser];
-                    resetView.viewId = pubStreamId;
-                    [weakSelf.streamViews removeObjectForKey:loginUser];
-                    [weakSelf.streamViews setObject:resetView forKey:pubStreamId];
-
-                    //3.3.9 new 自定义视频数据
-                    if (weakSelf.videoModel != VIDEO_INPUT_MODE_NONE) {
-                        [weakSelf openVideoCamera];
-                    }
-                    
-                    [[EMClient sharedClient].conferenceManager startMonitorSpeaker:weakSelf.conference timeInterval:300 completion:nil];
-                }
-            }];
+            return ;
         }
+        
+        weakSelf.conferenceId = aCall.confId;
+        weakSelf.conference = aCall;
+        
+        if (weakSelf.isCreater && [weakSelf.conversationId length] > 0) {
+            NSString *currentUser = [EMClient sharedClient].currentUsername;
+            EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请加入会议: %@", currentUser, weakSelf.conference.confId]];
+            EMMessage *message = [[EMMessage alloc] initWithConversationID:weakSelf.conversationId from:currentUser to:weakSelf.conversationId body:textBody ext:@{@"em_conference_op":@"invite", @"conferenceId":weakSelf.conference.confId, @"password":self.password, @"em_conference_type":@(weakSelf.conferenceType), @"msg_extension":@{@"inviter":currentUser, @"group_id":weakSelf.conversationId}}];
+            message.chatType = weakSelf.chatType;
+            [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+            [weakSelf showHint:@"已在群中发送邀请消息"];
+        }
+        
+        EMConfUserView *userView = [weakSelf.streamViews objectForKey:loginUser];
+        self.localView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
+        self.localView.tag = 100;
+        self.localView.backgroundColor = [UIColor blackColor];
+        self.localView.scaleMode = EMCallViewScaleModeAspectFill;
+        pubConfig.localView = self.localView;
+        pubConfig.enableVideo = NO;
+        
+        //3.3.9 new 自定义视频数据
+        if (self.videoModel != VIDEO_INPUT_MODE_NONE) {
+            pubConfig.enableCustomizeVideoData = YES;
+            pubConfig.enableVideo = YES;
+            [userView.videoView addSubview:self.localView];
+        }
+        
+        [[EMClient sharedClient].conferenceManager publishConference:weakSelf.conference streamParam:pubConfig completion:^(NSString *pubStreamId, EMError *aError) {
+            if (aError) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.pubFail", @"Pub stream failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
+                [alertView show];
+            } else {
+                weakSelf.pubStreamId = pubStreamId;
+                
+                EMConfUserView *resetView = [weakSelf.streamViews objectForKey:loginUser];
+                resetView.viewId = pubStreamId;
+                [weakSelf.streamViews removeObjectForKey:loginUser];
+                [weakSelf.streamViews setObject:resetView forKey:pubStreamId];
+                
+                //3.3.9 new 自定义视频数据
+                if (weakSelf.videoModel != VIDEO_INPUT_MODE_NONE) {
+                    [weakSelf openVideoCamera];
+                }
+                
+                [[EMClient sharedClient].conferenceManager startMonitorSpeaker:weakSelf.conference timeInterval:300 completion:nil];
+            }
+        }];
     };
     
     if (self.isCreater) {
-        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithPassword:weakSelf.password completion:block];
+        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.conferenceType password:self.password completion:block];
     } else {
-        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:_conferenceId password:weakSelf.password completion:^(EMCallConference *aCall, EMError *aError) {
+        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.conferenceId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, @"", aError);
         }];
     }
@@ -371,8 +388,8 @@
 - (void)_inviteUser:(NSString *)aUserName
 {
     NSString *currentUser = [EMClient sharedClient].currentUsername;
-    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"Invite %@ to join conference: %@", aUserName, self.conference.confId]];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"conferenceId":self.conference.confId, @"password":self.password, @"msg_extension":@{@"inviter":currentUser, @"group_id":@""}}];
+    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请你加入会议: %@", currentUser, self.conference.confId]];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"em_conference_op":@"invite", @"conferenceId":self.conference.confId, @"password":self.password, @"em_conference_type":@(self.conferenceType), @"msg_extension":@{@"inviter":currentUser, @"group_id":@""}}];
     message.chatType = EMChatTypeChat;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
@@ -444,20 +461,20 @@
 
 #pragma mark - EMConferenceManagerDelegate
 
-- (void)userDidJoin:(EMCallConference *)aConference
-               user:(NSString *)aUserName
+- (void)memberDidJoin:(EMCallConference *)aConference
+               member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aUserName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aMember.memberName];
         [self showHint:message];
     }
 }
 
-- (void)userDidLeave:(EMCallConference *)aConference
-                user:(NSString *)aUserName
+- (void)memberDidLeave:(EMCallConference *)aConference
+                member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aUserName];
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aMember.memberName];
         [self showHint:message];
     }
 }
@@ -465,14 +482,10 @@
 - (void)streamDidUpdate:(EMCallConference *)aConference
               addStream:(EMCallStream *)aStream
 {
-    if (self.isCreater && [aConference.callId isEqualToString:self.conference.callId]) {
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
         [self.streamsDic setObject:aStream forKey:aStream.streamId];
         [self _subStream:aStream];
     }
-//    if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        [self.streamsDic setObject:aStream forKey:aStream.streamId];
-//        [self _subStream:aStream];
-//    }
 }
 
 - (void)streamDidUpdate:(EMCallConference *)aConference
@@ -618,6 +631,10 @@
 
 - (IBAction)inviteMemberAction:(id)sender
 {
+    if ([self.conversationId length] > 0) {
+        return;
+    }
+    
     NSMutableArray *usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContacts]];
     NSArray *streams = [self.streamsDic allValues];
     for (EMCallStream *stream in streams) {

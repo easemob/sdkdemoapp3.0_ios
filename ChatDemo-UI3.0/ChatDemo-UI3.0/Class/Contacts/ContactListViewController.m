@@ -246,14 +246,25 @@
             ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         }
-//        else if (row == 3) {
-//            RobotListViewController *robot = [[RobotListViewController alloc] init];
-//            [self.navigationController pushViewController:robot animated:YES];
-//        }
         
 #if DEMO_CALL == 1
         else if (row == 3) {
-            [[DemoConfManager sharedManager] pushConferenceController];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeCommunication];
+            }];
+            [alertController addAction:defaultAction];
+            
+            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeLargeCommunication];
+            }];
+            [alertController addAction:mixAction];
+            
+            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            
         }
         else if (row == 4) {
             [[DemoConfManager sharedManager] pushCustomVideoConferenceController];
