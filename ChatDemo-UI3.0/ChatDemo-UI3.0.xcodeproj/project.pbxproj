@@ -83,7 +83,6 @@
 		3A2DBA692058DD830066EFB8 /* EMConfAddUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2DBA652058DD830066EFB8 /* EMConfAddUserCell.m */; };
 		3A2DBA6B2058E1870066EFB8 /* EMConfUserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A2DBA6A2058E1870066EFB8 /* EMConfUserView.xib */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
-		3A36E18E201F3C16007D5C12 /* VideoCustomCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A36E18D201F3C15007D5C12 /* VideoCustomCamera.mm */; };
 		3A386ED21DE5539C000F3D8E /* EMCallViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E8B1DE5539C000F3D8E /* EMCallViewController.mm */; };
 		3A386ED31DE5539C000F3D8E /* EMCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A386E8C1DE5539C000F3D8E /* EMCallViewController.xib */; };
 		3A386ED41DE5539C000F3D8E /* EMVideoInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A386E8E1DE5539C000F3D8E /* EMVideoInfoViewController.m */; };
@@ -117,6 +116,7 @@
 		3ACCB11A206109EF0028F40A /* conf_talking@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACCB118206109EF0028F40A /* conf_talking@2x.png */; };
 		3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */; };
 		3AD29CC820A1AB6900B93EFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AD29CC720A1AB6900B93EFE /* Settings.bundle */; };
+		3AE6AA232122C8010026CC62 /* VideoCustomCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3AE6AA222122C8010026CC62 /* VideoCustomCamera.mm */; };
 		3AEA773520F854DE007B6DA6 /* MessageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEA773420F854DE007B6DA6 /* MessageSettingsViewController.m */; };
 		3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6561E1F5BD40022E835 /* EMGroupMembersViewController.m */; };
 		3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6A6591E1F80570022E835 /* EMGroupBansViewController.m */; };
@@ -422,8 +422,6 @@
 		3A32AB811DDEBF4600E03E27 /* EMSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchControllerDelegate.h; sourceTree = "<group>"; };
 		3A32AB821DDEBF4600E03E27 /* UIViewController+SearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SearchController.h"; sourceTree = "<group>"; };
 		3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SearchController.m"; sourceTree = "<group>"; };
-		3A36E18C201F3C15007D5C12 /* VideoCustomCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCustomCamera.h; sourceTree = "<group>"; };
-		3A36E18D201F3C15007D5C12 /* VideoCustomCamera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoCustomCamera.mm; sourceTree = "<group>"; };
 		3A386E8A1DE5539C000F3D8E /* EMCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallViewController.h; sourceTree = "<group>"; };
 		3A386E8B1DE5539C000F3D8E /* EMCallViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EMCallViewController.mm; sourceTree = "<group>"; };
 		3A386E8C1DE5539C000F3D8E /* EMCallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMCallViewController.xib; sourceTree = "<group>"; };
@@ -482,6 +480,8 @@
 		3AD0FB981E1E7267001F3957 /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
 		3AD0FB991E1E7267001F3957 /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
 		3AD29CC720A1AB6900B93EFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		3AE6AA212122C8010026CC62 /* VideoCustomCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCustomCamera.h; sourceTree = "<group>"; };
+		3AE6AA222122C8010026CC62 /* VideoCustomCamera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoCustomCamera.mm; sourceTree = "<group>"; };
 		3AEA773320F854DE007B6DA6 /* MessageSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageSettingsViewController.h; sourceTree = "<group>"; };
 		3AEA773420F854DE007B6DA6 /* MessageSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageSettingsViewController.m; sourceTree = "<group>"; };
 		3AECBA7A1E1B87EF0044D1B2 /* HyphenateVideoRecorder_CN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HyphenateVideoRecorder_CN.framework; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Release-iphoneos/HyphenateVideoRecorder_CN.framework"; sourceTree = "<group>"; };
@@ -963,8 +963,6 @@
 				3AC445EB211173CC00A31E52 /* CallResolutionViewController.h */,
 				3AC445EA211173CC00A31E52 /* CallResolutionViewController.m */,
 				3AB11E4720529B9F0061FD88 /* Conference */,
-				3A36E18C201F3C15007D5C12 /* VideoCustomCamera.h */,
-				3A36E18D201F3C15007D5C12 /* VideoCustomCamera.mm */,
 				3A1D30D91F389355004929BD /* imgs */,
 				3A386E891DE5539C000F3D8E /* 1v1call */,
 			);
@@ -991,8 +989,10 @@
 		3AB11E4720529B9F0061FD88 /* Conference */ = {
 			isa = PBXGroup;
 			children = (
-				3A2DBA6A2058E1870066EFB8 /* EMConfUserView.xib */,
 				3A2DBA5F2058DD830066EFB8 /* ChooseMember */,
+				3AE6AA212122C8010026CC62 /* VideoCustomCamera.h */,
+				3AE6AA222122C8010026CC62 /* VideoCustomCamera.mm */,
+				3A2DBA6A2058E1870066EFB8 /* EMConfUserView.xib */,
 				3AB11E4C20529B9F0061FD88 /* DemoConfManager.h */,
 				3AB11E4820529B9F0061FD88 /* DemoConfManager.m */,
 				3AB11E4B20529B9F0061FD88 /* ConferenceViewController.h */,
@@ -2007,13 +2007,13 @@
 				3A7E5EDB1F3C630900FE82CE /* EMCallOptions+NSCoding.m in Sources */,
 				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
 				D2B61E331BC7BEA6007CB53E /* ConversationListController.m in Sources */,
+				3AE6AA232122C8010026CC62 /* VideoCustomCamera.mm in Sources */,
 				3A386ED41DE5539C000F3D8E /* EMVideoInfoViewController.m in Sources */,
 				D2F7691F1CBF42DB009778FB /* SearchChatViewController.m in Sources */,
 				3C6BBA0619419EBD00A64684 /* EMRemarkImageView.m in Sources */,
 				D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */,
 				D29A6BAF1B720960002324BB /* UserProfileEditViewController.m in Sources */,
 				3C5EB36319407CAF005C7704 /* EMChooseViewController.m in Sources */,
-				3A36E18E201F3C16007D5C12 /* VideoCustomCamera.mm in Sources */,
 				3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */,
 				D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */,
 				3C3527361931D1BE00385240 /* BaseTableViewCell.m in Sources */,
