@@ -69,7 +69,7 @@
         _callSession = aCallSession;
         _isDismissing = NO;
         
-        if (aCallSession.type == EMCallTypeVideo) {
+        if (aCallSession.type == EMCallTypeVideo && ![self _isHeadphone]) {
             AVAudioSession *audioSession = [AVAudioSession sharedInstance];
             [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
             [audioSession setActive:NO error:nil];

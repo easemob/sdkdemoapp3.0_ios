@@ -630,7 +630,7 @@
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     if (self.outButton.selected) {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    }else {
+    } else {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
     }
     [audioSession setActive:YES error:nil];
