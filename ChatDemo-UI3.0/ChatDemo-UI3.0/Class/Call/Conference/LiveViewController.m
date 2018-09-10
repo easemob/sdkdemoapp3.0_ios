@@ -630,7 +630,7 @@
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     if (self.outButton.selected) {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    }else {
+    } else {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
     }
     [audioSession setActive:YES error:nil];
@@ -669,6 +669,26 @@
             [DemoCallManager sharedManager].isCalling = NO;
         }];
     }
+}
+
+- (IBAction)maxVideoKbpsAction:(id)sender
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"设置视频最大码率" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入视频最大码率";
+    }];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *textField = alertController.textFields.firstObject;
+        int kbps = [textField.text intValue];
+        [[EMClient sharedClient].conferenceManager updateConference:self.conference maxVideoKbps:kbps];
+    }];
+    [alertController addAction:okAction];
+    
+    [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Public

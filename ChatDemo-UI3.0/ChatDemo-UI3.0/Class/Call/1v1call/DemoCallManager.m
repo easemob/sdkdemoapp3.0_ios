@@ -14,7 +14,7 @@
 #import <CoreTelephony/CTCall.h>
 
 #import "EaseSDKHelper.h"
-//#import "EMVideoRecorderPlugin.h"
+//#import "EMCallRecorderPlugin.h"
 
 #import "MainViewController.h"
 #import "EMCallViewController.h"
@@ -81,7 +81,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
     
-//    [EMVideoRecorderPlugin initGlobalConfig];
+//    [EMCallRecorderPlugin initGlobalConfig];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
@@ -100,15 +100,15 @@ static DemoCallManager *callManager = nil;
     __weak typeof(self) weakSelf = self;
     self.callCenter = [[CTCallCenter alloc] init];
     self.callCenter.callEventHandler = ^(CTCall* call) {
-        if(call.callState == CTCallStateConnected) {
-            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
-        }
-        
 //        if(call.callState == CTCallStateConnected) {
-//            [weakSelf.currentController muteCall];
-//        } else if(call.callState == CTCallStateDisconnected) {
-//            [weakSelf.currentController resumeCall];
+//            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
 //        }
+        
+        if(call.callState == CTCallStateConnected) {
+            [weakSelf.currentController muteCall];
+        } else if(call.callState == CTCallStateDisconnected) {
+            [weakSelf.currentController resumeCall];
+        }
     };
 }
 
@@ -416,6 +416,9 @@ static DemoCallManager *callManager = nil;
     }
     
     [self _clearCurrentCallViewAndData];
+    
+//    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+//    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 

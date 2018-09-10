@@ -115,6 +115,16 @@
                                 <action selector="enableVideoAction:" destination="-1" eventType="touchUpInside" id="Xwq-Ym-W8o"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Cf-6S-jti">
+                            <rect key="frame" x="74" y="8" width="78" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="max VKbps">
+                                <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="maxVideoKbpsAction:" destination="-1" eventType="touchUpInside" id="AJA-f0-vVn"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="OCp-Ja-olY" firstAttribute="top" secondItem="41e-L0-0B0" secondAttribute="top" id="6TH-e2-WKb"/>

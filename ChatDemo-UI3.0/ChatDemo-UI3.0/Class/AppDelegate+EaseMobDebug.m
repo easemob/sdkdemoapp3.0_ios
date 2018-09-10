@@ -20,20 +20,19 @@
 
 -(BOOL)isSpecifyServer
 {
-    
-//    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+//    EMOptions *options0 = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
 //
-//    options.enableDnsConfig = NO;
-//    options.chatPort = 31297;
-//    options.chatServer = @"118.193.28.212";
-//    options.restServer = @"118.193.28.212:31083";
+//    options0.enableDnsConfig = NO;
+//    options0.chatPort = 6717;
+//    options0.chatServer = @"39.96.116.29";
+//    options0.restServer = @"39.96.116.29:8080";
 //
-//    options.apnsCertName = @"chatdemoui_dev";
-//    options.enableConsoleLog = YES;
+//    options0.apnsCertName = @"chatdemoui_dev";
+//    options0.enableConsoleLog = YES;
 //
-//    [[EMClient sharedClient] initializeSDKWithOptions:options];
+//    [[EMClient sharedClient] initializeSDKWithOptions:options0];
 //
-//    
+//
 //    return YES;
     
 

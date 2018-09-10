@@ -12,10 +12,10 @@
 
 #import <Hyphenate/EMCallVideoView.h>
 
-//#import "EMVideoRecorderPlugin.h"
-
 #import "DemoCallManager.h"
 #import "EMVideoInfoViewController.h"
+
+//#import "EMCallRecorderPlugin.h"
 
 //3.3.9 new 自定义视频数据
 #import "VideoCustomCamera.h"
@@ -69,7 +69,7 @@
         _callSession = aCallSession;
         _isDismissing = NO;
         
-        if (aCallSession.type == EMCallTypeVideo) {
+        if (aCallSession.type == EMCallTypeVideo && ![self _isHeadphone]) {
             AVAudioSession *audioSession = [AVAudioSession sharedInstance];
             [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
             [audioSession setActive:NO error:nil];
@@ -361,6 +361,46 @@
     [[DemoCallManager sharedManager] hangupCallWithReason:EMCallEndReasonHangup];
 }
 
+- (IBAction)recorderAction:(id)sender
+{
+//    UIButton *button = (UIButton *)sender;
+//    [button setTitle:@"停止录制" forState:UIControlStateSelected];
+//    button.selected = !button.isSelected;
+//
+//    if (!button.isSelected) {
+//        if (button.tag == 100) {
+//            [[EMCallRecorderPlugin sharedInstance] stopAudioRecordWithCcompletion:^(NSString *aFilePath, EMError *aError) {
+//                NSLog(@"录制语音路径：%@", aFilePath);
+//            }];
+//        } else if (button.tag == 200) {
+//            NSString *path = [[EMCallRecorderPlugin sharedInstance] stopVideoRecording:nil];
+//            NSLog(@"录制音视频路径：%@", path);
+//        }
+//    } else {
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"录制" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//
+//        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"录制语音" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            button.tag = 100;
+//            [[EMCallRecorderPlugin sharedInstance] startAudioRecordWithCompletion:^(EMError *aError) {
+//                //
+//            }];
+//        }];
+//        [alertController addAction:defaultAction];
+//
+//        UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"录制音视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            button.tag = 200;
+//            NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//            NSString *filePath = [path stringByAppendingPathComponent:@"HyphenateSDK"];
+//            [[EMCallRecorderPlugin sharedInstance] startVideoRecordingToFilePath:filePath error:nil];
+//        }];
+//        [alertController addAction:mixAction];
+//
+//        [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:nil]];
+//        
+//        [self presentViewController:alertController animated:YES completion:nil];
+//    }
+}
+
 - (void)handleAudioRouteChanged:(NSNotification *)aNotif
 {
     NSDictionary *interuptionDict = aNotif.userInfo;
@@ -506,6 +546,7 @@
 {
     [self.callSession pauseVoice];
     [self.callSession pauseVideo];
+    
 }
 
 - (void)resumeCall

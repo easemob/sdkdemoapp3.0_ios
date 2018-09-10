@@ -23,8 +23,6 @@
 @property (nonatomic, strong) UISwitch *cameraSwitch;
 @property (nonatomic, strong) UISwitch *fixedSwitch;
 
-@property (strong, nonatomic) UISwitch *audioMixSwitch;
-
 @end
 
 @implementation CallSettingViewController
@@ -41,24 +39,6 @@
     frame.origin.x = self.view.frame.size.width - 10 - frame.size.width;
     frame.origin.y = 10;
     self.fixedSwitch.frame = frame;
-    
-    self.audioMixSwitch = [[UISwitch alloc] init];
-    self.audioMixSwitch.frame = frame;
-    [self.audioMixSwitch addTarget:self action:@selector(audioMixSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-    self.audioMixSwitch.on = NO;
-    
-    EMConferenceMode model = EMConferenceModeLarge;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    id obj = [userDefaults objectForKey:@"audioMix"];
-    if (obj) {
-        model = (EMConferenceMode)[obj integerValue];
-    } else {
-        [userDefaults setObject:[NSNumber numberWithInteger:model] forKey:@"audioMix"];
-        [userDefaults synchronize];
-    }
-    if (model == EMConferenceModeLarge) {
-        self.audioMixSwitch.on = YES;
-    }
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     [self.fixedSwitch setOn:options.isFixedVideoResolution animated:NO];
@@ -313,19 +293,6 @@
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[NSNumber numberWithBool:control.isOn] forKey:@"showCallInfo"];
-    [userDefaults synchronize];
-}
-
-- (void)audioMixSwitchChanged:(UISwitch *)control
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-#if DEMO_CALL == 1
-    EMConferenceMode model = control.isOn ? EMConferenceModeLarge : EMConferenceModeNormal;
-    [userDefaults setObject:[NSNumber numberWithInteger:model] forKey:@"audioMix"];
-    [[EMClient sharedClient].conferenceManager setMode:model];
-#endif
-    
     [userDefaults synchronize];
 }
 
