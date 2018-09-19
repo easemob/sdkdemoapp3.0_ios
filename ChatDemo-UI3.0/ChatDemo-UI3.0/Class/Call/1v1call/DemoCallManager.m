@@ -19,17 +19,18 @@
 #import "MainViewController.h"
 #import "EMCallViewController.h"
 
+#import "Call1v1AudioViewController.h"
+#import "Call1v1VideoViewController.h"
+
 static DemoCallManager *callManager = nil;
 
 @interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate, EMCallBuilderDelegate>
 
 @property (strong, nonatomic) NSObject *callLock;
+@property (strong, nonatomic) EMCallSession *currentCall;
+@property (nonatomic, strong) EM1v1CallViewController *currentController;
 
-@property (strong, nonatomic) NSTimer *timer;
-
-@property (strong, nonatomic) EMCallSession *currentSession;
-
-@property (strong, nonatomic) EMCallViewController *currentController;
+@property (strong, nonatomic) NSTimer *timeoutTimer;
 
 @property (nonatomic, strong) CTCallCenter *callCenter;
 
@@ -66,7 +67,8 @@ static DemoCallManager *callManager = nil;
     self.callCenter = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_CALL object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_MAKE1V1CALL object:nil];
 }
 
 #pragma mark - private
@@ -74,13 +76,14 @@ static DemoCallManager *callManager = nil;
 - (void)_initManager
 {
     _callLock = [[NSObject alloc] init];
-    _currentSession = nil;
+    _currentCall = nil;
     _currentController = nil;
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
     
+//    //录制相关功能初始化
 //    [EMCallRecorderPlugin initGlobalConfig];
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
@@ -95,59 +98,46 @@ static DemoCallManager *callManager = nil;
     }
     [[EMClient sharedClient].callManager setCallOptions:options];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeCall:) name:KNOTIFICATION_CALL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:KNOTIFICATION_MAKE1V1CALL object:nil];
     
-    __weak typeof(self) weakSelf = self;
-    self.callCenter = [[CTCallCenter alloc] init];
-    self.callCenter.callEventHandler = ^(CTCall* call) {
+//    __weak typeof(self) weakSelf = self;
+//    self.callCenter = [[CTCallCenter alloc] init];
+//    self.callCenter.callEventHandler = ^(CTCall* call) {
+////        if(call.callState == CTCallStateConnected) {
+////            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
+////        }
+//
 //        if(call.callState == CTCallStateConnected) {
-//            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
+//            [weakSelf.currentController muteCall];
+//        } else if(call.callState == CTCallStateDisconnected) {
+//            [weakSelf.currentController resumeCall];
 //        }
-        
-        if(call.callState == CTCallStateConnected) {
-            [weakSelf.currentController muteCall];
-        } else if(call.callState == CTCallStateDisconnected) {
-            [weakSelf.currentController resumeCall];
-        }
-    };
+//    };
 }
 
-- (void)_clearCurrentCallViewAndData
-{
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-    @synchronized (_callLock) {
-        self.currentSession = nil;
-        
-        self.currentController.isDismissing = YES;
-        [self.currentController clearData];
-        [self.currentController dismissViewControllerAnimated:NO completion:nil];
-        self.currentController = nil;
-    }
-}
-
-#pragma mark - private timer
+#pragma mark - Call Timeout Before Answered
 
 - (void)_timeoutBeforeCallAnswered
 {
-    [self hangupCallWithReason:EMCallEndReasonNoResponse];
+    [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
-- (void)_startCallTimer
+- (void)_startCallTimeoutTimer
 {
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:50 target:self selector:@selector(_timeoutBeforeCallAnswered) userInfo:nil repeats:NO];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:50 target:self selector:@selector(_timeoutBeforeCallAnswered) userInfo:nil repeats:NO];
 }
 
-- (void)_stopCallTimer
+- (void)_stopCallTimeoutTimer
 {
-    if (self.timer == nil) {
+    if (self.timeoutTimer == nil) {
         return;
     }
     
-    [self.timer invalidate];
-    self.timer = nil;
+    [self.timeoutTimer invalidate];
+    self.timeoutTimer = nil;
 }
 
 #pragma mark - EMCallManagerDelegate
@@ -162,21 +152,25 @@ static DemoCallManager *callManager = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
     
-    if(self.isCalling || (self.currentSession && self.currentSession.status != EMCallSessionStatusDisconnected)){
+    if(self.isCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
     
     [[DemoCallManager sharedManager] setIsCalling:YES];
     @synchronized (_callLock) {
-        [self _startCallTimer];
+        [self _startCallTimeoutTimer];
         
-        self.currentSession = aSession;
-        self.currentController = [[EMCallViewController alloc] initWithCallSession:self.currentSession];
-        self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        self.currentCall = aSession;
+        if (aSession.type == EMCallTypeVoice) {
+            self.currentController = [[Call1v1AudioViewController alloc] initWithCallSession:self.currentCall];
+        } else {
+            self.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:self.currentCall isCustomData:NO];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentController) {
+                self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
                 [self.mainController presentViewController:self.currentController animated:NO completion:nil];
             }
         });
@@ -185,16 +179,16 @@ static DemoCallManager *callManager = nil;
 
 - (void)callDidConnect:(EMCallSession *)aSession
 {
-    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
-        [self.currentController stateToConnected];
+    if ([aSession.callId isEqualToString:self.currentCall.callId]) {
+        self.currentController.callStatus = EMCallSessionStatusConnected;
     }
 }
 
 - (void)callDidAccept:(EMCallSession *)aSession
 {
-    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
-        [self _stopCallTimer];
-        [self.currentController stateToAnswered];
+    if ([aSession.callId isEqualToString:self.currentCall.callId]) {
+        [self _stopCallTimeoutTimer];
+        self.currentController.callStatus = EMCallSessionStatusAccepted;
     }
 }
 
@@ -202,80 +196,56 @@ static DemoCallManager *callManager = nil;
             reason:(EMCallEndReason)aReason
              error:(EMError *)aError
 {
-    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
-        self.isCalling = NO;
-        [self _stopCallTimer];
-        
-        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
-        options.enableCustomizeVideoData = NO;
-        
-        @synchronized (_callLock) {
-            self.currentSession = nil;
-            [self _clearCurrentCallViewAndData];
-        }
-        
-        if (aReason != EMCallEndReasonHangup) {
-            NSString *reasonStr = @"end";
+    if (![aSession.callId isEqualToString:self.currentCall.callId]) {
+        return;
+    }
+    
+    [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
+    if (aReason != EMCallEndReasonHangup) {
+        if (aError) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
+        } else {
+            NSString *reasonStr = @"通话结束";
             switch (aReason) {
                 case EMCallEndReasonNoResponse:
-                {
-                    reasonStr = NSLocalizedString(@"call.noResponse", @"NO response");
-                }
+                    reasonStr = @"没有响应";
                     break;
                 case EMCallEndReasonDecline:
-                {
-                    reasonStr = NSLocalizedString(@"call.rejected", @"Reject the call");
-                }
+                    reasonStr = @"对方拒绝接通通话";
                     break;
                 case EMCallEndReasonBusy:
-                {
-                    reasonStr = NSLocalizedString(@"call.in", @"In the call...");
-                }
+                    reasonStr = @"对方正在通话中";
                     break;
                 case EMCallEndReasonFailed:
-                {
-                    reasonStr = NSLocalizedString(@"call.connectFailed", @"Connect failed");
-                }
-                    break;
-                case EMCallEndReasonUnsupported:
-                {
-                    reasonStr = NSLocalizedString(@"call.connectUnsupported", @"Unsupported");
-                }
+                    reasonStr = @"通话建立连接失败";
                     break;
                 case EMCallEndReasonRemoteOffline:
-                {
-                    reasonStr = NSLocalizedString(@"call.offline", @"Remote offline");
-                }
+                    reasonStr = @"对方不在线，无法接听通话";
                     break;
                 default:
                     break;
             }
             
-            if (aError) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
-            }
-            else{
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-                [alertView show];
-            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+            [alertView show];
         }
     }
 }
 
 - (void)callStateDidChange:(EMCallSession *)aSession
-                      type:(EMCallStreamingStatus)aType
+                      type:(EMCallStreamingStatus)aStatus
 {
-    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
-        [self.currentController setStreamType:aType];
+    if ([aSession.callId isEqualToString:self.currentCall.callId]) {
+        [self.currentController updateStreamingStatus:aStatus];
     }
 }
 
 - (void)callNetworkDidChange:(EMCallSession *)aSession
                       status:(EMCallNetworkStatus)aStatus
 {
-    if ([aSession.callId isEqualToString:self.currentSession.callId]) {
-        [self.currentController setNetwork:aStatus];
+    if ([aSession.callId isEqualToString:self.currentCall.callId]) {
+//        [self.currentController setNetwork:aStatus];
     }
 }
 
@@ -294,7 +264,7 @@ static DemoCallManager *callManager = nil;
 
 #pragma mark - NSNotification
 
-- (void)makeCall:(NSNotification*)notify
+- (void)handleMake1v1Call:(NSNotification*)notify
 {
     if (!notify.object) {
         return;
@@ -305,12 +275,12 @@ static DemoCallManager *callManager = nil;
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
         UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
+            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
         }];
         [alertController addAction:defaultAction];
         
         UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
+            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
         }];
         [alertController addAction:customAction];
         
@@ -318,22 +288,13 @@ static DemoCallManager *callManager = nil;
         
         [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
     } else {
-        [self makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
+        [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
     }
 }
 
-#pragma mark - public
-
-- (void)saveCallOptions
-{
-    NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
-    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
-    [NSKeyedArchiver archiveRootObject:options toFile:file];
-}
-
-- (void)makeCallWithUsername:(NSString *)aUsername
-                        type:(EMCallType)aType
-           isCustomVideoData:(BOOL)aIsCustomVideo
+- (void)_makeCallWithUsername:(NSString *)aUsername
+                         type:(EMCallType)aType
+            isCustomVideoData:(BOOL)aIsCustomVideo
 {
     if ([aUsername length] == 0) {
         return;
@@ -350,13 +311,13 @@ static DemoCallManager *callManager = nil;
             }
             
             @synchronized (self.callLock) {
-                strongSelf.currentSession = aCallSession;
+                strongSelf.currentCall = aCallSession;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (aType == EMCallTypeVideo) {
-                        strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession isCustomData:aIsCustomVideo];
+                        strongSelf.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:strongSelf.currentCall isCustomData:aIsCustomVideo];
                     } else {
-                        strongSelf.currentController = [[EMCallViewController alloc] initWithCallSession:strongSelf.currentSession];
+                        strongSelf.currentController = [[Call1v1AudioViewController alloc] initWithCallSession:strongSelf.currentCall];
                     }
                     
                     if (strongSelf.currentController) {
@@ -365,7 +326,7 @@ static DemoCallManager *callManager = nil;
                 });
             }
             
-            [weakSelf _startCallTimer];
+            [weakSelf _startCallTimeoutTimer];
         }
         else {
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
@@ -380,15 +341,24 @@ static DemoCallManager *callManager = nil;
     }];
 }
 
+#pragma mark - public
+
+- (void)saveCallOptions
+{
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    [NSKeyedArchiver archiveRootObject:options toFile:file];
+}
+
 - (void)answerCall:(NSString *)aCallId
 {
-    if (!self.currentSession || ![self.currentSession.callId isEqualToString:aCallId]) {
+    if (!self.currentCall || ![self.currentCall.callId isEqualToString:aCallId]) {
         return ;
     }
     
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:weakSelf.currentSession.callId];
+        EMError *error = [[EMClient sharedClient].callManager answerIncomingCall:weakSelf.currentCall.callId];
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (error.code == EMErrorNetworkUnavailable) {
@@ -396,29 +366,52 @@ static DemoCallManager *callManager = nil;
                     [alertView show];
                 }
                 else{
-                    [weakSelf hangupCallWithReason:EMCallEndReasonFailed];
+                    [weakSelf endCallWithId:aCallId reason:EMCallEndReasonFailed];
                 }
             });
         }
     });
 }
 
-- (void)hangupCallWithReason:(EMCallEndReason)aReason
+- (void)_endCallWithId:(NSString *)aCallId
+          isNeedHangup:(BOOL)aIsNeedHangup
+                reason:(EMCallEndReason)aReason
 {
+    if (!self.currentCall || ![self.currentCall.callId isEqualToString:aCallId]) {
+        if (aIsNeedHangup) {
+            [[EMClient sharedClient].callManager endCall:aCallId reason:aReason];
+        }
+        return ;
+    }
+    
     self.isCalling = NO;
-    [self _stopCallTimer];
+    [self _stopCallTimeoutTimer];
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = NO;
     
-    if (self.currentSession) {
-        [[EMClient sharedClient].callManager endCall:self.currentSession.callId reason:aReason];
+    if (aIsNeedHangup) {
+        [[EMClient sharedClient].callManager endCall:aCallId reason:aReason];
     }
     
-    [self _clearCurrentCallViewAndData];
-    
-//    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-//    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    @synchronized (_callLock) {
+        self.currentCall = nil;
+        
+        //        self.currentController.isDismissing = YES;
+        [self.currentController dismissViewControllerAnimated:NO completion:nil];
+        self.currentController = nil;
+        
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setActive:YES error:nil];
+    }
+}
+
+- (void)endCallWithId:(NSString *)aCallId
+               reason:(EMCallEndReason)aReason
+{
+    [self _endCallWithId:aCallId isNeedHangup:YES reason:aReason];
 }
 
 

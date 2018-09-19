@@ -22,14 +22,12 @@
 
 + (instancetype)sharedManager;
 
-- (void)saveCallOptions;
-
-- (void)makeCallWithUsername:(NSString *)aUsername
-                        type:(EMCallType)aType;
-
 - (void)answerCall:(NSString *)aCallId;
 
-- (void)hangupCallWithReason:(EMCallEndReason)aReason;
+- (void)endCallWithId:(NSString *)aCallId
+               reason:(EMCallEndReason)aReason;
+
+- (void)saveCallOptions;
 
 #endif
 

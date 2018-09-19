@@ -350,7 +350,7 @@
     [self _stopTimeTimer];
     [self _stopRing];
     
-    [[DemoCallManager sharedManager] hangupCallWithReason:EMCallEndReasonDecline];
+    [[DemoCallManager sharedManager] endCallWithId:self.callSession.callId reason:EMCallEndReasonDecline];
 }
 
 - (IBAction)hangupAction:(id)sender
@@ -358,7 +358,7 @@
     [self _stopTimeTimer];
     [self _stopRing];
     
-    [[DemoCallManager sharedManager] hangupCallWithReason:EMCallEndReasonHangup];
+    [[DemoCallManager sharedManager] endCallWithId:self.callSession.callId reason:EMCallEndReasonHangup];
 }
 
 - (IBAction)recorderAction:(id)sender
@@ -369,7 +369,7 @@
 //
 //    if (!button.isSelected) {
 //        if (button.tag == 100) {
-//            [[EMCallRecorderPlugin sharedInstance] stopAudioRecordWithCcompletion:^(NSString *aFilePath, EMError *aError) {
+//            [[EMCallRecorderPlugin sharedInstance] stopAudioRecordWithCompletion:^(NSString *aFilePath, EMError *aError) {
 //                NSLog(@"录制语音路径：%@", aFilePath);
 //            }];
 //        } else if (button.tag == 200) {
