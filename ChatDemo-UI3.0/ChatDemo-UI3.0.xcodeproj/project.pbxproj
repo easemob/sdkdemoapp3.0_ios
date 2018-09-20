@@ -93,6 +93,7 @@
 		3A2F294A21537E7E00F86EB5 /* ConfInviteUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F293F21537E7E00F86EB5 /* ConfInviteUserCell.m */; };
 		3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AED21537EF200F86EB5 /* DemoCallManager.m */; };
 		3A2F2AF121537EF300F86EB5 /* EMCallOptions+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AEE21537EF200F86EB5 /* EMCallOptions+NSCoding.m */; };
+		3A2F2AF72153862900F86EB5 /* EMCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AF52153862900F86EB5 /* EMCallViewController.m */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
 		3A4FF463211AD2D700978F7C /* confr_video_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4FF462211AD2D700978F7C /* confr_video_off@2x.png */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
@@ -536,6 +537,8 @@
 		3A2F2AED21537EF200F86EB5 /* DemoCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCallManager.m; sourceTree = "<group>"; };
 		3A2F2AEE21537EF200F86EB5 /* EMCallOptions+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EMCallOptions+NSCoding.m"; sourceTree = "<group>"; };
 		3A2F2AEF21537EF300F86EB5 /* DemoCallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoCallManager.h; sourceTree = "<group>"; };
+		3A2F2AF52153862900F86EB5 /* EMCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMCallViewController.m; sourceTree = "<group>"; };
+		3A2F2AF62153862900F86EB5 /* EMCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallViewController.h; sourceTree = "<group>"; };
 		3A32AB811DDEBF4600E03E27 /* EMSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchControllerDelegate.h; sourceTree = "<group>"; };
 		3A32AB821DDEBF4600E03E27 /* UIViewController+SearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SearchController.h"; sourceTree = "<group>"; };
 		3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SearchController.m"; sourceTree = "<group>"; };
@@ -1141,12 +1144,12 @@
 				3A2F2AED21537EF200F86EB5 /* DemoCallManager.m */,
 				3A2F2AEC21537EF200F86EB5 /* EMCallOptions+NSCoding.h */,
 				3A2F2AEE21537EF200F86EB5 /* EMCallOptions+NSCoding.m */,
-				3A2F292E21537E7E00F86EB5 /* Call1v1VideoViewController.h */,
-				3A2F292F21537E7E00F86EB5 /* Call1v1AudioViewController.m */,
 				3A2F293021537E7E00F86EB5 /* EM1v1CallViewController.h */,
-				3A2F293121537E7E00F86EB5 /* Call1v1VideoViewController.m */,
-				3A2F293221537E7E00F86EB5 /* Call1v1AudioViewController.h */,
 				3A2F293321537E7E00F86EB5 /* EM1v1CallViewController.m */,
+				3A2F293221537E7E00F86EB5 /* Call1v1AudioViewController.h */,
+				3A2F292F21537E7E00F86EB5 /* Call1v1AudioViewController.m */,
+				3A2F292E21537E7E00F86EB5 /* Call1v1VideoViewController.h */,
+				3A2F293121537E7E00F86EB5 /* Call1v1VideoViewController.m */,
 			);
 			path = 1v1;
 			sourceTree = "<group>";
@@ -1154,12 +1157,14 @@
 		3A2F293421537E7E00F86EB5 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				3A2F293521537E7E00F86EB5 /* CallResolutionViewController.m */,
-				3A2F293621537E7E00F86EB5 /* CallSettingViewController.m */,
+				3A2F2AF62153862900F86EB5 /* EMCallViewController.h */,
+				3A2F2AF52153862900F86EB5 /* EMCallViewController.m */,
+				3A2F293A21537E7E00F86EB5 /* EMButton.h */,
 				3A2F293721537E7E00F86EB5 /* EMButton.m */,
 				3A2F293821537E7E00F86EB5 /* CallResolutionViewController.h */,
+				3A2F293521537E7E00F86EB5 /* CallResolutionViewController.m */,
 				3A2F293921537E7E00F86EB5 /* CallSettingViewController.h */,
-				3A2F293A21537E7E00F86EB5 /* EMButton.h */,
+				3A2F293621537E7E00F86EB5 /* CallSettingViewController.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -2401,6 +2406,7 @@
 				3C6BBA0619419EBD00A64684 /* EMRemarkImageView.m in Sources */,
 				3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */,
 				D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */,
+				3A2F2AF72153862900F86EB5 /* EMCallViewController.m in Sources */,
 				3A2F294821537E7E00F86EB5 /* ConfInviteUsersViewController.m in Sources */,
 				D29A6BAF1B720960002324BB /* UserProfileEditViewController.m in Sources */,
 				3C5EB36319407CAF005C7704 /* EMChooseViewController.m in Sources */,

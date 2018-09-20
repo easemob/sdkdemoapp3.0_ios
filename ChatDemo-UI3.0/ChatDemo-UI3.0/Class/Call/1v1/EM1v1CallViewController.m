@@ -36,7 +36,7 @@
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
-    [self _setupBaseSubviews];
+    [self _setup1v1CallControllerSubviews];
     
     self.remoteNameLabel.text = self.callSession.remoteName;
     self.timeLabel.hidden = YES;
@@ -61,20 +61,11 @@
 
 #pragma mark - Subviews
 
-- (void)_setupBaseSubviews
+- (void)_setup1v1CallControllerSubviews
 {
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.statusLabel = [[UILabel alloc] init];
-    self.statusLabel.backgroundColor = [UIColor clearColor];
-    self.statusLabel.font = [UIFont systemFontOfSize:25];
-    self.statusLabel.textColor = [UIColor blackColor];
     self.statusLabel.text = @"正在建立连接...";
-    [self.view addSubview:self.statusLabel];
-    [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(35);
-        make.left.equalTo(self.view).offset(15);
-    }];
     
     self.timeLabel = [[UILabel alloc] init];
     self.timeLabel.backgroundColor = [UIColor clearColor];
@@ -113,36 +104,12 @@
         make.right.equalTo(self.view).offset(-20);
     }];
     
-    self.microphoneButton = [[EMButton alloc] initWithTitle:@"麦克风" target:self action:@selector(microphoneButtonAction)];
-    [self.microphoneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
-    [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_gray"] forState:UIControlStateNormal];
-    [self.microphoneButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
-    [self.view addSubview:self.microphoneButton];
-    
-    self.speakerButton = [[EMButton alloc] initWithTitle:@"扬声器" target:self action:@selector(speakerButtonAction)];
-    [self.speakerButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.speakerButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-    [self.speakerButton setImage:[UIImage imageNamed:@"speaker_gray"] forState:UIControlStateNormal];
-    [self.speakerButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
-    [self.view addSubview:self.speakerButton];
-    
-    self.minButton = [[UIButton alloc] init];
-    self.minButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.minButton setImage:[UIImage imageNamed:@"minimize_gray"] forState:UIControlStateNormal];
-    [self.minButton addTarget:self action:@selector(minimizeAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.minButton];
     [self.minButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-30);
         make.right.equalTo(self.view).offset(-25);
         make.width.height.equalTo(@40);
     }];
     
-    self.hangupButton = [[UIButton alloc] init];
-    self.hangupButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.hangupButton setImage:[UIImage imageNamed:@"hangup"] forState:UIControlStateNormal];
-    [self.hangupButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.hangupButton];
     if (self.callSession.isCaller) {
         [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.view);
@@ -343,15 +310,7 @@
 
 - (void)speakerButtonAction
 {
-    self.speakerButton.selected = !self.speakerButton.isSelected;
-    
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    if (self.speakerButton.isSelected) {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    } else {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    }
-    [audioSession setActive:YES error:nil];
+    [super speakerButtonAction];
 }
 
 - (void)minimizeAction
