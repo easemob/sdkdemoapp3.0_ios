@@ -11,6 +11,7 @@
 #import "Masonry.h"
 
 #import "RealtimeSearchUtil.h"
+#import "DemoConfManager.h"
 #import "ConfInviteUserCell.h"
 
 @interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
@@ -56,6 +57,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    self.searchBar.delegate = nil;
 }
 
 #pragma mark - Subviews
@@ -248,7 +254,10 @@
 
 - (void)startConferenceAction
 {
-    
+    __weak typeof(self) weakSelf = self;
+    [self dismissViewControllerAnimated:YES completion:^{
+        [[DemoConfManager sharedManager] startConferenceWithType:weakSelf.type inviteUsers:weakSelf.inviteUsers];
+    }];
 }
 
 @end

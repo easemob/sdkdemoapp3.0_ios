@@ -93,7 +93,13 @@
 		3A2F294A21537E7E00F86EB5 /* ConfInviteUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F293F21537E7E00F86EB5 /* ConfInviteUserCell.m */; };
 		3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AED21537EF200F86EB5 /* DemoCallManager.m */; };
 		3A2F2AF121537EF300F86EB5 /* EMCallOptions+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AEE21537EF200F86EB5 /* EMCallOptions+NSCoding.m */; };
+		3A2F2AF42153800900F86EB5 /* EMConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AF32153800900F86EB5 /* EMConferenceViewController.m */; };
 		3A2F2AF72153862900F86EB5 /* EMCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2AF52153862900F86EB5 /* EMCallViewController.m */; };
+		3A2F2C9B21538CF600F86EB5 /* DemoConfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2C9A21538CF600F86EB5 /* DemoConfManager.m */; };
+		3A2F2CA3215393E600F86EB5 /* invite_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2C9F215393E500F86EB5 /* invite_white@2x.png */; };
+		3A2F2CA4215393E600F86EB5 /* invite_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA0215393E500F86EB5 /* invite_gray@3x.png */; };
+		3A2F2CA5215393E600F86EB5 /* invite_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */; };
+		3A2F2CA6215393E600F86EB5 /* invite_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
 		3A4FF463211AD2D700978F7C /* confr_video_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4FF462211AD2D700978F7C /* confr_video_off@2x.png */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
@@ -107,7 +113,6 @@
 		3A8DC51F2063A6BB002CD774 /* conf_camera_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8DC51D2063A6BB002CD774 /* conf_camera_off@2x.png */; };
 		3A9E54812108278D009D946A /* LiveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A9E54802108278D009D946A /* LiveViewController.xib */; };
 		3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */; };
-		3AB11E5620529B9F0061FD88 /* DemoConfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB11E4820529B9F0061FD88 /* DemoConfManager.m */; };
 		3AB11E5820529B9F0061FD88 /* ConferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */; };
 		3AB11E5920529B9F0061FD88 /* ConferenceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
@@ -537,8 +542,16 @@
 		3A2F2AED21537EF200F86EB5 /* DemoCallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCallManager.m; sourceTree = "<group>"; };
 		3A2F2AEE21537EF200F86EB5 /* EMCallOptions+NSCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EMCallOptions+NSCoding.m"; sourceTree = "<group>"; };
 		3A2F2AEF21537EF300F86EB5 /* DemoCallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoCallManager.h; sourceTree = "<group>"; };
+		3A2F2AF22153800900F86EB5 /* EMConferenceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMConferenceViewController.h; sourceTree = "<group>"; };
+		3A2F2AF32153800900F86EB5 /* EMConferenceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMConferenceViewController.m; sourceTree = "<group>"; };
 		3A2F2AF52153862900F86EB5 /* EMCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMCallViewController.m; sourceTree = "<group>"; };
 		3A2F2AF62153862900F86EB5 /* EMCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallViewController.h; sourceTree = "<group>"; };
+		3A2F2C9921538CF600F86EB5 /* DemoConfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoConfManager.h; sourceTree = "<group>"; };
+		3A2F2C9A21538CF600F86EB5 /* DemoConfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoConfManager.m; sourceTree = "<group>"; };
+		3A2F2C9F215393E500F86EB5 /* invite_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_white@2x.png"; sourceTree = "<group>"; };
+		3A2F2CA0215393E500F86EB5 /* invite_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_gray@3x.png"; sourceTree = "<group>"; };
+		3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_gray@2x.png"; sourceTree = "<group>"; };
+		3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_white@3x.png"; sourceTree = "<group>"; };
 		3A32AB811DDEBF4600E03E27 /* EMSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchControllerDelegate.h; sourceTree = "<group>"; };
 		3A32AB821DDEBF4600E03E27 /* UIViewController+SearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SearchController.h"; sourceTree = "<group>"; };
 		3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SearchController.m"; sourceTree = "<group>"; };
@@ -563,10 +576,8 @@
 		3A9E54802108278D009D946A /* LiveViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveViewController.xib; sourceTree = "<group>"; };
 		3AA412E61DDEDB2600317D72 /* EMSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchResultController.h; sourceTree = "<group>"; };
 		3AA412E71DDEDB2600317D72 /* EMSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSearchResultController.m; sourceTree = "<group>"; };
-		3AB11E4820529B9F0061FD88 /* DemoConfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoConfManager.m; sourceTree = "<group>"; };
 		3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConferenceViewController.xib; sourceTree = "<group>"; };
 		3AB11E4B20529B9F0061FD88 /* ConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConferenceViewController.h; sourceTree = "<group>"; };
-		3AB11E4C20529B9F0061FD88 /* DemoConfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoConfManager.h; sourceTree = "<group>"; };
 		3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ConferenceViewController.mm; sourceTree = "<group>"; };
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -1173,6 +1184,10 @@
 			isa = PBXGroup;
 			children = (
 				3A2F293C21537E7E00F86EB5 /* Invite */,
+				3A2F2C9921538CF600F86EB5 /* DemoConfManager.h */,
+				3A2F2C9A21538CF600F86EB5 /* DemoConfManager.m */,
+				3A2F2AF22153800900F86EB5 /* EMConferenceViewController.h */,
+				3A2F2AF32153800900F86EB5 /* EMConferenceViewController.m */,
 			);
 			path = Confr;
 			sourceTree = "<group>";
@@ -1180,11 +1195,11 @@
 		3A2F293C21537E7E00F86EB5 /* Invite */ = {
 			isa = PBXGroup;
 			children = (
-				3A2F293D21537E7E00F86EB5 /* ConfInviteUsersViewController.m */,
-				3A2F293E21537E7E00F86EB5 /* ConfInviteUserCell.xib */,
-				3A2F293F21537E7E00F86EB5 /* ConfInviteUserCell.m */,
 				3A2F294021537E7E00F86EB5 /* ConfInviteUsersViewController.h */,
+				3A2F293D21537E7E00F86EB5 /* ConfInviteUsersViewController.m */,
 				3A2F294121537E7E00F86EB5 /* ConfInviteUserCell.h */,
+				3A2F293F21537E7E00F86EB5 /* ConfInviteUserCell.m */,
+				3A2F293E21537E7E00F86EB5 /* ConfInviteUserCell.xib */,
 			);
 			path = Invite;
 			sourceTree = "<group>";
@@ -1220,12 +1235,10 @@
 				3A2DBA5F2058DD830066EFB8 /* ChooseMember */,
 				3AE6AA212122C8010026CC62 /* VideoCustomCamera.h */,
 				3AE6AA222122C8010026CC62 /* VideoCustomCamera.mm */,
-				3A2DBA6A2058E1870066EFB8 /* EMConfUserView.xib */,
-				3AB11E4C20529B9F0061FD88 /* DemoConfManager.h */,
-				3AB11E4820529B9F0061FD88 /* DemoConfManager.m */,
 				3AB11E4B20529B9F0061FD88 /* ConferenceViewController.h */,
 				3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */,
 				3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */,
+				3A2DBA6A2058E1870066EFB8 /* EMConfUserView.xib */,
 				3AFC3C0121073DB60055A6A1 /* LiveViewController.h */,
 				3AFC3C0221073DB60055A6A1 /* LiveViewController.m */,
 				3A9E54802108278D009D946A /* LiveViewController.xib */,
@@ -1236,6 +1249,10 @@
 		3ACFCD3921524B18009F488D /* CallImages */ = {
 			isa = PBXGroup;
 			children = (
+				3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */,
+				3A2F2CA0215393E500F86EB5 /* invite_gray@3x.png */,
+				3A2F2C9F215393E500F86EB5 /* invite_white@2x.png */,
+				3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */,
 				3ACFCDDE21525238009F488D /* micphone_gray@2x.png */,
 				3ACFCDCF21525236009F488D /* micphone_gray@3x.png */,
 				3ACFCDDC21525238009F488D /* micphone_white@2x.png */,
@@ -2122,6 +2139,7 @@
 				EBD2ABB21A7CDAC000D16528 /* tabbar_contacts@2x.png in Resources */,
 				EBD2AB9E1A7CDAC000D16528 /* password.png in Resources */,
 				D2B3DACA1BF1D7B700913BD5 /* icon_010.gif in Resources */,
+				3A2F2CA4215393E600F86EB5 /* invite_gray@3x.png in Resources */,
 				D2B3DACF1BF1D7B700913BD5 /* icon_018_cover.png in Resources */,
 				3A1D31331F389355004929BD /* Button_Mute@3x.png in Resources */,
 				EBD2AB511A7CDAC000D16528 /* chat_location_detail_disclosureHL.png in Resources */,
@@ -2217,6 +2235,7 @@
 				3A1D31421F389355004929BD /* Button_Speaker_disabled@3x.png in Resources */,
 				EBD2AB8F1A7CDAC000D16528 /* chat_receiver_bg@2x.png in Resources */,
 				EBD2ABA91A7CDAC000D16528 /* groupPrivateHeader@2x.png in Resources */,
+				3A2F2CA5215393E600F86EB5 /* invite_gray@2x.png in Resources */,
 				3ACFCDC721524B18009F488D /* animate_00028.png in Resources */,
 				3ACCB119206109EF0028F40A /* conf_talking@3x.png in Resources */,
 				3A1D31441F389355004929BD /* Button_Stats@2x.png in Resources */,
@@ -2279,6 +2298,7 @@
 				3A1D31261F389355004929BD /* Button_Cancel_Call@2x.png in Resources */,
 				D2B3DAE11BF1D7B700913BD5 /* icon_035_cover.png in Resources */,
 				3ACFCD9621524B18009F488D /* animate_00044.png in Resources */,
+				3A2F2CA3215393E600F86EB5 /* invite_white@2x.png in Resources */,
 				3A1D31241F389355004929BD /* Button_Camera_disabled@3x.png in Resources */,
 				3A1D31551F389355004929BD /* conf_uncheck@2x.png in Resources */,
 				D2B3DAD21BF1D7B700913BD5 /* icon_019.gif in Resources */,
@@ -2300,6 +2320,7 @@
 				3A1D313F1F389355004929BD /* Button_Speaker_active@3x.png in Resources */,
 				3A1D31271F389355004929BD /* Button_Cancel_Call@3x.png in Resources */,
 				D2B3DAD41BF1D7B700913BD5 /* icon_020.gif in Resources */,
+				3A2F2CA6215393E600F86EB5 /* invite_white@3x.png in Resources */,
 				3A1D312C1F389355004929BD /* Button_Minimize@2x.png in Resources */,
 				3A1D313B1F389355004929BD /* Button_Speaker@2x.png in Resources */,
 				EBD2ABAF1A7CDAC000D16528 /* tabbar_chatsHL.png in Resources */,
@@ -2392,6 +2413,7 @@
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
 				3A2F294621537E7E00F86EB5 /* CallSettingViewController.m in Sources */,
+				3A2F2C9B21538CF600F86EB5 /* DemoConfManager.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				846D77051E6FA4DD0091DC94 /* EMCreateChatroomController.m in Sources */,
 				9003D9131939D8D000DC38A4 /* AddFriendCell.m in Sources */,
@@ -2416,7 +2438,6 @@
 				9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */,
 				906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */,
 				3CBF90C019302F5000AD68AE /* BaseViewController.m in Sources */,
-				3AB11E5620529B9F0061FD88 /* DemoConfManager.m in Sources */,
 				3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */,
 				906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */,
 				3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */,
@@ -2483,6 +2504,7 @@
 				D2BF98B31AEDD780009E0D5C /* EditNicknameViewController.m in Sources */,
 				3AD0FB9A1E1E7267001F3957 /* EMGroupAdminsViewController.m in Sources */,
 				D28AE8D31F22123C0028C18A /* EMDevicesViewController.m in Sources */,
+				3A2F2AF42153800900F86EB5 /* EMConferenceViewController.m in Sources */,
 				90911145192EEE6E008A48AA /* MainViewController.m in Sources */,
 				3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */,
 				3C6BBA0C1941A7CF00A64684 /* EMTextView.m in Sources */,

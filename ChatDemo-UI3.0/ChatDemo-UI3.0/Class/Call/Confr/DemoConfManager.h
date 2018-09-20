@@ -14,6 +14,7 @@
 #define KNOTIFICATION_CONFERENCE @"conference"
 
 @class MainViewController;
+@class EMConferenceViewController;
 @interface DemoConfManager : NSObject
 
 #if DEMO_CALL == 1
@@ -32,7 +33,12 @@
 
 #pragma mark - New
 
-- (void)startConferenceWithType:(EMConferenceType)aType;
+- (void)selectConfMemberWithType:(EMConferenceType)aType;
+
+- (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
+                                            inviteUsers:(NSArray *)aInviteUsers;
+
+- (void)endConference:(EMCallConference *)aCall;
 
 #endif
 

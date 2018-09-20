@@ -17,12 +17,11 @@
 #import "EMConfUserSelectionViewController.h"
 
 #import "ConfInviteUsersViewController.h"
+#import "EMConferenceViewController.h"
 
 static DemoConfManager *confManager = nil;
 
 @interface DemoConfManager()<EMConferenceManagerDelegate, EMChatManagerDelegate>
-
-@property (strong, nonatomic) ConferenceViewController *currentController;
 
 @end
 
@@ -63,8 +62,6 @@ static DemoConfManager *confManager = nil;
 
 - (void)_initManager
 {
-    _currentController = nil;
-    
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
@@ -175,7 +172,7 @@ static DemoConfManager *confManager = nil;
 
 #pragma mark - New
 
-- (void)startConferenceWithType:(EMConferenceType)aType
+- (void)selectConfMemberWithType:(EMConferenceType)aType
 {
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aType];
     [self.mainController presentViewController:controller animated:NO completion:^{
@@ -184,6 +181,31 @@ static DemoConfManager *confManager = nil;
         [controller.dataArray addObjectsFromArray:usernames];
         [controller.tableView reloadData];
     }];
+}
+
+- (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
+                                            inviteUsers:(NSArray *)aInviteUsers
+{
+    [[DemoCallManager sharedManager] setIsCalling:YES];
+    
+    EMConferenceViewController *controller = [[EMConferenceViewController alloc] initWithType:aType inviteUsers:aInviteUsers];
+    [self.mainController presentViewController:controller animated:NO completion:nil];
+    
+    return controller;
+}
+
+- (void)endConference:(EMCallConference *)aCall
+{
+    if (aCall) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setActive:YES error:nil];
+        
+        [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
+        [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
+        
+        [[DemoCallManager sharedManager] setIsCalling:NO];
+    }
 }
 
 #endif

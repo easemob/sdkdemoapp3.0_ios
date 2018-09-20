@@ -252,12 +252,12 @@
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
             
             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] startConferenceWithType:EMConferenceTypeCommunication];
+                [[DemoConfManager sharedManager] selectConfMemberWithType:EMConferenceTypeCommunication];
             }];
             [alertController addAction:defaultAction];
             
             UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] startConferenceWithType:EMConferenceTypeLargeCommunication];
+                [[DemoConfManager sharedManager] selectConfMemberWithType:EMConferenceTypeLargeCommunication];
             }];
             [alertController addAction:mixAction];
             
