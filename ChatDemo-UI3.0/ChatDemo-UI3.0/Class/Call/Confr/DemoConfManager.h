@@ -36,9 +36,11 @@
 - (void)selectConfMemberWithType:(EMConferenceType)aType;
 
 - (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
+                                               password:(NSString *)aPassword
                                             inviteUsers:(NSArray *)aInviteUsers;
 
-- (void)endConference:(EMCallConference *)aCall;
+- (void)endConference:(EMCallConference *)aCall
+            isDestroy:(BOOL)aIsDestroy;
 
 #endif
 

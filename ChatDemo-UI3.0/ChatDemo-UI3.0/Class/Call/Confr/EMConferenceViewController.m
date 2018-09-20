@@ -8,8 +8,6 @@
 
 #import "EMConferenceViewController.h"
 
-#import "DemoConfManager.h"
-
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) NSMutableArray *inviteUsers;
@@ -19,12 +17,15 @@
 @implementation EMConferenceViewController
 
 - (instancetype)initWithType:(EMConferenceType)aType
+                    password:(NSString *)aPassword
                  inviteUsers:(NSArray *)aInviteUsers
 {
     self = [super init];
     if (self) {
         _type = aType;
+        _password = aPassword;
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
+        _streamItemDict = [[NSMutableDictionary alloc] init];
     }
     
     return self;
@@ -33,10 +34,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.videoViewBorder = 10;
+    float width = ([[UIScreen mainScreen] bounds].size.width - self.videoViewBorder) / kConferenceVideoMaxCol;
+    self.videoViewSize = CGSizeMake(width, width);
+    
     [self _setupConferenceControllerSubviews];
     if (!isHeadphone()) {
         [self speakerButtonAction];
     }
+    
+    BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+    self.switchCameraButton.selected = isUseBackCamera;
     
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
@@ -101,13 +109,13 @@
         make.bottom.equalTo(self.switchCameraButton);
     }];
     
-    EMButton *videoButton = [[EMButton alloc] initWithTitle:@"视频" target:self action:@selector(videoButtonAction:)];
-    [videoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [videoButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
-    [videoButton setImage:[UIImage imageNamed:@"video_white"] forState:UIControlStateNormal];
-    [videoButton setImage:[UIImage imageNamed:@"video_gray"] forState:UIControlStateSelected];
-    [self.view addSubview:videoButton];
-    [videoButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.videoButton = [[EMButton alloc] initWithTitle:@"视频" target:self action:@selector(videoButtonAction:)];
+    [self.videoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [self.videoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [self.videoButton setImage:[UIImage imageNamed:@"video_gray"] forState:UIControlStateNormal];
+    [self.videoButton setImage:[UIImage imageNamed:@"video_white"] forState:UIControlStateSelected];
+    [self.view addSubview:self.videoButton];
+    [self.videoButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.microphoneButton.mas_right).offset(padding);
         make.bottom.equalTo(self.switchCameraButton);
     }];
@@ -117,11 +125,11 @@
     [self.speakerButton setImage:[UIImage imageNamed:@"speaker_gray"] forState:UIControlStateNormal];
     [self.speakerButton setImage:[UIImage imageNamed:@"speaker_white"] forState:UIControlStateSelected];
     [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(videoButton.mas_right).offset(padding);
+        make.left.equalTo(self.videoButton.mas_right).offset(padding);
         make.bottom.equalTo(self.switchCameraButton);
     }];
     
-    [@[inviteButton, self.switchCameraButton, self.microphoneButton, videoButton, self.speakerButton] mas_makeConstraints:^(MASConstraintMaker *make) {
+    [@[inviteButton, self.switchCameraButton, self.microphoneButton, self.videoButton, self.speakerButton] mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(width);
         make.height.mas_equalTo(height);
     }];
@@ -199,7 +207,11 @@
 {
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     
-    [[DemoConfManager sharedManager] endConference:self.conference];
+    BOOL isDestroy = NO;
+    if (self.type == EMConferenceTypeLive && self.isCreater) {
+        isDestroy = YES;
+    }
+    [[DemoConfManager sharedManager] endConference:self.conference isDestroy:isDestroy];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

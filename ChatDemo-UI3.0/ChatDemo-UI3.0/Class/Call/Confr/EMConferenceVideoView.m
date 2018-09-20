@@ -1,0 +1,106 @@
+//
+//  EMConferenceVideoView.m
+//  ChatDemo-UI3.0
+//
+//  Created by XieYajie on 2018/9/20.
+//  Copyright © 2018 XieYajie. All rights reserved.
+//
+
+#import "EMConferenceVideoView.h"
+
+#import "Masonry.h"
+
+@interface EMConferenceVideoView()
+
+@property (nonatomic, strong) UIImageView *statusView;
+
+@end
+
+@implementation EMConferenceVideoView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor yellowColor];
+        
+        self.bgView = [[UIImageView alloc] init];
+        self.bgView.contentMode = UIViewContentModeScaleAspectFit;
+        self.bgView.userInteractionEnabled = YES;
+        self.bgView.layer.borderWidth = 0.5;
+        self.bgView.layer.borderColor = [UIColor grayColor].CGColor;
+        self.bgView.image = [UIImage imageNamed:@"conf_connecting"];
+        [self addSubview:self.bgView];
+        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
+        
+        self.statusView = [[UIImageView alloc] init];
+        self.statusView.contentMode = UIViewContentModeScaleAspectFit;
+        [self addSubview:self.statusView];
+        [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(5);
+            make.right.equalTo(self).offset(-5);
+            make.width.height.equalTo(@20);
+        }];
+        
+        self.nameLabel = [[UILabel alloc] init];
+        self.nameLabel.textColor = [UIColor whiteColor];
+        self.nameLabel.font = [UIFont systemFontOfSize:13];
+        [self addSubview:self.nameLabel];
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(5);
+            make.left.equalTo(self).offset(5);
+            make.right.equalTo(self.statusView.mas_left).offset(-5);
+            make.height.equalTo(@20);
+        }];
+    }
+    
+    return self;
+}
+
+- (void)setStatus:(StreamStatus)status
+{
+    if (_status == status) {
+        return;
+    }
+    
+    _status = status;
+    switch (_status) {
+        case StreamStatusConnecting:
+            self.statusView.image = [UIImage imageNamed:@"conf_ring"];
+            break;
+        case StreamStatusTalking:
+            self.statusView.image = [UIImage imageNamed:@"conf_talking"];
+            break;
+        case StreamStatusAudioMuted:
+            self.statusView.image = [UIImage imageNamed:@"conf_mute"];
+            break;
+            
+        default:
+            self.statusView.image = nil;
+            break;
+    }
+}
+
+- (void)setEnableVideo:(BOOL)enableVideo
+{
+    _enableVideo = enableVideo;
+    if (enableVideo) {
+        [self sendSubviewToBack:self.bgView];
+    } else {
+        if (self.status < StreamStatusConnected) {
+            self.bgView.image = [UIImage imageNamed:@"conf_connecting"];
+        } else {
+            self.bgView.image = [UIImage imageNamed:@"default_micro"];
+        }
+        [self sendSubviewToBack:self.displayView];
+    }
+}
+
+@end
+
+
+@implementation EMConferenceVideoItem
+
+@end

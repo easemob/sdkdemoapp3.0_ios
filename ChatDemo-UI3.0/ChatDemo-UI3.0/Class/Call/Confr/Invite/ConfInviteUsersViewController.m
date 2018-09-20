@@ -256,7 +256,7 @@
 {
     __weak typeof(self) weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        [[DemoConfManager sharedManager] startConferenceWithType:weakSelf.type inviteUsers:weakSelf.inviteUsers];
+        [[DemoConfManager sharedManager] startConferenceWithType:weakSelf.type password:@"" inviteUsers:weakSelf.inviteUsers];
     }];
 }
 

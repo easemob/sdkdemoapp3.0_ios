@@ -17,7 +17,7 @@
 #import "EMConfUserSelectionViewController.h"
 
 #import "ConfInviteUsersViewController.h"
-#import "EMConferenceViewController.h"
+#import "MeetingViewController.h"
 
 static DemoConfManager *confManager = nil;
 
@@ -184,17 +184,24 @@ static DemoConfManager *confManager = nil;
 }
 
 - (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
+                                               password:(NSString *)aPassword
                                             inviteUsers:(NSArray *)aInviteUsers
 {
     [[DemoCallManager sharedManager] setIsCalling:YES];
     
-    EMConferenceViewController *controller = [[EMConferenceViewController alloc] initWithType:aType inviteUsers:aInviteUsers];
+    EMConferenceViewController *controller = nil;
+    if (aType != EMConferenceTypeLive) {
+        controller = [[MeetingViewController alloc] initWithPassword:aPassword inviteUsers:aInviteUsers];
+    } else {
+        
+    }
     [self.mainController presentViewController:controller animated:NO completion:nil];
     
     return controller;
 }
 
 - (void)endConference:(EMCallConference *)aCall
+            isDestroy:(BOOL)aIsDestroy
 {
     if (aCall) {
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -202,7 +209,12 @@ static DemoConfManager *confManager = nil;
         [audioSession setActive:YES error:nil];
         
         [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
-        [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
+        
+        if (aIsDestroy) {
+            [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
+        } else {
+            [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
+        }
         
         [[DemoCallManager sharedManager] setIsCalling:NO];
     }

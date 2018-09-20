@@ -100,6 +100,13 @@
 		3A2F2CA4215393E600F86EB5 /* invite_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA0215393E500F86EB5 /* invite_gray@3x.png */; };
 		3A2F2CA5215393E600F86EB5 /* invite_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */; };
 		3A2F2CA6215393E600F86EB5 /* invite_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */; };
+		3A2F2E4A21539B2B00F86EB5 /* MeetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2E4921539B2B00F86EB5 /* MeetingViewController.m */; };
+		3A2F2E4D2153AC7000F86EB5 /* EMConferenceVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2E4C2153AC7000F86EB5 /* EMConferenceVideoView.m */; };
+		3A2F2E502153AD2300F86EB5 /* Live2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2E4F2153AD2300F86EB5 /* Live2ViewController.m */; };
+		3A2F2E552153B98300F86EB5 /* default_micro@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E512153B98300F86EB5 /* default_micro@3x.png */; };
+		3A2F2E562153B98300F86EB5 /* default_micro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E522153B98300F86EB5 /* default_micro@2x.png */; };
+		3A2F2E572153B98300F86EB5 /* conf_connecting@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E532153B98300F86EB5 /* conf_connecting@3x.png */; };
+		3A2F2E582153B98300F86EB5 /* conf_connecting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E542153B98300F86EB5 /* conf_connecting@2x.png */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
 		3A4FF463211AD2D700978F7C /* confr_video_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4FF462211AD2D700978F7C /* confr_video_off@2x.png */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
@@ -552,6 +559,16 @@
 		3A2F2CA0215393E500F86EB5 /* invite_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_gray@3x.png"; sourceTree = "<group>"; };
 		3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_gray@2x.png"; sourceTree = "<group>"; };
 		3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_white@3x.png"; sourceTree = "<group>"; };
+		3A2F2E4821539B2B00F86EB5 /* MeetingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetingViewController.h; sourceTree = "<group>"; };
+		3A2F2E4921539B2B00F86EB5 /* MeetingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeetingViewController.m; sourceTree = "<group>"; };
+		3A2F2E4B2153AC7000F86EB5 /* EMConferenceVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMConferenceVideoView.h; sourceTree = "<group>"; };
+		3A2F2E4C2153AC7000F86EB5 /* EMConferenceVideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMConferenceVideoView.m; sourceTree = "<group>"; };
+		3A2F2E4E2153AD2300F86EB5 /* Live2ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Live2ViewController.h; sourceTree = "<group>"; };
+		3A2F2E4F2153AD2300F86EB5 /* Live2ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Live2ViewController.m; sourceTree = "<group>"; };
+		3A2F2E512153B98300F86EB5 /* default_micro@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_micro@3x.png"; sourceTree = "<group>"; };
+		3A2F2E522153B98300F86EB5 /* default_micro@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_micro@2x.png"; sourceTree = "<group>"; };
+		3A2F2E532153B98300F86EB5 /* conf_connecting@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_connecting@3x.png"; sourceTree = "<group>"; };
+		3A2F2E542153B98300F86EB5 /* conf_connecting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conf_connecting@2x.png"; sourceTree = "<group>"; };
 		3A32AB811DDEBF4600E03E27 /* EMSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchControllerDelegate.h; sourceTree = "<group>"; };
 		3A32AB821DDEBF4600E03E27 /* UIViewController+SearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SearchController.h"; sourceTree = "<group>"; };
 		3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SearchController.m"; sourceTree = "<group>"; };
@@ -1168,10 +1185,10 @@
 		3A2F293421537E7E00F86EB5 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				3A2F2AF62153862900F86EB5 /* EMCallViewController.h */,
-				3A2F2AF52153862900F86EB5 /* EMCallViewController.m */,
 				3A2F293A21537E7E00F86EB5 /* EMButton.h */,
 				3A2F293721537E7E00F86EB5 /* EMButton.m */,
+				3A2F2AF62153862900F86EB5 /* EMCallViewController.h */,
+				3A2F2AF52153862900F86EB5 /* EMCallViewController.m */,
 				3A2F293821537E7E00F86EB5 /* CallResolutionViewController.h */,
 				3A2F293521537E7E00F86EB5 /* CallResolutionViewController.m */,
 				3A2F293921537E7E00F86EB5 /* CallSettingViewController.h */,
@@ -1186,8 +1203,14 @@
 				3A2F293C21537E7E00F86EB5 /* Invite */,
 				3A2F2C9921538CF600F86EB5 /* DemoConfManager.h */,
 				3A2F2C9A21538CF600F86EB5 /* DemoConfManager.m */,
+				3A2F2E4B2153AC7000F86EB5 /* EMConferenceVideoView.h */,
+				3A2F2E4C2153AC7000F86EB5 /* EMConferenceVideoView.m */,
 				3A2F2AF22153800900F86EB5 /* EMConferenceViewController.h */,
 				3A2F2AF32153800900F86EB5 /* EMConferenceViewController.m */,
+				3A2F2E4821539B2B00F86EB5 /* MeetingViewController.h */,
+				3A2F2E4921539B2B00F86EB5 /* MeetingViewController.m */,
+				3A2F2E4E2153AD2300F86EB5 /* Live2ViewController.h */,
+				3A2F2E4F2153AD2300F86EB5 /* Live2ViewController.m */,
 			);
 			path = Confr;
 			sourceTree = "<group>";
@@ -1249,6 +1272,10 @@
 		3ACFCD3921524B18009F488D /* CallImages */ = {
 			isa = PBXGroup;
 			children = (
+				3A2F2E542153B98300F86EB5 /* conf_connecting@2x.png */,
+				3A2F2E532153B98300F86EB5 /* conf_connecting@3x.png */,
+				3A2F2E522153B98300F86EB5 /* default_micro@2x.png */,
+				3A2F2E512153B98300F86EB5 /* default_micro@3x.png */,
 				3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */,
 				3A2F2CA0215393E500F86EB5 /* invite_gray@3x.png */,
 				3A2F2C9F215393E500F86EB5 /* invite_white@2x.png */,
@@ -2139,6 +2166,7 @@
 				EBD2ABB21A7CDAC000D16528 /* tabbar_contacts@2x.png in Resources */,
 				EBD2AB9E1A7CDAC000D16528 /* password.png in Resources */,
 				D2B3DACA1BF1D7B700913BD5 /* icon_010.gif in Resources */,
+				3A2F2E572153B98300F86EB5 /* conf_connecting@3x.png in Resources */,
 				3A2F2CA4215393E600F86EB5 /* invite_gray@3x.png in Resources */,
 				D2B3DACF1BF1D7B700913BD5 /* icon_018_cover.png in Resources */,
 				3A1D31331F389355004929BD /* Button_Mute@3x.png in Resources */,
@@ -2275,6 +2303,7 @@
 				EBD2ABA41A7CDAC000D16528 /* titleBar.png in Resources */,
 				D2B3DAC91BF1D7B700913BD5 /* icon_010_cover.png in Resources */,
 				3ACFCD9521524B18009F488D /* animate_00050.png in Resources */,
+				3A2F2E582153B98300F86EB5 /* conf_connecting@2x.png in Resources */,
 				3A1D31501F389355004929BD /* conf_delete@3x.png in Resources */,
 				3ACFCDA421524B18009F488D /* animate_00081.png in Resources */,
 				3A8DC51E2063A6BB002CD774 /* conf_camera_on@2x.png in Resources */,
@@ -2325,6 +2354,7 @@
 				3A1D313B1F389355004929BD /* Button_Speaker@2x.png in Resources */,
 				EBD2ABAF1A7CDAC000D16528 /* tabbar_chatsHL.png in Resources */,
 				9091103A192EEA70008A48AA /* Images.xcassets in Resources */,
+				3A2F2E552153B98300F86EB5 /* default_micro@3x.png in Resources */,
 				EBD2ABB81A7CDAC000D16528 /* tabbar_settingHL@2x.png in Resources */,
 				EBD2ABAA1A7CDAC000D16528 /* groupPublicHeader@2x.png in Resources */,
 				3ACFCDB521524B18009F488D /* animate_00058.png in Resources */,
@@ -2354,6 +2384,7 @@
 				3ACFCDA121524B18009F488D /* animate_00046.png in Resources */,
 				D2A910831C83E7890025AD0A /* 57.png in Resources */,
 				3ACFCD8C21524B18009F488D /* animate_00032.png in Resources */,
+				3A2F2E562153B98300F86EB5 /* default_micro@2x.png in Resources */,
 				3A1D31201F389355004929BD /* Button_Camera_active@2x.png in Resources */,
 				D2B3DACE1BF1D7B700913BD5 /* icon_013.gif in Resources */,
 				3AB11E5820529B9F0061FD88 /* ConferenceViewController.xib in Resources */,
@@ -2425,6 +2456,7 @@
 				D2B61E331BC7BEA6007CB53E /* ConversationListController.m in Sources */,
 				3AE6AA232122C8010026CC62 /* VideoCustomCamera.mm in Sources */,
 				D2F7691F1CBF42DB009778FB /* SearchChatViewController.m in Sources */,
+				3A2F2E502153AD2300F86EB5 /* Live2ViewController.m in Sources */,
 				3C6BBA0619419EBD00A64684 /* EMRemarkImageView.m in Sources */,
 				3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */,
 				D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */,
@@ -2485,7 +2517,9 @@
 				D25AA35A1E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m in Sources */,
 				3AFC3C0321073DB60055A6A1 /* LiveViewController.m in Sources */,
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
+				3A2F2E4A21539B2B00F86EB5 /* MeetingViewController.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
+				3A2F2E4D2153AC7000F86EB5 /* EMConferenceVideoView.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
