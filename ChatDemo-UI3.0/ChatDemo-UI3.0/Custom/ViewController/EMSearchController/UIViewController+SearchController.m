@@ -61,7 +61,6 @@ static const void *ResultControllerKey = &ResultControllerKey;
     self.definesPresentationContext = YES;
     
     self.searchController.searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.0];;
-    
 }
 
 #pragma mark - disable

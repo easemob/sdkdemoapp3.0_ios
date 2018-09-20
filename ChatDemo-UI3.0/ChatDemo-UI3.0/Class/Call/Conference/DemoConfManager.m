@@ -16,6 +16,8 @@
 #import "MainViewController.h"
 #import "EMConfUserSelectionViewController.h"
 
+#import "ConfInviteUsersViewController.h"
+
 static DemoConfManager *confManager = nil;
 
 @interface DemoConfManager()<EMConferenceManagerDelegate, EMChatManagerDelegate>
@@ -169,6 +171,19 @@ static DemoConfManager *confManager = nil;
             [self.mainController.navigationController pushViewController:confController animated:NO];
         }
     }
+}
+
+#pragma mark - New
+
+- (void)startConferenceWithType:(EMConferenceType)aType
+{
+    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aType];
+    [self.mainController presentViewController:controller animated:NO completion:^{
+        NSArray *usernames = [[EMClient sharedClient].contactManager getContacts];
+        [controller.dataArray removeAllObjects];
+        [controller.dataArray addObjectsFromArray:usernames];
+        [controller.tableView reloadData];
+    }];
 }
 
 #endif

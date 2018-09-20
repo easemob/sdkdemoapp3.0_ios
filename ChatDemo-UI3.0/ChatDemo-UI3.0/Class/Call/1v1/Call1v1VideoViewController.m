@@ -145,7 +145,7 @@
     self.minVideoView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.minVideoView];
     [self.minVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.timeLabel.mas_bottom).offset(15);
+        make.top.equalTo(self.remoteNameLabel.mas_bottom);
         make.width.mas_equalTo(width);
         make.height.mas_equalTo(height);
         make.right.equalTo(self.view).offset(-15);

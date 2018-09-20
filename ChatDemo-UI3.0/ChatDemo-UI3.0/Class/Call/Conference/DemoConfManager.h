@@ -30,6 +30,10 @@
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage;
 
+#pragma mark - New
+
+- (void)startConferenceWithType:(EMConferenceType)aType;
+
 #endif
 
 @end

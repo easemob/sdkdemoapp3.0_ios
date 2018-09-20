@@ -17,8 +17,6 @@
 //#import "EMCallRecorderPlugin.h"
 
 #import "MainViewController.h"
-#import "EMCallViewController.h"
-
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 

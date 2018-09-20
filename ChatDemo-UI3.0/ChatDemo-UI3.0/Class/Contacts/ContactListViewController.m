@@ -109,7 +109,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 5;
+        return 4;
     } else if (section == 1) {
         return [self.otherPlatformIds count];
     }
@@ -252,12 +252,12 @@
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
             
             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeCommunication];
+                [[DemoConfManager sharedManager] startConferenceWithType:EMConferenceTypeCommunication];
             }];
             [alertController addAction:defaultAction];
             
             UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeLargeCommunication];
+                [[DemoConfManager sharedManager] startConferenceWithType:EMConferenceTypeLargeCommunication];
             }];
             [alertController addAction:mixAction];
             
