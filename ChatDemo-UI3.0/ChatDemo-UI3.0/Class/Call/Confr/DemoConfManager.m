@@ -137,39 +137,6 @@ static DemoConfManager *confManager = nil;
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
 
-- (void)handleMessageToJoinConference:(EMMessage *)aMessage
-{
-    NSString *conferenceId = [aMessage.ext objectForKey:@"conferenceId"];
-    NSString *password = [aMessage.ext objectForKey:@"password"];
-    if ([conferenceId length] == 0) {
-        conferenceId = [aMessage.ext objectForKey:@"em_conference_id"];
-        password = [aMessage.ext objectForKey:@"em_conference_password"];
-    }
-    if ([conferenceId length] > 0) {
-        if ([DemoCallManager sharedManager].isCalling) {
-            return;
-        }
-        
-        NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
-        if ([op length] > 0) {
-            if ([op isEqualToString:@"invite"]) {
-                [[DemoCallManager sharedManager] setIsCalling:YES];
-                EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
-                if (type == EMConferenceTypeLive) {
-                    LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
-                    [self.mainController.navigationController pushViewController:controller animated:NO];
-                } else {
-                    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId password:password confrType:type];
-                    [self.mainController.navigationController pushViewController:confController animated:NO];
-                }
-            }
-        } else {
-            ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:conferenceId password:password confrType:EMConferenceTypeLargeCommunication];
-            [self.mainController.navigationController pushViewController:confController animated:NO];
-        }
-    }
-}
-
 #pragma mark - New
 
 - (void)selectConfMemberWithType:(EMConferenceType)aType
@@ -219,6 +186,51 @@ static DemoConfManager *confManager = nil;
         [[DemoCallManager sharedManager] setIsCalling:NO];
     }
 }
+
+- (void)handleMessageToJoinConference:(EMMessage *)aMessage
+{
+    //新版属性
+    NSString *conferenceId = [aMessage.ext objectForKey:@"em_conference_id"];
+    NSString *password = [aMessage.ext objectForKey:@"em_conference_password"];
+    //如果新版属性不存在，判断旧版本属性
+    if ([conferenceId length] == 0) {
+        conferenceId = [aMessage.ext objectForKey:@"conferenceId"];
+        password = [aMessage.ext objectForKey:@"password"];
+    }
+    
+    //如果conferenceId不存在，则不处理
+    if ([conferenceId length] == 0) {
+        return;
+    }
+    
+    //如果正在进行1v1通话，不处理
+    if ([DemoCallManager sharedManager].isCalling) {
+        return;
+    }
+    
+    EMConferenceViewController *controller = nil;
+    NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
+    //如果“em_conference_op”属性存在，说明是新版
+    if ([op length] > 0) {
+        if ([op isEqualToString:@"invite"]) {
+            [[DemoCallManager sharedManager] setIsCalling:YES];
+            EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
+            if (type == EMConferenceTypeLive) {
+//                LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
+//                [self.mainController.navigationController pushViewController:controller animated:NO];
+            } else {
+                controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:type];
+            }
+        }
+    } else {
+        controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:EMConferenceTypeLargeCommunication];
+    }
+    
+    if (controller) {
+        [self.mainController presentViewController:controller animated:NO completion:nil];
+    }
+}
+
 
 #endif
 

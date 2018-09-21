@@ -10,7 +10,12 @@
 
 @interface MeetingViewController : EMConferenceViewController
 
+@property (nonatomic, strong) NSString *conversationId;
+
 - (instancetype)initWithPassword:(NSString *)aPassword
                      inviteUsers:(NSArray *)aInviteUsers;
+
+- (instancetype)initWithJoinConfId:(NSString *)aConfId
+                          password:(NSString *)aPassword;
 
 @end

@@ -10,8 +10,6 @@
 
 @interface EMConferenceViewController ()
 
-@property (nonatomic, strong) NSMutableArray *inviteUsers;
-
 @end
 
 @implementation EMConferenceViewController
@@ -24,7 +22,27 @@
     if (self) {
         _type = aType;
         _password = aPassword;
+        _isCreater = YES;
+        
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
+        _streamItemDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithJoinConfId:(NSString *)aConfId
+                          password:(NSString *)aPassword
+                              type:(EMConferenceType)aType
+{
+    self = [super init];
+    if (self) {
+        _joinConfId = aConfId;
+        _password = aPassword;
+        _type = aType;
+        _isCreater = NO;
+        
+        _inviteUsers = [[NSMutableArray alloc] init];
         _streamItemDict = [[NSMutableDictionary alloc] init];
     }
     
@@ -43,8 +61,8 @@
         [self speakerButtonAction];
     }
     
-    BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
-    self.switchCameraButton.selected = isUseBackCamera;
+    self.isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+    self.switchCameraButton.selected = self.isUseBackCamera;
     
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
@@ -90,10 +108,13 @@
     }];
     
     self.switchCameraButton = [[EMButton alloc] initWithTitle:@"切换摄像头" target:self action:@selector(switchCameraButtonAction:)];
+    [self.switchCameraButton setTitle:@"禁用" forState:UIControlStateDisabled];
     [self.switchCameraButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.switchCameraButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
+    [self.switchCameraButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_white"] forState:UIControlStateNormal];
     [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_gray"] forState:UIControlStateSelected];
+    [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_gray"] forState:UIControlStateDisabled];
     [self.view addSubview:self.switchCameraButton];
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(padding);
@@ -146,29 +167,161 @@
     }];
 }
 
+#pragma mark - EMConferenceManagerDelegate
+
+- (void)memberDidJoin:(EMCallConference *)aConference
+               member:(EMCallMember *)aMember
+{
+    if ([aConference.callId isEqualToString: self.conference.callId]) {
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aMember.memberName];
+        [self showHint:message];
+    }
+}
+
+- (void)memberDidLeave:(EMCallConference *)aConference
+                member:(EMCallMember *)aMember
+{
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aMember.memberName];
+        [self showHint:message];
+    }
+}
+
+- (void)streamDidUpdate:(EMCallConference *)aConference
+              addStream:(EMCallStream *)aStream
+{
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
+//        [self _subStream:aStream];
+    }
+}
+
+- (void)streamDidUpdate:(EMCallConference *)aConference
+           removeStream:(EMCallStream *)aStream
+{
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
+//        [self.streamsDic removeObjectForKey:aStream.streamId];
+//        [self _removeStream:aStream];
+    }
+}
+
+- (void)conferenceDidEnd:(EMCallConference *)aConference
+                  reason:(EMCallEndReason)aReason
+                   error:(EMError *)aError
+{
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.closed", @"Conference has been closed") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
+        [alertView show];
+        
+        [self hangupAction];
+    }
+}
+
+- (void)streamDidUpdate:(EMCallConference *)aConference
+                 stream:(EMCallStream *)aStream
+{
+    if (![aConference.callId isEqualToString:self.conference.callId] || aStream == nil) {
+        return;
+    }
+    
+//    EMCallStream *oldStream = [self.streamsDic objectForKey:aStream.streamId];
+//    if (oldStream) {
+//        if (oldStream.enableVideo != aStream.enableVideo) {
+//            EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
+//            EMCallRemoteView *displayView = [userView.videoView viewWithTag:100];
+//            if (displayView == nil && aStream.enableVideo) {
+//                displayView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
+//                displayView.tag = 100;
+//                displayView.scaleMode = EMCallViewScaleModeAspectFill;
+//                [userView.videoView addSubview:displayView];
+//
+//                [[EMClient sharedClient].conferenceManager updateConference:self.conference streamId:aStream.streamId remoteVideoView:displayView completion:nil];
+//            }
+//            displayView.hidden = !aStream.enableVideo;
+//        } else if (oldStream.enableVoice != aStream.enableVoice) {
+//            EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
+//            userView.isMuted = !aStream.enableVoice;
+//            if (aStream.enableVoice) {
+//                userView.status = EMAudioStatusConnected;
+//            }
+//        }
+//
+//        [self.streamsDic setObject:aStream forKey:aStream.streamId];
+//    }
+}
+
+- (void)streamStartTransmitting:(EMCallConference *)aConference
+                       streamId:(NSString *)aStreamId
+{
+    if ([aConference.callId isEqualToString:self.conference.callId]) {
+//        if ([aStreamId isEqualToString:self.pubStreamId]) {
+//            [self _userViewDidConnectedWithStreamId:aStreamId];
+//        } else if ([self.streamViews objectForKey:aStreamId]) {
+//            [self _userViewDidConnectedWithStreamId:aStreamId];
+//        }
+    }
+}
+
+- (void)conferenceNetworkDidChange:(EMCallConference *)aSession
+                            status:(EMCallNetworkStatus)aStatus
+{
+    NSString *str = @"";
+    switch (aStatus) {
+        case EMCallNetworkStatusNormal:
+            str = NSLocalizedString(@"network.conference.normal", @"Network changes: the network is normal");
+            break;
+        case EMCallNetworkStatusUnstable:
+            str = NSLocalizedString(@"network.conference.unstable", @"Network changes: the network is unstable");
+            break;
+        case EMCallNetworkStatusNoData:
+            str = NSLocalizedString(@"network.conference.dis", @"Network changes: the network is disconnect");
+            break;
+            
+        default:
+            break;
+    }
+    if ([str length] > 0) {
+        [self showHint:str];
+    }
+}
+
+- (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
+                 speakingStreamIds:(NSArray *)aStreamIds
+{
+    if (![aConference.callId isEqualToString:self.conference.callId]) {
+        return;
+    }
+    
+//    for (NSString *streamId in aStreamIds) {
+//        EMConfUserView *userView = [self.streamViews objectForKey:streamId];
+//        userView.status = EMAudioStatusTalking;
+//
+//        [self.talkingStreamIds removeObject:streamId];
+//    }
+//
+//    for (NSString *streamId in self.talkingStreamIds) {
+//        EMConfUserView *userView = [self.streamViews objectForKey:streamId];
+//        userView.status = EMAudioStatusConnected;
+//    }
+//
+//    [self.talkingStreamIds removeAllObjects];
+//    [self.talkingStreamIds addObjectsFromArray:aStreamIds];
+}
+
 #pragma mark - Member
 
-- (void)_inviteUser:(NSString *)aUserName
+- (void)inviteUser:(NSString *)aUserName
 {
-//    NSString *currentUser = [EMClient sharedClient].currentUsername;
-//    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请你加入会议: %@", currentUser, self.conference.confId]];
-//    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:@{@"em_conference_op":@"invite", @"conferenceId":self.conference.confId, @"password":self.password, @"em_conference_type":@(self.conferenceType), @"msg_extension":@{@"inviter":currentUser, @"group_id":@""}}];
-//    message.chatType = EMChatTypeChat;
-//    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
-    
-    //    NSMutableDictionary *ext = [[NSMutableDictionary alloc] init];
-    //    [ext setObject:[EMClient sharedClient].currentUsername forKey:@"creater"];
-    //    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:ext options:NSJSONWritingPrettyPrinted error:nil];
-    //    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    //
-    //    EMError *error = nil;
-    //    __weak typeof(self) weakSelf = self;
-    //    [[EMClient sharedClient].conferenceManager inviteUserToJoinConference:self.conference userName:aUserName password:nil ext:jsonString error:&error];
-    //    if (error) {
-    //        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteFail", @"Invite failed!")];
-    //    } else {
-    //        [weakSelf showHint:NSLocalizedString(@"alert.conference.inviteSuccess", @"Invite successful!")];
-    //    }
+    NSString *currentUser = [EMClient sharedClient].currentUsername;
+    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请你加入会议: %@", currentUser, self.conference.confId]];
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:@{@"em_conference_op":@"invite",@"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_conference_type":@(self.type)}];
+    //为了兼容旧版本
+    if (self.type != EMConferenceTypeLive) {
+        [ext setObject:self.conference.confId forKey:@"conferenceId"];
+        [ext setObject:@{@"inviter":currentUser, @"group_id":@""} forKey:@"msg_extension"];
+    }
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:ext];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
 
 #pragma mark - Action
@@ -186,14 +339,19 @@
 
 - (void)switchCameraButtonAction:(EMButton *)aButton
 {
+    self.isUseBackCamera = !self.isUseBackCamera;
     aButton.selected = !aButton.selected;
-    [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
+    if (self.conference) {
+        [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
+    }
 }
 
 - (void)videoButtonAction:(EMButton *)aButton
 {
     aButton.selected = !aButton.isSelected;
-    [[EMClient sharedClient].conferenceManager updateConference:self.conference enableVideo:aButton.selected];
+    if (self.conference) {
+        [[EMClient sharedClient].conferenceManager updateConference:self.conference enableVideo:aButton.selected];
+    }
     
     //TODO: 更新View
 }

@@ -18,6 +18,8 @@
 
 @interface EMButton()
 
+@property (nonatomic, strong) NSString *normalTitle;
+
 @property (nonatomic, strong) UIImageView *imgView;
 
 @property (nonatomic, strong) NSMutableDictionary *stateDict;
@@ -32,10 +34,18 @@
 {
     self = [super init];
     if (self) {
+        _normalTitle = aTitle;
+        _stateDict = [[NSMutableDictionary alloc] init];
+        
+        
         [self _setupSubviewsWithTitle:aTitle];
         
         [self addTarget:aTarget action:aAction forControlEvents:UIControlEventTouchUpInside];
-        _stateDict = [[NSMutableDictionary alloc] init];
+        
+        EMButtonState *buttonState = [[EMButtonState alloc] init];
+        buttonState.title = aTitle;
+        buttonState.titleColor = EMButtonDefaultTitleColor;
+        [self.stateDict setObject:buttonState forKey:@(UIControlStateNormal)];
     }
     
     return self;
@@ -68,6 +78,31 @@
     }];
 }
 
+#pragma mark - Private
+
+- (EMButtonState *)_getButtonStateWithState:(UIControlState)aState
+{
+    EMButtonState *buttonState = [self.stateDict objectForKey:@(aState)];
+    if (!buttonState) {
+        buttonState = [[EMButtonState alloc] init];
+        buttonState.title = self.normalTitle;
+        buttonState.titleColor = EMButtonDefaultTitleColor;
+        [self.stateDict setObject:buttonState forKey:@(aState)];
+    }
+    
+    return buttonState;
+}
+
+- (void)_reloadWithState:(UIControlState)aState
+{
+    EMButtonState *buttonState = [self.stateDict objectForKey:@(aState)];
+    if (buttonState) {
+        self.imgView.image = buttonState.image;
+        self.titleLabel.textColor = buttonState.titleColor;
+        self.titleLabel.text = buttonState.title;
+    }
+}
+
 #pragma mark - Public
 
 - (void)setSelected:(BOOL)selected
@@ -78,22 +113,35 @@
     if (selected) {
         state = UIControlStateSelected;
     }
+    [self _reloadWithState:state];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
     
-    EMButtonState *buttonState = [self.stateDict objectForKey:@(state)];
-    if (buttonState) {
-        self.imgView.image = buttonState.image;
-        self.titleLabel.textColor = buttonState.titleColor;
+    UIControlState state = UIControlStateNormal;
+    if (!enabled) {
+        state = UIControlStateDisabled;
+    }
+    [self _reloadWithState:state];
+}
+
+- (void)setTitle:(nullable NSString *)title
+        forState:(UIControlState)state
+{
+    EMButtonState *buttonState = [self _getButtonStateWithState:state];
+    buttonState.title = title;
+    
+    if (self.state == state) {
+        self.titleLabel.text = title;
     }
 }
 
 - (void)setTitleColor:(nullable UIColor *)color
              forState:(UIControlState)state
 {
-    EMButtonState *buttonState = [self.stateDict objectForKey:@(state)];
-    if (!buttonState) {
-        buttonState = [[EMButtonState alloc] init];
-        [self.stateDict setObject:buttonState forKey:@(state)];
-    }
+    EMButtonState *buttonState = [self _getButtonStateWithState:state];
     buttonState.titleColor = color;
     
     if (self.state == state) {
@@ -104,12 +152,7 @@
 - (void)setImage:(nullable UIImage *)image
         forState:(UIControlState)state
 {
-    EMButtonState *buttonState = [self.stateDict objectForKey:@(state)];
-    if (!buttonState) {
-        buttonState = [[EMButtonState alloc] init];
-        buttonState.titleColor = EMButtonDefaultTitleColor;
-        [self.stateDict setObject:buttonState forKey:@(state)];
-    }
+    EMButtonState *buttonState = [self _getButtonStateWithState:state];
     buttonState.image = image;
     
     if (self.state == state) {

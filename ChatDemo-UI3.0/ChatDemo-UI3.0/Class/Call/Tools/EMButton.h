@@ -10,6 +10,7 @@
 
 @interface EMButtonState : NSObject
 
+@property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIColor *titleColor;
 @property (nonatomic, strong) UIImage *image;
 
@@ -22,6 +23,9 @@
 - (instancetype)initWithTitle:(NSString *)aTitle
                        target:(id)aTarget
                        action:(SEL)aAction;
+
+- (void)setTitle:(nullable NSString *)title
+        forState:(UIControlState)state;
 
 - (void)setTitleColor:(nullable UIColor *)color
              forState:(UIControlState)state;

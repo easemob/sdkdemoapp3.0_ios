@@ -25,8 +25,11 @@
 @property (nonatomic, strong) __block EMCallConference *conference;
 @property (nonatomic, readonly) EMConferenceType type;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic) BOOL isCreater;
-@property (nonatomic, strong) NSString *joinConfId;
+@property (nonatomic, readonly) BOOL isCreater;
+@property (nonatomic, strong, readonly) NSString *joinConfId;
+@property (nonatomic) BOOL isUseBackCamera;
+
+@property (nonatomic, strong, readonly) NSMutableArray *inviteUsers;
 
 @property (nonatomic, strong) EMCallLocalView *localVideoView;
 @property (nonatomic, strong) NSString *pubStreamId;
@@ -39,6 +42,12 @@
                     password:(NSString *)aPassword
                  inviteUsers:(NSArray *)aInviteUsers;
 
-- (void)createConference;
+- (instancetype)initWithJoinConfId:(NSString *)aConfId
+                          password:(NSString *)aPassword
+                              type:(EMConferenceType)aType;
+
+- (void)inviteUser:(NSString *)aUserName;
+
+- (void)videoButtonAction:(EMButton *)aButton;
 
 @end

@@ -19,7 +19,16 @@
 {
     self = [super initWithType:EMConferenceTypeLargeCommunication password:aPassword inviteUsers:aInviteUsers];
     if (self) {
-        self.isCreater = YES;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithJoinConfId:(NSString *)aConfId
+                          password:(NSString *)aPassword
+{
+    self = [super initWithJoinConfId:aConfId password:aPassword type:EMConferenceTypeLargeCommunication];
+    if (self) {
     }
     
     return self;
@@ -28,10 +37,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.switchCameraButton.enabled = NO;
     
     [self _createOrJoinConference];
-    
-    //TODO: invite
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,16 +106,24 @@
         weakself.password = aPassword;
         
         [weakself _pubLocalStreamWithEnableVideo:NO completion:nil];
+        
+        //如果是创建者，进行邀请人操作
+        if (weakself.isCreater) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                for (NSString *username in weakself.inviteUsers) {
+                    [weakself inviteUser:username];
+                }
+            });
+        }
     };
     
     if (self.isCreater) {
         [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:self.password completion:block];
     } else {
-//        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.conferenceId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
-//            block(aCall, @"", aError);
-//        }];
+        [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.joinConfId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
+            block(aCall, @"", aError);
+        }];
     }
-    
 }
 
 #pragma mark - EMStream
@@ -150,7 +166,7 @@
         
         weakself.videoButton.enabled = YES;
         weakself.videoButton.selected = aEnableVideo;
-        weakself.switchCameraButton.enabled = YES;
+        weakself.switchCameraButton.enabled = aEnableVideo;
         
         weakself.pubStreamId = aPubStreamId;
         [self.streamItemDict setObject:videoItem forKey:aPubStreamId];
@@ -163,14 +179,34 @@
 
 #pragma mark - Action
 
+- (void)microphoneButtonAction
+{
+    [super microphoneButtonAction];
+    
+    if ([self.pubStreamId length] > 0) {
+        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
+        if (videoItem) {
+            videoItem.videoView.status = self.microphoneButton.isSelected ? StreamStatusAudioMuted : StreamStatusNormal;
+        }
+    }
+}
+
 - (void)videoButtonAction:(EMButton *)aButton
 {
-    aButton.selected = !aButton.isSelected;
-    [[EMClient sharedClient].conferenceManager updateConference:self.conference enableVideo:aButton.selected];
+    [super videoButtonAction:aButton];
     
     //TODO: 更新View
     EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
     videoItem.videoView.enableVideo = aButton.isSelected;
+    self.switchCameraButton.enabled = aButton.isSelected;
+    
+    if (aButton.selected) {
+        BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+        if (isUseBackCamera != self.isUseBackCamera) {
+            self.switchCameraButton.selected = self.isUseBackCamera;
+            [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
+        }
+    }
 }
 
 @end

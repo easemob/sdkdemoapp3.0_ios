@@ -29,8 +29,6 @@
 
 - (void)pushCustomVideoConferenceController;
 
-- (void)handleMessageToJoinConference:(EMMessage *)aMessage;
-
 #pragma mark - New
 
 - (void)selectConfMemberWithType:(EMConferenceType)aType;
@@ -41,6 +39,8 @@
 
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy;
+
+- (void)handleMessageToJoinConference:(EMMessage *)aMessage;
 
 #endif
 
