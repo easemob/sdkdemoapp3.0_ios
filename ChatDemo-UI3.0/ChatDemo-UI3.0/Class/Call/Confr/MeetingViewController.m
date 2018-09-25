@@ -8,7 +8,10 @@
 
 #import "MeetingViewController.h"
 
-@interface MeetingViewController ()
+@interface MeetingViewController ()<EMConferenceVideoViewDelegate>
+
+@property (nonatomic, strong) UIButton *gridButton;
+@property (nonatomic, strong) EMConferenceVideoView *currentBigView;
 
 @end
 
@@ -39,6 +42,18 @@
     // Do any additional setup after loading the view.
     self.switchCameraButton.enabled = NO;
     
+    self.gridButton = [[UIButton alloc] init];
+    self.gridButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.gridButton setImage:[UIImage imageNamed:@"grid_white"] forState:UIControlStateNormal];
+    [self.gridButton addTarget:self action:@selector(gridAction) forControlEvents:UIControlEventTouchUpInside];
+    self.gridButton.hidden = YES;
+    [self.view addSubview:self.gridButton];
+    [self.gridButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-30);
+        make.left.equalTo(self.view).offset(25);
+        make.width.height.equalTo(@40);
+    }];
+    
     [self _createOrJoinConference];
 }
 
@@ -47,44 +62,27 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Subviews
+#pragma mark - EMConferenceVideoViewDelegate
 
-#pragma mark - Video Views
-
-- (CGRect)_getNewVideoViewFrame
+- (void)conferenceVideoViewDidTap:(EMConferenceVideoView *)aVideoView
 {
-    NSInteger count = [self.streamItemDict count];
-    
-    NSInteger row = count / kConferenceVideoMaxCol;
-    NSInteger col = count % kConferenceVideoMaxCol;
-    CGRect frame = CGRectMake(col * (self.videoViewSize.width + self.videoViewBorder), row * (self.videoViewSize.height + self.videoViewBorder), self.videoViewSize.width, self.videoViewSize.height);
-    
-    return frame;
-}
-
-- (EMConferenceVideoItem *)_setupNewVideoViewWithName:(NSString *)aName
-                                          displayView:(UIView *)aDisplayView
-                                               stream:(EMCallStream *)aStream
-{
-    CGRect frame = [self _getNewVideoViewFrame];
-    EMConferenceVideoView *videoView = [[EMConferenceVideoView alloc] initWithFrame:frame];
-    videoView.nameLabel.text = aName;
-    videoView.displayView = aDisplayView;
-    [videoView addSubview:aDisplayView];
-    [videoView sendSubviewToBack:aDisplayView];
-    [aDisplayView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(videoView);
-    }];
-    [self.scrollView addSubview:videoView];
-    
-    EMConferenceVideoItem *retItem = [[EMConferenceVideoItem alloc] init];
-    retItem.videoView = videoView;
-    retItem.stream = aStream;
-    if ([aStream.streamId length] > 0) {
-        [self.streamItemDict setObject:retItem forKey:aStream.streamId];
+    self.gridButton.hidden = !aVideoView.isBig;
+    [aVideoView.displayView removeFromSuperview];
+    if (aVideoView.isBig) {
+        self.currentBigView = nil;
+        [aVideoView addSubview:aVideoView.displayView];
+        [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(aVideoView);
+        }];
+    } else {
+        self.currentBigView = aVideoView;
+        [self.view addSubview:aVideoView.displayView];
+        [self.view sendSubviewToBack:aVideoView.displayView];
+        [self.view sendSubviewToBack:self.scrollView];
+        [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
     }
-    
-    return retItem;
 }
 
 #pragma mark - EMConference
@@ -96,7 +94,8 @@
         if (aError) {
             [self hangupAction];
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"创建会议失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            NSString *msg = weakself.isCreater ? @"创建会议失败" : @"加入会议失败";
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
             
             return ;
@@ -121,12 +120,21 @@
         [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:self.password completion:block];
     } else {
         [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.joinConfId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
-            block(aCall, @"", aError);
+            block(aCall, weakself.password, aError);
         }];
     }
 }
 
 #pragma mark - EMStream
+
+- (EMConferenceVideoItem *)setupNewVideoViewWithName:(NSString *)aName
+                                         displayView:(UIView *)aDisplayView
+                                              stream:(EMCallStream *)aStream
+{
+    EMConferenceVideoItem *item = [super setupNewVideoViewWithName:aName displayView:aDisplayView stream:aStream];
+    item.videoView.delegate = self;
+    return item;
+}
 
 - (void)_pubLocalStreamWithEnableVideo:(BOOL)aEnableVideo
                             completion:(void (^)(NSString *aPubStreamId))aCompletionBlock
@@ -150,8 +158,6 @@
     EMCallLocalView *localView = [[EMCallLocalView alloc] init];
     localView.scaleMode = EMCallViewScaleModeAspectFill;
     localView.backgroundColor = [UIColor blueColor];
-    EMConferenceVideoItem *videoItem = [self _setupNewVideoViewWithName:pubConfig.streamName displayView:localView stream:nil];
-    videoItem.videoView.enableVideo = aEnableVideo;
     pubConfig.localView = localView;
     
     __weak typeof(self) weakself = self;
@@ -169,7 +175,11 @@
         weakself.switchCameraButton.enabled = aEnableVideo;
         
         weakself.pubStreamId = aPubStreamId;
-        [self.streamItemDict setObject:videoItem forKey:aPubStreamId];
+        
+        EMConferenceVideoItem *videoItem = [self setupNewVideoViewWithName:pubConfig.streamName displayView:localView stream:nil];
+        videoItem.videoView.enableVideo = aEnableVideo;
+        [weakself.streamItemDict setObject:videoItem forKey:aPubStreamId];
+        [weakself.streamIds addObject:aPubStreamId];
         
         if (aCompletionBlock) {
             aCompletionBlock(aPubStreamId);
@@ -186,7 +196,7 @@
     if ([self.pubStreamId length] > 0) {
         EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
         if (videoItem) {
-            videoItem.videoView.status = self.microphoneButton.isSelected ? StreamStatusAudioMuted : StreamStatusNormal;
+            videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
         }
     }
 }
@@ -206,6 +216,52 @@
             self.switchCameraButton.selected = self.isUseBackCamera;
             [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
         }
+    }
+}
+
+- (void)inviteButtonAction:(EMButton *)aButton
+{
+    NSMutableArray *members = [[NSMutableArray alloc] init];
+    [members addObject:[EMClient sharedClient].currentUsername];
+    for (NSString *key in self.streamItemDict) {
+        EMConferenceVideoItem *item = [self.streamItemDict objectForKey:key];
+        if (item.stream) {
+            [members addObject:item.stream.userName];
+        }
+    }
+    
+    NSMutableArray *usernames = [[NSMutableArray alloc] initWithArray:[[EMClient sharedClient].contactManager getContacts]];
+    if ([members count] > 0) {
+        for (NSInteger i = [members count] - 1; i > -1; i--) {
+            NSString *name = [members objectAtIndex:i];
+            if ([usernames containsObject:name]) {
+                [usernames removeObject:name];
+            }
+        }
+    }
+    
+    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithCreate:NO];
+    [controller.dataArray removeAllObjects];
+    [controller.dataArray addObjectsFromArray:usernames];
+    [controller.tableView reloadData];
+    
+    __weak typeof(self) weakself = self;
+    [controller setDoneCompletion:^(NSArray *inviteUsers) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            for (NSString *username in inviteUsers) {
+                [weakself inviteUser:username];
+            }
+        });
+    }];
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)gridAction
+{
+    if (self.currentBigView) {
+        self.currentBigView.isBig = NO;
+        [self conferenceVideoViewDidTap:self.currentBigView];
     }
 }
 

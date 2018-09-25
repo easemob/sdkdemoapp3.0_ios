@@ -25,7 +25,6 @@
         _isCreater = YES;
         
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
-        _streamItemDict = [[NSMutableDictionary alloc] init];
     }
     
     return self;
@@ -43,7 +42,6 @@
         _isCreater = NO;
         
         _inviteUsers = [[NSMutableArray alloc] init];
-        _streamItemDict = [[NSMutableDictionary alloc] init];
     }
     
     return self;
@@ -52,7 +50,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.videoViewBorder = 10;
+    self.streamIds = [[NSMutableArray alloc] init];
+    _streamItemDict = [[NSMutableDictionary alloc] init];
+    
+    self.videoViewBorder = 0;
     float width = ([[UIScreen mainScreen] bounds].size.width - self.videoViewBorder) / kConferenceVideoMaxCol;
     self.videoViewSize = CGSizeMake(width, width);
     
@@ -61,8 +62,14 @@
         [self speakerButtonAction];
     }
     
+    //本地摄像头方向
     self.isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
     self.switchCameraButton.selected = self.isUseBackCamera;
+    
+    //多人实时音视频默认使用扬声器
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    [audioSession setActive:YES error:nil];
     
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
@@ -70,6 +77,13 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)dealloc
@@ -191,7 +205,7 @@
               addStream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        [self _subStream:aStream];
+        [self _subStream:aStream];
     }
 }
 
@@ -199,8 +213,7 @@
            removeStream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        [self.streamsDic removeObjectForKey:aStream.streamId];
-//        [self _removeStream:aStream];
+        [self _removeStream:aStream];
     }
 }
 
@@ -221,6 +234,19 @@
 {
     if (![aConference.callId isEqualToString:self.conference.callId] || aStream == nil) {
         return;
+    }
+    
+    EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:aStream.streamId];
+    if (!videoItem.stream) {
+        return;
+    }
+    
+    if (videoItem.stream.enableVideo != aStream.enableVideo) {
+        videoItem.videoView.enableVideo = aStream.enableVideo;
+    }
+    
+    if (videoItem.stream.enableVoice != aStream.enableVoice) {
+        videoItem.videoView.enableVoice = aStream.enableVoice;
     }
     
 //    EMCallStream *oldStream = [self.streamsDic objectForKey:aStream.streamId];
@@ -305,6 +331,90 @@
 //
 //    [self.talkingStreamIds removeAllObjects];
 //    [self.talkingStreamIds addObjectsFromArray:aStreamIds];
+}
+
+#pragma mark - Video Views
+
+- (CGRect)getNewVideoViewFrame
+{
+    NSInteger count = [self.streamItemDict count];
+    
+    NSInteger row = count / kConferenceVideoMaxCol;
+    NSInteger col = count % kConferenceVideoMaxCol;
+    CGRect frame = CGRectMake(col * (self.videoViewSize.width + self.videoViewBorder), row * (self.videoViewSize.height + self.videoViewBorder), self.videoViewSize.width, self.videoViewSize.height);
+    
+    return frame;
+}
+
+- (EMConferenceVideoItem *)setupNewVideoViewWithName:(NSString *)aName
+                                         displayView:(UIView *)aDisplayView
+                                              stream:(EMCallStream *)aStream
+{
+    CGRect frame = [self getNewVideoViewFrame];
+    EMConferenceVideoView *videoView = [[EMConferenceVideoView alloc] initWithFrame:frame];
+    videoView.nameLabel.text = aName;
+    videoView.displayView = aDisplayView;
+    [videoView addSubview:aDisplayView];
+    [videoView sendSubviewToBack:aDisplayView];
+    [aDisplayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(videoView);
+    }];
+    [self.scrollView addSubview:videoView];
+    
+    if (CGRectGetMaxY(frame) > self.scrollView.contentSize.height) {
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame));
+    }
+    
+    EMConferenceVideoItem *retItem = [[EMConferenceVideoItem alloc] init];
+    retItem.videoView = videoView;
+    retItem.stream = aStream;
+    if ([aStream.streamId length] > 0) {
+        [self.streamItemDict setObject:retItem forKey:aStream.streamId];
+        [self.streamIds addObject:aStream.streamId];
+    }
+    
+    return retItem;
+}
+
+#pragma mark - Stream
+
+- (void)_subStream:(EMCallStream *)aStream
+{
+    EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
+    remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+    EMConferenceVideoItem *videoItem = [self setupNewVideoViewWithName:aStream.userName displayView:remoteView stream:aStream];
+    videoItem.videoView.enableVideo = aStream.enableVideo;
+    
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
+        if (aError) {
+            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"alert.conference.subFail", @"Sub stream-%@ failed!"), aStream.userName];
+            [weakSelf showHint:message];
+            [weakSelf.streamItemDict removeObjectForKey:aStream.streamId];
+            return ;
+        }
+        
+        videoItem.videoView.enableVoice = aStream.enableVoice;
+    }];
+}
+
+- (void)_removeStream:(EMCallStream *)aStream
+{
+    NSInteger index = [self.streamIds indexOfObject:aStream.streamId];
+    [self.streamIds removeObjectAtIndex:index];
+    
+    EMConferenceVideoItem *removeItem = [self.streamItemDict objectForKey:aStream.streamId];
+    CGRect prevFrame = removeItem.videoView.frame;
+    [removeItem.videoView removeFromSuperview];
+    [self.streamItemDict removeObjectForKey:aStream.streamId];
+    
+    for (NSInteger i = index; i < [self.streamIds count]; i++) {
+        NSString *streamId = [self.streamIds objectAtIndex:i];
+        EMConferenceVideoItem *item = [self.streamItemDict objectForKey:streamId];
+        CGRect frame = item.videoView.frame;
+        item.videoView.frame = prevFrame;
+        prevFrame = frame;
+    }
 }
 
 #pragma mark - Member

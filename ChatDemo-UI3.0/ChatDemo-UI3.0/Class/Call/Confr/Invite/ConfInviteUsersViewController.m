@@ -16,7 +16,7 @@
 
 @interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
-@property (nonatomic) EMConferenceType type;
+@property (nonatomic) BOOL isCreate;
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -26,15 +26,18 @@
 
 @property (nonatomic, strong) NSMutableArray *searchDataArray;
 
+@property (nonatomic, strong) NSMutableArray *inviteUsers;
+
 @end
 
 @implementation ConfInviteUsersViewController
 
-- (instancetype)initWithType:(EMConferenceType)aType
+- (instancetype)initWithCreate:(BOOL)aIsCreate
 {
     self = [super init];
     if (self) {
-        _type = aType;
+        _dataArray = [[NSMutableArray alloc] init];
+        _isCreate = aIsCreate;
     }
     
     return self;
@@ -43,7 +46,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _dataArray = [[NSMutableArray alloc] init];
     self.searchDataArray = [[NSMutableArray alloc] init];
     self.inviteUsers = [[NSMutableArray alloc] init];
     
@@ -68,6 +70,8 @@
 
 - (void)_setupSubviews
 {
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -121,7 +125,11 @@
     [startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [startButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [startButton setImage:[UIImage imageNamed:@"video_white"] forState:UIControlStateNormal];
-    [startButton setTitle:@"  开始会议" forState:UIControlStateNormal];
+    if (self.isCreate) {
+        [startButton setTitle:@"  开始会议" forState:UIControlStateNormal];
+    } else {
+        [startButton setTitle:@"  完成" forState:UIControlStateNormal];
+    }
     [startButton addTarget:self action:@selector(startConferenceAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:startButton];
     [startButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -249,15 +257,29 @@
 
 - (void)closeAction
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.isCreate) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)startConferenceAction
 {
-    __weak typeof(self) weakSelf = self;
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[DemoConfManager sharedManager] startConferenceWithType:weakSelf.type password:@"" inviteUsers:weakSelf.inviteUsers];
-    }];
+    if (self.isCreate) {
+        __weak typeof(self) weakSelf = self;
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (weakSelf.doneCompletion) {
+                weakSelf.doneCompletion(self.inviteUsers);
+            }
+        }];
+    } else {
+        if (self.doneCompletion) {
+            self.doneCompletion(self.inviteUsers);
+        }
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

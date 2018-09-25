@@ -13,10 +13,12 @@ typedef enum {
     StreamStatusConnecting,
     StreamStatusConnected,
     StreamStatusTalking,
-    StreamStatusAudioMuted,
 } StreamStatus;
 
+@protocol EMConferenceVideoViewDelegate;
 @interface EMConferenceVideoView : UIView
+
+@property (nonatomic, weak) id<EMConferenceVideoViewDelegate> delegate;
 
 @property (nonatomic, strong) UIImageView *bgView;
 
@@ -26,7 +28,19 @@ typedef enum {
 
 @property (nonatomic) StreamStatus status;
 
+@property (nonatomic) BOOL enableVoice;
+
 @property (nonatomic) BOOL enableVideo;
+
+@property (nonatomic) BOOL isBig;
+
+@end
+
+@protocol EMConferenceVideoViewDelegate <NSObject>
+
+@optional
+
+- (void)conferenceVideoViewDidTap:(EMConferenceVideoView *)aVideoView;
 
 @end
 
@@ -38,3 +52,4 @@ typedef enum {
 @property (nonatomic, strong) EMConferenceVideoView *videoView;
 
 @end
+

@@ -141,13 +141,17 @@ static DemoConfManager *confManager = nil;
 
 - (void)selectConfMemberWithType:(EMConferenceType)aType
 {
-    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aType];
-    [self.mainController presentViewController:controller animated:NO completion:^{
-        NSArray *usernames = [[EMClient sharedClient].contactManager getContacts];
-        [controller.dataArray removeAllObjects];
-        [controller.dataArray addObjectsFromArray:usernames];
-        [controller.tableView reloadData];
+    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithCreate:YES];
+    NSArray *usernames = [[EMClient sharedClient].contactManager getContacts];
+    [controller.dataArray removeAllObjects];
+    [controller.dataArray addObjectsFromArray:usernames];
+    [controller.tableView reloadData];
+    
+    __weak typeof(self) weakSelf = self;
+    [controller setDoneCompletion:^(NSArray *inviteUsers) {
+        [weakSelf startConferenceWithType:aType password:@"" inviteUsers:inviteUsers];
     }];
+    [self.mainController presentViewController:controller animated:NO completion:nil];
 }
 
 - (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
@@ -162,7 +166,9 @@ static DemoConfManager *confManager = nil;
     } else {
         
     }
-    [self.mainController presentViewController:controller animated:NO completion:nil];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self.mainController presentViewController:navController animated:NO completion:nil];
     
     return controller;
 }
@@ -216,10 +222,10 @@ static DemoConfManager *confManager = nil;
             [[DemoCallManager sharedManager] setIsCalling:YES];
             EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
             if (type == EMConferenceTypeLive) {
-//                LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
-//                [self.mainController.navigationController pushViewController:controller animated:NO];
+                LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
+                [self.mainController.navigationController pushViewController:controller animated:NO];
             } else {
-                controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:type];
+                controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password];
             }
         }
     } else {

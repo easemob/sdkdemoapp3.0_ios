@@ -13,8 +13,9 @@
 @property (nonatomic, strong, readonly) UITableView *tableView;
 
 @property (nonatomic, strong, readonly) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSMutableArray *inviteUsers;
 
-- (instancetype)initWithType:(EMConferenceType)aType;
+@property (copy) void (^doneCompletion)(NSArray *inviteUsers);
+
+- (instancetype)initWithCreate:(BOOL)aIsCreate;
 
 @end

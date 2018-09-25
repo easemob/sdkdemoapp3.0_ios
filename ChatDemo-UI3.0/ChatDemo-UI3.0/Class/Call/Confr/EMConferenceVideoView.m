@@ -54,6 +54,11 @@
             make.right.equalTo(self.statusView.mas_left).offset(-5);
             make.height.equalTo(@20);
         }];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
+        [self addGestureRecognizer:tap];
+        
+        self.isBig = NO;
     }
     
     return self;
@@ -73,13 +78,20 @@
         case StreamStatusTalking:
             self.statusView.image = [UIImage imageNamed:@"conf_talking"];
             break;
-        case StreamStatusAudioMuted:
-            self.statusView.image = [UIImage imageNamed:@"conf_mute"];
-            break;
             
         default:
             self.statusView.image = nil;
             break;
+    }
+}
+
+- (void)setEnableVoice:(BOOL)enableVoice
+{
+    _enableVoice = enableVoice;
+    if (enableVoice) {
+        self.statusView.image = nil;
+    } else {
+        self.statusView.image = [UIImage imageNamed:@"conf_mute"];
     }
 }
 
@@ -95,6 +107,18 @@
             self.bgView.image = [UIImage imageNamed:@"default_micro"];
         }
         [self sendSubviewToBack:self.displayView];
+    }
+}
+
+#pragma mark - UITapGestureRecognizer
+
+- (void)handleTapAction:(UITapGestureRecognizer *)aTap
+{
+    if (aTap.state == UIGestureRecognizerStateEnded) {
+        if (_delegate && [_delegate respondsToSelector:@selector(conferenceVideoViewDidTap:)]) {
+            self.isBig = !self.isBig;
+            [_delegate conferenceVideoViewDidTap:self];
+        }
     }
 }
 

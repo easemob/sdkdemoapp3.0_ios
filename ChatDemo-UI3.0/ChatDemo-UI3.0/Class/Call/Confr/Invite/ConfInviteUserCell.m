@@ -37,9 +37,9 @@
         _isChecked = isChecked;
         
         if (isChecked) {
-            self.checkView.image = [UIImage imageNamed:@"conf_check"];
+            self.checkView.image = [UIImage imageNamed:@"checked"];
         } else {
-            self.checkView.image = [UIImage imageNamed:@"conf_uncheck"];
+            self.checkView.image = [UIImage imageNamed:@"unchecked"];
         }
     }
 }
