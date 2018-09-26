@@ -279,11 +279,10 @@
                        streamId:(NSString *)aStreamId
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-//        if ([aStreamId isEqualToString:self.pubStreamId]) {
-//            [self _userViewDidConnectedWithStreamId:aStreamId];
-//        } else if ([self.streamViews objectForKey:aStreamId]) {
-//            [self _userViewDidConnectedWithStreamId:aStreamId];
-//        }
+        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:aStreamId];
+        if (videoItem && videoItem.videoView) {
+            videoItem.videoView.status = StreamStatusConnected;
+        }
     }
 }
 

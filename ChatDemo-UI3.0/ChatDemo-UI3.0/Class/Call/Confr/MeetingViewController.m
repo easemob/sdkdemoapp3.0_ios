@@ -69,18 +69,18 @@
     self.gridButton.hidden = !aVideoView.isBig;
     [aVideoView.displayView removeFromSuperview];
     if (aVideoView.isBig) {
-        self.currentBigView = nil;
-        [aVideoView addSubview:aVideoView.displayView];
-        [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(aVideoView);
-        }];
-    } else {
         self.currentBigView = aVideoView;
         [self.view addSubview:aVideoView.displayView];
         [self.view sendSubviewToBack:aVideoView.displayView];
         [self.view sendSubviewToBack:self.scrollView];
         [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
+        }];
+    } else {
+        self.currentBigView = nil;
+        [aVideoView addSubview:aVideoView.displayView];
+        [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(aVideoView);
         }];
     }
 }

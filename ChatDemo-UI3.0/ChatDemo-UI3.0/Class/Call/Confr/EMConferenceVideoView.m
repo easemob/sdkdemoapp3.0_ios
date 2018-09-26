@@ -29,7 +29,7 @@
         self.bgView.userInteractionEnabled = YES;
         self.bgView.layer.borderWidth = 0.5;
         self.bgView.layer.borderColor = [UIColor grayColor].CGColor;
-        self.bgView.image = [UIImage imageNamed:@"conf_connecting"];
+        self.bgView.image = [UIImage imageNamed:@"bg_connecting"];
         [self addSubview:self.bgView];
         [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
@@ -73,10 +73,18 @@
     _status = status;
     switch (_status) {
         case StreamStatusConnecting:
-            self.statusView.image = [UIImage imageNamed:@"conf_ring"];
+            self.statusView.image = [UIImage imageNamed:@"ring_gray"];
+            break;
+        case StreamStatusConnected:
+        {
+            self.statusView.image = nil;
+            if (!self.enableVideo) {
+                self.bgView.image = [UIImage imageNamed:@"bg_micro"];
+            }
+        }
             break;
         case StreamStatusTalking:
-            self.statusView.image = [UIImage imageNamed:@"conf_talking"];
+            self.statusView.image = [UIImage imageNamed:@"talking_green"];
             break;
             
         default:
@@ -91,7 +99,7 @@
     if (enableVoice) {
         self.statusView.image = nil;
     } else {
-        self.statusView.image = [UIImage imageNamed:@"conf_mute"];
+        self.statusView.image = [UIImage imageNamed:@"mute_red"];
     }
 }
 
@@ -102,9 +110,9 @@
         [self sendSubviewToBack:self.bgView];
     } else {
         if (self.status < StreamStatusConnected) {
-            self.bgView.image = [UIImage imageNamed:@"conf_connecting"];
+            self.bgView.image = [UIImage imageNamed:@"bg_connecting"];
         } else {
-            self.bgView.image = [UIImage imageNamed:@"default_micro"];
+            self.bgView.image = [UIImage imageNamed:@"bg_micro"];
         }
         [self sendSubviewToBack:self.displayView];
     }
@@ -115,6 +123,10 @@
 - (void)handleTapAction:(UITapGestureRecognizer *)aTap
 {
     if (aTap.state == UIGestureRecognizerStateEnded) {
+        if (!self.enableVideo) {
+            return;
+        }
+        
         if (_delegate && [_delegate respondsToSelector:@selector(conferenceVideoViewDidTap:)]) {
             self.isBig = !self.isBig;
             [_delegate conferenceVideoViewDidTap:self];
