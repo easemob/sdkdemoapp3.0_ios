@@ -82,6 +82,11 @@
     [self.view addSubview:self.hangupButton];
 }
 
+- (void)setFloatingViewFrameWithSuperView:(UIView *)aSuperView
+{
+    
+}
+
 #pragma mark - NSNotification
 
 - (void)handleAudioRouteChanged:(NSNotification *)aNotif

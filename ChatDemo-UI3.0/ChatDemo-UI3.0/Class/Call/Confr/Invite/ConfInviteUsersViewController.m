@@ -16,28 +16,35 @@
 
 @interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
-@property (nonatomic) BOOL isCreate;
-
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UISearchBar *searchBar;
-
 @property (nonatomic, strong) UITableView *searchTableView;
+
+@property (nonatomic) BOOL isCreate;
+@property (nonatomic) ConfInviteType type;
+@property (nonatomic, strong) NSArray *excludeUsers;
+@property (nonatomic, strong) NSString *gorcId;
+
+@property (nonatomic, strong) NSString *cursor;
 @property (nonatomic) BOOL isSearching;
-
 @property (nonatomic, strong) NSMutableArray *searchDataArray;
-
 @property (nonatomic, strong) NSMutableArray *inviteUsers;
 
 @end
 
 @implementation ConfInviteUsersViewController
 
-- (instancetype)initWithCreate:(BOOL)aIsCreate
+- (instancetype)initWithType:(ConfInviteType)aType
+                    isCreate:(BOOL)aIsCreate
+                excludeUsers:(NSArray *)aExcludeUsers
+           groupOrChatroomId:(NSString *)aGorcId
 {
     self = [super init];
     if (self) {
-        _dataArray = [[NSMutableArray alloc] init];
+        _type = aType;
         _isCreate = aIsCreate;
+        _excludeUsers = aExcludeUsers;
+        _gorcId = aGorcId;
     }
     
     return self;
@@ -51,9 +58,8 @@
     
     [self _setupSubviews];
     
-    UINib *nib = [UINib nibWithNibName:@"ConfInviteUserCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"ConfInviteUserCell"];
-    [self.searchTableView registerNib:nib forCellReuseIdentifier:@"ConfInviteUserCell"];
+    self.showRefreshHeader = YES;
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,7 +136,7 @@
     } else {
         [startButton setTitle:@"  完成" forState:UIControlStateNormal];
     }
-    [startButton addTarget:self action:@selector(startConferenceAction) forControlEvents:UIControlEventTouchUpInside];
+    [startButton addTarget:self action:@selector(doneAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:startButton];
     [startButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-36);
@@ -144,9 +150,6 @@
     self.searchTableView.dataSource = self;
     self.searchTableView.rowHeight = 60;
     
-    _tableView = [[UITableView alloc] init];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
     self.tableView.rowHeight = 60;
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,6 +158,10 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(startButton.mas_top).offset(-20);
     }];
+    
+    UINib *nib = [UINib nibWithNibName:@"ConfInviteUserCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"ConfInviteUserCell"];
+    [self.searchTableView registerNib:nib forCellReuseIdentifier:@"ConfInviteUserCell"];
 }
 
 #pragma mark - Table view data source
@@ -253,6 +260,110 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Data
+
+- (NSArray *)_getInvitableUsers:(NSArray *)aAllUsers
+{
+    NSMutableArray *retNames = [[NSMutableArray alloc] init];
+    [retNames addObjectsFromArray:aAllUsers];
+    for (NSString *name in self.excludeUsers) {
+        if ([retNames containsObject:name]) {
+            [retNames removeObject:name];
+        }
+    }
+    
+    return retNames;
+}
+
+- (void)_fetchGroupMembersWithIsHeader:(BOOL)aIsHeader
+{
+    NSInteger pageSize = 50;
+    __weak typeof(self) weakSelf = self;
+    [self showHudInView:self.view hint:@"正在获取群组成员..."];
+    [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.gorcId cursor:self.cursor pageSize:pageSize completion:^(EMCursorResult *aResult, EMError *aError) {
+        [weakSelf hideHud];
+        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+        if (aError) {
+            [weakSelf showHint:[[NSString alloc] initWithFormat:@"获取群组成员失败: %@", aError.errorDescription]];
+            return ;
+        }
+        
+        weakSelf.cursor = aResult.cursor;
+        
+        if (aIsHeader) {
+            [weakSelf.dataArray removeAllObjects];
+        }
+        NSArray *usernames = [self _getInvitableUsers:aResult.list];
+        [weakSelf.dataArray addObjectsFromArray:usernames];
+        [weakSelf.tableView reloadData];
+        if ([aResult.list count] == 0 || [aResult.cursor length] == 0) {
+            weakSelf.showRefreshFooter = NO;
+        } else {
+            weakSelf.showRefreshFooter = YES;
+        }
+    }];
+}
+
+- (void)_fetchChatroomMembersWithIsHeader:(BOOL)aIsHeader
+{
+    NSInteger pageSize = 50;
+    __weak typeof(self) weakSelf = self;
+    [self showHudInView:self.view hint:@"正在获取聊天室成员..."];
+    [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.gorcId cursor:self.cursor pageSize:pageSize completion:^(EMCursorResult *aResult, EMError *aError) {
+        [weakSelf hideHud];
+        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+        
+        if (aError) {
+            [weakSelf showHint:[[NSString alloc] initWithFormat:@"获取聊天室成员失败: %@", aError.errorDescription]];
+            return ;
+        }
+        
+        weakSelf.cursor = aResult.cursor;
+        
+        if (aIsHeader) {
+            [weakSelf.dataArray removeAllObjects];
+        }
+        NSArray *usernames = [self _getInvitableUsers:aResult.list];
+        [weakSelf.dataArray addObjectsFromArray:usernames];
+        [weakSelf.tableView reloadData];
+        
+        if ([aResult.list count] == 0 || [aResult.cursor length] == 0) {
+            self.showRefreshFooter = NO;
+        } else {
+            self.showRefreshFooter = YES;
+        }
+    }];
+}
+
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    if (self.type == ConfInviteTypeUser) {
+        NSArray *usernames = [self _getInvitableUsers:[[EMClient sharedClient].contactManager getContacts]];
+        [self.dataArray removeAllObjects];
+        [self.dataArray addObjectsFromArray:usernames];
+        [self.tableView reloadData];
+        
+        [self tableViewDidFinishTriggerHeader:YES reload:NO];
+    } else if (self.type == ConfInviteTypeGroup) {
+        self.cursor = @"";
+        [self _fetchGroupMembersWithIsHeader:YES];
+    } else if (self.type == ConfInviteTypeChatroom) {
+        self.cursor = @"";
+        [self _fetchChatroomMembersWithIsHeader:YES];
+    }
+}
+
+- (void)tableViewDidTriggerFooterRefresh
+{
+    if (self.type == ConfInviteTypeGroup) {
+        [self _fetchGroupMembersWithIsHeader:NO];
+    } else if (self.type == ConfInviteTypeChatroom) {
+        [self _fetchChatroomMembersWithIsHeader:NO];
+    } else {
+        [self tableViewDidFinishTriggerHeader:NO reload:NO];
+    }
+}
+
 #pragma mark - Action
 
 - (void)closeAction
@@ -264,7 +375,7 @@
     }
 }
 
-- (void)startConferenceAction
+- (void)doneAction
 {
     if (self.isCreate) {
         __weak typeof(self) weakSelf = self;

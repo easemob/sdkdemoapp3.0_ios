@@ -16,7 +16,7 @@
 #import "MainViewController.h"
 #import "EMConfUserSelectionViewController.h"
 
-#import "ConfInviteUsersViewController.h"
+
 #import "MeetingViewController.h"
 
 static DemoConfManager *confManager = nil;
@@ -139,58 +139,29 @@ static DemoConfManager *confManager = nil;
 
 #pragma mark - New
 
-- (void)selectConfMemberWithType:(EMConferenceType)aType
+- (void)inviteMemberWithConfType:(EMConferenceType)aConfType
+                      inviteType:(ConfInviteType)aInviteType
+                  conversationId:(NSString *)aConversationId
+                        chatType:(EMChatType)aChatType
 {
-    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithCreate:YES];
-    NSArray *usernames = [[EMClient sharedClient].contactManager getContacts];
-    [controller.dataArray removeAllObjects];
-    [controller.dataArray addObjectsFromArray:usernames];
-    [controller.tableView reloadData];
+    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aInviteType isCreate:YES excludeUsers:nil groupOrChatroomId:aConversationId];
     
     __weak typeof(self) weakSelf = self;
-    [controller setDoneCompletion:^(NSArray *inviteUsers) {
-        [weakSelf startConferenceWithType:aType password:@"" inviteUsers:inviteUsers];
+    [controller setDoneCompletion:^(NSArray *aInviteUsers) {
+        [[DemoCallManager sharedManager] setIsCalling:YES];
+        
+        EMConferenceViewController *controller = nil;
+        if (aConfType != EMConferenceTypeLive) {
+            controller = [[MeetingViewController alloc] initWithPassword:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
+        } else {
+            
+        }
+        controller.inviteType = aInviteType;
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [weakSelf.mainController presentViewController:navController animated:NO completion:nil];
     }];
     [self.mainController presentViewController:controller animated:NO completion:nil];
-}
-
-- (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
-                                               password:(NSString *)aPassword
-                                            inviteUsers:(NSArray *)aInviteUsers
-{
-    [[DemoCallManager sharedManager] setIsCalling:YES];
-    
-    EMConferenceViewController *controller = nil;
-    if (aType != EMConferenceTypeLive) {
-        controller = [[MeetingViewController alloc] initWithPassword:aPassword inviteUsers:aInviteUsers];
-    } else {
-        
-    }
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    [self.mainController presentViewController:navController animated:NO completion:nil];
-    
-    return controller;
-}
-
-- (void)endConference:(EMCallConference *)aCall
-            isDestroy:(BOOL)aIsDestroy
-{
-    if (aCall) {
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-        [audioSession setActive:YES error:nil];
-        
-        [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
-        
-        if (aIsDestroy) {
-            [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
-        } else {
-            [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
-        }
-        
-        [[DemoCallManager sharedManager] setIsCalling:NO];
-    }
 }
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage
@@ -216,24 +187,54 @@ static DemoConfManager *confManager = nil;
     
     EMConferenceViewController *controller = nil;
     NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
-    //如果“em_conference_op”属性存在，说明是新版
-    if ([op length] > 0) {
-        if ([op isEqualToString:@"invite"]) {
-            [[DemoCallManager sharedManager] setIsCalling:YES];
-            EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
-            if (type == EMConferenceTypeLive) {
-                LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
-                [self.mainController.navigationController pushViewController:controller animated:NO];
-            } else {
-                controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password];
-            }
+    do {
+        //如果“em_conference_op”属性存在，说明是新版
+        if ([op length] == 0) {
+            controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:EMConferenceTypeLargeCommunication chatId:nil chatType:EMChatTypeChat];
+            break;
         }
-    } else {
-        controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:EMConferenceTypeLargeCommunication];
-    }
+        
+        if (![op isEqualToString:@"invite"]) {
+            break;
+        }
+        
+        [[DemoCallManager sharedManager] setIsCalling:YES];
+        
+        EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
+        NSString *chatId = [aMessage.ext objectForKey:@"em_conference_chatId"];
+        EMChatType chatType = (EMChatType)[[aMessage.ext objectForKey:@"em_conference_chatType"] integerValue];
+        if (type == EMConferenceTypeLive) {
+            LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
+            [self.mainController.navigationController pushViewController:controller animated:NO];
+        } else {
+            controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password chatId:chatId chatType:chatType];
+        }
+        
+    } while (0);
     
     if (controller) {
-        [self.mainController presentViewController:controller animated:NO completion:nil];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [self.mainController presentViewController:navController animated:NO completion:nil];
+    }
+}
+
+- (void)endConference:(EMCallConference *)aCall
+            isDestroy:(BOOL)aIsDestroy
+{
+    if (aCall) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setActive:YES error:nil];
+        
+        [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
+        
+        if (aIsDestroy) {
+            [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
+        } else {
+            [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
+        }
+        
+        [[DemoCallManager sharedManager] setIsCalling:NO];
     }
 }
 

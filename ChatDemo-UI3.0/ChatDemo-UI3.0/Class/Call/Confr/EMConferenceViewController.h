@@ -17,36 +17,46 @@
 //默认状态：
 //1. 使用前置摄像头
 //2. 不上传本地视频
-@interface EMConferenceViewController : EMCallViewController<EMConferenceManagerDelegate>
+@interface EMConferenceViewController : EMCallViewController<EMConferenceManagerDelegate, EMConferenceVideoViewDelegate>
 
 @property (nonatomic, strong) EMButton *switchCameraButton;
 @property (nonatomic, strong) EMButton *videoButton;
 @property (nonatomic, strong) UIScrollView *scrollView;
 
+@property (nonatomic) float videoViewBorder;
+@property (nonatomic) CGSize videoViewSize;
+
 @property (nonatomic, strong) __block EMCallConference *conference;
-@property (nonatomic, readonly) EMConferenceType type;
-@property (nonatomic, strong) NSString *password;
-@property (nonatomic, readonly) BOOL isCreater;
 @property (nonatomic, strong, readonly) NSString *joinConfId;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, readonly) EMConferenceType type;
+@property (nonatomic, readonly) BOOL isCreater;
 @property (nonatomic) BOOL isUseBackCamera;
 
-@property (nonatomic, strong, readonly) NSMutableArray *inviteUsers;
+@property (nonatomic, strong, readonly) NSMutableArray *talkingStreamIds;
 
 @property (nonatomic, strong) EMCallLocalView *localVideoView;
 @property (nonatomic, strong, readonly) NSMutableDictionary *streamItemDict;
 @property (nonatomic, strong) NSString *pubStreamId;
 @property (nonatomic, strong) NSMutableArray *streamIds;
 
-@property (nonatomic) float videoViewBorder;
-@property (nonatomic) CGSize videoViewSize;
+@property (nonatomic, strong, readonly) NSMutableArray *inviteUsers;
+@property (nonatomic) ConfInviteType inviteType;
+
+@property (nonatomic, strong, readonly) NSString *chatId;
+@property (nonatomic, readonly) EMChatType chatType;
 
 - (instancetype)initWithType:(EMConferenceType)aType
                     password:(NSString *)aPassword
-                 inviteUsers:(NSArray *)aInviteUsers;
+                 inviteUsers:(NSArray *)aInviteUsers
+                      chatId:(NSString *)aChatId
+                    chatType:(EMChatType)aChatType;
 
 - (instancetype)initWithJoinConfId:(NSString *)aConfId
                           password:(NSString *)aPassword
-                              type:(EMConferenceType)aType;
+                              type:(EMConferenceType)aType
+                            chatId:(NSString *)aChatId
+                          chatType:(EMChatType)aChatType;
 
 //stream
 - (CGRect)getNewVideoViewFrame;
@@ -55,8 +65,12 @@
                                          displayView:(UIView *)aDisplayView
                                               stream:(EMCallStream *)aStream;
 
+- (void)pubLocalStreamWithEnableVideo:(BOOL)aEnableVideo
+                           completion:(void (^)(NSString *aPubStreamId, EMError *aError))aCompletionBlock;
+
 //member
-- (void)inviteUser:(NSString *)aUserName;
+- (void)sendInviteMessageWithConversationId:(NSString *)aConversationId
+                                   chatType:(EMChatType)aChatType;
 
 //action
 - (void)videoButtonAction:(EMButton *)aButton;

@@ -28,6 +28,8 @@
 
 - (void)updateStreamingStatus:(EMCallStreamingStatus)aStatus;
 
+- (void)clearDataAndView;
+
 #endif
 
 @end

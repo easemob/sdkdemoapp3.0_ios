@@ -398,6 +398,7 @@ static DemoCallManager *callManager = nil;
         self.currentCall = nil;
         
         //        self.currentController.isDismissing = YES;
+        [self.currentController clearDataAndView];
         [self.currentController dismissViewControllerAnimated:NO completion:nil];
         self.currentController = nil;
         

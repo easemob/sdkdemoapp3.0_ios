@@ -10,12 +10,14 @@
 
 @interface MeetingViewController : EMConferenceViewController
 
-@property (nonatomic, strong) NSString *conversationId;
-
 - (instancetype)initWithPassword:(NSString *)aPassword
-                     inviteUsers:(NSArray *)aInviteUsers;
+                     inviteUsers:(NSArray *)aInviteUsers
+                          chatId:(NSString *)aChatId
+                        chatType:(EMChatType)aChatType;
 
 - (instancetype)initWithJoinConfId:(NSString *)aConfId
-                          password:(NSString *)aPassword;
+                          password:(NSString *)aPassword
+                            chatId:(NSString *)aChatId
+                          chatType:(EMChatType)aChatType;
 
 @end

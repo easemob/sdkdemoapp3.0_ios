@@ -10,6 +10,9 @@
 
 @interface EMConferenceViewController ()
 
+@property (nonatomic, strong) UIButton *gridButton;
+@property (nonatomic, strong) EMConferenceVideoView *currentBigView;
+
 @end
 
 @implementation EMConferenceViewController
@@ -17,12 +20,16 @@
 - (instancetype)initWithType:(EMConferenceType)aType
                     password:(NSString *)aPassword
                  inviteUsers:(NSArray *)aInviteUsers
+                      chatId:(NSString *)aChatId
+                    chatType:(EMChatType)aChatType
 {
     self = [super init];
     if (self) {
+        _isCreater = YES;
         _type = aType;
         _password = aPassword;
-        _isCreater = YES;
+        _chatId = aChatId;
+        _chatType = aChatType;
         
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
     }
@@ -33,13 +40,24 @@
 - (instancetype)initWithJoinConfId:(NSString *)aConfId
                           password:(NSString *)aPassword
                               type:(EMConferenceType)aType
+                            chatId:(NSString *)aChatId
+                          chatType:(EMChatType)aChatType
 {
     self = [super init];
     if (self) {
+        _isCreater = NO;
         _joinConfId = aConfId;
         _password = aPassword;
         _type = aType;
-        _isCreater = NO;
+        _chatId = aChatId;
+        _chatType = aChatType;
+        
+        _inviteType = ConfInviteTypeUser;
+        if (aChatType == EMChatTypeGroupChat) {
+            _inviteType = ConfInviteTypeGroup;
+        } else if (aChatType == EMChatTypeChatRoom) {
+            _inviteType = ConfInviteTypeChatroom;
+        }
         
         _inviteUsers = [[NSMutableArray alloc] init];
     }
@@ -50,14 +68,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.streamIds = [[NSMutableArray alloc] init];
-    _streamItemDict = [[NSMutableDictionary alloc] init];
-    
-    self.videoViewBorder = 0;
-    float width = ([[UIScreen mainScreen] bounds].size.width - self.videoViewBorder) / kConferenceVideoMaxCol;
-    self.videoViewSize = CGSizeMake(width, width);
-    
+    [self _initializeConferenceController];
     [self _setupConferenceControllerSubviews];
+    
     if (!isHeadphone()) {
         [self speakerButtonAction];
     }
@@ -71,6 +84,7 @@
     [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
     [audioSession setActive:YES error:nil];
     
+    //注册SDK回调监听
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
 
@@ -92,6 +106,17 @@
 }
 
 #pragma mark - Subviews
+
+- (void)_initializeConferenceController
+{
+    self.streamIds = [[NSMutableArray alloc] init];
+    _streamItemDict = [[NSMutableDictionary alloc] init];
+    _talkingStreamIds = [[NSMutableArray alloc] init];
+    
+    self.videoViewBorder = 0;
+    float width = ([[UIScreen mainScreen] bounds].size.width - self.videoViewBorder) / kConferenceVideoMaxCol;
+    self.videoViewSize = CGSizeMake(width, width);
+}
 
 - (void)_setupConferenceControllerSubviews
 {
@@ -167,6 +192,18 @@
     [@[inviteButton, self.switchCameraButton, self.microphoneButton, self.videoButton, self.speakerButton] mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(width);
         make.height.mas_equalTo(height);
+    }];
+    
+    self.gridButton = [[UIButton alloc] init];
+    self.gridButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.gridButton setImage:[UIImage imageNamed:@"grid_white"] forState:UIControlStateNormal];
+    [self.gridButton addTarget:self action:@selector(gridAction) forControlEvents:UIControlEventTouchUpInside];
+    self.gridButton.hidden = YES;
+    [self.view addSubview:self.gridButton];
+    [self.gridButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-30);
+        make.left.equalTo(self.view).offset(25);
+        make.width.height.equalTo(@40);
     }];
     
     self.scrollView = [[UIScrollView alloc] init];
@@ -249,30 +286,7 @@
         videoItem.videoView.enableVoice = aStream.enableVoice;
     }
     
-//    EMCallStream *oldStream = [self.streamsDic objectForKey:aStream.streamId];
-//    if (oldStream) {
-//        if (oldStream.enableVideo != aStream.enableVideo) {
-//            EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
-//            EMCallRemoteView *displayView = [userView.videoView viewWithTag:100];
-//            if (displayView == nil && aStream.enableVideo) {
-//                displayView = [[EMCallRemoteView alloc] initWithFrame:CGRectMake(0, 0, userView.videoView.frame.size.width, userView.videoView.frame.size.height)];
-//                displayView.tag = 100;
-//                displayView.scaleMode = EMCallViewScaleModeAspectFill;
-//                [userView.videoView addSubview:displayView];
-//
-//                [[EMClient sharedClient].conferenceManager updateConference:self.conference streamId:aStream.streamId remoteVideoView:displayView completion:nil];
-//            }
-//            displayView.hidden = !aStream.enableVideo;
-//        } else if (oldStream.enableVoice != aStream.enableVoice) {
-//            EMConfUserView *userView = [self.streamViews objectForKey:aStream.streamId];
-//            userView.isMuted = !aStream.enableVoice;
-//            if (aStream.enableVoice) {
-//                userView.status = EMAudioStatusConnected;
-//            }
-//        }
-//
-//        [self.streamsDic setObject:aStream forKey:aStream.streamId];
-//    }
+    videoItem.stream = aStream;
 }
 
 - (void)streamStartTransmitting:(EMCallConference *)aConference
@@ -316,20 +330,47 @@
         return;
     }
     
-//    for (NSString *streamId in aStreamIds) {
-//        EMConfUserView *userView = [self.streamViews objectForKey:streamId];
-//        userView.status = EMAudioStatusTalking;
-//
-//        [self.talkingStreamIds removeObject:streamId];
-//    }
-//
-//    for (NSString *streamId in self.talkingStreamIds) {
-//        EMConfUserView *userView = [self.streamViews objectForKey:streamId];
-//        userView.status = EMAudioStatusConnected;
-//    }
-//
-//    [self.talkingStreamIds removeAllObjects];
-//    [self.talkingStreamIds addObjectsFromArray:aStreamIds];
+    for (NSString *streamId in aStreamIds) {
+        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:streamId];
+        if (videoItem && videoItem.videoView) {
+            videoItem.videoView.status = StreamStatusTalking;
+        }
+        
+        [self.talkingStreamIds removeObject:streamId];
+    }
+    
+    for (NSString *streamId in self.talkingStreamIds) {
+        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:streamId];
+        if (videoItem && videoItem.videoView) {
+            videoItem.videoView.status = StreamStatusNormal;
+        }
+    }
+    
+    [self.talkingStreamIds removeAllObjects];
+    [self.talkingStreamIds addObjectsFromArray:aStreamIds];
+}
+
+#pragma mark - EMConferenceVideoViewDelegate
+
+- (void)conferenceVideoViewDidTap:(EMConferenceVideoView *)aVideoView
+{
+    self.gridButton.hidden = !aVideoView.isBig;
+    [aVideoView.displayView removeFromSuperview];
+    if (aVideoView.isBig) {
+        self.currentBigView = aVideoView;
+        [self.view addSubview:aVideoView.displayView];
+        [self.view sendSubviewToBack:aVideoView.displayView];
+        [self.view sendSubviewToBack:self.scrollView];
+        [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    } else {
+        self.currentBigView = nil;
+        [aVideoView addSubview:aVideoView.displayView];
+        [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(aVideoView);
+        }];
+    }
 }
 
 #pragma mark - Video Views
@@ -351,6 +392,7 @@
 {
     CGRect frame = [self getNewVideoViewFrame];
     EMConferenceVideoView *videoView = [[EMConferenceVideoView alloc] initWithFrame:frame];
+    videoView.delegate = self;
     videoView.nameLabel.text = aName;
     videoView.displayView = aDisplayView;
     [videoView addSubview:aDisplayView];
@@ -376,6 +418,62 @@
 }
 
 #pragma mark - Stream
+
+- (void)pubLocalStreamWithEnableVideo:(BOOL)aEnableVideo
+                           completion:(void (^)(NSString *aPubStreamId, EMError *aError))aCompletionBlock
+{
+    //上传流的过程中，不允许操作视频按钮
+    self.videoButton.enabled = NO;
+    self.switchCameraButton.enabled = NO;
+    
+    EMStreamParam *pubConfig = [[EMStreamParam alloc] init];
+    pubConfig.streamName = [EMClient sharedClient].currentUsername;
+    pubConfig.enableVideo = aEnableVideo;
+    
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    pubConfig.isFixedVideoResolution = options.isFixedVideoResolution;
+    pubConfig.maxVideoKbps = (int)options.maxVideoKbps;
+    pubConfig.maxAudioKbps = (int)options.maxAudioKbps;
+    pubConfig.videoResolution = options.videoResolution;
+    
+    pubConfig.isBackCamera = self.switchCameraButton.isSelected;
+    
+    EMCallLocalView *localView = [[EMCallLocalView alloc] init];
+    localView.scaleMode = EMCallViewScaleModeAspectFill;
+    localView.backgroundColor = [UIColor blueColor];
+    pubConfig.localView = localView;
+    
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
+        if (aError) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"上传本地视频流失败，请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+            
+            if (aCompletionBlock) {
+                aCompletionBlock(nil, aError);
+            }
+            
+            return ;
+            
+            //TODO: 后续处理是怎么样的
+        }
+        
+        weakself.videoButton.enabled = YES;
+        weakself.videoButton.selected = aEnableVideo;
+        weakself.switchCameraButton.enabled = aEnableVideo;
+        
+        weakself.pubStreamId = aPubStreamId;
+        
+        EMConferenceVideoItem *videoItem = [self setupNewVideoViewWithName:pubConfig.streamName displayView:localView stream:nil];
+        videoItem.videoView.enableVideo = aEnableVideo;
+        [weakself.streamItemDict setObject:videoItem forKey:aPubStreamId];
+        [weakself.streamIds addObject:aPubStreamId];
+        
+        if (aCompletionBlock) {
+            aCompletionBlock(aPubStreamId, nil);
+        }
+    }];
+}
 
 - (void)_subStream:(EMCallStream *)aStream
 {
@@ -418,18 +516,26 @@
 
 #pragma mark - Member
 
-- (void)inviteUser:(NSString *)aUserName
+- (void)sendInviteMessageWithConversationId:(NSString *)aConversationId
+                                   chatType:(EMChatType)aChatType
 {
+    NSString *tmpStr = self.type == EMConferenceTypeLive ? @"邀请你加入互动会议" : @"邀请你加入会议";
     NSString *currentUser = [EMClient sharedClient].currentUsername;
-    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ 邀请你加入会议: %@", currentUser, self.conference.confId]];
+    EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ %@: %@", currentUser, tmpStr, self.conference.confId]];
     NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:@{@"em_conference_op":@"invite",@"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_conference_type":@(self.type)}];
     //为了兼容旧版本
     if (self.type != EMConferenceTypeLive) {
         [ext setObject:self.conference.confId forKey:@"conferenceId"];
         [ext setObject:@{@"inviter":currentUser, @"group_id":@""} forKey:@"msg_extension"];
     }
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aUserName from:currentUser to:aUserName body:textBody ext:ext];
-    message.chatType = EMChatTypeChat;
+    //添加会话相关属性
+    if ([self.chatId length] > 0) {
+        [ext setObject:self.chatId forKey:@"em_conference_chatId"];
+        [ext setObject:@(self.chatType) forKey:@"em_conference_chatType"];
+    }
+    
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aConversationId from:currentUser to:aConversationId body:textBody ext:ext];
+    message.chatType = aChatType;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
 
@@ -463,6 +569,14 @@
     }
     
     //TODO: 更新View
+}
+
+- (void)gridAction
+{
+    if (self.currentBigView) {
+        self.currentBigView.isBig = NO;
+        [self conferenceVideoViewDidTap:self.currentBigView];
+    }
 }
 
 - (void)minimizeAction

@@ -6,16 +6,21 @@
 //  Copyright © 2018 XieYajie. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "EMRefreshViewController.h"
 
-@interface ConfInviteUsersViewController : UIViewController
+typedef enum {
+    ConfInviteTypeUser = 0,
+    ConfInviteTypeGroup,
+    ConfInviteTypeChatroom,
+} ConfInviteType;
 
-@property (nonatomic, strong, readonly) UITableView *tableView;
+@interface ConfInviteUsersViewController : EMRefreshViewController
 
-@property (nonatomic, strong, readonly) NSMutableArray *dataArray;
+@property (copy) void (^doneCompletion)(NSArray *aInviteUsers);
 
-@property (copy) void (^doneCompletion)(NSArray *inviteUsers);
-
-- (instancetype)initWithCreate:(BOOL)aIsCreate;
+- (instancetype)initWithType:(ConfInviteType)aType
+                    isCreate:(BOOL)aIsCreate
+                excludeUsers:(NSArray *)aExcludeUsers
+           groupOrChatroomId:(NSString *)aGorcId;
 
 @end

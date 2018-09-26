@@ -19,6 +19,8 @@
 
 #if DEMO_CALL == 1
 
+@synthesize floatingView = _floatingView;
+
 - (instancetype)initWithCallSession:(EMCallSession *)aCallSession
 {
     self = [super init];
@@ -56,7 +58,7 @@
 
 - (void)dealloc
 {
-    [self _stopCallDurationTimer];
+    [self clearDataAndView];
 }
 
 #pragma mark - Subviews
@@ -137,6 +139,35 @@
             make.width.height.mas_equalTo(size);
         }];
     }
+}
+
+#pragma mark - Floating View
+
+- (EMCallFloatingView *)floatingView
+{
+    if (_floatingView == nil) {
+        _floatingView = [[EMCallFloatingView alloc] initWithIsOnlyVoice:YES];
+        [_floatingView addTarget:self action:@selector(toNormalSizeAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _floatingView;
+}
+
+- (void)setFloatingViewFrameWithSuperView:(UIView *)aSuperView
+{
+    [self.floatingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@50);
+        make.top.equalTo(aSuperView.mas_top).offset(80);
+        make.right.equalTo(aSuperView.mas_right).offset(-40);
+    }];
+}
+
+- (void)toNormalSizeAction:(EMCallFloatingView *)aFloatView
+{
+    [aFloatView removeFromSuperview];
+    
+    UIViewController *mainController = (UIViewController *)[DemoCallManager sharedManager].mainController;
+    [mainController presentViewController:self animated:NO completion:nil];
 }
 
 #pragma mark - timer
@@ -296,6 +327,15 @@
     [self showHint:str];
 }
 
+- (void)clearDataAndView
+{
+    [self _stopCallDurationTimer];
+    
+    if (_floatingView) {
+        [_floatingView removeFromSuperview];
+    }
+}
+
 #pragma mark - Action
 
 - (void)microphoneButtonAction
@@ -315,12 +355,17 @@
 
 - (void)minimizeAction
 {
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    [self setFloatingViewFrameWithSuperView:keyWindow];
     
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)hangupAction
 {
-    [self _stopCallDurationTimer];
+    [self clearDataAndView];
     
     NSString *callId = self.callSession.callId;
     _callSession = nil;

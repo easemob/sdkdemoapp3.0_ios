@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ConfInviteUsersViewController.h"
+
 #import "ConferenceViewController.h"
 #import "LiveViewController.h"
 
@@ -31,16 +33,15 @@
 
 #pragma mark - New
 
-- (void)selectConfMemberWithType:(EMConferenceType)aType;
+- (void)inviteMemberWithConfType:(EMConferenceType)aConfType
+                      inviteType:(ConfInviteType)aInviteType
+                  conversationId:(NSString *)aConversationId
+                        chatType:(EMChatType)aChatType;
 
-- (EMConferenceViewController *)startConferenceWithType:(EMConferenceType)aType
-                                               password:(NSString *)aPassword
-                                            inviteUsers:(NSArray *)aInviteUsers;
+- (void)handleMessageToJoinConference:(EMMessage *)aMessage;
 
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy;
-
-- (void)handleMessageToJoinConference:(EMMessage *)aMessage;
 
 #endif
 
