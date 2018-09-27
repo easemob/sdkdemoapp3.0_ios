@@ -8,10 +8,14 @@
 
 #import "EMConferenceViewController.h"
 
+#import "AppDelegate.h"
+
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
+
+@property (nonatomic) CGRect localViewTmpFrame;
 
 @end
 
@@ -224,7 +228,7 @@
                member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString: self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userJoin", @"User %@ has been joined to the conference"), aMember.memberName];
+        NSString *message = [NSString stringWithFormat:@"%@ 加入会议", aMember.memberName];
         [self showHint:message];
     }
 }
@@ -233,7 +237,7 @@
                 member:(EMCallMember *)aMember
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"hint.conference.userLeave", @"User %@ has been leaved from the conference"), aMember.memberName];
+        NSString *message = [NSString stringWithFormat:@"%@ 离开会议", aMember.memberName];
         [self showHint:message];
     }
 }
@@ -259,7 +263,7 @@
                    error:(EMError *)aError
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.closed", @"Conference has been closed") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"会议已关闭" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
         
         [self hangupAction];
@@ -354,6 +358,19 @@
 
 - (void)streamViewDidTap:(EMStreamView *)aVideoView
 {
+    if (aVideoView == _floatingView) {
+        self.minButton.selected = NO;
+        [self.floatingView removeFromSuperview];
+        
+        [self.scrollView addSubview:self.floatingView];
+        self.floatingView.frame = self.localViewTmpFrame;
+        self.floatingView = nil;
+        
+        UIViewController *mainController = [(AppDelegate *)[UIApplication sharedApplication].delegate mainController];
+        [mainController presentViewController:self.navigationController animated:NO completion:nil];
+        return;
+    }
+    
     if (!aVideoView.enableVideo) {
         return;
     }
@@ -372,6 +389,8 @@
         }];
     } else {
         [aVideoView addSubview:aVideoView.displayView];
+        [aVideoView sendSubviewToBack:aVideoView.displayView];
+        [aVideoView sendSubviewToBack:aVideoView.bgView];
         [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(aVideoView);
         }];
@@ -554,7 +573,26 @@
 
 - (void)inviteButtonAction:(EMButton *)aButton
 {
+    NSMutableArray *members = [[NSMutableArray alloc] init];
+    [members addObject:[EMClient sharedClient].currentUsername];
+    for (NSString *key in self.streamItemDict) {
+        EMStreamItem *item = [self.streamItemDict objectForKey:key];
+        if (item.stream) {
+            [members addObject:item.stream.userName];
+        }
+    }
+    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:self.inviteType isCreate:NO excludeUsers:members groupOrChatroomId:self.chatId];
     
+    __weak typeof(self) weakself = self;
+    [controller setDoneCompletion:^(NSArray *aInviteUsers) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            for (NSString *username in aInviteUsers) {
+                [weakself sendInviteMessageWithConversationId:username chatType:EMChatTypeChat];
+            }
+        });
+    }];
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)switchCameraButtonAction:(EMButton *)aButton
@@ -580,19 +618,24 @@
 {
     if (self.currentBigView) {
         [self streamViewDidTap:self.currentBigView];
-        
-//        EMStreamView *videoView = self.currentBigView;
-//        self.currentBigView = nil;
-//        [videoView addSubview:videoView.displayView];
-//        [videoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.edges.equalTo(videoView);
-//        }];
     }
 }
 
 - (void)minimizeAction
 {
+    self.minButton.selected = YES;
     
+    EMStreamItem *item = [self.streamItemDict objectForKey:self.pubStreamId];
+    self.localViewTmpFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
+    self.floatingView = item.videoView;
+    [self.floatingView removeFromSuperview];
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    self.floatingView.frame = CGRectMake(keyWindow.frame.size.width - 120, 80, 80, 80);
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)hangupAction
@@ -605,7 +648,7 @@
     }
     [[DemoConfManager sharedManager] endConference:self.conference isDestroy:isDestroy];
 
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

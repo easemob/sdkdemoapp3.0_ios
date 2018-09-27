@@ -198,31 +198,6 @@
     }
 }
 
-- (void)minimizeAction
-{
-    self.minButton.selected = YES;
-    
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    [keyWindow addSubview:self.floatingView];
-    [keyWindow bringSubviewToFront:self.floatingView];
-    [self.floatingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@80);
-        make.top.equalTo(keyWindow.mas_top).offset(80);
-        make.right.equalTo(keyWindow.mas_right).offset(-40);
-    }];
-    
-    if (self.callSession.remoteVideoView) {
-        [self.callSession.remoteVideoView removeFromSuperview];
-        self.floatingView.displayView = self.callSession.remoteVideoView;
-        [self.floatingView addSubview:self.callSession.remoteVideoView];
-        [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.floatingView);
-        }];
-    }
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
-
 #pragma mark - EMStreamViewDelegate
 
 - (void)streamViewDidTap:(EMStreamView *)aVideoView
@@ -306,6 +281,31 @@
     } else {
         [self.callSession resumeVideo];
     }
+}
+
+- (void)minimizeAction
+{
+    self.minButton.selected = YES;
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    [self.floatingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@80);
+        make.top.equalTo(keyWindow.mas_top).offset(80);
+        make.right.equalTo(keyWindow.mas_right).offset(-40);
+    }];
+    
+    if (self.callSession.remoteVideoView) {
+        [self.callSession.remoteVideoView removeFromSuperview];
+        self.floatingView.displayView = self.callSession.remoteVideoView;
+        [self.floatingView addSubview:self.callSession.remoteVideoView];
+        [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.floatingView);
+        }];
+    }
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 //#ifdef DEBUG

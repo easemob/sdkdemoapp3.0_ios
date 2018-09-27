@@ -127,28 +127,4 @@
     }
 }
 
-- (void)inviteButtonAction:(EMButton *)aButton
-{
-    NSMutableArray *members = [[NSMutableArray alloc] init];
-    [members addObject:[EMClient sharedClient].currentUsername];
-    for (NSString *key in self.streamItemDict) {
-        EMStreamItem *item = [self.streamItemDict objectForKey:key];
-        if (item.stream) {
-            [members addObject:item.stream.userName];
-        }
-    }
-    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:self.inviteType isCreate:NO excludeUsers:members groupOrChatroomId:self.chatId];
-
-    __weak typeof(self) weakself = self;
-    [controller setDoneCompletion:^(NSArray *aInviteUsers) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            for (NSString *username in aInviteUsers) {
-                [weakself sendInviteMessageWithConversationId:username chatType:EMChatTypeChat];
-            }
-        });
-    }];
-    
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 @end

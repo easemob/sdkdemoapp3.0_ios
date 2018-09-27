@@ -23,6 +23,8 @@ static DemoConfManager *confManager = nil;
 
 @interface DemoConfManager()<EMConferenceManagerDelegate, EMChatManagerDelegate>
 
+@property (strong, nonatomic) UINavigationController *confNavController;
+
 @end
 
 #endif
@@ -108,8 +110,6 @@ static DemoConfManager *confManager = nil;
 
 - (ConferenceViewController *)pushConferenceControllerWithType:(EMConferenceType)aType
 {
-    [[DemoCallManager sharedManager] setIsCalling:YES];
-    
     ConferenceViewController *controller = nil;
     if (aType != EMConferenceTypeLive) {
         controller = [[ConferenceViewController alloc] initWithConferenceType:aType];
@@ -121,8 +121,6 @@ static DemoConfManager *confManager = nil;
 
 - (LiveViewController *)pushLiveControllerWithPassword:(NSString *)aPassword
 {
-    [[DemoCallManager sharedManager] setIsCalling:YES];
-    
     LiveViewController *controller = [[LiveViewController alloc] initWithPassword:aPassword];
     [self.mainController.navigationController pushViewController:controller animated:NO];
     
@@ -131,8 +129,6 @@ static DemoConfManager *confManager = nil;
 
 - (void)pushCustomVideoConferenceController
 {
-    [[DemoCallManager sharedManager] setIsCalling:YES];
-    
     ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:YES];
     [self.mainController.navigationController pushViewController:confController animated:NO];
 }
@@ -144,11 +140,18 @@ static DemoConfManager *confManager = nil;
                   conversationId:(NSString *)aConversationId
                         chatType:(EMChatType)aChatType
 {
+    if (self.isCalling || [DemoCallManager sharedManager].isCalling) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"有通话正在进行" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        
+        return;
+    }
+    
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aInviteType isCreate:YES excludeUsers:nil groupOrChatroomId:aConversationId];
     
     __weak typeof(self) weakSelf = self;
     [controller setDoneCompletion:^(NSArray *aInviteUsers) {
-        [[DemoCallManager sharedManager] setIsCalling:YES];
+        weakSelf.isCalling = YES;
         
         EMConferenceViewController *controller = nil;
         if (aConfType != EMConferenceTypeLive) {
@@ -158,14 +161,19 @@ static DemoConfManager *confManager = nil;
         }
         controller.inviteType = aInviteType;
         
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [weakSelf.mainController presentViewController:navController animated:NO completion:nil];
+        weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [weakSelf.mainController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }];
     [self.mainController presentViewController:controller animated:NO completion:nil];
 }
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage
 {
+    //如果正在进行1v1通话，不处理
+    if ([DemoCallManager sharedManager].isCalling) {
+        return;
+    }
+    
     //新版属性
     NSString *conferenceId = [aMessage.ext objectForKey:@"em_conference_id"];
     NSString *password = [aMessage.ext objectForKey:@"em_conference_password"];
@@ -177,11 +185,6 @@ static DemoConfManager *confManager = nil;
     
     //如果conferenceId不存在，则不处理
     if ([conferenceId length] == 0) {
-        return;
-    }
-    
-    //如果正在进行1v1通话，不处理
-    if ([DemoCallManager sharedManager].isCalling) {
         return;
     }
     
@@ -198,8 +201,6 @@ static DemoConfManager *confManager = nil;
             break;
         }
         
-        [[DemoCallManager sharedManager] setIsCalling:YES];
-        
         EMConferenceType type = (EMConferenceType)[[aMessage.ext objectForKey:@"em_conference_type"] integerValue];
         NSString *chatId = [aMessage.ext objectForKey:@"em_conference_chatId"];
         EMChatType chatType = (EMChatType)[[aMessage.ext objectForKey:@"em_conference_chatType"] integerValue];
@@ -213,8 +214,9 @@ static DemoConfManager *confManager = nil;
     } while (0);
     
     if (controller) {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [self.mainController presentViewController:navController animated:NO completion:nil];
+        self.isCalling = YES;
+        self.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [self.mainController presentViewController:self.confNavController animated:NO completion:nil];
     }
 }
 
@@ -222,6 +224,9 @@ static DemoConfManager *confManager = nil;
             isDestroy:(BOOL)aIsDestroy
 {
     if (aCall) {
+        self.isCalling = NO;
+        self.confNavController = nil;
+        
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
         [audioSession setActive:YES error:nil];

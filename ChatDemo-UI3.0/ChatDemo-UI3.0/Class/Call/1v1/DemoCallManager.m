@@ -14,6 +14,7 @@
 #import <CoreTelephony/CTCall.h>
 
 #import "EaseSDKHelper.h"
+#import "DemoConfManager.h"
 //#import "EMCallRecorderPlugin.h"
 
 #import "MainViewController.h"
@@ -150,7 +151,7 @@ static DemoCallManager *callManager = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
     
-    if(self.isCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
+    if(self.isCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected) || [DemoConfManager sharedManager].isCalling){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
@@ -268,6 +269,12 @@ static DemoCallManager *callManager = nil;
         return;
     }
     
+    if (self.isCalling || [DemoConfManager sharedManager].isCalling) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"有通话正在进行" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+        return;
+    }
+    
     EMCallType type = (EMCallType)[[notify.object objectForKey:@"type"] integerValue];
     if (type == EMCallTypeVideo) {
         [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
@@ -304,8 +311,11 @@ static DemoCallManager *callManager = nil;
         DemoCallManager *strongSelf = weakSelf;
         if (strongSelf) {
             if (aError || aCallSession == nil) {
+                weakSelf.isCalling = NO;
+                
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"call.initFailed", @"Establish call failure") message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
+                
                 return;
             }
             
@@ -328,9 +338,12 @@ static DemoCallManager *callManager = nil;
             [weakSelf _startCallTimeoutTimer];
         }
         else {
+            weakSelf.isCalling = NO;
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
+    
+    self.isCalling = YES;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = aIsCustomVideo;

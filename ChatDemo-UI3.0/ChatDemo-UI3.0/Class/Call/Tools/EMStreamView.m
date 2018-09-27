@@ -56,6 +56,8 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
         [self addGestureRecognizer:tap];
         
+        [self bringSubviewToFront:_nameLabel];
+        
         _isLockedBgView = NO;
     }
     
@@ -111,8 +113,7 @@
     if (enableVideo) {
         [self sendSubviewToBack:_bgView];
     } else {
-        [self bringSubviewToFront:_bgView];
-        [self bringSubviewToFront:_statusView];
+        [self sendSubviewToBack:_displayView];
     }
 }
 

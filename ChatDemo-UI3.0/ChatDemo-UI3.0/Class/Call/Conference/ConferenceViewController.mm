@@ -187,8 +187,6 @@
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange) name:UIDeviceOrientationDidChangeNotification object:nil];
 
-    
-    [[DemoCallManager sharedManager] setIsCalling:YES];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
     self.streamViews = [[NSMutableDictionary alloc] init];
@@ -319,7 +317,6 @@
             weakSelf.conference = nil;
             self.navigationController.navigationBarHidden = NO;
             [self.navigationController popViewControllerAnimated:NO];
-            [DemoCallManager sharedManager].isCalling = NO;
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"alert.conference.createFail", @"Create or Join conference failed!") delegate:nil cancelButtonTitle:NSLocalizedString(@"sure", @"OK") otherButtonTitles:nil, nil];
             [alertView show];

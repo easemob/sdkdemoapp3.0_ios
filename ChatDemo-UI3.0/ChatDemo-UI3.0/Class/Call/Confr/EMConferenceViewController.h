@@ -23,6 +23,8 @@
 @property (nonatomic, strong) EMButton *videoButton;
 @property (nonatomic, strong) UIScrollView *scrollView;
 
+@property (nonatomic, strong) EMStreamView *floatingView;
+
 @property (nonatomic) float videoViewBorder;
 @property (nonatomic) CGSize videoViewSize;
 
