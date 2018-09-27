@@ -12,9 +12,6 @@
 
 #if DEMO_CALL == 1
 
-- (instancetype)initWithCallSession:(EMCallSession *)aCallSession
-                       isCustomData:(BOOL)aIsCustom;
-
 #endif
 
 @end

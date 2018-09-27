@@ -59,6 +59,28 @@
         make.right.equalTo(self.view).offset(-20);
         make.bottom.equalTo(self.microphoneButton.mas_top).offset(-40);
     }];
+    
+    self.floatingView.bgView.image = [UIImage imageNamed:@"floating_voice"];
+    self.floatingView.bgView.layer.borderWidth = 0;
+    self.floatingView.isLockedBgView = YES;
+}
+
+#pragma mark - Action
+
+- (void)minimizeAction
+{
+    self.minButton.selected = YES;
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    [self.floatingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@50);
+        make.top.equalTo(keyWindow.mas_top).offset(80);
+        make.right.equalTo(keyWindow.mas_right).offset(-40);
+    }];
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 #endif

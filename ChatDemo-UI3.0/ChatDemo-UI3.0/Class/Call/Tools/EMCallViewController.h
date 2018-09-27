@@ -11,7 +11,6 @@
 #import "Masonry.h"
 
 #import "EMButton.h"
-#import "EMCallFloatingView.h"
 
 static bool isHeadphone()
 {
@@ -35,10 +34,6 @@ static bool isHeadphone()
 
 @property (nonatomic, strong) UIButton *hangupButton;
 @property (nonatomic, strong) UIButton *minButton;
-
-@property (nonatomic, strong) EMCallFloatingView *floatingView;
-
-- (void)setFloatingViewFrameWithSuperView:(UIView *)aSuperView;
 
 - (void)microphoneButtonAction;
 

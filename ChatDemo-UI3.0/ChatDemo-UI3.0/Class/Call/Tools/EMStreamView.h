@@ -1,5 +1,5 @@
 //
-//  EMConferenceVideoView.h
+//  EMStreamView.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2018/9/20.
@@ -15,10 +15,10 @@ typedef enum {
     StreamStatusTalking,
 } StreamStatus;
 
-@protocol EMConferenceVideoViewDelegate;
-@interface EMConferenceVideoView : UIView
+@protocol EMStreamViewDelegate;
+@interface EMStreamView : UIView
 
-@property (nonatomic, weak) id<EMConferenceVideoViewDelegate> delegate;
+@property (nonatomic, weak) id<EMStreamViewDelegate> delegate;
 
 @property (nonatomic, strong) UIImageView *bgView;
 
@@ -32,24 +32,26 @@ typedef enum {
 
 @property (nonatomic) BOOL enableVideo;
 
-@property (nonatomic) BOOL isBig;
+@property (nonatomic) BOOL isLockedBgView;
+
+@property (nonatomic, strong) id ext;
 
 @end
 
-@protocol EMConferenceVideoViewDelegate <NSObject>
+@protocol EMStreamViewDelegate <NSObject>
 
 @optional
 
-- (void)conferenceVideoViewDidTap:(EMConferenceVideoView *)aVideoView;
+- (void)streamViewDidTap:(EMStreamView *)aVideoView;
 
 @end
 
 
-@interface EMConferenceVideoItem : NSObject
+@interface EMStreamItem : NSObject
 
 @property (nonatomic, strong) EMCallStream *stream;
 
-@property (nonatomic, strong) EMConferenceVideoView *videoView;
+@property (nonatomic, strong) EMStreamView *videoView;
 
 @end
 

@@ -18,9 +18,6 @@
 @property (nonatomic, strong) UIView *minVideoView;
 @property (nonatomic, strong) EMButton *switchCameraButton;
 
-@property (nonatomic) BOOL isCustom;
-@property (nonatomic) CGSize minVideoViewSize;
-
 //#ifdef DEBUG
 //@property (nonatomic, strong) EMButton *recorderButton;
 //#endif
@@ -32,17 +29,6 @@
 #if DEMO_CALL == 1
 
 @synthesize callStatus = _callStatus;
-
-- (instancetype)initWithCallSession:(EMCallSession *)aCallSession
-                       isCustomData:(BOOL)aIsCustom
-{
-    self = [super initWithCallSession:aCallSession];
-    if (self) {
-        _isCustom = aIsCustom;
-    }
-    
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -141,11 +127,12 @@
     width = 80;
     CGSize size = [UIScreen mainScreen].bounds.size;
     height = size.height / size.width * width;
-    self.minVideoViewSize = CGSizeMake(width, height);
-    
+
     self.minVideoView = [[UIView alloc] init];
     self.minVideoView.tag = TAG_MINVIDEOVIEW_LOCAL;
     self.minVideoView.backgroundColor = [UIColor blackColor];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exchangeVideoViewAction:)];
+    [self.minVideoView addGestureRecognizer:tap];
     [self.view addSubview:self.minVideoView];
     [self.minVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.remoteNameLabel.mas_bottom);
@@ -154,31 +141,50 @@
         make.right.equalTo(self.view).offset(-15);
     }];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeVideoViewAction:)];
-    [self.minVideoView addGestureRecognizer:tap];
-    
-    self.callSession.localVideoView = [[EMCallLocalView alloc] initWithFrame:CGRectMake(0, 0, self.minVideoViewSize.width, self.minVideoViewSize.height)];
+    self.callSession.localVideoView = [[EMCallLocalView alloc] init];
     self.callSession.localVideoView.scaleMode = EMCallViewScaleModeAspectFill;
     [self.minVideoView addSubview:self.callSession.localVideoView];
     [self.view bringSubviewToFront:self.minVideoView];
+    [self.callSession.localVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.minVideoView);
+    }];
+}
+
+- (void)_setRemoteVideoViewFrame
+{
+    if (self.minButton.isSelected) {
+        [self.floatingView addSubview:self.callSession.remoteVideoView];
+        [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.floatingView);
+        }];
+        return;
+    }
+    
+    if (self.minVideoView.tag == TAG_MINVIDEOVIEW_REMOTE) {
+        [self.minVideoView addSubview:self.callSession.remoteVideoView];
+        [self.view bringSubviewToFront:self.minVideoView];
+        [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.minVideoView);
+        }];
+    } else {
+        [self.view addSubview:self.callSession.remoteVideoView];
+        [self.view sendSubviewToBack:self.callSession.remoteVideoView];
+        [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
 }
 
 - (void)_setupRemoteVideoView
 {
     if (self.callSession.remoteVideoView == nil) {
-        CGRect frame = self.minVideoView.tag == TAG_MINVIDEOVIEW_REMOTE ? CGRectMake(0, 0, self.minVideoViewSize.width, self.minVideoViewSize.height) : CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        self.callSession.remoteVideoView = [[EMCallRemoteView alloc] initWithFrame:frame];
+        self.callSession.remoteVideoView = [[EMCallRemoteView alloc] init];
         self.callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
         self.callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
-        
-        if (self.minVideoView.tag == TAG_MINVIDEOVIEW_REMOTE) {
-            [self.minVideoView addSubview:self.callSession.remoteVideoView];
-            [self.view bringSubviewToFront:self.minVideoView];
-        } else {
-            [self.view addSubview:self.callSession.remoteVideoView];
-            [self.view sendSubviewToBack:self.callSession.remoteVideoView];
-        }
+        self.callSession.remoteVideoView.userInteractionEnabled = YES;
     }
+    
+    [self _setRemoteVideoViewFrame];
 }
 
 #pragma mark - Super Public
@@ -192,48 +198,88 @@
     }
 }
 
+- (void)minimizeAction
+{
+    self.minButton.selected = YES;
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    [self.floatingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@80);
+        make.top.equalTo(keyWindow.mas_top).offset(80);
+        make.right.equalTo(keyWindow.mas_right).offset(-40);
+    }];
+    
+    if (self.callSession.remoteVideoView) {
+        [self.callSession.remoteVideoView removeFromSuperview];
+        self.floatingView.displayView = self.callSession.remoteVideoView;
+        [self.floatingView addSubview:self.callSession.remoteVideoView];
+        [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.floatingView);
+        }];
+    }
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+#pragma mark - EMStreamViewDelegate
+
+- (void)streamViewDidTap:(EMStreamView *)aVideoView
+{
+    [super streamViewDidTap:aVideoView];
+    
+    if (self.callSession.remoteVideoView) {
+        [self.callSession.remoteVideoView removeFromSuperview];
+        [self _setRemoteVideoViewFrame];
+    }
+}
+
 #pragma mark - Action
 
-- (void)changeVideoViewAction:(UITapGestureRecognizer *)aTap
+- (void)exchangeVideoViewAction:(UITapGestureRecognizer *)aTap
 {
     if (aTap.state != UIGestureRecognizerStateEnded) {
         return;
     }
     
-    CGRect bigFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    CGRect minFrame = CGRectMake(0, 0, self.minVideoViewSize.width, self.minVideoViewSize.height);
     [self.callSession.localVideoView removeFromSuperview];
     [self.callSession.remoteVideoView removeFromSuperview];
     [self.waitImgView removeFromSuperview];
     if (self.minVideoView.tag == TAG_MINVIDEOVIEW_LOCAL) {
         self.minVideoView.tag = TAG_MINVIDEOVIEW_REMOTE;
         
-        self.callSession.localVideoView.frame = bigFrame;
         [self.view addSubview:self.callSession.localVideoView];
         [self.view sendSubviewToBack:self.callSession.localVideoView];
+        [self.callSession.localVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
         
         if (self.callSession.remoteVideoView) {
-            self.callSession.remoteVideoView.frame = minFrame;
             [self.minVideoView addSubview:self.callSession.remoteVideoView];
+            [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(self.minVideoView);
+            }];
         } else {
             [self.minVideoView addSubview:self.waitImgView];
             [self.waitImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.minVideoView);
-                make.bottom.equalTo(self.minVideoView);
-                make.left.equalTo(self.minVideoView);
-                make.right.equalTo(self.minVideoView);
+                make.edges.equalTo(self.minVideoView);\
             }];
         }
     } else if (self.minVideoView.tag == TAG_MINVIDEOVIEW_REMOTE) {
         self.minVideoView.tag = TAG_MINVIDEOVIEW_LOCAL;
         
-        self.callSession.localVideoView.frame = minFrame;
         [self.minVideoView addSubview:self.callSession.localVideoView];
+        [self.callSession.localVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.minVideoView);
+        }];
         
         if (self.callSession.remoteVideoView) {
-            self.callSession.remoteVideoView.frame = bigFrame;
             [self.view addSubview:self.callSession.remoteVideoView];
             [self.view sendSubviewToBack:self.callSession.remoteVideoView];
+            [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(self.view);
+            }];
         } else {
             [self.view addSubview:self.waitImgView];
             [self.view sendSubviewToBack:self.waitImgView];

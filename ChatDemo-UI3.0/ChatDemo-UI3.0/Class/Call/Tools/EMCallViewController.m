@@ -54,19 +54,19 @@
     [self.microphoneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
     [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_gray"] forState:UIControlStateNormal];
-    [self.microphoneButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_gray"] forState:UIControlStateSelected];
     [self.view addSubview:self.microphoneButton];
     
     self.speakerButton = [[EMButton alloc] initWithTitle:@"扬声器" target:self action:@selector(speakerButtonAction)];
     [self.speakerButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.speakerButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     [self.speakerButton setImage:[UIImage imageNamed:@"speaker_gray"] forState:UIControlStateNormal];
-    [self.speakerButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    [self.speakerButton setImage:[UIImage imageNamed:@"speaker_gray"] forState:UIControlStateSelected];
     [self.view addSubview:self.speakerButton];
     
     self.minButton = [[UIButton alloc] init];
     self.minButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.minButton setImage:[UIImage imageNamed:@"minimize_gray"] forState:UIControlStateNormal];
+    [self.minButton setImage:[UIImage imageNamed:@"minimize_white"] forState:UIControlStateNormal];
     [self.minButton addTarget:self action:@selector(minimizeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.minButton];
     [self.minButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -80,11 +80,6 @@
     [self.hangupButton setImage:[UIImage imageNamed:@"hangup"] forState:UIControlStateNormal];
     [self.hangupButton addTarget:self action:@selector(hangupAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.hangupButton];
-}
-
-- (void)setFloatingViewFrameWithSuperView:(UIView *)aSuperView
-{
-    
 }
 
 #pragma mark - NSNotification

@@ -11,7 +11,7 @@
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) UIButton *gridButton;
-@property (nonatomic, strong) EMConferenceVideoView *currentBigView;
+@property (nonatomic, strong) EMStreamView *currentBigView;
 
 @end
 
@@ -273,7 +273,7 @@
         return;
     }
     
-    EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:aStream.streamId];
+    EMStreamItem *videoItem = [self.streamItemDict objectForKey:aStream.streamId];
     if (!videoItem.stream) {
         return;
     }
@@ -293,7 +293,7 @@
                        streamId:(NSString *)aStreamId
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:aStreamId];
+        EMStreamItem *videoItem = [self.streamItemDict objectForKey:aStreamId];
         if (videoItem && videoItem.videoView) {
             videoItem.videoView.status = StreamStatusConnected;
         }
@@ -331,7 +331,7 @@
     }
     
     for (NSString *streamId in aStreamIds) {
-        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:streamId];
+        EMStreamItem *videoItem = [self.streamItemDict objectForKey:streamId];
         if (videoItem && videoItem.videoView) {
             videoItem.videoView.status = StreamStatusTalking;
         }
@@ -340,7 +340,7 @@
     }
     
     for (NSString *streamId in self.talkingStreamIds) {
-        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:streamId];
+        EMStreamItem *videoItem = [self.streamItemDict objectForKey:streamId];
         if (videoItem && videoItem.videoView) {
             videoItem.videoView.status = StreamStatusNormal;
         }
@@ -350,13 +350,19 @@
     [self.talkingStreamIds addObjectsFromArray:aStreamIds];
 }
 
-#pragma mark - EMConferenceVideoViewDelegate
+#pragma mark - EMStreamViewDelegate
 
-- (void)conferenceVideoViewDidTap:(EMConferenceVideoView *)aVideoView
+- (void)streamViewDidTap:(EMStreamView *)aVideoView
 {
-    self.gridButton.hidden = !aVideoView.isBig;
+    if (!aVideoView.enableVideo) {
+        return;
+    }
+    
+    BOOL isFullscreen = [aVideoView.ext boolValue];
+    aVideoView.ext = @(!isFullscreen);
+    self.gridButton.hidden = isFullscreen;
     [aVideoView.displayView removeFromSuperview];
-    if (aVideoView.isBig) {
+    if (!isFullscreen) {
         self.currentBigView = aVideoView;
         [self.view addSubview:aVideoView.displayView];
         [self.view sendSubviewToBack:aVideoView.displayView];
@@ -365,11 +371,11 @@
             make.edges.equalTo(self.view);
         }];
     } else {
-        self.currentBigView = nil;
         [aVideoView addSubview:aVideoView.displayView];
         [aVideoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(aVideoView);
         }];
+        self.currentBigView = nil;
     }
 }
 
@@ -386,12 +392,12 @@
     return frame;
 }
 
-- (EMConferenceVideoItem *)setupNewVideoViewWithName:(NSString *)aName
-                                         displayView:(UIView *)aDisplayView
-                                              stream:(EMCallStream *)aStream
+- (EMStreamItem *)setupNewStreamItemWithName:(NSString *)aName
+                                 displayView:(UIView *)aDisplayView
+                                      stream:(EMCallStream *)aStream
 {
     CGRect frame = [self getNewVideoViewFrame];
-    EMConferenceVideoView *videoView = [[EMConferenceVideoView alloc] initWithFrame:frame];
+    EMStreamView *videoView = [[EMStreamView alloc] initWithFrame:frame];
     videoView.delegate = self;
     videoView.nameLabel.text = aName;
     videoView.displayView = aDisplayView;
@@ -406,7 +412,7 @@
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame));
     }
     
-    EMConferenceVideoItem *retItem = [[EMConferenceVideoItem alloc] init];
+    EMStreamItem *retItem = [[EMStreamItem alloc] init];
     retItem.videoView = videoView;
     retItem.stream = aStream;
     if ([aStream.streamId length] > 0) {
@@ -440,7 +446,6 @@
     
     EMCallLocalView *localView = [[EMCallLocalView alloc] init];
     localView.scaleMode = EMCallViewScaleModeAspectFill;
-    localView.backgroundColor = [UIColor blueColor];
     pubConfig.localView = localView;
     
     __weak typeof(self) weakself = self;
@@ -464,7 +469,7 @@
         
         weakself.pubStreamId = aPubStreamId;
         
-        EMConferenceVideoItem *videoItem = [self setupNewVideoViewWithName:pubConfig.streamName displayView:localView stream:nil];
+        EMStreamItem *videoItem = [self setupNewStreamItemWithName:pubConfig.streamName displayView:localView stream:nil];
         videoItem.videoView.enableVideo = aEnableVideo;
         [weakself.streamItemDict setObject:videoItem forKey:aPubStreamId];
         [weakself.streamIds addObject:aPubStreamId];
@@ -479,7 +484,7 @@
 {
     EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
     remoteView.scaleMode = EMCallViewScaleModeAspectFill;
-    EMConferenceVideoItem *videoItem = [self setupNewVideoViewWithName:aStream.userName displayView:remoteView stream:aStream];
+    EMStreamItem *videoItem = [self setupNewStreamItemWithName:aStream.userName displayView:remoteView stream:aStream];
     videoItem.videoView.enableVideo = aStream.enableVideo;
     
     __weak typeof(self) weakSelf = self;
@@ -500,14 +505,14 @@
     NSInteger index = [self.streamIds indexOfObject:aStream.streamId];
     [self.streamIds removeObjectAtIndex:index];
     
-    EMConferenceVideoItem *removeItem = [self.streamItemDict objectForKey:aStream.streamId];
+    EMStreamItem *removeItem = [self.streamItemDict objectForKey:aStream.streamId];
     CGRect prevFrame = removeItem.videoView.frame;
     [removeItem.videoView removeFromSuperview];
     [self.streamItemDict removeObjectForKey:aStream.streamId];
     
     for (NSInteger i = index; i < [self.streamIds count]; i++) {
         NSString *streamId = [self.streamIds objectAtIndex:i];
-        EMConferenceVideoItem *item = [self.streamItemDict objectForKey:streamId];
+        EMStreamItem *item = [self.streamItemDict objectForKey:streamId];
         CGRect frame = item.videoView.frame;
         item.videoView.frame = prevFrame;
         prevFrame = frame;
@@ -574,8 +579,14 @@
 - (void)gridAction
 {
     if (self.currentBigView) {
-        self.currentBigView.isBig = NO;
-        [self conferenceVideoViewDidTap:self.currentBigView];
+        [self streamViewDidTap:self.currentBigView];
+        
+//        EMStreamView *videoView = self.currentBigView;
+//        self.currentBigView = nil;
+//        [videoView addSubview:videoView.displayView];
+//        [videoView.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.edges.equalTo(videoView);
+//        }];
     }
 }
 

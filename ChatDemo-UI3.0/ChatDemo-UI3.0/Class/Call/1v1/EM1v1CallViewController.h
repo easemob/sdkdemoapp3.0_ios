@@ -9,8 +9,9 @@
 #import "EMCallViewController.h"
 
 #import "DemoCallManager.h"
+#import "EMStreamView.h"
 
-@interface EM1v1CallViewController : EMCallViewController
+@interface EM1v1CallViewController : EMCallViewController<EMStreamViewDelegate>
 
 #if DEMO_CALL == 1
 
@@ -20,6 +21,8 @@
 @property (nonatomic, strong) UIButton *answerButton;
 
 @property (nonatomic, strong) UIImageView *waitImgView;
+
+@property (nonatomic, strong) EMStreamView *floatingView;
 
 @property (nonatomic) EMCallSessionStatus callStatus;
 @property (nonatomic, strong) EMCallSession *callSession;

@@ -19,8 +19,6 @@
 
 #if DEMO_CALL == 1
 
-@synthesize floatingView = _floatingView;
-
 - (instancetype)initWithCallSession:(EMCallSession *)aCallSession
 {
     self = [super init];
@@ -59,6 +57,14 @@
 - (void)dealloc
 {
     [self clearDataAndView];
+}
+
+- (void)clearDataAndView
+{
+    [self _stopCallDurationTimer];
+    
+    [_floatingView removeFromSuperview];
+    _floatingView = nil;
 }
 
 #pragma mark - Subviews
@@ -106,6 +112,7 @@
         make.right.equalTo(self.view).offset(-20);
     }];
     
+    [self.minButton setImage:[UIImage imageNamed:@"minimize_gray"] forState:UIControlStateNormal];
     [self.minButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-30);
         make.right.equalTo(self.view).offset(-25);
@@ -143,34 +150,68 @@
 
 #pragma mark - Floating View
 
-- (EMCallFloatingView *)floatingView
+- (EMStreamView *)floatingView
 {
     if (_floatingView == nil) {
-        _floatingView = [[EMCallFloatingView alloc] initWithIsOnlyVoice:YES];
-        [_floatingView addTarget:self action:@selector(toNormalSizeAction:) forControlEvents:UIControlEventTouchUpInside];
+        _floatingView = [[EMStreamView alloc] init];
+        _floatingView.enableVideo = self.callSession.type == EMCallTypeVideo ? YES : NO;
+        _floatingView.delegate = self;
     }
     
     return _floatingView;
 }
 
-- (void)setFloatingViewFrameWithSuperView:(UIView *)aSuperView
+- (void)_updateFloatingViewWithCallStatus:(EMCallSessionStatus)callStatus
 {
-    [self.floatingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@50);
-        make.top.equalTo(aSuperView.mas_top).offset(80);
-        make.right.equalTo(aSuperView.mas_right).offset(-40);
-    }];
-}
-
-- (void)toNormalSizeAction:(EMCallFloatingView *)aFloatView
-{
-    [aFloatView removeFromSuperview];
+    if (!_floatingView) {
+        return;
+    }
     
-    UIViewController *mainController = (UIViewController *)[DemoCallManager sharedManager].mainController;
-    [mainController presentViewController:self animated:NO completion:nil];
+    switch (callStatus) {
+        case EMCallSessionStatusConnecting:
+        {
+            _floatingView.status = StreamStatusConnecting;
+        }
+            break;
+        case EMCallSessionStatusConnected:
+        case EMCallSessionStatusAccepted:
+        {
+            _floatingView.status = StreamStatusConnected;
+        }
+            break;
+            
+        default:
+            _floatingView.status = StreamStatusNormal;
+            break;
+    }
 }
 
-#pragma mark - timer
+- (void)_updateFloatingViewWithStreamingStatus:(EMCallStreamingStatus)aStatus
+{
+    if (!_floatingView) {
+        return;
+    }
+    
+    switch (aStatus) {
+        case EMCallStreamStatusVoicePause:
+            _floatingView.enableVoice = NO;
+            break;
+        case EMCallStreamStatusVoiceResume:
+            _floatingView.enableVoice = YES;
+            break;
+        case EMCallStreamStatusVideoPause:
+            _floatingView.enableVideo = NO;
+            break;
+        case EMCallStreamStatusVideoResume:
+            _floatingView.enableVideo = YES;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark - Timer
 
 - (void)_updateCallDuration
 {
@@ -242,6 +283,17 @@
     }
 }
 
+#pragma mark - EMStreamViewDelegate
+
+- (void)streamViewDidTap:(EMStreamView *)aVideoView
+{
+    self.minButton.selected = NO;
+    [self.floatingView removeFromSuperview];
+    
+    UIViewController *mainController = (UIViewController *)[DemoCallManager sharedManager].mainController;
+    [mainController presentViewController:self animated:NO completion:nil];
+}
+
 #pragma mark - Status
 
 - (void)setCallStatus:(EMCallSessionStatus)callStatus
@@ -301,6 +353,8 @@
         default:
             break;
     }
+    
+    [self _updateFloatingViewWithCallStatus:callStatus];
 }
 
 - (void)updateStreamingStatus:(EMCallStreamingStatus)aStatus
@@ -325,15 +379,8 @@
     }
     
     [self showHint:str];
-}
-
-- (void)clearDataAndView
-{
-    [self _stopCallDurationTimer];
     
-    if (_floatingView) {
-        [_floatingView removeFromSuperview];
-    }
+    [self _updateFloatingViewWithStreamingStatus:aStatus];
 }
 
 #pragma mark - Action
@@ -355,12 +402,6 @@
 
 - (void)minimizeAction
 {
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    [keyWindow addSubview:self.floatingView];
-    [keyWindow bringSubviewToFront:self.floatingView];
-    [self setFloatingViewFrameWithSuperView:keyWindow];
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)hangupAction

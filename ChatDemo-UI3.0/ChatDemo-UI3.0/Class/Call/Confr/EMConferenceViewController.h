@@ -9,7 +9,7 @@
 #import "EMCallViewController.h"
 
 #import "DemoConfManager.h"
-#import "EMConferenceVideoView.h"
+#import "EMStreamView.h"
 #import "ConfInviteUsersViewController.h"
 
 #define kConferenceVideoMaxCol 2
@@ -17,7 +17,7 @@
 //默认状态：
 //1. 使用前置摄像头
 //2. 不上传本地视频
-@interface EMConferenceViewController : EMCallViewController<EMConferenceManagerDelegate, EMConferenceVideoViewDelegate>
+@interface EMConferenceViewController : EMCallViewController<EMConferenceManagerDelegate, EMStreamViewDelegate>
 
 @property (nonatomic, strong) EMButton *switchCameraButton;
 @property (nonatomic, strong) EMButton *videoButton;
@@ -61,9 +61,9 @@
 //stream
 - (CGRect)getNewVideoViewFrame;
 
-- (EMConferenceVideoItem *)setupNewVideoViewWithName:(NSString *)aName
-                                         displayView:(UIView *)aDisplayView
-                                              stream:(EMCallStream *)aStream;
+- (EMStreamItem *)setupNewStreamItemWithName:(NSString *)aName
+                                 displayView:(UIView *)aDisplayView
+                                      stream:(EMCallStream *)aStream;
 
 - (void)pubLocalStreamWithEnableVideo:(BOOL)aEnableVideo
                            completion:(void (^)(NSString *aPubStreamId, EMError *aError))aCompletionBlock;

@@ -1,29 +1,27 @@
 //
-//  EMConferenceVideoView.m
+//  EMStreamView.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2018/9/20.
 //  Copyright © 2018 XieYajie. All rights reserved.
 //
 
-#import "EMConferenceVideoView.h"
+#import "EMStreamView.h"
 
 #import "Masonry.h"
 
-@interface EMConferenceVideoView()
+@interface EMStreamView()
 
 @property (nonatomic, strong) UIImageView *statusView;
 
 @end
 
-@implementation EMConferenceVideoView
+@implementation EMStreamView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor yellowColor];
-        
         self.bgView = [[UIImageView alloc] init];
         self.bgView.contentMode = UIViewContentModeScaleAspectFit;
         self.bgView.userInteractionEnabled = YES;
@@ -58,7 +56,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapAction:)];
         [self addGestureRecognizer:tap];
         
-        self.isBig = NO;
+        _isLockedBgView = NO;
     }
     
     return self;
@@ -71,24 +69,25 @@
     }
     
     _status = status;
+    [self bringSubviewToFront:_statusView];
     switch (_status) {
         case StreamStatusConnecting:
-            self.statusView.image = [UIImage imageNamed:@"ring_gray"];
+            _statusView.image = [UIImage imageNamed:@"ring_gray"];
             break;
         case StreamStatusConnected:
         {
-            self.statusView.image = nil;
-            if (!self.enableVideo) {
-                self.bgView.image = [UIImage imageNamed:@"bg_micro"];
+            _statusView.image = nil;
+            if (!self.isLockedBgView) {
+                _bgView.image = [UIImage imageNamed:@"bg_micro"];
             }
         }
             break;
         case StreamStatusTalking:
-            self.statusView.image = [UIImage imageNamed:@"talking_green"];
+            _statusView.image = [UIImage imageNamed:@"talking_green"];
             break;
             
         default:
-            self.statusView.image = nil;
+            _statusView.image = nil;
             break;
     }
 }
@@ -96,25 +95,24 @@
 - (void)setEnableVoice:(BOOL)enableVoice
 {
     _enableVoice = enableVoice;
+    
+    [self bringSubviewToFront:_statusView];
     if (enableVoice) {
-        self.statusView.image = nil;
+        _statusView.image = nil;
     } else {
-        self.statusView.image = [UIImage imageNamed:@"mute_red"];
+        _statusView.image = [UIImage imageNamed:@"mute_red"];
     }
 }
 
 - (void)setEnableVideo:(BOOL)enableVideo
 {
     _enableVideo = enableVideo;
+    
     if (enableVideo) {
-        [self sendSubviewToBack:self.bgView];
+        [self sendSubviewToBack:_bgView];
     } else {
-        if (self.status < StreamStatusConnected) {
-            self.bgView.image = [UIImage imageNamed:@"bg_connecting"];
-        } else {
-            self.bgView.image = [UIImage imageNamed:@"bg_micro"];
-        }
-        [self sendSubviewToBack:self.displayView];
+        [self bringSubviewToFront:_bgView];
+        [self bringSubviewToFront:_statusView];
     }
 }
 
@@ -123,13 +121,9 @@
 - (void)handleTapAction:(UITapGestureRecognizer *)aTap
 {
     if (aTap.state == UIGestureRecognizerStateEnded) {
-        if (!self.enableVideo) {
-            return;
-        }
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(conferenceVideoViewDidTap:)]) {
-            self.isBig = !self.isBig;
-            [_delegate conferenceVideoViewDidTap:self];
+
+        if (_delegate && [_delegate respondsToSelector:@selector(streamViewDidTap:)]) {
+            [_delegate streamViewDidTap:self];
         }
     }
 }
@@ -137,6 +131,6 @@
 @end
 
 
-@implementation EMConferenceVideoItem
+@implementation EMStreamItem
 
 @end

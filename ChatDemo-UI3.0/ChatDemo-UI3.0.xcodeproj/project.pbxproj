@@ -99,7 +99,6 @@
 		3A2F2CA5215393E600F86EB5 /* invite_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA1215393E500F86EB5 /* invite_gray@2x.png */; };
 		3A2F2CA6215393E600F86EB5 /* invite_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */; };
 		3A2F2E4A21539B2B00F86EB5 /* MeetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2E4921539B2B00F86EB5 /* MeetingViewController.m */; };
-		3A2F2E4D2153AC7000F86EB5 /* EMConferenceVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2E4C2153AC7000F86EB5 /* EMConferenceVideoView.m */; };
 		3A2F2E502153AD2300F86EB5 /* Live2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F2E4F2153AD2300F86EB5 /* Live2ViewController.m */; };
 		3A2F2E552153B98300F86EB5 /* bg_micro@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E512153B98300F86EB5 /* bg_micro@3x.png */; };
 		3A2F2E562153B98300F86EB5 /* bg_micro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E522153B98300F86EB5 /* bg_micro@2x.png */; };
@@ -127,11 +126,11 @@
 		3AADCD2F215B33D800B738BB /* talking_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCD29215B33D800B738BB /* talking_green@2x.png */; };
 		3AADCD30215B33D800B738BB /* talking_green@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCD2A215B33D800B738BB /* talking_green@3x.png */; };
 		3AADCF15215B396C00B738BB /* EMRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AADCF01215B396C00B738BB /* EMRefreshViewController.m */; };
-		3AADCF18215B794D00B738BB /* EMCallFloatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AADCF17215B794D00B738BB /* EMCallFloatingView.m */; };
 		3AADCF1B215B7FBA00B738BB /* floating_voice@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF19215B7FB900B738BB /* floating_voice@3x.png */; };
 		3AADCF1C215B7FBA00B738BB /* floating_voice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF1A215B7FBA00B738BB /* floating_voice@2x.png */; };
 		3AADCF1F215B8C2900B738BB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF21215B8C2900B738BB /* Localizable.strings */; };
 		3AADCF25215B8CB000B738BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF27215B8CB000B738BB /* InfoPlist.strings */; };
+		3AADD26D215B9D1500B738BB /* EMStreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AADD26C215B9D1500B738BB /* EMStreamView.m */; };
 		3AB11E5820529B9F0061FD88 /* ConferenceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */; };
 		3AB11E5920529B9F0061FD88 /* ConferenceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
@@ -573,8 +572,6 @@
 		3A2F2CA2215393E500F86EB5 /* invite_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_white@3x.png"; sourceTree = "<group>"; };
 		3A2F2E4821539B2B00F86EB5 /* MeetingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetingViewController.h; sourceTree = "<group>"; };
 		3A2F2E4921539B2B00F86EB5 /* MeetingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeetingViewController.m; sourceTree = "<group>"; };
-		3A2F2E4B2153AC7000F86EB5 /* EMConferenceVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMConferenceVideoView.h; sourceTree = "<group>"; };
-		3A2F2E4C2153AC7000F86EB5 /* EMConferenceVideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMConferenceVideoView.m; sourceTree = "<group>"; };
 		3A2F2E4E2153AD2300F86EB5 /* Live2ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Live2ViewController.h; sourceTree = "<group>"; };
 		3A2F2E4F2153AD2300F86EB5 /* Live2ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Live2ViewController.m; sourceTree = "<group>"; };
 		3A2F2E512153B98300F86EB5 /* bg_micro@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_micro@3x.png"; sourceTree = "<group>"; };
@@ -615,14 +612,14 @@
 		3AADCD2A215B33D800B738BB /* talking_green@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "talking_green@3x.png"; sourceTree = "<group>"; };
 		3AADCED3215B396C00B738BB /* EMRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshViewController.h; sourceTree = "<group>"; };
 		3AADCF01215B396C00B738BB /* EMRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshViewController.m; sourceTree = "<group>"; };
-		3AADCF16215B794D00B738BB /* EMCallFloatingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMCallFloatingView.h; sourceTree = "<group>"; };
-		3AADCF17215B794D00B738BB /* EMCallFloatingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMCallFloatingView.m; sourceTree = "<group>"; };
 		3AADCF19215B7FB900B738BB /* floating_voice@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "floating_voice@3x.png"; sourceTree = "<group>"; };
 		3AADCF1A215B7FBA00B738BB /* floating_voice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "floating_voice@2x.png"; sourceTree = "<group>"; };
 		3AADCF20215B8C2900B738BB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3AADCF22215B8C3300B738BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3AADCF26215B8CB000B738BB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3AADCF28215B8CB100B738BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3AADD26B215B9D1500B738BB /* EMStreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMStreamView.h; sourceTree = "<group>"; };
+		3AADD26C215B9D1500B738BB /* EMStreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMStreamView.m; sourceTree = "<group>"; };
 		3AB11E4A20529B9F0061FD88 /* ConferenceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConferenceViewController.xib; sourceTree = "<group>"; };
 		3AB11E4B20529B9F0061FD88 /* ConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConferenceViewController.h; sourceTree = "<group>"; };
 		3AB11E4E20529B9F0061FD88 /* ConferenceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ConferenceViewController.mm; sourceTree = "<group>"; };
@@ -1211,7 +1208,8 @@
 		3A2F293421537E7E00F86EB5 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				3AADCED2215B396C00B738BB /* RefreshController */,
+				3AADD26B215B9D1500B738BB /* EMStreamView.h */,
+				3AADD26C215B9D1500B738BB /* EMStreamView.m */,
 				3A2F293A21537E7E00F86EB5 /* EMButton.h */,
 				3A2F293721537E7E00F86EB5 /* EMButton.m */,
 				3A2F2AF62153862900F86EB5 /* EMCallViewController.h */,
@@ -1220,8 +1218,7 @@
 				3A2F293521537E7E00F86EB5 /* CallResolutionViewController.m */,
 				3A2F293921537E7E00F86EB5 /* CallSettingViewController.h */,
 				3A2F293621537E7E00F86EB5 /* CallSettingViewController.m */,
-				3AADCF16215B794D00B738BB /* EMCallFloatingView.h */,
-				3AADCF17215B794D00B738BB /* EMCallFloatingView.m */,
+				3AADCED2215B396C00B738BB /* RefreshController */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1232,8 +1229,6 @@
 				3A2F293C21537E7E00F86EB5 /* Invite */,
 				3A2F2C9921538CF600F86EB5 /* DemoConfManager.h */,
 				3A2F2C9A21538CF600F86EB5 /* DemoConfManager.m */,
-				3A2F2E4B2153AC7000F86EB5 /* EMConferenceVideoView.h */,
-				3A2F2E4C2153AC7000F86EB5 /* EMConferenceVideoView.m */,
 				3A2F2AF22153800900F86EB5 /* EMConferenceViewController.h */,
 				3A2F2AF32153800900F86EB5 /* EMConferenceViewController.m */,
 				3A2F2E4821539B2B00F86EB5 /* MeetingViewController.h */,
@@ -2530,7 +2525,6 @@
 				D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */,
 				3A2F2AF72153862900F86EB5 /* EMCallViewController.m in Sources */,
 				3A2F294821537E7E00F86EB5 /* ConfInviteUsersViewController.m in Sources */,
-				3AADCF18215B794D00B738BB /* EMCallFloatingView.m in Sources */,
 				D29A6BAF1B720960002324BB /* UserProfileEditViewController.m in Sources */,
 				3C5EB36319407CAF005C7704 /* EMChooseViewController.m in Sources */,
 				3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */,
@@ -2570,6 +2564,7 @@
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
 				3AF6A65A1E1F80570022E835 /* EMGroupBansViewController.m in Sources */,
 				D25AA35B1E8D29C8006BF820 /* EMMemberCell.m in Sources */,
+				3AADD26D215B9D1500B738BB /* EMStreamView.m in Sources */,
 				D2B61E361BC7C76B007CB53E /* ContactListViewController.m in Sources */,
 				3C2923B11988E13300DCCD40 /* BlackListViewController.m in Sources */,
 				D2714BA91FE24E1600D4CB38 /* EMServiceCheckViewController.m in Sources */,
@@ -2589,7 +2584,6 @@
 				905325CF1932ED8B00F064D7 /* EMSearchBar.m in Sources */,
 				3A2F2E4A21539B2B00F86EB5 /* MeetingViewController.m in Sources */,
 				3C914D8619514BBD0002DAD3 /* CreateGroupViewController.m in Sources */,
-				3A2F2E4D2153AC7000F86EB5 /* EMConferenceVideoView.m in Sources */,
 				9003D9181939D8D000DC38A4 /* RealtimeSearchUtil.m in Sources */,
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,

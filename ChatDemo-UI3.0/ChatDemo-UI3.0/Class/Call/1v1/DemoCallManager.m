@@ -163,7 +163,7 @@ static DemoCallManager *callManager = nil;
         if (aSession.type == EMCallTypeVoice) {
             self.currentController = [[Call1v1AudioViewController alloc] initWithCallSession:self.currentCall];
         } else {
-            self.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:self.currentCall isCustomData:NO];
+            self.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:self.currentCall];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -314,7 +314,7 @@ static DemoCallManager *callManager = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (aType == EMCallTypeVideo) {
-                        strongSelf.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:strongSelf.currentCall isCustomData:aIsCustomVideo];
+                        strongSelf.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:strongSelf.currentCall];
                     } else {
                         strongSelf.currentController = [[Call1v1AudioViewController alloc] initWithCallSession:strongSelf.currentCall];
                     }

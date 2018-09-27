@@ -103,7 +103,7 @@
     [super microphoneButtonAction];
     
     if ([self.pubStreamId length] > 0) {
-        EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
+        EMStreamItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
         if (videoItem) {
             videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
         }
@@ -114,7 +114,7 @@
 {
     [super videoButtonAction:aButton];
     
-    EMConferenceVideoItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
+    EMStreamItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
     videoItem.videoView.enableVideo = aButton.isSelected;
     self.switchCameraButton.enabled = aButton.isSelected;
     
@@ -132,7 +132,7 @@
     NSMutableArray *members = [[NSMutableArray alloc] init];
     [members addObject:[EMClient sharedClient].currentUsername];
     for (NSString *key in self.streamItemDict) {
-        EMConferenceVideoItem *item = [self.streamItemDict objectForKey:key];
+        EMStreamItem *item = [self.streamItemDict objectForKey:key];
         if (item.stream) {
             [members addObject:item.stream.userName];
         }
