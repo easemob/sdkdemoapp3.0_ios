@@ -37,7 +37,6 @@
 
 @property (nonatomic, strong, readonly) NSMutableArray *talkingStreamIds;
 
-@property (nonatomic, strong) EMCallLocalView *localVideoView;
 @property (nonatomic, strong, readonly) NSMutableDictionary *streamItemDict;
 @property (nonatomic, strong) NSString *pubStreamId;
 @property (nonatomic, strong) NSMutableArray *streamIds;
@@ -70,9 +69,11 @@
 - (void)pubLocalStreamWithEnableVideo:(BOOL)aEnableVideo
                            completion:(void (^)(NSString *aPubStreamId, EMError *aError))aCompletionBlock;
 
+- (void)removeStreamWithId:(NSString *)aStreamId;
+
 //member
-- (void)sendInviteMessageWithConversationId:(NSString *)aConversationId
-                                   chatType:(EMChatType)aChatType;
+- (void)sendInviteMessageWithChatId:(NSString *)aChatId
+                           chatType:(EMChatType)aChatType;
 
 //action
 - (void)videoButtonAction:(EMButton *)aButton;

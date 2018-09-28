@@ -10,4 +10,12 @@
 
 @interface Live2ViewController : EMConferenceViewController
 
+- (instancetype)initWithJoinConfId:(NSString *)aConfId
+                          password:(NSString *)aPassword
+                             admin:(NSString *)aAdmin
+                            chatId:(NSString *)aChatId
+                          chatType:(EMChatType)aChatType;
+
+- (void)handleRoleChangedMessage:(EMMessage *)aMessage;
+
 @end

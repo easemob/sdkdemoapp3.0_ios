@@ -151,12 +151,12 @@
     }];
     
     self.switchCameraButton = [[EMButton alloc] initWithTitle:@"切换摄像头" target:self action:@selector(switchCameraButtonAction:)];
-    [self.switchCameraButton setTitle:@"禁用" forState:UIControlStateDisabled];
     [self.switchCameraButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.switchCameraButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
-    [self.switchCameraButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_white"] forState:UIControlStateNormal];
+    [self.switchCameraButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
     [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_gray"] forState:UIControlStateSelected];
+    [self.switchCameraButton setTitle:@"禁用" forState:UIControlStateDisabled];
+    [self.switchCameraButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_gray"] forState:UIControlStateDisabled];
     [self.view addSubview:self.switchCameraButton];
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -165,9 +165,12 @@
     }];
     
     [self.microphoneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
     [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_white"] forState:UIControlStateNormal];
+    [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
     [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_gray"] forState:UIControlStateSelected];
+    [self.microphoneButton setTitle:@"禁用" forState:UIControlStateDisabled];
+    [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+    [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_gray"] forState:UIControlStateDisabled];
     [self.microphoneButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.switchCameraButton.mas_right).offset(padding);
         make.bottom.equalTo(self.switchCameraButton);
@@ -175,9 +178,12 @@
     
     self.videoButton = [[EMButton alloc] initWithTitle:@"视频" target:self action:@selector(videoButtonAction:)];
     [self.videoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.videoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.videoButton setImage:[UIImage imageNamed:@"video_gray"] forState:UIControlStateNormal];
+    [self.videoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.videoButton setImage:[UIImage imageNamed:@"video_white"] forState:UIControlStateSelected];
+    [self.videoButton setTitle:@"禁用" forState:UIControlStateDisabled];
+    [self.videoButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+    [self.videoButton setImage:[UIImage imageNamed:@"video_gray"] forState:UIControlStateDisabled];
     [self.view addSubview:self.videoButton];
     [self.videoButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.microphoneButton.mas_right).offset(padding);
@@ -212,7 +218,6 @@
     
     self.scrollView = [[UIScrollView alloc] init];
     self.scrollView.showsHorizontalScrollIndicator = NO;
-    self.scrollView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.scrollView];
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view);
@@ -254,7 +259,7 @@
            removeStream:(EMCallStream *)aStream
 {
     if ([aConference.callId isEqualToString:self.conference.callId]) {
-        [self _removeStream:aStream];
+        [self removeStreamWithId:aStream.streamId];
     }
 }
 
@@ -310,13 +315,13 @@
     NSString *str = @"";
     switch (aStatus) {
         case EMCallNetworkStatusNormal:
-            str = NSLocalizedString(@"network.conference.normal", @"Network changes: the network is normal");
+            str = @"网路正常";
             break;
         case EMCallNetworkStatusUnstable:
-            str = NSLocalizedString(@"network.conference.unstable", @"Network changes: the network is unstable");
+            str = @"网路不稳定";
             break;
         case EMCallNetworkStatusNoData:
-            str = NSLocalizedString(@"network.conference.dis", @"Network changes: the network is disconnect");
+            str = @"网路已断开";
             break;
             
         default:
@@ -470,7 +475,7 @@
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
         if (aError) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"上传本地视频流失败，请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"上传本地视频流失败，请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
             
             if (aCompletionBlock) {
@@ -519,15 +524,15 @@
     }];
 }
 
-- (void)_removeStream:(EMCallStream *)aStream
+- (void)removeStreamWithId:(NSString *)aStreamId
 {
-    NSInteger index = [self.streamIds indexOfObject:aStream.streamId];
+    NSInteger index = [self.streamIds indexOfObject:aStreamId];
     [self.streamIds removeObjectAtIndex:index];
     
-    EMStreamItem *removeItem = [self.streamItemDict objectForKey:aStream.streamId];
+    EMStreamItem *removeItem = [self.streamItemDict objectForKey:aStreamId];
     CGRect prevFrame = removeItem.videoView.frame;
     [removeItem.videoView removeFromSuperview];
-    [self.streamItemDict removeObjectForKey:aStream.streamId];
+    [self.streamItemDict removeObjectForKey:aStreamId];
     
     for (NSInteger i = index; i < [self.streamIds count]; i++) {
         NSString *streamId = [self.streamIds objectAtIndex:i];
@@ -540,8 +545,8 @@
 
 #pragma mark - Member
 
-- (void)sendInviteMessageWithConversationId:(NSString *)aConversationId
-                                   chatType:(EMChatType)aChatType
+- (void)sendInviteMessageWithChatId:(NSString *)aChatId
+                           chatType:(EMChatType)aChatType
 {
     NSString *tmpStr = self.type == EMConferenceTypeLive ? @"邀请你加入互动会议" : @"邀请你加入会议";
     NSString *currentUser = [EMClient sharedClient].currentUsername;
@@ -554,11 +559,11 @@
     }
     //添加会话相关属性
     if ([self.chatId length] > 0) {
-        [ext setObject:self.chatId forKey:@"em_conference_chatId"];
+        [ext setObject:aChatId forKey:@"em_conference_chatId"];
         [ext setObject:@(self.chatType) forKey:@"em_conference_chatType"];
     }
     
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aConversationId from:currentUser to:aConversationId body:textBody ext:ext];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aChatId from:currentUser to:aChatId body:textBody ext:ext];
     message.chatType = aChatType;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
@@ -569,6 +574,13 @@
 {
     self.microphoneButton.selected = !self.microphoneButton.isSelected;
     [[EMClient sharedClient].conferenceManager updateConference:self.conference isMute:self.microphoneButton.selected];
+    
+    if ([self.pubStreamId length] > 0) {
+        EMStreamItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
+        if (videoItem) {
+            videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
+        }
+    }
 }
 
 - (void)inviteButtonAction:(EMButton *)aButton
@@ -587,7 +599,7 @@
     [controller setDoneCompletion:^(NSArray *aInviteUsers) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             for (NSString *username in aInviteUsers) {
-                [weakself sendInviteMessageWithConversationId:username chatType:EMChatTypeChat];
+                [weakself sendInviteMessageWithChatId:username chatType:EMChatTypeChat];
             }
         });
     }];
@@ -611,7 +623,17 @@
         [[EMClient sharedClient].conferenceManager updateConference:self.conference enableVideo:aButton.selected];
     }
     
-    //TODO: 更新View
+    EMStreamItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
+    videoItem.videoView.enableVideo = aButton.isSelected;
+    self.switchCameraButton.enabled = aButton.isSelected;
+    
+    if (aButton.selected) {
+        BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+        if (isUseBackCamera != self.isUseBackCamera) {
+            self.switchCameraButton.selected = self.isUseBackCamera;
+            [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
+        }
+    }
 }
 
 - (void)gridAction

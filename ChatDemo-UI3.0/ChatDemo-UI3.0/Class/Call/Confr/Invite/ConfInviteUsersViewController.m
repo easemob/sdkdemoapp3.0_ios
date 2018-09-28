@@ -281,9 +281,10 @@
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"正在获取群组成员..."];
     [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.gorcId cursor:self.cursor pageSize:pageSize completion:^(EMCursorResult *aResult, EMError *aError) {
-        [weakSelf hideHud];
-        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
         if (aError) {
+            [weakSelf hideHud];
+            [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+            
             [weakSelf showHint:[[NSString alloc] initWithFormat:@"获取群组成员失败: %@", aError.errorDescription]];
             return ;
         }
@@ -292,8 +293,19 @@
         
         if (aIsHeader) {
             [weakSelf.dataArray removeAllObjects];
+            
+            EMError *error = nil;
+            EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.gorcId error:&error];
+            if (!error) {
+                NSArray *admins = [weakSelf _getInvitableUsers:group.adminList];
+                [weakSelf.dataArray addObjectsFromArray:admins];
+            }
         }
-        NSArray *usernames = [self _getInvitableUsers:aResult.list];
+        
+        [weakSelf hideHud];
+        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+        
+        NSArray *usernames = [weakSelf _getInvitableUsers:aResult.list];
         [weakSelf.dataArray addObjectsFromArray:usernames];
         [weakSelf.tableView reloadData];
         if ([aResult.list count] == 0 || [aResult.cursor length] == 0) {
@@ -310,10 +322,10 @@
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"正在获取聊天室成员..."];
     [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.gorcId cursor:self.cursor pageSize:pageSize completion:^(EMCursorResult *aResult, EMError *aError) {
-        [weakSelf hideHud];
-        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
-        
         if (aError) {
+            [weakSelf hideHud];
+            [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+            
             [weakSelf showHint:[[NSString alloc] initWithFormat:@"获取聊天室成员失败: %@", aError.errorDescription]];
             return ;
         }
@@ -322,8 +334,19 @@
         
         if (aIsHeader) {
             [weakSelf.dataArray removeAllObjects];
+            
+            EMError *error = nil;
+            EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:weakSelf.gorcId error:&error];
+            if (!error) {
+                NSArray *admins = [weakSelf _getInvitableUsers:chatroom.adminList];
+                [weakSelf.dataArray addObjectsFromArray:admins];
+            }
         }
-        NSArray *usernames = [self _getInvitableUsers:aResult.list];
+        
+        [weakSelf hideHud];
+        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
+        
+        NSArray *usernames = [weakSelf _getInvitableUsers:aResult.list];
         [weakSelf.dataArray addObjectsFromArray:usernames];
         [weakSelf.tableView reloadData];
         

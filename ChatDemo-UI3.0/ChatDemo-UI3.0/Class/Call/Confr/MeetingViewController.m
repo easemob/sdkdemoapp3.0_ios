@@ -14,30 +14,6 @@
 
 @implementation MeetingViewController
 
-- (instancetype)initWithPassword:(NSString *)aPassword
-                     inviteUsers:(NSArray *)aInviteUsers
-                          chatId:(NSString *)aChatId
-                        chatType:(EMChatType)aChatType
-{
-    self = [super initWithType:EMConferenceTypeLargeCommunication password:aPassword inviteUsers:aInviteUsers chatId:aChatId chatType:aChatType];
-    if (self) {
-    }
-    
-    return self;
-}
-
-- (instancetype)initWithJoinConfId:(NSString *)aConfId
-                          password:(NSString *)aPassword
-                            chatId:(NSString *)aChatId
-                          chatType:(EMChatType)aChatType
-{
-    self = [super initWithJoinConfId:aConfId password:aPassword type:EMConferenceTypeLargeCommunication chatId:aChatId chatType:aChatType];
-    if (self) {
-    }
-    
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -74,14 +50,15 @@
         
         //如果是创建者并且是从会话中触发
         if (self.isCreater && [self.chatId length] > 0) {
-            [self sendInviteMessageWithConversationId:self.chatId chatType:self.chatType];
+            [self sendInviteMessageWithChatId:self.chatId chatType:self.chatType];
+            [weakself showHint:@"已在群中发送邀请消息"];
         }
         
         //如果是创建者，进行邀请人操作
         if (weakself.isCreater) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 for (NSString *username in weakself.inviteUsers) {
-                    [weakself sendInviteMessageWithConversationId:username chatType:EMChatTypeChat];
+                    [weakself sendInviteMessageWithChatId:username chatType:EMChatTypeChat];
                 }
             });
         }
@@ -93,37 +70,6 @@
         [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.joinConfId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, weakself.password, aError);
         }];
-    }
-}
-
-#pragma mark - Action
-
-- (void)microphoneButtonAction
-{
-    [super microphoneButtonAction];
-    
-    if ([self.pubStreamId length] > 0) {
-        EMStreamItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
-        if (videoItem) {
-            videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
-        }
-    }
-}
-
-- (void)videoButtonAction:(EMButton *)aButton
-{
-    [super videoButtonAction:aButton];
-    
-    EMStreamItem *videoItem = [self.streamItemDict objectForKey:self.pubStreamId];
-    videoItem.videoView.enableVideo = aButton.isSelected;
-    self.switchCameraButton.enabled = aButton.isSelected;
-    
-    if (aButton.selected) {
-        BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
-        if (isUseBackCamera != self.isUseBackCamera) {
-            self.switchCameraButton.selected = self.isUseBackCamera;
-            [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
-        }
     }
 }
 

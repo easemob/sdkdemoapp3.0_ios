@@ -14,10 +14,9 @@
 
 #import "DemoCallManager.h"
 #import "MainViewController.h"
-#import "EMConfUserSelectionViewController.h"
-
 
 #import "MeetingViewController.h"
+#import "Live2ViewController.h"
 
 static DemoConfManager *confManager = nil;
 
@@ -68,23 +67,6 @@ static DemoConfManager *confManager = nil;
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
 }
 
-#pragma mark - EMConferenceManagerDelegate
-
-- (void)userDidRecvInvite:(NSString *)aConfId
-                 password:(NSString *)aPassword
-                      ext:(NSString *)aExt
-{
-//    if ([DemoCallManager sharedManager].isCalling) {
-//        return;
-//    }
-//    
-//    NSData *jsonData = [aExt dataUsingEncoding:NSUTF8StringEncoding];
-//    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-//    NSString *creater = [dic objectForKey:@"creater"];
-//    ConferenceViewController *confController = [[ConferenceViewController alloc] initWithConferenceId:aConfId creater:creater password:aPassword];
-//    [self.mainController.navigationController pushViewController:confController animated:NO];
-}
-
 #pragma mark - EMChatManagerDelegate
 
 - (void)messagesDidReceive:(NSArray *)aMessages
@@ -97,10 +79,10 @@ static DemoConfManager *confManager = nil;
         
         NSString *op = [message.ext objectForKey:@"em_conference_op"];
         if ([op isEqualToString:@"request_tobe_speaker"] || [op isEqualToString:@"request_tobe_audience"]) {
-            UIViewController *controller = self.mainController.navigationController.topViewController;
-            if ([controller isKindOfClass:[LiveViewController class]]) {
-                LiveViewController *liveController = (LiveViewController *)controller;
-                [liveController handleMessage:message];
+            EMConferenceViewController *controller =  self.confNavController.viewControllers[0];
+            if ([controller isKindOfClass:[Live2ViewController class]]) {
+                Live2ViewController *liveController = (Live2ViewController *)controller;
+                [liveController handleRoleChangedMessage:message];
             }
         }
     }
@@ -147,7 +129,7 @@ static DemoConfManager *confManager = nil;
         return;
     }
     
-    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aInviteType isCreate:YES excludeUsers:nil groupOrChatroomId:aConversationId];
+    ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aInviteType isCreate:YES excludeUsers:@[[EMClient sharedClient].currentUsername] groupOrChatroomId:aConversationId];
     
     __weak typeof(self) weakSelf = self;
     [controller setDoneCompletion:^(NSArray *aInviteUsers) {
@@ -155,9 +137,9 @@ static DemoConfManager *confManager = nil;
         
         EMConferenceViewController *controller = nil;
         if (aConfType != EMConferenceTypeLive) {
-            controller = [[MeetingViewController alloc] initWithPassword:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
+            controller = [[MeetingViewController alloc] initWithType:EMConferenceTypeLargeCommunication password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
         } else {
-            
+            controller = [[Live2ViewController alloc] initWithType:EMConferenceTypeLive password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
         }
         controller.inviteType = aInviteType;
         
@@ -205,10 +187,9 @@ static DemoConfManager *confManager = nil;
         NSString *chatId = [aMessage.ext objectForKey:@"em_conference_chatId"];
         EMChatType chatType = (EMChatType)[[aMessage.ext objectForKey:@"em_conference_chatType"] integerValue];
         if (type == EMConferenceTypeLive) {
-            LiveViewController *controller = [[LiveViewController alloc] initWithConfrId:conferenceId password:password admin:aMessage.from];
-            [self.mainController.navigationController pushViewController:controller animated:NO];
+            controller = [[Live2ViewController alloc] initWithJoinConfId:conferenceId password:password admin:aMessage.from chatId:chatId chatType:chatType];
         } else {
-            controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password chatId:chatId chatType:chatType];
+            controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:EMConferenceTypeLargeCommunication chatId:chatId chatType:chatType];
         }
         
     } while (0);
