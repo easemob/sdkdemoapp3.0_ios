@@ -10,11 +10,6 @@
 
 #import "ConfInviteUsersViewController.h"
 
-#import "ConferenceViewController.h"
-#import "LiveViewController.h"
-
-#define KNOTIFICATION_CONFERENCE @"conference"
-
 @class MainViewController;
 @class EMConferenceViewController;
 @interface DemoConfManager : NSObject
@@ -26,14 +21,6 @@
 @property (strong, nonatomic) MainViewController *mainController;
 
 + (instancetype)sharedManager;
-
-- (ConferenceViewController *)pushConferenceControllerWithType:(EMConferenceType)aType;
-
-- (LiveViewController *)pushLiveControllerWithPassword:(NSString *)aPassword;
-
-- (void)pushCustomVideoConferenceController;
-
-#pragma mark - New
 
 - (void)inviteMemberWithConfType:(EMConferenceType)aConfType
                       inviteType:(ConfInviteType)aInviteType

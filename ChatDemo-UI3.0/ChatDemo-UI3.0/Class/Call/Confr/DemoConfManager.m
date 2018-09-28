@@ -90,33 +90,6 @@ static DemoConfManager *confManager = nil;
 
 #pragma mark - conference
 
-- (ConferenceViewController *)pushConferenceControllerWithType:(EMConferenceType)aType
-{
-    ConferenceViewController *controller = nil;
-    if (aType != EMConferenceTypeLive) {
-        controller = [[ConferenceViewController alloc] initWithConferenceType:aType];
-        [self.mainController.navigationController pushViewController:controller animated:NO];
-    }
-    
-    return controller;
-}
-
-- (LiveViewController *)pushLiveControllerWithPassword:(NSString *)aPassword
-{
-    LiveViewController *controller = [[LiveViewController alloc] initWithPassword:aPassword];
-    [self.mainController.navigationController pushViewController:controller animated:NO];
-    
-    return controller;
-}
-
-- (void)pushCustomVideoConferenceController
-{
-    ConferenceViewController *confController = [[ConferenceViewController alloc] initVideoCallWithIsCustomData:YES];
-    [self.mainController.navigationController pushViewController:confController animated:NO];
-}
-
-#pragma mark - New
-
 - (void)inviteMemberWithConfType:(EMConferenceType)aConfType
                       inviteType:(ConfInviteType)aInviteType
                   conversationId:(NSString *)aConversationId

@@ -267,7 +267,7 @@
             
         }
         else if (row == 4) {
-            [[DemoConfManager sharedManager] pushCustomVideoConferenceController];
+            //TODO: custom call
         }
 #endif
     } else if (section == 1) {
