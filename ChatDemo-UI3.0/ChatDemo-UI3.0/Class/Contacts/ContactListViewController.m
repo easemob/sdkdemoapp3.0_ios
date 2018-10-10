@@ -264,14 +264,13 @@
             [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
             
             [self presentViewController:alertController animated:YES completion:nil];
-            
         }
         else if (row == 4) {
             //TODO: custom call
         }
 #endif
     } else if (section == 1) {
-       ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
         [self.navigationController pushViewController:chatController animated:YES];
     }
     else{
