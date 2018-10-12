@@ -255,7 +255,7 @@
         }
 
         if (alertView.tag == FIXED_BITRATE_ALERTVIEW_TAG) {
-            if (value >= 150 && value <= 1000) {
+            if ((value >= 150 && value <= 1000) || value == 0) {
                 EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
                 options.maxVideoKbps = value;
                 [[DemoCallManager sharedManager] saveCallOptions];
