@@ -14,6 +14,7 @@
 @property (nonatomic, strong) EMButton *vkbpsButton;
 
 @property (nonatomic, strong) NSString *admin;
+@property (nonatomic) NSInteger currentVkbps;
 
 @end
 
@@ -37,6 +38,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.currentVkbps = 0;
     [self _setupSubviews];
     [self _createOrJoinLive];
 }
@@ -218,14 +220,17 @@
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"设置视频最大码率" message:nil preferredStyle:UIAlertControllerStyleAlert];
     
+    __weak typeof(self) weakself = self;
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"请输入视频最大码率";
+        textField.text = @(weakself.currentVkbps).stringValue;
     }];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *textField = alertController.textFields.firstObject;
-        int kbps = [textField.text intValue];
-        [[EMClient sharedClient].conferenceManager updateConference:self.conference maxVideoKbps:kbps];
+        weakself.currentVkbps = [textField.text integerValue];
+        
+        [[EMClient sharedClient].conferenceManager updateConference:self.conference maxVideoKbps:(int)weakself.currentVkbps];
     }];
     [alertController addAction:okAction];
     
