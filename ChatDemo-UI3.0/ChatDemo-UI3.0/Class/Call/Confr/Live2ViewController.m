@@ -53,6 +53,11 @@
     self.vkbpsButton = [[EMButton alloc] initWithTitle:@"设置码率" target:self action:@selector(vkbpsAction)];
     [self.vkbpsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_white"] forState:UIControlStateNormal];
+    [self.vkbpsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_white"] forState:UIControlStateSelected];
+    [self.vkbpsButton setTitle:@"禁用" forState:UIControlStateDisabled];
+    [self.vkbpsButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+    [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_gray"] forState:UIControlStateDisabled];
     [self.view addSubview:self.vkbpsButton];
     [self.vkbpsButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.microphoneButton);
@@ -62,10 +67,10 @@
     }];
     
     self.roleButton = [[EMButton alloc] initWithTitle:@"上麦" target:self action:@selector(roleAction)];
-    [self.roleButton setTitle:@"下麦" forState:UIControlStateSelected];
     [self.roleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.roleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.roleButton setImage:[UIImage imageNamed:@"role_white"] forState:UIControlStateNormal];
+    [self.roleButton setTitle:@"下麦" forState:UIControlStateSelected];
+    [self.roleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.roleButton setImage:[UIImage imageNamed:@"role_white"] forState:UIControlStateSelected];
     [self.view addSubview:self.roleButton];
     [self.roleButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -83,6 +88,7 @@
         self.switchCameraButton.enabled = NO;
         self.microphoneButton.enabled = NO;
         self.videoButton.enabled = NO;
+        self.vkbpsButton.enabled = NO;
     }
 }
 
@@ -97,8 +103,10 @@
         self.switchCameraButton.enabled = aEnableVideo;
 
         self.roleButton.selected = YES;
+        self.vkbpsButton.enabled = YES;
     } else {
         self.roleButton.selected = NO;
+        self.vkbpsButton.enabled = NO;
     }
     
     if (self.isCreater) {
@@ -122,6 +130,7 @@
         self.switchCameraButton.enabled = NO;
         self.microphoneButton.enabled = NO;
         self.videoButton.enabled = NO;
+        self.vkbpsButton.enabled = NO;
         
         [self removeStreamWithId:self.pubStreamId];
         self.pubStreamId = nil;
