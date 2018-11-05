@@ -89,7 +89,6 @@
 - (void)_updateViewsAfterPubWithEnableVideo:(BOOL)aEnableVideo
                                       error:(EMError *)aError
 {
-    self.roleButton.hidden = NO;
     if (!aError) {
         self.microphoneButton.enabled = YES;
         
@@ -100,6 +99,12 @@
         self.roleButton.selected = YES;
     } else {
         self.roleButton.selected = NO;
+    }
+    
+    if (self.isCreater) {
+        self.roleButton.hidden = YES;
+    } else {
+        self.roleButton.hidden = NO;
     }
 }
 
