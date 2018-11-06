@@ -5,8 +5,10 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'ChatDemo-UI3.0' do
 
-    pod 'Hyphenate'
+    pod 'Masonry'
 
-    pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
+    #pod 'Hyphenate'
+
+    #pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
 
 end

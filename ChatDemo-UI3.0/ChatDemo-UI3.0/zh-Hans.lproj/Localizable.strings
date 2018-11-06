@@ -1,14 +1,10 @@
-/************************************************************
- *  * Hyphenate CONFIDENTIAL
- * __________________
- * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- *
- * NOTICE: All information contained herein is, and remains
- * the property of Hyphenate Inc.
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained
- * from Hyphenate Inc.
- */
+/* 
+  Localizable.strings
+  ChatDemo-UI3.0
+
+  Created by XieYajie on 2018/9/26.
+  Copyright © 2018 XieYajie. All rights reserved.
+*/
 
 //general
 "register" = "注册";

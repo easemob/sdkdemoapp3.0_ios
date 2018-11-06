@@ -109,7 +109,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 5;
+        return 4;
     } else if (section == 1) {
         return [self.otherPlatformIds count];
     }
@@ -252,26 +252,25 @@
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
             
             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeCommunication];
+                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat];
             }];
             [alertController addAction:defaultAction];
             
             UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeLargeCommunication];
+                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat];
             }];
             [alertController addAction:mixAction];
             
             [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
             
             [self presentViewController:alertController animated:YES completion:nil];
-            
         }
         else if (row == 4) {
-            [[DemoConfManager sharedManager] pushCustomVideoConferenceController];
+            //TODO: custom call
         }
 #endif
     } else if (section == 1) {
-       ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
         [self.navigationController pushViewController:chatController animated:YES];
     }
     else{
@@ -305,6 +304,7 @@
 {
     return [self setupCellEditActions:indexPath];
 }
+
 
 #pragma mark - UIAlertViewDelegate
 

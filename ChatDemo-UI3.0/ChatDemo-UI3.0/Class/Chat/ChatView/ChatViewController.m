@@ -192,9 +192,13 @@
     // Hide the keyboard
     [self.chatToolbar endEditing:YES];
     
-    ConferenceViewController *controller = [[DemoConfManager sharedManager] pushConferenceControllerWithType:EMConferenceTypeLargeCommunication];
-    controller.conversationId = self.conversation.conversationId;
-    controller.chatType = (EMChatType)self.conversation.type;
+    ConfInviteType inviteType = ConfInviteTypeUser;
+    if (self.conversation.type == EMChatTypeGroupChat) {
+        inviteType = ConfInviteTypeGroup;
+    } else if (self.conversation.type == EMChatTypeChatRoom) {
+        inviteType = ConfInviteTypeChatroom;
+    }
+    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:self.conversation.conversationId chatType:(EMChatType)self.conversation.type];
 }
 
 - (void)moreViewLiveAction:(EaseChatBarMoreView *)moreView
@@ -202,9 +206,13 @@
     // Hide the keyboard
     [self.chatToolbar endEditing:YES];
     
-    LiveViewController *controller = [[DemoConfManager sharedManager] pushLiveControllerWithPassword:@""];
-    controller.conversationId = self.conversation.conversationId;
-    controller.chatType = (EMChatType)self.conversation.type;
+    ConfInviteType inviteType = ConfInviteTypeUser;
+    if (self.conversation.type == EMChatTypeGroupChat) {
+        inviteType = ConfInviteTypeGroup;
+    } else if (self.conversation.type == EMChatTypeChatRoom) {
+        inviteType = ConfInviteTypeChatroom;
+    }
+    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:self.conversation.conversationId chatType:(EMChatType)self.conversation.type];
 }
 
 #pragma mark - EaseMessageCellDelegate
