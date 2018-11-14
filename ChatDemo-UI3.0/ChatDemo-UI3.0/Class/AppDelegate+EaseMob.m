@@ -91,7 +91,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     BOOL loginSuccess = [notification.object boolValue];
     EMNavigationController *navigationController = nil;
-    if (loginSuccess) {//登陆成功加载主窗口控制器
+    if (loginSuccess) {//登录成功加载主窗口控制器
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
         if (self.mainController == nil) {
@@ -109,7 +109,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
         [[ChatDemoHelper shareHelper] asyncPushOptions];
     }
-    else{//登陆失败加载登陆页面控制器
+    else{//登录失败加载登录页面控制器
         if (self.mainController) {
             [self.mainController.navigationController popToRootViewControllerAnimated:NO];
         }

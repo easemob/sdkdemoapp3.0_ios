@@ -110,7 +110,7 @@
             [[EMClient sharedClient] setApnsNickname:nameTextField.text];
         }
     }
-    //登陆
+    //登录
     [self loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
 }
 
@@ -245,11 +245,11 @@
     });
 }
 
-//点击登陆后的操作
+//点击登录后的操作
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
-    //异步登陆账号
+    //异步登录账号
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = [[EMClient sharedClient] loginWithUsername:username password:password];
@@ -262,7 +262,7 @@
                 
                 //保存最近一次登录用户名
                 [weakself saveLastLoginUsername];
-                //发送自动登陆状态通知
+                //发送自动登录状态通知
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:[NSNumber numberWithBool:YES]];
                 
             } else {
@@ -298,7 +298,7 @@
     });
 }
 
-//登陆账号
+//登录账号
 - (IBAction)doLogin:(id)sender
 {
     if ([self isEmpty]) {
@@ -345,7 +345,7 @@
         if (!aError) {
             //保存最近一次登录用户名
             [weakself saveLastLoginUsername];
-            //发送自动登陆状态通知
+            //发送自动登录状态通知
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:[NSNumber numberWithBool:YES]];
         } else {
             TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
