@@ -563,6 +563,10 @@
         [ext setObject:@(self.chatType) forKey:@"em_conference_chatType"];
     }
     
+    if ([self.admin length] > 0) {
+        [ext setObject:self.admin forKey:@"em_conference_admin"];
+    }
+    
     EMMessage *message = [[EMMessage alloc] initWithConversationID:aChatId from:currentUser to:aChatId body:textBody ext:ext];
     message.chatType = aChatType;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];

@@ -13,7 +13,6 @@
 @property (nonatomic, strong) EMButton *roleButton;
 @property (nonatomic, strong) EMButton *vkbpsButton;
 
-@property (nonatomic, strong) NSString *admin;
 @property (nonatomic) int maxVkbps;
 
 @end
@@ -28,7 +27,7 @@
 {
     self = [super initWithJoinConfId:aConfId password:aPassword type:EMConferenceTypeLive chatId:aChatId chatType:aChatType];
     if (self) {
-        _admin = aAdmin;
+        self.admin = aAdmin;
     }
     
     return self;
@@ -156,6 +155,7 @@
         
         weakself.conference = aCall;
         weakself.password = aPassword;
+        weakself.admin = [EMClient sharedClient].currentUsername;
         
         [weakself pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId, EMError *aError) {
             [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];

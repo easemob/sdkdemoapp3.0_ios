@@ -160,7 +160,11 @@ static DemoConfManager *confManager = nil;
         NSString *chatId = [aMessage.ext objectForKey:@"em_conference_chatId"];
         EMChatType chatType = (EMChatType)[[aMessage.ext objectForKey:@"em_conference_chatType"] integerValue];
         if (type == EMConferenceTypeLive) {
-            controller = [[Live2ViewController alloc] initWithJoinConfId:conferenceId password:password admin:aMessage.from chatId:chatId chatType:chatType];
+            NSString *admin = [aMessage.ext objectForKey:@"em_conference_admin"];
+            if ([admin length] == 0) {
+                admin = aMessage.from;
+            }
+            controller = [[Live2ViewController alloc] initWithJoinConfId:conferenceId password:password admin:admin chatId:chatId chatType:chatType];
         } else {
             controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:EMConferenceTypeLargeCommunication chatId:chatId chatType:chatType];
         }
