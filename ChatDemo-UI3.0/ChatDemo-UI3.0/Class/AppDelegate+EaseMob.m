@@ -15,9 +15,10 @@
 #import "AppDelegate+Parse.h"
 
 #import "EMNavigationController.h"
-#import "LoginViewController.h"
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
+
+#import "EMLoginViewController.h"
 
 /**
  *  本类中做了EaseMob初始化和推送等操作
@@ -116,8 +117,9 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         self.mainController = nil;
         [ChatDemoHelper shareHelper].mainVC = nil;
         
-        LoginViewController *loginController = [[LoginViewController alloc] init];
-        navigationController = [[EMNavigationController alloc] initWithRootViewController:loginController];
+        EMLoginViewController *controller = [[EMLoginViewController alloc] init];
+        navigationController = [[EMNavigationController alloc] initWithRootViewController:controller];
+        
         [self clearParse];
     }
     

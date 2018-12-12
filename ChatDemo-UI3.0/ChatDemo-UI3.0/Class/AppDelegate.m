@@ -12,7 +12,6 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
-#import "LoginViewController.h"
 
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+Parse.h"
