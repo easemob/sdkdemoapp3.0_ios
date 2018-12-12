@@ -53,6 +53,9 @@
     self.vkbpsButton = [[EMButton alloc] initWithTitle:@"设置码率" target:self action:@selector(vkbpsAction)];
     [self.vkbpsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_white"] forState:UIControlStateNormal];
+    [self.vkbpsButton setTitle:@"禁用" forState:UIControlStateDisabled];
+    [self.vkbpsButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+    [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_gray"] forState:UIControlStateDisabled];
     [self.view addSubview:self.vkbpsButton];
     [self.vkbpsButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.microphoneButton);
@@ -111,8 +114,10 @@
     if (aConference.role == EMConferenceRoleSpeaker && [self.pubStreamId length] == 0) {
         [self pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId, EMError *aError) {
             [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];
+            weakself.vkbpsButton.enabled = YES;
         }];
     } else if (aConference.role == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
+        self.vkbpsButton.enabled = NO;
         self.roleButton.selected = NO;
         self.switchCameraButton.enabled = NO;
         self.microphoneButton.enabled = NO;
@@ -152,6 +157,7 @@
         
         [weakself pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId, EMError *aError) {
             [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];
+            weakself.vkbpsButton.enabled = YES;
         }];
         
         //如果是创建者并且是从会话中触发
@@ -191,6 +197,7 @@
                 [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];
             }];
         } else {
+            weakself.vkbpsButton.enabled = NO;
             weakself.roleButton.hidden = NO;
         }
     };
@@ -244,6 +251,7 @@
         
         __weak typeof(self) weakself = self;
         [[EMClient sharedClient].conferenceManager unpublishConference:self.conference streamId:self.pubStreamId completion:^(EMError *aError) {
+            weakself.vkbpsButton.enabled = NO;
             weakself.roleButton.selected = NO;
             weakself.switchCameraButton.enabled = NO;
             weakself.microphoneButton.enabled = NO;

@@ -387,7 +387,7 @@
 
 - (void)microphoneButtonAction
 {
-    self.microphoneButton.selected = !self.microphoneButton.isSelected;
+    self.microphoneButton.selected = !self.microphoneButton.selected;
     if (self.microphoneButton.isSelected) {
         [self.callSession pauseVoice];
     } else {
