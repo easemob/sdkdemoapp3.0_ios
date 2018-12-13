@@ -181,24 +181,22 @@ static DemoConfManager *confManager = nil;
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy
 {
-    if (aCall) {
-        self.isCalling = NO;
-        self.confNavController = nil;
-        
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-        [audioSession setActive:YES error:nil];
-        
-        [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
-        
-        if (aIsDestroy) {
-            [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
-        } else {
-            [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
-        }
-        
-        [[DemoCallManager sharedManager] setIsCalling:NO];
+    self.isCalling = NO;
+    self.confNavController = nil;
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    [audioSession setActive:YES error:nil];
+    
+    [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
+    
+    if (aIsDestroy) {
+        [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
+    } else {
+        [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
     }
+    
+    [[DemoCallManager sharedManager] setIsCalling:NO];
 }
 
 
