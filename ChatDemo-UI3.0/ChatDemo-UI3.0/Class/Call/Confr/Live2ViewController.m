@@ -280,6 +280,33 @@
     [self showHint:@"已经向管理员发送申请信息"];
 }
 
+- (void)minimizeAction
+{
+    self.minButton.selected = YES;
+    
+    EMStreamItem *item = nil;
+    if ([self.pubStreamId length] > 0) {
+        item = [self.streamItemDict objectForKey:self.pubStreamId];
+    } else if ([self.streamIds count] > 0) {
+        item = [self.streamItemDict objectForKey:self.streamIds[0]];
+    }
+    
+    if (!item) {
+        return;
+    }
+    
+    self.localViewTmpFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
+    self.floatingView = item.videoView;
+    [self.floatingView removeFromSuperview];
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    self.floatingView.frame = CGRectMake(keyWindow.frame.size.width - 120, 80, 80, 80);
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
 #pragma mark - Public
 
 - (void)handleRoleChangedMessage:(EMMessage *)aMessage

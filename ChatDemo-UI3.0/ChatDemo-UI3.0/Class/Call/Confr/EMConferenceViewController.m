@@ -15,8 +15,6 @@
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
 
-@property (nonatomic) CGRect localViewTmpFrame;
-
 @end
 
 @implementation EMConferenceViewController
