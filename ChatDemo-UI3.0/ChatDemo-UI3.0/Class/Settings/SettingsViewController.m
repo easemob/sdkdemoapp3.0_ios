@@ -404,6 +404,9 @@
                 [weakSelf showHint:error.errorDescription];
             }
             else{
+                [EMDemoOptions sharedOptions].isAutoLogin = NO;
+                [[EMDemoOptions sharedOptions] archive];
+                
                 [[ApplyViewController shareController] clear];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
             }
