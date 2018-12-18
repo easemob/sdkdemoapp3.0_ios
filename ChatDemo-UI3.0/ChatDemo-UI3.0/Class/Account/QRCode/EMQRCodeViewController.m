@@ -12,6 +12,34 @@
 #import "WSLNativeScanTool.h"
 #import "WSLScanView.h"
 
+/*
+ 第一版（因时间不够，先只弄北京集群）：
+ 
+ {
+     "Appkey":"必填项：应用Appkey",
+     "ApnsCertname":"可选项：推送证书名",
+     "Username":"必填项：登录用户名",
+     "Password":"可选项：登录密码",
+ }
+ 
+ 
+ 第二版（在第一版基础上添加私有化服务器配置项）：
+ 
+ {
+     "Appkey":"必填项：应用Appkey，默认easemob-demo#chatdemoui",
+     "ApnsCertname":"可选项：推送证书名，默认[chatdemoui_dev]\[chatdemoui]",
+     "Username":"必填项：登录用户名",
+     "Password":"可选项：登录密码",
+ 
+     "HttpsOnly":bool型[true->rest操作只能使用https，默认false],
+
+     "SpecifyServer":int型[0->使用默认地址即北京集群，1->使用以下自定义服务器配置，默认0],
+     "IMServer":"必填项：im服务器地址",
+     "IMPort":"必填项：im服务器端口号",
+     "RestServer":"必填项：rest服务器地址",
+ }
+ */
+
 @interface EMQRCodeViewController ()
 
 @property (nonatomic, strong) WSLNativeScanTool *scanTool;
@@ -37,7 +65,6 @@
         [weakself.scanTool openFlashSwitch:NO];
         
         if (weakself.scanFinishCompletion) {
-            //TODO:scanFinishCompletion
             weakself.scanFinishCompletion(aScanString);
         }
         [weakself closeAction];
@@ -54,7 +81,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIButton *backButton = [[UIButton alloc] init];
-    [backButton setImage:[UIImage imageNamed:@"close_gray"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"close_white"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
     [backButton mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -28,34 +28,13 @@
     [self _setupViews];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
-}
-
 #pragma mark - Subviews
 
 - (void)_setupViews
 {
-    self.navigationController.navigationBarHidden = YES;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    UIButton *backButton = [[UIButton alloc] init];
-    [backButton setImage:[UIImage imageNamed:@"close_gray"] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:backButton];
-    [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(5);
-        make.top.equalTo(self.view).offset(20);
-        make.width.height.equalTo(@50);
-    }];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = @"注册";
@@ -64,7 +43,7 @@
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(15);
-        make.top.equalTo(backButton.mas_bottom);
+        make.top.equalTo(self.view);
         make.height.equalTo(@60);
     }];
     

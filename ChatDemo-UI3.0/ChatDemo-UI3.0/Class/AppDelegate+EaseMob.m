@@ -11,13 +11,13 @@
  */
 
 #import "AppDelegate+EaseMob.h"
-#import "AppDelegate+EaseMobDebug.h"
 #import "AppDelegate+Parse.h"
 
 #import "EMNavigationController.h"
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
 
+#import "EMDemoOptions.h"
 #import "EMLoginViewController.h"
 
 /**
@@ -28,8 +28,6 @@
 
 - (void)easemobApplication:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-                    appkey:(NSString *)appkey
-              apnsCertName:(NSString *)apnsCertName
                otherConfig:(NSDictionary *)otherConfig
 {
     //注册登录状态监听
@@ -37,24 +35,15 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                              selector:@selector(loginStateChange:)
                                                  name:KNOTIFICATION_LOGINCHANGE
                                                object:nil];
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    BOOL isHttpsOnly = [ud boolForKey:@"identifier_httpsonly"];
-    
     [[EaseSDKHelper shareHelper] hyphenateApplication:application
-                    didFinishLaunchingWithOptions:launchOptions
-                                           appkey:appkey
-                                     apnsCertName:apnsCertName
-                                      otherConfig:@{@"httpsOnly":[NSNumber numberWithBool:isHttpsOnly], kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],@"easeSandBox":[NSNumber numberWithBool:[self isSpecifyServer]]}];
+                        didFinishLaunchingWithOptions:launchOptions];
     
-    [ChatDemoHelper shareHelper];
-    
-    BOOL isAutoLogin = [EMClient sharedClient].isAutoLogin;
-    if (isAutoLogin){
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    if (demoOptions.isAutoLogin){
+        [[EMClient sharedClient] initializeSDKWithOptions:[demoOptions toOptions]];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-    }
-    else
-    {
+    } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     }
 }
@@ -93,6 +82,8 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     BOOL loginSuccess = [notification.object boolValue];
     EMNavigationController *navigationController = nil;
     if (loginSuccess) {//登录成功加载主窗口控制器
+        [ChatDemoHelper shareHelper];
+        
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
         if (self.mainController == nil) {
@@ -109,6 +100,17 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
         [[ChatDemoHelper shareHelper] asyncPushOptions];
+        
+        if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
+            [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
+            [[UINavigationBar appearance] setTitleTextAttributes:
+             [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+        } else {
+            navigationController.navigationBar.barStyle = UIBarStyleDefault;
+            [navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
+                                                     forBarMetrics:UIBarMetricsDefault];
+            [navigationController.navigationBar.layer setMasksToBounds:YES];
+        }
     }
     else{//登录失败加载登录页面控制器
         if (self.mainController) {
@@ -120,15 +122,10 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[EMNavigationController alloc] initWithRootViewController:controller];
         
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:18], NSFontAttributeName, nil]];
+        
         [self clearParse];
-    }
-    
-    //设置7.0以下的导航栏
-    if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
-        navigationController.navigationBar.barStyle = UIBarStyleDefault;
-        [navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
-                                                 forBarMetrics:UIBarMetricsDefault];
-        [navigationController.navigationBar.layer setMasksToBounds:YES];
     }
     
     navigationController.navigationBar.accessibilityIdentifier = @"navigationbar";

@@ -22,6 +22,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _enableVoice = YES;
+        
         self.bgView = [[UIImageView alloc] init];
         self.bgView.contentMode = UIViewContentModeScaleAspectFit;
         self.bgView.userInteractionEnabled = YES;
@@ -91,6 +93,10 @@
         default:
             _statusView.image = nil;
             break;
+    }
+    
+    if (status == StreamStatusNormal && !_enableVoice) {
+        [self setEnableVoice:_enableVoice];
     }
 }
 

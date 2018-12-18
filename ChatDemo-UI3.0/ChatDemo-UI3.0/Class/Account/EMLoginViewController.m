@@ -14,15 +14,22 @@
 #import "EMDevicesViewController.h"
 #import "EMRegisterViewController.h"
 #import "EMQRCodeViewController.h"
+#import "EMSDKOptionsViewController.h"
+
+#import "EMDemoOptions.h"
 
 @interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+
+@property (nonatomic) BOOL isInitializedSDK;
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UITableViewCell *titleCell;
+@property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) UITableViewCell *appkeyCell;
 @property (nonatomic, strong) UITextField *appkeyField;
+@property (nonatomic, strong) UIButton *appkeyButton;
 
 @property (nonatomic, strong) UITableViewCell *nameCell;
 @property (nonatomic, strong) UITextField *nameField;
@@ -41,6 +48,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _isInitializedSDK = NO;
     
     [self _setupSubviews];
     
@@ -50,12 +58,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
 
@@ -63,29 +65,16 @@
 
 - (void)_setupSubviews
 {
-    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar.layer setMasksToBounds:YES];
+    self.navigationController.navigationBar.backIndicatorImage = [UIImage imageNamed:@"back_gary"];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIButton *leftButton = [[UIButton alloc] init];
-    [leftButton setImage:[UIImage imageNamed:@"device"] forState:UIControlStateNormal];
-    [leftButton addTarget:self action:@selector(devicesAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:leftButton];
-    [leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(5);
-        make.top.equalTo(self.view).offset(20);
-        make.width.height.equalTo(@50);
-    }];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
     
-    UIButton *rightButton = [[UIButton alloc] init];
-    [rightButton setImage:[UIImage imageNamed:@"qr"] forState:UIControlStateNormal];
-    [rightButton addTarget:self action:@selector(qrCodeAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:rightButton];
-    [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view).offset(5);
-        make.top.equalTo(leftButton);
-        make.width.height.equalTo(@50);
-    }];
-    
+    self.view.backgroundColor = [UIColor whiteColor];
     [self _setupTableView];
 }
 
@@ -98,19 +87,19 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(70);
+        make.top.equalTo(self.view);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
     
     self.titleCell = [self _setupCell];
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"登录";
-    titleLabel.textColor = [UIColor blackColor];
-    titleLabel.font = [UIFont systemFontOfSize:28];
-    [self.titleCell.contentView addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.titleLabel = [[UILabel alloc] init];
+    self.titleLabel.text = @"登录";
+    self.titleLabel.textColor = [UIColor blackColor];
+    self.titleLabel.font = [UIFont systemFontOfSize:28];
+    [self.titleCell.contentView addSubview:self.titleLabel];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleCell.contentView).offset(15);
         make.top.equalTo(self.titleCell.contentView);
         make.bottom.equalTo(self.titleCell.contentView);
@@ -118,6 +107,8 @@
     
     self.appkeyCell = [self _setupCell];
     self.appkeyField = [[UITextField alloc] init];
+    self.appkeyField.delegate = self;
+    self.appkeyField.enabled = NO;
     self.appkeyField.borderStyle = UITextBorderStyleNone;
     self.appkeyField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.appkeyField.placeholder = @"应用appkey";
@@ -134,13 +125,13 @@
         make.bottom.equalTo(self.appkeyCell.contentView);
     }];
     
-    UIButton *changeButton = [[UIButton alloc] init];
-    changeButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    [changeButton setTitle:@"更换" forState:UIControlStateNormal];
-    [changeButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-    [changeButton addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.appkeyCell.contentView addSubview:changeButton];
-    [changeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.appkeyButton = [[UIButton alloc] init];
+    self.appkeyButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [self.appkeyButton setTitle:@"更换" forState:UIControlStateNormal];
+    [self.appkeyButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.appkeyButton addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.appkeyCell.contentView addSubview:self.appkeyButton];
+    [self.appkeyButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.appkeyCell.contentView).offset(-15);
         make.top.equalTo(self.appkeyCell.contentView);
         make.bottom.equalTo(self.appkeyCell.contentView);
@@ -204,6 +195,7 @@
 - (UITableViewCell *)_setupCell
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -234,7 +226,7 @@
     [registerButton addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonCell.contentView addSubview:registerButton];
     [registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(loginButton.mas_bottom).offset(10);
+        make.top.equalTo(loginButton.mas_bottom).offset(20);
         make.left.equalTo(loginButton);
         make.bottom.equalTo(self.buttonCell.contentView);
     }];
@@ -242,7 +234,6 @@
     self.loginTypeButton = [[UIButton alloc] init];
     self.loginTypeButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.loginTypeButton setTitle:@"使用token登录" forState:UIControlStateNormal];
-    [self.loginTypeButton setTitle:@"使用密码登录" forState:UIControlStateNormal];
     [self.loginTypeButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [self.loginTypeButton addTarget:self action:@selector(loginTypeChangeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonCell.contentView addSubview:self.loginTypeButton];
@@ -263,6 +254,42 @@
         [ud setObject:username forKey:[NSString stringWithFormat:@"em_lastLogin_username"]];
         [ud synchronize];
     }
+}
+
+- (void)_updateSDKOptions:(NSDictionary *)aDic
+{
+    NSString *appkey = [aDic objectForKey:kOptions_Appkey];
+    NSString *apns = [aDic objectForKey:kOptions_ApnsCertname];
+    BOOL httpsOnly = [[aDic objectForKey:kOptions_HttpsOnly] boolValue];
+    if ([appkey length] == 0) {
+        appkey = DEF_APPKEY;
+    }
+    if ([apns length] == 0) {
+#if DEBUG
+        apns = @"chatdemoui_dev";
+#else
+        apns = @"chatdemoui";
+#endif
+    }
+    
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    demoOptions.appkey = appkey;
+    demoOptions.apnsCertName = apns;
+    demoOptions.usingHttpsOnly = httpsOnly;
+    
+    int specifyServer = [[aDic objectForKey:kOptions_SpecifyServer] intValue];
+    if (specifyServer != 0) {
+        NSString *imServer = [aDic objectForKey:kOptions_IMServer];
+        NSString *imPort = [aDic objectForKey:kOptions_IMPort];
+        NSString *restServer = [aDic objectForKey:kOptions_RestServer];
+        if ([imServer length] > 0 && [restServer length] > 0 && [imPort length] > 0) {
+            demoOptions.chatPort = [imPort intValue];
+            demoOptions.chatServer = imServer;
+            demoOptions.restServer = restServer;
+        }
+    }
+    
+    [demoOptions archive];
 }
 
 #pragma mark - Table view data source
@@ -318,7 +345,7 @@
             height = 60;
             break;
         case 4:
-            height = 100;
+            height = 110;
             break;
             
         default:
@@ -364,13 +391,54 @@
 {
     [self.view endEditing:YES];
     
-    EMQRCodeViewController *controller = [[EMQRCodeViewController alloc] init];
-    [self.navigationController presentViewController:controller animated:YES completion:nil];
+    if (self.isInitializedSDK) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            exit(0);
+        }];
+        [alertController addAction:okAction];
+        
+        [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        EMQRCodeViewController *controller = [[EMQRCodeViewController alloc] init];
+        
+        __weak typeof(self) weakself = self;
+        [controller setScanFinishCompletion:^(NSString * _Nonnull aJson) {
+            NSData *jsonData = [aJson dataUsingEncoding:NSUTF8StringEncoding];
+            NSError *error;
+            id obj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
+            if (!error && [obj isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *dic = (NSDictionary *)obj;
+                NSString *username = [dic objectForKey:@"Username"];
+                NSString *pssword = [dic objectForKey:@"Password"];
+                if ([username length] == 0) {
+                    return ;
+                }
+                
+                [weakself _updateSDKOptions:dic];
+                
+                weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
+                weakself.nameField.text = username;
+                weakself.pswdField.text = pssword;
+                
+                if ([pssword length] == 0) {
+                    [weakself.pswdField becomeFirstResponder];
+                }
+            }
+        }];
+        [self.navigationController presentViewController:controller animated:YES completion:nil];
+    }
 }
 
 - (void)changeAppkeyAction
 {
-    [self.appkeyField becomeFirstResponder];
+//    __weak typeof(self) weakself = self;
+    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!self.isInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
+    }];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)pswdSecureAction:(UIButton *)aButton
@@ -394,6 +462,14 @@
         return;
     }
     
+    if (!self.isInitializedSDK) {
+        self.isInitializedSDK = YES;
+        EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
+        [[EMClient sharedClient] initializeSDKWithOptions:options];
+        
+        [self.appkeyButton setTitle:@"查看" forState:UIControlStateNormal];
+    }
+    
     __weak typeof(self) weakself = self;
     void (^finishBlock) (NSString *aName, EMError *aError) = ^(NSString *aName, EMError *aError) {
         [weakself hideHud];
@@ -401,6 +477,8 @@
         if (!aError) {
             //设置是否自动登录
             [[EMClient sharedClient].options setIsAutoLogin:YES];
+            [EMDemoOptions sharedOptions].isAutoLogin = YES;
+            [[EMDemoOptions sharedOptions] archive];
             //保存最近一次登录用户名
             [weakself _saveLoginUsername];
             //发送自动登录状态通知
@@ -466,17 +544,21 @@
     
     self.loginTypeButton.selected = !self.loginTypeButton.selected;
     if (self.loginTypeButton.selected) {
+        self.titleLabel.text = @"使用token登录";
         self.pswdField.placeholder = @"token";
         self.pswdField.secureTextEntry = NO;
         self.pswdField.rightView = nil;
         self.pswdField.rightViewMode = UITextFieldViewModeNever;
         self.pswdField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        [self.loginTypeButton setTitle:@"使用密码登录" forState:UIControlStateNormal];
     } else {
+        self.titleLabel.text = @"登录";
         self.pswdField.placeholder = @"密码";
         self.pswdField.secureTextEntry = !self.pswdRightView.selected;
         self.pswdField.rightView = self.pswdRightView;
         self.pswdField.rightViewMode = UITextFieldViewModeAlways;
         self.pswdField.clearButtonMode = UITextFieldViewModeNever;
+        [self.loginTypeButton setTitle:@"使用token登录" forState:UIControlStateNormal];
     }
 }
 

@@ -25,6 +25,8 @@
 #import "CallSettingViewController.h"
 #endif
 
+#import "EMDemoOptions.h"
+
 @interface SettingsViewController ()
 
 @property (strong, nonatomic) UIView *footerView;
@@ -344,6 +346,9 @@
 - (void)groupInviteChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setIsAutoAcceptGroupInvitation:control.on];
+    
+    [EMDemoOptions sharedOptions].isAutoAcceptGroupInvitation = control.isOn;
+    [[EMDemoOptions sharedOptions] archive];
 }
 
 - (void)sortMethodChanged:(UISwitch *)control
@@ -365,16 +370,16 @@
 {
     [[EMClient sharedClient].options setIsAutoTransferMessageAttachments:control.on];
     
-    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
-    [udefaults setBool:control.isOn forKey:@"autoTransferMessageFile"];
+    [EMDemoOptions sharedOptions].isAutoTransferMessageAttachments = control.isOn;
+    [[EMDemoOptions sharedOptions] archive];
 }
 
 - (void)autoDownloadChanged:(UISwitch *)control
 {
     [[EMClient sharedClient].options setIsAutoDownloadThumbnail:control.on];
     
-    NSUserDefaults *udefaults = [NSUserDefaults standardUserDefaults];
-    [udefaults setBool:control.isOn forKey:@"autoDownloadMessageThumbnail"];
+    [EMDemoOptions sharedOptions].isAutoDownloadThumbnail = control.isOn;
+    [[EMDemoOptions sharedOptions] archive];
 }
     
 - (void)refreshConfig
