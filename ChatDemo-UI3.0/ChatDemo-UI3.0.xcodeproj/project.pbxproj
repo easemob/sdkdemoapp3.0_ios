@@ -68,6 +68,7 @@
 		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
 		3A6FEF7A218072CB0092EFA0 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9A2A4B21709EF100AC4689 /* Hyphenate.framework */; };
 		3A6FEF7B218072CB0092EFA0 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9A2A4B21709EF100AC4689 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3A7CF3E521CA377900D91197 /* EMGlobalVariables.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7CF3E421CA377900D91197 /* EMGlobalVariables.m */; };
 		3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */; };
 		3A807B0F1D951301004D18CB /* EMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A807B0E1D951301004D18CB /* EMNavigationController.m */; };
 		3A9A29D321709ECC00AC4689 /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A28B221709ECB00AC4689 /* UIViewController+HUD.m */; };
@@ -647,6 +648,8 @@
 		3A6FEF87218079100092EFA0 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../rtc-ios/RtcSDK/RtcSDK/3rdParth/webrtc/WebRTC.framework"; sourceTree = "<group>"; };
 		3A7354472019F42900AB6CDB /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "ChatDemo-UI3.0/3rdparty/Fabric.framework"; sourceTree = "<group>"; };
 		3A7354482019F42900AB6CDB /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "ChatDemo-UI3.0/3rdparty/Crashlytics.framework"; sourceTree = "<group>"; };
+		3A7CF3E321CA377900D91197 /* EMGlobalVariables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGlobalVariables.h; sourceTree = "<group>"; };
+		3A7CF3E421CA377900D91197 /* EMGlobalVariables.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGlobalVariables.m; sourceTree = "<group>"; };
 		3A807B051D9511B1004D18CB /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
 		3A807B0D1D951301004D18CB /* EMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNavigationController.h; sourceTree = "<group>"; };
 		3A807B0E1D951301004D18CB /* EMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNavigationController.m; sourceTree = "<group>"; };
@@ -1513,6 +1516,8 @@
 				3A031B4A21C7B22C00A8D7BB /* EMSDKOptions.plist */,
 				3A031B4C21C7C45800A8D7BB /* EMDemoOptions.h */,
 				3A031B4D21C7C45800A8D7BB /* EMDemoOptions.m */,
+				3A7CF3E321CA377900D91197 /* EMGlobalVariables.h */,
+				3A7CF3E421CA377900D91197 /* EMGlobalVariables.m */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -3489,6 +3494,7 @@
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
 				3A9A2A1A21709ECC00AC4689 /* MKAnnotationView+WebCache.m in Sources */,
 				3A9A2A3021709ECC00AC4689 /* EaseMessageViewController.m in Sources */,
+				3A7CF3E521CA377900D91197 /* EMGlobalVariables.m in Sources */,
 				90AFCFDA1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */,
 				3A9A29E821709ECC00AC4689 /* MJRefreshBackGifFooter.m in Sources */,
 				3A9A29EE21709ECC00AC4689 /* MJRefreshNormalHeader.m in Sources */,

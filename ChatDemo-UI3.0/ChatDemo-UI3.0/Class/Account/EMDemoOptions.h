@@ -22,6 +22,8 @@ static NSString *kOptions_AutoAcceptGroupInvitation = @"AutoAcceptGroupInvitatio
 static NSString *kOptions_AutoTransMsgFile = @"AutoTransferMessageAttachments";
 static NSString *kOptions_AutoDownloadThumb = @"AutoDownloadThumbnail";
 
+static NSString *kOptions_LoggedinUsername = @"LoggedinUsername";
+
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -47,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isAutoAcceptGroupInvitation;
 @property (nonatomic) BOOL isAutoTransferMessageAttachments;
 @property (nonatomic) BOOL isAutoDownloadThumbnail;
+
+@property (nonatomic, strong) NSString *loggedInUsername;
 
 + (instancetype)sharedOptions;
 

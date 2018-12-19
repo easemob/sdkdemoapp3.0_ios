@@ -10,13 +10,15 @@
   * from Hyphenate Inc.
   */
 
+#import <UserNotifications/UserNotifications.h>
 #import "MainViewController.h"
 
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
 #import "ChatDemoHelper.h"
-#import <UserNotifications/UserNotifications.h>
+
+#import "EMGlobalVariables.h"
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -80,10 +82,6 @@ static NSString *kGroupName = @"GroupName";
     
     [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
     [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
-    
-#if DEMO_CALL == 1
-    [DemoConfManager sharedManager].mainController = self;
-#endif
 }
 
 - (void)didReceiveMemoryWarning

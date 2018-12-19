@@ -29,10 +29,12 @@ static EMDemoOptions *sharedOptions = nil;
         self.chatPort = 6717;
         self.restServer = @"a1.sdb.easemob.com";
         
-        self.isAutoLogin = NO;
         self.isAutoAcceptGroupInvitation = NO;
         self.isAutoTransferMessageAttachments = NO;
         self.isAutoDownloadThumbnail = YES;
+        
+        self.isAutoLogin = NO;
+        self.loggedInUsername = @"";
     }
     
     return self;
@@ -54,10 +56,12 @@ static EMDemoOptions *sharedOptions = nil;
         self.chatServer = [aDecoder decodeObjectForKey:kOptions_IMServer];
         self.restServer = [aDecoder decodeObjectForKey:kOptions_RestServer];
         
-        self.isAutoLogin = [aDecoder decodeBoolForKey:kOptions_AutoLogin];
         self.isAutoAcceptGroupInvitation = [aDecoder decodeBoolForKey:kOptions_AutoAcceptGroupInvitation];
         self.isAutoTransferMessageAttachments = [aDecoder decodeBoolForKey:kOptions_AutoTransMsgFile];
         self.isAutoDownloadThumbnail = [aDecoder decodeBoolForKey:kOptions_AutoDownloadThumb];
+        
+        self.isAutoLogin = [aDecoder decodeBoolForKey:kOptions_AutoLogin];
+        self.loggedInUsername = [aDecoder decodeObjectForKey:kOptions_LoggedinUsername];
     }
     return self;
 }
@@ -73,10 +77,12 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeObject:self.chatServer forKey:kOptions_IMServer];
     [aCoder encodeObject:self.restServer forKey:kOptions_RestServer];
     
-    [aCoder encodeBool:self.isAutoLogin forKey:kOptions_AutoLogin];
     [aCoder encodeBool:self.isAutoAcceptGroupInvitation forKey:kOptions_AutoAcceptGroupInvitation];
     [aCoder encodeBool:self.isAutoTransferMessageAttachments forKey:kOptions_AutoTransMsgFile];
     [aCoder encodeBool:self.isAutoDownloadThumbnail forKey:kOptions_AutoDownloadThumb];
+    
+    [aCoder encodeBool:self.isAutoLogin forKey:kOptions_AutoLogin];
+    [aCoder encodeObject:self.loggedInUsername forKey:kOptions_LoggedinUsername];
     
 }
 
@@ -116,10 +122,12 @@ static EMDemoOptions *sharedOptions = nil;
     EMOptions *retOpt = [EMOptions optionsWithAppkey:self.appkey];
     retOpt.apnsCertName = self.apnsCertName;
     retOpt.usingHttpsOnly = self.usingHttpsOnly;
-    retOpt.isAutoLogin = YES;
+
     retOpt.isAutoAcceptGroupInvitation = self.isAutoTransferMessageAttachments;
     retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
     retOpt.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
+    
+    retOpt.isAutoLogin = self.isAutoLogin;
     
     retOpt.enableConsoleLog = YES;
     if (self.specifyServer) {

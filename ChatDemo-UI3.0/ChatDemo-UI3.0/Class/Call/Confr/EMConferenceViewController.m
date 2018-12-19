@@ -8,7 +8,7 @@
 
 #import "EMConferenceViewController.h"
 
-#import "AppDelegate.h"
+#import "EMGlobalVariables.h"
 
 @interface EMConferenceViewController ()
 
@@ -369,8 +369,7 @@
         self.floatingView.frame = self.localViewTmpFrame;
         self.floatingView = nil;
         
-        UIViewController *mainController = [(AppDelegate *)[UIApplication sharedApplication].delegate mainController];
-        [mainController presentViewController:self.navigationController animated:NO completion:nil];
+        [gMainController presentViewController:self.navigationController animated:NO completion:nil];
         return;
     }
     

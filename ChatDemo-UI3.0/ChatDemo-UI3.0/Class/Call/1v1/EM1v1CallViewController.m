@@ -8,6 +8,8 @@
 
 #import "EM1v1CallViewController.h"
 
+#import "EMGlobalVariables.h"
+
 @interface EM1v1CallViewController ()
 
 @property (nonatomic, strong) NSTimer *callDurationTimer;
@@ -290,8 +292,7 @@
     self.minButton.selected = NO;
     [self.floatingView removeFromSuperview];
     
-    UIViewController *mainController = (UIViewController *)[DemoCallManager sharedManager].mainController;
-    [mainController presentViewController:self animated:NO completion:nil];
+    [gMainController presentViewController:self animated:NO completion:nil];
 }
 
 #pragma mark - Status

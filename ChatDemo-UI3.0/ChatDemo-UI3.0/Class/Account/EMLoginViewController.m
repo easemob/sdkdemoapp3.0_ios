@@ -246,16 +246,6 @@
 
 #pragma mark - Private
 
-- (void)_saveLoginUsername
-{
-    NSString *username = [[EMClient sharedClient] currentUsername];
-    if (username && username.length > 0) {
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        [ud setObject:username forKey:[NSString stringWithFormat:@"em_lastLogin_username"]];
-        [ud synchronize];
-    }
-}
-
 - (void)_updateSDKOptions:(NSDictionary *)aDic
 {
     NSString *appkey = [aDic objectForKey:kOptions_Appkey];
@@ -477,10 +467,12 @@
         if (!aError) {
             //设置是否自动登录
             [[EMClient sharedClient].options setIsAutoLogin:YES];
-            [EMDemoOptions sharedOptions].isAutoLogin = YES;
-            [[EMDemoOptions sharedOptions] archive];
-            //保存最近一次登录用户名
-            [weakself _saveLoginUsername];
+            
+            EMDemoOptions *options = [EMDemoOptions sharedOptions];
+            options.isAutoLogin = YES;
+            options.loggedInUsername = aName;
+            [options archive];
+            
             //发送自动登录状态通知
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:[NSNumber numberWithBool:YES]];
             

@@ -19,6 +19,10 @@
 #import <Bugly/Bugly.h>
 #import <UserNotifications/UserNotifications.h>
 
+#import "EMGlobalVariables.h"
+
+extern MainViewController *gMainController;
+
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @end
@@ -57,16 +61,16 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    if (_mainController) {
-        [_mainController jumpToChatList];
+    if (gMainController) {
+        [gMainController jumpToChatList];
     }
     [self easemobApplication:application didReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    if (_mainController) {
-        [_mainController didReceiveLocalNotification:notification];
+    if (gMainController) {
+        [gMainController didReceiveLocalNotification:notification];
     }
 }
 
@@ -78,8 +82,8 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
 {
-    if (_mainController) {
-        [_mainController didReceiveUserNotification:response.notification];
+    if (gMainController) {
+        [gMainController didReceiveUserNotification:response.notification];
     }
     completionHandler();
 }

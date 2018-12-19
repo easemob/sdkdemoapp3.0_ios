@@ -10,15 +10,10 @@
 
 #import "ConfInviteUsersViewController.h"
 
-@class MainViewController;
 @class EMConferenceViewController;
 @interface DemoConfManager : NSObject
 
 #if DEMO_CALL == 1
-
-@property (nonatomic) BOOL isCalling;
-
-@property (strong, nonatomic) MainViewController *mainController;
 
 + (instancetype)sharedManager;
 

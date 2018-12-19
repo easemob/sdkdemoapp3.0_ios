@@ -17,6 +17,7 @@
 #import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
 
+#import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
 #import "EMLoginViewController.h"
 
@@ -82,24 +83,25 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     BOOL loginSuccess = [notification.object boolValue];
     EMNavigationController *navigationController = nil;
     if (loginSuccess) {//登录成功加载主窗口控制器
-        [ChatDemoHelper shareHelper];
+        ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
         
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
-        if (self.mainController == nil) {
-            self.mainController = [[MainViewController alloc] init];
-            navigationController = [[EMNavigationController alloc] initWithRootViewController:self.mainController];
-        }else{
-            navigationController  = (EMNavigationController *)self.mainController.navigationController;
+        
+        if (gMainController == nil) {
+            MainViewController *mainController = [[MainViewController alloc] init];
+            [EMGlobalVariables setGlobalMainController:mainController];
+
+            navigationController = [[EMNavigationController alloc] initWithRootViewController:mainController];
+        } else {
+            navigationController  = (EMNavigationController *)gMainController.navigationController;
         }
         // 环信UIdemo中有用到Parse，您的项目中不需要添加，可忽略此处
         [self initParse];
         
-        [ChatDemoHelper shareHelper].mainVC = self.mainController;
-        
-        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
-        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
-        [[ChatDemoHelper shareHelper] asyncPushOptions];
+        [demoHelper asyncGroupFromServer];
+        [demoHelper asyncConversationFromDB];
+        [demoHelper asyncPushOptions];
         
         if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
             [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
@@ -113,11 +115,10 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         }
     }
     else{//登录失败加载登录页面控制器
-        if (self.mainController) {
-            [self.mainController.navigationController popToRootViewControllerAnimated:NO];
+        if (gMainController) {
+            [gMainController.navigationController popToRootViewControllerAnimated:NO];
         }
-        self.mainController = nil;
-        [ChatDemoHelper shareHelper].mainVC = nil;
+        [EMGlobalVariables setGlobalMainController:nil];
         
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[EMNavigationController alloc] initWithRootViewController:controller];
