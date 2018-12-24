@@ -17,6 +17,7 @@
 #import "EMSDKOptionsViewController.h"
 
 #import "EMDemoOptions.h"
+#import "EMAlertController.h"
 
 @interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -447,8 +448,7 @@
 
     if ([name length] == 0 || [pswd length] == 0) {
         NSString *errorDes = isTokenLogin ? @"用户ID或者token不能为空" : @"用户ID或者密码不能为空";
-        //TODO:错误提示
-        TTAlertNoTitle(errorDes);
+        [EMAlertController showErrorAlert:errorDes];
         return;
     }
     
@@ -499,8 +499,7 @@
             default:
                 break;
         }
-        //TODO:错误提示
-        TTAlertNoTitle(errorDes);
+        [EMAlertController showErrorAlert:errorDes];
     };
     
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];

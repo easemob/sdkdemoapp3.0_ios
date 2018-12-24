@@ -10,6 +10,8 @@
 
 #import "Masonry.h"
 
+#import "EMAlertController.h"
+
 @interface EMRegisterViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *nameField;
@@ -156,9 +158,7 @@
     NSString *pswd = self.pswdField.text;
     
     if ([name length] == 0 || [pswd length] == 0) {
-        NSString *errorDes = @"用户ID或者密码不能为空";
-        //TODO:错误提示
-        TTAlertNoTitle(errorDes);
+        [EMAlertController showErrorAlert:@"用户ID或者密码不能为空"];
         return;
     }
     
@@ -192,8 +192,7 @@
             default:
                 break;
         }
-        //TODO:错误提示
-        TTAlertNoTitle(errorDes);
+        [EMAlertController showErrorAlert:errorDes];
     }];
 }
 
