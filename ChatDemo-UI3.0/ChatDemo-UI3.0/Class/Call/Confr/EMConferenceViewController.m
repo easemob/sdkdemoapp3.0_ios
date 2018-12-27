@@ -555,7 +555,7 @@
     }
     //添加会话相关属性
     if ([self.chatId length] > 0) {
-        [ext setObject:aChatId forKey:@"em_conference_chatId"];
+        [ext setObject:self.chatId forKey:@"em_conference_chatId"];
         [ext setObject:@(self.chatType) forKey:@"em_conference_chatType"];
     }
     
