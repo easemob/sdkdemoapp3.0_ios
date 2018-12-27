@@ -35,6 +35,7 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isAutoLogin = NO;
         self.loggedInUsername = @"";
+        self.loggedInPassword = @"";
     }
     
     return self;
@@ -62,6 +63,7 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isAutoLogin = [aDecoder decodeBoolForKey:kOptions_AutoLogin];
         self.loggedInUsername = [aDecoder decodeObjectForKey:kOptions_LoggedinUsername];
+        self.loggedInPassword = [aDecoder decodeObjectForKey:kOptions_LoggedinPassword];
     }
     return self;
 }
@@ -83,6 +85,7 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.isAutoLogin forKey:kOptions_AutoLogin];
     [aCoder encodeObject:self.loggedInUsername forKey:kOptions_LoggedinUsername];
+    [aCoder encodeObject:self.loggedInPassword forKey:kOptions_LoggedinPassword];
     
 }
 
@@ -94,6 +97,14 @@ static EMDemoOptions *sharedOptions = nil;
     });
     
     return sharedOptions;
+}
+
+- (void)setLoggedInUsername:(NSString *)loggedInUsername
+{
+    if (![_loggedInUsername isEqualToString:loggedInUsername]) {
+        _loggedInUsername = loggedInUsername;
+        _loggedInPassword = @"";
+    }
 }
 
 + (EMDemoOptions *)getOptionsFromLocal

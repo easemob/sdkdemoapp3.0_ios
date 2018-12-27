@@ -10,21 +10,20 @@
 
 #import "Masonry.h"
 
-#import "ChatViewController.h"
+#import "EMDemoOptions.h"
+#import "EMAlertController.h"
 
 #define KALERT_GET_ALL 1
 #define KALERT_KICK_ALL 2
 #define KALERT_KICK_ONE 3
 
-@interface EMDevicesViewController ()<UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@interface EMDevicesViewController ()
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
-@property (nonatomic, strong) NSIndexPath *willKickDeviceIndex;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
+
+@property (nonatomic) BOOL isAuthed;
 
 @end
 
@@ -35,7 +34,13 @@
     
     [self _setupSubviews];
     
-    [self _showUsernamePasswordAlertViewWithTag:KALERT_GET_ALL];
+    EMDemoOptions *options = [EMDemoOptions sharedOptions];
+    self.username = options.loggedInUsername;
+    self.password = options.loggedInPassword;
+    if ([self.username length] > 0 && [self.password length] > 0) {
+        self.isAuthed = YES;
+    }
+    [self _headerRefreshAction];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,37 +68,18 @@
 - (void)_setupSubviews
 {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@""] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(kickAllAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@""] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(kickAllDevicesAction)];
     
+    self.title = @"登录设备列表";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"登录设备";
-    titleLabel.textColor = [UIColor blackColor];
-    titleLabel.font = [UIFont systemFontOfSize:28];
-    [self.view addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(15);
-        make.top.equalTo(self.view);
-        make.height.equalTo(@60);
-    }];
-    
-    self.tableView = [[UITableView alloc] init];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    [self.view addSubview:self.tableView];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-    }];
+//    self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(_headerRefreshAction) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:self.refreshControl];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(_headerRefreshAction) forControlEvents:UIControlEventValueChanged];
+    self.tableView.refreshControl = refreshControl;
 }
 
 - (id)_setupCellEditActions:(NSIndexPath *)aIndexPath
@@ -131,19 +117,17 @@
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     }
     
     EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
     cell.textLabel.text = options.deviceName;
     if ([options.deviceName length] == 0) {
-        cell.textLabel.text = options.deviceUUID;
-    }
-    
-    if ([cell.textLabel.text length] == 0) {
         cell.textLabel.text = options.resource;
     }
+    
+    cell.detailTextLabel.text = options.deviceUUID;
     
     return cell;
 }
@@ -185,46 +169,46 @@
 
 #pragma mark - NSNotification
 
-- (void)_showUsernamePasswordAlertViewWithTag:(NSInteger)aTag
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"getPermission", @"Get Permission") message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = NSLocalizedString(@"username", @"Username");
-    }];
-    
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = NSLocalizedString(@"password", @"Password");
-        textField.secureTextEntry = YES;
-    }];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleDefault handler:nil];
-    [alertController addAction:cancelAction];
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        UITextField *usernameField = alertController.textFields.firstObject;
-        self.username = usernameField.text;
-        
-        UITextField *passwordField = alertController.textFields.lastObject;
-        self.password = passwordField.text;
-        
-        if ([EMClient sharedClient].isLoggedIn && ![self.username isEqualToString:[EMClient sharedClient].currentUsername]) {
-            [self.refreshControl endRefreshing];
-            [self showHint:@"请输入当前登录账号"];
-            return ;
-        }
-        
-        if (aTag == KALERT_GET_ALL) {
-            [self fetchDataFromServer];
-        } else if (aTag == KALERT_KICK_ALL) {
-            [self kickAllDevices];
-        } else if (aTag == KALERT_KICK_ONE) {
-            [self kickOneDevice];
-        }
-    }];
-    [alertController addAction:okAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
+//- (void)_showUsernamePasswordAlertViewWithTag:(NSInteger)aTag
+//{
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"getPermission", @"Get Permission") message:nil preferredStyle:UIAlertControllerStyleAlert];
+//    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+//        textField.placeholder = NSLocalizedString(@"username", @"Username");
+//    }];
+//
+//    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+//        textField.placeholder = NSLocalizedString(@"password", @"Password");
+//        textField.secureTextEntry = YES;
+//    }];
+//    
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleDefault handler:nil];
+//    [alertController addAction:cancelAction];
+//
+//    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        UITextField *usernameField = alertController.textFields.firstObject;
+//        self.username = usernameField.text;
+//
+//        UITextField *passwordField = alertController.textFields.lastObject;
+//        self.password = passwordField.text;
+//
+//        if ([EMClient sharedClient].isLoggedIn && ![self.username isEqualToString:[EMClient sharedClient].currentUsername]) {
+//            [self.refreshControl endRefreshing];
+//            [self showHint:@"请输入当前登录账号"];
+//            return ;
+//        }
+//
+//        if (aTag == KALERT_GET_ALL) {
+//            [self fetchDataFromServer];
+//        } else if (aTag == KALERT_KICK_ALL) {
+//            [self kickAllDevices];
+//        } else if (aTag == KALERT_KICK_ONE) {
+//            [self kickOneDevice];
+//        }
+//    }];
+//    [alertController addAction:okAction];
+//
+//    [self presentViewController:alertController animated:YES completion:nil];
+//}
 
 #pragma mark - Action
 
@@ -235,35 +219,10 @@
 
 - (void)deleteCellAction:(NSIndexPath *)aIndexPath
 {
-    self.willKickDeviceIndex = aIndexPath;
-    [self _showUsernamePasswordAlertViewWithTag:KALERT_KICK_ONE];
-}
-
-- (void)kickAllAction
-{
-    [self _showUsernamePasswordAlertViewWithTag:KALERT_KICK_ALL];
-}
-
-- (void)kickAllDevices
-{
-    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
-    __weak typeof(self) weakself = self;
-    [[EMClient sharedClient] kickAllDevicesWithUsername:self.username password:self.password completion:^(EMError *aError) {
-        [weakself hideHud];
-        if (!aError) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
-        } else {
-            [weakself showHint:aError.errorDescription];
-        }
-    }];
-}
-
-- (void)kickOneDevice
-{
-    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
-    __weak typeof(self) weakself = self;
+    EMDeviceConfig *device = [self.dataSource objectAtIndex:aIndexPath.row];
     
-    EMDeviceConfig *device = [self.dataSource objectAtIndex:self.willKickDeviceIndex.row];
+    __weak typeof(self) weakself = self;
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
     [[EMClient sharedClient] kickDevice:device username:self.username password:self.password completion:^(EMError *aError) {
         [weakself hideHud];
         if (!aError) {
@@ -271,13 +230,26 @@
             if ([deviceName isEqualToString:device.deviceName]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
             } else {
-                [weakself.dataSource removeObjectAtIndex:weakself.willKickDeviceIndex.row];
-                [weakself.tableView deleteRowsAtIndexPaths:@[weakself.willKickDeviceIndex] withRowAnimation:UITableViewRowAnimationFade];
+                [weakself.dataSource removeObjectAtIndex:aIndexPath.row];
+                [weakself.tableView deleteRowsAtIndexPaths:@[aIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
         } else {
-            [weakself showHint:aError.errorDescription];
+            [EMAlertController showErrorAlert:aError.errorDescription];
         }
-        weakself.willKickDeviceIndex = nil;
+    }];
+}
+
+- (void)kickAllDevicesAction
+{
+    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient] kickAllDevicesWithUsername:self.username password:self.password completion:^(EMError *aError) {
+        [weakself hideHud];
+        if (aError) {
+            [EMAlertController showErrorAlert:aError.errorDescription];
+        } else {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+        }
     }];
 }
 
@@ -285,21 +257,52 @@
 
 - (void)_headerRefreshAction
 {
-    [self _showUsernamePasswordAlertViewWithTag:KALERT_GET_ALL];
+    if (!self.isAuthed) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"获取权限" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"输入当前账号的密码";
+            textField.secureTextEntry = YES;
+        }];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:cancelAction];
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            UITextField *passwordField = alertController.textFields.firstObject;
+            self.password = passwordField.text;
+            
+            if ([EMClient sharedClient].isLoggedIn && ![self.username isEqualToString:[EMClient sharedClient].currentUsername]) {
+                [self.tableView.refreshControl endRefreshing];
+                [self showHint:@"请输入当前登录账号密码"];
+                return ;
+            }
+            
+            [self fetchDataFromServer];
+        }];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        [self fetchDataFromServer];
+    }
 }
 
 - (void)fetchDataFromServer
 {
-    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient] getLoggedInDevicesFromServerWithUsername:self.username password:self.password completion:^(NSArray *aList, EMError *aError) {
         [weakself hideHud];
-        [weakself.refreshControl endRefreshing];
+        [weakself.tableView.refreshControl endRefreshing];
         if (!aError) {
+            weakself.isAuthed = YES;
             [weakself.dataSource removeAllObjects];
             [weakself.dataSource addObjectsFromArray:aList];
             [weakself.tableView reloadData];
         } else {
+            if (aError.code == EMErrorUserAuthenticationFailed) {
+                weakself.isAuthed = NO;
+            }
             [weakself showHint:aError.errorDescription];
         }
     }];

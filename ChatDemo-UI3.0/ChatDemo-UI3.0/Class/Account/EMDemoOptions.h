@@ -23,6 +23,7 @@ static NSString *kOptions_AutoTransMsgFile = @"AutoTransferMessageAttachments";
 static NSString *kOptions_AutoDownloadThumb = @"AutoDownloadThumbnail";
 
 static NSString *kOptions_LoggedinUsername = @"LoggedinUsername";
+static NSString *kOptions_LoggedinPassword = @"LoggedinPassword";
 
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
@@ -51,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isAutoDownloadThumbnail;
 
 @property (nonatomic, strong) NSString *loggedInUsername;
+@property (nonatomic, strong) NSString *loggedInPassword;
 
 + (instancetype)sharedOptions;
 

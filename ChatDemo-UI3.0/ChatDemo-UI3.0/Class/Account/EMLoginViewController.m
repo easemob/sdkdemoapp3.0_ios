@@ -373,7 +373,7 @@
 {
     [self.view endEditing:YES];
     
-    EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] init];
+    EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
     [self.navigationController pushViewController:devicesController animated:YES];
 }
 
@@ -471,6 +471,7 @@
             EMDemoOptions *options = [EMDemoOptions sharedOptions];
             options.isAutoLogin = YES;
             options.loggedInUsername = aName;
+            options.loggedInPassword = pswd;
             [options archive];
             
             //发送自动登录状态通知

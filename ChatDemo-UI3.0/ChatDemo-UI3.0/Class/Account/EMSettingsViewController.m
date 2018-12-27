@@ -11,6 +11,7 @@
 #import "Masonry.h"
 
 #import "EMAccountViewController.h"
+#import "EMDevicesViewController.h"
 
 @interface EMSettingsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -203,7 +204,8 @@
         if (row == 0) {
             
         } else if (row == 1) {
-            
+            EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 2) {
         if (row == 0) {

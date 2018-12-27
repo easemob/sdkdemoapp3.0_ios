@@ -118,7 +118,7 @@
     if (indexPath.row == 1) {
         [self emailSendLogAction];
     } else if (indexPath.row == 2) {
-        EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] init];
+        EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:devicesController animated:YES];
     } else if (indexPath.row == 3) {
         EMServiceCheckViewController *serviceCheckViewController = [[EMServiceCheckViewController alloc] init];
