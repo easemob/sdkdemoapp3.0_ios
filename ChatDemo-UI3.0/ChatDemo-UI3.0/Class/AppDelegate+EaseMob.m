@@ -21,6 +21,8 @@
 #import "EMDemoOptions.h"
 #import "EMLoginViewController.h"
 
+#import "EMHomeViewController.h"
+
 /**
  *  本类中做了EaseMob初始化和推送等操作
  */
@@ -84,7 +86,6 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
     EMNavigationController *navigationController = nil;
     if (loginSuccess) {//登录成功加载主窗口控制器
         ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
-        
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
         
@@ -93,6 +94,9 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
             [EMGlobalVariables setGlobalMainController:mainController];
 
             navigationController = [[EMNavigationController alloc] initWithRootViewController:mainController];
+            
+//            EMHomeViewController *homeController = [[EMHomeViewController alloc] init];
+//            navigationController = [[EMNavigationController alloc] initWithRootViewController:homeController];
         } else {
             navigationController  = (EMNavigationController *)gMainController.navigationController;
         }
@@ -102,17 +106,6 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         [demoHelper asyncGroupFromServer];
         [demoHelper asyncConversationFromDB];
         [demoHelper asyncPushOptions];
-        
-        if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
-            [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
-            [[UINavigationBar appearance] setTitleTextAttributes:
-             [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
-        } else {
-            navigationController.navigationBar.barStyle = UIBarStyleDefault;
-            [navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
-                                                     forBarMetrics:UIBarMetricsDefault];
-            [navigationController.navigationBar.layer setMasksToBounds:YES];
-        }
     }
     else{//登录失败加载登录页面控制器
         if (gMainController) {

@@ -11,7 +11,6 @@
  */
 
 #import "AppDelegate.h"
-#import "MainViewController.h"
 
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+Parse.h"
@@ -20,8 +19,6 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "EMGlobalVariables.h"
-
-extern MainViewController *gMainController;
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 

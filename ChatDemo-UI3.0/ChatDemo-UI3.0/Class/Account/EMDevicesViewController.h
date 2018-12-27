@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMDevicesViewController : UITableViewController
+@interface EMDevicesViewController : UIViewController
 
 @end

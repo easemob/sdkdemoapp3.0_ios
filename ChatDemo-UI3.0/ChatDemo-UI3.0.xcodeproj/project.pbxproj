@@ -226,6 +226,11 @@
 		3ACA2B8F21D0863A007294E1 /* alert_default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA2B7E21D0863A007294E1 /* alert_default@3x.png */; };
 		3ACA2B9021D0863A007294E1 /* alert_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA2B7F21D0863A007294E1 /* alert_error@2x.png */; };
 		3ACA2B9121D0863A007294E1 /* EMAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2B8021D0863A007294E1 /* EMAlertController.m */; };
+		3ACA2B9521D09555007294E1 /* EMDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2B9321D09555007294E1 /* EMDevicesViewController.m */; };
+		3ACA2B9921D0C555007294E1 /* EMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2B9821D0C555007294E1 /* EMHomeViewController.m */; };
+		3ACA2B9C21D0CD47007294E1 /* EMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2B9B21D0CD47007294E1 /* EMSettingsViewController.m */; };
+		3ACA2B9E21D0D486007294E1 /* user_default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA2B9D21D0D486007294E1 /* user_default@3x.png */; };
+		3ACA2BA321D0EC15007294E1 /* EMAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2BA221D0EC15007294E1 /* EMAccountViewController.m */; };
 		3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6920088E4E0087CE2D /* DingViewController.m */; };
 		3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */; };
 		3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */; };
@@ -408,7 +413,6 @@
 		D25AA35E1E8D29C8006BF820 /* shape_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3551E8D29C8006BF820 /* shape_left@2x.png */; };
 		D25AA35F1E8D29C8006BF820 /* shape_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA3561E8D29C8006BF820 /* shape_right@2x.png */; };
 		D2714BA91FE24E1600D4CB38 /* EMServiceCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */; };
-		D28AE8D31F22123C0028C18A /* EMDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */; };
 		D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */; };
 		D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BAB1B72090F002324BB /* UserProfileManager.m */; };
 		D29A6BAF1B720960002324BB /* UserProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BAE1B720960002324BB /* UserProfileEditViewController.m */; };
@@ -962,6 +966,15 @@
 		3ACA2B7E21D0863A007294E1 /* alert_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_default@3x.png"; sourceTree = "<group>"; };
 		3ACA2B7F21D0863A007294E1 /* alert_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_error@2x.png"; sourceTree = "<group>"; };
 		3ACA2B8021D0863A007294E1 /* EMAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAlertController.m; sourceTree = "<group>"; };
+		3ACA2B9321D09555007294E1 /* EMDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDevicesViewController.m; sourceTree = "<group>"; };
+		3ACA2B9421D09555007294E1 /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
+		3ACA2B9721D0C555007294E1 /* EMHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMHomeViewController.h; sourceTree = "<group>"; };
+		3ACA2B9821D0C555007294E1 /* EMHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMHomeViewController.m; sourceTree = "<group>"; };
+		3ACA2B9A21D0CD47007294E1 /* EMSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMSettingsViewController.h; sourceTree = "<group>"; };
+		3ACA2B9B21D0CD47007294E1 /* EMSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMSettingsViewController.m; sourceTree = "<group>"; };
+		3ACA2B9D21D0D486007294E1 /* user_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_default@3x.png"; sourceTree = "<group>"; };
+		3ACA2BA121D0EC15007294E1 /* EMAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMAccountViewController.h; sourceTree = "<group>"; };
+		3ACA2BA221D0EC15007294E1 /* EMAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMAccountViewController.m; sourceTree = "<group>"; };
 		3ACC7F6820088E4E0087CE2D /* DingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingViewController.h; sourceTree = "<group>"; };
 		3ACC7F6920088E4E0087CE2D /* DingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingViewController.m; sourceTree = "<group>"; };
 		3ACC7F6B20089A5D0087CE2D /* DingAcksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingAcksViewController.h; sourceTree = "<group>"; };
@@ -1213,8 +1226,6 @@
 		D25AA3561E8D29C8006BF820 /* shape_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape_right@2x.png"; sourceTree = "<group>"; };
 		D2714BA71FE24E1500D4CB38 /* EMServiceCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMServiceCheckViewController.h; sourceTree = "<group>"; };
 		D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMServiceCheckViewController.m; sourceTree = "<group>"; };
-		D28AE8D11F22123C0028C18A /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
-		D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDevicesViewController.m; sourceTree = "<group>"; };
 		D29A6BA71B7208DF002324BB /* UIImageView+HeadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+HeadImage.h"; sourceTree = "<group>"; };
 		D29A6BA81B7208DF002324BB /* UIImageView+HeadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HeadImage.m"; sourceTree = "<group>"; };
 		D29A6BAA1B72090F002324BB /* UserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileManager.h; sourceTree = "<group>"; };
@@ -1524,6 +1535,8 @@
 		3A66253221BFD5EB0004F853 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				3ACA2B9421D09555007294E1 /* EMDevicesViewController.h */,
+				3ACA2B9321D09555007294E1 /* EMDevicesViewController.m */,
 				3ACA2B4C21D08629007294E1 /* EMAlertView */,
 				3A66253D21C0B7A50004F853 /* loginImages */,
 				3A66253621C0B7A50004F853 /* QRCode */,
@@ -1538,6 +1551,10 @@
 				3A031B4D21C7C45800A8D7BB /* EMDemoOptions.m */,
 				3A7CF3E321CA377900D91197 /* EMGlobalVariables.h */,
 				3A7CF3E421CA377900D91197 /* EMGlobalVariables.m */,
+				3ACA2B9A21D0CD47007294E1 /* EMSettingsViewController.h */,
+				3ACA2B9B21D0CD47007294E1 /* EMSettingsViewController.m */,
+				3ACA2BA121D0EC15007294E1 /* EMAccountViewController.h */,
+				3ACA2BA221D0EC15007294E1 /* EMAccountViewController.m */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -1558,6 +1575,7 @@
 		3A66253D21C0B7A50004F853 /* loginImages */ = {
 			isa = PBXGroup;
 			children = (
+				3ACA2B9D21D0D486007294E1 /* user_default@3x.png */,
 				3A031B4321C7A57300A8D7BB /* back_gary@2x.png */,
 				3A031B4221C7A57300A8D7BB /* back_gary@3x.png */,
 				3A031B4421C7A57300A8D7BB /* close_white@2x.png */,
@@ -2187,6 +2205,15 @@
 			path = EMAlertView;
 			sourceTree = "<group>";
 		};
+		3ACA2B9621D0C536007294E1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				3ACA2B9721D0C555007294E1 /* EMHomeViewController.h */,
+				3ACA2B9821D0C555007294E1 /* EMHomeViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		3ACFCD3921524B18009F488D /* CallImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -2658,6 +2685,7 @@
 		90911120192EEBB8008A48AA /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				3ACA2B9621D0C536007294E1 /* Home */,
 				3A66253221BFD5EB0004F853 /* Account */,
 				3A386E881DE5539C000F3D8E /* Call */,
 				D2CB22591B60CB08001BC741 /* Profile */,
@@ -2687,8 +2715,6 @@
 			children = (
 				D2714BA71FE24E1500D4CB38 /* EMServiceCheckViewController.h */,
 				D2714BA81FE24E1500D4CB38 /* EMServiceCheckViewController.m */,
-				D28AE8D11F22123C0028C18A /* EMDevicesViewController.h */,
-				D28AE8D21F22123C0028C18A /* EMDevicesViewController.m */,
 				D29A6BAD1B720960002324BB /* UserProfileEditViewController.h */,
 				D29A6BAE1B720960002324BB /* UserProfileEditViewController.m */,
 				D2BF98B11AEDD780009E0D5C /* EditNicknameViewController.h */,
@@ -3161,6 +3187,7 @@
 				3ACA2B8C21D0863A007294E1 /* alert_success@3x.png in Resources */,
 				3AB6B57E215CD1DF003B310F /* kbps_white@3x.png in Resources */,
 				EBD2AB9D1A7CDAC000D16528 /* account@2x.png in Resources */,
+				3ACA2B9E21D0D486007294E1 /* user_default@3x.png in Resources */,
 				3ACFCDFA21525239009F488D /* switchCamera_white@2x.png in Resources */,
 				EBD2AB3F1A7CDAC000D16528 /* call_silence_h.png in Resources */,
 				3A2F294921537E7E00F86EB5 /* ConfInviteUserCell.xib in Resources */,
@@ -3379,6 +3406,7 @@
 				3A9A29F421709ECC00AC4689 /* MJRefreshAutoFooter.m in Sources */,
 				90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */,
 				3A9A2A0B21709ECC00AC4689 /* DACircularProgressView.m in Sources */,
+				3ACA2BA321D0EC15007294E1 /* EMAccountViewController.m in Sources */,
 				3A9A29E221709ECC00AC4689 /* EaseUserModel.m in Sources */,
 				3A9A29DC21709ECC00AC4689 /* EaseEmoji.m in Sources */,
 				3A9A2A3E21709ECC00AC4689 /* EaseRecordView.m in Sources */,
@@ -3407,6 +3435,7 @@
 				3A66253521BFD6AE0004F853 /* EMLoginViewController.m in Sources */,
 				3A66255F21C0C33D0004F853 /* WSLNativeScanTool.m in Sources */,
 				3A9A2A0121709ECC00AC4689 /* EMCDDeviceManagerBase.m in Sources */,
+				3ACA2B9C21D0CD47007294E1 /* EMSettingsViewController.m in Sources */,
 				3A9A29D921709ECC00AC4689 /* EaseMessageReadManager.m in Sources */,
 				3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */,
 				D25978A11BCD072100148BF6 /* ContactListSelectViewController.m in Sources */,
@@ -3536,6 +3565,7 @@
 				3A9A29FA21709ECC00AC4689 /* EMVoiceConverter.mm in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3A9A2A1B21709ECC00AC4689 /* SDWebImageManager.m in Sources */,
+				3ACA2B9921D0C555007294E1 /* EMHomeViewController.m in Sources */,
 				3A9A29F821709ECC00AC4689 /* wav.mm in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
 				3A9A2A1A21709ECC00AC4689 /* MKAnnotationView+WebCache.m in Sources */,
@@ -3557,6 +3587,7 @@
 				3A9A2A1021709ECC00AC4689 /* PSTCollectionViewData.m in Sources */,
 				3A9A2A0421709ECC00AC4689 /* MWZoomingScrollView.m in Sources */,
 				3A2F294421537E7E00F86EB5 /* EM1v1CallViewController.m in Sources */,
+				3ACA2B9521D09555007294E1 /* EMDevicesViewController.m in Sources */,
 				3A9A2A4121709ECC00AC4689 /* EaseBubbleView+Location.m in Sources */,
 				3A9A2A0D21709ECC00AC4689 /* PSTCollectionViewFlowLayout.m in Sources */,
 				D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */,
@@ -3570,7 +3601,6 @@
 				3A9A2A3721709ECC00AC4689 /* EaseBaseMessageCell.m in Sources */,
 				3A9A2A4621709ECC00AC4689 /* EaseBubbleView+Image.m in Sources */,
 				3A9A29F121709ECC00AC4689 /* MJRefreshFooter.m in Sources */,
-				D28AE8D31F22123C0028C18A /* EMDevicesViewController.m in Sources */,
 				3A9A29EF21709ECC00AC4689 /* MJRefreshStateHeader.m in Sources */,
 				3A2F2AF42153800900F86EB5 /* EMConferenceViewController.m in Sources */,
 				90911145192EEE6E008A48AA /* MainViewController.m in Sources */,

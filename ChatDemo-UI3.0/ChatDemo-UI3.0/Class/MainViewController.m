@@ -62,6 +62,17 @@ static NSString *kGroupName = @"GroupName";
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
     
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
+        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+    } else {
+        self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
+                                                 forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar.layer setMasksToBounds:YES];
+    }
+    
     self.title = NSLocalizedString(@"title.conversation", @"Conversations");
     
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
