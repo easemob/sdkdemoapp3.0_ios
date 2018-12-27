@@ -458,7 +458,6 @@
     pubConfig.enableVideo = aEnableVideo;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
-    pubConfig.isFixedVideoResolution = options.isFixedVideoResolution;
     pubConfig.maxVideoKbps = (int)options.maxVideoKbps;
     pubConfig.maxAudioKbps = (int)options.maxAudioKbps;
     pubConfig.videoResolution = options.videoResolution;
@@ -664,6 +663,7 @@
 - (void)hangupAction
 {
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    [self.floatingView removeFromSuperview];
     
     BOOL isDestroy = NO;
     if (self.type == EMConferenceTypeLive && self.isCreater) {
