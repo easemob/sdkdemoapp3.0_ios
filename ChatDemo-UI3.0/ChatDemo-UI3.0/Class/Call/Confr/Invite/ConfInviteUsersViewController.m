@@ -297,6 +297,8 @@
             EMError *error = nil;
             EMGroup *group = [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.gorcId error:&error];
             if (!error) {
+                [weakSelf.dataArray addObjectsFromArray:[weakSelf _getInvitableUsers:@[group.owner]]];
+                
                 NSArray *admins = [weakSelf _getInvitableUsers:group.adminList];
                 [weakSelf.dataArray addObjectsFromArray:admins];
             }
@@ -338,6 +340,8 @@
             EMError *error = nil;
             EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:weakSelf.gorcId error:&error];
             if (!error) {
+                [weakSelf.dataArray addObjectsFromArray:[weakSelf _getInvitableUsers:@[chatroom.owner]]];
+                
                 NSArray *admins = [weakSelf _getInvitableUsers:chatroom.adminList];
                 [weakSelf.dataArray addObjectsFromArray:admins];
             }
