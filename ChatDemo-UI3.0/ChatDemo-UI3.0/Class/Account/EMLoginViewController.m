@@ -69,10 +69,9 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];
-    self.navigationController.navigationBar.backIndicatorImage = [UIImage imageNamed:@"back_gary"];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -374,7 +373,7 @@
 {
     [self.view endEditing:YES];
     
-    EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
+    EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] init];
     [self.navigationController pushViewController:devicesController animated:YES];
 }
 
@@ -426,8 +425,9 @@
 
 - (void)changeAppkeyAction
 {
-//    __weak typeof(self) weakself = self;
+    __weak typeof(self) weakself = self;
     EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!self.isInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
+        weakself.appkeyField.text = aOptions.appkey;
     }];
     [self.navigationController pushViewController:controller animated:YES];
 }

@@ -120,6 +120,7 @@
             textField.textAlignment = NSTextAlignmentRight;
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
             textField.adjustsFontSizeToFitWidth = YES;
+            textField.returnKeyType = UIReturnKeyDone;
             [cell.contentView addSubview:textField];
             [textField mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(cell.contentView).offset(-8);
