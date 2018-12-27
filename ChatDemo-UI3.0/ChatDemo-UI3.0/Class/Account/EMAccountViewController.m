@@ -178,11 +178,11 @@
     NSInteger row = indexPath.row;
     if (section == 0) {
         if (row == 2) {
-            
+            [self changeNikeNameAction];
         }
     } else if (section == 1) {
         if (row == 1) {
-            
+            [self changeDisturbDateAction];
         }
     } else if (section == 2) {
         if (row == 0) {
@@ -201,14 +201,53 @@
 - (void)disturbValueChanged
 {
     [self.tableView reloadData];
+    
+    if (!self.disturbSwitch.isOn) {
+        [self showHint:@"更新免打扰设置..."];
+        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+        options.noDisturbingStartH = 0;
+        options.noDisturbingEndH = 0;
+        options.noDisturbStatus = EMPushNoDisturbStatusClose;
+        [[EMClient sharedClient] updatePushOptionsToServer];
+        [self hideHud];
+    }
+}
+
+- (void)changeDisturbDateAction
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"选择免打扰时间" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    __weak typeof(self) weakself = self;
+    [alertController addAction:[UIAlertAction actionWithTitle:@"全天(0:00 - 24:00)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakself showHint:@"更新免打扰设置..."];
+        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+        options.noDisturbingStartH = 0;
+        options.noDisturbingEndH = 24;
+        options.noDisturbStatus = EMPushNoDisturbStatusDay;
+        [[EMClient sharedClient] updatePushOptionsToServer];
+        [weakself hideHud];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"夜间(22:00 - 7:00)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakself showHint:@"更新免打扰设置..."];
+        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+        options.noDisturbingStartH = 22;
+        options.noDisturbingEndH = 7;
+        options.noDisturbStatus = EMPushNoDisturbStatusCustom;
+        [[EMClient sharedClient] updatePushOptionsToServer];
+        [weakself hideHud];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)_updateNikeName:(NSString *)aName
 {
-    __weak typeof(self) weakself = self;
     //设置推送设置
-    [self showHint:@"正在更新昵称..."];
+    [self showHint:@"更新APNS昵称..."];
     [[EMClient sharedClient] setApnsNickname:aName];
+    [self.tableView reloadData];
     [self hideHud];
 }
 
@@ -223,11 +262,10 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:cancelAction];
     
+    __weak typeof(self) weakself = self;
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UITextField *textField = alertController.textFields.firstObject;
-        [self showHint:NSLocalizedString(@"setting.saving", "saving...")];
-        [[EMClient sharedClient] setApnsNickname:textField.text];
-        
+        [weakself _updateNikeName:textField.text];
     }];
     [alertController addAction:okAction];
     
@@ -237,7 +275,7 @@
 - (void)logoutAction
 {
     __weak typeof(self) weakself = self;
-    [self showHudInView:self.view hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
+    [self showHudInView:self.view hint:@"退出..."];
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
         [weakself hideHud];
         if (aError) {
