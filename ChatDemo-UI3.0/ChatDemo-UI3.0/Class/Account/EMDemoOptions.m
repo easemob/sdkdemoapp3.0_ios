@@ -36,6 +36,9 @@ static EMDemoOptions *sharedOptions = nil;
         self.isAutoLogin = NO;
         self.loggedInUsername = @"";
         self.loggedInPassword = @"";
+        
+        self.isChatTyping = NO;
+        self.isAutoDeliveryAck = NO;
     }
     
     return self;
@@ -64,6 +67,9 @@ static EMDemoOptions *sharedOptions = nil;
         self.isAutoLogin = [aDecoder decodeBoolForKey:kOptions_AutoLogin];
         self.loggedInUsername = [aDecoder decodeObjectForKey:kOptions_LoggedinUsername];
         self.loggedInPassword = [aDecoder decodeObjectForKey:kOptions_LoggedinPassword];
+        
+        self.isChatTyping = [aDecoder decodeBoolForKey:kOptions_ChatTyping];
+        self.isAutoDeliveryAck = [aDecoder decodeBoolForKey:kOptions_AutoDeliveryAck];
     }
     return self;
 }
@@ -87,6 +93,8 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeObject:self.loggedInUsername forKey:kOptions_LoggedinUsername];
     [aCoder encodeObject:self.loggedInPassword forKey:kOptions_LoggedinPassword];
     
+    [aCoder encodeBool:self.isChatTyping forKey:kOptions_ChatTyping];
+    [aCoder encodeBool:self.isAutoDeliveryAck forKey:kOptions_AutoDeliveryAck];
 }
 
 + (instancetype)sharedOptions
@@ -134,12 +142,6 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.apnsCertName = self.apnsCertName;
     retOpt.usingHttpsOnly = self.usingHttpsOnly;
 
-    retOpt.isAutoAcceptGroupInvitation = self.isAutoTransferMessageAttachments;
-    retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
-    retOpt.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
-    
-    retOpt.isAutoLogin = self.isAutoLogin;
-    
     retOpt.enableConsoleLog = YES;
     if (self.specifyServer) {
         retOpt.enableDnsConfig = NO;
@@ -147,6 +149,14 @@ static EMDemoOptions *sharedOptions = nil;
         retOpt.chatServer = self.chatServer;
         retOpt.restServer = self.restServer;
     }
+    
+    retOpt.isAutoLogin = self.isAutoLogin;
+    
+    retOpt.isAutoAcceptGroupInvitation = self.isAutoTransferMessageAttachments;
+    retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
+    retOpt.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
+    
+    retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     
     return retOpt;
 }

@@ -31,7 +31,6 @@
 
 - (void)_setupSubviews
 {
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     
     self.title = @"个人信息";

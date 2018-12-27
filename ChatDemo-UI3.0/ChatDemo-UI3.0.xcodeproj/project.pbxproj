@@ -47,6 +47,7 @@
 		3A2F2E572153B98300F86EB5 /* bg_connecting@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E532153B98300F86EB5 /* bg_connecting@3x.png */; };
 		3A2F2E582153B98300F86EB5 /* bg_connecting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E542153B98300F86EB5 /* bg_connecting@2x.png */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
+		3A51984E21D4CA070000E44A /* EMPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51984D21D4CA070000E44A /* EMPrivacyViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A66253521BFD6AE0004F853 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66253421BFD6AE0004F853 /* EMLoginViewController.m */; };
 		3A66254721C0B7A50004F853 /* device@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A66253E21C0B7A50004F853 /* device@2x.png */; };
@@ -631,6 +632,8 @@
 		3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SearchController.m"; sourceTree = "<group>"; };
 		3A386F131DE557BA000F3D8E /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3A386F141DE557BA000F3D8E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		3A51984C21D4CA070000E44A /* EMPrivacyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMPrivacyViewController.h; sourceTree = "<group>"; };
+		3A51984D21D4CA070000E44A /* EMPrivacyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMPrivacyViewController.m; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A66253321BFD6AE0004F853 /* EMLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
@@ -1555,6 +1558,8 @@
 				3ACA2B9B21D0CD47007294E1 /* EMSettingsViewController.m */,
 				3ACA2BA121D0EC15007294E1 /* EMAccountViewController.h */,
 				3ACA2BA221D0EC15007294E1 /* EMAccountViewController.m */,
+				3A51984C21D4CA070000E44A /* EMPrivacyViewController.h */,
+				3A51984D21D4CA070000E44A /* EMPrivacyViewController.m */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -3560,6 +3565,7 @@
 				3A9A29FF21709ECC00AC4689 /* EMAudioRecorderUtil.m in Sources */,
 				3A807B061D9511B1004D18CB /* TTGlobalUICommon.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
+				3A51984E21D4CA070000E44A /* EMPrivacyViewController.m in Sources */,
 				3A9A2A0E21709ECC00AC4689 /* PSTCollectionViewCell.m in Sources */,
 				3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */,
 				3A9A29FA21709ECC00AC4689 /* EMVoiceConverter.mm in Sources */,

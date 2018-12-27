@@ -25,6 +25,9 @@ static NSString *kOptions_AutoDownloadThumb = @"AutoDownloadThumbnail";
 static NSString *kOptions_LoggedinUsername = @"LoggedinUsername";
 static NSString *kOptions_LoggedinPassword = @"LoggedinPassword";
 
+static NSString *kOptions_ChatTyping = @"ChatTyping";
+static NSString *kOptions_AutoDeliveryAck = @"AutoDeliveryAck";
+
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -53,6 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *loggedInUsername;
 @property (nonatomic, strong) NSString *loggedInPassword;
+
+@property (nonatomic) BOOL isChatTyping;
+@property (nonatomic) BOOL isAutoDeliveryAck;
 
 + (instancetype)sharedOptions;
 
