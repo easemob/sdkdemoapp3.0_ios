@@ -11,7 +11,9 @@
 #import "Masonry.h"
 
 #import "EMAccountViewController.h"
+#import "EMBlacklistViewController.h"
 #import "EMDevicesViewController.h"
+#import "EMGeneralViewController.h"
 #import "EMPrivacyViewController.h"
 #import "EMCallSettingsViewController.h"
 
@@ -204,14 +206,16 @@
         }
     } else if (section == 1) {
         if (row == 0) {
-            
+            EMBlacklistViewController *controller = [[EMBlacklistViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
             EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 2) {
         if (row == 0) {
-            
+            EMGeneralViewController *controller = [[EMGeneralViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
             EMPrivacyViewController *pvController = [[EMPrivacyViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:pvController animated:YES];

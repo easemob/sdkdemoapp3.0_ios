@@ -17,11 +17,14 @@ static NSString *kOptions_IMPort = @"IMPort";
 static NSString *kOptions_IMServer = @"IMServer";
 static NSString *kOptions_RestServer = @"RestServer";
 
-static NSString *kOptions_AutoLogin = @"AutoLogin";
 static NSString *kOptions_AutoAcceptGroupInvitation = @"AutoAcceptGroupInvitation";
 static NSString *kOptions_AutoTransMsgFile = @"AutoTransferMessageAttachments";
 static NSString *kOptions_AutoDownloadThumb = @"AutoDownloadThumbnail";
+static NSString *kOptions_DeleteChatExitGroup = @"DeleteChatExitGroup";
+static NSString *kOptions_SortMessageByServerTime = @"SortMessageByServerTime";
+static NSString *kOptions_PriorityGetMsgFromServer = @"PriorityGetMsgFromServer";
 
+static NSString *kOptions_AutoLogin = @"AutoLogin";
 static NSString *kOptions_LoggedinUsername = @"LoggedinUsername";
 static NSString *kOptions_LoggedinPassword = @"LoggedinPassword";
 
@@ -52,11 +55,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *restServer;
 
-@property (nonatomic) BOOL isAutoLogin;
+@property (nonatomic) BOOL isDeleteMessagesWhenExitGroup;
 @property (nonatomic) BOOL isAutoAcceptGroupInvitation;
 @property (nonatomic) BOOL isAutoTransferMessageAttachments;
 @property (nonatomic) BOOL isAutoDownloadThumbnail;
+@property (nonatomic) BOOL isSortMessageByServerTime;
+@property (nonatomic) BOOL isPriorityGetMsgFromServer;
 
+@property (nonatomic) BOOL isAutoLogin;
 @property (nonatomic, strong) NSString *loggedInUsername;
 @property (nonatomic, strong) NSString *loggedInPassword;
 

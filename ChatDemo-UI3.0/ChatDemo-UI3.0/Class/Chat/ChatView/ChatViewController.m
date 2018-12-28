@@ -123,7 +123,7 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    if ([[ChatDemoHelper shareHelper] isFetchHistoryChange]) {
+    if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         NSString *startMessageId = nil;
         if ([self.messsagesSource count] > 0) {
             startMessageId = [(EMMessage *)self.messsagesSource.firstObject messageId];

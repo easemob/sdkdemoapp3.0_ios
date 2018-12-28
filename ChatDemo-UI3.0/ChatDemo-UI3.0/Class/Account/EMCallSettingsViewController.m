@@ -36,7 +36,7 @@
     self.title = @"实时音视频";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.tableView.rowHeight = 50;
+    self.tableView.rowHeight = 55;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
 }

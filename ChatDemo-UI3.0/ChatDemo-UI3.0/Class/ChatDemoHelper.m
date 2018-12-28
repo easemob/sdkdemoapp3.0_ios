@@ -119,11 +119,6 @@ static ChatDemoHelper *helper = nil;
     });
 }
 
-- (BOOL)isFetchHistoryChange{
-    NSUserDefaults *uDefaults = [NSUserDefaults standardUserDefaults];
-    return [uDefaults boolForKey:@"isFetchHistory"];
-}
-
 #pragma mark - EMClientDelegate
 
 // 网络状态变化回调

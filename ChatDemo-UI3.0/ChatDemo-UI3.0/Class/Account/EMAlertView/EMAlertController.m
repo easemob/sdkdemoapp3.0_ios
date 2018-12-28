@@ -112,9 +112,10 @@
     return [UIImage imageNamed:imageName];
 }
 
-+ (void)showErrorAlert:(NSString *)aMessage
++ (void)showAlertWithStyle:(EMAlertViewStyle)aStyle
+                   message:(NSString *)aMessage
 {
-    EMAlertController *view = [[EMAlertController alloc] initWithStyle:EMAlertViewStyleError message:aMessage];
+    EMAlertController *view = [[EMAlertController alloc] initWithStyle:aStyle message:aMessage];
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -125,6 +126,21 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [view removeFromSuperview];
     });
+}
+
++ (void)showErrorAlert:(NSString *)aMessage
+{
+    [EMAlertController showAlertWithStyle:EMAlertViewStyleError message:aMessage];
+}
+
++ (void)showSuccessAlert:(NSString *)aMessage
+{
+    [EMAlertController showAlertWithStyle:EMAlertViewStyleSuccess message:aMessage];
+}
+
++ (void)showInfoAlert:(NSString *)aMessage
+{
+    [EMAlertController showAlertWithStyle:EMAlertViewStyleInfo message:aMessage];
 }
 
 @end

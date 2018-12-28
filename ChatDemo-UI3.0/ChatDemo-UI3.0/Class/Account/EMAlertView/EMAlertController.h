@@ -21,6 +21,10 @@ typedef NS_ENUM(NSInteger, EMAlertViewStyle) {
 
 + (void)showErrorAlert:(NSString *)aStr;
 
++ (void)showSuccessAlert:(NSString *)aMessage;
+
++ (void)showInfoAlert:(NSString *)aMessage;
+
 @end
 
 NS_ASSUME_NONNULL_END
