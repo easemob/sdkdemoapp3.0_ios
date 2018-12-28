@@ -13,6 +13,7 @@
 #import "EMAccountViewController.h"
 #import "EMDevicesViewController.h"
 #import "EMPrivacyViewController.h"
+#import "EMCallSettingsViewController.h"
 
 @interface EMSettingsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -217,7 +218,8 @@
         }
     } else if (section == 3) {
         if (row == 0) {
-            
+            EMCallSettingsViewController *controller = [[EMCallSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     }
 }

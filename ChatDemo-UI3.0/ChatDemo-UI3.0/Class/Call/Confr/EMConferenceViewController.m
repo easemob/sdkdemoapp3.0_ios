@@ -9,6 +9,7 @@
 #import "EMConferenceViewController.h"
 
 #import "EMGlobalVariables.h"
+#import "EMDemoOptions.h"
 
 @interface EMConferenceViewController ()
 
@@ -78,7 +79,7 @@
     }
     
     //本地摄像头方向
-    self.isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+    self.isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
     self.switchCameraButton.selected = self.isUseBackCamera;
     
     //多人实时音视频默认使用扬声器
@@ -628,7 +629,7 @@
     self.switchCameraButton.enabled = aButton.isSelected;
     
     if (aButton.selected) {
-        BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+        BOOL isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
         if (isUseBackCamera != self.isUseBackCamera) {
             self.switchCameraButton.selected = self.isUseBackCamera;
             [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];

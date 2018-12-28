@@ -39,6 +39,9 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isChatTyping = NO;
         self.isAutoDeliveryAck = NO;
+        
+        self.isShowCallInfo = NO;
+        self.isUseBackCamera = NO;
     }
     
     return self;
@@ -70,6 +73,9 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isChatTyping = [aDecoder decodeBoolForKey:kOptions_ChatTyping];
         self.isAutoDeliveryAck = [aDecoder decodeBoolForKey:kOptions_AutoDeliveryAck];
+        
+        self.isShowCallInfo = [aDecoder decodeBoolForKey:kOptions_ShowCallInfo];
+        self.isUseBackCamera = [aDecoder decodeBoolForKey:kOptions_UseBackCamera];
     }
     return self;
 }
@@ -95,6 +101,9 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.isChatTyping forKey:kOptions_ChatTyping];
     [aCoder encodeBool:self.isAutoDeliveryAck forKey:kOptions_AutoDeliveryAck];
+    
+    [aCoder encodeBool:self.isShowCallInfo forKey:kOptions_ShowCallInfo];
+    [aCoder encodeBool:self.isUseBackCamera forKey:kOptions_UseBackCamera];
 }
 
 + (instancetype)sharedOptions

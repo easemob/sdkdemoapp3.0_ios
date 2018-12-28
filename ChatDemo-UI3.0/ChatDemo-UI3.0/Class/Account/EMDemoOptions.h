@@ -28,6 +28,9 @@ static NSString *kOptions_LoggedinPassword = @"LoggedinPassword";
 static NSString *kOptions_ChatTyping = @"ChatTyping";
 static NSString *kOptions_AutoDeliveryAck = @"AutoDeliveryAck";
 
+static NSString *kOptions_ShowCallInfo = @"ShowCallInfo";
+static NSString *kOptions_UseBackCamera = @"UseBackCamera";
+
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -59,6 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL isChatTyping;
 @property (nonatomic) BOOL isAutoDeliveryAck;
+
+@property (nonatomic) BOOL isShowCallInfo;
+@property (nonatomic) BOOL isUseBackCamera;
 
 + (instancetype)sharedOptions;
 

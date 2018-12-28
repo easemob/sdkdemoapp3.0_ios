@@ -47,6 +47,7 @@
 		3A2F2E572153B98300F86EB5 /* bg_connecting@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E532153B98300F86EB5 /* bg_connecting@3x.png */; };
 		3A2F2E582153B98300F86EB5 /* bg_connecting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2F2E542153B98300F86EB5 /* bg_connecting@2x.png */; };
 		3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */; };
+		3A32EFAF21D5C5DC00B1F90E /* EMCallSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EFAE21D5C5DC00B1F90E /* EMCallSettingsViewController.m */; };
 		3A51984E21D4CA070000E44A /* EMPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51984D21D4CA070000E44A /* EMPrivacyViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A66253521BFD6AE0004F853 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66253421BFD6AE0004F853 /* EMLoginViewController.m */; };
@@ -630,6 +631,8 @@
 		3A32AB811DDEBF4600E03E27 /* EMSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSearchControllerDelegate.h; sourceTree = "<group>"; };
 		3A32AB821DDEBF4600E03E27 /* UIViewController+SearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SearchController.h"; sourceTree = "<group>"; };
 		3A32AB831DDEBF4600E03E27 /* UIViewController+SearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SearchController.m"; sourceTree = "<group>"; };
+		3A32EFAD21D5C5DC00B1F90E /* EMCallSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMCallSettingsViewController.h; sourceTree = "<group>"; };
+		3A32EFAE21D5C5DC00B1F90E /* EMCallSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMCallSettingsViewController.m; sourceTree = "<group>"; };
 		3A386F131DE557BA000F3D8E /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3A386F141DE557BA000F3D8E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		3A51984C21D4CA070000E44A /* EMPrivacyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMPrivacyViewController.h; sourceTree = "<group>"; };
@@ -1560,6 +1563,8 @@
 				3ACA2BA221D0EC15007294E1 /* EMAccountViewController.m */,
 				3A51984C21D4CA070000E44A /* EMPrivacyViewController.h */,
 				3A51984D21D4CA070000E44A /* EMPrivacyViewController.m */,
+				3A32EFAD21D5C5DC00B1F90E /* EMCallSettingsViewController.h */,
+				3A32EFAE21D5C5DC00B1F90E /* EMCallSettingsViewController.m */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -3501,6 +3506,7 @@
 				3A9A2A2121709ECC00AC4689 /* SDWebImageCompat.m in Sources */,
 				3A9A29D821709ECC00AC4689 /* FixFopen.c in Sources */,
 				3A9A2A4921709ECC00AC4689 /* EaseUI.m in Sources */,
+				3A32EFAF21D5C5DC00B1F90E /* EMCallSettingsViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				3C117122197D243B00E2DBEC /* PushNotificationViewController.m in Sources */,
 				90AFCFD81ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */,
