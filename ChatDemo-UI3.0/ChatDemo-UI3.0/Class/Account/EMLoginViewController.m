@@ -112,7 +112,7 @@
     self.appkeyField.borderStyle = UITextBorderStyleNone;
     self.appkeyField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.appkeyField.placeholder = @"应用appkey";
-    self.appkeyField.text = @"easemob-demo#chatdemoui";
+    self.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
     self.appkeyField.keyboardType = UIKeyboardTypeNamePhonePad;
     self.appkeyField.returnKeyType = UIReturnKeyDone;
     self.appkeyField.font = [UIFont systemFontOfSize:15];
