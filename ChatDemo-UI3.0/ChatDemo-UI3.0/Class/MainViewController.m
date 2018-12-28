@@ -118,7 +118,6 @@ static NSString *kGroupName = @"GroupName";
     }else if (item.tag == 2){
         self.title = NSLocalizedString(@"title.setting", @"Setting");
         self.navigationItem.rightBarButtonItem = nil;
-        [_settingsVC refreshConfig];
     }
 }
 
@@ -149,7 +148,7 @@ static NSString *kGroupName = @"GroupName";
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
-    _settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    _settingsVC = [[EMSettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];
