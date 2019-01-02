@@ -243,7 +243,7 @@
         EMMessageBody *messageBody = message.body;
         switch (messageBody.type) {
             case EMMessageBodyTypeImage:{
-                content = NSLocalizedString(@"message.image1", @"[image]");
+                content = @"[图片]";
             } break;
             case EMMessageBodyTypeText:{
                 // 表情映射。
@@ -255,16 +255,16 @@
                 }
             } break;
             case EMMessageBodyTypeVoice:{
-                content = NSLocalizedString(@"message.voice1", @"[voice]");
+                content = @"[音频]";
             } break;
             case EMMessageBodyTypeLocation: {
-                content = NSLocalizedString(@"message.location1", @"[location]");
+                content = @"[位置]";
             } break;
             case EMMessageBodyTypeVideo: {
-                content = NSLocalizedString(@"message.video1", @"[video]");
+                content = @"[视频]";
             } break;
             case EMMessageBodyTypeFile: {
-                content = NSLocalizedString(@"message.file1", @"[file]");
+                content = @"[文件]";
             } break;
             default: {
             } break;
