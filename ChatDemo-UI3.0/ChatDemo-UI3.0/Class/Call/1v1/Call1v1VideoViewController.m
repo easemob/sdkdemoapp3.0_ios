@@ -136,12 +136,12 @@
     [self.view addSubview:self.minVideoView];
     [self.minVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.remoteNameLabel.mas_bottom);
-        make.width.mas_equalTo(width);
-        make.height.mas_equalTo(height);
+        make.width.mas_equalTo(80);
+        make.height.mas_equalTo(80);
         make.right.equalTo(self.view).offset(-15);
     }];
     
-    self.callSession.localVideoView = [[EMCallLocalView alloc] init];
+    self.callSession.localVideoView = [[EMCallLocalVideoView alloc] init];
     self.callSession.localVideoView.scaleMode = EMCallViewScaleModeAspectFill;
     [self.minVideoView addSubview:self.callSession.localVideoView];
     [self.view bringSubviewToFront:self.minVideoView];
@@ -178,7 +178,7 @@
 - (void)_setupRemoteVideoView
 {
     if (self.callSession.remoteVideoView == nil) {
-        self.callSession.remoteVideoView = [[EMCallRemoteView alloc] init];
+        self.callSession.remoteVideoView = [[EMCallRemoteVideoView alloc] init];
         self.callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
         self.callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
         self.callSession.remoteVideoView.userInteractionEnabled = YES;
@@ -309,6 +309,15 @@
 }
 
 //#ifdef DEBUG
+//- (void)takeRemoteVideoPicture
+//{
+//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//    NSString *filePath = [path stringByAppendingPathComponent:@"saveImage"];
+//    [[EMClient sharedClient].callManager takeRemoteVideoPictureWithCallId:self.callSession.callId saveToPath:filePath completion:^(NSString *aFilePath, NSError *aError) {
+//        //
+//    }];
+//}
+//
 //- (void)recorderButtonAction
 //{
 //    self.recorderButton.selected = !self.recorderButton.isSelected;

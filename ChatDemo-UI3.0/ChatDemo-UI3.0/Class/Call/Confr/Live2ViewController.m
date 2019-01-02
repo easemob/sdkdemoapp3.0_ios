@@ -13,8 +13,7 @@
 @property (nonatomic, strong) EMButton *roleButton;
 @property (nonatomic, strong) EMButton *vkbpsButton;
 
-@property (nonatomic, strong) NSString *admin;
-@property (nonatomic) NSInteger currentVkbps;
+@property (nonatomic) int maxVkbps;
 
 @end
 
@@ -28,7 +27,7 @@
 {
     self = [super initWithJoinConfId:aConfId password:aPassword type:EMConferenceTypeLive chatId:aChatId chatType:aChatType];
     if (self) {
-        _admin = aAdmin;
+        self.admin = aAdmin;
     }
     
     return self;
@@ -37,8 +36,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _maxVkbps = 0;
     
-    self.currentVkbps = 0;
     [self _setupSubviews];
     [self _createOrJoinLive];
 }
@@ -55,8 +54,6 @@
     self.vkbpsButton = [[EMButton alloc] initWithTitle:@"设置码率" target:self action:@selector(vkbpsAction)];
     [self.vkbpsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_white"] forState:UIControlStateNormal];
-    [self.vkbpsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-    [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_white"] forState:UIControlStateSelected];
     [self.vkbpsButton setTitle:@"禁用" forState:UIControlStateDisabled];
     [self.vkbpsButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [self.vkbpsButton setImage:[UIImage imageNamed:@"kbps_gray"] forState:UIControlStateDisabled];
@@ -126,8 +123,10 @@
     if (aConference.role == EMConferenceRoleSpeaker && [self.pubStreamId length] == 0) {
         [self pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId, EMError *aError) {
             [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];
+            weakself.vkbpsButton.enabled = YES;
         }];
     } else if (aConference.role == EMConferenceRoleAudience && [self.pubStreamId length] > 0) {
+        self.vkbpsButton.enabled = NO;
         self.roleButton.selected = NO;
         self.switchCameraButton.enabled = NO;
         self.microphoneButton.enabled = NO;
@@ -165,9 +164,11 @@
         
         weakself.conference = aCall;
         weakself.password = aPassword;
+        weakself.admin = [EMClient sharedClient].currentUsername;
         
         [weakself pubLocalStreamWithEnableVideo:YES completion:^(NSString *aPubStreamId, EMError *aError) {
             [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];
+            weakself.vkbpsButton.enabled = YES;
         }];
         
         //如果是创建者并且是从会话中触发
@@ -207,6 +208,7 @@
                 [weakself _updateViewsAfterPubWithEnableVideo:YES error:aError];
             }];
         } else {
+            weakself.vkbpsButton.enabled = NO;
             weakself.roleButton.hidden = NO;
         }
     };
@@ -223,14 +225,15 @@
     __weak typeof(self) weakself = self;
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"请输入视频最大码率";
-        textField.text = @(weakself.currentVkbps).stringValue;
+        if (weakself.maxVkbps > 0) {
+            textField.text = @(weakself.maxVkbps).stringValue;
+        }
     }];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *textField = alertController.textFields.firstObject;
-        weakself.currentVkbps = [textField.text integerValue];
-        
-        [[EMClient sharedClient].conferenceManager updateConference:self.conference maxVideoKbps:(int)weakself.currentVkbps];
+        weakself.maxVkbps = [textField.text intValue];
+        [[EMClient sharedClient].conferenceManager updateConference:weakself.conference maxVideoKbps:weakself.maxVkbps];
     }];
     [alertController addAction:okAction];
     
@@ -263,6 +266,7 @@
         
         __weak typeof(self) weakself = self;
         [[EMClient sharedClient].conferenceManager unpublishConference:self.conference streamId:self.pubStreamId completion:^(EMError *aError) {
+            weakself.vkbpsButton.enabled = NO;
             weakself.roleButton.selected = NO;
             weakself.switchCameraButton.enabled = NO;
             weakself.microphoneButton.enabled = NO;
@@ -283,6 +287,33 @@
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
     [self showHint:@"已经向管理员发送申请信息"];
+}
+
+- (void)minimizeAction
+{
+    self.minButton.selected = YES;
+    
+    EMStreamItem *item = nil;
+    if ([self.pubStreamId length] > 0) {
+        item = [self.streamItemDict objectForKey:self.pubStreamId];
+    } else if ([self.streamIds count] > 0) {
+        item = [self.streamItemDict objectForKey:self.streamIds[0]];
+    }
+    
+    if (!item) {
+        return;
+    }
+    
+    self.localViewTmpFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
+    self.floatingView = item.videoView;
+    [self.floatingView removeFromSuperview];
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    self.floatingView.frame = CGRectMake(keyWindow.frame.size.width - 120, 80, 80, 80);
+    [keyWindow addSubview:self.floatingView];
+    [keyWindow bringSubviewToFront:self.floatingView];
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 #pragma mark - Public

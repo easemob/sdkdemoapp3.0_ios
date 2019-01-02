@@ -17,7 +17,7 @@
 #import "DemoConfManager.h"
 //#import "EMCallRecorderPlugin.h"
 
-#import "MainViewController.h"
+#import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 
@@ -151,12 +151,12 @@ static DemoCallManager *callManager = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
     }
     
-    if(self.isCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected) || [DemoConfManager sharedManager].isCalling){
+    if(gIsCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
     
-    [[DemoCallManager sharedManager] setIsCalling:YES];
+    gIsCalling = YES;
     @synchronized (_callLock) {
         [self _startCallTimeoutTimer];
         
@@ -170,7 +170,7 @@ static DemoCallManager *callManager = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentController) {
                 self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                [self.mainController presentViewController:self.currentController animated:NO completion:nil];
+                [gMainController presentViewController:self.currentController animated:NO completion:nil];
             }
         });
     }
@@ -269,7 +269,7 @@ static DemoCallManager *callManager = nil;
         return;
     }
     
-    if (self.isCalling || [DemoConfManager sharedManager].isCalling) {
+    if (gIsCalling) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"有通话正在进行" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
         return;
@@ -311,7 +311,7 @@ static DemoCallManager *callManager = nil;
         DemoCallManager *strongSelf = weakSelf;
         if (strongSelf) {
             if (aError || aCallSession == nil) {
-                weakSelf.isCalling = NO;
+                gIsCalling = NO;
                 
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"call.initFailed", @"Establish call failure") message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
                 [alertView show];
@@ -330,7 +330,7 @@ static DemoCallManager *callManager = nil;
                     }
                     
                     if (strongSelf.currentController) {
-                        [strongSelf.mainController presentViewController:strongSelf.currentController animated:NO completion:nil];
+                        [gMainController presentViewController:strongSelf.currentController animated:NO completion:nil];
                     }
                 });
             }
@@ -338,12 +338,12 @@ static DemoCallManager *callManager = nil;
             [weakSelf _startCallTimeoutTimer];
         }
         else {
-            weakSelf.isCalling = NO;
+            gIsCalling = NO;
             [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
         }
     };
     
-    self.isCalling = YES;
+    gIsCalling = YES;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = aIsCustomVideo;
@@ -396,7 +396,7 @@ static DemoCallManager *callManager = nil;
         return ;
     }
     
-    self.isCalling = NO;
+    gIsCalling = NO;
     [self _stopCallTimeoutTimer];
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];

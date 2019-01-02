@@ -15,13 +15,13 @@
 
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
-#import "SettingsViewController.h"
+#import "EMSettingsViewController.h"
 
 @interface MainViewController : UITabBarController
 
 @property (nonatomic, strong) ConversationListController *chatListVC;
 @property (nonatomic, strong) ContactListViewController *contactsVC;
-@property (nonatomic, strong) SettingsViewController *settingsVC;
+@property (nonatomic, strong) EMSettingsViewController *settingsVC;
 
 - (void)jumpToChatList;
 

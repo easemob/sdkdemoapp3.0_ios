@@ -8,14 +8,13 @@
 
 #import "EMConferenceViewController.h"
 
-#import "AppDelegate.h"
+#import "EMGlobalVariables.h"
+#import "EMDemoOptions.h"
 
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
-
-@property (nonatomic) CGRect localViewTmpFrame;
 
 @end
 
@@ -80,7 +79,7 @@
     }
     
     //本地摄像头方向
-    self.isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+    self.isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
     self.switchCameraButton.selected = self.isUseBackCamera;
     
     //多人实时音视频默认使用扬声器
@@ -371,8 +370,7 @@
         self.floatingView.frame = self.localViewTmpFrame;
         self.floatingView = nil;
         
-        UIViewController *mainController = [(AppDelegate *)[UIApplication sharedApplication].delegate mainController];
-        [mainController presentViewController:self.navigationController animated:NO completion:nil];
+        [gMainController presentViewController:self.navigationController animated:NO completion:nil];
         return;
     }
     
@@ -461,14 +459,13 @@
     pubConfig.enableVideo = aEnableVideo;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
-    pubConfig.isFixedVideoResolution = options.isFixedVideoResolution;
     pubConfig.maxVideoKbps = (int)options.maxVideoKbps;
     pubConfig.maxAudioKbps = (int)options.maxAudioKbps;
     pubConfig.videoResolution = options.videoResolution;
-    
+
     pubConfig.isBackCamera = self.switchCameraButton.isSelected;
-    
-    EMCallLocalView *localView = [[EMCallLocalView alloc] init];
+
+    EMCallLocalVideoView *localView = [[EMCallLocalVideoView alloc] init];
     localView.scaleMode = EMCallViewScaleModeAspectFill;
     pubConfig.localView = localView;
     
@@ -506,7 +503,7 @@
 
 - (void)_subStream:(EMCallStream *)aStream
 {
-    EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
+    EMCallRemoteVideoView *remoteView = [[EMCallRemoteVideoView alloc] init];
     remoteView.scaleMode = EMCallViewScaleModeAspectFill;
     EMStreamItem *videoItem = [self setupNewStreamItemWithName:aStream.userName displayView:remoteView stream:aStream];
     videoItem.videoView.enableVideo = aStream.enableVideo;
@@ -559,8 +556,12 @@
     }
     //添加会话相关属性
     if ([self.chatId length] > 0) {
-        [ext setObject:aChatId forKey:@"em_conference_chatId"];
+        [ext setObject:self.chatId forKey:@"em_conference_chatId"];
         [ext setObject:@(self.chatType) forKey:@"em_conference_chatType"];
+    }
+    
+    if ([self.admin length] > 0) {
+        [ext setObject:self.admin forKey:@"em_conference_admin"];
     }
     
     EMMessage *message = [[EMMessage alloc] initWithConversationID:aChatId from:currentUser to:aChatId body:textBody ext:ext];
@@ -628,7 +629,7 @@
     self.switchCameraButton.enabled = aButton.isSelected;
     
     if (aButton.selected) {
-        BOOL isUseBackCamera = [[[NSUserDefaults standardUserDefaults] objectForKey:@"em_IsUseBackCamera"] boolValue];
+        BOOL isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
         if (isUseBackCamera != self.isUseBackCamera) {
             self.switchCameraButton.selected = self.isUseBackCamera;
             [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
@@ -663,6 +664,7 @@
 - (void)hangupAction
 {
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    [self.floatingView removeFromSuperview];
     
     BOOL isDestroy = NO;
     if (self.type == EMConferenceTypeLive && self.isCreater) {

@@ -201,7 +201,7 @@
         EMMessageBody *messageBody = lastMessage.body;
         switch (messageBody.type) {
             case EMMessageBodyTypeImage:{
-                latestMessageTitle = NSLocalizedString(@"message.image1", @"[image]");
+                latestMessageTitle = @"[图片]";
             } break;
             case EMMessageBodyTypeText:{
                 // 表情映射。
@@ -213,16 +213,16 @@
                 }
             } break;
             case EMMessageBodyTypeVoice:{
-                latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");
+                latestMessageTitle = @"[音频]";
             } break;
             case EMMessageBodyTypeLocation: {
-                latestMessageTitle = NSLocalizedString(@"message.location1", @"[location]");
+                latestMessageTitle = @"[位置]";
             } break;
             case EMMessageBodyTypeVideo: {
-                latestMessageTitle = NSLocalizedString(@"message.video1", @"[video]");
+                latestMessageTitle = @"[视频]";
             } break;
             case EMMessageBodyTypeFile: {
-                latestMessageTitle = NSLocalizedString(@"message.file1", @"[file]");
+                latestMessageTitle = @"[文件]";
             } break;
             default: {
             } break;
@@ -239,9 +239,10 @@
         
         NSDictionary *ext = conversationModel.conversation.ext;
         if (ext && [ext[kHaveUnreadAtMessage] intValue] == kAtAllMessage) {
-            latestMessageTitle = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"group.atAll", nil), latestMessageTitle];
+            NSString *allMsg = @"[有全体消息]";
+            latestMessageTitle = [NSString stringWithFormat:@"%@ %@", allMsg, latestMessageTitle];
             attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-            [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, NSLocalizedString(@"group.atAll", nil).length)];
+            [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, allMsg.length)];
             
         }
         else if (ext && [ext[kHaveUnreadAtMessage] intValue] == kAtYouMessage) {

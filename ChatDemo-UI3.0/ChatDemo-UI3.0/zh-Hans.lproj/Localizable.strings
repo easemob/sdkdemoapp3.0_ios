@@ -92,7 +92,7 @@
 //register
 "register.ongoing" = "正在注册...";
 "register.fail" = "注册失败";
-"register.success" = "注册成功，请登陆";
+"register.success" = "注册成功，请登录";
 "register.repeat" = "您注册的用户已存在!";
 "register.confirmPassword" = "两次输入密码不一致,请重新输入";
 

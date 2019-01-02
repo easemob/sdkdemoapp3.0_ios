@@ -11,8 +11,6 @@
  */
 
 #import "AppDelegate.h"
-#import "MainViewController.h"
-#import "LoginViewController.h"
 
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+Parse.h"
@@ -20,11 +18,11 @@
 #import <Bugly/Bugly.h>
 #import <UserNotifications/UserNotifications.h>
 
+#import "EMGlobalVariables.h"
+
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @end
-
-#define EaseMobAppKey @"easemob-demo#chatdemoui"
 
 
 @implementation AppDelegate
@@ -40,39 +38,18 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
-        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
-    }
-    
     // 环信UIdemo中有用到Parse，您的项目中不需要添加，可忽略此处。
     [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
     
-#warning Init SDK，detail in AppDelegate+EaseMob.m
-#warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
-    NSString *apnsCertName = nil;
 #ifdef DEBUG
-    apnsCertName = @"chatdemoui_dev";
 #else
-    apnsCertName = @"chatdemoui";
-    
     //环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
     //如果你自己的项目也要使用bugly，请按照bugly官方教程自行配置
     [Bugly startWithAppId:nil];
 #endif
     
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    NSString *appkey = [ud stringForKey:@"identifier_appkey"];
-    if (!appkey) {
-        appkey = EaseMobAppKey;
-        [ud setObject:appkey forKey:@"identifier_appkey"];
-    }
-
     [self easemobApplication:application
 didFinishLaunchingWithOptions:launchOptions
-                      appkey:appkey
-                apnsCertName:apnsCertName
                  otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
 
     [self.window makeKeyAndVisible];
@@ -81,16 +58,16 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    if (_mainController) {
-        [_mainController jumpToChatList];
+    if (gMainController) {
+        [gMainController jumpToChatList];
     }
     [self easemobApplication:application didReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    if (_mainController) {
-        [_mainController didReceiveLocalNotification:notification];
+    if (gMainController) {
+        [gMainController didReceiveLocalNotification:notification];
     }
 }
 
@@ -102,8 +79,8 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
 {
-    if (_mainController) {
-        [_mainController didReceiveUserNotification:response.notification];
+    if (gMainController) {
+        [gMainController didReceiveUserNotification:response.notification];
     }
     completionHandler();
 }

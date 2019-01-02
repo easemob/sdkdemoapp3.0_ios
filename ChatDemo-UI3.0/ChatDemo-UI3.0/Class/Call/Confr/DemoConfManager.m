@@ -13,8 +13,8 @@
 #import <Hyphenate/Hyphenate.h>
 
 #import "DemoCallManager.h"
-#import "MainViewController.h"
 
+#import "EMGlobalVariables.h"
 #import "MeetingViewController.h"
 #import "Live2ViewController.h"
 
@@ -95,7 +95,7 @@ static DemoConfManager *confManager = nil;
                   conversationId:(NSString *)aConversationId
                         chatType:(EMChatType)aChatType
 {
-    if (self.isCalling || [DemoCallManager sharedManager].isCalling) {
+    if (gIsCalling) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"有通话正在进行" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alertView show];
         
@@ -103,10 +103,10 @@ static DemoConfManager *confManager = nil;
     }
     
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aInviteType isCreate:YES excludeUsers:@[[EMClient sharedClient].currentUsername] groupOrChatroomId:aConversationId];
-    
+
     __weak typeof(self) weakSelf = self;
     [controller setDoneCompletion:^(NSArray *aInviteUsers) {
-        weakSelf.isCalling = YES;
+        gIsCalling = YES;
         
         EMConferenceViewController *controller = nil;
         if (aConfType != EMConferenceTypeLive) {
@@ -117,15 +117,16 @@ static DemoConfManager *confManager = nil;
         controller.inviteType = aInviteType;
         
         weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [weakSelf.mainController presentViewController:weakSelf.confNavController animated:NO completion:nil];
+        [gMainController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }];
-    [self.mainController presentViewController:controller animated:NO completion:nil];
+    
+    [gMainController presentViewController:controller animated:NO completion:nil];
 }
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage
 {
     //如果正在进行1v1通话，不处理
-    if ([DemoCallManager sharedManager].isCalling) {
+    if (gIsCalling) {
         return;
     }
     
@@ -160,7 +161,11 @@ static DemoConfManager *confManager = nil;
         NSString *chatId = [aMessage.ext objectForKey:@"em_conference_chatId"];
         EMChatType chatType = (EMChatType)[[aMessage.ext objectForKey:@"em_conference_chatType"] integerValue];
         if (type == EMConferenceTypeLive) {
-            controller = [[Live2ViewController alloc] initWithJoinConfId:conferenceId password:password admin:aMessage.from chatId:chatId chatType:chatType];
+            NSString *admin = [aMessage.ext objectForKey:@"em_conference_admin"];
+            if ([admin length] == 0) {
+                admin = aMessage.from;
+            }
+            controller = [[Live2ViewController alloc] initWithJoinConfId:conferenceId password:password admin:admin chatId:chatId chatType:chatType];
         } else {
             controller = [[MeetingViewController alloc] initWithJoinConfId:conferenceId password:password type:EMConferenceTypeLargeCommunication chatId:chatId chatType:chatType];
         }
@@ -168,33 +173,31 @@ static DemoConfManager *confManager = nil;
     } while (0);
     
     if (controller) {
-        self.isCalling = YES;
+        gIsCalling = YES;
         self.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [self.mainController presentViewController:self.confNavController animated:NO completion:nil];
+        [gMainController presentViewController:self.confNavController animated:NO completion:nil];
     }
 }
 
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy
 {
-    if (aCall) {
-        self.isCalling = NO;
-        self.confNavController = nil;
-        
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-        [audioSession setActive:YES error:nil];
-        
-        [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
-        
-        if (aIsDestroy) {
-            [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
-        } else {
-            [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
-        }
-        
-        [[DemoCallManager sharedManager] setIsCalling:NO];
+    gIsCalling = NO;
+    self.confNavController = nil;
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    [audioSession setActive:YES error:nil];
+    
+    [[EMClient sharedClient].conferenceManager stopMonitorSpeaker:aCall];
+    
+    if (aIsDestroy) {
+        [[EMClient sharedClient].conferenceManager destroyConferenceWithId:aCall.confId completion:nil];
+    } else {
+        [[EMClient sharedClient].conferenceManager leaveConference:aCall completion:nil];
     }
+    
+    gIsCalling = NO;
 }
 
 

@@ -14,7 +14,7 @@
 
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
-#import "MainViewController.h"
+
 #import "ChatViewController.h"
 
 #define kHaveUnreadAtMessage    @"kHaveAtMessage"
@@ -27,8 +27,6 @@
 
 @property (nonatomic, weak) ConversationListController *conversationListVC;
 
-@property (nonatomic, weak) MainViewController *mainVC;
-
 @property (nonatomic, weak) ChatViewController *chatVC;
 
 + (instancetype)shareHelper;
@@ -38,7 +36,5 @@
 - (void)asyncGroupFromServer;
 
 - (void)asyncConversationFromDB;
-
-- (BOOL)isFetchHistoryChange;
 
 @end
