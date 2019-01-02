@@ -141,7 +141,7 @@
         make.right.equalTo(self.view).offset(-15);
     }];
     
-    self.callSession.localVideoView = [[EMCallLocalVideoView alloc] init];
+    self.callSession.localVideoView = [[EMCallLocalView alloc] init];
     self.callSession.localVideoView.scaleMode = EMCallViewScaleModeAspectFill;
     [self.minVideoView addSubview:self.callSession.localVideoView];
     [self.view bringSubviewToFront:self.minVideoView];
@@ -178,7 +178,7 @@
 - (void)_setupRemoteVideoView
 {
     if (self.callSession.remoteVideoView == nil) {
-        self.callSession.remoteVideoView = [[EMCallRemoteVideoView alloc] init];
+        self.callSession.remoteVideoView = [[EMCallRemoteView alloc] init];
         self.callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
         self.callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
         self.callSession.remoteVideoView.userInteractionEnabled = YES;

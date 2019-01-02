@@ -465,7 +465,7 @@
 
     pubConfig.isBackCamera = self.switchCameraButton.isSelected;
 
-    EMCallLocalVideoView *localView = [[EMCallLocalVideoView alloc] init];
+    EMCallLocalView *localView = [[EMCallLocalView alloc] init];
     localView.scaleMode = EMCallViewScaleModeAspectFill;
     pubConfig.localView = localView;
     
@@ -503,7 +503,7 @@
 
 - (void)_subStream:(EMCallStream *)aStream
 {
-    EMCallRemoteVideoView *remoteView = [[EMCallRemoteVideoView alloc] init];
+    EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
     remoteView.scaleMode = EMCallViewScaleModeAspectFill;
     EMStreamItem *videoItem = [self setupNewStreamItemWithName:aStream.userName displayView:remoteView stream:aStream];
     videoItem.videoView.enableVideo = aStream.enableVideo;
