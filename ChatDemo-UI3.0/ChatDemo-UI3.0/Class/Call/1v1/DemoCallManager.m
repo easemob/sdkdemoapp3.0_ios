@@ -15,11 +15,14 @@
 
 #import "EaseSDKHelper.h"
 #import "DemoConfManager.h"
-//#import "EMCallRecorderPlugin.h"
 
 #import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
+
+#ifdef DEBUG
+#import "EMCallRecorderPlugin.h"
+#endif
 
 static DemoCallManager *callManager = nil;
 
@@ -82,8 +85,10 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
     
-//    //录制相关功能初始化
-//    [EMCallRecorderPlugin initGlobalConfig];
+#ifdef DEBUG
+    //录制相关功能初始化
+    [EMCallRecorderPlugin initGlobalConfig];
+#endif
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
