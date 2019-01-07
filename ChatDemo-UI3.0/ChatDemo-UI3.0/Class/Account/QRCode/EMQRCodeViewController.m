@@ -12,6 +12,8 @@
 #import "WSLNativeScanTool.h"
 #import "WSLScanView.h"
 
+#import "EMAlertController.h"
+
 /*
  第一版（因时间不够，先只弄北京集群）：
  
@@ -61,12 +63,30 @@
     self.scanTool = [[WSLNativeScanTool alloc] initWithPreview:self.scanOutputView andScanFrame:_scanView.scanRetangleRect];
     self.scanTool.scanFinishedBlock = ^(NSString *aScanString) {
         NSLog(@"扫描结果 %@",aScanString);
-        [weakself.scanTool sessionStopRunning];
-        [weakself.scanTool openFlashSwitch:NO];
-        
-        if (weakself.scanFinishCompletion) {
-            weakself.scanFinishCompletion(aScanString);
+        NSDictionary *dic = nil;
+        if ([aScanString length] > 0) {
+            NSData *jsonData = [aScanString dataUsingEncoding:NSUTF8StringEncoding];
+            NSError *error;
+            id obj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
+            if (!error && [obj isKindOfClass:[NSDictionary class]]) {
+                dic = (NSDictionary *)obj;
+                if ([dic count] == 0) {
+                    dic = nil;
+                }
+            }
         }
+        
+        if (!dic) {
+            [EMAlertController showErrorAlert:@"未知的二维码信息"];
+        } else {
+            [EMAlertController showSuccessAlert:@"设置成功"];
+            
+            if (weakself.scanFinishCompletion) {
+                weakself.scanFinishCompletion(dic);
+            }
+        }
+        
+        [weakself.scanTool sessionStopRunning];
         [weakself closeAction];
     };
     

@@ -396,27 +396,21 @@
         EMQRCodeViewController *controller = [[EMQRCodeViewController alloc] init];
         
         __weak typeof(self) weakself = self;
-        [controller setScanFinishCompletion:^(NSString * _Nonnull aJson) {
-            NSData *jsonData = [aJson dataUsingEncoding:NSUTF8StringEncoding];
-            NSError *error;
-            id obj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
-            if (!error && [obj isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *dic = (NSDictionary *)obj;
-                NSString *username = [dic objectForKey:@"Username"];
-                NSString *pssword = [dic objectForKey:@"Password"];
-                if ([username length] == 0) {
-                    return ;
-                }
-                
-                [weakself _updateSDKOptions:dic];
-                
-                weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
-                weakself.nameField.text = username;
-                weakself.pswdField.text = pssword;
-                
-                if ([pssword length] == 0) {
-                    [weakself.pswdField becomeFirstResponder];
-                }
+        [controller setScanFinishCompletion:^(NSDictionary *aJsonDic) {
+            NSString *username = [aJsonDic objectForKey:@"Username"];
+            NSString *pssword = [aJsonDic objectForKey:@"Password"];
+            if ([username length] == 0) {
+                return ;
+            }
+            
+            [weakself _updateSDKOptions:aJsonDic];
+            
+            weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
+            weakself.nameField.text = username;
+            weakself.pswdField.text = pssword;
+            
+            if ([pssword length] == 0) {
+                [weakself.pswdField becomeFirstResponder];
             }
         }];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
