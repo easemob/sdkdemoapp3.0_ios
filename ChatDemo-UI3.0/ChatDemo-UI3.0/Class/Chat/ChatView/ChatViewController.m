@@ -25,6 +25,8 @@
 #import "DingViewController.h"
 #import "DingAcksViewController.h"
 
+#import "EMDemoOptions.h"
+
 #if DEMO_CALL == 1
 #import "DemoConfManager.h"
 #endif
@@ -63,9 +65,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dingAction) name:kNotification_DingAction object:nil];
     
     if (self.conversation.type == EMConversationTypeChat) {
-        NSUserDefaults *uDefaults = [NSUserDefaults standardUserDefaults];
-        BOOL isTyping = [uDefaults boolForKey:@"MessageShowTyping"];
-        if (isTyping) {
+        self.isTyping = [EMDemoOptions sharedOptions].isChatTyping;
+        if (self.isTyping) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         }
     }
@@ -122,7 +123,7 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    if ([[ChatDemoHelper shareHelper] isFetchHistoryChange]) {
+    if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         NSString *startMessageId = nil;
         if ([self.messsagesSource count] > 0) {
             startMessageId = [(EMMessage *)self.messsagesSource.firstObject messageId];

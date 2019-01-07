@@ -22,6 +22,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _enableVoice = YES;
+        
         self.bgView = [[UIImageView alloc] init];
         self.bgView.contentMode = UIViewContentModeScaleAspectFit;
         self.bgView.userInteractionEnabled = YES;
@@ -72,24 +74,38 @@
     
     _status = status;
     [self bringSubviewToFront:_statusView];
+    
     switch (_status) {
         case StreamStatusConnecting:
-            _statusView.image = [UIImage imageNamed:@"ring_gray"];
+        {
+            if (_enableVoice) {
+                _statusView.image = [UIImage imageNamed:@"ring_gray"];
+            }
+        }
             break;
         case StreamStatusConnected:
         {
-            _statusView.image = nil;
+            if (_enableVoice) {
+                _statusView.image = nil;
+            }
+            
             if (!self.isLockedBgView) {
                 _bgView.image = [UIImage imageNamed:@"bg_micro"];
             }
         }
             break;
         case StreamStatusTalking:
-            _statusView.image = [UIImage imageNamed:@"talking_green"];
+            if (_enableVoice) {
+                _statusView.image = [UIImage imageNamed:@"talking_green"];
+            }
             break;
             
         default:
-            _statusView.image = nil;
+            {
+                if (_enableVoice) {
+                    _statusView.image = nil;
+                }
+            }
             break;
     }
 }

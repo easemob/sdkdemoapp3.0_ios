@@ -31,6 +31,7 @@
 @property (nonatomic, strong) __block EMCallConference *conference;
 @property (nonatomic, strong, readonly) NSString *joinConfId;
 @property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *admin;
 @property (nonatomic, readonly) EMConferenceType type;
 @property (nonatomic, readonly) BOOL isCreater;
 @property (nonatomic) BOOL isUseBackCamera;
@@ -46,6 +47,8 @@
 
 @property (nonatomic, strong, readonly) NSString *chatId;
 @property (nonatomic, readonly) EMChatType chatType;
+
+@property (nonatomic) CGRect localViewTmpFrame;
 
 - (instancetype)initWithType:(EMConferenceType)aType
                     password:(NSString *)aPassword

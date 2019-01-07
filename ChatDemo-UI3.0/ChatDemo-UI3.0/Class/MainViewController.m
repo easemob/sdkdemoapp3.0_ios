@@ -10,13 +10,15 @@
   * from Hyphenate Inc.
   */
 
+#import <UserNotifications/UserNotifications.h>
 #import "MainViewController.h"
 
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
 #import "ChatDemoHelper.h"
-#import <UserNotifications/UserNotifications.h>
+
+#import "EMGlobalVariables.h"
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -60,6 +62,17 @@ static NSString *kGroupName = @"GroupName";
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
     
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
+        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+    } else {
+        self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
+                                                 forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar.layer setMasksToBounds:YES];
+    }
+    
     self.title = NSLocalizedString(@"title.conversation", @"Conversations");
     
     //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
@@ -80,10 +93,6 @@ static NSString *kGroupName = @"GroupName";
     
     [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
     [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
-    
-#if DEMO_CALL == 1
-    [DemoConfManager sharedManager].mainController = self;
-#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,7 +118,6 @@ static NSString *kGroupName = @"GroupName";
     }else if (item.tag == 2){
         self.title = NSLocalizedString(@"title.setting", @"Setting");
         self.navigationItem.rightBarButtonItem = nil;
-        [_settingsVC refreshConfig];
     }
 }
 
@@ -140,7 +148,7 @@ static NSString *kGroupName = @"GroupName";
     [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
     [self selectedTapTabBarItems:_contactsVC.tabBarItem];
     
-    _settingsVC = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    _settingsVC = [[EMSettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
                                                    selectedImage:[UIImage imageNamed:@"tabbar_settingHL"]];

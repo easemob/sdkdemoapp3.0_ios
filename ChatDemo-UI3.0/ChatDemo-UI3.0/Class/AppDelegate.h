@@ -11,7 +11,7 @@
   */
 
 #import <UIKit/UIKit.h>
-#import "MainViewController.h"
+
 #import "ApplyViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, EMChatManagerDelegate>
@@ -20,6 +20,5 @@
 }
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) MainViewController *mainController;
 
 @end

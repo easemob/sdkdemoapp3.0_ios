@@ -9,8 +9,8 @@
 #import "AppDelegate+ShareFiles.h"
 #import "ShareFilesViewController.h"
 #import "EMNavigationController.h"
-#import "LoginViewController.h"
 
+#import "EMLoginViewController.h"
 
 @implementation AppDelegate (ShareFiles)
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
@@ -19,7 +19,7 @@
         id vc = self.window.rootViewController;
         if ([vc isKindOfClass:[EMNavigationController class]]) {
             EMNavigationController *emNav = (EMNavigationController *)vc;
-            if (![emNav.topViewController isKindOfClass:[LoginViewController class]]) {
+            if (![emNav.topViewController isKindOfClass:[EMLoginViewController class]]) {
                 if (emNav.viewControllers.count > 0) {
                     [emNav popToRootViewControllerAnimated:NO];
                 }

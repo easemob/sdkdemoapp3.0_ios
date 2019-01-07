@@ -11,14 +11,9 @@
 #import <Hyphenate/Hyphenate.h>
 #import "EMCallOptions+NSCoding.h"
 
-@class MainViewController;
 @interface DemoCallManager : NSObject
 
 #if DEMO_CALL == 1
-
-@property (nonatomic) BOOL isCalling;
-
-@property (strong, nonatomic) MainViewController *mainController;
 
 + (instancetype)sharedManager;
 
