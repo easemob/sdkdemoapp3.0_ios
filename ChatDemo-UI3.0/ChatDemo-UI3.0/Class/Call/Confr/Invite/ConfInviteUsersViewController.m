@@ -267,7 +267,7 @@
     NSMutableArray *retNames = [[NSMutableArray alloc] init];
     [retNames addObjectsFromArray:aAllUsers];
     
-    NSString *loginName = [EMClient sharedClient].currentUsername;
+    NSString *loginName = [[EMClient sharedClient].currentUsername lowercaseString];
     if ([retNames containsObject:loginName]) {
         [retNames removeObject:loginName];
     }
