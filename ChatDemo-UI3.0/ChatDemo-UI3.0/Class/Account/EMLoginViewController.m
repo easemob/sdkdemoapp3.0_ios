@@ -71,7 +71,9 @@
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];
     self.view.backgroundColor = [UIColor whiteColor];
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device_disable"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -143,7 +145,6 @@
     self.nameField.delegate = self;
     self.nameField.borderStyle = UITextBorderStyleNone;
     self.nameField.placeholder = @"用户ID";
-    self.nameField.keyboardType = UIKeyboardTypeNamePhonePad;
     self.nameField.returnKeyType = UIReturnKeyDone;
     self.nameField.font = [UIFont systemFontOfSize:17];
     self.nameField.rightViewMode = UITextFieldViewModeWhileEditing;

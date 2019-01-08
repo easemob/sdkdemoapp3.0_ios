@@ -60,6 +60,8 @@
 		3A32EFE821D619D900B1F90E /* EMBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EFDF21D619D900B1F90E /* EMBlacklistViewController.m */; };
 		3A4BD04821E45AE500800BD4 /* EMRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BD04421E45AE500800BD4 /* EMRefreshTableViewController.m */; };
 		3A4BD04921E45AE500800BD4 /* EMRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */; };
+		3A4BD04F21E4899300800BD4 /* device_disable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4BD04D21E4899300800BD4 /* device_disable@3x.png */; };
+		3A4BD05021E4899300800BD4 /* device_disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4BD04E21E4899300800BD4 /* device_disable@2x.png */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A66253521BFD6AE0004F853 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66253421BFD6AE0004F853 /* EMLoginViewController.m */; };
 		3A66254721C0B7A50004F853 /* device@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A66253E21C0B7A50004F853 /* device@2x.png */; };
@@ -652,6 +654,8 @@
 		3A4BD04521E45AE500800BD4 /* EMRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshViewController.h; sourceTree = "<group>"; };
 		3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshViewController.m; sourceTree = "<group>"; };
 		3A4BD04721E45AE500800BD4 /* EMRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshTableViewController.h; sourceTree = "<group>"; };
+		3A4BD04D21E4899300800BD4 /* device_disable@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "device_disable@3x.png"; sourceTree = "<group>"; };
+		3A4BD04E21E4899300800BD4 /* device_disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "device_disable@2x.png"; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A66253321BFD6AE0004F853 /* EMLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
@@ -1607,6 +1611,8 @@
 		3A66253D21C0B7A50004F853 /* loginImages */ = {
 			isa = PBXGroup;
 			children = (
+				3A4BD04E21E4899300800BD4 /* device_disable@2x.png */,
+				3A4BD04D21E4899300800BD4 /* device_disable@3x.png */,
 				3A32EFB621D6160E00B1F90E /* user_default_1@3x.png */,
 				3ACA2B9D21D0D486007294E1 /* user_default@3x.png */,
 				3A031B4321C7A57300A8D7BB /* back_gary@2x.png */,
@@ -3209,6 +3215,7 @@
 				EBD2ABA11A7CDAC000D16528 /* back@2x.png in Resources */,
 				D2B3DAD11BF1D7B700913BD5 /* icon_019_cover.png in Resources */,
 				EBD2ABA01A7CDAC000D16528 /* add@2x.png in Resources */,
+				3A4BD05021E4899300800BD4 /* device_disable@2x.png in Resources */,
 				3ACFCDA321524B18009F488D /* animate_00056.png in Resources */,
 				D2A910851C83E7890025AD0A /* 80.png in Resources */,
 				3A66255121C0BB990004F853 /* secure@3x.png in Resources */,
@@ -3261,6 +3268,7 @@
 				3A031B4721C7A57300A8D7BB /* back_gary@3x.png in Resources */,
 				3ACFCDA421524B18009F488D /* animate_00081.png in Resources */,
 				3AB6B581215CD1DF003B310F /* role_gray@2x.png in Resources */,
+				3A4BD04F21E4899300800BD4 /* device_disable@3x.png in Resources */,
 				3ACFCD9221524B18009F488D /* animate_00036.png in Resources */,
 				EBD2ABB61A7CDAC000D16528 /* tabbar_setting@2x.png in Resources */,
 				3AE752AC215A4A0A0031B9A4 /* grid_white@2x.png in Resources */,
