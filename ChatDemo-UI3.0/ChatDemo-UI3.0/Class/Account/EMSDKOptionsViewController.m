@@ -76,6 +76,20 @@
     [self _setupCells];
 }
 
+- (NSInteger)_tagWithSection:(NSInteger)aSection
+                         row:(NSInteger)aRow
+{
+    return ((aSection + 1) * 100 + aRow);
+}
+
+- (void)_getSection:(NSInteger *)aSection
+                row:(NSInteger *)aRow
+            fromTag:(NSInteger)aTag
+{
+    *aSection = aTag / 100 - 1;
+    *aRow = aTag % 100;
+}
+
 - (void)_setupCells
 {
     self.cellArray = [[NSMutableArray alloc] init];
@@ -108,22 +122,20 @@
                 }
             }
             
-            UITableViewCell *cell = [self _setupCellWithTitle:title value:value isSwitch:isBool tag:(i * 100 + j)];
+            UITableViewCell *cell = [self _setupCellWithTitle:title value:value isSwitch:isBool tag:[self _tagWithSection:i row:j]];
             [array addObject:cell];
         }
         
         [self.cellArray addObject:array];
     }
     
-    if (!self.enableEdit) {
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.textColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
-        cell.textLabel.text = @"还原默认配置";
-        [array addObject:cell];
-        [self.cellArray addObject:array];
-    }
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.textLabel.textColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    cell.textLabel.text = @"还原默认配置";
+    [array addObject:cell];
+    [self.cellArray addObject:array];
 }
 
 - (UITableViewCell *)_setupCellWithTitle:(NSString *)aTitle
@@ -181,13 +193,59 @@
     return cell;
 }
 
+- (void)_reloadCellValues
+{
+    if (!self.enableEdit) {
+        return;
+    }
+    
+    for (int i = 0; i < [self.plistArray count]; i++) {
+        NSArray *tmpPlist = self.plistArray[i];
+        for (int j = 0; j < [tmpPlist count]; j++) {
+            UITableViewCell *cell = self.cellArray[i][j];
+            NSDictionary *dic = tmpPlist[j];
+            NSString *getMethod = [dic objectForKey:@"getMethod"];
+            NSString *value = @"";
+            BOOL isBool = NO;
+            if ([getMethod length] > 0) {
+                SEL sel = NSSelectorFromString(getMethod);
+                IMP imp = [self.demoOptions methodForSelector:sel];
+                NSString *resultType = [dic objectForKey:@"getResultType"];
+                if ([resultType length] > 0) {
+                    if ([resultType isEqualToString:@"int"]) {
+                        int (*func)(id, SEL) = (void *)imp;
+                        value = @(func(self.demoOptions, sel)).stringValue;
+                    } else if ([resultType isEqualToString:@"bool"]) {
+                        isBool = YES;
+                        bool (*func)(id, SEL) = (void *)imp;
+                        value = @(func(self.demoOptions, sel)).stringValue;
+                    }
+                    
+                } else {
+                    id (*func)(id, SEL) = (void *)imp;
+                    value = func(self.demoOptions, sel);
+                }
+            }
+            
+            if (isBool) {
+                UISwitch *sw = [cell.contentView viewWithTag:[self _tagWithSection:i row:j]];
+                [sw setOn:[value boolValue]];
+            } else {
+                UITextField *textField = [cell.contentView viewWithTag:[self _tagWithSection:i row:j]];
+                textField.text = value;
+            }
+        }
+    }
+}
+
 #pragma mark - Plist
 
 - (void)_setOptionsValueWithTag:(NSInteger)aTag
                           value:(id)aValue
 {
-    NSInteger section = aTag / 100;
-    NSInteger row = aTag % 100;
+    NSInteger section = 0;
+    NSInteger row = 0;
+    [self _getSection:&section row:&row fromTag:aTag];
     
     NSDictionary *dic = self.plistArray[section][row];
     NSString *setMethod = [dic objectForKey:@"setMethod"];
@@ -273,21 +331,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == [self.cellArray count] - 1 && !self.enableEdit) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    if (indexPath.section == [self.cellArray count] - 1) {
+        if (self.enableEdit) {
             EMDemoOptions *options = [EMDemoOptions sharedOptions];
-            [options reInit];
+            [options reInitServerOptions];
             [options archive];
             
-            exit(0);
-        }];
-        [alertController addAction:okAction];
-        
-        [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        }]];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
+            self.demoOptions = [options copy];
+            [self _reloadCellValues];
+        } else {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                EMDemoOptions *options = [EMDemoOptions sharedOptions];
+                [options reInitServerOptions];
+                [options archive];
+                
+                exit(0);
+            }];
+            [alertController addAction:okAction];
+            
+            [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            }]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }
 }
 

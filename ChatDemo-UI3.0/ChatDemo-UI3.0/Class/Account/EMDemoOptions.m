@@ -17,7 +17,24 @@ static EMDemoOptions *sharedOptions = nil;
 {
     self = [super init];
     if (self) {
-        [self reInit];
+        [self reInitServerOptions];
+        
+        self.isDeleteMessagesWhenExitGroup = NO;
+        self.isAutoAcceptGroupInvitation = NO;
+        self.isAutoTransferMessageAttachments = YES;
+        self.isAutoDownloadThumbnail = YES;
+        self.isSortMessageByServerTime = NO;
+        self.isPriorityGetMsgFromServer = NO;
+        
+        self.isAutoLogin = NO;
+        self.loggedInUsername = @"";
+        self.loggedInPassword = @"";
+        
+        self.isChatTyping = NO;
+        self.isAutoDeliveryAck = NO;
+        
+        self.isShowCallInfo = NO;
+        self.isUseBackCamera = NO;
     }
     
     return self;
@@ -154,7 +171,7 @@ static EMDemoOptions *sharedOptions = nil;
     [NSKeyedArchiver archiveRootObject:self toFile:file];
 }
 
-- (void)reInit
+- (void)reInitServerOptions
 {
     self.appkey = DEF_APPKEY;
 #if DEBUG
@@ -167,23 +184,6 @@ static EMDemoOptions *sharedOptions = nil;
     self.chatServer = @"msync-im1.sandbox.easemob.com";
     self.chatPort = 6717;
     self.restServer = @"a1.sdb.easemob.com";
-    
-    self.isDeleteMessagesWhenExitGroup = NO;
-    self.isAutoAcceptGroupInvitation = NO;
-    self.isAutoTransferMessageAttachments = YES;
-    self.isAutoDownloadThumbnail = YES;
-    self.isSortMessageByServerTime = NO;
-    self.isPriorityGetMsgFromServer = NO;
-    
-    self.isAutoLogin = NO;
-    self.loggedInUsername = @"";
-    self.loggedInPassword = @"";
-    
-    self.isChatTyping = NO;
-    self.isAutoDeliveryAck = NO;
-    
-    self.isShowCallInfo = NO;
-    self.isUseBackCamera = NO;
 }
 
 - (EMOptions *)toOptions
