@@ -30,7 +30,7 @@
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.demoOptions = [EMDemoOptions sharedOptions];
+        self.demoOptions = [[EMDemoOptions sharedOptions] copy];
         self.enableEdit = aEnableEdit;
         self.finishCompletion = aFinishBlock;
     }
@@ -55,6 +55,19 @@
 {
     self.title = @"SDK配置";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    
+    if (self.enableEdit) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveOptionsAction)];
+    } else {
+        UIButton *saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
+        [saveButton setTitle:@"保存" forState:UIControlStateNormal];
+        [saveButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:0.4] forState:UIControlStateNormal];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:saveButton];
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    
+    self.navigationItem.rightBarButtonItem.enabled = self.enableEdit;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.tableView.rowHeight = 60;
@@ -225,13 +238,13 @@
         return 50;
     }
     
-    return 10;
+    return 20;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        UIView *view = [[UIView alloc] init];
+    if (section == 0 &&  !self.enableEdit) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width - 20, 50)];
         label.numberOfLines = 0;
         label.font = [UIFont systemFontOfSize:13];
@@ -246,7 +259,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0;
+    if (section == [self.cellArray count] - 1) {
+        return 20;
+    }
+    
+    return 1;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -297,17 +314,32 @@
 
 - (void)backAction
 {
-    if (self.finishCompletion) {
-        [self.demoOptions archive];
-        self.finishCompletion(self.demoOptions);
-    }
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)switchValueChanged:(UISwitch *)aSwitch
 {
     [self _setOptionsValueWithTag:aSwitch.tag value:@(aSwitch.isOn)];
+}
+
+- (void)saveOptionsAction
+{
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    demoOptions.appkey = self.demoOptions.appkey;
+    demoOptions.apnsCertName = self.demoOptions.apnsCertName;
+    demoOptions.specifyServer = self.demoOptions.specifyServer;
+    demoOptions.chatPort = self.demoOptions.chatPort;
+    demoOptions.chatServer = self.demoOptions.chatServer;
+    demoOptions.restServer = self.demoOptions.restServer;
+    demoOptions.usingHttpsOnly = self.demoOptions.usingHttpsOnly;
+    [demoOptions archive];
+    
+    if (self.finishCompletion) {
+        [self.demoOptions archive];
+        self.finishCompletion(demoOptions);
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -39,7 +39,7 @@ static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 NS_ASSUME_NONNULL_BEGIN
 
 @class EMOptions;
-@interface EMDemoOptions : NSObject <NSCoding>
+@interface EMDemoOptions : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, copy) NSString *appkey;
 

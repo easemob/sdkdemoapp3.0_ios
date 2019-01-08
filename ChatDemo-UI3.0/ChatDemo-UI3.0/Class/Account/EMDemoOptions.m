@@ -23,6 +23,16 @@ static EMDemoOptions *sharedOptions = nil;
     return self;
 }
 
++ (instancetype)sharedOptions
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedOptions = [EMDemoOptions getOptionsFromLocal];
+    });
+    
+    return sharedOptions;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
@@ -88,14 +98,31 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.isUseBackCamera forKey:kOptions_UseBackCamera];
 }
 
-+ (instancetype)sharedOptions
+- (id)copyWithZone:(nullable NSZone *)zone
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedOptions = [EMDemoOptions getOptionsFromLocal];
-    });
+    EMDemoOptions *retModel = [[[self class] alloc] init];
+    retModel.appkey = self.appkey;
+    retModel.apnsCertName = self.apnsCertName;
+    retModel.usingHttpsOnly = self.usingHttpsOnly;
+    retModel.specifyServer = self.specifyServer;
+    retModel.chatPort = self.chatPort;
+    retModel.chatServer = self.chatServer;
+    retModel.restServer = self.restServer;
+    retModel.isDeleteMessagesWhenExitGroup = self.isDeleteMessagesWhenExitGroup;
+    retModel.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
+    retModel.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
+    retModel.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
+    retModel.isSortMessageByServerTime = self.isSortMessageByServerTime;
+    retModel.isPriorityGetMsgFromServer = self.isPriorityGetMsgFromServer;
+    retModel.isAutoLogin = self.isAutoLogin;
+    retModel.loggedInUsername = self.loggedInUsername;
+    retModel.loggedInPassword = self.loggedInPassword;
+    retModel.isChatTyping = self.isChatTyping;
+    retModel.isAutoDeliveryAck = self.isAutoDeliveryAck;
+    retModel.isShowCallInfo = self.isShowCallInfo;
+    retModel.isUseBackCamera = self.isUseBackCamera;
     
-    return sharedOptions;
+    return retModel;
 }
 
 - (void)setLoggedInUsername:(NSString *)loggedInUsername
