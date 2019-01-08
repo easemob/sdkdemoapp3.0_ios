@@ -26,17 +26,28 @@
 - (void)_setupWithStyle:(EMAlertViewStyle)aStyle
                 message:(NSString *)aMessage
 {
-    self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.5];
+    self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.1];
     
-    UIView *bgView = [[UIView alloc] init];
-    bgView.backgroundColor = [UIColor whiteColor];
-    bgView.clipsToBounds = YES;
-    bgView.layer.cornerRadius = 5.0;
-    [self addSubview:bgView];
-    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIView *mainView = [[UIView alloc] init];
+    mainView.backgroundColor = [UIColor whiteColor];
+    mainView.layer.cornerRadius = 5.0;
+    mainView.layer.shadowColor = [UIColor grayColor].CGColor;
+    mainView.layer.shadowOffset = CGSizeMake(2, 5);
+    mainView.layer.shadowOpacity = 0.5;
+    [self addSubview:mainView];
+    [mainView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(50);
         make.centerX.equalTo(self);
         make.left.greaterThanOrEqualTo(self).offset(30);
+    }];
+    
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = [UIColor clearColor];
+    bgView.clipsToBounds = YES;
+    bgView.layer.cornerRadius = 5.0;
+    [mainView addSubview:bgView];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(mainView);
     }];
     
     UIView *line = [[UIView alloc] init];
