@@ -21,8 +21,6 @@
 #import "EMDemoOptions.h"
 #import "EMLoginViewController.h"
 
-#import "EMHomeViewController.h"
-
 /**
  *  本类中做了EaseMob初始化和推送等操作
  */

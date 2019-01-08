@@ -58,7 +58,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.tableView.rowHeight = 60;
-    self.tableView.sectionHeaderHeight = 15;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
     [self _setupCells];
@@ -102,6 +101,16 @@
         
         [self.cellArray addObject:array];
     }
+    
+    if (!self.enableEdit) {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.textColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+        cell.textLabel.text = @"还原默认配置";
+        [array addObject:cell];
+        [self.cellArray addObject:array];
+    }
 }
 
 - (UITableViewCell *)_setupCellWithTitle:(NSString *)aTitle
@@ -111,7 +120,7 @@
 {
     UITableViewCell *cell = nil;
     if (self.enableEdit) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCellValue1"];
         if (!aIsSwitch) {
             UITextField *textField = [[UITextField alloc] init];
             textField.delegate = self;
@@ -130,7 +139,6 @@
             }];
             
             textField.text = aValue;
-//            textField.backgroundColor = [UIColor redColor];
         }
         
     } else {
@@ -193,11 +201,11 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.plistArray count];
+    return [self.cellArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = [self.plistArray[section] count];
+    NSInteger count = [self.cellArray[section] count];
     
     return count;
 }
@@ -207,6 +215,63 @@
     UITableViewCell *cell = [self.cellArray[indexPath.section] objectAtIndex:indexPath.row];
     
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0 && !self.enableEdit) {
+        return 50;
+    }
+    
+    return 10;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        UIView *view = [[UIView alloc] init];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width - 20, 50)];
+        label.numberOfLines = 0;
+        label.font = [UIFont systemFontOfSize:13];
+        label.textColor = [UIColor lightGrayColor];
+        label.text = @"demo已经绑定以下环境设置，如果需要修改配置请点击\"还原默认配置\"重新启动App";
+        [view addSubview:label];
+        return view;
+    }
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == [self.cellArray count] - 1 && !self.enableEdit) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            EMDemoOptions *options = [EMDemoOptions sharedOptions];
+            [options reInit];
+            [options archive];
+            
+            exit(0);
+        }];
+        [alertController addAction:okAction];
+        
+        [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - UITextFieldDelegate

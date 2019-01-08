@@ -17,34 +17,7 @@ static EMDemoOptions *sharedOptions = nil;
 {
     self = [super init];
     if (self) {
-        self.appkey = DEF_APPKEY;
-#if DEBUG
-        self.apnsCertName = @"chatdemoui_dev";
-#else
-        self.apnsCertName = @"chatdemoui";
-#endif
-        self.usingHttpsOnly = NO;
-        self.specifyServer = NO;
-        self.chatServer = @"msync-im1.sandbox.easemob.com";
-        self.chatPort = 6717;
-        self.restServer = @"a1.sdb.easemob.com";
-        
-        self.isDeleteMessagesWhenExitGroup = NO;
-        self.isAutoAcceptGroupInvitation = NO;
-        self.isAutoTransferMessageAttachments = YES;
-        self.isAutoDownloadThumbnail = YES;
-        self.isSortMessageByServerTime = NO;
-        self.isPriorityGetMsgFromServer = NO;
-        
-        self.isAutoLogin = NO;
-        self.loggedInUsername = @"";
-        self.loggedInPassword = @"";
-        
-        self.isChatTyping = NO;
-        self.isAutoDeliveryAck = NO;
-        
-        self.isShowCallInfo = NO;
-        self.isUseBackCamera = NO;
+        [self reInit];
     }
     
     return self;
@@ -152,6 +125,38 @@ static EMDemoOptions *sharedOptions = nil;
     NSString *fileName = @"emdemo_options.data";
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
     [NSKeyedArchiver archiveRootObject:self toFile:file];
+}
+
+- (void)reInit
+{
+    self.appkey = DEF_APPKEY;
+#if DEBUG
+    self.apnsCertName = @"chatdemoui_dev";
+#else
+    self.apnsCertName = @"chatdemoui";
+#endif
+    self.usingHttpsOnly = NO;
+    self.specifyServer = NO;
+    self.chatServer = @"msync-im1.sandbox.easemob.com";
+    self.chatPort = 6717;
+    self.restServer = @"a1.sdb.easemob.com";
+    
+    self.isDeleteMessagesWhenExitGroup = NO;
+    self.isAutoAcceptGroupInvitation = NO;
+    self.isAutoTransferMessageAttachments = YES;
+    self.isAutoDownloadThumbnail = YES;
+    self.isSortMessageByServerTime = NO;
+    self.isPriorityGetMsgFromServer = NO;
+    
+    self.isAutoLogin = NO;
+    self.loggedInUsername = @"";
+    self.loggedInPassword = @"";
+    
+    self.isChatTyping = NO;
+    self.isAutoDeliveryAck = NO;
+    
+    self.isShowCallInfo = NO;
+    self.isUseBackCamera = NO;
 }
 
 - (EMOptions *)toOptions

@@ -451,8 +451,6 @@
         self.isInitializedSDK = YES;
         EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
         [[EMClient sharedClient] initializeSDKWithOptions:options];
-        
-        [self.appkeyButton setTitle:@"查看" forState:UIControlStateNormal];
     }
     
     __weak typeof(self) weakself = self;
