@@ -292,6 +292,13 @@
     
     if (videoItem.stream.enableVoice != aStream.enableVoice) {
         videoItem.videoView.enableVoice = aStream.enableVoice;
+        
+        if (aStream.enableVoice && self.speakerButton.isSelected) {
+            //多人实时音视频默认使用扬声器
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            [audioSession setActive:YES error:nil];
+        }
     }
     
     videoItem.stream = aStream;
@@ -581,6 +588,13 @@
         if (videoItem) {
             videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
         }
+    }
+    
+    if (!self.microphoneButton.isSelected && self.speakerButton.isSelected) {
+        //多人实时音视频默认使用扬声器
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
     }
 }
 
