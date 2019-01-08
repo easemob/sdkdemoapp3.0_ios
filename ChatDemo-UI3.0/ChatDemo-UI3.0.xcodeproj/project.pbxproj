@@ -58,6 +58,8 @@
 		3A32EFE621D619D900B1F90E /* EMPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EFDC21D619D800B1F90E /* EMPrivacyViewController.m */; };
 		3A32EFE721D619D900B1F90E /* EMGeneralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EFDE21D619D800B1F90E /* EMGeneralViewController.m */; };
 		3A32EFE821D619D900B1F90E /* EMBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EFDF21D619D900B1F90E /* EMBlacklistViewController.m */; };
+		3A4BD04821E45AE500800BD4 /* EMRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BD04421E45AE500800BD4 /* EMRefreshTableViewController.m */; };
+		3A4BD04921E45AE500800BD4 /* EMRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A66253521BFD6AE0004F853 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66253421BFD6AE0004F853 /* EMLoginViewController.m */; };
 		3A66254721C0B7A50004F853 /* device@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A66253E21C0B7A50004F853 /* device@2x.png */; };
@@ -213,7 +215,6 @@
 		3AADCD2E215B33D800B738BB /* ring_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCD28215B33D700B738BB /* ring_gray@3x.png */; };
 		3AADCD2F215B33D800B738BB /* talking_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCD29215B33D800B738BB /* talking_green@2x.png */; };
 		3AADCD30215B33D800B738BB /* talking_green@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCD2A215B33D800B738BB /* talking_green@3x.png */; };
-		3AADCF15215B396C00B738BB /* EMRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AADCF01215B396C00B738BB /* EMRefreshViewController.m */; };
 		3AADCF1B215B7FBA00B738BB /* floating_voice@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF19215B7FB900B738BB /* floating_voice@3x.png */; };
 		3AADCF1C215B7FBA00B738BB /* floating_voice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF1A215B7FBA00B738BB /* floating_voice@2x.png */; };
 		3AADCF1F215B8C2900B738BB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3AADCF21215B8C2900B738BB /* Localizable.strings */; };
@@ -648,6 +649,10 @@
 		3A32EFE021D619D900B1F90E /* EMAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAccountViewController.h; sourceTree = "<group>"; };
 		3A386F131DE557BA000F3D8E /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3A386F141DE557BA000F3D8E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		3A4BD04421E45AE500800BD4 /* EMRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshTableViewController.m; sourceTree = "<group>"; };
+		3A4BD04521E45AE500800BD4 /* EMRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshViewController.h; sourceTree = "<group>"; };
+		3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshViewController.m; sourceTree = "<group>"; };
+		3A4BD04721E45AE500800BD4 /* EMRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshTableViewController.h; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A66253321BFD6AE0004F853 /* EMLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
@@ -952,8 +957,6 @@
 		3AADCD28215B33D700B738BB /* ring_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ring_gray@3x.png"; sourceTree = "<group>"; };
 		3AADCD29215B33D800B738BB /* talking_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "talking_green@2x.png"; sourceTree = "<group>"; };
 		3AADCD2A215B33D800B738BB /* talking_green@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "talking_green@3x.png"; sourceTree = "<group>"; };
-		3AADCED3215B396C00B738BB /* EMRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshViewController.h; sourceTree = "<group>"; };
-		3AADCF01215B396C00B738BB /* EMRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshViewController.m; sourceTree = "<group>"; };
 		3AADCF19215B7FB900B738BB /* floating_voice@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "floating_voice@3x.png"; sourceTree = "<group>"; };
 		3AADCF1A215B7FBA00B738BB /* floating_voice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "floating_voice@2x.png"; sourceTree = "<group>"; };
 		3AADCF20215B8C2900B738BB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1479,7 +1482,6 @@
 				3A2F293521537E7E00F86EB5 /* CallResolutionViewController.m */,
 				3A2F293921537E7E00F86EB5 /* CallSettingViewController.h */,
 				3A2F293621537E7E00F86EB5 /* CallSettingViewController.m */,
-				3AADCED2215B396C00B738BB /* RefreshController */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1557,6 +1559,17 @@
 				3A2F293B21537E7E00F86EB5 /* Confr */,
 			);
 			path = Call;
+			sourceTree = "<group>";
+		};
+		3A4BD04321E45AE500800BD4 /* RefreshController */ = {
+			isa = PBXGroup;
+			children = (
+				3A4BD04421E45AE500800BD4 /* EMRefreshTableViewController.m */,
+				3A4BD04521E45AE500800BD4 /* EMRefreshViewController.h */,
+				3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */,
+				3A4BD04721E45AE500800BD4 /* EMRefreshTableViewController.h */,
+			);
+			path = RefreshController;
 			sourceTree = "<group>";
 		};
 		3A66253221BFD5EB0004F853 /* Account */ = {
@@ -2202,15 +2215,6 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		3AADCED2215B396C00B738BB /* RefreshController */ = {
-			isa = PBXGroup;
-			children = (
-				3AADCED3215B396C00B738BB /* EMRefreshViewController.h */,
-				3AADCF01215B396C00B738BB /* EMRefreshViewController.m */,
-			);
-			path = RefreshController;
-			sourceTree = "<group>";
-		};
 		3ACA2B4C21D08629007294E1 /* EMAlertView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2475,6 +2479,7 @@
 		3CBF90BD19302F5000AD68AE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3A4BD04321E45AE500800BD4 /* RefreshController */,
 				3A32AB801DDEBF4600E03E27 /* EMSearchController */,
 				3A807B0D1D951301004D18CB /* EMNavigationController.h */,
 				3A807B0E1D951301004D18CB /* EMNavigationController.m */,
@@ -3409,6 +3414,7 @@
 				3A9A2A0B21709ECC00AC4689 /* DACircularProgressView.m in Sources */,
 				3A9A29E221709ECC00AC4689 /* EaseUserModel.m in Sources */,
 				3A9A29DC21709ECC00AC4689 /* EaseEmoji.m in Sources */,
+				3A4BD04921E45AE500800BD4 /* EMRefreshViewController.m in Sources */,
 				3A9A2A3E21709ECC00AC4689 /* EaseRecordView.m in Sources */,
 				3A2F294321537E7E00F86EB5 /* Call1v1VideoViewController.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
@@ -3500,6 +3506,7 @@
 				3A9A2A4921709ECC00AC4689 /* EaseUI.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				90AFCFD81ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */,
+				3A4BD04821E45AE500800BD4 /* EMRefreshTableViewController.m in Sources */,
 				3A9A2A4821709ECC00AC4689 /* EaseSDKHelper.m in Sources */,
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */,
@@ -3535,7 +3542,6 @@
 				3A9A2A1221709ECC00AC4689 /* PSTCollectionViewUpdateItem.m in Sources */,
 				3A9A2A1921709ECC00AC4689 /* UIImage+WebP.m in Sources */,
 				3A9A29DE21709ECC00AC4689 /* EaseEmojiEmoticons.m in Sources */,
-				3AADCF15215B396C00B738BB /* EMRefreshViewController.m in Sources */,
 				90B42A381B65E62C00968342 /* RobotManager.m in Sources */,
 				3A9A2A4421709ECC00AC4689 /* EaseBubbleView+Video.m in Sources */,
 				3A9A2A2621709ECC00AC4689 /* UIImageView+WebCache.m in Sources */,
