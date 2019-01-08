@@ -10,6 +10,7 @@
 
 #import "Masonry.h"
 
+#import "EMConversationsViewController.h"
 #import "EMSettingsViewController.h"
 
 @interface EMHomeViewController ()<UITabBarDelegate>
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
 
+@property (nonatomic, strong) EMConversationsViewController *conversationsController;
 @property (nonatomic, strong) EMSettingsViewController *settingsController;
 
 @end
@@ -90,14 +92,19 @@
 
 - (void)_setupChildController
 {
-    self.settingsController = [[EMSettingsViewController alloc] init];
-    [self addChildViewController:self.settingsController];
-    self.viewControllers = @[self.settingsController];
+    self.conversationsController = [[EMConversationsViewController alloc] init];
+    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"settings" selectedImgName:@"settings_on" tag:0];
+    self.conversationsController.tabBarItem = consItem;
+    [self addChildViewController:self.conversationsController];
     
+    self.settingsController = [[EMSettingsViewController alloc] init];
     UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"settings" selectedImgName:@"settings_on" tag:2];
     self.settingsController.tabBarItem = settingsItem;
+    [self addChildViewController:self.settingsController];
     
-    [self.tabBar setItems:@[settingsItem]];
+    self.viewControllers = @[self.settingsController];
+    
+    [self.tabBar setItems:@[consItem, settingsItem]];
     
     self.tabBar.selectedItem = settingsItem;
     [self tabBar:self.tabBar didSelectItem:settingsItem];
@@ -109,7 +116,9 @@
 {
     NSInteger tag = item.tag;
     UIView *addView = nil;
-    if (tag == 2) {
+    if (tag == 0) {
+        addView = self.conversationsController.view;
+    } else if (tag == 2) {
         addView = self.settingsController.view;
     }
     

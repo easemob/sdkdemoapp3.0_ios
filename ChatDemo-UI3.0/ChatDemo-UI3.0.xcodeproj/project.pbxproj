@@ -238,7 +238,6 @@
 		3ACA2B8F21D0863A007294E1 /* alert_default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA2B7E21D0863A007294E1 /* alert_default@3x.png */; };
 		3ACA2B9021D0863A007294E1 /* alert_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA2B7F21D0863A007294E1 /* alert_error@2x.png */; };
 		3ACA2B9121D0863A007294E1 /* EMAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2B8021D0863A007294E1 /* EMAlertController.m */; };
-		3ACA2B9921D0C555007294E1 /* EMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA2B9821D0C555007294E1 /* EMHomeViewController.m */; };
 		3ACA2B9E21D0D486007294E1 /* user_default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA2B9D21D0D486007294E1 /* user_default@3x.png */; };
 		3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6920088E4E0087CE2D /* DingViewController.m */; };
 		3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */; };
@@ -986,8 +985,6 @@
 		3ACA2B7E21D0863A007294E1 /* alert_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_default@3x.png"; sourceTree = "<group>"; };
 		3ACA2B7F21D0863A007294E1 /* alert_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_error@2x.png"; sourceTree = "<group>"; };
 		3ACA2B8021D0863A007294E1 /* EMAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAlertController.m; sourceTree = "<group>"; };
-		3ACA2B9721D0C555007294E1 /* EMHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMHomeViewController.h; sourceTree = "<group>"; };
-		3ACA2B9821D0C555007294E1 /* EMHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMHomeViewController.m; sourceTree = "<group>"; };
 		3ACA2B9D21D0D486007294E1 /* user_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_default@3x.png"; sourceTree = "<group>"; };
 		3ACC7F6820088E4E0087CE2D /* DingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingViewController.h; sourceTree = "<group>"; };
 		3ACC7F6920088E4E0087CE2D /* DingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingViewController.m; sourceTree = "<group>"; };
@@ -2232,15 +2229,6 @@
 			path = EMAlertView;
 			sourceTree = "<group>";
 		};
-		3ACA2B9621D0C536007294E1 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				3ACA2B9721D0C555007294E1 /* EMHomeViewController.h */,
-				3ACA2B9821D0C555007294E1 /* EMHomeViewController.m */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
 		3ACFCD3921524B18009F488D /* CallImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -2714,7 +2702,6 @@
 		90911120192EEBB8008A48AA /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				3ACA2B9621D0C536007294E1 /* Home */,
 				3A66253221BFD5EB0004F853 /* Account */,
 				3A386E881DE5539C000F3D8E /* Call */,
 				D2CB22591B60CB08001BC741 /* Profile */,
@@ -3570,7 +3557,6 @@
 				3A9A29FA21709ECC00AC4689 /* EMVoiceConverter.mm in Sources */,
 				28BFD6371B01D40500D0ADEC /* ChatroomListViewController.m in Sources */,
 				3A9A2A1B21709ECC00AC4689 /* SDWebImageManager.m in Sources */,
-				3ACA2B9921D0C555007294E1 /* EMHomeViewController.m in Sources */,
 				3A9A29F821709ECC00AC4689 /* wav.mm in Sources */,
 				3AA412E81DDEDB2600317D72 /* EMSearchResultController.m in Sources */,
 				3A9A2A1A21709ECC00AC4689 /* MKAnnotationView+WebCache.m in Sources */,
