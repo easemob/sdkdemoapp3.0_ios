@@ -53,6 +53,8 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
     
+    [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]];
+    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
@@ -104,7 +106,7 @@
     [self addChildViewController:self.conversationsController];
     
     self.contactsController = [[EMContactsViewController alloc] init];
-    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
+    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"联系人" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
     self.contactsController.tabBarItem = contItem;
     [self addChildViewController:self.contactsController];
     
