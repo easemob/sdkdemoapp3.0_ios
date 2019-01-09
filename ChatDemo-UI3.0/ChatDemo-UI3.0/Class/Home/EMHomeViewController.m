@@ -11,7 +11,12 @@
 #import "Masonry.h"
 
 #import "EMConversationsViewController.h"
+#import "EMContactsViewController.h"
 #import "EMSettingsViewController.h"
+
+#define kTabbarItemTag_Conversation 0
+#define kTabbarItemTag_Contact 1
+#define kTabbarItemTag_Settings 2
 
 @interface EMHomeViewController ()<UITabBarDelegate>
 
@@ -19,6 +24,7 @@
 @property (strong, nonatomic) NSArray *viewControllers;
 
 @property (nonatomic, strong) EMConversationsViewController *conversationsController;
+@property (nonatomic, strong) EMContactsViewController *contactsController;
 @property (nonatomic, strong) EMSettingsViewController *settingsController;
 
 @end
@@ -93,21 +99,26 @@
 - (void)_setupChildController
 {
     self.conversationsController = [[EMConversationsViewController alloc] init];
-    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"settings" selectedImgName:@"settings_on" tag:0];
+    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"tabbar_chat_gray" selectedImgName:@"tabbar_chat_blue" tag:kTabbarItemTag_Conversation];
     self.conversationsController.tabBarItem = consItem;
     [self addChildViewController:self.conversationsController];
     
+    self.contactsController = [[EMContactsViewController alloc] init];
+    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
+    self.contactsController.tabBarItem = contItem;
+    [self addChildViewController:self.contactsController];
+    
     self.settingsController = [[EMSettingsViewController alloc] init];
-    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"settings" selectedImgName:@"settings_on" tag:2];
+    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"tabbar_settings_gray" selectedImgName:@"tabbar_settings_blue" tag:kTabbarItemTag_Settings];
     self.settingsController.tabBarItem = settingsItem;
     [self addChildViewController:self.settingsController];
     
-    self.viewControllers = @[self.settingsController];
+    self.viewControllers = @[self.conversationsController, self.contactsController, self.settingsController];
     
-    [self.tabBar setItems:@[consItem, settingsItem]];
+    [self.tabBar setItems:@[consItem, contItem, settingsItem]];
     
-    self.tabBar.selectedItem = settingsItem;
-    [self tabBar:self.tabBar didSelectItem:settingsItem];
+    self.tabBar.selectedItem = consItem;
+    [self tabBar:self.tabBar didSelectItem:consItem];
 }
 
 #pragma mark - UITabBarDelegate
@@ -116,9 +127,11 @@
 {
     NSInteger tag = item.tag;
     UIView *addView = nil;
-    if (tag == 0) {
+    if (tag == kTabbarItemTag_Conversation) {
         addView = self.conversationsController.view;
-    } else if (tag == 2) {
+    } else if (tag == kTabbarItemTag_Contact) {
+        addView = self.contactsController.view;
+    } else if (tag == kTabbarItemTag_Settings) {
         addView = self.settingsController.view;
     }
     
