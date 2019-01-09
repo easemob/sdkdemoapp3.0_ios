@@ -86,7 +86,7 @@
     
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    cell.imageView.image = [UIImage imageNamed:@"user_default_1"];
+    cell.imageView.image = [UIImage imageNamed:@"user_1"];
     cell.textLabel.text = [self.dataArray[section] objectAtIndex:row];
     
     return cell;

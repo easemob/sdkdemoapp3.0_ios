@@ -122,7 +122,7 @@
             cell.textLabel.font = [UIFont systemFontOfSize:18];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
             cell.detailTextLabel.textColor = [UIColor grayColor];
-            cell.imageView.image = [UIImage imageNamed:@"user_default"];
+            cell.imageView.image = [UIImage imageNamed:@"user_3"];
             [cell.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(cell.textLabel.mas_bottom).offset(3);
                 make.left.equalTo(cell.textLabel);
