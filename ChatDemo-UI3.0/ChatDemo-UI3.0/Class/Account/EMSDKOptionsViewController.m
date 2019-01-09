@@ -333,18 +333,14 @@
 {
     if (indexPath.section == [self.cellArray count] - 1) {
         if (self.enableEdit) {
-            EMDemoOptions *options = [EMDemoOptions sharedOptions];
-            [options reInitServerOptions];
-            [options archive];
+            [EMDemoOptions reInitAndSaveServerOptions];
             
-            self.demoOptions = [options copy];
+            self.demoOptions = [[EMDemoOptions sharedOptions] copy];
             [self _reloadCellValues];
         } else {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                EMDemoOptions *options = [EMDemoOptions sharedOptions];
-                [options reInitServerOptions];
-                [options archive];
+                [EMDemoOptions reInitAndSaveServerOptions];
                 
                 exit(0);
             }];

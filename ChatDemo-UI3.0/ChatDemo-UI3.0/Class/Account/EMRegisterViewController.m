@@ -13,8 +13,13 @@
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
 #import "EMAlertController.h"
+#import "EMQRCodeViewController.h"
+#import "EMSDKOptionsViewController.h"
 
 @interface EMRegisterViewController ()<UITextFieldDelegate>
+
+@property (nonatomic, strong) UITextField *appkeyField;
+@property (nonatomic, strong) UIButton *appkeyRightView;
 
 @property (nonatomic, strong) UITextField *nameField;
 
@@ -37,6 +42,7 @@
 - (void)_setupViews
 {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
 
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -49,6 +55,38 @@
         make.left.equalTo(self.view).offset(15);
         make.top.equalTo(self.view);
         make.height.equalTo(@60);
+    }];
+    
+    self.appkeyField = [[UITextField alloc] init];
+    self.appkeyField.delegate = self;
+    self.appkeyField.enabled = NO;
+    self.appkeyField.borderStyle = UITextBorderStyleNone;
+    self.appkeyField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.appkeyField.placeholder = @"应用appkey";
+    self.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
+    self.appkeyField.keyboardType = UIKeyboardTypeNamePhonePad;
+    self.appkeyField.returnKeyType = UIReturnKeyDone;
+    self.appkeyField.font = [UIFont systemFontOfSize:15];
+    self.appkeyField.rightViewMode = UITextFieldViewModeWhileEditing;
+    [self.view addSubview:self.appkeyField];
+    [self.appkeyField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(30);
+        make.right.equalTo(self.view).offset(-80);
+        make.top.equalTo(titleLabel.mas_bottom).offset(10);
+        make.height.equalTo(@40);
+    }];
+    
+    self.appkeyRightView = [[UIButton alloc] init];
+    self.appkeyRightView.titleLabel.font = [UIFont systemFontOfSize:15];
+    [self.appkeyRightView setTitle:@"更换" forState:UIControlStateNormal];
+    [self.appkeyRightView setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.appkeyRightView addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.appkeyRightView];
+    [self.appkeyRightView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.appkeyField);
+        make.bottom.equalTo(self.appkeyField);
+        make.left.equalTo(self.appkeyField.mas_right);
+        make.right.equalTo(self.view).offset(-30);
     }];
     
     self.nameField = [[UITextField alloc] init];
@@ -69,7 +107,7 @@
     [self.nameField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.top.equalTo(titleLabel.mas_bottom).offset(20);
+        make.top.equalTo(self.appkeyField.mas_bottom).offset(20);
         make.height.equalTo(@45);
     }];
     
@@ -79,7 +117,6 @@
     self.pswdField.placeholder = @"密码";
     self.pswdField.font = [UIFont systemFontOfSize:17];
     self.pswdField.returnKeyType = UIReturnKeyDone;
-    //    self.pswdField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.pswdField.secureTextEntry = YES;
     self.pswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
     [self.pswdRightView setImage:[UIImage imageNamed:@"secure"] forState:UIControlStateNormal];
@@ -144,6 +181,55 @@
 - (void)backAction
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)qrCodeAction
+{
+    [self.view endEditing:YES];
+    
+    if (gIsInitializedSDK) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            exit(0);
+        }];
+        [alertController addAction:okAction];
+        
+        [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        EMQRCodeViewController *controller = [[EMQRCodeViewController alloc] init];
+        
+        __weak typeof(self) weakself = self;
+        [controller setScanFinishCompletion:^(NSDictionary *aJsonDic) {
+            NSString *username = [aJsonDic objectForKey:@"Username"];
+            NSString *pssword = [aJsonDic objectForKey:@"Password"];
+            if ([username length] == 0) {
+                return ;
+            }
+            
+            [EMDemoOptions updateAndSaveServerOptions:aJsonDic];
+            
+            weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
+            weakself.nameField.text = username;
+            weakself.pswdField.text = pssword;
+            
+            if ([pssword length] == 0) {
+                [weakself.pswdField becomeFirstResponder];
+            }
+        }];
+        [self.navigationController presentViewController:controller animated:YES completion:nil];
+    }
+}
+
+- (void)changeAppkeyAction
+{
+    __weak typeof(self) weakself = self;
+    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!gIsInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
+        weakself.appkeyField.text = aOptions.appkey;
+    }];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)pswdSecureAction:(UIButton *)aButton

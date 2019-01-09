@@ -17,7 +17,7 @@ static EMDemoOptions *sharedOptions = nil;
 {
     self = [super init];
     if (self) {
-        [self reInitServerOptions];
+        [self _initServerOptions];
         
         self.isDeleteMessagesWhenExitGroup = NO;
         self.isAutoAcceptGroupInvitation = NO;
@@ -38,16 +38,6 @@ static EMDemoOptions *sharedOptions = nil;
     }
     
     return self;
-}
-
-+ (instancetype)sharedOptions
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedOptions = [EMDemoOptions getOptionsFromLocal];
-    });
-    
-    return sharedOptions;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -150,28 +140,9 @@ static EMDemoOptions *sharedOptions = nil;
     }
 }
 
-+ (EMDemoOptions *)getOptionsFromLocal
-{
-    EMDemoOptions *retModel = nil;
-    NSString *fileName = @"emdemo_options.data";
-    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
-    retModel = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
-    if (!retModel) {
-        retModel = [[EMDemoOptions alloc] init];
-        [retModel archive];
-    }
-    
-    return retModel;
-}
+#pragma mark - Private
 
-- (void)archive
-{
-    NSString *fileName = @"emdemo_options.data";
-    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
-    [NSKeyedArchiver archiveRootObject:self toFile:file];
-}
-
-- (void)reInitServerOptions
+- (void)_initServerOptions
 {
     self.appkey = DEF_APPKEY;
 #if DEBUG
@@ -184,6 +155,15 @@ static EMDemoOptions *sharedOptions = nil;
     self.chatServer = @"msync-im1.sandbox.easemob.com";
     self.chatPort = 6717;
     self.restServer = @"a1.sdb.easemob.com";
+}
+
+#pragma mark - Public
+
+- (void)archive
+{
+    NSString *fileName = @"emdemo_options.data";
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
+    [NSKeyedArchiver archiveRootObject:self toFile:file];
 }
 
 - (EMOptions *)toOptions
@@ -211,6 +191,79 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     
     return retOpt;
+}
+
+#pragma mark - Class Methods
+
++ (instancetype)sharedOptions
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedOptions = [EMDemoOptions getOptionsFromLocal];
+    });
+    
+    return sharedOptions;
+}
+
++ (EMDemoOptions *)getOptionsFromLocal
+{
+    EMDemoOptions *retModel = nil;
+    NSString *fileName = @"emdemo_options.data";
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
+    retModel = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
+    if (!retModel) {
+        retModel = [[EMDemoOptions alloc] init];
+        [retModel archive];
+    }
+    
+    return retModel;
+}
+
++ (void)reInitAndSaveServerOptions
+{
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    [demoOptions _initServerOptions];
+    
+    [demoOptions archive];
+}
+
++ (void)updateAndSaveServerOptions:(NSDictionary *)aDic
+{
+    NSString *appkey = [aDic objectForKey:kOptions_Appkey];
+    NSString *apns = [aDic objectForKey:kOptions_ApnsCertname];
+    BOOL httpsOnly = [[aDic objectForKey:kOptions_HttpsOnly] boolValue];
+    if ([appkey length] == 0) {
+        appkey = DEF_APPKEY;
+    }
+    if ([apns length] == 0) {
+#if DEBUG
+        apns = @"chatdemoui_dev";
+#else
+        apns = @"chatdemoui";
+#endif
+    }
+    
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    demoOptions.appkey = appkey;
+    demoOptions.apnsCertName = apns;
+    demoOptions.usingHttpsOnly = httpsOnly;
+    
+    int specifyServer = [[aDic objectForKey:kOptions_SpecifyServer] intValue];
+    demoOptions.specifyServer = NO;
+    if (specifyServer != 0) {
+        demoOptions.specifyServer = YES;
+        
+        NSString *imServer = [aDic objectForKey:kOptions_IMServer];
+        NSString *imPort = [aDic objectForKey:kOptions_IMPort];
+        NSString *restServer = [aDic objectForKey:kOptions_RestServer];
+        if ([imServer length] > 0 && [restServer length] > 0 && [imPort length] > 0) {
+            demoOptions.chatPort = [imPort intValue];
+            demoOptions.chatServer = imServer;
+            demoOptions.restServer = restServer;
+        }
+    }
+    
+    [demoOptions archive];
 }
 
 @end

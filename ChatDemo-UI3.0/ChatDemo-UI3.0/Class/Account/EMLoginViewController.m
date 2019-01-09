@@ -242,44 +242,6 @@
     }];
 }
 
-#pragma mark - Private
-
-- (void)_updateSDKOptions:(NSDictionary *)aDic
-{
-    NSString *appkey = [aDic objectForKey:kOptions_Appkey];
-    NSString *apns = [aDic objectForKey:kOptions_ApnsCertname];
-    BOOL httpsOnly = [[aDic objectForKey:kOptions_HttpsOnly] boolValue];
-    if ([appkey length] == 0) {
-        appkey = DEF_APPKEY;
-    }
-    if ([apns length] == 0) {
-#if DEBUG
-        apns = @"chatdemoui_dev";
-#else
-        apns = @"chatdemoui";
-#endif
-    }
-    
-    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
-    demoOptions.appkey = appkey;
-    demoOptions.apnsCertName = apns;
-    demoOptions.usingHttpsOnly = httpsOnly;
-    
-    int specifyServer = [[aDic objectForKey:kOptions_SpecifyServer] intValue];
-    if (specifyServer != 0) {
-        NSString *imServer = [aDic objectForKey:kOptions_IMServer];
-        NSString *imPort = [aDic objectForKey:kOptions_IMPort];
-        NSString *restServer = [aDic objectForKey:kOptions_RestServer];
-        if ([imServer length] > 0 && [restServer length] > 0 && [imPort length] > 0) {
-            demoOptions.chatPort = [imPort intValue];
-            demoOptions.chatServer = imServer;
-            demoOptions.restServer = restServer;
-        }
-    }
-    
-    [demoOptions archive];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -401,7 +363,7 @@
                 return ;
             }
             
-            [weakself _updateSDKOptions:aJsonDic];
+            [EMDemoOptions updateAndSaveServerOptions:aJsonDic];
             
             weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
             weakself.nameField.text = username;

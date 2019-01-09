@@ -74,9 +74,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedOptions;
 
-- (void)archive;
++ (void)reInitAndSaveServerOptions;
 
-- (void)reInitServerOptions;
++ (void)updateAndSaveServerOptions:(NSDictionary *)aDic;
+
+- (void)archive;
 
 - (EMOptions *)toOptions;
 
