@@ -387,6 +387,8 @@
 
 - (void)saveOptionsAction
 {
+    [self.view endEditing:YES];
+    
     EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
     demoOptions.appkey = self.demoOptions.appkey;
     demoOptions.apnsCertName = self.demoOptions.apnsCertName;

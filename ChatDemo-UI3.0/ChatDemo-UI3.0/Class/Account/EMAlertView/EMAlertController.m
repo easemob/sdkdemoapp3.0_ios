@@ -10,6 +10,12 @@
 
 #import "Masonry.h"
 
+@interface EMAlertController()
+
+@property (nonatomic, strong) UIView *mainView;
+
+@end
+
 @implementation EMAlertController
 
 - (instancetype)initWithStyle:(EMAlertViewStyle)aStyle
@@ -28,15 +34,15 @@
 {
     self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.1];
     
-    UIView *mainView = [[UIView alloc] init];
-    mainView.backgroundColor = [UIColor whiteColor];
-    mainView.layer.cornerRadius = 5.0;
-    mainView.layer.shadowColor = [UIColor grayColor].CGColor;
-    mainView.layer.shadowOffset = CGSizeMake(2, 5);
-    mainView.layer.shadowOpacity = 0.5;
-    [self addSubview:mainView];
-    [mainView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(50);
+    self.mainView = [[UIView alloc] init];
+    self.mainView.backgroundColor = [UIColor whiteColor];
+    self.mainView.layer.cornerRadius = 5.0;
+    self.mainView.layer.shadowColor = [UIColor grayColor].CGColor;
+    self.mainView.layer.shadowOffset = CGSizeMake(2, 5);
+    self.mainView.layer.shadowOpacity = 0.5;
+    [self addSubview:self.mainView];
+    [self.mainView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(-60);
         make.centerX.equalTo(self);
         make.left.greaterThanOrEqualTo(self).offset(30);
     }];
@@ -45,9 +51,9 @@
     bgView.backgroundColor = [UIColor clearColor];
     bgView.clipsToBounds = YES;
     bgView.layer.cornerRadius = 5.0;
-    [mainView addSubview:bgView];
+    [self.mainView addSubview:bgView];
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(mainView);
+        make.edges.equalTo(self.mainView);
     }];
     
     UIView *line = [[UIView alloc] init];
@@ -133,9 +139,30 @@
         make.edges.equalTo(keyWindow);
     }];
     
+    [view layoutIfNeeded];
+    [view setNeedsUpdateConstraints];
+    [view.mainView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(view).offset(50);
+    }];
+    [UIView animateWithDuration:0.3 animations:^{
+        [view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        //
+    }];
+    
+    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [view removeFromSuperview];
+        [view layoutIfNeeded];
+        [view setNeedsUpdateConstraints];
+        [view.mainView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(view).offset(-60);
+        }];
+        [UIView animateWithDuration:0.3 animations:^{
+            [view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            [view removeFromSuperview];
+        }];
     });
 }
 
