@@ -41,6 +41,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     
     EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
     if (demoOptions.isAutoLogin){
+        gIsInitializedSDK = YES;
         [[EMClient sharedClient] initializeSDKWithOptions:[demoOptions toOptions]];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];

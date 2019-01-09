@@ -16,12 +16,11 @@
 #import "EMQRCodeViewController.h"
 #import "EMSDKOptionsViewController.h"
 
+#import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
 #import "EMAlertController.h"
 
 @interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
-
-@property (nonatomic) BOOL isInitializedSDK;
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -49,8 +48,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _isInitializedSDK = NO;
-    
     [self _setupSubviews];
     
     [self.tableView reloadData];
@@ -382,7 +379,7 @@
 {
     [self.view endEditing:YES];
     
-    if (self.isInitializedSDK) {
+    if (gIsInitializedSDK) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             exit(0);
@@ -421,7 +418,7 @@
 - (void)changeAppkeyAction
 {
     __weak typeof(self) weakself = self;
-    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!self.isInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
+    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!gIsInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
         weakself.appkeyField.text = aOptions.appkey;
     }];
     [self.navigationController pushViewController:controller animated:YES];
@@ -447,8 +444,8 @@
         return;
     }
     
-    if (!self.isInitializedSDK) {
-        self.isInitializedSDK = YES;
+    if (!gIsInitializedSDK) {
+        gIsInitializedSDK = YES;
         EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
         [[EMClient sharedClient] initializeSDKWithOptions:options];
     }

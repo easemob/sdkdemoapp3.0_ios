@@ -10,6 +10,8 @@
 
 #import "Masonry.h"
 
+#import "EMGlobalVariables.h"
+#import "EMDemoOptions.h"
 #import "EMAlertController.h"
 
 @interface EMRegisterViewController ()<UITextFieldDelegate>
@@ -160,6 +162,12 @@
     if ([name length] == 0 || [pswd length] == 0) {
         [EMAlertController showErrorAlert:@"用户ID或者密码不能为空"];
         return;
+    }
+    
+    if (!gIsInitializedSDK) {
+        gIsInitializedSDK = YES;
+        EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
+        [[EMClient sharedClient] initializeSDKWithOptions:options];
     }
     
     __weak typeof(self) weakself = self;
