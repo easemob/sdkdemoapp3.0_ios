@@ -1,16 +1,16 @@
 //
-//  EMImageTextCell.m
+//  EMAvatarNameCell.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/9.
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMImageTextCell.h"
+#import "EMAvatarNameCell.h"
 
 #import "Masonry.h"
 
-@implementation EMImageTextCell
+@implementation EMAvatarNameCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier

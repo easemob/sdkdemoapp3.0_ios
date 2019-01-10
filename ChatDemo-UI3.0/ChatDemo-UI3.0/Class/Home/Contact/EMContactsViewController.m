@@ -10,7 +10,14 @@
 
 #import "Masonry.h"
 
-#import "EMImageTextCell.h"
+#import "DemoConfManager.h"
+
+#import "EMAvatarNameCell.h"
+#import "UIViewController+Search.h"
+#import "EMInviteFriendViewController.h"
+#import "GroupListViewController.h"
+#import "ChatroomListViewController.h"
+
 
 @interface EMContactsViewController ()
 
@@ -54,6 +61,7 @@
     [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    self.showRefreshHeader = YES;
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = @"联系人";
@@ -66,28 +74,11 @@
         make.height.equalTo(@60);
     }];
     
-    UIButton *searchButton = [[UIButton alloc] init];
-    searchButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    searchButton.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
-    searchButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    searchButton.layer.cornerRadius = 8;
-    searchButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
-    searchButton.titleEdgeInsets = UIEdgeInsetsMake(0, 18, 0, 0);
-    [searchButton setTitle:@"搜索" forState:UIControlStateNormal];
-    [searchButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    [searchButton setImage:[UIImage imageNamed:@"search_gray"] forState:UIControlStateNormal];
-    [searchButton addTarget:self action:@selector(searchButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:searchButton];
-    [searchButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
-        make.left.equalTo(self.view).offset(15);
-        make.right.equalTo(self.view).offset(-15);
-        make.height.equalTo(@35);
-    }];
+    [self enableSearchController];
     
     self.tableView.rowHeight = 50;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(searchButton.mas_bottom).offset(15);
+        make.top.equalTo(self.searchButton.mas_bottom).offset(15);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
@@ -114,10 +105,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = @"EMImageTextCell";
-    EMImageTextCell *cell = (EMImageTextCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    NSString *CellIdentifier = @"EMAvatarNameCell";
+    EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[EMImageTextCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     NSInteger section = indexPath.section;
@@ -201,8 +192,39 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    NSInteger section = indexPath.section;
-//    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    if (section == 0) {
+        if (row == 0) {
+            EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 1) {
+            
+        } else if (row == 2) {
+//            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
+//            [self.navigationController pushViewController:groupController animated:YES];
+        } else if (row == 3) {
+//            ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
+//            [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 4) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat];
+            }];
+            [alertController addAction:defaultAction];
+
+            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat];
+            }];
+            [alertController addAction:mixAction];
+
+            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
+
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }
+    
 //    if (section == 0) {
 //        if (row == 0) {
 //            [self.navigationController pushViewController:[ApplyViewController shareController] animated:YES];
@@ -358,6 +380,25 @@
     [self _sortAllContacts:self.allContacts];
     
     [self.tableView reloadData];
+}
+
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aContactsList, EMError *aContactsError) {
+        if (!aContactsError) {
+            [weakself.allContacts removeAllObjects];
+            [weakself.allContacts addObjectsFromArray:aContactsList];
+        }
+        
+        [[EMClient sharedClient].contactManager getBlackListFromServerWithCompletion:^(NSArray *aBlackList, EMError *aError) {
+            if (!aError) {
+                [weakself _sortAllContacts:weakself.allContacts];
+            }
+            [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+            [weakself.tableView reloadData];
+        }];
+    }];
 }
 
 #pragma mark - Action

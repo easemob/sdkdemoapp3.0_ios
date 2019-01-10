@@ -1,5 +1,5 @@
 //
-//  EMImageTextCell.h
+//  EMAvatarNameCell.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/9.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMImageTextCell : UITableViewCell
+@interface EMAvatarNameCell : UITableViewCell
 
 @property (nonatomic, strong) UIImageView *avatarView;
 
