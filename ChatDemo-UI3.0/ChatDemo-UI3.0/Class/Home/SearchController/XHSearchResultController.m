@@ -20,6 +20,9 @@
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     [self _initSubviews];
 }
 
@@ -35,14 +38,20 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Getter
 
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
         _searchBar = [[UISearchBar alloc] init];
-//        _searchBar.tintColor = kColor_Green;
-//        _searchBar.backgroundImage = [[UIImage imageNamed:@"searchBar_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:5];
+        _searchBar.searchBarStyle = UISearchBarStyleMinimal;
+        _searchBar.backgroundColor = [UIColor whiteColor];
+        _searchBar.returnKeyType = UIReturnKeyDone;
     }
     
     return _searchBar;
@@ -52,13 +61,11 @@
 
 - (void)_initSubviews
 {
-    self.view.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.0];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:self.searchBar];
-    
-    CGFloat oY = [UIApplication sharedApplication].statusBarFrame.size.height + 5;
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(oY);
+        make.top.equalTo(self.view.mas_top).offset(25);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.height.equalTo(@50);
@@ -136,6 +143,14 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //在iOS8.0上，必须加上这个方法才能出发左划操作
+    if (_commitEditingAtIndexPath) {
+        return _commitEditingAtIndexPath(tableView, editingStyle, indexPath);
+    }
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -151,6 +166,54 @@
         _didDeselectRowAtIndexPathCompletion(tableView, indexPath);
     }
 }
+
+#pragma mark - KeyBoard
+
+- (void)keyBoardWillShow:(NSNotification *)note
+{
+    // 获取用户信息
+    NSDictionary *userInfo = [NSDictionary dictionaryWithDictionary:note.userInfo];
+    // 获取键盘高度
+    CGRect keyBoardBounds  = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyBoardHeight = keyBoardBounds.size.height;
+    // 获取键盘动画时间
+    CGFloat animationTime  = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    // 定义好动作
+    void (^animation)(void) = ^void(void) {
+        [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.view.mas_bottom).offset(-keyBoardHeight);
+        }];
+    };
+    
+    if (animationTime > 0) {
+        [UIView animateWithDuration:animationTime animations:animation];
+    } else {
+        animation();
+    }
+}
+
+- (void)keyBoardWillHide:(NSNotification *)note
+{
+    // 获取用户信息
+    NSDictionary *userInfo = [NSDictionary dictionaryWithDictionary:note.userInfo];
+    // 获取键盘动画时间
+    CGFloat animationTime  = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    // 定义好动作
+    void (^animation)(void) = ^void(void) {
+        [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.view.mas_bottom);
+        }];
+    };
+    
+    if (animationTime > 0) {
+        [UIView animateWithDuration:animationTime animations:animation];
+    } else {
+        animation();
+    }
+}
+
 
 #pragma mark - Data
 

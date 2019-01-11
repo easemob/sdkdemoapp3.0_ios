@@ -13,7 +13,7 @@
 #import "ChatroomListViewController.h"
 
 #import "ChatViewController.h"
-#import "RealtimeSearchUtil.h"
+#import "EMRealtimeSearch.h"
 #import <Hyphenate/EMCursorResult.h>
 #import "BaseTableViewCell.h"
 
@@ -171,7 +171,7 @@
 
 - (void)cancelButtonClicked
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+    [[EMRealtimeSearch shared] realtimeSearchStop];
 }
 
 - (void)didSearchFinish
@@ -225,7 +225,7 @@
 - (void)searchTextChangeWithString:(NSString *)aString
 {
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.resultController.displaySource removeAllObjects];

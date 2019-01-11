@@ -18,7 +18,7 @@
 #import "AddFriendViewController.h"
 #import "ApplyViewController.h"
 #import "UserProfileManager.h"
-#import "RealtimeSearchUtil.h"
+#import "EMRealtimeSearch.h"
 #import "UserProfileManager.h"
 
 #import "BaseTableViewCell.h"
@@ -395,13 +395,13 @@
                                                        
 - (void)cancelButtonClicked
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+    [[EMRealtimeSearch shared] realtimeSearchStop];
 }
                                                
 - (void)searchTextChangeWithString:(NSString *)aString
 {
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.contactsSource searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.contactsSource searchText:aString collationStringSelector:@selector(showName) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.resultController.displaySource removeAllObjects];

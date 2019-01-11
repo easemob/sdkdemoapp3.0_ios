@@ -97,19 +97,39 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 
 #pragma mark - UISearchBarDelegate
 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
+        && [self respondsToSelector:@selector(searchBarWillBeginEditing:)]) {
+        [self performSelector:@selector(searchBarWillBeginEditing:)
+                   withObject:searchBar];
+    }
+    
+    return YES;
+}
+
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
         [searchBar resignFirstResponder];
         if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
-            && [self respondsToSelector:@selector(didSearchWithString:)]) {
-            [self performSelector:@selector(didSearchWithString:)
-                       withObject:searchBar.text];
+            && [self respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
+            [self performSelector:@selector(searchBarSearchButtonClicked:)
+                       withObject:searchBar];
         }
         return NO;
     }
     
     return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
+        && [self respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
+        [self performSelector:@selector(searchTextDidChangeWithString:)
+                   withObject:searchText];
+    }
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar

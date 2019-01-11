@@ -14,7 +14,6 @@
 
 #import "EMRemarkImageView.h"
 #import "BaseTableViewCell.h"
-#import "RealtimeSearchUtil.h"
 
 @interface ContactSelectionViewController ()
 

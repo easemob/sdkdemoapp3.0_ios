@@ -16,7 +16,7 @@
 #import "RobotManager.h"
 #import "RobotChatViewController.h"
 #import "UserProfileManager.h"
-#import "RealtimeSearchUtil.h"
+#import "EMRealtimeSearch.h"
 #import "ChatDemoHelper.h"
 #import "EMDingMessageHelper.h"
 
@@ -275,13 +275,13 @@
 
 - (void)cancelButtonClicked
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+    [[EMRealtimeSearch shared] realtimeSearchStop];
 }
 
 - (void)searchTextChangeWithString:(NSString *)aString
 {
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.resultController.displaySource removeAllObjects];

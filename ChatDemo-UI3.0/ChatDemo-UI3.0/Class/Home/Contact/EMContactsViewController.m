@@ -8,17 +8,20 @@
 
 #import "EMContactsViewController.h"
 
+#import "EMRealtimeSearch.h"
 #import "DemoConfManager.h"
 
+#import "EMAlertController.h"
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
 #import "EMNotificationViewController.h"
+
 #import "GroupListViewController.h"
 #import "ChatroomListViewController.h"
+#import "ChatViewController.h"
 
-
-@interface EMContactsViewController ()
+@interface EMContactsViewController ()<XHSearchControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *allContacts;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
@@ -81,6 +84,57 @@
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
+    }];
+    
+    __weak typeof(self) weakself = self;
+    self.resultController.tableView.rowHeight = 50;
+    [self.resultController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
+        NSString *CellIdentifier = @"EMAvatarNameCell";
+        EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        NSInteger row = indexPath.row;
+        NSString *contact = weakself.resultController.dataArray[row];
+        cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+        cell.nameLabel.text = contact;
+        return cell;
+    }];
+    [self.resultController setCanEditRowAtIndexPath:^BOOL(UITableView *tableView, NSIndexPath *indexPath) {
+        return YES;
+    }];
+    [self.resultController setCommitEditingAtIndexPath:^(UITableView *tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath *indexPath) {
+        if (editingStyle == UITableViewCellEditingStyleDelete) {
+            NSInteger row = indexPath.row;
+            NSString *contact = weakself.resultController.dataArray[row];
+            [weakself.resultController showHudInView:weakself.resultController.view hint:@"删除好友..."];
+            [weakself _deleteContact:contact completion:^(EMError *aError) {
+                [weakself.resultController hideHud];
+                if (!aError) {
+                    [weakself.resultController.dataArray removeObjectAtIndex:row];
+                    [weakself.resultController.tableView reloadData];
+                    
+                    //更新联系人页面
+                    for (NSMutableArray *array in weakself.dataArray) {
+                        if ([array containsObject:contact]) {
+                            [array removeObject:contact];
+                            if ([array count] == 0) {
+                                [weakself.dataArray removeObject:array];
+                            }
+                            [weakself.tableView reloadData];
+                            break;
+                        }
+                    }
+                }
+            }];
+        }
+    }];
+    [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSInteger row = indexPath.row;
+        NSString *contact = weakself.resultController.dataArray[row];
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:contact conversationType:EMConversationTypeChat];
+        [weakself.navigationController pushViewController:chatController animated:YES];
     }];
 }
 
@@ -223,6 +277,10 @@
 
             [self presentViewController:alertController animated:YES completion:nil];
         }
+    } else {
+        NSString *contact = self.dataArray[section - 1][row];
+        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:contact conversationType:EMConversationTypeChat];
+        [self.navigationController pushViewController:chatController animated:YES];
     }
     
 //    if (section == 0) {
@@ -287,17 +345,58 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //在iOS8.0上，必须加上这个方法才能出发左划操作
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSInteger section = indexPath.section - 1;
+        NSString *contact = self.dataArray[section][indexPath.row];
+        __weak typeof(self) weakself = self;
+        [self showHudInView:self.view hint:@"删除好友..."];
+        [self _deleteContact:contact completion:^(EMError *aError) {
+            if (!aError) {
+                NSMutableArray *array = weakself.dataArray[section];
+                [array removeObjectAtIndex:indexPath.row];
+                if ([array count] == 0) {
+                    [weakself.dataArray removeObjectAtIndex:section];
+                    [weakself.sectionTitles removeObjectAtIndex:section];
+                }
+                [weakself.tableView reloadData];
+            }
+        }];
+    }
 }
 
-//- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return [self setupCellEditActions:indexPath];
-//}
-//
-//- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return [self setupCellEditActions:indexPath];
-//}
+#pragma mark - XHSearchControllerDelegate
+
+- (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
+{
+    self.resultController.searchKeyword = nil;
+}
+
+- (void)searchBarCancelButtonAction:(UISearchBar *)searchBar
+{
+    [[EMRealtimeSearch shared] realtimeSearchStop];
+    
+    [self.resultController.dataArray removeAllObjects];
+    [self.resultController.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.view endEditing:YES];
+}
+
+- (void)searchTextDidChangeWithString:(NSString *)aString
+{
+    self.resultController.searchKeyword = aString;
+    
+    __weak typeof(self) weakself = self;
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.allContacts searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.resultController.dataArray removeAllObjects];
+            [weakself.resultController.dataArray addObjectsFromArray:results];
+            [weakself.resultController.tableView reloadData];
+        });
+    }];
+}
 
 #pragma mark - Private
 
@@ -368,6 +467,24 @@
     [self.dataArray addObjectsFromArray:sortedArray];
 }
 
+- (void)_deleteContact:(NSString *)aContact
+            completion:(void (^)(EMError *aError))aCompletion
+{
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].contactManager deleteContact:aContact isDeleteConversation:NO completion:^(NSString *aUsername, EMError *aError) {
+        [weakself hideHud];
+        if (aError) {
+            [EMAlertController showErrorAlert:@"删除好友失败"];
+        } else {
+            [weakself.allContacts removeObject:aContact];
+        }
+        
+        if (aCompletion) {
+            aCompletion(aError);
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)_loadAllContactsFromDB
@@ -402,10 +519,5 @@
 }
 
 #pragma mark - Action
-
-- (void)searchButtonAction
-{
-    
-}
 
 @end

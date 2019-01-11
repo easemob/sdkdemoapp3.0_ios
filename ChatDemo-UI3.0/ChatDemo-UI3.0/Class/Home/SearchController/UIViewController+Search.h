@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "XHSearchControllerDelegate.h"
 #import "XHSearchResultController.h"
 
 @interface UIViewController (Search) <UISearchBarDelegate>

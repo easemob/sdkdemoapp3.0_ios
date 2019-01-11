@@ -1,20 +1,16 @@
-/************************************************************
-  *  * Hyphenate CONFIDENTIAL 
-  * __________________ 
-  * Copyright (C) 2016 Hyphenate Inc. All rights reserved. 
-  *  
-  * NOTICE: All information contained herein is, and remains 
-  * the property of Hyphenate Inc.
-  * Dissemination of this information or reproduction of this material 
-  * is strictly forbidden unless prior written permission is obtained
-  * from Hyphenate Inc.
-  */
+//
+//  EMRealtimeSearch.m
+//  DXStudio
+//
+//  Created by XieYajie on 22/09/2017.
+//  Copyright © 2017 dxstudio. All rights reserved.
+//
 
-#import "RealtimeSearchUtil.h"
+#import "EMRealtimeSearch.h"
 
-static RealtimeSearchUtil *defaultUtil = nil;
+static EMRealtimeSearch *defaultUtil = nil;
 
-@interface RealtimeSearchUtil()
+@interface EMRealtimeSearch()
 
 @property (weak, nonatomic) id source;
 
@@ -33,7 +29,7 @@ static RealtimeSearchUtil *defaultUtil = nil;
 
 @end
 
-@implementation RealtimeSearchUtil
+@implementation EMRealtimeSearch
 
 @synthesize source = _source;
 @synthesize selector = _selector;
@@ -55,11 +51,11 @@ static RealtimeSearchUtil *defaultUtil = nil;
  *
  *  @return 实时搜索单例
  */
-+ (instancetype)currentUtil
++ (instancetype)shared
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        defaultUtil = [[RealtimeSearchUtil alloc] init];
+        defaultUtil = [[EMRealtimeSearch alloc] init];
     });
     
     return defaultUtil;

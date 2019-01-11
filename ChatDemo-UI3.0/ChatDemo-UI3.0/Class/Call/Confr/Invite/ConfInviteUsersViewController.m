@@ -8,7 +8,7 @@
 
 #import "ConfInviteUsersViewController.h"
 
-#import "RealtimeSearchUtil.h"
+#import "EMRealtimeSearch.h"
 #import "DemoConfManager.h"
 #import "ConfInviteUserCell.h"
 
@@ -223,7 +223,7 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.dataArray searchText:searchBar.text collationStringSelector:nil resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:searchBar.text collationStringSelector:nil resultBlock:^(NSArray *results) {
         if (results) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.searchDataArray removeAllObjects];
@@ -247,7 +247,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+    [[EMRealtimeSearch shared] realtimeSearchStop];
     [searchBar setShowsCancelButton:NO];
     [searchBar resignFirstResponder];
 

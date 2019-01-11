@@ -1,20 +1,16 @@
-/************************************************************
-  *  * Hyphenate CONFIDENTIAL 
-  * __________________ 
-  * Copyright (C) 2016 Hyphenate Inc. All rights reserved. 
-  *  
-  * NOTICE: All information contained herein is, and remains 
-  * the property of Hyphenate Inc.
-  * Dissemination of this information or reproduction of this material 
-  * is strictly forbidden unless prior written permission is obtained
-  * from Hyphenate Inc.
-  */
+//
+//  EMRealtimeSearch.h
+//  DXStudio
+//
+//  Created by XieYajie on 22/09/2017.
+//  Copyright © 2017 dxstudio. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
 typedef void (^RealtimeSearchResultsBlock)(NSArray *results);
 
-@interface RealtimeSearchUtil : NSObject
+@interface EMRealtimeSearch : NSObject
 
 /**
  *  是否连续搜索，默认YES(要搜索的字符串作为一个整体)
@@ -26,7 +22,7 @@ typedef void (^RealtimeSearchResultsBlock)(NSArray *results);
  *
  *  @return 实时搜索单例
  */
-+ (instancetype)currentUtil;
++ (instancetype)shared;
 
 /**
  *  开始搜索，与[realtimeSearchStop]配套使用
