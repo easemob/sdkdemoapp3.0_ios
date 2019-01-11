@@ -18,8 +18,6 @@
 		3A031B4B21C7B22C00A8D7BB /* EMSDKOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A031B4A21C7B22C00A8D7BB /* EMSDKOptions.plist */; };
 		3A031B4E21C7C45800A8D7BB /* EMDemoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A031B4D21C7C45800A8D7BB /* EMDemoOptions.m */; };
 		3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B1B9EE1C3B80290087A74F /* MessageUI.framework */; };
-		3A2AB3BC21E3459C00C68A63 /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2AB3BA21E3459C00C68A63 /* libffmpeg-ios-full.a */; };
-		3A2AB3BD21E3459C00C68A63 /* libHyphenateAVRecorderPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2AB3BB21E3459C00C68A63 /* libHyphenateAVRecorderPlugin.a */; };
 		3A2C3A251E23AF5000DCD9BE /* EMChatroomAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A1E1E23AF5000DCD9BE /* EMChatroomAdminsViewController.m */; };
 		3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A201E23AF5000DCD9BE /* EMChatroomBansViewController.m */; };
 		3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3A221E23AF5000DCD9BE /* EMChatroomMembersViewController.m */; };
@@ -62,6 +60,8 @@
 		3A4BD04F21E4899300800BD4 /* device_disable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4BD04D21E4899300800BD4 /* device_disable@3x.png */; };
 		3A4BD05021E4899300800BD4 /* device_disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4BD04E21E4899300800BD4 /* device_disable@2x.png */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
+		3A5A19B721E6EF0C0059F1AA /* libHyphenateAVRecorderPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5A19B521E6EF0C0059F1AA /* libHyphenateAVRecorderPlugin.a */; };
+		3A5A19B821E6EF0C0059F1AA /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5A19B621E6EF0C0059F1AA /* libffmpeg-ios-full.a */; };
 		3A5A19BF21E6F1AA0059F1AA /* UIViewController+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A19BA21E6F1AA0059F1AA /* UIViewController+Search.m */; };
 		3A5A19C021E6F1AA0059F1AA /* XHSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A19BE21E6F1AA0059F1AA /* XHSearchResultController.m */; };
 		3A5A19C921E7010A0059F1AA /* EMContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A19C521E7010A0059F1AA /* EMContactsViewController.m */; };
@@ -605,7 +605,6 @@
 		3A031B4D21C7C45800A8D7BB /* EMDemoOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMDemoOptions.m; sourceTree = "<group>"; };
 		3A27807A1DDB270200362CA7 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		3A27807C1DDB271400362CA7 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateFullSDK.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libHyphenateFullSDK.a"; sourceTree = "<group>"; };
-		3A2AB3AD21E3019A00C68A63 /* EMCallRecorderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallRecorderPlugin.h; sourceTree = "<group>"; };
 		3A2AB3BA21E3459C00C68A63 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "ChatDemo-UI3.0/Class/Call/plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3A2AB3BB21E3459C00C68A63 /* libHyphenateAVRecorderPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateAVRecorderPlugin.a; path = "ChatDemo-UI3.0/Class/Call/plugin/libHyphenateAVRecorderPlugin.a"; sourceTree = "<group>"; };
 		3A2C3A1D1E23AF5000DCD9BE /* EMChatroomAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatroomAdminsViewController.h; sourceTree = "<group>"; };
@@ -684,6 +683,9 @@
 		3A4BD04E21E4899300800BD4 /* device_disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "device_disable@2x.png"; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		3A5A19B421E6EF0C0059F1AA /* EMCallRecorderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMCallRecorderPlugin.h; sourceTree = "<group>"; };
+		3A5A19B521E6EF0C0059F1AA /* libHyphenateAVRecorderPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateAVRecorderPlugin.a; sourceTree = "<group>"; };
+		3A5A19B621E6EF0C0059F1AA /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3A5A19BA21E6F1AA0059F1AA /* UIViewController+Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Search.m"; sourceTree = "<group>"; };
 		3A5A19BB21E6F1AA0059F1AA /* XHSearchControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHSearchControllerDelegate.h; sourceTree = "<group>"; };
 		3A5A19BC21E6F1AA0059F1AA /* XHSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHSearchResultController.h; sourceTree = "<group>"; };
@@ -1443,8 +1445,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A2AB3BC21E3459C00C68A63 /* libffmpeg-ios-full.a in Frameworks */,
-				3A2AB3BD21E3459C00C68A63 /* libHyphenateAVRecorderPlugin.a in Frameworks */,
 				3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */,
 				3A9A29F721709ECC00AC4689 /* libopencore-amrnb.a in Frameworks */,
 				3AFDAE64201AE5780088D44E /* Bugly.framework in Frameworks */,
@@ -1452,6 +1452,8 @@
 				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
+				3A5A19B821E6EF0C0059F1AA /* libffmpeg-ios-full.a in Frameworks */,
+				3A5A19B721E6EF0C0059F1AA /* libHyphenateAVRecorderPlugin.a in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
 				D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */,
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
@@ -1491,14 +1493,6 @@
 				846D77041E6FA4DD0091DC94 /* EMCreateChatroomController.m */,
 			);
 			path = Chatroom;
-			sourceTree = "<group>";
-		};
-		3A2AB3AC21E3019A00C68A63 /* plugin */ = {
-			isa = PBXGroup;
-			children = (
-				3A2AB3AD21E3019A00C68A63 /* EMCallRecorderPlugin.h */,
-			);
-			path = plugin;
 			sourceTree = "<group>";
 		};
 		3A2C3A1C1E23AF5000DCD9BE /* Info */ = {
@@ -1618,7 +1612,7 @@
 		3A386E881DE5539C000F3D8E /* Call */ = {
 			isa = PBXGroup;
 			children = (
-				3A2AB3AC21E3019A00C68A63 /* plugin */,
+				3A5A19B321E6EF0C0059F1AA /* plugin */,
 				3ACFCD3921524B18009F488D /* CallImages */,
 				3A2F293421537E7E00F86EB5 /* Tools */,
 				3A2F292D21537E7E00F86EB5 /* 1v1 */,

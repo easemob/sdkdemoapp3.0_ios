@@ -21,6 +21,8 @@
 #import "EMDemoOptions.h"
 #import "EMLoginViewController.h"
 
+#import "EMHomeViewController.h"
+
 /**
  *  本类中做了EaseMob初始化和推送等操作
  */
@@ -89,13 +91,12 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
         
         if (gMainController == nil) {
-            MainViewController *mainController = [[MainViewController alloc] init];
-            [EMGlobalVariables setGlobalMainController:mainController];
-
-            navigationController = [[EMNavigationController alloc] initWithRootViewController:mainController];
+//            MainViewController *mainController = [[MainViewController alloc] init];
+//            [EMGlobalVariables setGlobalMainController:mainController];
+//            navigationController = [[EMNavigationController alloc] initWithRootViewController:mainController];
             
-//            EMHomeViewController *homeController = [[EMHomeViewController alloc] init];
-//            navigationController = [[EMNavigationController alloc] initWithRootViewController:homeController];
+            EMHomeViewController *homeController = [[EMHomeViewController alloc] init];
+            navigationController = [[EMNavigationController alloc] initWithRootViewController:homeController];
         } else {
             navigationController  = (EMNavigationController *)gMainController.navigationController;
         }
