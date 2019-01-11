@@ -8,7 +8,6 @@
 
 #import "XHSearchResultController.h"
 
-#import "Masonry.h"
 #import "MJRefresh.h"
 
 @interface XHSearchResultController ()<UITableViewDelegate, UITableViewDataSource>

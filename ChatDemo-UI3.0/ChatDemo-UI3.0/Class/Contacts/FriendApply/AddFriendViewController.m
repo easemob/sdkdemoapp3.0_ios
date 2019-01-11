@@ -260,12 +260,11 @@
         UITextField *messageTextField = [alertView textFieldAtIndex:0];
         
         NSString *messageStr = @"";
-        NSString *username = [[EMClient sharedClient] currentUsername];
         if (messageTextField.text.length > 0) {
-            messageStr = [NSString stringWithFormat:@"%@：%@", username, messageTextField.text];
+            messageStr = [NSString stringWithFormat:@"申请添加您为好友：%@", messageTextField.text];
         }
         else{
-            messageStr = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyInvite", @"%@ invite you as a friend"), username];
+            messageStr = @"申请添加您为好友";
         }
         [self sendFriendApplyAtIndexPath:self.selectedIndexPath
                                  message:messageStr];

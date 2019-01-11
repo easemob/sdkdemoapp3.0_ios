@@ -8,13 +8,12 @@
 
 #import "EMContactsViewController.h"
 
-#import "Masonry.h"
-
 #import "DemoConfManager.h"
 
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
+#import "EMNotificationViewController.h"
 #import "GroupListViewController.h"
 #import "ChatroomListViewController.h"
 
@@ -58,7 +57,7 @@
 
 - (void)_setupSubviews
 {
-    [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]];
+    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
@@ -119,7 +118,7 @@
             cell.nameLabel.text = @"添加好友";
         } else if (row == 1) {
             cell.avatarView.image = [UIImage imageNamed:@""];
-            cell.nameLabel.text = @"申请通知";
+            cell.nameLabel.text = @"申请与通知";
         } else if (row == 2) {
             cell.avatarView.image = [UIImage imageNamed:@""];
             cell.nameLabel.text = @"群组";
@@ -162,9 +161,9 @@
     }
     
     UIView *view = [[UIView alloc] init];
-    view.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    view.backgroundColor = kColor_LightGray;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width - 20, 20)];
-    label.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    label.backgroundColor = kColor_LightGray;
     label.font = [UIFont systemFontOfSize:15];
     
     NSString *title = self.sectionTitles[section - 1];
@@ -199,7 +198,8 @@
             EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
-            
+            EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 2) {
 //            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
 //            [self.navigationController pushViewController:groupController animated:YES];

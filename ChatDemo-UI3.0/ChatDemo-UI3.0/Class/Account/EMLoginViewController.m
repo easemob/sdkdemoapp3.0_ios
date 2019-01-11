@@ -8,7 +8,6 @@
 
 #import "EMLoginViewController.h"
 
-#import "Masonry.h"
 #import "MBProgressHUD.h"
 
 #import "EMDevicesViewController.h"
@@ -127,7 +126,7 @@
     self.appkeyButton = [[UIButton alloc] init];
     self.appkeyButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.appkeyButton setTitle:@"更换" forState:UIControlStateNormal];
-    [self.appkeyButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.appkeyButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [self.appkeyButton addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
     [self.appkeyCell.contentView addSubview:self.appkeyButton];
     [self.appkeyButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -204,7 +203,7 @@
     UIButton *loginButton = [[UIButton alloc] init];
     loginButton.clipsToBounds = YES;
     loginButton.layer.cornerRadius = 5;
-    loginButton.backgroundColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    loginButton.backgroundColor = kColor_Blue;
     loginButton.titleLabel.font = [UIFont systemFontOfSize:19];
     [loginButton setTitle:@"登录" forState:UIControlStateNormal];
     [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -220,7 +219,7 @@
     UIButton *registerButton = [[UIButton alloc] init];
     registerButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [registerButton setTitle:@"新用户注册" forState:UIControlStateNormal];
-    [registerButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [registerButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [registerButton addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonCell.contentView addSubview:registerButton];
     [registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -232,7 +231,7 @@
     self.loginTypeButton = [[UIButton alloc] init];
     self.loginTypeButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.loginTypeButton setTitle:@"使用token登录" forState:UIControlStateNormal];
-    [self.loginTypeButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.loginTypeButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [self.loginTypeButton addTarget:self action:@selector(loginTypeChangeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonCell.contentView addSubview:self.loginTypeButton];
     [self.loginTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -309,7 +308,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    textField.layer.borderColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0].CGColor;
+    textField.layer.borderColor = kColor_Blue.CGColor;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

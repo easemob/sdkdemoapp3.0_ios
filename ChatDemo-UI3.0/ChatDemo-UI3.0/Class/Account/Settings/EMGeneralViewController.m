@@ -40,7 +40,7 @@
     
     self.tableView.rowHeight = 55;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    self.tableView.backgroundColor = kColor_LightGray;
 }
 
 #pragma mark - Table view data source

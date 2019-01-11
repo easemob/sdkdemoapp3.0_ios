@@ -8,8 +8,6 @@
 
 #import "EMSDKOptionsViewController.h"
 
-#import "Masonry.h"
-
 #import "EMDemoOptions.h"
 
 @interface EMSDKOptionsViewController ()<UITextFieldDelegate>
@@ -72,7 +70,7 @@
     
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    self.tableView.backgroundColor = kColor_LightGray;
     [self _setupCells];
 }
 
@@ -132,7 +130,7 @@
     NSMutableArray *array = [[NSMutableArray alloc] init];
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.textColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    cell.textLabel.textColor = kColor_Blue;
     cell.textLabel.text = @"还原默认配置";
     [array addObject:cell];
     [self.cellArray addObject:array];

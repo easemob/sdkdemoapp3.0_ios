@@ -9,8 +9,6 @@
 #import "UIViewController+Search.h"
 #import <objc/runtime.h>
 
-#import "Masonry.h"
-
 static const void *SearchButtonKey = &SearchButtonKey;
 static const void *ResultControllerKey = &ResultControllerKey;
 static const void *ResultNavigationControllerKey = &ResultNavigationControllerKey;
@@ -62,7 +60,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
     if (self.searchButton == nil) {
         self.searchButton = [[UIButton alloc] init];
         self.searchButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.searchButton.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+        self.searchButton.backgroundColor = kColor_LightGray;
         self.searchButton.titleLabel.font = [UIFont systemFontOfSize:15];
         self.searchButton.layer.cornerRadius = 8;
         self.searchButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);

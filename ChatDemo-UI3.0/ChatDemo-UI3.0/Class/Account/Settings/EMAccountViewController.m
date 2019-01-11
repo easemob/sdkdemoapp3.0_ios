@@ -38,7 +38,7 @@
     self.tableView.sectionHeaderHeight = 15;
 //    self.tableView.sectionFooterHeight = 15;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    self.tableView.backgroundColor = kColor_LightGray;
     
     self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_3"]];
     self.headerView.frame = CGRectMake(0, 0, 60, 60);

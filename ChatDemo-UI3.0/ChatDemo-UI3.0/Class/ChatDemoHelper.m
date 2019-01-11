@@ -24,6 +24,7 @@
 #endif
 
 #import "EMGlobalVariables.h"
+#import "EMNotifications.h"
 
 static ChatDemoHelper *helper = nil;
 
@@ -552,6 +553,13 @@ static ChatDemoHelper *helper = nil;
         return;
     }
     
+    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+    model.sender = aInviter;
+    model.groupId = aGroupId;
+    model.type = EMNotificationModelTypeGroupInvite;
+    model.message = aMessage;
+    [EMNotifications insertModel:model];
+    
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
     [[ApplyViewController shareController] addNewApply:dic];
     if (gMainController) {
@@ -722,6 +730,13 @@ static ChatDemoHelper *helper = nil;
     if (!aMessage) {
         aMessage = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
     }
+    
+    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+    model.sender = aUsername;
+    model.message = aMessage;
+    model.type = EMNotificationModelTypeContact;
+    [EMNotifications insertModel:model];
+    
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aUsername, @"username":aUsername, @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
     [[ApplyViewController shareController] addNewApply:dic];
     if (gMainController) {

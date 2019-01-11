@@ -8,8 +8,6 @@
 
 #import "EMInviteFriendViewController.h"
 
-#import "Masonry.h"
-
 #import "EMAlertController.h"
 #import "EMAvatarNameCell.h"
 
@@ -52,7 +50,7 @@
     
     self.searchField = [[UITextField alloc] init];
     self.searchField.delegate = self;
-    self.searchField.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    self.searchField.backgroundColor = kColor_LightGray;
     self.searchField.font = [UIFont systemFontOfSize:16];
     self.searchField.placeholder = @"搜索用户ID";
     self.searchField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -75,22 +73,8 @@
     self.cancelButton = [[UIButton alloc] init];
     self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [self.cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-    [self.cancelButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(searchCancelButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50)];
-//    searchBar.delegate = self;
-//    searchBar.returnKeyType = UIReturnKeySearch;
-//    searchBar.backgroundImage = nil;
-//    searchBar.barTintColor = [UIColor whiteColor];
-//    searchBar.placeholder = @"搜索用户ID";
-//    UITextField *searchField = [searchBar valueForKey:@"searchField"];
-//    if (searchField) {
-//        searchField.font = [UIFont systemFontOfSize:16];
-//        [searchField setBackgroundColor:[UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]];
-//    }
-//    self.tableView.tableHeaderView = searchBar;
 }
 
 #pragma mark - Table view data source
@@ -113,7 +97,7 @@
         UIButton *rightButton = [[UIButton alloc] init];
         rightButton.tag = 100;
         rightButton.clipsToBounds = YES;
-        rightButton.backgroundColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+        rightButton.backgroundColor = kColor_Blue;
         rightButton.titleLabel.font = [UIFont systemFontOfSize:16];
         rightButton.layer.cornerRadius = 5;
         [rightButton setTitle:@"添加好友" forState:UIControlStateNormal];
@@ -146,15 +130,15 @@
         if ([contacts containsObject:self.searchUsername] || [blacks containsObject:self.searchUsername]) {
             rightButton.selected = YES;
             [rightButton setTitle:@"已添加" forState:UIControlStateSelected];
-            rightButton.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.0];
+            rightButton.backgroundColor = kColor_Gray;
         } else {
             BOOL isInvited = [self.invitedUsers containsObject:self.searchUsername];
             rightButton.selected = isInvited;
             if (isInvited) {
                 [rightButton setTitle:@"已申请" forState:UIControlStateSelected];
-                rightButton.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.0];
+                rightButton.backgroundColor = kColor_Gray;
             } else {
-                rightButton.backgroundColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+                rightButton.backgroundColor = kColor_Blue;
             }
         }
     }
@@ -232,7 +216,7 @@
             [EMAlertController showErrorAlert:@"添加失败"];
         } else {
             aButton.selected = YES;
-            aButton.backgroundColor = [UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.0];
+            aButton.backgroundColor = kColor_Gray;
             [weakself.invitedUsers addObject:self.searchUsername];
             
             [EMAlertController showSuccessAlert:@"已发出好友申请"];

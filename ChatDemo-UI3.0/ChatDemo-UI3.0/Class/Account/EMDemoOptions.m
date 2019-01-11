@@ -183,7 +183,7 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.isAutoLogin = self.isAutoLogin;
     
     retOpt.isDeleteMessagesWhenExitGroup = self.isDeleteMessagesWhenExitGroup;
-    retOpt.isAutoAcceptGroupInvitation = self.isAutoTransferMessageAttachments;
+    retOpt.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
     retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
     retOpt.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
     retOpt.sortMessageByServerTime = self.isSortMessageByServerTime;

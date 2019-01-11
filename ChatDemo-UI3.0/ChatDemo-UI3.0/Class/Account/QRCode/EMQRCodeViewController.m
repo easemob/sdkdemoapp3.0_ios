@@ -8,7 +8,6 @@
 
 #import "EMQRCodeViewController.h"
 
-#import "Masonry.h"
 #import "WSLNativeScanTool.h"
 #import "WSLScanView.h"
 
@@ -117,7 +116,7 @@
     //构建扫描样式视图
     self.scanView = [[WSLScanView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.scanView.scanRetangleRect = CGRectMake((self.view.frame.size.width - 250) / 2, (self.view.frame.size.height - 250) / 2, 250, 250);
-    self.scanView.colorAngle = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    self.scanView.colorAngle = kColor_Blue;
     self.scanView.photoframeAngleW = 20;
     self.scanView.photoframeAngleH = 20;
     self.scanView.photoframeLineW = 2;

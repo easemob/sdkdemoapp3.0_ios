@@ -8,8 +8,6 @@
 
 #import "EMAlertController.h"
 
-#import "Masonry.h"
-
 @interface EMAlertController()
 
 @property (nonatomic, strong) UIView *mainView;
@@ -89,7 +87,7 @@
 
 - (UIColor *)_tagColorWithStyle:(EMAlertViewStyle)aStyle
 {
-    UIColor *color = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    UIColor *color = kColor_Blue;
     switch (aStyle) {
         case EMAlertViewStyleError:
             color = [UIColor colorWithRed:204 / 255.0 green:58 / 255.0 blue:35 / 255.0 alpha:1.0];

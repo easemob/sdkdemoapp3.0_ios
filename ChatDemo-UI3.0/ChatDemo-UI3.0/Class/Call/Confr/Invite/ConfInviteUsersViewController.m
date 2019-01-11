@@ -8,8 +8,6 @@
 
 #import "ConfInviteUsersViewController.h"
 
-#import "Masonry.h"
-
 #import "RealtimeSearchUtil.h"
 #import "DemoConfManager.h"
 #import "ConfInviteUserCell.h"

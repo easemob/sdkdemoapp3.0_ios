@@ -8,8 +8,6 @@
 
 #import "EMSettingsViewController.h"
 
-#import "Masonry.h"
-
 #import "EMAccountViewController.h"
 #import "EMBlacklistViewController.h"
 #import "EMDevicesViewController.h"
@@ -50,7 +48,7 @@
 
 - (void)_setupSubviews
 {
-    [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]];
+    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
     
     self.view.backgroundColor = [UIColor whiteColor];
     

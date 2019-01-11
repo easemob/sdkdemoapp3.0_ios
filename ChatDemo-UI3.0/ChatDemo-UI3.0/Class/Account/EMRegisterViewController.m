@@ -8,8 +8,6 @@
 
 #import "EMRegisterViewController.h"
 
-#import "Masonry.h"
-
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
 #import "EMAlertController.h"
@@ -79,7 +77,7 @@
     self.appkeyRightView = [[UIButton alloc] init];
     self.appkeyRightView.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.appkeyRightView setTitle:@"更换" forState:UIControlStateNormal];
-    [self.appkeyRightView setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.appkeyRightView setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [self.appkeyRightView addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.appkeyRightView];
     [self.appkeyRightView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -140,7 +138,7 @@
     UIButton *registerButton = [[UIButton alloc] init];
     registerButton.clipsToBounds = YES;
     registerButton.layer.cornerRadius = 5;
-    registerButton.backgroundColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    registerButton.backgroundColor = kColor_Blue;
     registerButton.titleLabel.font = [UIFont systemFontOfSize:19];
     [registerButton setTitle:@"注册" forState:UIControlStateNormal];
     [registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -158,7 +156,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    textField.layer.borderColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0].CGColor;
+    textField.layer.borderColor = kColor_Blue.CGColor;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

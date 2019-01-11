@@ -8,8 +8,6 @@
 
 #import "EMStreamView.h"
 
-#import "Masonry.h"
-
 @interface EMStreamView()
 
 @property (nonatomic, strong) UIImageView *statusView;

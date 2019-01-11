@@ -8,8 +8,6 @@
 
 #import "EMAvatarNameCell.h"
 
-#import "Masonry.h"
-
 @implementation EMAvatarNameCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style

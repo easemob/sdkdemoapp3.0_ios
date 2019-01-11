@@ -8,8 +8,6 @@
 
 #import "EMDevicesViewController.h"
 
-#import "Masonry.h"
-
 #import "EMDemoOptions.h"
 #import "EMAlertController.h"
 
@@ -75,7 +73,7 @@
     
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
-//    self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+//    self.tableView.backgroundColor = kColor_LightGray;
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(_headerRefreshAction) forControlEvents:UIControlEventValueChanged];

@@ -8,8 +8,6 @@
 
 #import "EMConversationsViewController.h"
 
-#import "Masonry.h"
-
 @implementation EMConversationsViewController
 
 - (void)viewDidLoad {
