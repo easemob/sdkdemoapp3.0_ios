@@ -8,6 +8,8 @@
 
 #import "EMNotifications.h"
 
+#import "EMMulticastDelegate.h"
+
 static NSString *kNotifications_Sender = @"sender";
 static NSString *kNotifications_Receiver = @"receiver";
 static NSString *kNotifications_GroupId = @"groupId";
@@ -15,6 +17,7 @@ static NSString *kNotifications_Message = @"message";
 static NSString *kNotifications_Time = @"time";
 static NSString *kNotifications_Status = @"status";
 static NSString *kNotifications_Type = @"type";
+static NSString *kNotifications_IsRead = @"isRead";
 
 @implementation EMNotificationModel
 
@@ -38,6 +41,7 @@ static NSString *kNotifications_Type = @"type";
         self.time = [aDecoder decodeObjectForKey:kNotifications_Time];
         self.status = [aDecoder decodeIntegerForKey:kNotifications_Status];
         self.type = [aDecoder decodeIntegerForKey:kNotifications_Type];
+        self.isRead = [aDecoder decodeBoolForKey:kNotifications_IsRead];
     }
     return self;
 }
@@ -51,12 +55,15 @@ static NSString *kNotifications_Type = @"type";
     [aCoder encodeObject:self.time forKey:kNotifications_Time];
     [aCoder encodeInteger:self.status forKey:kNotifications_Status];
     [aCoder encodeInteger:self.type forKey:kNotifications_Type];
+    [aCoder encodeBool:self.isRead forKey:kNotifications_IsRead];
 }
 
 @end
 
 static EMNotifications *shared = nil;
 @interface EMNotifications()
+
+@property (nonatomic, strong) EMMulticastDelegate<EMNotificationsDelegate> *delegates;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
@@ -80,9 +87,12 @@ static EMNotifications *shared = nil;
     if (self) {
         _fileName = [NSString stringWithFormat:@"emdemo_notifications_%@.data", [EMClient sharedClient].currentUsername];
         _notificationList = [[NSMutableArray alloc] init];
+        _isCheckUnreadCount = YES;
         
         _dateFormatter = [[NSDateFormatter alloc] init];
         [_dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm"];
+        
+        _delegates = (EMMulticastDelegate<EMNotificationsDelegate> *)[[EMMulticastDelegate alloc] init];
         
         [self getNotificationsFromLocal];
     }
@@ -90,12 +100,43 @@ static EMNotifications *shared = nil;
     return self;
 }
 
+#pragma mark - Private
+
 - (void)getNotificationsFromLocal
 {
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:self.fileName];
     NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
     [self.notificationList removeAllObjects];
     [self.notificationList addObjectsFromArray:array];
+    
+    _unreadCount = [self getUnreadCount];
+    if (self.isCheckUnreadCount) {
+        [self.delegates didNotificationsUnreadCountUpdate:_unreadCount];
+    }
+}
+
+- (NSInteger)getUnreadCount
+{
+    NSInteger ret = 0;
+    for (EMNotificationModel *model in self.notificationList) {
+        if (!model.isRead) {
+            ++ret;
+        }
+    }
+    
+    return ret;
+}
+
+#pragma mark - Public
+
+- (void)addDelegate:(id<EMNotificationsDelegate>)aDelegate
+{
+    [self.delegates addDelegate:aDelegate delegateQueue:dispatch_get_main_queue()];
+}
+
+- (void)removeDelegate:(id<EMNotificationsDelegate>)aDelegate
+{
+    [self.delegates removeDelegate:aDelegate];
 }
 
 - (void)archive
@@ -104,14 +145,36 @@ static EMNotifications *shared = nil;
     [NSKeyedArchiver archiveRootObject:self.notificationList toFile:file];
 }
 
-+ (void)insertModel:(EMNotificationModel *)aModel
+- (void)markAllAsRead
 {
-    EMNotifications *nf = [EMNotifications shared];
-    NSString *time = [nf.dateFormatter stringFromDate:[NSDate date]];
+    BOOL isArchive = NO;
+    for (EMNotificationModel *model in self.notificationList) {
+        if (!model.isRead) {
+            model.isRead = YES;
+            isArchive = YES;
+        }
+    }
+    
+    if (isArchive) {
+        [self archive];
+    }
+    
+    if (self.unreadCount != 0) {
+        _unreadCount = 0;
+        
+        if (self.isCheckUnreadCount) {
+            [self.delegates didNotificationsUnreadCountUpdate:0];
+        }
+    }
+}
 
-    for (EMNotificationModel *model in nf.notificationList) {
-        if ([model.sender isEqualToString:aModel.sender] && model.type == aModel.type && [model.groupId isEqualToString:aModel.groupId] && model.status == aModel.status && [model.time isEqualToString:time]) {
-            return;
+- (void)insertModel:(EMNotificationModel *)aModel
+{
+    NSString *time = [self.dateFormatter stringFromDate:[NSDate date]];
+    for (EMNotificationModel *model in self.notificationList) {
+        if (model.type == aModel.type && model.status == aModel.status && [model.sender isEqualToString:aModel.sender] && [model.groupId isEqualToString:aModel.groupId]) {
+            [self.notificationList removeObject:model];
+            break;
         }
     }
     
@@ -124,12 +187,17 @@ static EMNotifications *shared = nil;
         }
     }
     
-    [nf.notificationList insertObject:aModel atIndex:0];
-    [nf archive];
-    
-    if (nf.delegate && [nf.delegate respondsToSelector:@selector(didNotificationListUpdate)]) {
-        [nf.delegate didNotificationListUpdate];
+    if (!self.isCheckUnreadCount) {
+        aModel.isRead = YES;
+    } else {
+        ++_unreadCount;
+        [self.delegates didNotificationsUnreadCountUpdate:self.unreadCount];
     }
+    
+    [self.notificationList insertObject:aModel atIndex:0];
+    [self archive];
+    
+    [self.delegates didNotificationsUpdate];
 }
 
 @end

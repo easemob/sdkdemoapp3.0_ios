@@ -276,6 +276,7 @@
 		3AC23BAD21E88AE000EC603C /* alert_error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AC23BA421E88ADF00EC603C /* alert_error@3x.png */; };
 		3AC23BAE21E88AE000EC603C /* alert_success@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AC23BA521E88ADF00EC603C /* alert_success@3x.png */; };
 		3AC23BAF21E88AE000EC603C /* alert_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AC23BA621E88AE000EC603C /* alert_default@2x.png */; };
+		3AC23BB621E8A19900EC603C /* EMMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23BB521E8A19900EC603C /* EMMulticastDelegate.m */; };
 		3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6920088E4E0087CE2D /* DingViewController.m */; };
 		3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */; };
 		3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */; };
@@ -1072,6 +1073,8 @@
 		3AC23BA421E88ADF00EC603C /* alert_error@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_error@3x.png"; sourceTree = "<group>"; };
 		3AC23BA521E88ADF00EC603C /* alert_success@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_success@3x.png"; sourceTree = "<group>"; };
 		3AC23BA621E88AE000EC603C /* alert_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert_default@2x.png"; sourceTree = "<group>"; };
+		3AC23BB421E8A19900EC603C /* EMMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMulticastDelegate.h; sourceTree = "<group>"; };
+		3AC23BB521E8A19900EC603C /* EMMulticastDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMulticastDelegate.m; sourceTree = "<group>"; };
 		3ACC7F6820088E4E0087CE2D /* DingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingViewController.h; sourceTree = "<group>"; };
 		3ACC7F6920088E4E0087CE2D /* DingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingViewController.m; sourceTree = "<group>"; };
 		3ACC7F6B20089A5D0087CE2D /* DingAcksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingAcksViewController.h; sourceTree = "<group>"; };
@@ -2334,6 +2337,7 @@
 		3AC23A9621E87EC400EC603C /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				3AC23BB321E8A19900EC603C /* MulticastDelegate */,
 				3AC23B6521E8813C00EC603C /* EMRealtimeSearch.h */,
 				3AC23B6421E8813C00EC603C /* EMRealtimeSearch.m */,
 				3AC23A9721E87EC400EC603C /* EMColorDefine.h */,
@@ -2424,6 +2428,15 @@
 				3AC23B9F21E88ADF00EC603C /* EMAlertController.m */,
 			);
 			path = EMAlertController;
+			sourceTree = "<group>";
+		};
+		3AC23BB321E8A19900EC603C /* MulticastDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				3AC23BB421E8A19900EC603C /* EMMulticastDelegate.h */,
+				3AC23BB521E8A19900EC603C /* EMMulticastDelegate.m */,
+			);
+			path = MulticastDelegate;
 			sourceTree = "<group>";
 		};
 		3ACFCD3921524B18009F488D /* CallImages */ = {
@@ -3642,6 +3655,7 @@
 				3AC23B8321E8847C00EC603C /* ApplyFriendCell.m in Sources */,
 				3A9A2A3421709ECC00AC4689 /* EaseMessageTimeCell.m in Sources */,
 				3AC23B8421E8847C00EC603C /* ApplyViewController.m in Sources */,
+				3AC23BB621E8A19900EC603C /* EMMulticastDelegate.m in Sources */,
 				3AC23B8721E8847C00EC603C /* ContactListSelectViewController.m in Sources */,
 				3A9A2A0721709ECC00AC4689 /* MWPhoto.m in Sources */,
 				3A9A2A2C21709ECC00AC4689 /* EaseLocationViewController.m in Sources */,

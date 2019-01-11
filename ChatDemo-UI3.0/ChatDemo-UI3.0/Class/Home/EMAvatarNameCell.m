@@ -36,6 +36,8 @@
 
 - (void)_setupSubviews
 {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     _avatarView = [[UIImageView alloc] init];
     [self.contentView addSubview:_avatarView];
     [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {

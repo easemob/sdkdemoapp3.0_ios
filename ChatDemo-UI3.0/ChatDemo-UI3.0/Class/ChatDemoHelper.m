@@ -558,7 +558,7 @@ static ChatDemoHelper *helper = nil;
     model.groupId = aGroupId;
     model.type = EMNotificationModelTypeGroupInvite;
     model.message = aMessage;
-    [EMNotifications insertModel:model];
+    [[EMNotifications shared] insertModel:model];
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
     [[ApplyViewController shareController] addNewApply:dic];
@@ -735,7 +735,7 @@ static ChatDemoHelper *helper = nil;
     model.sender = aUsername;
     model.message = aMessage;
     model.type = EMNotificationModelTypeContact;
-    [EMNotifications insertModel:model];
+    [[EMNotifications shared] insertModel:model];
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aUsername, @"username":aUsername, @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
     [[ApplyViewController shareController] addNewApply:dic];

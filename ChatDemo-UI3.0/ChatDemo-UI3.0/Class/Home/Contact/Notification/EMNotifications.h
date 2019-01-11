@@ -39,20 +39,33 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 @property (nonatomic) EMNotificationModelType type;
 
+@property (nonatomic) BOOL isRead;
+
 @end
 
 @protocol EMNotificationsDelegate;
+@class EMMulticastDelegate;
 @interface EMNotifications : NSObject
-
-@property (nonatomic, weak) id<EMNotificationsDelegate> delegate;
 
 @property (nonatomic, strong, readonly) NSString *fileName;
 
 @property (nonatomic, strong) NSMutableArray *notificationList;
 
+@property (nonatomic) BOOL isCheckUnreadCount;
+
+@property (nonatomic, readonly) NSInteger unreadCount;
+
 + (instancetype)shared;
 
-+ (void)insertModel:(EMNotificationModel *)aModel;
+- (void)addDelegate:(id<EMNotificationsDelegate>)aDelegate;
+
+- (void)removeDelegate:(id<EMNotificationsDelegate>)aDelegate;
+
+- (void)insertModel:(EMNotificationModel *)aModel;
+
+- (void)markAllAsRead;
+
+//- (NSInteger)getUnreadCount;
 
 - (void)archive;
 
@@ -60,7 +73,11 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 @protocol EMNotificationsDelegate <NSObject>
 
-- (void)didNotificationListUpdate;
+@optional
+
+- (void)didNotificationsUpdate;
+
+- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount;
 
 @end
 

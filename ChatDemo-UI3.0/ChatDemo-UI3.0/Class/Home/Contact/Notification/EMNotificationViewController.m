@@ -24,14 +24,31 @@
     
     // Uncomment the following line to preserve selection between presentations.
     self.dataArray = [[NSMutableArray alloc] init];
-    [EMNotifications shared].delegate = self;
+    
+    [[EMNotifications shared] addDelegate:self];
     
     [self _setupViews];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[EMNotifications shared] markAllAsRead];
+    [EMNotifications shared].isCheckUnreadCount = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [EMNotifications shared].isCheckUnreadCount = YES;
+}
+
 - (void)dealloc
 {
-    [EMNotifications shared].delegate = nil;
+    [EMNotifications shared].isCheckUnreadCount = YES;
+    [[EMNotifications shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -74,7 +91,7 @@
 
 #pragma mark - EMNotificationsDelegate
 
-- (void)didNotificationListUpdate
+- (void)didNotificationsUpdate
 {
     [self.tableView reloadData];
 }

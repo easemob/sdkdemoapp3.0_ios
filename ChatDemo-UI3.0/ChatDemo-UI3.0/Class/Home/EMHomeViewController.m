@@ -8,6 +8,8 @@
 
 #import "EMHomeViewController.h"
 
+#import "EMNotifications.h"
+
 #import "EMConversationsViewController.h"
 #import "EMContactsViewController.h"
 #import "EMSettingsViewController.h"
@@ -16,7 +18,7 @@
 #define kTabbarItemTag_Contact 1
 #define kTabbarItemTag_Settings 2
 
-@interface EMHomeViewController ()<UITabBarDelegate>
+@interface EMHomeViewController ()<UITabBarDelegate, EMNotificationsDelegate>
 
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
@@ -32,8 +34,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     [self _setupSubviews];
+    
+    [[EMNotifications shared] addDelegate:self];
+    [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -41,6 +45,11 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)dealloc
+{
+    [[EMNotifications shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -143,6 +152,17 @@
             make.right.equalTo(self.view);
             make.bottom.equalTo(self.tabBar.mas_top);
         }];
+    }
+}
+
+#pragma mark - EMNotificationsDelegate
+
+- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
+{
+    if (aUnreadCount > 0) {
+        self.contactsController.tabBarItem.badgeValue = @(aUnreadCount).stringValue;
+    } else {
+        self.contactsController.tabBarItem.badgeValue = nil;
     }
 }
 

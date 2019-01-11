@@ -9,7 +9,7 @@
 #import "EMContactsViewController.h"
 
 #import "EMRealtimeSearch.h"
-#import "DemoConfManager.h"
+#import "EMNotifications.h"
 
 #import "EMAlertController.h"
 #import "EMAvatarNameCell.h"
@@ -17,14 +17,18 @@
 #import "EMInviteFriendViewController.h"
 #import "EMNotificationViewController.h"
 
+#import "DemoConfManager.h"
 #import "GroupListViewController.h"
 #import "ChatroomListViewController.h"
 #import "ChatViewController.h"
 
-@interface EMContactsViewController ()<XHSearchControllerDelegate>
+@interface EMContactsViewController ()<XHSearchControllerDelegate, EMNotificationsDelegate>
 
-@property (strong, nonatomic) NSMutableArray *allContacts;
-@property (strong, nonatomic) NSMutableArray *sectionTitles;
+@property (nonatomic, strong) NSMutableArray *allContacts;
+@property (nonatomic, strong) NSMutableArray *sectionTitles;
+
+@property (nonatomic, strong) EMAvatarNameCell *notifCell;
+@property (nonatomic, strong) UILabel *notifBadgeLabel;
 
 @end
 
@@ -38,6 +42,9 @@
     self.sectionTitles = [[NSMutableArray alloc] init];
     
     [self _setupSubviews];
+    
+    [[EMNotifications shared] addDelegate:self];
+    [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
     
     [self _loadAllContactsFromDB];
 }
@@ -54,6 +61,11 @@
     [super viewWillDisappear:animated];
     
     self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)dealloc
+{
+    [[EMNotifications shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -77,7 +89,6 @@
     }];
     
     [self enableSearchController];
-    
     self.tableView.rowHeight = 50;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);
@@ -86,6 +97,30 @@
         make.bottom.equalTo(self.view);
     }];
     
+    [self _setupSearchResultController];
+    
+    self.notifCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMNotificationsCell"];
+    self.notifCell.avatarView.image = [UIImage imageNamed:@""];
+    self.notifCell.nameLabel.text = @"申请与通知";
+    
+    self.notifBadgeLabel = [[UILabel alloc] init];
+    self.notifBadgeLabel.backgroundColor = [UIColor redColor];
+    self.notifBadgeLabel.textColor = [UIColor whiteColor];
+    self.notifBadgeLabel.font = [UIFont systemFontOfSize:13];
+    self.notifBadgeLabel.hidden = YES;
+    self.notifBadgeLabel.clipsToBounds = YES;
+    self.notifBadgeLabel.layer.cornerRadius = 10;
+    [self.notifCell.contentView addSubview:self.notifBadgeLabel];
+    [self.notifBadgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.notifCell.contentView);
+        make.right.equalTo(self.notifCell.contentView).offset(-10);
+        make.height.equalTo(@20);
+        make.width.greaterThanOrEqualTo(@20);
+    }];
+}
+
+- (void)_setupSearchResultController
+{
     __weak typeof(self) weakself = self;
     self.resultController.tableView.rowHeight = 50;
     [self.resultController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
@@ -158,21 +193,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = @"EMAvatarNameCell";
-    EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
+    if (section == 0 && row == 1) {//申请cell特殊化，需要显示角标
+        return self.notifCell;
+    }
+    
+    NSString *cellIdentifier = @"EMAvatarNameCell";
+    EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+
     if (section == 0) {
         if (row == 0) {
             cell.avatarView.image = [UIImage imageNamed:@""];
             cell.nameLabel.text = @"添加好友";
-        } else if (row == 1) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
-            cell.nameLabel.text = @"申请与通知";
         } else if (row == 2) {
             cell.avatarView.image = [UIImage imageNamed:@""];
             cell.nameLabel.text = @"群组";
@@ -396,6 +432,24 @@
             [weakself.resultController.tableView reloadData];
         });
     }];
+}
+
+#pragma mark - EMNotificationsDelegate
+
+- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
+{
+    if (aUnreadCount > 0) {
+        if (aUnreadCount < 10) {
+            self.notifBadgeLabel.textAlignment = NSTextAlignmentCenter;
+            self.notifBadgeLabel.text = @(aUnreadCount).stringValue;
+        } else {
+            self.notifBadgeLabel.textAlignment = NSTextAlignmentLeft;
+            self.notifBadgeLabel.text = [NSString stringWithFormat:@" %@ ", @(aUnreadCount)];
+        }
+        self.notifBadgeLabel.hidden = NO;
+    } else {
+        self.notifBadgeLabel.hidden = YES;
+    }
 }
 
 #pragma mark - Private
