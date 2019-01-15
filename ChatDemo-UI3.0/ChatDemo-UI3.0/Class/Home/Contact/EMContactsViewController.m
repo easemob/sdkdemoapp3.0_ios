@@ -169,7 +169,7 @@
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
         ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:contact conversationType:EMConversationTypeChat];
-        [weakself.navigationController pushViewController:chatController animated:YES];
+        [weakself.resultController.navigationController pushViewController:chatController animated:YES];
     }];
 }
 
@@ -571,7 +571,5 @@
         }];
     }];
 }
-
-#pragma mark - Action
 
 @end

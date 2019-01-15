@@ -105,6 +105,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+    
     if (self.conversation.type == EMConversationTypeGroupChat) {
         NSDictionary *ext = self.conversation.ext;
         if ([[ext objectForKey:@"subject"] length])
