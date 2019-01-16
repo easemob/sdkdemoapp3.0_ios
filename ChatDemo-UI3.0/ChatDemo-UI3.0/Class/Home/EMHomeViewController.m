@@ -36,11 +36,10 @@
     // Do any additional setup after loading the view.
     [self _setupSubviews];
     
+    //监听消息接收，主要更新会话tabbaritem的badge
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-    
+    //监听通知申请，主要更新联系人tabbaritem的badge
     [[EMNotifications shared] addDelegate:self];
-    [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
-    [self _loadConversationTabBarItemBadge];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -48,6 +47,7 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
+    [self _loadTabBarItemsBadge];
 }
 
 - (void)dealloc
@@ -192,6 +192,13 @@
     } else {
         self.conversationsController.tabBarItem.badgeValue = nil;
     }
+}
+
+- (void)_loadTabBarItemsBadge
+{
+    [self _loadConversationTabBarItemBadge];
+    
+    [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
 }
 
 @end
