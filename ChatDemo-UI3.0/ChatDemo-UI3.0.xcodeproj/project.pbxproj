@@ -410,7 +410,6 @@
 		90011F921AE4BF090088D549 /* EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90011F911AE4BF090088D549 /* EMAlertView.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
-		90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */; };
 		906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */; };
 		906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
@@ -453,7 +452,6 @@
 		D29A6BB31B72098D002324BB /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB11B72098D002324BB /* Parse.framework */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
-		D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */; };
 		D2A910801C83E7890025AD0A /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = D2A9107A1C83E7890025AD0A /* 114.png */; };
 		D2A910811C83E7890025AD0A /* 120.png in Resources */ = {isa = PBXBuildFile; fileRef = D2A9107B1C83E7890025AD0A /* 120.png */; };
 		D2A910821C83E7890025AD0A /* 29.png in Resources */ = {isa = PBXBuildFile; fileRef = D2A9107C1C83E7890025AD0A /* 29.png */; };
@@ -1246,8 +1244,6 @@
 		9003D7851939D8D000DC38A4 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		9003D7861939D8D000DC38A4 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
-		90517D651A5C3C1F008F1315 /* AppDelegate+EaseMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+EaseMob.h"; sourceTree = "<group>"; };
-		90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+EaseMob.m"; sourceTree = "<group>"; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
 		906083D51B71F894008574B4 /* EMRobotChatTextBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRobotChatTextBubbleView.h; sourceTree = "<group>"; };
 		906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRobotChatTextBubbleView.m; sourceTree = "<group>"; };
@@ -1315,8 +1311,6 @@
 		D29A6BB01B72098D002324BB /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		D29A6BB11B72098D002324BB /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
-		D29A6BB71B720A62002324BB /* AppDelegate+Parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Parse.h"; sourceTree = "<group>"; };
-		D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Parse.m"; sourceTree = "<group>"; };
 		D2A9107A1C83E7890025AD0A /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114.png; sourceTree = "<group>"; };
 		D2A9107B1C83E7890025AD0A /* 120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 120.png; sourceTree = "<group>"; };
 		D2A9107C1C83E7890025AD0A /* 29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 29.png; sourceTree = "<group>"; };
@@ -2918,10 +2912,6 @@
 				90911143192EEE6E008A48AA /* MainViewController.m */,
 				90911121192EEBB8008A48AA /* AppDelegate.h */,
 				90911122192EEBB8008A48AA /* AppDelegate.m */,
-				D29A6BB71B720A62002324BB /* AppDelegate+Parse.h */,
-				D29A6BB81B720A62002324BB /* AppDelegate+Parse.m */,
-				90517D651A5C3C1F008F1315 /* AppDelegate+EaseMob.h */,
-				90517D661A5C3C1F008F1315 /* AppDelegate+EaseMob.m */,
 				D2FFDB901C1687A30031425A /* ChatDemoHelper.h */,
 				D2FFDB911C1687A30031425A /* ChatDemoHelper.m */,
 			);
@@ -3751,7 +3741,6 @@
 				3A9A29FC21709ECC00AC4689 /* EMCDDeviceManager+ProximitySensor.m in Sources */,
 				3A9A29EA21709ECC00AC4689 /* MJRefreshBackNormalFooter.m in Sources */,
 				3A9A2A2E21709ECC00AC4689 /* EaseUsersListViewController.m in Sources */,
-				D29A6BB91B720A62002324BB /* AppDelegate+Parse.m in Sources */,
 				3A9A29FE21709ECC00AC4689 /* EMCDDeviceManager+Microphone.m in Sources */,
 				3C3EB2FF195465D100E1AE9E /* PublicGroupDetailViewController.m in Sources */,
 				3A9A29E021709ECC00AC4689 /* EaseMessageModel.m in Sources */,
@@ -3803,7 +3792,6 @@
 				3A9A2A3A21709ECC00AC4689 /* EaseFacialView.m in Sources */,
 				3A031B4E21C7C45800A8D7BB /* EMDemoOptions.m in Sources */,
 				3A9A2A3B21709ECC00AC4689 /* EaseFaceView.m in Sources */,
-				90517D671A5C3C1F008F1315 /* AppDelegate+EaseMob.m in Sources */,
 				3A9A29E421709ECC00AC4689 /* MJRefreshConst.m in Sources */,
 				3AC23BA921E88AE000EC603C /* EMAlertController.m in Sources */,
 				3C13D94E1A120BA200903622 /* ContactView.m in Sources */,
