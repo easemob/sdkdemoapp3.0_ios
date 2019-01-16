@@ -18,7 +18,7 @@
 #define kTabbarItemTag_Contact 1
 #define kTabbarItemTag_Settings 2
 
-@interface EMHomeViewController ()<UITabBarDelegate, EMNotificationsDelegate>
+@interface EMHomeViewController ()<UITabBarDelegate, EMChatManagerDelegate, EMNotificationsDelegate>
 
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
@@ -36,8 +36,11 @@
     // Do any additional setup after loading the view.
     [self _setupSubviews];
     
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    
     [[EMNotifications shared] addDelegate:self];
     [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
+    [self _loadConversationTabBarItemBadge];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -49,6 +52,7 @@
 
 - (void)dealloc
 {
+    [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMNotifications shared] removeDelegate:self];
 }
 
@@ -155,6 +159,13 @@
     }
 }
 
+#pragma mark - EMChatManagerDelegate
+
+- (void)messagesDidReceive:(NSArray *)aMessages
+{
+    [self _loadConversationTabBarItemBadge];
+}
+
 #pragma mark - EMNotificationsDelegate
 
 - (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
@@ -163,6 +174,23 @@
         self.contactsController.tabBarItem.badgeValue = @(aUnreadCount).stringValue;
     } else {
         self.contactsController.tabBarItem.badgeValue = nil;
+    }
+}
+
+#pragma mark - Private
+
+- (void)_loadConversationTabBarItemBadge
+{
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
+    NSInteger unreadCount = 0;
+    for (EMConversation *conversation in conversations) {
+        unreadCount += conversation.unreadMessagesCount;
+    }
+    
+    if (unreadCount > 0) {
+        self.conversationsController.tabBarItem.badgeValue = @(unreadCount).stringValue;
+    } else {
+        self.conversationsController.tabBarItem.badgeValue = nil;
     }
 }
 

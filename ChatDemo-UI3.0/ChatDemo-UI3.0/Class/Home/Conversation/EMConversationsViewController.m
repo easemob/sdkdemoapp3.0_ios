@@ -16,7 +16,10 @@
 #import "UIViewController+Search.h"
 #import "ChatViewController.h"
 
-@interface EMConversationsViewController()<XHSearchControllerDelegate>
+@interface EMConversationsViewController()<EMChatManagerDelegate, XHSearchControllerDelegate>
+
+@property (nonatomic) BOOL isViewAppear;
+@property (nonatomic) BOOL isNeedReload;
 
 @end
 
@@ -28,6 +31,7 @@
     
     [self _setupSubviews];
     
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [self _loadAllConversationsFromDBWithIsShowHud:YES];
 }
 
@@ -36,6 +40,11 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
+    self.isViewAppear = YES;
+    if (self.isNeedReload) {
+        self.isNeedReload = NO;
+        [self.tableView reloadData];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -43,6 +52,13 @@
     [super viewWillDisappear:animated];
     
     self.navigationController.navigationBarHidden = NO;
+    self.isViewAppear = NO;
+    self.isNeedReload = NO;
+}
+
+- (void)dealloc
+{
+    [[EMClient sharedClient].chatManager removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -173,6 +189,22 @@
         [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:YES completion:nil];
         [self.dataArray removeObjectAtIndex:row];
         [self.tableView reloadData];
+    }
+}
+
+#pragma mark - EMChatManagerDelegate
+
+- (void)conversationListDidUpdate:(NSArray *)aConversationList
+{
+    [self _loadAllConversationsFromDBWithIsShowHud:NO];
+}
+
+- (void)messagesDidReceive:(NSArray *)aMessages
+{
+    if (self.isViewAppear) {
+        [self.tableView reloadData];
+    } else {
+        self.isNeedReload = YES;
     }
 }
 

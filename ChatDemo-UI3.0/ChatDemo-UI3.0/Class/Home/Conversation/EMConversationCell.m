@@ -75,13 +75,13 @@ static int kConversation_AtAll = 2;
     _badgeLabel.textColor = [UIColor whiteColor];
     _badgeLabel.backgroundColor = [UIColor redColor];
     _badgeLabel.clipsToBounds = YES;
-    _badgeLabel.layer.cornerRadius = 7;
+    _badgeLabel.layer.cornerRadius = 8;
     [_badgeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.contentView addSubview:_badgeLabel];
     [_badgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_centerY).offset(3);
         make.right.equalTo(self.contentView).offset(-15);
-        make.height.equalTo(@14);
+        make.height.equalTo(@16);
     }];
     
     _detailLabel = [[UILabel alloc] init];
