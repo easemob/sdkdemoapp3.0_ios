@@ -51,8 +51,8 @@
 
 - (void)_setupSubviews
 {
+    [self addPopBackLeftItem];
     self.title = @"SDK配置";
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     
     if (self.enableEdit) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveOptionsAction)];
@@ -372,11 +372,6 @@
 }
 
 #pragma mark - Action
-
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)switchValueChanged:(UISwitch *)aSwitch
 {

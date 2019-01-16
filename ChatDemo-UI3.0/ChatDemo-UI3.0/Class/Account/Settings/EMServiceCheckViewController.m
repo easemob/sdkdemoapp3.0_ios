@@ -49,7 +49,7 @@
 
 - (void)_setupSubviews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    [self addPopBackLeftItem];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"开始" style:UIBarButtonItemStylePlain target:self action:@selector(serviceCheckBeginAction)];
     
     self.title = @"诊断";
@@ -113,11 +113,6 @@
 }
 
 #pragma mark - Action
-
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)_beginServiceCheck
 {

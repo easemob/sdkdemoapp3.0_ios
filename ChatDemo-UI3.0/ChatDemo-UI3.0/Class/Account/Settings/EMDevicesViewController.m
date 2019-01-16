@@ -65,7 +65,7 @@
 
 - (void)_setupSubviews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    [self addPopBackLeftItem];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@""] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(kickAllDevicesAction)];
     
     self.title = @"登录设备列表";
@@ -209,11 +209,6 @@
 //}
 
 #pragma mark - Action
-
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)deleteCellAction:(NSIndexPath *)aIndexPath
 {

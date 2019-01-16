@@ -45,6 +45,16 @@
     return YES;
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    [[EMClient sharedClient] applicationDidEnterBackground:application];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    [[EMClient sharedClient] applicationWillEnterForeground:application];
+}
+
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -113,13 +123,50 @@
         gIsInitializedSDK = YES;
         [[EMClient sharedClient] initializeSDKWithOptions:[demoOptions toOptions]];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@(YES)];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@(NO)];
     }
 }
 
 #pragma mark - Demo
+
+//注册远程通知
+- (void)_registerRemoteNotification
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    application.applicationIconBadgeNumber = 0;
+    
+    if (NSClassFromString(@"UNUserNotificationCenter")) {
+        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+        
+        [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert completionHandler:^(BOOL granted, NSError *error) {
+            if (granted) {
+#if !TARGET_IPHONE_SIMULATOR
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [application registerForRemoteNotifications];
+                });
+#endif
+            }
+        }];
+        return;
+    }
+    
+    if([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    
+#if !TARGET_IPHONE_SIMULATOR
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        [application registerForRemoteNotifications];
+    } else {
+        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    }
+#endif
+}
 
 - (void)_initDemo
 {
@@ -130,15 +177,11 @@
     [Bugly startWithAppId:nil];
 #endif
     
-    //注册本地推送
-    if (NSClassFromString(@"UNUserNotificationCenter")) {
-        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-    }
-    
     //注册登录状态监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     
-    [[EaseSDKHelper shareHelper] hyphenateApplication:nil didFinishLaunchingWithOptions:nil];
+    //注册推送
+    [self _registerRemoteNotification];
 }
 
 - (void)loginStateChange:(NSNotification *)aNotif

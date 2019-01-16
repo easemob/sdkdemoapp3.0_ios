@@ -16,10 +16,11 @@
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
 #import "EMNotificationViewController.h"
+#import "EMChatroomsViewController.h"
 
 #import "DemoConfManager.h"
 #import "GroupListViewController.h"
-#import "ChatroomListViewController.h"
+//#import "ChatroomListViewController.h"
 #import "ChatViewController.h"
 
 @interface EMContactsViewController ()<XHSearchControllerDelegate, EMNotificationsDelegate>
@@ -90,6 +91,7 @@
     
     [self enableSearchController];
     self.tableView.rowHeight = 50;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);
         make.left.equalTo(self.view);
@@ -265,10 +267,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == [self.dataArray count]) {
-        return 20;
-    }
-    
     return 1;
 }
 
@@ -294,8 +292,8 @@
 //            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
 //            [self.navigationController pushViewController:groupController animated:YES];
         } else if (row == 3) {
-//            ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
-//            [self.navigationController pushViewController:controller animated:YES];
+            EMChatroomsViewController *controller = [[EMChatroomsViewController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 4) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 

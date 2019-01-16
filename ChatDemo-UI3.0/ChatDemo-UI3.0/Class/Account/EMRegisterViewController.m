@@ -39,7 +39,7 @@
 
 - (void)_setupViews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    [self addPopBackLeftItem];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
 
     self.view.backgroundColor = [UIColor whiteColor];
@@ -176,11 +176,6 @@
 
 #pragma mark - Action
 
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (void)qrCodeAction
 {
     [self.view endEditing:YES];
@@ -263,7 +258,8 @@
             if (weakself.successCompletion) {
                 weakself.successCompletion(name, pswd);
             }
-            [weakself backAction];
+            
+            [weakself.navigationController popViewControllerAnimated:YES];
             return ;
         }
         

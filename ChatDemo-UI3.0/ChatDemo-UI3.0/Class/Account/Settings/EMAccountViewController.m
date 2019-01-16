@@ -31,8 +31,7 @@
 
 - (void)_setupSubviews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-    
+    [self addPopBackLeftItem];
     self.title = @"个人信息";
     
     self.tableView.sectionHeaderHeight = 15;
@@ -196,11 +195,6 @@
 }
 
 #pragma mark - Action
-
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)disturbValueChanged
 {

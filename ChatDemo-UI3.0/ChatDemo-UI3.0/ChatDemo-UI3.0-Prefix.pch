@@ -31,5 +31,6 @@
     //3.5.4
     #import "Masonry.h"
     #import "EMColorDefine.h"
+    #import "UIViewController+Util.h"
 
 #endif

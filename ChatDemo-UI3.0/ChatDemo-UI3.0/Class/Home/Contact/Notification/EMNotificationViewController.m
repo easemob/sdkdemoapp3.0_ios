@@ -55,7 +55,7 @@
 
 - (void)_setupViews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+    [self addPopBackLeftItem];
     self.title = @"申请与通知";
     
     self.tableView.backgroundColor = kColor_LightGray;
@@ -152,13 +152,6 @@
             block(aError);
         }];
     }
-}
-
-#pragma mark - Action
-
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

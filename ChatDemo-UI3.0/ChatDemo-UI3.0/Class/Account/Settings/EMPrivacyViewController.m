@@ -31,8 +31,7 @@
 
 - (void)_setupSubviews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-    
+    [self addPopBackLeftItem];
     self.title = @"隐私";
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -122,11 +121,6 @@
 }
 
 #pragma mark - Action
-
-- (void)backAction
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)typingSwitchValueChanged
 {
