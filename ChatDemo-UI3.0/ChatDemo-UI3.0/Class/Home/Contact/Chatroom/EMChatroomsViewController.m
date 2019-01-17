@@ -13,6 +13,7 @@
 
 #import "EMGroupCell.h"
 #import "EMCreateChatroomViewController.h"
+
 #import "ChatViewController.h"
 
 @interface EMChatroomsViewController ()
@@ -79,6 +80,7 @@
     }
     
     if (tableView == self.tableView && indexPath.section == 0) {
+        cell.detailLabel.text = nil;
         if (indexPath.row == 0) {
             cell.avatarView.image = [UIImage imageNamed:@""];
             cell.nameLabel.text = @"创建聊天室";
@@ -100,6 +102,7 @@
     } else {
         cell.nameLabel.text = chatroom.chatroomId;
     }
+    cell.detailLabel.text = chatroom.chatroomId;
     
     return cell;
 }

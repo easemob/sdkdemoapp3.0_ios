@@ -8,7 +8,7 @@
 
 #import "EMSearchViewController.h"
 
-@interface EMSearchViewController ()<EMSearchBarDelegate>
+@interface EMSearchViewController ()
 
 @end
 

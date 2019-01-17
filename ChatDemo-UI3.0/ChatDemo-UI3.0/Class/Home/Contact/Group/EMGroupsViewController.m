@@ -11,9 +11,14 @@
 #import "EMAlertController.h"
 
 #import "EMGroupCell.h"
+#import "EMInviteGroupMemberViewController.h"
+#import "EMCreateGroupViewController.h"
+
 #import "ChatViewController.h"
 
 @interface EMGroupsViewController ()
+
+@property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
 @end
 
@@ -25,15 +30,16 @@
     [self _setupSubviews];
     
     self.page = 1;
-    [self _fetchGroupsWithPage:self.page isHeader:YES isShowHUD:YES];
+    [self _fetchJoinedGroupsWithPage:self.page isHeader:YES isShowHUD:YES];
 }
 
 #pragma mark - Subviews
 
 - (void)_setupSubviews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-    self.title = @"我的聊天室";
+    [self addPopBackLeftItem];
+    self.title = @"我的群组";
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
 }
@@ -55,7 +61,7 @@
     NSInteger count = 0;
     if (tableView == self.tableView) {
         if (section == 0) {
-            count = 1;
+            count = 2;
         } else {
             count = [self.dataArray count];
         }
@@ -77,27 +83,32 @@
     }
     
     if (tableView == self.tableView && indexPath.section == 0) {
+        cell.detailLabel.text = nil;
         if (indexPath.row == 0) {
             cell.avatarView.image = [UIImage imageNamed:@""];
-            cell.nameLabel.text = @"创建聊天室";
+            cell.nameLabel.text = @"创建群组";
+        } else if (indexPath.row == 1) {
+            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.nameLabel.text = @"加入群组";
         }
         
         return cell;
     }
     
-    EMChatroom *chatroom = nil;
+    EMGroup *group = nil;
     if (tableView == self.tableView) {
-        chatroom = [self.dataArray objectAtIndex:indexPath.row];
+        group = [self.dataArray objectAtIndex:indexPath.row];
     } else {
-        chatroom = [self.searchResults objectAtIndex:indexPath.row];
+        group = [self.searchResults objectAtIndex:indexPath.row];
     }
     
     cell.avatarView.image = [UIImage imageNamed:@"user_2"];
-    if ([chatroom.subject length]) {
-        cell.nameLabel.text = chatroom.subject;
+    if ([group.subject length]) {
+        cell.nameLabel.text = group.subject;
     } else {
-        cell.nameLabel.text = chatroom.chatroomId;
+        cell.nameLabel.text = group.groupId;
     }
+    cell.detailLabel.text = group.groupId;
     
     return cell;
 }
@@ -123,14 +134,23 @@
     [self.view endEditing:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    EMChatroom *chatroom = nil;
-    if (tableView == self.tableView) {
-        chatroom = [self.dataArray objectAtIndex:indexPath.row];
-    } else {
-        chatroom = [self.searchResults objectAtIndex:indexPath.row];
+    if (tableView == self.tableView && indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            [self _createGroupAction];
+        } else if (indexPath.row == 1) {
+            //
+        }
+        return;
     }
-    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:chatroom.chatroomId conversationType:EMConversationTypeChatRoom];
-    chatController.title = chatroom.subject;
+    
+    EMGroup *group = nil;
+    if (tableView == self.tableView) {
+        group = [self.dataArray objectAtIndex:indexPath.row];
+    } else {
+        group = [self.searchResults objectAtIndex:indexPath.row];
+    }
+    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
+    chatController.title = group.subject;
     [self.navigationController pushViewController:chatController animated:YES];
 }
 
@@ -138,11 +158,6 @@
 
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
-//    if (!self.isSearching) {
-//        return;
-//    }
-//
-//    [self _searchChatroomWithId:aString];
     [self.view endEditing:YES];
 }
 
@@ -164,9 +179,9 @@
 
 #pragma mark - data
 
-- (void)_fetchGroupsWithPage:(NSInteger)aPage
-                      isHeader:(BOOL)aIsHeader
-                      isShowHUD:(BOOL)aIsShowHUD
+- (void)_fetchJoinedGroupsWithPage:(NSInteger)aPage
+                          isHeader:(BOOL)aIsHeader
+                         isShowHUD:(BOOL)aIsShowHUD
 {
     [self hideHud];
     if (aIsShowHUD) {
@@ -174,7 +189,7 @@
     }
     
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].roomManager getChatroomsFromServerWithPage:aPage pageSize:50 completion:^(EMPageResult *aResult, EMError *aError) {
+    [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:aPage pageSize:50 completion:^(NSArray *aList, EMError *aError) {
         if (aIsShowHUD) {
             [weakself hideHud];
         }
@@ -182,9 +197,9 @@
             if (aIsHeader) {
                 [weakself.dataArray removeAllObjects];
             }
-            [weakself.dataArray addObjectsFromArray:aResult.list];
+            [weakself.dataArray addObjectsFromArray:aList];
             
-            weakself.showRefreshFooter = aResult.count > 0 ? YES : NO;
+            weakself.showRefreshFooter = aList.count > 0 ? YES : NO;
             [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:YES];
         }
     }];
@@ -193,36 +208,35 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     self.page = 1;
-    [self _fetchGroupsWithPage:self.page isHeader:YES isShowHUD:NO];
+    [self _fetchJoinedGroupsWithPage:self.page isHeader:YES isShowHUD:NO];
 }
 
 - (void)tableViewDidTriggerFooterRefresh
 {
     self.page += 1;
-    [self _fetchGroupsWithPage:self.page isHeader:NO isShowHUD:NO];
-}
-
-- (void)_searchChatroomWithId:(NSString *)aId
-{
-    __weak typeof(self) weakself = self;
-    [self showHudInView:self.view hint:@"搜索聊天室..."];
-    [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:aId completion:^(EMChatroom *aChatroom, EMError *aError) {
-        [weakself hideHud];
-        if (!aError) {
-            [weakself.searchResults removeAllObjects];
-            [weakself.searchResults addObject:aChatroom];
-            [weakself.searchResultTableView reloadData];
-        } else {
-            [EMAlertController showErrorAlert:@"未搜索到聊天室"];
-        }
-    }];
+    [self _fetchJoinedGroupsWithPage:self.page isHeader:NO isShowHUD:NO];
 }
 
 #pragma mark - Action
 
-- (void)backAction
+- (void)_createGroupAction
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    self.inviteController = nil;
+    self.inviteController = [[EMInviteGroupMemberViewController alloc] init];
+    
+    __weak typeof(self) weakself = self;
+    [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
+        EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
+        createController.inviteController = weakself.inviteController;
+        [createController setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
+            [weakself.dataArray insertObject:aGroup atIndex:0];
+            [weakself.tableView reloadData];
+        }];
+        [weakself.navigationController pushViewController:createController animated:YES];
+    }];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.inviteController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end

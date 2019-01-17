@@ -125,8 +125,8 @@
     NSInteger row = indexPath.row;
     __weak typeof(self) weakself = self;
     if (row == 0) {
-        EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入群组名称"];
-        controller.title = @"群组名称";
+        EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入聊天室名称"];
+        controller.title = @"聊天室名称";
         [controller setDoneCompletion:^(NSString * _Nonnull aString) {
             weakself.name = aString;
             if ([aString length] > 0) {
@@ -165,7 +165,6 @@
     }
     
     __weak typeof(self) weakself = self;
-    
     [self showHudInView:self.view hint:@"创建聊天室..."];
     [[EMClient sharedClient].roomManager createChatroomWithSubject:self.name description:self.detail invitees:nil message:nil maxMembersCount:self.maxMemNum completion:^(EMChatroom *aChatroom, EMError *aError) {
         [weakself hideHud];

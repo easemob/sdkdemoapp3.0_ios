@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMSearchViewController : EMRefreshViewController
+@interface EMSearchViewController : EMRefreshViewController<EMSearchBarDelegate>
 
 @property (nonatomic) BOOL isSearching;
 

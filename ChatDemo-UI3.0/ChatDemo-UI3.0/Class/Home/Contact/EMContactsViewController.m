@@ -16,10 +16,11 @@
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
 #import "EMNotificationViewController.h"
+#import "EMGroupsViewController.h"
 #import "EMChatroomsViewController.h"
 
 #import "DemoConfManager.h"
-#import "GroupListViewController.h"
+//#import "GroupListViewController.h"
 //#import "ChatroomListViewController.h"
 #import "ChatViewController.h"
 
@@ -289,8 +290,8 @@
             EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 2) {
-//            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-//            [self.navigationController pushViewController:groupController animated:YES];
+            EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 3) {
             EMChatroomsViewController *controller = [[EMChatroomsViewController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];

@@ -45,21 +45,21 @@
         make.top.equalTo(self.contentView).offset(10);
         make.left.equalTo(self.avatarView.mas_right).offset(8);
         make.right.equalTo(self.contentView).offset(-10);
-        make.bottom.equalTo(self.contentView).offset(-10);
+//        make.bottom.equalTo(self.contentView).offset(-10);
     }];
     
-//    _detailLabel = [[UILabel alloc] init];
-//    _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    _detailLabel.backgroundColor = [UIColor clearColor];
-//    _detailLabel.font = [UIFont systemFontOfSize:15];
-//    _detailLabel.textColor = [UIColor grayColor];
-//    [self.contentView addSubview:_detailLabel];
-//    [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.nameLabel.mas_bottom);
-//        make.left.equalTo(self.nameLabel);
-//        make.right.equalTo(self.nameLabel);
-//        make.bottom.equalTo(self.contentView).offset(-8);
-//    }];
+    _detailLabel = [[UILabel alloc] init];
+    _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _detailLabel.backgroundColor = [UIColor clearColor];
+    _detailLabel.font = [UIFont systemFontOfSize:15];
+    _detailLabel.textColor = [UIColor grayColor];
+    [self.contentView addSubview:_detailLabel];
+    [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.mas_bottom);
+        make.left.equalTo(self.nameLabel);
+        make.right.equalTo(self.nameLabel);
+        make.bottom.equalTo(self.contentView).offset(-8);
+    }];
 }
 
 @end
