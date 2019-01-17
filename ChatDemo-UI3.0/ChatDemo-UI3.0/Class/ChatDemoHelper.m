@@ -19,10 +19,6 @@
 #import "EaseSDKHelper.h"
 #import "EMDingMessageHelper.h"
 
-#if DEMO_CALL == 1
-#import "DemoCallManager.h"
-#endif
-
 #import "EMGlobalVariables.h"
 #import "EMNotifications.h"
 
@@ -69,10 +65,6 @@ static ChatDemoHelper *helper = nil;
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-    
-#if DEMO_CALL == 1
-    [DemoCallManager sharedManager];
-#endif
 }
 
 - (void)asyncPushOptions

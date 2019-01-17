@@ -15,6 +15,12 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
 }
 
+- (void)addPopBackLeftItemWithTarget:(id _Nullable )aTarget
+                              action:(SEL _Nullable )aAction
+{
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_gary"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
+}
+
 - (void)addKeyboardNotificationsWithShowSelector:(SEL)aShowSelector
                                     hideSelector:(SEL)aHideSelector
 {

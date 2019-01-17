@@ -73,6 +73,8 @@
 		3A646F7C21EF241E00BA44BC /* EMGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A646F7B21EF241E00BA44BC /* EMGroupCell.m */; };
 		3A646F8021EF3C6300BA44BC /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A646F7F21EF3C6300BA44BC /* UIViewController+Util.m */; };
 		3A646F8421EF3E5900BA44BC /* EMGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A646F8221EF3E5900BA44BC /* EMGroupsViewController.m */; };
+		3A646F8721EF41B300BA44BC /* EMCreateChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A646F8621EF41B300BA44BC /* EMCreateChatroomViewController.m */; };
+		3A646F8A21EF4B5100BA44BC /* EMTextFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A646F8921EF4B5100BA44BC /* EMTextFieldViewController.m */; };
 		3A66253521BFD6AE0004F853 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66253421BFD6AE0004F853 /* EMLoginViewController.m */; };
 		3A66255721C0BD4F0004F853 /* EMRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66255621C0BD4F0004F853 /* EMRegisterViewController.m */; };
 		3A66255F21C0C33D0004F853 /* WSLNativeScanTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66255C21C0C33D0004F853 /* WSLNativeScanTool.m */; };
@@ -80,6 +82,7 @@
 		3A66256321C0C3500004F853 /* EMQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66256221C0C3500004F853 /* EMQRCodeViewController.m */; };
 		3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */; };
 		3A6764B71E5D3FB300ABF196 /* ChatroomDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */; };
+		3A6E78BD21F028BD004D307D /* EMTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6E78BC21F028BD004D307D /* EMTextViewController.m */; };
 		3A6FEF7A218072CB0092EFA0 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9A2A4B21709EF100AC4689 /* Hyphenate.framework */; };
 		3A6FEF7B218072CB0092EFA0 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9A2A4B21709EF100AC4689 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A7BDB2C21E5EAD2003A3887 /* tabbar_contacts_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7BDB1A21E5EAD2003A3887 /* tabbar_contacts_blue@3x.png */; };
@@ -723,6 +726,10 @@
 		3A646F7F21EF3C6300BA44BC /* UIViewController+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
 		3A646F8221EF3E5900BA44BC /* EMGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupsViewController.m; sourceTree = "<group>"; };
 		3A646F8321EF3E5900BA44BC /* EMGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupsViewController.h; sourceTree = "<group>"; };
+		3A646F8521EF41B300BA44BC /* EMCreateChatroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMCreateChatroomViewController.h; sourceTree = "<group>"; };
+		3A646F8621EF41B300BA44BC /* EMCreateChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMCreateChatroomViewController.m; sourceTree = "<group>"; };
+		3A646F8821EF4B5100BA44BC /* EMTextFieldViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMTextFieldViewController.h; sourceTree = "<group>"; };
+		3A646F8921EF4B5100BA44BC /* EMTextFieldViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMTextFieldViewController.m; sourceTree = "<group>"; };
 		3A66253321BFD6AE0004F853 /* EMLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		3A66253421BFD6AE0004F853 /* EMLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
 		3A66255521C0BD4F0004F853 /* EMRegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMRegisterViewController.h; sourceTree = "<group>"; };
@@ -737,6 +744,8 @@
 		3A6764B31E5D2C6800ABF196 /* GroupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupSettingViewController.m; sourceTree = "<group>"; };
 		3A6764B51E5D3FB300ABF196 /* ChatroomDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatroomDetailViewController.h; sourceTree = "<group>"; };
 		3A6764B61E5D3FB300ABF196 /* ChatroomDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatroomDetailViewController.m; sourceTree = "<group>"; };
+		3A6E78BB21F028BD004D307D /* EMTextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMTextViewController.h; sourceTree = "<group>"; };
+		3A6E78BC21F028BD004D307D /* EMTextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMTextViewController.m; sourceTree = "<group>"; };
 		3A6FEF87218079100092EFA0 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../rtc-ios/RtcSDK/RtcSDK/3rdParth/webrtc/WebRTC.framework"; sourceTree = "<group>"; };
 		3A7354472019F42900AB6CDB /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "ChatDemo-UI3.0/3rdparty/Fabric.framework"; sourceTree = "<group>"; };
 		3A7354482019F42900AB6CDB /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "ChatDemo-UI3.0/3rdparty/Crashlytics.framework"; sourceTree = "<group>"; };
@@ -1727,6 +1736,12 @@
 				3A646F7B21EF241E00BA44BC /* EMGroupCell.m */,
 				3A646F7521EF213A00BA44BC /* EMChatroomsViewController.h */,
 				3A646F7621EF213A00BA44BC /* EMChatroomsViewController.m */,
+				3A646F8521EF41B300BA44BC /* EMCreateChatroomViewController.h */,
+				3A646F8621EF41B300BA44BC /* EMCreateChatroomViewController.m */,
+				3A646F8821EF4B5100BA44BC /* EMTextFieldViewController.h */,
+				3A646F8921EF4B5100BA44BC /* EMTextFieldViewController.m */,
+				3A6E78BB21F028BD004D307D /* EMTextViewController.h */,
+				3A6E78BC21F028BD004D307D /* EMTextViewController.m */,
 				3A646F7421EF213A00BA44BC /* EMSearchBar.h */,
 				3A646F7121EF213A00BA44BC /* EMSearchBar.m */,
 				3A646F7221EF213A00BA44BC /* EMSearchViewController.h */,
@@ -3648,6 +3663,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A646F8A21EF4B5100BA44BC /* EMTextFieldViewController.m in Sources */,
 				3A2F294221537E7E00F86EB5 /* Call1v1AudioViewController.m in Sources */,
 				3A9A2A0A21709ECC00AC4689 /* MWGridCell.m in Sources */,
 				3A9A2A1521709ECC00AC4689 /* PSTCollectionView.m in Sources */,
@@ -3688,6 +3704,7 @@
 				3A9A2A4721709ECC00AC4689 /* EaseBubbleView+Gif.m in Sources */,
 				D29A6BAC1B72090F002324BB /* UserProfileManager.m in Sources */,
 				3A9A2A4221709ECC00AC4689 /* EaseBubbleView+File.m in Sources */,
+				3A6E78BD21F028BD004D307D /* EMTextViewController.m in Sources */,
 				3A32EFE121D619D900B1F90E /* EMSettingsViewController.m in Sources */,
 				3A9A29E921709ECC00AC4689 /* MJRefreshBackStateFooter.m in Sources */,
 				3A2F2AF72153862900F86EB5 /* EMCallViewController.m in Sources */,
@@ -3776,6 +3793,7 @@
 				D2CB225C1B60CB08001BC741 /* UserProfileViewController.m in Sources */,
 				3A2C3A271E23AF5000DCD9BE /* EMChatroomMembersViewController.m in Sources */,
 				90985E481A8A08D400976DD6 /* InvitationManager.m in Sources */,
+				3A646F8721EF41B300BA44BC /* EMCreateChatroomViewController.m in Sources */,
 				3A9A29DD21709ECC00AC4689 /* EaseEmotionEscape.m in Sources */,
 				3A9A2A2721709ECC00AC4689 /* UIView+WebCacheOperation.m in Sources */,
 				3A9A2A2D21709ECC00AC4689 /* EaseConversationListViewController.m in Sources */,

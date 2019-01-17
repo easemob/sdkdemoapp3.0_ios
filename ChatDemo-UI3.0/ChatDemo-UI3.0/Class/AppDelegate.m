@@ -16,6 +16,9 @@
 #import <Bugly/Bugly.h>
 
 #import "ChatDemoHelper.h"
+#if DEMO_CALL == 1
+#import "DemoCallManager.h"
+#endif
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
@@ -182,6 +185,10 @@
     
     //注册推送
     [self _registerRemoteNotification];
+    
+#if DEMO_CALL == 1
+    [DemoCallManager sharedManager];
+#endif
 }
 
 - (void)loginStateChange:(NSNotification *)aNotif

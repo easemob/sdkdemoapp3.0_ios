@@ -12,7 +12,7 @@
 #import "EMAlertController.h"
 
 #import "EMGroupCell.h"
-#import "EMCreateChatroomController.h"
+#import "EMCreateChatroomViewController.h"
 #import "ChatViewController.h"
 
 @interface EMChatroomsViewController ()
@@ -129,8 +129,11 @@
     if (tableView == self.tableView) {
         if (indexPath.section == 0) {
             if (indexPath.row == 0) {
-                EMCreateChatroomController *createRoomController = [[EMCreateChatroomController alloc] init];
-                [self.navigationController pushViewController:createRoomController animated:YES];
+                EMCreateChatroomViewController *controller = [[EMCreateChatroomViewController alloc] initWithStyle:UITableViewStyleGrouped];
+//                [controller setSuccessCompletion:^(EMChatroom * _Nonnull aChatroom) {
+//                    
+//                }];
+                [self.navigationController pushViewController:controller animated:YES];
             }
             
             return;
