@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
 
+@property (nonatomic) BOOL isSetSpeaker;
+
 @end
 
 @implementation EMConferenceViewController
@@ -71,24 +73,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if (!isHeadphone()) {
+        self.speakerButton.selected = YES;
+        [self speakerButtonAction];
+    }
+    
     [self _initializeConferenceController];
     [self _setupConferenceControllerSubviews];
     
-    if (!isHeadphone()) {
-        [self speakerButtonAction];
-    }
+    //注册SDK回调监听
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
     //本地摄像头方向
     self.isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
     self.switchCameraButton.selected = self.isUseBackCamera;
-    
-    //多人实时音视频默认使用扬声器
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    [audioSession setActive:YES error:nil];
-    
-    //注册SDK回调监听
-    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+
+    self.speakerButton.selected = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -292,13 +292,6 @@
     
     if (videoItem.stream.enableVoice != aStream.enableVoice) {
         videoItem.videoView.enableVoice = aStream.enableVoice;
-        
-        if (aStream.enableVoice && self.speakerButton.isSelected) {
-            //多人实时音视频默认使用扬声器
-            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-            [audioSession setActive:YES error:nil];
-        }
     }
     
     videoItem.stream = aStream;
@@ -311,6 +304,13 @@
         EMStreamItem *videoItem = [self.streamItemDict objectForKey:aStreamId];
         if (videoItem && videoItem.videoView) {
             videoItem.videoView.status = StreamStatusConnected;
+        }
+        
+        if (!self.microphoneButton.isSelected && self.speakerButton.isSelected && !self.isSetSpeaker) {
+            self.isSetSpeaker = YES;
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            [audioSession setActive:YES error:nil];
         }
     }
 }
@@ -591,7 +591,6 @@
     }
     
     if (!self.microphoneButton.isSelected && self.speakerButton.isSelected) {
-        //多人实时音视频默认使用扬声器
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
         [audioSession setActive:YES error:nil];
