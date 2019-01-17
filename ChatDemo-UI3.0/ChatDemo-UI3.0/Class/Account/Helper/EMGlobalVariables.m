@@ -10,6 +10,9 @@
 
 MainViewController *gMainController = nil;
 BOOL gIsInitializedSDK = NO;
+
+EMHomeViewController *gHomeController = nil;
+
 BOOL gIsCalling = NO;
 
 static EMGlobalVariables *shared = nil;

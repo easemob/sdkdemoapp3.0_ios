@@ -201,7 +201,7 @@
     } else if (self.conversation.type == EMChatTypeChatRoom) {
         inviteType = ConfInviteTypeChatroom;
     }
-    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:self.conversation.conversationId chatType:(EMChatType)self.conversation.type];
+    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:self.conversation.conversationId chatType:(EMChatType)self.conversation.type popFromController:self.navigationController];
 }
 
 - (void)moreViewLiveAction:(EaseChatBarMoreView *)moreView
@@ -215,7 +215,7 @@
     } else if (self.conversation.type == EMChatTypeChatRoom) {
         inviteType = ConfInviteTypeChatroom;
     }
-    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:self.conversation.conversationId chatType:(EMChatType)self.conversation.type];
+    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:self.conversation.conversationId chatType:(EMChatType)self.conversation.type popFromController:self.navigationController];
 }
 
 #pragma mark - EaseMessageCellDelegate

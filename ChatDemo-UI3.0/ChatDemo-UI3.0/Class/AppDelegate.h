@@ -12,8 +12,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ApplyViewController.h"
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate, EMChatManagerDelegate>
 {
     EMConnectionState _connectionState;

@@ -197,28 +197,16 @@
     
     BOOL loginSuccess = [aNotif.object boolValue];
     if (loginSuccess) {//登录成功加载主窗口控制器
-        ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
-        //加载申请通知的数据
-        [[ApplyViewController shareController] loadDataSourceFromLocalDB];
-        
-        if (gMainController == nil) {
-            //            MainViewController *mainController = [[MainViewController alloc] init];
-            //            [EMGlobalVariables setGlobalMainController:mainController];
-            //            navigationController = [[EMNavigationController alloc] initWithRootViewController:mainController];
-            
+        navigationController = (UINavigationController *)self.window.rootViewController;
+        if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[EMHomeViewController class]])) {
             EMHomeViewController *homeController = [[EMHomeViewController alloc] init];
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
-        } else {
-            navigationController = gMainController.navigationController;
         }
-        
+        ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
         [demoHelper asyncGroupFromServer];
         [demoHelper asyncConversationFromDB];
         [demoHelper asyncPushOptions];
     } else {//登录失败加载登录页面控制器
-        if (gMainController) {
-            [gMainController.navigationController popToRootViewControllerAnimated:NO];
-        }
         [EMGlobalVariables setGlobalMainController:nil];
         
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];

@@ -15,6 +15,7 @@
 #import "DemoCallManager.h"
 
 #import "EMGlobalVariables.h"
+
 #import "MeetingViewController.h"
 #import "Live2ViewController.h"
 
@@ -94,6 +95,7 @@ static DemoConfManager *confManager = nil;
                       inviteType:(ConfInviteType)aInviteType
                   conversationId:(NSString *)aConversationId
                         chatType:(EMChatType)aChatType
+               popFromController:(UIViewController *)aController
 {
     if (gIsCalling) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"有通话正在进行" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -103,7 +105,7 @@ static DemoConfManager *confManager = nil;
     }
     
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:aInviteType isCreate:YES excludeUsers:@[[EMClient sharedClient].currentUsername] groupOrChatroomId:aConversationId];
-
+    
     __weak typeof(self) weakSelf = self;
     [controller setDoneCompletion:^(NSArray *aInviteUsers) {
         gIsCalling = YES;
@@ -117,10 +119,10 @@ static DemoConfManager *confManager = nil;
         controller.inviteType = aInviteType;
         
         weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [gMainController presentViewController:weakSelf.confNavController animated:NO completion:nil];
+        [aController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }];
     
-    [gMainController presentViewController:controller animated:NO completion:nil];
+    [aController presentViewController:controller animated:NO completion:nil];
 }
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage

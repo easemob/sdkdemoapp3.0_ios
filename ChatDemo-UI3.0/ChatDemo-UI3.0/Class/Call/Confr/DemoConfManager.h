@@ -20,7 +20,8 @@
 - (void)inviteMemberWithConfType:(EMConferenceType)aConfType
                       inviteType:(ConfInviteType)aInviteType
                   conversationId:(NSString *)aConversationId
-                        chatType:(EMChatType)aChatType;
+                        chatType:(EMChatType)aChatType
+               popFromController:(UIViewController *)aController;
 
 - (void)handleMessageToJoinConference:(EMMessage *)aMessage;
 
