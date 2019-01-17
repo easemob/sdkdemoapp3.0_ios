@@ -11,7 +11,7 @@
 #import "EMRealtimeSearch.h"
 #import "EMAlertController.h"
 
-#import "EMGroupCell.h"
+#import "EMAvatarNameCell.h"
 #import "EMCreateChatroomViewController.h"
 
 #import "ChatViewController.h"
@@ -71,12 +71,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"EMGroupCell";
-    EMGroupCell *cell = (EMGroupCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"EMAvatarNameCell";
+    EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[EMGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     if (tableView == self.tableView && indexPath.section == 0) {
@@ -155,11 +155,11 @@
 
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
-//    if (!self.isSearching) {
-//        return;
-//    }
-//
-//    [self _searchChatroomWithId:aString];
+    if (!self.isSearching) {
+        return;
+    }
+
+    [self _searchChatroomWithId:aString];
     [self.view endEditing:YES];
 }
 
@@ -187,7 +187,7 @@
 {
     [self hideHud];
     if (aIsShowHUD) {
-        [self showHudInView:self.view hint:@"获取k聊天室..."];
+        [self showHudInView:self.view hint:@"获取聊天室..."];
     }
     
     __weak typeof(self) weakself = self;

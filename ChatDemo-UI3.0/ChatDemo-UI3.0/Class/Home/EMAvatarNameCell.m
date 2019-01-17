@@ -54,11 +54,44 @@
     _nameLabel.font = [UIFont systemFontOfSize:18];
     [self.contentView addSubview:_nameLabel];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(5);
+        make.top.equalTo(self.contentView).offset(8);
         make.left.equalTo(self.avatarView.mas_right).offset(8);
         make.right.equalTo(self.contentView).offset(-15);
-        make.bottom.equalTo(self.contentView).offset(-5);
+//        make.bottom.equalTo(self.contentView).offset(-5);
     }];
+    
+    _detailLabel = [[UILabel alloc] init];
+    _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _detailLabel.backgroundColor = [UIColor clearColor];
+    _detailLabel.font = [UIFont systemFontOfSize:15];
+    _detailLabel.textColor = [UIColor grayColor];
+    [self.contentView addSubview:_detailLabel];
+    [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.mas_bottom);
+        make.left.equalTo(self.nameLabel);
+        make.right.equalTo(self.nameLabel);
+        make.bottom.equalTo(self.contentView).offset(-8);
+    }];
+}
+
+#pragma mark - Public
+
+- (void)setAccessoryButton:(UIButton *)accessoryButton
+{
+    _accessoryButton = accessoryButton;
+    if (_accessoryButton) {
+        [_accessoryButton addTarget:self action:@selector(accessoryButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    self.accessoryView = accessoryButton;
+}
+
+#pragma mark - Action
+
+- (void)accessoryButtonAction
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(cellAccessoryButtonAction:)]) {
+        [_delegate cellAccessoryButtonAction:self];
+    }
 }
 
 @end

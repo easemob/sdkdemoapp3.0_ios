@@ -284,7 +284,7 @@
     NSInteger row = indexPath.row;
     if (section == 0) {
         if (row == 0) {
-            EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+            EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
             EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
