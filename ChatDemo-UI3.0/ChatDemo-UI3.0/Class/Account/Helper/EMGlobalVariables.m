@@ -8,7 +8,6 @@
 
 #import "EMGlobalVariables.h"
 
-MainViewController *gMainController = nil;
 BOOL gIsInitializedSDK = NO;
 
 EMHomeViewController *gHomeController = nil;
@@ -36,11 +35,6 @@ static EMGlobalVariables *shared = nil;
     }
     
     return self;
-}
-
-+ (void)setGlobalMainController:(nullable MainViewController *)aMainController
-{
-    gMainController = aMainController;
 }
 
 @end

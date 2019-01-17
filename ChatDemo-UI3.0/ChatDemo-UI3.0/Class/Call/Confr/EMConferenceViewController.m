@@ -377,7 +377,7 @@
         self.floatingView.frame = self.localViewTmpFrame;
         self.floatingView = nil;
         
-        [gMainController presentViewController:self.navigationController animated:NO completion:nil];
+        [gHomeController presentViewController:self.navigationController animated:NO completion:nil];
         return;
     }
     

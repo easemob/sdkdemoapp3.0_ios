@@ -175,7 +175,7 @@ static DemoCallManager *callManager = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentController) {
                 self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                [gMainController presentViewController:self.currentController animated:NO completion:nil];
+                [gHomeController presentViewController:self.currentController animated:NO completion:nil];
             }
         });
     }
@@ -335,7 +335,7 @@ static DemoCallManager *callManager = nil;
                     }
                     
                     if (strongSelf.currentController) {
-                        [gMainController presentViewController:strongSelf.currentController animated:NO completion:nil];
+                        [gHomeController presentViewController:strongSelf.currentController animated:NO completion:nil];
                     }
                 });
             }

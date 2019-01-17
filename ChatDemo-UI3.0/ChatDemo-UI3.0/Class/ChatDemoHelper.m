@@ -107,7 +107,7 @@ static ChatDemoHelper *helper = nil;
                 [weakself.conversationListVC refreshDataSource];
             }
             
-            [gMainController setupUnreadMessageCount];
+//            [gMainController setupUnreadMessageCount];
         });
     });
 }
@@ -117,7 +117,7 @@ static ChatDemoHelper *helper = nil;
 // 网络状态变化回调
 - (void)didConnectionStateChanged:(EMConnectionState)connectionState
 {
-    [gMainController networkChanged:connectionState];
+//    [gMainController networkChanged:connectionState];
 }
 
 - (void)autoLoginDidCompleteWithError:(EMError *)error
@@ -129,7 +129,7 @@ static ChatDemoHelper *helper = nil;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     } else if([[EMClient sharedClient] isConnected]){
-        UIView *view = gMainController.view;
+        UIView *view = gHomeController.view;
         [MBProgressHUD showHUDAddedTo:view animated:YES];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL flag = [[EMClient sharedClient] migrateDatabaseToLatestSDK];
@@ -205,21 +205,21 @@ static ChatDemoHelper *helper = nil;
     
     switch (aEvent) {
         case EMMultiDevicesEventContactRemove:
-            [gMainController.contactsVC reloadDataSource];
+//            [gMainController.contactsVC reloadDataSource];
             break;
         case EMMultiDevicesEventContactAccept:
             [[ApplyViewController shareController] removeApply:aTarget];
-            [gMainController setupUntreatedApplyCount];
-            [gMainController.contactsVC reloadDataSource];
+//            [gMainController setupUntreatedApplyCount];
+//            [gMainController.contactsVC reloadDataSource];
             break;
         case EMMultiDevicesEventContactDecline:
             [[ApplyViewController shareController] removeApply:aTarget];
-            [gMainController setupUntreatedApplyCount];
+//            [gMainController setupUntreatedApplyCount];
             break;
         case EMMultiDevicesEventContactBan:
         case EMMultiDevicesEventContactAllow:
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateBlacklist" object:nil];
-            [gMainController.contactsVC reloadDataSource];
+//            [gMainController.contactsVC reloadDataSource];
             break;
             
         default:
@@ -239,7 +239,7 @@ static ChatDemoHelper *helper = nil;
         case EMMultiDevicesEventGroupInviteDecline:
         case EMMultiDevicesEventGroupApplyDecline:
             [[ApplyViewController shareController] removeApply:aGroupId];
-            [gMainController setupUntreatedApplyCount];
+//            [gMainController setupUntreatedApplyCount];
             break;
         case EMMultiDevicesEventGroupCreate:
         case EMMultiDevicesEventGroupJoin:
@@ -253,7 +253,7 @@ static ChatDemoHelper *helper = nil;
         case EMMultiDevicesEventGroupApplyAccept:
         case EMMultiDevicesEventGroupInviteAccept:
             [[ApplyViewController shareController] removeApply:aGroupId];
-            [gMainController setupUntreatedApplyCount];
+//            [gMainController setupUntreatedApplyCount];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:aGroupId];
             break;
         case EMMultiDevicesEventGroupApply:
@@ -293,7 +293,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didUpdateConversationList:(NSArray *)aConversationList
 {
-    [gMainController setupUnreadMessageCount];
+//    [gMainController setupUnreadMessageCount];
     
     if (self.conversationListVC) {
         [_conversationListVC refreshDataSource];
@@ -318,13 +318,13 @@ static ChatDemoHelper *helper = nil;
 #if !TARGET_IPHONE_SIMULATOR
             switch (state) {
                 case UIApplicationStateActive:
-                    [gMainController playSoundAndVibration];
+//                    [gMainController playSoundAndVibration];
                     break;
                 case UIApplicationStateInactive:
-                    [gMainController playSoundAndVibration];
+//                    [gMainController playSoundAndVibration];
                     break;
                 case UIApplicationStateBackground:
-                    [gMainController showNotificationWithMessage:message];
+//                    [gMainController showNotificationWithMessage:message];
                     break;
                 default:
                     break;
@@ -346,9 +346,9 @@ static ChatDemoHelper *helper = nil;
                 [_conversationListVC refresh];
             }
             
-            if (gMainController) {
-                [gMainController setupUnreadMessageCount];
-            }
+//            if (gMainController) {
+//                [gMainController setupUnreadMessageCount];
+//            }
             return;
         }
         
@@ -362,9 +362,9 @@ static ChatDemoHelper *helper = nil;
             [_conversationListVC refresh];
         }
         
-        if (gMainController) {
-            [gMainController setupUnreadMessageCount];
-        }
+//        if (gMainController) {
+//            [gMainController setupUnreadMessageCount];
+//        }
     }
 }
 
@@ -412,9 +412,9 @@ static ChatDemoHelper *helper = nil;
         [_conversationListVC refresh];
     }
     
-    if (gMainController) {
-        [gMainController setupUnreadMessageCount];
-    }
+//    if (gMainController) {
+//        [gMainController setupUnreadMessageCount];
+//    }
 }
 
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
@@ -445,25 +445,25 @@ static ChatDemoHelper *helper = nil;
         TTAlertNoTitle(str);
     }
     
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gMainController.navigationController.viewControllers];
-    ChatViewController *chatViewContrller = nil;
-    for (id viewController in viewControllers)
-    {
-        if ([viewController isKindOfClass:[ChatViewController class]] && [aGroup.groupId isEqualToString:[(ChatViewController *)viewController conversation].conversationId])
-        {
-            chatViewContrller = viewController;
-            break;
-        }
-    }
-    if (chatViewContrller)
-    {
-        [viewControllers removeObject:chatViewContrller];
-        if ([viewControllers count] > 0) {
-            [gMainController.navigationController setViewControllers:@[viewControllers[0]] animated:YES];
-        } else {
-            [gMainController.navigationController setViewControllers:viewControllers animated:YES];
-        }
-    }
+//    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gMainController.navigationController.viewControllers];
+//    ChatViewController *chatViewContrller = nil;
+//    for (id viewController in viewControllers)
+//    {
+//        if ([viewController isKindOfClass:[ChatViewController class]] && [aGroup.groupId isEqualToString:[(ChatViewController *)viewController conversation].conversationId])
+//        {
+//            chatViewContrller = viewController;
+//            break;
+//        }
+//    }
+//    if (chatViewContrller)
+//    {
+//        [viewControllers removeObject:chatViewContrller];
+//        if ([viewControllers count] > 0) {
+//            [gMainController.navigationController setViewControllers:@[viewControllers[0]] animated:YES];
+//        } else {
+//            [gMainController.navigationController setViewControllers:viewControllers animated:YES];
+//        }
+//    }
 }
 
 - (void)didReceiveJoinGroupApplication:(EMGroup *)aGroup
@@ -483,12 +483,12 @@ static ChatDemoHelper *helper = nil;
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aGroup.subject, @"groupId":aGroup.groupId, @"username":aApplicant, @"groupname":aGroup.subject, @"applyMessage":aReason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
     [[ApplyViewController shareController] addNewApply:dic];
-    if (gMainController) {
-        [gMainController setupUntreatedApplyCount];
-#if !TARGET_IPHONE_SIMULATOR
-        [gMainController playSoundAndVibration];
-#endif
-    }
+//    if (gMainController) {
+//        [gMainController setupUntreatedApplyCount];
+//#if !TARGET_IPHONE_SIMULATOR
+//        [gMainController playSoundAndVibration];
+//#endif
+//    }
     
     if (self.contactViewVC) {
         [self.contactViewVC reloadApplyView];
@@ -554,12 +554,12 @@ static ChatDemoHelper *helper = nil;
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
     [[ApplyViewController shareController] addNewApply:dic];
-    if (gMainController) {
-        [gMainController setupUntreatedApplyCount];
-#if !TARGET_IPHONE_SIMULATOR
-        [gMainController playSoundAndVibration];
-#endif
-    }
+//    if (gMainController) {
+//        [gMainController setupUntreatedApplyCount];
+//#if !TARGET_IPHONE_SIMULATOR
+//        [gMainController playSoundAndVibration];
+//#endif
+//    }
     
     if (self.contactViewVC) {
         [self.contactViewVC reloadApplyView];
@@ -684,27 +684,27 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveDeletedFromUsername:(NSString *)aUsername
 {
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gMainController.navigationController.viewControllers];
-    ChatViewController *chatViewContrller = nil;
-    for (id viewController in viewControllers)
-    {
-        if ([viewController isKindOfClass:[ChatViewController class]] && [aUsername isEqualToString:[(ChatViewController *)viewController conversation].conversationId])
-        {
-            chatViewContrller = viewController;
-            break;
-        }
-    }
-    if (chatViewContrller)
-    {
-        [viewControllers removeObject:chatViewContrller];
-        if ([viewControllers count] > 0) {
-            [gMainController.navigationController setViewControllers:@[viewControllers[0]] animated:YES];
-        } else {
-            [gMainController.navigationController setViewControllers:viewControllers animated:YES];
-        }
-    }
-    [gMainController showHint:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"delete", @"delete"), aUsername]];
-    [_contactViewVC reloadDataSource];
+//    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gMainController.navigationController.viewControllers];
+//    ChatViewController *chatViewContrller = nil;
+//    for (id viewController in viewControllers)
+//    {
+//        if ([viewController isKindOfClass:[ChatViewController class]] && [aUsername isEqualToString:[(ChatViewController *)viewController conversation].conversationId])
+//        {
+//            chatViewContrller = viewController;
+//            break;
+//        }
+//    }
+//    if (chatViewContrller)
+//    {
+//        [viewControllers removeObject:chatViewContrller];
+//        if ([viewControllers count] > 0) {
+//            [gMainController.navigationController setViewControllers:@[viewControllers[0]] animated:YES];
+//        } else {
+//            [gMainController.navigationController setViewControllers:viewControllers animated:YES];
+//        }
+//    }
+//    [gMainController showHint:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"delete", @"delete"), aUsername]];
+//    [_contactViewVC reloadDataSource];
 }
 
 - (void)didReceiveAddedFromUsername:(NSString *)aUsername
@@ -731,32 +731,32 @@ static ChatDemoHelper *helper = nil;
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aUsername, @"username":aUsername, @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
     [[ApplyViewController shareController] addNewApply:dic];
-    if (gMainController) {
-        [gMainController setupUntreatedApplyCount];
-#if !TARGET_IPHONE_SIMULATOR
-        [gMainController playSoundAndVibration];
-        
-        BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
-        if (!isAppActivity) {
-            //发送本地推送
-            if (NSClassFromString(@"UNUserNotificationCenter")) {
-                UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
-                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-                content.sound = [UNNotificationSound defaultSound];
-                content.body =[NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
-                UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[[NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate] * 1000] stringValue] content:content trigger:trigger];
-                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
-            }
-            else {
-                UILocalNotification *notification = [[UILocalNotification alloc] init];
-                notification.fireDate = [NSDate date]; //触发通知的时间
-                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
-                notification.alertAction = NSLocalizedString(@"open", @"Open");
-                notification.timeZone = [NSTimeZone defaultTimeZone];
-            }
-        }
-#endif
-    }
+//    if (gMainController) {
+//        [gMainController setupUntreatedApplyCount];
+//#if !TARGET_IPHONE_SIMULATOR
+//        [gMainController playSoundAndVibration];
+//
+//        BOOL isAppActivity = [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
+//        if (!isAppActivity) {
+//            //发送本地推送
+//            if (NSClassFromString(@"UNUserNotificationCenter")) {
+//                UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0.01 repeats:NO];
+//                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+//                content.sound = [UNNotificationSound defaultSound];
+//                content.body =[NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+//                UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[[NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate] * 1000] stringValue] content:content trigger:trigger];
+//                [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+//            }
+//            else {
+//                UILocalNotification *notification = [[UILocalNotification alloc] init];
+//                notification.fireDate = [NSDate date]; //触发通知的时间
+//                notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+//                notification.alertAction = NSLocalizedString(@"open", @"Open");
+//                notification.timeZone = [NSTimeZone defaultTimeZone];
+//            }
+//        }
+//#endif
+//    }
     [_contactViewVC reloadApplyView];
 }
 
@@ -859,7 +859,7 @@ static ChatDemoHelper *helper = nil;
 
 - (ChatViewController*)_getCurrentChatView
 {
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gMainController.navigationController.viewControllers];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gHomeController.navigationController.viewControllers];
     ChatViewController *chatViewContrller = nil;
     for (id viewController in viewControllers)
     {
@@ -874,7 +874,7 @@ static ChatDemoHelper *helper = nil;
 
 - (void)_clearHelper
 {
-    [EMGlobalVariables setGlobalMainController:nil];
+    gHomeController = nil;
     
     self.conversationListVC = nil;
     self.chatVC = nil;

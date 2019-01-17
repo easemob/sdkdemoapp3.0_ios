@@ -89,6 +89,7 @@
 		3A6E78C921F03F4B004D307D /* checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6E78C521F03F4B004D307D /* checked@2x.png */; };
 		3A6E78CC21F05E57004D307D /* EMCreateGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6E78CB21F05E57004D307D /* EMCreateGroupViewController.m */; };
 		3A6E78CF21F06D29004D307D /* EMJoinGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6E78CE21F06D29004D307D /* EMJoinGroupViewController.m */; };
+		3A6E78D221F084DF004D307D /* EMBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6E78D121F084DF004D307D /* EMBadgeLabel.m */; };
 		3A6FEF7A218072CB0092EFA0 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9A2A4B21709EF100AC4689 /* Hyphenate.framework */; };
 		3A6FEF7B218072CB0092EFA0 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9A2A4B21709EF100AC4689 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A7BDB2C21E5EAD2003A3887 /* tabbar_contacts_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7BDB1A21E5EAD2003A3887 /* tabbar_contacts_blue@3x.png */; };
@@ -760,6 +761,8 @@
 		3A6E78CB21F05E57004D307D /* EMCreateGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMCreateGroupViewController.m; sourceTree = "<group>"; };
 		3A6E78CD21F06D29004D307D /* EMJoinGroupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMJoinGroupViewController.h; sourceTree = "<group>"; };
 		3A6E78CE21F06D29004D307D /* EMJoinGroupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMJoinGroupViewController.m; sourceTree = "<group>"; };
+		3A6E78D021F084DF004D307D /* EMBadgeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMBadgeLabel.h; sourceTree = "<group>"; };
+		3A6E78D121F084DF004D307D /* EMBadgeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMBadgeLabel.m; sourceTree = "<group>"; };
 		3A6FEF87218079100092EFA0 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../rtc-ios/RtcSDK/RtcSDK/3rdParth/webrtc/WebRTC.framework"; sourceTree = "<group>"; };
 		3A7354472019F42900AB6CDB /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "ChatDemo-UI3.0/3rdparty/Fabric.framework"; sourceTree = "<group>"; };
 		3A7354482019F42900AB6CDB /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "ChatDemo-UI3.0/3rdparty/Crashlytics.framework"; sourceTree = "<group>"; };
@@ -1685,6 +1688,8 @@
 				3A50252021ECA90D00FDC704 /* NSDate+Category.m */,
 				3A50250221EC801600FDC704 /* EMChatHelper.h */,
 				3A50250121EC801600FDC704 /* EMChatHelper.m */,
+				3A6E78D021F084DF004D307D /* EMBadgeLabel.h */,
+				3A6E78D121F084DF004D307D /* EMBadgeLabel.m */,
 				3A5024FF21EC776F00FDC704 /* EMConversationCell.h */,
 				3A5024FE21EC776F00FDC704 /* EMConversationCell.m */,
 				3A5024FC21EC685200FDC704 /* EMConversationsViewController.h */,
@@ -3707,6 +3712,7 @@
 				3A9A2A2421709ECC00AC4689 /* SDWebImageDownloaderOperation.m in Sources */,
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
 				3A2F294621537E7E00F86EB5 /* CallSettingViewController.m in Sources */,
+				3A6E78D221F084DF004D307D /* EMBadgeLabel.m in Sources */,
 				3A2F2C9B21538CF600F86EB5 /* DemoConfManager.m in Sources */,
 				90EF2CEF192F2B4E00BDC549 /* SRSlimeView.m in Sources */,
 				3A9A29F321709ECC00AC4689 /* MJRefreshBackFooter.m in Sources */,

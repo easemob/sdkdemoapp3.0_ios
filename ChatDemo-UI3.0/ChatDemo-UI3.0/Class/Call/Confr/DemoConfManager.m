@@ -177,7 +177,7 @@ static DemoConfManager *confManager = nil;
     if (controller) {
         gIsCalling = YES;
         self.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [gMainController presentViewController:self.confNavController animated:NO completion:nil];
+        [gHomeController presentViewController:self.confNavController animated:NO completion:nil];
     }
 }
 

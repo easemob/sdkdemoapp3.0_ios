@@ -10,11 +10,7 @@
 
 #import "EMHomeViewController.h"
 
-#import "MainViewController.h"
-
 NS_ASSUME_NONNULL_BEGIN
-
-extern MainViewController *gMainController;
 
 extern EMHomeViewController *gHomeController;
 
@@ -23,8 +19,6 @@ extern BOOL gIsInitializedSDK;
 extern BOOL gIsCalling;
 
 @interface EMGlobalVariables : NSObject
-
-+ (void)setGlobalMainController:(nullable MainViewController *)aMainController;
 
 @end
 

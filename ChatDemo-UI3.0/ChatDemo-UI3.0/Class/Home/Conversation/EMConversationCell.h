@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "EMBadgeLabel.h"
+
 @class EMConversationModel;
 @interface EMConversationCell : UITableViewCell
 
@@ -19,7 +21,7 @@
 
 @property (nonatomic, strong) UILabel *timeLabel;
 
-@property (nonatomic, strong) UILabel *badgeLabel;
+@property (nonatomic, strong) EMBadgeLabel *badgeLabel;
 
 @property (nonatomic, strong) EMConversationModel *model;
 

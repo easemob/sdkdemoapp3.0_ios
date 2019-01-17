@@ -292,7 +292,7 @@
     self.minButton.selected = NO;
     [self.floatingView removeFromSuperview];
     
-    [gMainController presentViewController:self animated:NO completion:nil];
+    [gHomeController presentViewController:self animated:NO completion:nil];
 }
 
 #pragma mark - Status

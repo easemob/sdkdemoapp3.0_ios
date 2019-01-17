@@ -70,18 +70,15 @@ static int kConversation_AtAll = 2;
         make.height.equalTo(@22);
     }];
     
-    _badgeLabel = [[UILabel alloc] init];
-    _badgeLabel.font = [UIFont systemFontOfSize:13];
-    _badgeLabel.textColor = [UIColor whiteColor];
-    _badgeLabel.backgroundColor = [UIColor redColor];
+    _badgeLabel = [[EMBadgeLabel alloc] init];
     _badgeLabel.clipsToBounds = YES;
-    _badgeLabel.layer.cornerRadius = 8;
-    [_badgeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    _badgeLabel.layer.cornerRadius = 10;
     [self.contentView addSubview:_badgeLabel];
     [_badgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_centerY).offset(3);
         make.right.equalTo(self.contentView).offset(-15);
-        make.height.equalTo(@16);
+        make.height.equalTo(@20);
+        make.width.greaterThanOrEqualTo(@20);
     }];
     
     _detailLabel = [[UILabel alloc] init];
@@ -202,10 +199,10 @@ static int kConversation_AtAll = 2;
     self.timeLabel.text = [self _getTimeWithModel:conversation];
     
     if (conversation.unreadMessagesCount == 0) {
-        self.badgeLabel.text = nil;
+        self.badgeLabel.value = @"";
         self.badgeLabel.hidden = YES;
     } else {
-        self.badgeLabel.text = [NSString stringWithFormat:@" %@ ", @(conversation.unreadMessagesCount)];
+        self.badgeLabel.value = [NSString stringWithFormat:@" %@ ", @(conversation.unreadMessagesCount)];
         self.badgeLabel.hidden = NO;
     }
 }

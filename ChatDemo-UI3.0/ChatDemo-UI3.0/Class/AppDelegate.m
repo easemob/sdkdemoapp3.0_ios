@@ -75,18 +75,18 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    if (gMainController) {
-        [gMainController jumpToChatList];
-    }
+//    if (gMainController) {
+//        [gMainController jumpToChatList];
+//    }
     
     [[EMClient sharedClient] application:application didReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    if (gMainController) {
-        [gMainController didReceiveLocalNotification:notification];
-    }
+//    if (gMainController) {
+//        [gMainController didReceiveLocalNotification:notification];
+//    }
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
@@ -97,9 +97,9 @@
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler
 {
-    if (gMainController) {
-        [gMainController didReceiveUserNotification:response.notification];
-    }
+//    if (gMainController) {
+//        [gMainController didReceiveUserNotification:response.notification];
+//    }
     completionHandler();
 }
 
@@ -200,6 +200,7 @@
         navigationController = (UINavigationController *)self.window.rootViewController;
         if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[EMHomeViewController class]])) {
             EMHomeViewController *homeController = [[EMHomeViewController alloc] init];
+            gHomeController = homeController;
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
         ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
@@ -207,7 +208,7 @@
         [demoHelper asyncConversationFromDB];
         [demoHelper asyncPushOptions];
     } else {//登录失败加载登录页面控制器
-        [EMGlobalVariables setGlobalMainController:nil];
+        gHomeController = nil;
         
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
