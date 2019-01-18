@@ -8,9 +8,10 @@
 
 #import "EMQRCodeViewController.h"
 
-#import "Masonry.h"
 #import "WSLNativeScanTool.h"
 #import "WSLScanView.h"
+
+#import "EMAlertController.h"
 
 /*
  第一版（因时间不够，先只弄北京集群）：
@@ -61,12 +62,30 @@
     self.scanTool = [[WSLNativeScanTool alloc] initWithPreview:self.scanOutputView andScanFrame:_scanView.scanRetangleRect];
     self.scanTool.scanFinishedBlock = ^(NSString *aScanString) {
         NSLog(@"扫描结果 %@",aScanString);
-        [weakself.scanTool sessionStopRunning];
-        [weakself.scanTool openFlashSwitch:NO];
-        
-        if (weakself.scanFinishCompletion) {
-            weakself.scanFinishCompletion(aScanString);
+        NSDictionary *dic = nil;
+        if ([aScanString length] > 0) {
+            NSData *jsonData = [aScanString dataUsingEncoding:NSUTF8StringEncoding];
+            NSError *error;
+            id obj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
+            if (!error && [obj isKindOfClass:[NSDictionary class]]) {
+                dic = (NSDictionary *)obj;
+                if ([dic count] == 0) {
+                    dic = nil;
+                }
+            }
         }
+        
+        if (!dic) {
+            [EMAlertController showErrorAlert:@"未知的二维码信息"];
+        } else {
+            [EMAlertController showSuccessAlert:@"设置成功"];
+            
+            if (weakself.scanFinishCompletion) {
+                weakself.scanFinishCompletion(dic);
+            }
+        }
+        
+        [weakself.scanTool sessionStopRunning];
         [weakself closeAction];
     };
     
@@ -97,7 +116,7 @@
     //构建扫描样式视图
     self.scanView = [[WSLScanView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.scanView.scanRetangleRect = CGRectMake((self.view.frame.size.width - 250) / 2, (self.view.frame.size.height - 250) / 2, 250, 250);
-    self.scanView.colorAngle = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    self.scanView.colorAngle = kColor_Blue;
     self.scanView.photoframeAngleW = 20;
     self.scanView.photoframeAngleH = 20;
     self.scanView.photoframeLineW = 2;

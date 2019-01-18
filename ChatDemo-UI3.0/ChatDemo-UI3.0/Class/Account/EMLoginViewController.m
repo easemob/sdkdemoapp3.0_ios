@@ -8,7 +8,6 @@
 
 #import "EMLoginViewController.h"
 
-#import "Masonry.h"
 #import "MBProgressHUD.h"
 
 #import "EMDevicesViewController.h"
@@ -16,12 +15,11 @@
 #import "EMQRCodeViewController.h"
 #import "EMSDKOptionsViewController.h"
 
+#import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
 #import "EMAlertController.h"
 
 @interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
-
-@property (nonatomic) BOOL isInitializedSDK;
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -49,8 +47,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _isInitializedSDK = NO;
-    
     [self _setupSubviews];
     
     [self.tableView reloadData];
@@ -71,7 +67,9 @@
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];
     self.view.backgroundColor = [UIColor whiteColor];
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device_disable"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -128,7 +126,7 @@
     self.appkeyButton = [[UIButton alloc] init];
     self.appkeyButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.appkeyButton setTitle:@"更换" forState:UIControlStateNormal];
-    [self.appkeyButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.appkeyButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [self.appkeyButton addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
     [self.appkeyCell.contentView addSubview:self.appkeyButton];
     [self.appkeyButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -143,7 +141,6 @@
     self.nameField.delegate = self;
     self.nameField.borderStyle = UITextBorderStyleNone;
     self.nameField.placeholder = @"用户ID";
-    self.nameField.keyboardType = UIKeyboardTypeNamePhonePad;
     self.nameField.returnKeyType = UIReturnKeyDone;
     self.nameField.font = [UIFont systemFontOfSize:17];
     self.nameField.rightViewMode = UITextFieldViewModeWhileEditing;
@@ -206,7 +203,7 @@
     UIButton *loginButton = [[UIButton alloc] init];
     loginButton.clipsToBounds = YES;
     loginButton.layer.cornerRadius = 5;
-    loginButton.backgroundColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0];
+    loginButton.backgroundColor = kColor_Blue;
     loginButton.titleLabel.font = [UIFont systemFontOfSize:19];
     [loginButton setTitle:@"登录" forState:UIControlStateNormal];
     [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -222,7 +219,7 @@
     UIButton *registerButton = [[UIButton alloc] init];
     registerButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [registerButton setTitle:@"新用户注册" forState:UIControlStateNormal];
-    [registerButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [registerButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [registerButton addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonCell.contentView addSubview:registerButton];
     [registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -234,7 +231,7 @@
     self.loginTypeButton = [[UIButton alloc] init];
     self.loginTypeButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.loginTypeButton setTitle:@"使用token登录" forState:UIControlStateNormal];
-    [self.loginTypeButton setTitleColor:[UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.loginTypeButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
     [self.loginTypeButton addTarget:self action:@selector(loginTypeChangeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonCell.contentView addSubview:self.loginTypeButton];
     [self.loginTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -242,44 +239,6 @@
         make.right.equalTo(loginButton);
         make.bottom.equalTo(registerButton);
     }];
-}
-
-#pragma mark - Private
-
-- (void)_updateSDKOptions:(NSDictionary *)aDic
-{
-    NSString *appkey = [aDic objectForKey:kOptions_Appkey];
-    NSString *apns = [aDic objectForKey:kOptions_ApnsCertname];
-    BOOL httpsOnly = [[aDic objectForKey:kOptions_HttpsOnly] boolValue];
-    if ([appkey length] == 0) {
-        appkey = DEF_APPKEY;
-    }
-    if ([apns length] == 0) {
-#if DEBUG
-        apns = @"chatdemoui_dev";
-#else
-        apns = @"chatdemoui";
-#endif
-    }
-    
-    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
-    demoOptions.appkey = appkey;
-    demoOptions.apnsCertName = apns;
-    demoOptions.usingHttpsOnly = httpsOnly;
-    
-    int specifyServer = [[aDic objectForKey:kOptions_SpecifyServer] intValue];
-    if (specifyServer != 0) {
-        NSString *imServer = [aDic objectForKey:kOptions_IMServer];
-        NSString *imPort = [aDic objectForKey:kOptions_IMPort];
-        NSString *restServer = [aDic objectForKey:kOptions_RestServer];
-        if ([imServer length] > 0 && [restServer length] > 0 && [imPort length] > 0) {
-            demoOptions.chatPort = [imPort intValue];
-            demoOptions.chatServer = imServer;
-            demoOptions.restServer = restServer;
-        }
-    }
-    
-    [demoOptions archive];
 }
 
 #pragma mark - Table view data source
@@ -349,7 +308,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    textField.layer.borderColor = [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0].CGColor;
+    textField.layer.borderColor = kColor_Blue.CGColor;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -381,7 +340,7 @@
 {
     [self.view endEditing:YES];
     
-    if (self.isInitializedSDK) {
+    if (gIsInitializedSDK) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"(づ｡◕‿‿◕｡)づ" message:@"当前appkey以及环境配置已生效，如果需要更改需要重启客户端" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             exit(0);
@@ -396,27 +355,21 @@
         EMQRCodeViewController *controller = [[EMQRCodeViewController alloc] init];
         
         __weak typeof(self) weakself = self;
-        [controller setScanFinishCompletion:^(NSString * _Nonnull aJson) {
-            NSData *jsonData = [aJson dataUsingEncoding:NSUTF8StringEncoding];
-            NSError *error;
-            id obj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
-            if (!error && [obj isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *dic = (NSDictionary *)obj;
-                NSString *username = [dic objectForKey:@"Username"];
-                NSString *pssword = [dic objectForKey:@"Password"];
-                if ([username length] == 0) {
-                    return ;
-                }
-                
-                [weakself _updateSDKOptions:dic];
-                
-                weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
-                weakself.nameField.text = username;
-                weakself.pswdField.text = pssword;
-                
-                if ([pssword length] == 0) {
-                    [weakself.pswdField becomeFirstResponder];
-                }
+        [controller setScanFinishCompletion:^(NSDictionary *aJsonDic) {
+            NSString *username = [aJsonDic objectForKey:@"Username"];
+            NSString *pssword = [aJsonDic objectForKey:@"Password"];
+            if ([username length] == 0) {
+                return ;
+            }
+            
+            [EMDemoOptions updateAndSaveServerOptions:aJsonDic];
+            
+            weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
+            weakself.nameField.text = username;
+            weakself.pswdField.text = pssword;
+            
+            if ([pssword length] == 0) {
+                [weakself.pswdField becomeFirstResponder];
             }
         }];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
@@ -426,7 +379,7 @@
 - (void)changeAppkeyAction
 {
     __weak typeof(self) weakself = self;
-    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!self.isInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
+    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!gIsInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
         weakself.appkeyField.text = aOptions.appkey;
     }];
     [self.navigationController pushViewController:controller animated:YES];
@@ -452,12 +405,10 @@
         return;
     }
     
-    if (!self.isInitializedSDK) {
-        self.isInitializedSDK = YES;
+    if (!gIsInitializedSDK) {
+        gIsInitializedSDK = YES;
         EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
         [[EMClient sharedClient] initializeSDKWithOptions:options];
-        
-        [self.appkeyButton setTitle:@"查看" forState:UIControlStateNormal];
     }
     
     __weak typeof(self) weakself = self;

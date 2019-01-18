@@ -17,17 +17,7 @@ static EMDemoOptions *sharedOptions = nil;
 {
     self = [super init];
     if (self) {
-        self.appkey = DEF_APPKEY;
-#if DEBUG
-        self.apnsCertName = @"chatdemoui_dev";
-#else
-        self.apnsCertName = @"chatdemoui";
-#endif
-        self.usingHttpsOnly = NO;
-        self.specifyServer = NO;
-        self.chatServer = @"msync-im1.sandbox.easemob.com";
-        self.chatPort = 6717;
-        self.restServer = @"a1.sdb.easemob.com";
+        [self _initServerOptions];
         
         self.isDeleteMessagesWhenExitGroup = NO;
         self.isAutoAcceptGroupInvitation = NO;
@@ -115,14 +105,31 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.isUseBackCamera forKey:kOptions_UseBackCamera];
 }
 
-+ (instancetype)sharedOptions
+- (id)copyWithZone:(nullable NSZone *)zone
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedOptions = [EMDemoOptions getOptionsFromLocal];
-    });
+    EMDemoOptions *retModel = [[[self class] alloc] init];
+    retModel.appkey = self.appkey;
+    retModel.apnsCertName = self.apnsCertName;
+    retModel.usingHttpsOnly = self.usingHttpsOnly;
+    retModel.specifyServer = self.specifyServer;
+    retModel.chatPort = self.chatPort;
+    retModel.chatServer = self.chatServer;
+    retModel.restServer = self.restServer;
+    retModel.isDeleteMessagesWhenExitGroup = self.isDeleteMessagesWhenExitGroup;
+    retModel.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
+    retModel.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
+    retModel.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
+    retModel.isSortMessageByServerTime = self.isSortMessageByServerTime;
+    retModel.isPriorityGetMsgFromServer = self.isPriorityGetMsgFromServer;
+    retModel.isAutoLogin = self.isAutoLogin;
+    retModel.loggedInUsername = self.loggedInUsername;
+    retModel.loggedInPassword = self.loggedInPassword;
+    retModel.isChatTyping = self.isChatTyping;
+    retModel.isAutoDeliveryAck = self.isAutoDeliveryAck;
+    retModel.isShowCallInfo = self.isShowCallInfo;
+    retModel.isUseBackCamera = self.isUseBackCamera;
     
-    return sharedOptions;
+    return retModel;
 }
 
 - (void)setLoggedInUsername:(NSString *)loggedInUsername
@@ -133,19 +140,24 @@ static EMDemoOptions *sharedOptions = nil;
     }
 }
 
-+ (EMDemoOptions *)getOptionsFromLocal
+#pragma mark - Private
+
+- (void)_initServerOptions
 {
-    EMDemoOptions *retModel = nil;
-    NSString *fileName = @"emdemo_options.data";
-    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
-    retModel = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
-    if (!retModel) {
-        retModel = [[EMDemoOptions alloc] init];
-        [retModel archive];
-    }
-    
-    return retModel;
+    self.appkey = DEF_APPKEY;
+#if DEBUG
+    self.apnsCertName = @"chatdemoui_dev";
+#else
+    self.apnsCertName = @"chatdemoui";
+#endif
+    self.usingHttpsOnly = NO;
+    self.specifyServer = NO;
+    self.chatServer = @"msync-im1.sandbox.easemob.com";
+    self.chatPort = 6717;
+    self.restServer = @"a1.sdb.easemob.com";
 }
+
+#pragma mark - Public
 
 - (void)archive
 {
@@ -171,7 +183,7 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.isAutoLogin = self.isAutoLogin;
     
     retOpt.isDeleteMessagesWhenExitGroup = self.isDeleteMessagesWhenExitGroup;
-    retOpt.isAutoAcceptGroupInvitation = self.isAutoTransferMessageAttachments;
+    retOpt.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
     retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
     retOpt.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
     retOpt.sortMessageByServerTime = self.isSortMessageByServerTime;
@@ -179,6 +191,79 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     
     return retOpt;
+}
+
+#pragma mark - Class Methods
+
++ (instancetype)sharedOptions
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedOptions = [EMDemoOptions getOptionsFromLocal];
+    });
+    
+    return sharedOptions;
+}
+
++ (EMDemoOptions *)getOptionsFromLocal
+{
+    EMDemoOptions *retModel = nil;
+    NSString *fileName = @"emdemo_options.data";
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
+    retModel = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
+    if (!retModel) {
+        retModel = [[EMDemoOptions alloc] init];
+        [retModel archive];
+    }
+    
+    return retModel;
+}
+
++ (void)reInitAndSaveServerOptions
+{
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    [demoOptions _initServerOptions];
+    
+    [demoOptions archive];
+}
+
++ (void)updateAndSaveServerOptions:(NSDictionary *)aDic
+{
+    NSString *appkey = [aDic objectForKey:kOptions_Appkey];
+    NSString *apns = [aDic objectForKey:kOptions_ApnsCertname];
+    BOOL httpsOnly = [[aDic objectForKey:kOptions_HttpsOnly] boolValue];
+    if ([appkey length] == 0) {
+        appkey = DEF_APPKEY;
+    }
+    if ([apns length] == 0) {
+#if DEBUG
+        apns = @"chatdemoui_dev";
+#else
+        apns = @"chatdemoui";
+#endif
+    }
+    
+    EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
+    demoOptions.appkey = appkey;
+    demoOptions.apnsCertName = apns;
+    demoOptions.usingHttpsOnly = httpsOnly;
+    
+    int specifyServer = [[aDic objectForKey:kOptions_SpecifyServer] intValue];
+    demoOptions.specifyServer = NO;
+    if (specifyServer != 0) {
+        demoOptions.specifyServer = YES;
+        
+        NSString *imServer = [aDic objectForKey:kOptions_IMServer];
+        NSString *imPort = [aDic objectForKey:kOptions_IMPort];
+        NSString *restServer = [aDic objectForKey:kOptions_RestServer];
+        if ([imServer length] > 0 && [restServer length] > 0 && [imPort length] > 0) {
+            demoOptions.chatPort = [imPort intValue];
+            demoOptions.chatServer = imServer;
+            demoOptions.restServer = restServer;
+        }
+    }
+    
+    [demoOptions archive];
 }
 
 @end

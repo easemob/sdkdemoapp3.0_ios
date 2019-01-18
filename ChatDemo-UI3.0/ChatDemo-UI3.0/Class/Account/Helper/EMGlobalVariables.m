@@ -9,6 +9,7 @@
 #import "EMGlobalVariables.h"
 
 MainViewController *gMainController = nil;
+BOOL gIsInitializedSDK = NO;
 BOOL gIsCalling = NO;
 
 static EMGlobalVariables *shared = nil;

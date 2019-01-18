@@ -1,35 +1,36 @@
 //
-//  EMRefreshViewController.m
-//  ChatDemo-UI3.0
+//  XHRefreshTableViewController.m
+//  DXStudio
 //
-//  Created by XieYajie on 2018/9/19.
-//  Copyright © 2018 XieYajie. All rights reserved.
+//  Created by XieYajie on 18/08/2017.
+//  Copyright © 2017 dxstudio. All rights reserved.
 //
 
-#import "EMRefreshViewController.h"
+#import "EMRefreshTableViewController.h"
 
 #import "MJRefresh.h"
 
-@interface EMRefreshViewController ()
+@interface EMRefreshTableViewController ()
 
 @end
 
-@implementation EMRefreshViewController
+@implementation EMRefreshTableViewController
+
+@synthesize rightItems = _rightItems;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
-//    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-//        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-//    }
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
+
+    self.tableView.tableFooterView = self.defaultFooterView;
     
     _page = 0;
     _showRefreshHeader = NO;
     _showRefreshFooter = NO;
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,6 +39,13 @@
 }
 
 #pragma mark - setter
+
+//- (void)setRefreshHeaderColor:(UIColor *)aColor
+//{
+//    if (self.showRefreshHeader && self.tableView.mj_header) {
+//        [(MJRefreshNormalHeader *)self.tableView.mj_header setRefreshHeaderColor:aColor];
+//    }
+//}
 
 - (void)setShowRefreshHeader:(BOOL)showRefreshHeader
 {
@@ -49,7 +57,6 @@
                 [weakSelf tableViewDidTriggerHeaderRefresh];
             }];
             self.tableView.mj_header.accessibilityIdentifier = @"refresh_header";
-            //            header.updatedTimeHidden = YES;
         }
         else{
             [self.tableView setMj_header:nil];
@@ -85,6 +92,15 @@
     return _dataArray;
 }
 
+- (NSMutableDictionary *)dataDictionary
+{
+    if (_dataDictionary == nil) {
+        _dataDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    return _dataDictionary;
+}
+
 - (UIView *)defaultFooterView
 {
     if (_defaultFooterView == nil) {
@@ -94,61 +110,29 @@
     return _defaultFooterView;
 }
 
-- (UITableView *)tableView
-{
-    if (_tableView == nil) {
-        _tableView = [[UITableView alloc] init];
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        _tableView.tableFooterView = self.defaultFooterView;
-    }
-    
-    return _tableView;
-}
-
-- (BOOL)isHeaderRefreshing
-{
-    BOOL isRefreshing = NO;
-    if (self.showRefreshHeader) {
-        isRefreshing = self.tableView.mj_header.isRefreshing;
-    }
-    
-    return isRefreshing;
-}
-
-- (BOOL)isFooterRefreshing
-{
-    BOOL isRefreshing = NO;
-    if (self.showRefreshFooter) {
-        isRefreshing = self.tableView.mj_footer.isRefreshing;
-    }
-    
-    return isRefreshing;
-}
-
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"UITableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    // Configure the cell...
-    
-    return cell;
-}
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    // Return the number of sections.
+//    return 1;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    // Return the number of rows in the section.
+//    return 0;
+//}
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    static NSString *CellIdentifier = @"UITableViewCell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//
+//    // Configure the cell...
+//
+//    return cell;
+//}
 
 #pragma mark - public refresh
 
@@ -161,12 +145,12 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    [self tableViewDidFinishTriggerHeader:YES reload:NO];
+    
 }
 
 - (void)tableViewDidTriggerFooterRefresh
 {
-    [self tableViewDidFinishTriggerHeader:NO reload:NO];
+    
 }
 
 - (void)tableViewDidFinishTriggerHeader:(BOOL)isHeader reload:(BOOL)reload

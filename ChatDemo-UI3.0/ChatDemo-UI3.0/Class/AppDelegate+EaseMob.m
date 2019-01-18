@@ -21,8 +21,6 @@
 #import "EMDemoOptions.h"
 #import "EMLoginViewController.h"
 
-#import "EMHomeViewController.h"
-
 /**
  *  本类中做了EaseMob初始化和推送等操作
  */
@@ -43,6 +41,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     
     EMDemoOptions *demoOptions = [EMDemoOptions sharedOptions];
     if (demoOptions.isAutoLogin){
+        gIsInitializedSDK = YES;
         [[EMClient sharedClient] initializeSDKWithOptions:[demoOptions toOptions]];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];

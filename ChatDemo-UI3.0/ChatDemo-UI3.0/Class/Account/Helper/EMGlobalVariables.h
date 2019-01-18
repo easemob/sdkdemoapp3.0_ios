@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern MainViewController *gMainController;
 
+extern BOOL gIsInitializedSDK;
+
 extern BOOL gIsCalling;
 
 @interface EMGlobalVariables : NSObject

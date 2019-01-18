@@ -8,8 +8,6 @@
 
 #import "EMButton.h"
 
-#import "Masonry.h"
-
 #define EMButtonDefaultTitleColor [UIColor blackColor]
 
 @implementation EMButtonState

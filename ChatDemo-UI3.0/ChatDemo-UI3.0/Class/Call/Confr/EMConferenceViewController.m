@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
 
+@property (nonatomic) BOOL isSetSpeaker;
+
 @end
 
 @implementation EMConferenceViewController
@@ -71,24 +73,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if (!isHeadphone()) {
+        self.speakerButton.selected = YES;
+        [self speakerButtonAction];
+    }
+    
     [self _initializeConferenceController];
     [self _setupConferenceControllerSubviews];
     
-    if (!isHeadphone()) {
-        [self speakerButtonAction];
-    }
+    //注册SDK回调监听
+    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
     
     //本地摄像头方向
     self.isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
     self.switchCameraButton.selected = self.isUseBackCamera;
-    
-    //多人实时音视频默认使用扬声器
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    [audioSession setActive:YES error:nil];
-    
-    //注册SDK回调监听
-    [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+
+    self.speakerButton.selected = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -305,6 +305,13 @@
         if (videoItem && videoItem.videoView) {
             videoItem.videoView.status = StreamStatusConnected;
         }
+        
+        if (!self.microphoneButton.isSelected && self.speakerButton.isSelected && !self.isSetSpeaker) {
+            self.isSetSpeaker = YES;
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            [audioSession setActive:YES error:nil];
+        }
     }
 }
 
@@ -367,7 +374,7 @@
         [self.floatingView removeFromSuperview];
         
         [self.scrollView addSubview:self.floatingView];
-        self.floatingView.frame = self.localViewTmpFrame;
+        self.floatingView.frame = self.floatViewFromFrame;
         self.floatingView = nil;
         
         [gMainController presentViewController:self.navigationController animated:NO completion:nil];
@@ -524,20 +531,27 @@
 - (void)removeStreamWithId:(NSString *)aStreamId
 {
     NSInteger index = [self.streamIds indexOfObject:aStreamId];
-    [self.streamIds removeObjectAtIndex:index];
     
     EMStreamItem *removeItem = [self.streamItemDict objectForKey:aStreamId];
     CGRect prevFrame = removeItem.videoView.frame;
     [removeItem.videoView removeFromSuperview];
-    [self.streamItemDict removeObjectForKey:aStreamId];
     
-    for (NSInteger i = index; i < [self.streamIds count]; i++) {
+    for (NSInteger i = index + 1; i < [self.streamIds count]; i++) {
         NSString *streamId = [self.streamIds objectAtIndex:i];
         EMStreamItem *item = [self.streamItemDict objectForKey:streamId];
-        CGRect frame = item.videoView.frame;
-        item.videoView.frame = prevFrame;
-        prevFrame = frame;
+        if (self.minButton.selected && self.floatingView == item.videoView) {
+            CGRect frame = self.floatViewFromFrame;
+            self.floatViewFromFrame = prevFrame;
+            prevFrame = frame;
+        } else {
+            CGRect frame = item.videoView.frame;
+            item.videoView.frame = prevFrame;
+            prevFrame = frame;
+        }
     }
+    
+    [self.streamIds removeObjectAtIndex:index];
+    [self.streamItemDict removeObjectForKey:aStreamId];
 }
 
 #pragma mark - Member
@@ -581,6 +595,12 @@
         if (videoItem) {
             videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
         }
+    }
+    
+    if (!self.microphoneButton.isSelected && self.speakerButton.isSelected) {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setActive:YES error:nil];
     }
 }
 
@@ -649,7 +669,7 @@
     self.minButton.selected = YES;
     
     EMStreamItem *item = [self.streamItemDict objectForKey:self.pubStreamId];
-    self.localViewTmpFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
+    self.floatViewFromFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
     self.floatingView = item.videoView;
     [self.floatingView removeFromSuperview];
     

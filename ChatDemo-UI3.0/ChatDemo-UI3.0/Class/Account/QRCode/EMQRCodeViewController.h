@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMQRCodeViewController : UIViewController
 
-@property (nonatomic, copy) void (^scanFinishCompletion)(NSString *aJson);
+@property (nonatomic, copy) void (^scanFinishCompletion)(NSDictionary *aJsonDic);
 
 @end
 

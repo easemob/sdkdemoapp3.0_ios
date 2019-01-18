@@ -304,7 +304,7 @@
         return;
     }
     
-    self.localViewTmpFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
+    self.floatViewFromFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
     self.floatingView = item.videoView;
     [self.floatingView removeFromSuperview];
     

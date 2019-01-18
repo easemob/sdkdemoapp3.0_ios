@@ -212,8 +212,10 @@
 {
     [super setCallStatus:callStatus];
     
-    if (callStatus == EMCallSessionStatusAccepted && !self.callSession.remoteVideoView) {
-        [self _setupRemoteVideoView];
+    if (callStatus == EMCallSessionStatusAccepted) {
+        if (!self.callSession.remoteVideoView) {
+            [self _setupRemoteVideoView];
+        }
     }
 }
 

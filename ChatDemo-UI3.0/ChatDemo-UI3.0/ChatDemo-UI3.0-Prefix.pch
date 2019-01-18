@@ -28,4 +28,8 @@
 
     #import "EaseUI.h"
 
+    //new UI
+    #import "Masonry.h"
+    #import "EMColorDefine.h"
+
 #endif

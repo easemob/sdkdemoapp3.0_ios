@@ -48,7 +48,7 @@
 @property (nonatomic, strong, readonly) NSString *chatId;
 @property (nonatomic, readonly) EMChatType chatType;
 
-@property (nonatomic) CGRect localViewTmpFrame;
+@property (nonatomic) CGRect floatViewFromFrame;
 
 - (instancetype)initWithType:(EMConferenceType)aType
                     password:(NSString *)aPassword

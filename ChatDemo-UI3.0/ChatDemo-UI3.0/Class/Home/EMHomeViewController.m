@@ -8,15 +8,21 @@
 
 #import "EMHomeViewController.h"
 
-#import "Masonry.h"
-
+#import "EMConversationsViewController.h"
+#import "EMContactsViewController.h"
 #import "EMSettingsViewController.h"
+
+#define kTabbarItemTag_Conversation 0
+#define kTabbarItemTag_Contact 1
+#define kTabbarItemTag_Settings 2
 
 @interface EMHomeViewController ()<UITabBarDelegate>
 
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
 
+@property (nonatomic, strong) EMConversationsViewController *conversationsController;
+@property (nonatomic, strong) EMContactsViewController *contactsController;
 @property (nonatomic, strong) EMSettingsViewController *settingsController;
 
 @end
@@ -44,6 +50,8 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
+    
+    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
@@ -84,23 +92,33 @@
     UITabBarItem *retItem = [[UITabBarItem alloc] initWithTitle:aTitle image:[UIImage imageNamed:aImgName] selectedImage:[UIImage imageNamed:aSelectedImgName]];
     retItem.tag = aTag;
     [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:14], NSFontAttributeName, [UIColor lightGrayColor],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
-    [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0], NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+    [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, kColor_Blue, NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     return retItem;
 }
 
 - (void)_setupChildController
 {
+    self.conversationsController = [[EMConversationsViewController alloc] init];
+    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"tabbar_chat_gray" selectedImgName:@"tabbar_chat_blue" tag:kTabbarItemTag_Conversation];
+    self.conversationsController.tabBarItem = consItem;
+    [self addChildViewController:self.conversationsController];
+    
+    self.contactsController = [[EMContactsViewController alloc] init];
+    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"联系人" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
+    self.contactsController.tabBarItem = contItem;
+    [self addChildViewController:self.contactsController];
+    
     self.settingsController = [[EMSettingsViewController alloc] init];
-    [self addChildViewController:self.settingsController];
-    self.viewControllers = @[self.settingsController];
-    
-    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"settings" selectedImgName:@"settings_on" tag:2];
+    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"tabbar_settings_gray" selectedImgName:@"tabbar_settings_blue" tag:kTabbarItemTag_Settings];
     self.settingsController.tabBarItem = settingsItem;
+    [self addChildViewController:self.settingsController];
     
-    [self.tabBar setItems:@[settingsItem]];
+    self.viewControllers = @[self.conversationsController, self.contactsController, self.settingsController];
     
-    self.tabBar.selectedItem = settingsItem;
-    [self tabBar:self.tabBar didSelectItem:settingsItem];
+    [self.tabBar setItems:@[consItem, contItem, settingsItem]];
+    
+    self.tabBar.selectedItem = consItem;
+    [self tabBar:self.tabBar didSelectItem:consItem];
 }
 
 #pragma mark - UITabBarDelegate
@@ -109,7 +127,11 @@
 {
     NSInteger tag = item.tag;
     UIView *addView = nil;
-    if (tag == 2) {
+    if (tag == kTabbarItemTag_Conversation) {
+        addView = self.conversationsController.view;
+    } else if (tag == kTabbarItemTag_Contact) {
+        addView = self.contactsController.view;
+    } else if (tag == kTabbarItemTag_Settings) {
         addView = self.settingsController.view;
     }
     

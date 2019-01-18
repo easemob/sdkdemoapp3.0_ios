@@ -35,6 +35,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    [audioSession setActive:YES error:nil];
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
@@ -338,16 +341,18 @@
                 connectStr = @"Direct";
             }
             self.remoteNameLabel.text = [NSString stringWithFormat:@"%@  --  %@", self.callSession.remoteName, connectStr];
-            
-            if (self.speakerButton.isSelected) {
-                AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-                [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-                [audioSession setActive:YES error:nil];
-            }
-            
+
             if (self.microphoneButton.isSelected) {
                 [self.callSession pauseVoice];
             }
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (!self.microphoneButton.isSelected && self.speakerButton.isSelected) {
+                    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+                    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+                    [audioSession setActive:YES error:nil];
+                }
+            });
         }
             break;
             

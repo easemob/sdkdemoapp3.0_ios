@@ -40,7 +40,7 @@
     
     self.tableView.rowHeight = 55;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    self.tableView.backgroundColor = [UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0];
+    self.tableView.backgroundColor = kColor_LightGray;
 }
 
 #pragma mark - Table view data source
@@ -56,7 +56,7 @@
             count = 1;
             break;
         case 1:
-            count = 2;
+            count = 3;
             break;
         case 2:
             count = 1;
@@ -98,12 +98,12 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (isSwitchCell) {
             switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
-            switchControl.tag = section * 10 + row;
+            switchControl.tag = [self _tagWithIndexPath:indexPath];
             [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:switchControl];
         }
     } else if (isSwitchCell) {
-        switchControl = [cell.contentView viewWithTag:(section * 10 + row)];
+        switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
     }
     
     EMDemoOptions *options = [EMDemoOptions sharedOptions];
@@ -118,9 +118,12 @@
         }
     } else if (section == 1) {
         if (row == 0) {
+            cell.textLabel.text = @"自动登录";
+            [switchControl setOn:[EMClient sharedClient].options.isAutoLogin animated:YES];
+        } else if (row == 1) {
             cell.textLabel.text = @"自动接收群组邀请";
             [switchControl setOn:options.isAutoAcceptGroupInvitation animated:YES];
-        } else if (row == 1) {
+        } else if (row == 2) {
             cell.textLabel.text = @"群聊退出时删除会话";
             [switchControl setOn:options.isDeleteMessagesWhenExitGroup animated:YES];
         }
@@ -254,6 +257,22 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Private
+
+- (NSInteger)_tagWithIndexPath:(NSIndexPath *)aIndexPath
+{
+    NSInteger tag = aIndexPath.section * 10 + aIndexPath.row;
+    return tag;
+}
+
+- (NSIndexPath *)_indexPathWithTag:(NSInteger)aTag
+{
+    NSInteger section = aTag / 10;
+    NSInteger row = aTag % 10;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    return indexPath;
+}
+
 #pragma mark - Action
 
 - (void)backAction
@@ -264,49 +283,40 @@
 - (void)cellSwitchValueChanged:(UISwitch *)aSwitch
 {
     EMDemoOptions *options = [EMDemoOptions sharedOptions];
-    NSInteger tag = aSwitch.tag;
-    switch (tag) {
-        case 10:
-        {
+    NSIndexPath *indexPath = [self _indexPathWithTag:aSwitch.tag];
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    if (section == 1) {
+        if (row == 0) {
+            [EMClient sharedClient].options.isAutoLogin = aSwitch.isOn;
+            options.isAutoLogin = aSwitch.isOn;
+            [options archive];
+        } else if (row == 1) {
             [EMClient sharedClient].options.isAutoAcceptGroupInvitation = aSwitch.isOn;
-            
             options.isAutoAcceptGroupInvitation = aSwitch.isOn;
             [options archive];
-        }
-            break;
-        case 11:
-        {
+        } else if (row == 2) {
             [EMClient sharedClient].options.isDeleteMessagesWhenExitGroup = aSwitch.isOn;
-            
             options.isDeleteMessagesWhenExitGroup = aSwitch.isOn;
             [options archive];
         }
-            break;
-        case 20:
-        {
+    } else if (section == 2) {
+        if (row == 0) {
             options.isPriorityGetMsgFromServer = aSwitch.isOn;
             [options archive];
         }
-            break;
-        case 30:
-        {
+    } else if (section == 3) {
+        if (row == 0) {
             [EMClient sharedClient].options.isAutoTransferMessageAttachments = aSwitch.isOn;
-            
             options.isAutoTransferMessageAttachments = aSwitch.isOn;
             [options archive];
         }
-            break;
-        case 40:
-        {
+    } else if (section == 4) {
+        if (row == 0) {
             [EMClient sharedClient].options.isAutoDownloadThumbnail = aSwitch.isOn;
-            
             options.isAutoDownloadThumbnail = aSwitch.isOn;
             [options archive];
         }
-            break;
-            
-        default:
-            break;
     }
 }
 

@@ -8,8 +8,6 @@
 
 #import "ConfInviteUsersViewController.h"
 
-#import "Masonry.h"
-
 #import "RealtimeSearchUtil.h"
 #import "DemoConfManager.h"
 #import "ConfInviteUserCell.h"
@@ -266,6 +264,12 @@
 {
     NSMutableArray *retNames = [[NSMutableArray alloc] init];
     [retNames addObjectsFromArray:aAllUsers];
+    
+    NSString *loginName = [[EMClient sharedClient].currentUsername lowercaseString];
+    if ([retNames containsObject:loginName]) {
+        [retNames removeObject:loginName];
+    }
+    
     for (NSString *name in self.excludeUsers) {
         if ([retNames containsObject:name]) {
             [retNames removeObject:name];

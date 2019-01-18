@@ -8,8 +8,6 @@
 
 #import "EMSettingsViewController.h"
 
-#import "Masonry.h"
-
 #import "EMAccountViewController.h"
 #import "EMBlacklistViewController.h"
 #import "EMDevicesViewController.h"
@@ -50,7 +48,7 @@
 
 - (void)_setupSubviews
 {
-    [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor colorWithRed:245 / 255.0 green:245 / 255.0 blue:245 / 255.0 alpha:1.0]];
+    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -122,7 +120,7 @@
             cell.textLabel.font = [UIFont systemFontOfSize:18];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
             cell.detailTextLabel.textColor = [UIColor grayColor];
-            cell.imageView.image = [UIImage imageNamed:@"user_default"];
+            cell.imageView.image = [UIImage imageNamed:@"user_3"];
             [cell.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(cell.textLabel.mas_bottom).offset(3);
                 make.left.equalTo(cell.textLabel);
@@ -181,12 +179,16 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [[UIView alloc] init];
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0;
+    if (section == 3) {
+        return 20;
+    }
+    
+    return 1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
