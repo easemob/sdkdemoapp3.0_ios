@@ -9,7 +9,6 @@
 #import "EMChatroomsViewController.h"
 
 #import "EMRealtimeSearch.h"
-#import "EMAlertController.h"
 
 #import "EMAvatarNameCell.h"
 #import "EMCreateChatroomViewController.h"

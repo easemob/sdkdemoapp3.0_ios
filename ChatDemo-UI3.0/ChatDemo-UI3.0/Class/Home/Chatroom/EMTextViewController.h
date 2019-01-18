@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMTextViewController : UIViewController
 
-@property (nonatomic, copy) void (^doneCompletion)(NSString *aString);
+@property (nonatomic, copy) BOOL (^doneCompletion)(NSString *aString);
 
 - (instancetype)initWithString:(NSString *)aString
                    placeholder:(NSString *)aPlaceholder;

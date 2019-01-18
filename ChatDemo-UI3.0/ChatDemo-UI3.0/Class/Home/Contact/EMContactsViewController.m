@@ -11,18 +11,15 @@
 #import "EMRealtimeSearch.h"
 #import "EMNotifications.h"
 
-#import "EMAlertController.h"
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
 #import "EMNotificationViewController.h"
 #import "EMGroupsViewController.h"
 #import "EMChatroomsViewController.h"
+#import "EMChatViewController.h"
 
 #import "DemoConfManager.h"
-//#import "GroupListViewController.h"
-//#import "ChatroomListViewController.h"
-#import "ChatViewController.h"
 
 @interface EMContactsViewController ()<XHSearchControllerDelegate, EMNotificationsDelegate>
 
@@ -91,7 +88,7 @@
     }];
     
     [self enableSearchController];
-    self.tableView.rowHeight = 50;
+    self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);
@@ -171,8 +168,10 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:contact conversationType:EMConversationTypeChat];
-        [weakself.resultController.navigationController pushViewController:chatController animated:YES];
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:contact type:EMConversationTypeChat createIfNotExist:YES];
+        EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
+        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+        [weakself.resultController.navigationController pushViewController:controller animated:YES];
     }];
 }
 
@@ -314,57 +313,11 @@
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:contact conversationType:EMConversationTypeChat];
-        [self.navigationController pushViewController:chatController animated:YES];
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:contact type:EMConversationTypeChat createIfNotExist:YES];
+        EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
+        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+        [self.navigationController pushViewController:controller animated:YES];
     }
-    
-//    if (section == 0) {
-//        if (row == 0) {
-//            [self.navigationController pushViewController:[ApplyViewController shareController] animated:YES];
-//        }
-//        else if (row == 1)
-//        {
-//            GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
-//            [self.navigationController pushViewController:groupController animated:YES];
-//        }
-//        else if (row == 2)
-//        {
-//            ChatroomListViewController *controller = [[ChatroomListViewController alloc] initWithStyle:UITableViewStylePlain];
-//            [self.navigationController pushViewController:controller animated:YES];
-//        }
-//
-//#if DEMO_CALL == 1
-//        else if (row == 3) {
-//            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat];
-//            }];
-//            [alertController addAction:defaultAction];
-//
-//            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat];
-//            }];
-//            [alertController addAction:mixAction];
-//
-//            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-//
-//            [self presentViewController:alertController animated:YES completion:nil];
-//        }
-//        else if (row == 4) {
-//            //TODO: custom call
-//        }
-//#endif
-//    } else if (section == 1) {
-//        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:[self.otherPlatformIds objectAtIndex:indexPath.row] conversationType:EMConversationTypeChat];
-//        [self.navigationController pushViewController:chatController animated:YES];
-//    }
-//    else{
-//        EaseUserModel *model = [[self.dataArray objectAtIndex:(section - 2)] objectAtIndex:row];
-//        UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:model.buddy conversationType:EMConversationTypeChat];
-//        chatController.title = model.nickname.length > 0 ? model.nickname : model.buddy;
-//        [self.navigationController pushViewController:chatController animated:YES];
-//    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

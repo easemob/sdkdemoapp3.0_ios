@@ -8,7 +8,6 @@
 
 #import "EMCreateChatroomViewController.h"
 
-#import "EMAlertController.h"
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
 
@@ -127,19 +126,21 @@
     if (row == 0) {
         EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入聊天室名称"];
         controller.title = @"聊天室名称";
-        [controller setDoneCompletion:^(NSString * _Nonnull aString) {
+        [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
             weakself.name = aString;
             if ([aString length] > 0) {
                 self.nameCell.detailTextLabel.text = aString;
             } else {
                 self.nameCell.detailTextLabel.text = @"请输入聊天室名称";
             }
+            
+            return YES;
         }];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (row == 1 || row == 2) {
         EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.detail placeholder:@"请输入聊天室简介"];
         controller.title = @"聊天室简介";
-        [controller setDoneCompletion:^(NSString * _Nonnull aString) {
+        [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
             weakself.detail = aString;
             if ([aString length] > 0) {
                 self.detailCell.detailTextLabel.text = nil;
@@ -148,6 +149,7 @@
                 self.detailCell.detailTextLabel.text = @"请输入聊天室简介";
                 self.contentCell.textLabel.text = nil;
             }
+            return YES;
         }];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (row == 3) {

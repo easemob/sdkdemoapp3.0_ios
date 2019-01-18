@@ -11,7 +11,6 @@
 #import "EMGeneralViewController.h"
 
 #import "EMDemoOptions.h"
-#import "EMAlertController.h"
 #import "EMServiceCheckViewController.h"
 
 @interface EMGeneralViewController ()<MFMailComposeViewControllerDelegate>

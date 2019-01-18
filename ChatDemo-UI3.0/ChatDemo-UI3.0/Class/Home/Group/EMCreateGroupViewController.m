@@ -8,7 +8,6 @@
 
 #import "EMCreateGroupViewController.h"
 
-#import "EMAlertController.h"
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
 #import "EMInviteGroupMemberViewController.h"
@@ -251,13 +250,14 @@
     __weak typeof(self) weakself = self;
     EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入群组名称"];
     controller.title = @"群组名称";
-    [controller setDoneCompletion:^(NSString * _Nonnull aString) {
+    [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         weakself.name = aString;
         if ([aString length] > 0) {
             weakself.nameCell.detailTextLabel.text = aString;
         } else {
             weakself.nameCell.detailTextLabel.text = @"请输入群组名称";
         }
+        return YES;
     }];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -267,7 +267,7 @@
     __weak typeof(self) weakself = self;
     EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.detail placeholder:@"请输入群组简介"];
     controller.title = @"群组简介";
-    [controller setDoneCompletion:^(NSString * _Nonnull aString) {
+    [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         weakself.detail = aString;
         if ([aString length] > 0) {
             weakself.detailCell.detailTextLabel.text = nil;
@@ -276,6 +276,7 @@
             weakself.detailCell.detailTextLabel.text = @"请输入群组简介";
             weakself.contentCell.textLabel.text = nil;
         }
+        return YES;
     }];
     [self.navigationController pushViewController:controller animated:YES];
 }

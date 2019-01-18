@@ -8,9 +8,11 @@
 
 #import "EMChatViewController.h"
 
+#import "EMGroupInfoViewController.h"
+
 @interface EMChatViewController ()
 
-@property (nonatomic, strong) EMConversation *conversation;
+@property (nonatomic, strong) EMConversationModel *conversationModel;
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *titleDetailLabel;
@@ -19,11 +21,11 @@
 
 @implementation EMChatViewController
 
-- (instancetype)initWithCoversation:(EMConversation *)aConversation
+- (instancetype)initWithCoversation:(EMConversationModel *)aConversationModel
 {
     self = [super init];
     if (self) {
-        _conversation = aConversation;
+        _conversationModel = aConversationModel;
     }
     
     return self;
@@ -42,6 +44,9 @@
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
     [self _setupNavigationBarTitle];
     [self _setupNavigationBarRightItem];
+    
+    self.view.backgroundColor = kColor_LightGray;
+    self.tableView.backgroundColor = kColor_LightGray;
 }
 
 - (void)_setupNavigationBarTitle
@@ -49,9 +54,10 @@
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 06, 40)];
     
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.font = [UIFont systemFontOfSize:17];
+    self.titleLabel.font = [UIFont systemFontOfSize:18];
     self.titleLabel.textColor = [UIColor blackColor];
-    self.titleLabel.text = self.conversation.conversationId;
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleLabel.text = self.conversationModel.name;
     [titleView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleView);
@@ -62,7 +68,7 @@
     self.titleDetailLabel = [[UILabel alloc] init];
     self.titleDetailLabel.font = [UIFont systemFontOfSize:15];
     self.titleDetailLabel.textColor = [UIColor grayColor];
-    self.titleDetailLabel.text = self.conversation.conversationId;
+    self.titleDetailLabel.textAlignment = NSTextAlignmentCenter;
     [titleView addSubview:self.titleDetailLabel];
     [self.titleDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom);
@@ -72,15 +78,20 @@
     }];
     
     self.navigationItem.titleView = titleView;
+    
+    if (self.conversationModel.emModel.type != EMConversationTypeChat) {
+        self.titleDetailLabel.text = self.conversationModel.emModel.conversationId;
+    }
 }
 
 - (void)_setupNavigationBarRightItem
 {
-    if (self.conversation.type == EMConversationTypeChat) {
-        UIImage *image = [[UIImage imageNamed:@"clear_gray"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    if (self.conversationModel.emModel.type == EMConversationTypeChat) {
+        UIImage *image = [[UIImage imageNamed:@"close_gray"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
     } else {
-        
+        UIImage *image = [[UIImage imageNamed:@"search_gray"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(groupOrChatroomInfoAction)];
     }
 }
 
@@ -93,7 +104,22 @@
 
 - (void)deleteAllMessageAction
 {
-    
+    EMError *error = nil;
+    [self.conversationModel.emModel deleteAllMessages:&error];
+    if (!error) {
+        [self.dataArray removeAllObjects];
+        [self.tableView reloadData];
+    }
+}
+
+- (void)groupOrChatroomInfoAction
+{
+    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
+        EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversationModel.emModel.conversationId];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
+        
+    }
 }
 
 @end

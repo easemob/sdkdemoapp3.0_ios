@@ -33,4 +33,6 @@
     #import "EMColorDefine.h"
     #import "UIViewController+Util.h"
 
+    #import "EMAlertController.h"
+
 #endif

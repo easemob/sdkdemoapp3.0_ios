@@ -11,7 +11,6 @@
 #import "EMRealtimeSearch.h"
 
 #import "EMConversationModel.h"
-#import "EMAlertController.h"
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
 #import "ChatViewController.h"
@@ -264,30 +263,8 @@
         
         [weakself.dataArray removeAllObjects];
         
-        NSArray *groupArray = [[EMClient sharedClient].groupManager getJoinedGroups];
-        for (int i = 0; i < [sorted count]; i++) {
-            EMConversation *conversation = sorted[i];
-            EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
-            if (conversation.type == EMConversationTypeGroupChat) {
-                NSString *name = [conversation.ext objectForKey:@"subject"];
-                if ([name length] == 0) {
-                    for (EMGroup *group in groupArray) {
-                        if ([group.groupId isEqualToString:conversation.conversationId]) {
-                            NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                            [ext setObject:group.subject forKey:@"subject"];
-                            [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
-                            conversation.ext = ext;
-                            name = group.subject;
-                            break;
-                        }
-                    }
-                }
-                
-                model.name = name;
-            }
-            
-            [weakself.dataArray addObject:model];
-        }
+        NSArray *models = [EMConversationModel modelsFromEMConversations:sorted];
+        [weakself.dataArray addObjectsFromArray:models];
         
         if (aIsShowHUD) {
             [weakself hideHud];

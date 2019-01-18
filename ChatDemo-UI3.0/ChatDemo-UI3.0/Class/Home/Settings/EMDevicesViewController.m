@@ -9,7 +9,6 @@
 #import "EMDevicesViewController.h"
 
 #import "EMDemoOptions.h"
-#import "EMAlertController.h"
 
 #define KALERT_GET_ALL 1
 #define KALERT_KICK_ALL 2

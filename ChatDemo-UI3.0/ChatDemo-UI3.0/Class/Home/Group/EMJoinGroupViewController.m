@@ -10,9 +10,6 @@
 
 #import "EMSearchBar.h"
 #import "EMAvatarNameCell.h"
-#import "EMAlertController.h"
-
-#import "ChatViewController.h"
 
 @interface EMJoinGroupViewController ()<EMSearchBarDelegate, EMAvatarNameCellDelegate>
 

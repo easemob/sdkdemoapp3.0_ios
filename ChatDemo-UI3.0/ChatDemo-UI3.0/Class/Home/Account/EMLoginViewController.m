@@ -17,7 +17,6 @@
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
-#import "EMAlertController.h"
 
 @interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 

@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithEMModel:(EMConversation *)aModel;
 
++ (NSArray<EMConversationModel *> *)modelsFromEMConversations:(NSArray<EMConversation *> *)aConversations;
+
 @end
 
 NS_ASSUME_NONNULL_END

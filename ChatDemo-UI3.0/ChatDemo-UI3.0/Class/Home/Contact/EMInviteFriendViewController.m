@@ -9,7 +9,6 @@
 #import "EMInviteFriendViewController.h"
 
 #import "EMSearchBar.h"
-#import "EMAlertController.h"
 #import "EMAvatarNameCell.h"
 
 @interface EMInviteFriendViewController ()<UITextFieldDelegate, EMSearchBarDelegate, EMAvatarNameCellDelegate>

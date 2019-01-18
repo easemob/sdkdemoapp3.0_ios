@@ -8,14 +8,11 @@
 
 #import "EMGroupsViewController.h"
 
-#import "EMAlertController.h"
-
 #import "EMAvatarNameCell.h"
 #import "EMInviteGroupMemberViewController.h"
 #import "EMCreateGroupViewController.h"
 #import "EMJoinGroupViewController.h"
-
-#import "ChatViewController.h"
+#import "EMChatViewController.h"
 
 @interface EMGroupsViewController ()
 
@@ -150,9 +147,12 @@
     } else {
         group = [self.searchResults objectAtIndex:indexPath.row];
     }
-    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:group.groupId conversationType:EMConversationTypeGroupChat];
-    chatController.title = group.subject;
-    [self.navigationController pushViewController:chatController animated:YES];
+    
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:group.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
+    EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
+    model.name = group.subject;
+    EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - EMSearchBarDelegate

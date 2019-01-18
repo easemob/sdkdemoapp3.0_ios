@@ -89,11 +89,15 @@
 - (void)doneAction
 {
     [self.view endEditing:YES];
+    
+    BOOL isPop = YES;
     if (_doneCompletion) {
-        _doneCompletion(self.textView.text);
+        isPop = _doneCompletion(self.textView.text);
     }
     
-    [self.navigationController popViewControllerAnimated:YES];
+    if (isPop) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

@@ -10,7 +10,7 @@
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
-#import "EMAlertController.h"
+
 #import "EMQRCodeViewController.h"
 #import "EMSDKOptionsViewController.h"
 

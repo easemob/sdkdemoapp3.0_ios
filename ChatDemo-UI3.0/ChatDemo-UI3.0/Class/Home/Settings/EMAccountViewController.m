@@ -9,7 +9,6 @@
 #import "EMAccountViewController.h"
 
 #import "EMDemoOptions.h"
-#import "EMAlertController.h"
 
 @interface EMAccountViewController ()
 

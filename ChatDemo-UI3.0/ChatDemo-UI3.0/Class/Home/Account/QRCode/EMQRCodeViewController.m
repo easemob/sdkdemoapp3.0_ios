@@ -11,8 +11,6 @@
 #import "WSLNativeScanTool.h"
 #import "WSLScanView.h"
 
-#import "EMAlertController.h"
-
 /*
  第一版（因时间不够，先只弄北京集群）：
  
