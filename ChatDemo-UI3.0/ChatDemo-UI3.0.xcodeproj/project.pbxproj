@@ -132,6 +132,7 @@
 		3A3F297B21F1AF88001A6327 /* EMChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297421F1AF88001A6327 /* EMChatHelper.m */; };
 		3A3F297C21F1AF88001A6327 /* EMConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297621F1AF88001A6327 /* EMConversationsViewController.m */; };
 		3A3F298C21F1B2A0001A6327 /* EMChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F298B21F1B2A0001A6327 /* EMChatViewController.m */; };
+		3A3F298F21F1B742001A6327 /* EMMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F298E21F1B742001A6327 /* EMMessageModel.m */; };
 		3A4BD04821E45AE500800BD4 /* EMRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BD04421E45AE500800BD4 /* EMRefreshTableViewController.m */; };
 		3A4BD04921E45AE500800BD4 /* EMRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
@@ -804,6 +805,8 @@
 		3A3F297721F1AF88001A6327 /* EMConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationCell.h; sourceTree = "<group>"; };
 		3A3F298A21F1B2A0001A6327 /* EMChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatViewController.h; sourceTree = "<group>"; };
 		3A3F298B21F1B2A0001A6327 /* EMChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatViewController.m; sourceTree = "<group>"; };
+		3A3F298D21F1B742001A6327 /* EMMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMessageModel.h; sourceTree = "<group>"; };
+		3A3F298E21F1B742001A6327 /* EMMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMessageModel.m; sourceTree = "<group>"; };
 		3A4BD04421E45AE500800BD4 /* EMRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshTableViewController.m; sourceTree = "<group>"; };
 		3A4BD04521E45AE500800BD4 /* EMRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshViewController.h; sourceTree = "<group>"; };
 		3A4BD04621E45AE500800BD4 /* EMRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRefreshViewController.m; sourceTree = "<group>"; };
@@ -1925,6 +1928,8 @@
 		3A3F298921F1B281001A6327 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				3A3F298D21F1B742001A6327 /* EMMessageModel.h */,
+				3A3F298E21F1B742001A6327 /* EMMessageModel.m */,
 				3A3F298A21F1B2A0001A6327 /* EMChatViewController.h */,
 				3A3F298B21F1B2A0001A6327 /* EMChatViewController.m */,
 			);
@@ -3704,6 +3709,7 @@
 				3A9A2A1521709ECC00AC4689 /* PSTCollectionView.m in Sources */,
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				3A9A2A1421709ECC00AC4689 /* PSTCollectionViewItemKey.m in Sources */,
+				3A3F298F21F1B742001A6327 /* EMMessageModel.m in Sources */,
 				3A9A29E121709ECC00AC4689 /* EaseConversationModel.m in Sources */,
 				3A9A2A2421709ECC00AC4689 /* SDWebImageDownloaderOperation.m in Sources */,
 				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
