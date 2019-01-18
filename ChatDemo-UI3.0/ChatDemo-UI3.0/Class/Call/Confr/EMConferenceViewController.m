@@ -374,7 +374,7 @@
         [self.floatingView removeFromSuperview];
         
         [self.scrollView addSubview:self.floatingView];
-        self.floatingView.frame = self.localViewTmpFrame;
+        self.floatingView.frame = self.floatViewFromFrame;
         self.floatingView = nil;
         
         [gMainController presentViewController:self.navigationController animated:NO completion:nil];
@@ -531,20 +531,27 @@
 - (void)removeStreamWithId:(NSString *)aStreamId
 {
     NSInteger index = [self.streamIds indexOfObject:aStreamId];
-    [self.streamIds removeObjectAtIndex:index];
     
     EMStreamItem *removeItem = [self.streamItemDict objectForKey:aStreamId];
     CGRect prevFrame = removeItem.videoView.frame;
     [removeItem.videoView removeFromSuperview];
-    [self.streamItemDict removeObjectForKey:aStreamId];
     
-    for (NSInteger i = index; i < [self.streamIds count]; i++) {
+    for (NSInteger i = index + 1; i < [self.streamIds count]; i++) {
         NSString *streamId = [self.streamIds objectAtIndex:i];
         EMStreamItem *item = [self.streamItemDict objectForKey:streamId];
-        CGRect frame = item.videoView.frame;
-        item.videoView.frame = prevFrame;
-        prevFrame = frame;
+        if (self.minButton.selected && self.floatingView == item.videoView) {
+            CGRect frame = self.floatViewFromFrame;
+            self.floatViewFromFrame = prevFrame;
+            prevFrame = frame;
+        } else {
+            CGRect frame = item.videoView.frame;
+            item.videoView.frame = prevFrame;
+            prevFrame = frame;
+        }
     }
+    
+    [self.streamIds removeObjectAtIndex:index];
+    [self.streamItemDict removeObjectForKey:aStreamId];
 }
 
 #pragma mark - Member
@@ -662,7 +669,7 @@
     self.minButton.selected = YES;
     
     EMStreamItem *item = [self.streamItemDict objectForKey:self.pubStreamId];
-    self.localViewTmpFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
+    self.floatViewFromFrame = CGRectMake(item.videoView.frame.origin.x, item.videoView.frame.origin.y, item.videoView.frame.size.width, item.videoView.frame.size.height);
     self.floatingView = item.videoView;
     [self.floatingView removeFromSuperview];
     
