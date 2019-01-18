@@ -22,7 +22,7 @@
     
 //    self.selectionStyle = UITableViewCellSelectionStyleNone;
 //    self.checkView.contentMode = UIViewContentModeScaleAspectFit;
-//    self.checkView.image = [UIImage imageNamed:@"conf_unchecked"];
+//    self.checkView.image = [UIImage imageNamed:@"conf_uncheck"];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -39,7 +39,7 @@
         if (isChecked) {
             self.checkView.image = [UIImage imageNamed:@"checked"];
         } else {
-            self.checkView.image = [UIImage imageNamed:@"unchecked"];
+            self.checkView.image = [UIImage imageNamed:@"uncheck"];
         }
     }
 }
