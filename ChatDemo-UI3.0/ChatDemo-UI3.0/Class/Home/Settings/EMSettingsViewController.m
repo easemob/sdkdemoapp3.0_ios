@@ -207,7 +207,7 @@
         }
     } else if (section == 1) {
         if (row == 0) {
-            EMBlacklistViewController *controller = [[EMBlacklistViewController alloc] initWithStyle:UITableViewStylePlain];
+            EMBlacklistViewController *controller = [[EMBlacklistViewController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
             EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];

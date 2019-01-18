@@ -6,8 +6,8 @@
 //  Copyright © 2017 XieYajie. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "EMRefreshTableViewController.h"
 
-@interface EMDevicesViewController : UITableViewController
+@interface EMDevicesViewController : EMRefreshTableViewController
 
 @end

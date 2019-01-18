@@ -10,7 +10,6 @@
 
 @interface EMBlacklistViewController ()
 
-@property (nonatomic, strong) NSMutableArray *dataArray;
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 
 @end
@@ -21,11 +20,10 @@
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
-    self.dataArray = [[NSMutableArray alloc] init];
     self.sectionTitles = [[NSMutableArray alloc] init];
     
     [self _setupSubviews];
-    [self _headerRefreshAction];
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 #pragma mark - Subviews
@@ -36,34 +34,10 @@
     self.title = @"黑名单";
     self.view.backgroundColor = [UIColor whiteColor];
     
+    self.showRefreshHeader = YES;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(_headerRefreshAction) forControlEvents:UIControlEventValueChanged];
-    self.tableView.refreshControl = refreshControl;
 }
-
-- (id)_setupCellEditActions:(NSIndexPath *)aIndexPath
-{
-    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
-        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"移除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-            [self deleteCellAction:indexPath];
-        }];
-        deleteAction.backgroundColor = [UIColor redColor];
-        return @[deleteAction];
-    } else {
-        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"移除" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [self deleteCellAction:aIndexPath];
-        }];
-        deleteAction.backgroundColor = [UIColor redColor];
-        
-        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
-        config.performsFirstActionWithFullSwipe = NO;
-        return config;
-    }
-}
-
 
 #pragma mark - Table view data source
 
@@ -100,16 +74,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //在iOS8.0上，必须加上这个方法才能出发左划操作
-}
-
-- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self _setupCellEditActions:indexPath];
-}
-
-- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self _setupCellEditActions:indexPath];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self deleteCellAction:indexPath];
+    }
 }
 
 #pragma mark - Table view delegate
@@ -189,23 +156,23 @@
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
         }];
         
-        
         [sortedArray replaceObjectAtIndex:i withObject:[NSMutableArray arrayWithArray:array]];
     }
     
     return sortedArray;
 }
 
-- (void)_headerRefreshAction
+- (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].contactManager getBlackListFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
-        [weakself.refreshControl endRefreshing];
         if (!aError) {
             [weakself.dataArray removeAllObjects];
             [weakself.dataArray addObjectsFromArray:[weakself _sortDataArray:aList]];
             [weakself.tableView reloadData];
         }
+        
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     }];
 }
 

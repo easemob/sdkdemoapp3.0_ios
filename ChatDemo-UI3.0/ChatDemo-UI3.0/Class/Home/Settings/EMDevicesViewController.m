@@ -38,7 +38,7 @@
     if ([self.username length] > 0 && [self.password length] > 0) {
         self.isAuthed = YES;
     }
-    [self _headerRefreshAction];
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -71,33 +71,9 @@
     self.title = @"登录设备列表";
     self.view.backgroundColor = [UIColor whiteColor];
     
+    self.showRefreshHeader = YES;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
-//    self.tableView.backgroundColor = kColor_LightGray;
-    
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(_headerRefreshAction) forControlEvents:UIControlEventValueChanged];
-    self.tableView.refreshControl = refreshControl;
-}
-
-- (id)_setupCellEditActions:(NSIndexPath *)aIndexPath
-{
-    if ([UIDevice currentDevice].systemVersion.floatValue < 11.0) {
-        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"移除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-            [self deleteCellAction:indexPath];
-        }];
-        deleteAction.backgroundColor = [UIColor redColor];
-        return @[deleteAction];
-    } else {
-        UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"移除" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [self deleteCellAction:aIndexPath];
-        }];
-        deleteAction.backgroundColor = [UIColor redColor];
-        
-        UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
-        config.performsFirstActionWithFullSwipe = NO;
-        return config;
-    }
 }
 
 #pragma mark - Table view data source
@@ -139,16 +115,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //在iOS8.0上，必须加上这个方法才能出发左划操作
-}
-
-- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self _setupCellEditActions:indexPath];
-}
-
-- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self _setupCellEditActions:indexPath];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self deleteCellAction:indexPath];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -164,49 +133,6 @@
         [self.navigationController pushViewController:controller animated:YES];
     }*/
 }
-
-#pragma mark - NSNotification
-
-//- (void)_showUsernamePasswordAlertViewWithTag:(NSInteger)aTag
-//{
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"getPermission", @"Get Permission") message:nil preferredStyle:UIAlertControllerStyleAlert];
-//    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-//        textField.placeholder = NSLocalizedString(@"username", @"Username");
-//    }];
-//
-//    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-//        textField.placeholder = NSLocalizedString(@"password", @"Password");
-//        textField.secureTextEntry = YES;
-//    }];
-//    
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style:UIAlertActionStyleDefault handler:nil];
-//    [alertController addAction:cancelAction];
-//
-//    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//        UITextField *usernameField = alertController.textFields.firstObject;
-//        self.username = usernameField.text;
-//
-//        UITextField *passwordField = alertController.textFields.lastObject;
-//        self.password = passwordField.text;
-//
-//        if ([EMClient sharedClient].isLoggedIn && ![self.username isEqualToString:[EMClient sharedClient].currentUsername]) {
-//            [self.refreshControl endRefreshing];
-//            [self showHint:@"请输入当前登录账号"];
-//            return ;
-//        }
-//
-//        if (aTag == KALERT_GET_ALL) {
-//            [self fetchDataFromServer];
-//        } else if (aTag == KALERT_KICK_ALL) {
-//            [self kickAllDevices];
-//        } else if (aTag == KALERT_KICK_ONE) {
-//            [self kickOneDevice];
-//        }
-//    }];
-//    [alertController addAction:okAction];
-//
-//    [self presentViewController:alertController animated:YES completion:nil];
-//}
 
 #pragma mark - Action
 
@@ -248,7 +174,27 @@
 
 #pragma mark - Data
 
-- (void)_headerRefreshAction
+- (void)_fetchDevicesFromServer
+{
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient] getLoggedInDevicesFromServerWithUsername:self.username password:self.password completion:^(NSArray *aList, EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            weakself.isAuthed = YES;
+            [weakself.dataSource removeAllObjects];
+            [weakself.dataSource addObjectsFromArray:aList];
+            [weakself.tableView reloadData];
+        } else {
+            if (aError.code == EMErrorUserAuthenticationFailed) {
+                weakself.isAuthed = NO;
+            }
+            [weakself showHint:aError.errorDescription];
+        }
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+    }];
+}
+
+- (void)tableViewDidTriggerHeaderRefresh
 {
     if (!self.isAuthed) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"获取权限" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -271,34 +217,14 @@
                 return ;
             }
             
-            [self fetchDataFromServer];
+            [self _fetchDevicesFromServer];
         }];
         [alertController addAction:okAction];
         
         [self presentViewController:alertController animated:YES completion:nil];
     } else {
-        [self fetchDataFromServer];
+        [self _fetchDevicesFromServer];
     }
-}
-
-- (void)fetchDataFromServer
-{
-    __weak typeof(self) weakself = self;
-    [[EMClient sharedClient] getLoggedInDevicesFromServerWithUsername:self.username password:self.password completion:^(NSArray *aList, EMError *aError) {
-        [weakself hideHud];
-        [weakself.tableView.refreshControl endRefreshing];
-        if (!aError) {
-            weakself.isAuthed = YES;
-            [weakself.dataSource removeAllObjects];
-            [weakself.dataSource addObjectsFromArray:aList];
-            [weakself.tableView reloadData];
-        } else {
-            if (aError.code == EMErrorUserAuthenticationFailed) {
-                weakself.isAuthed = NO;
-            }
-            [weakself showHint:aError.errorDescription];
-        }
-    }];
 }
 
 @end
