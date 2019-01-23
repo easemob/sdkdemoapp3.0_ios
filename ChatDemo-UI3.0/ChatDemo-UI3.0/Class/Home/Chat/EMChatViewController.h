@@ -8,10 +8,9 @@
 
 #import "EMRefreshViewController.h"
 
-#import "EMConversationModel.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
+@class EMConversationModel;
 @interface EMChatViewController : EMRefreshViewController
 
 - (instancetype)initWithCoversation:(EMConversationModel *)aModel;

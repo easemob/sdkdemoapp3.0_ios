@@ -15,7 +15,6 @@
 #import "ChatroomDetailViewController.h"
 #import "UserProfileViewController.h"
 #import "UserProfileManager.h"
-#import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
 #import "EMChooseViewController.h"
 #import "ContactSelectionViewController.h"
@@ -626,11 +625,11 @@
 - (void)transpondMenuAction:(id)sender
 {
     if (self.menuIndexPath && self.menuIndexPath.row > 0) {
-        id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-        ContactListSelectViewController *listViewController = [[ContactListSelectViewController alloc] initWithNibName:nil bundle:nil];
-        listViewController.messageModel = model;
-        [listViewController tableViewDidTriggerHeaderRefresh];
-        [self.navigationController pushViewController:listViewController animated:YES];
+//        id<IMessageModel> model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+//        ContactListSelectViewController *listViewController = [[ContactListSelectViewController alloc] initWithNibName:nil bundle:nil];
+//        listViewController.messageModel = model;
+//        [listViewController tableViewDidTriggerHeaderRefresh];
+//        [self.navigationController pushViewController:listViewController animated:YES];
     }
     self.menuIndexPath = nil;
 }

@@ -57,7 +57,7 @@
 		3A3F28CC21F1AE98001A6327 /* EMCallSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28C321F1AE98001A6327 /* EMCallSettingsViewController.m */; };
 		3A3F28D121F1AEB3001A6327 /* EMAvatarNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28CF21F1AEB3001A6327 /* EMAvatarNameCell.m */; };
 		3A3F28D221F1AEB3001A6327 /* EMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28D021F1AEB3001A6327 /* EMHomeViewController.m */; };
-		3A3F28D921F1AEC7001A6327 /* EMNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28D421F1AEC7001A6327 /* EMNotifications.m */; };
+		3A3F28D921F1AEC7001A6327 /* EMNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28D421F1AEC7001A6327 /* EMNotificationHelper.m */; };
 		3A3F28DA21F1AEC7001A6327 /* EMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28D521F1AEC7001A6327 /* EMNotificationViewController.m */; };
 		3A3F28DB21F1AEC7001A6327 /* EMNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28D821F1AEC7001A6327 /* EMNotificationCell.m */; };
 		3A3F28E021F1AED1001A6327 /* EMInviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F28DC21F1AED1001A6327 /* EMInviteFriendViewController.m */; };
@@ -75,7 +75,7 @@
 		3A3F294C21F1AF31001A6327 /* UIViewController+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F294921F1AF31001A6327 /* UIViewController+Search.m */; };
 		3A3F294D21F1AF31001A6327 /* XHSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F294B21F1AF31001A6327 /* XHSearchResultController.m */; };
 		3A3F297821F1AF88001A6327 /* EMBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F296F21F1AF87001A6327 /* EMBadgeLabel.m */; };
-		3A3F297921F1AF88001A6327 /* EMConversationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297021F1AF87001A6327 /* EMConversationModel.m */; };
+		3A3F297921F1AF88001A6327 /* EMConversationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297021F1AF87001A6327 /* EMConversationHelper.m */; };
 		3A3F297A21F1AF88001A6327 /* EMConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297121F1AF88001A6327 /* EMConversationCell.m */; };
 		3A3F297B21F1AF88001A6327 /* EMChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297421F1AF88001A6327 /* EMChatHelper.m */; };
 		3A3F297C21F1AF88001A6327 /* EMConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F297621F1AF88001A6327 /* EMConversationsViewController.m */; };
@@ -289,12 +289,6 @@
 		3AB6B582215CD1DF003B310F /* kbps_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB6B57A215CD1DF003B310F /* kbps_gray@3x.png */; };
 		3AB6B583215CD1DF003B310F /* kbps_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB6B57B215CD1DF003B310F /* kbps_white@2x.png */; };
 		3AB6B584215CD1DF003B310F /* role_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AB6B57C215CD1DF003B310F /* role_white@2x.png */; };
-		3AC23B8321E8847C00EC603C /* ApplyFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23B7921E8847B00EC603C /* ApplyFriendCell.m */; };
-		3AC23B8421E8847C00EC603C /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23B7A21E8847B00EC603C /* ApplyViewController.m */; };
-		3AC23B8521E8847C00EC603C /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23B7C21E8847B00EC603C /* AddFriendViewController.m */; };
-		3AC23B8621E8847C00EC603C /* AddFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23B7E21E8847B00EC603C /* AddFriendCell.m */; };
-		3AC23B8721E8847C00EC603C /* ContactListSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23B8121E8847B00EC603C /* ContactListSelectViewController.m */; };
-		3AC23B8821E8847C00EC603C /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC23B8221E8847B00EC603C /* ContactListViewController.m */; };
 		3ACC7F6A20088E4E0087CE2D /* DingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6920088E4E0087CE2D /* DingViewController.m */; };
 		3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6C20089A5D0087CE2D /* DingAcksViewController.m */; };
 		3ACC7F7020089BA20087CE2D /* EMDingMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC7F6F20089BA20087CE2D /* EMDingMessageHelper.m */; };
@@ -701,10 +695,10 @@
 		3A3F28CF21F1AEB3001A6327 /* EMAvatarNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAvatarNameCell.m; sourceTree = "<group>"; };
 		3A3F28D021F1AEB3001A6327 /* EMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMHomeViewController.m; sourceTree = "<group>"; };
 		3A3F28D321F1AEC7001A6327 /* EMNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNotificationViewController.h; sourceTree = "<group>"; };
-		3A3F28D421F1AEC7001A6327 /* EMNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNotifications.m; sourceTree = "<group>"; };
+		3A3F28D421F1AEC7001A6327 /* EMNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNotificationHelper.m; sourceTree = "<group>"; };
 		3A3F28D521F1AEC7001A6327 /* EMNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNotificationViewController.m; sourceTree = "<group>"; };
 		3A3F28D621F1AEC7001A6327 /* EMNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNotificationCell.h; sourceTree = "<group>"; };
-		3A3F28D721F1AEC7001A6327 /* EMNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNotifications.h; sourceTree = "<group>"; };
+		3A3F28D721F1AEC7001A6327 /* EMNotificationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNotificationHelper.h; sourceTree = "<group>"; };
 		3A3F28D821F1AEC7001A6327 /* EMNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNotificationCell.m; sourceTree = "<group>"; };
 		3A3F28DC21F1AED1001A6327 /* EMInviteFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMInviteFriendViewController.m; sourceTree = "<group>"; };
 		3A3F28DD21F1AED1001A6327 /* EMContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMContactsViewController.m; sourceTree = "<group>"; };
@@ -736,12 +730,12 @@
 		3A3F294B21F1AF31001A6327 /* XHSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHSearchResultController.m; sourceTree = "<group>"; };
 		3A3F296E21F1AF87001A6327 /* EMBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBadgeLabel.h; sourceTree = "<group>"; };
 		3A3F296F21F1AF87001A6327 /* EMBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBadgeLabel.m; sourceTree = "<group>"; };
-		3A3F297021F1AF87001A6327 /* EMConversationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationModel.m; sourceTree = "<group>"; };
+		3A3F297021F1AF87001A6327 /* EMConversationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationHelper.m; sourceTree = "<group>"; };
 		3A3F297121F1AF88001A6327 /* EMConversationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationCell.m; sourceTree = "<group>"; };
 		3A3F297221F1AF88001A6327 /* EMChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatHelper.h; sourceTree = "<group>"; };
 		3A3F297321F1AF88001A6327 /* EMConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationsViewController.h; sourceTree = "<group>"; };
 		3A3F297421F1AF88001A6327 /* EMChatHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatHelper.m; sourceTree = "<group>"; };
-		3A3F297521F1AF88001A6327 /* EMConversationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationModel.h; sourceTree = "<group>"; };
+		3A3F297521F1AF88001A6327 /* EMConversationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationHelper.h; sourceTree = "<group>"; };
 		3A3F297621F1AF88001A6327 /* EMConversationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationsViewController.m; sourceTree = "<group>"; };
 		3A3F297721F1AF88001A6327 /* EMConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConversationCell.h; sourceTree = "<group>"; };
 		3A3F298A21F1B2A0001A6327 /* EMChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatViewController.h; sourceTree = "<group>"; };
@@ -1114,18 +1108,7 @@
 		3AB6B57A215CD1DF003B310F /* kbps_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kbps_gray@3x.png"; sourceTree = "<group>"; };
 		3AB6B57B215CD1DF003B310F /* kbps_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kbps_white@2x.png"; sourceTree = "<group>"; };
 		3AB6B57C215CD1DF003B310F /* role_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "role_white@2x.png"; sourceTree = "<group>"; };
-		3AC23B7621E8847B00EC603C /* ContactListSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListSelectViewController.h; sourceTree = "<group>"; };
-		3AC23B7721E8847B00EC603C /* ContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewController.h; sourceTree = "<group>"; };
-		3AC23B7921E8847B00EC603C /* ApplyFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyFriendCell.m; sourceTree = "<group>"; };
-		3AC23B7A21E8847B00EC603C /* ApplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyViewController.m; sourceTree = "<group>"; };
-		3AC23B7B21E8847B00EC603C /* AddFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendCell.h; sourceTree = "<group>"; };
-		3AC23B7C21E8847B00EC603C /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
-		3AC23B7D21E8847B00EC603C /* ApplyFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyFriendCell.h; sourceTree = "<group>"; };
-		3AC23B7E21E8847B00EC603C /* AddFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendCell.m; sourceTree = "<group>"; };
-		3AC23B7F21E8847B00EC603C /* ApplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyViewController.h; sourceTree = "<group>"; };
-		3AC23B8021E8847B00EC603C /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
-		3AC23B8121E8847B00EC603C /* ContactListSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListSelectViewController.m; sourceTree = "<group>"; };
-		3AC23B8221E8847B00EC603C /* ContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewController.m; sourceTree = "<group>"; };
+		3AC0B86821F81A51008B98A3 /* EMChatDemoDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatDemoDelegate.h; sourceTree = "<group>"; };
 		3ACC7F6820088E4E0087CE2D /* DingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingViewController.h; sourceTree = "<group>"; };
 		3ACC7F6920088E4E0087CE2D /* DingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DingViewController.m; sourceTree = "<group>"; };
 		3ACC7F6B20089A5D0087CE2D /* DingAcksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DingAcksViewController.h; sourceTree = "<group>"; };
@@ -1706,8 +1689,8 @@
 			children = (
 				3A3F28D621F1AEC7001A6327 /* EMNotificationCell.h */,
 				3A3F28D821F1AEC7001A6327 /* EMNotificationCell.m */,
-				3A3F28D721F1AEC7001A6327 /* EMNotifications.h */,
-				3A3F28D421F1AEC7001A6327 /* EMNotifications.m */,
+				3A3F28D721F1AEC7001A6327 /* EMNotificationHelper.h */,
+				3A3F28D421F1AEC7001A6327 /* EMNotificationHelper.m */,
 				3A3F28D321F1AEC7001A6327 /* EMNotificationViewController.h */,
 				3A3F28D521F1AEC7001A6327 /* EMNotificationViewController.m */,
 			);
@@ -1800,8 +1783,8 @@
 				3A3F297421F1AF88001A6327 /* EMChatHelper.m */,
 				3A3F297721F1AF88001A6327 /* EMConversationCell.h */,
 				3A3F297121F1AF88001A6327 /* EMConversationCell.m */,
-				3A3F297521F1AF88001A6327 /* EMConversationModel.h */,
-				3A3F297021F1AF87001A6327 /* EMConversationModel.m */,
+				3A3F297521F1AF88001A6327 /* EMConversationHelper.h */,
+				3A3F297021F1AF87001A6327 /* EMConversationHelper.m */,
 				3A3F297321F1AF88001A6327 /* EMConversationsViewController.h */,
 				3A3F297621F1AF88001A6327 /* EMConversationsViewController.m */,
 			);
@@ -1815,6 +1798,7 @@
 				3A3F298E21F1B742001A6327 /* EMMessageModel.m */,
 				3A3F298A21F1B2A0001A6327 /* EMChatViewController.h */,
 				3A3F298B21F1B2A0001A6327 /* EMChatViewController.m */,
+				3AC0B86821F81A51008B98A3 /* EMChatDemoDelegate.h */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2542,33 +2526,6 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		3AC23B7521E8847B00EC603C /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				3AC23B7621E8847B00EC603C /* ContactListSelectViewController.h */,
-				3AC23B7721E8847B00EC603C /* ContactListViewController.h */,
-				3AC23B7821E8847B00EC603C /* FriendApply */,
-				3AC23B8121E8847B00EC603C /* ContactListSelectViewController.m */,
-				3AC23B8221E8847B00EC603C /* ContactListViewController.m */,
-			);
-			path = Contacts;
-			sourceTree = "<group>";
-		};
-		3AC23B7821E8847B00EC603C /* FriendApply */ = {
-			isa = PBXGroup;
-			children = (
-				3AC23B7921E8847B00EC603C /* ApplyFriendCell.m */,
-				3AC23B7A21E8847B00EC603C /* ApplyViewController.m */,
-				3AC23B7B21E8847B00EC603C /* AddFriendCell.h */,
-				3AC23B7C21E8847B00EC603C /* AddFriendViewController.m */,
-				3AC23B7D21E8847B00EC603C /* ApplyFriendCell.h */,
-				3AC23B7E21E8847B00EC603C /* AddFriendCell.m */,
-				3AC23B7F21E8847B00EC603C /* ApplyViewController.h */,
-				3AC23B8021E8847B00EC603C /* AddFriendViewController.h */,
-			);
-			path = FriendApply;
-			sourceTree = "<group>";
-		};
 		3ACFCD3921524B18009F488D /* CallImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -3010,7 +2967,6 @@
 			isa = PBXGroup;
 			children = (
 				3A3F279921F1AE59001A6327 /* Home */,
-				3AC23B7521E8847B00EC603C /* Contacts */,
 				3A386E881DE5539C000F3D8E /* Call */,
 				D2CB22591B60CB08001BC741 /* Profile */,
 				D25787391B43EC7000B0E69F /* Robot */,
@@ -3769,7 +3725,6 @@
 				3A3F28C921F1AE98001A6327 /* EMGeneralViewController.m in Sources */,
 				906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */,
 				3A9A29E621709ECC00AC4689 /* UIScrollView+MJExtension.m in Sources */,
-				3AC23B8521E8847C00EC603C /* AddFriendViewController.m in Sources */,
 				3A3F28E021F1AED1001A6327 /* EMInviteFriendViewController.m in Sources */,
 				3A9A29D521709ECC00AC4689 /* NSString+Valid.m in Sources */,
 				3A3F293521F1AF17001A6327 /* EMJoinGroupViewController.m in Sources */,
@@ -3785,11 +3740,8 @@
 				3A9A29ED21709ECC00AC4689 /* MJRefreshAutoNormalFooter.m in Sources */,
 				3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */,
 				3A3F293221F1AF17001A6327 /* EMInviteGroupMemberViewController.m in Sources */,
-				3AC23B8321E8847C00EC603C /* ApplyFriendCell.m in Sources */,
 				3A3F28A421F1AE76001A6327 /* EMQRCodeViewController.m in Sources */,
 				3A9A2A3421709ECC00AC4689 /* EaseMessageTimeCell.m in Sources */,
-				3AC23B8421E8847C00EC603C /* ApplyViewController.m in Sources */,
-				3AC23B8721E8847C00EC603C /* ContactListSelectViewController.m in Sources */,
 				3A9A2A0721709ECC00AC4689 /* MWPhoto.m in Sources */,
 				3A9A2A2C21709ECC00AC4689 /* EaseLocationViewController.m in Sources */,
 				3A9A2A3C21709ECC00AC4689 /* EaseTextView.m in Sources */,
@@ -3803,7 +3755,7 @@
 				3A2C3A281E23AF5000DCD9BE /* EMChatroomMutesViewController.m in Sources */,
 				3A9A2A2021709ECC00AC4689 /* UIImage+MultiFormat.m in Sources */,
 				3C914D8519514BBD0002DAD3 /* ContactSelectionViewController.m in Sources */,
-				3A3F28D921F1AEC7001A6327 /* EMNotifications.m in Sources */,
+				3A3F28D921F1AEC7001A6327 /* EMNotificationHelper.m in Sources */,
 				283403091A9EBB8200B7DE9B /* GroupSubjectChangingViewController.m in Sources */,
 				3ACC7F6D20089A5D0087CE2D /* DingAcksViewController.m in Sources */,
 				D29A6BA91B7208DF002324BB /* UIImageView+HeadImage.m in Sources */,
@@ -3812,7 +3764,7 @@
 				3A9A2A1E21709ECC00AC4689 /* SDWebImageDownloader.m in Sources */,
 				3A9A29FB21709ECC00AC4689 /* EMCDDeviceManager+Remind.m in Sources */,
 				3A2C3A261E23AF5000DCD9BE /* EMChatroomBansViewController.m in Sources */,
-				3A3F297921F1AF88001A6327 /* EMConversationModel.m in Sources */,
+				3A3F297921F1AF88001A6327 /* EMConversationHelper.m in Sources */,
 				3A3F298C21F1B2A0001A6327 /* EMChatViewController.m in Sources */,
 				3A6764B41E5D2C6800ABF196 /* GroupSettingViewController.m in Sources */,
 				3A9A2A0521709ECC00AC4689 /* UIImage+MWPhotoBrowser.m in Sources */,
@@ -3855,7 +3807,6 @@
 				3A9A2A3221709ECC00AC4689 /* EaseUserCell.m in Sources */,
 				3A9A2A3921709ECC00AC4689 /* EaseImageView.m in Sources */,
 				3A9A2A1721709ECC00AC4689 /* PSTCollectionViewLayout.m in Sources */,
-				3AC23B8621E8847C00EC603C /* AddFriendCell.m in Sources */,
 				3A9A2A4021709ECC00AC4689 /* EaseBubbleView+Text.m in Sources */,
 				3A3F28A621F1AE76001A6327 /* WSLScanView.m in Sources */,
 				3A9A29F521709ECC00AC4689 /* MJRefreshComponent.m in Sources */,
@@ -3873,7 +3824,6 @@
 				3A9A2A1921709ECC00AC4689 /* UIImage+WebP.m in Sources */,
 				3A9A29DE21709ECC00AC4689 /* EaseEmojiEmoticons.m in Sources */,
 				3A3F28A521F1AE76001A6327 /* WSLNativeScanTool.m in Sources */,
-				3AC23B8821E8847C00EC603C /* ContactListViewController.m in Sources */,
 				90B42A381B65E62C00968342 /* RobotManager.m in Sources */,
 				3A9A2A4421709ECC00AC4689 /* EaseBubbleView+Video.m in Sources */,
 				3A9A2A2621709ECC00AC4689 /* UIImageView+WebCache.m in Sources */,

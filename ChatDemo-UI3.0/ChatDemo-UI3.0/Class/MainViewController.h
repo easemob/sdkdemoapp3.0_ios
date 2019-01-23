@@ -14,13 +14,11 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "ConversationListController.h"
-#import "ContactListViewController.h"
 #import "EMSettingsViewController.h"
 
 @interface MainViewController : UITabBarController
 
 @property (nonatomic, strong) ConversationListController *chatListVC;
-@property (nonatomic, strong) ContactListViewController *contactsVC;
 @property (nonatomic, strong) EMSettingsViewController *settingsVC;
 
 - (void)jumpToChatList;

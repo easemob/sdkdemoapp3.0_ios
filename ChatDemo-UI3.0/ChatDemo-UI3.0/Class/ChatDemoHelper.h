@@ -13,7 +13,6 @@
 #import <Foundation/Foundation.h>
 
 #import "ConversationListController.h"
-#import "ContactListViewController.h"
 
 #import "ChatViewController.h"
 
@@ -22,8 +21,6 @@
 #define kAtAllMessage           2
 
 @interface ChatDemoHelper : NSObject <EMClientDelegate, EMMultiDevicesDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate>
-
-@property (nonatomic, weak) ContactListViewController *contactViewVC;
 
 @property (nonatomic, weak) ConversationListController *conversationListVC;
 

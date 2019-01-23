@@ -10,7 +10,7 @@
 
 #import "EMRealtimeSearch.h"
 
-#import "EMConversationModel.h"
+#import "EMConversationHelper.h"
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
 #import "ChatViewController.h"
@@ -263,7 +263,7 @@
         
         [weakself.dataArray removeAllObjects];
         
-        NSArray *models = [EMConversationModel modelsFromEMConversations:sorted];
+        NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
         [weakself.dataArray addObjectsFromArray:models];
         
         if (aIsShowHUD) {

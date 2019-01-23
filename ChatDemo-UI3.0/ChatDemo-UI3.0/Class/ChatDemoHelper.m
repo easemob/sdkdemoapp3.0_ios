@@ -13,14 +13,13 @@
 #import "ChatDemoHelper.h"
 
 #import "AppDelegate.h"
-#import "ApplyViewController.h"
 #import "MBProgressHUD.h"
 
 #import "EaseSDKHelper.h"
 #import "EMDingMessageHelper.h"
 
 #import "EMGlobalVariables.h"
-#import "EMNotifications.h"
+#import "EMNotificationHelper.h"
 
 static ChatDemoHelper *helper = nil;
 
@@ -83,11 +82,11 @@ static ChatDemoHelper *helper = nil;
         EMError *error = nil;
         [[EMClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:-1 error:&error];
         if (!error) {
-            if (weakself.contactViewVC) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakself.contactViewVC reloadGroupView];
-                });
-            }
+//            if (weakself.contactViewVC) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [weakself.contactViewVC reloadGroupView];
+//                });
+//            }
         }
     });
 }
@@ -208,12 +207,12 @@ static ChatDemoHelper *helper = nil;
 //            [gMainController.contactsVC reloadDataSource];
             break;
         case EMMultiDevicesEventContactAccept:
-            [[ApplyViewController shareController] removeApply:aTarget];
+//            [[ApplyViewController shareController] removeApply:aTarget];
 //            [gMainController setupUntreatedApplyCount];
 //            [gMainController.contactsVC reloadDataSource];
             break;
         case EMMultiDevicesEventContactDecline:
-            [[ApplyViewController shareController] removeApply:aTarget];
+//            [[ApplyViewController shareController] removeApply:aTarget];
 //            [gMainController setupUntreatedApplyCount];
             break;
         case EMMultiDevicesEventContactBan:
@@ -238,7 +237,7 @@ static ChatDemoHelper *helper = nil;
     switch (aEvent) {
         case EMMultiDevicesEventGroupInviteDecline:
         case EMMultiDevicesEventGroupApplyDecline:
-            [[ApplyViewController shareController] removeApply:aGroupId];
+//            [[ApplyViewController shareController] removeApply:aGroupId];
 //            [gMainController setupUntreatedApplyCount];
             break;
         case EMMultiDevicesEventGroupCreate:
@@ -252,7 +251,7 @@ static ChatDemoHelper *helper = nil;
             break;
         case EMMultiDevicesEventGroupApplyAccept:
         case EMMultiDevicesEventGroupInviteAccept:
-            [[ApplyViewController shareController] removeApply:aGroupId];
+//            [[ApplyViewController shareController] removeApply:aGroupId];
 //            [gMainController setupUntreatedApplyCount];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadGroupList" object:aGroupId];
             break;
@@ -470,19 +469,19 @@ static ChatDemoHelper *helper = nil;
                              applicant:(NSString *)aApplicant
                                 reason:(NSString *)aReason
 {
-    if (!aGroup || !aApplicant) {
-        return;
-    }
-    
-    if (!aReason || aReason.length == 0) {
-        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aApplicant, aGroup.subject];
-    }
-    else{
-        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aApplicant, aGroup.subject, aReason];
-    }
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aGroup.subject, @"groupId":aGroup.groupId, @"username":aApplicant, @"groupname":aGroup.subject, @"applyMessage":aReason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
-    [[ApplyViewController shareController] addNewApply:dic];
+//    if (!aGroup || !aApplicant) {
+//        return;
+//    }
+//
+//    if (!aReason || aReason.length == 0) {
+//        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aApplicant, aGroup.subject];
+//    }
+//    else{
+//        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aApplicant, aGroup.subject, aReason];
+//    }
+//
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aGroup.subject, @"groupId":aGroup.groupId, @"username":aApplicant, @"groupname":aGroup.subject, @"applyMessage":aReason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
+//    [[ApplyViewController shareController] addNewApply:dic];
 //    if (gMainController) {
 //        [gMainController setupUntreatedApplyCount];
 //#if !TARGET_IPHONE_SIMULATOR
@@ -490,9 +489,9 @@ static ChatDemoHelper *helper = nil;
 //#endif
 //    }
     
-    if (self.contactViewVC) {
-        [self.contactViewVC reloadApplyView];
-    }
+//    if (self.contactViewVC) {
+//        [self.contactViewVC reloadApplyView];
+//    }
 }
 
 - (void)didJoinedGroup:(EMGroup *)aGroup
@@ -541,29 +540,29 @@ static ChatDemoHelper *helper = nil;
                           inviter:(NSString *)aInviter
                           message:(NSString *)aMessage
 {
-    if (!aGroupId || !aInviter) {
-        return;
-    }
-    
-    EMNotificationModel *model = [[EMNotificationModel alloc] init];
-    model.sender = aInviter;
-    model.groupId = aGroupId;
-    model.type = EMNotificationModelTypeGroupInvite;
-    model.message = aMessage;
-    [[EMNotifications shared] insertModel:model];
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
-    [[ApplyViewController shareController] addNewApply:dic];
+//    if (!aGroupId || !aInviter) {
+//        return;
+//    }
+//
+//    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+//    model.sender = aInviter;
+//    model.groupId = aGroupId;
+//    model.type = EMNotificationModelTypeGroupInvite;
+//    model.message = aMessage;
+//    [[EMNotificationHelper shared] insertModel:model];
+//    
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
+//    [[ApplyViewController shareController] addNewApply:dic];
 //    if (gMainController) {
 //        [gMainController setupUntreatedApplyCount];
 //#if !TARGET_IPHONE_SIMULATOR
 //        [gMainController playSoundAndVibration];
 //#endif
 //    }
-    
-    if (self.contactViewVC) {
-        [self.contactViewVC reloadApplyView];
-    }
+//
+//    if (self.contactViewVC) {
+//        [self.contactViewVC reloadApplyView];
+//    }
 }
 
 - (void)groupMuteListDidUpdate:(EMGroup *)aGroup
@@ -709,28 +708,28 @@ static ChatDemoHelper *helper = nil;
 
 - (void)didReceiveAddedFromUsername:(NSString *)aUsername
 {
-    [_contactViewVC reloadDataSource];
+//    [_contactViewVC reloadDataSource];
 }
 
 - (void)didReceiveFriendInvitationFromUsername:(NSString *)aUsername
                                        message:(NSString *)aMessage
 {
-    if (!aUsername) {
-        return;
-    }
-    
-    if (!aMessage) {
-        aMessage = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
-    }
-    
-    EMNotificationModel *model = [[EMNotificationModel alloc] init];
-    model.sender = aUsername;
-    model.message = aMessage;
-    model.type = EMNotificationModelTypeContact;
-    [[EMNotifications shared] insertModel:model];
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aUsername, @"username":aUsername, @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
-    [[ApplyViewController shareController] addNewApply:dic];
+//    if (!aUsername) {
+//        return;
+//    }
+//
+//    if (!aMessage) {
+//        aMessage = [NSString stringWithFormat:NSLocalizedString(@"friend.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
+//    }
+//
+//    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+//    model.sender = aUsername;
+//    model.message = aMessage;
+//    model.type = EMNotificationModelTypeContact;
+//    [[EMNotificationHelper shared] insertModel:model];
+//
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aUsername, @"username":aUsername, @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleFriend]}];
+//    [[ApplyViewController shareController] addNewApply:dic];
 //    if (gMainController) {
 //        [gMainController setupUntreatedApplyCount];
 //#if !TARGET_IPHONE_SIMULATOR
@@ -757,7 +756,7 @@ static ChatDemoHelper *helper = nil;
 //        }
 //#endif
 //    }
-    [_contactViewVC reloadApplyView];
+//    [_contactViewVC reloadApplyView];
 }
 
 #pragma mark - EMChatroomManagerDelegate
@@ -878,7 +877,6 @@ static ChatDemoHelper *helper = nil;
     
     self.conversationListVC = nil;
     self.chatVC = nil;
-    self.contactViewVC = nil;
     
     [[EMClient sharedClient] logout:NO];
 }

@@ -8,7 +8,7 @@
 
 #import "EMHomeViewController.h"
 
-#import "EMNotifications.h"
+#import "EMNotificationHelper.h"
 
 #import "EMConversationsViewController.h"
 #import "EMContactsViewController.h"
@@ -38,8 +38,9 @@
     
     //监听消息接收，主要更新会话tabbaritem的badge
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    //监听会话，主要更新会话tabbaritem的badge
     //监听通知申请，主要更新联系人tabbaritem的badge
-    [[EMNotifications shared] addDelegate:self];
+    [[EMNotificationHelper shared] addDelegate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -53,7 +54,7 @@
 - (void)dealloc
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
-    [[EMNotifications shared] removeDelegate:self];
+    [[EMNotificationHelper shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -198,7 +199,7 @@
 {
     [self _loadConversationTabBarItemBadge];
     
-    [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
+    [self didNotificationsUnreadCountUpdate:[EMNotificationHelper shared].unreadCount];
 }
 
 @end

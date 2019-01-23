@@ -8,6 +8,7 @@
 
 #import "EMGroupsViewController.h"
 
+#import "EMConversationHelper.h"
 #import "EMAvatarNameCell.h"
 #import "EMInviteGroupMemberViewController.h"
 #import "EMCreateGroupViewController.h"
@@ -148,9 +149,7 @@
         group = [self.searchResults objectAtIndex:indexPath.row];
     }
     
-    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:group.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
-    EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
-    model.name = group.subject;
+    EMConversationModel *model = [EMConversationHelper modelFromGroup:group];
     EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
     [self.navigationController pushViewController:controller animated:YES];
 }

@@ -1,5 +1,5 @@
 //
-//  EMNotifications.h
+//  EMNotificationHelper.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/10.
@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 @protocol EMNotificationsDelegate;
 @class EMMulticastDelegate;
-@interface EMNotifications : NSObject
+@interface EMNotificationHelper : NSObject <EMContactManagerDelegate, EMGroupManagerDelegate>
 
 @property (nonatomic, strong, readonly) NSString *fileName;
 
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 - (void)removeDelegate:(id<EMNotificationsDelegate>)aDelegate;
 
-- (void)insertModel:(EMNotificationModel *)aModel;
+//- (void)insertModel:(EMNotificationModel *)aModel;
 
 - (void)markAllAsRead;
 

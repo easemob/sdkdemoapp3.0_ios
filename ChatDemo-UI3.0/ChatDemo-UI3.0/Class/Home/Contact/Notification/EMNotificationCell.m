@@ -8,7 +8,7 @@
 
 #import "EMNotificationCell.h"
 
-#import "EMNotifications.h"
+#import "EMNotificationHelper.h"
 
 @interface EMNotificationCell()
 

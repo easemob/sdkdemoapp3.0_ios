@@ -8,7 +8,7 @@
 
 #import "EMNotificationViewController.h"
 
-#import "EMNotifications.h"
+#import "EMNotificationHelper.h"
 #import "EMNotificationCell.h"
 
 @interface EMNotificationViewController ()<EMNotificationsDelegate, EMNotificationCellDelegate>
@@ -25,7 +25,7 @@
     // Uncomment the following line to preserve selection between presentations.
     self.dataArray = [[NSMutableArray alloc] init];
     
-    [[EMNotifications shared] addDelegate:self];
+    [[EMNotificationHelper shared] addDelegate:self];
     
     [self _setupViews];
 }
@@ -34,21 +34,21 @@
 {
     [super viewDidAppear:animated];
     
-    [[EMNotifications shared] markAllAsRead];
-    [EMNotifications shared].isCheckUnreadCount = NO;
+    [[EMNotificationHelper shared] markAllAsRead];
+    [EMNotificationHelper shared].isCheckUnreadCount = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [EMNotifications shared].isCheckUnreadCount = YES;
+    [EMNotificationHelper shared].isCheckUnreadCount = YES;
 }
 
 - (void)dealloc
 {
-    [EMNotifications shared].isCheckUnreadCount = YES;
-    [[EMNotifications shared] removeDelegate:self];
+    [EMNotificationHelper shared].isCheckUnreadCount = YES;
+    [[EMNotificationHelper shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -70,11 +70,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[EMNotifications shared].notificationList count];
+    return [[EMNotificationHelper shared].notificationList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EMNotificationModel *model = [[EMNotifications shared].notificationList objectAtIndex:indexPath.row];
+    EMNotificationModel *model = [[EMNotificationHelper shared].notificationList objectAtIndex:indexPath.row];
     NSString *cellIdentifier = [NSString stringWithFormat:@"EMNotificationCell_%@", @(model.status)];
     EMNotificationCell *cell = (EMNotificationCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
@@ -107,7 +107,7 @@
         [weakself hideHud];
         if (!aError) {
             aModel.status = EMNotificationModelStatusAgreed;
-            [[EMNotifications shared] archive];
+            [[EMNotificationHelper shared] archive];
             
             [weakself.tableView reloadData];
         }
@@ -139,7 +139,7 @@
             }
         }
         
-        [[EMNotifications shared] archive];
+        [[EMNotificationHelper shared] archive];
         [weakself.tableView reloadData];
     };
     

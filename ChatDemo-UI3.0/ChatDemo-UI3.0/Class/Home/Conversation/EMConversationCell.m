@@ -9,7 +9,7 @@
 #import "EMConversationCell.h"
 
 #import "NSDate+Category.h"
-#import "EMConversationModel.h"
+#import "EMConversationHelper.h"
 
 static NSString *kConversation_IsRead = @"kHaveAtMessage";
 static int kConversation_AtYou = 1;

@@ -13,7 +13,6 @@
 #import <UserNotifications/UserNotifications.h>
 #import "MainViewController.h"
 
-#import "ApplyViewController.h"
 #import "ChatViewController.h"
 #import "UserProfileManager.h"
 #import "ChatDemoHelper.h"
@@ -83,15 +82,9 @@ static NSString *kGroupName = @"GroupName";
     [self setupSubviews];
     self.selectedIndex = 0;
     
-    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
-    [addButton addTarget:_contactsVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
-    _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
-    
     [self setupUnreadMessageCount];
     [self setupUntreatedApplyCount];
     
-    [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
     [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
 }
 
@@ -139,15 +132,6 @@ static NSString *kGroupName = @"GroupName";
     [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
     
-    _contactsVC = [[ContactListViewController alloc] initWithNibName:nil bundle:nil];
-    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.addressbook", @"AddressBook")
-                                                           image:[UIImage imageNamed:@"tabbar_contacts"]
-                                                   selectedImage:[UIImage imageNamed:@"tabbar_contactsHL"]];
-    _contactsVC.tabBarItem.tag = 1;
-    _contactsVC.tabBarItem.accessibilityIdentifier = @"contact";
-    [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
-    [self selectedTapTabBarItems:_contactsVC.tabBarItem];
-    
     _settingsVC = [[EMSettingsViewController alloc] init];
     _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
                                                            image:[UIImage imageNamed:@"tabbar_setting"]
@@ -158,7 +142,7 @@ static NSString *kGroupName = @"GroupName";
     [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
     [self selectedTapTabBarItems:_settingsVC.tabBarItem];
     
-    self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
+    self.viewControllers = @[_chatListVC, _settingsVC];
     [self selectedTapTabBarItems:_chatListVC.tabBarItem];
 }
 
@@ -200,16 +184,16 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)setupUntreatedApplyCount
 {
-    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
-    if (_contactsVC) {
-        if (unreadCount > 0) {
-            _contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
-        }else{
-            _contactsVC.tabBarItem.badgeValue = nil;
-        }
-    }
-    
-    [self.contactsVC reloadApplyView];
+//    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
+//    if (_contactsVC) {
+//        if (unreadCount > 0) {
+//            _contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
+//        }else{
+//            _contactsVC.tabBarItem.badgeValue = nil;
+//        }
+//    }
+//    
+//    [self.contactsVC reloadApplyView];
 }
 
 - (void)networkChanged:(EMConnectionState)connectionState

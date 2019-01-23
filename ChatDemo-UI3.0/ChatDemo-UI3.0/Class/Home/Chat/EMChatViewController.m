@@ -8,6 +8,8 @@
 
 #import "EMChatViewController.h"
 
+#import "EMConversationHelper.h"
+
 #import "EMGroupInfoViewController.h"
 
 @interface EMChatViewController ()
@@ -35,6 +37,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self _setupChatSubviews];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [EMConversationHelper markAllAsRead:self.conversationModel.emModel];
 }
 
 #pragma mark - Subviews

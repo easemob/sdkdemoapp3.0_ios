@@ -1,12 +1,12 @@
 //
-//  EMNotifications.m
+//  EMNotificationHelper.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/10.
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMNotifications.h"
+#import "EMNotificationHelper.h"
 
 #import "EMMulticastDelegate.h"
 
@@ -60,8 +60,8 @@ static NSString *kNotifications_IsRead = @"isRead";
 
 @end
 
-static EMNotifications *shared = nil;
-@interface EMNotifications()
+static EMNotificationHelper *shared = nil;
+@interface EMNotificationHelper()
 
 @property (nonatomic, strong) EMMulticastDelegate<EMNotificationsDelegate> *delegates;
 
@@ -69,13 +69,13 @@ static EMNotifications *shared = nil;
 
 @end
 
-@implementation EMNotifications
+@implementation EMNotificationHelper
 
 + (instancetype)shared
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shared = [[EMNotifications alloc] init];
+        shared = [[EMNotificationHelper alloc] init];
     });
     
     return shared;
@@ -94,10 +94,21 @@ static EMNotifications *shared = nil;
         
         _delegates = (EMMulticastDelegate<EMNotificationsDelegate> *)[[EMMulticastDelegate alloc] init];
         
+        [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
+        [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+        
         [self getNotificationsFromLocal];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [self.delegates removeAllDelegates];
+    
+    [[EMClient sharedClient].contactManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
 }
 
 #pragma mark - Private
@@ -198,6 +209,60 @@ static EMNotifications *shared = nil;
     [self archive];
     
     [self.delegates didNotificationsUpdate];
+}
+
+#pragma mark - EMContactManagerDelegate
+
+- (void)friendRequestDidReceiveFromUser:(NSString *)aUsername
+                                message:(NSString *)aMessage
+{
+    if ([aUsername length] == 0) {
+        return;
+    }
+    
+    if ([aMessage length] == 0) {
+        aMessage = @"申请添加您为好友";
+    }
+    
+    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+    model.sender = aUsername;
+    model.message = aMessage;
+    model.type = EMNotificationModelTypeContact;
+    [self insertModel:model];
+}
+
+#pragma mark - EMGroupManagerDelegate
+
+- (void)groupInvitationDidReceive:(NSString *)aGroupId
+                          inviter:(NSString *)aInviter
+                          message:(NSString *)aMessage
+{
+    if ([aGroupId length] == 0 || [aInviter length] == 0) {
+        return;
+    }
+    
+    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+    model.sender = aInviter;
+    model.groupId = aGroupId;
+    model.type = EMNotificationModelTypeGroupInvite;
+    model.message = aMessage;
+    [[EMNotificationHelper shared] insertModel:model];
+}
+
+- (void)joinGroupRequestDidReceive:(EMGroup *)aGroup
+                              user:(NSString *)aUsername
+                            reason:(NSString *)aReason
+{
+    if ([aGroup.groupId length] == 0 || [aUsername length] == 0) {
+        return;
+    }
+    
+    EMNotificationModel *model = [[EMNotificationModel alloc] init];
+    model.sender = aUsername;
+    model.groupId = aGroup.groupId;
+    model.type = EMNotificationModelTypeGroupJoin;
+    model.message = [NSString stringWithFormat:@"申请加入群组\"%@\"", aGroup.groupId];;
+    [[EMNotificationHelper shared] insertModel:model];
 }
 
 @end

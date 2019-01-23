@@ -9,7 +9,8 @@
 #import "EMContactsViewController.h"
 
 #import "EMRealtimeSearch.h"
-#import "EMNotifications.h"
+#import "EMNotificationHelper.h"
+#import "EMConversationHelper.h"
 
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
@@ -42,8 +43,8 @@
     
     [self _setupSubviews];
     
-    [[EMNotifications shared] addDelegate:self];
-    [self didNotificationsUnreadCountUpdate:[EMNotifications shared].unreadCount];
+    [[EMNotificationHelper shared] addDelegate:self];
+    [self didNotificationsUnreadCountUpdate:[EMNotificationHelper shared].unreadCount];
     
     [self _loadAllContactsFromDB];
 }
@@ -64,7 +65,7 @@
 
 - (void)dealloc
 {
-    [[EMNotifications shared] removeDelegate:self];
+    [[EMNotificationHelper shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -168,8 +169,7 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:contact type:EMConversationTypeChat createIfNotExist:YES];
-        EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
+        EMConversationModel *model = [EMConversationHelper modelFromContact:contact];
         EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
         [weakself.resultController.navigationController pushViewController:controller animated:YES];
     }];
