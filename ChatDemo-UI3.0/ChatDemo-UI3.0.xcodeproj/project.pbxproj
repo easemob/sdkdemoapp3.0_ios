@@ -333,8 +333,6 @@
 		90011F921AE4BF090088D549 /* EMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90011F911AE4BF090088D549 /* EMAlertView.m */; };
 		9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9003D7861939D8D000DC38A4 /* ChatViewController.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
-		906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */; };
-		906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		90911034192EEA70008A48AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90911033192EEA70008A48AA /* main.m */; };
@@ -345,8 +343,6 @@
 		90AFCFD81ECE9B45007BBD33 /* AppDelegate+ShareFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD31ECE9B45007BBD33 /* AppDelegate+ShareFiles.m */; };
 		90AFCFDA1ECE9B45007BBD33 /* ChatViewController+ShareFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD51ECE9B45007BBD33 /* ChatViewController+ShareFile.m */; };
 		90AFCFDC1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AFCFD71ECE9B45007BBD33 /* ShareFilesViewController.m */; };
-		90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A341B65E62C00968342 /* RobotChatViewController.m */; };
-		90B42A381B65E62C00968342 /* RobotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B42A361B65E62C00968342 /* RobotManager.m */; };
 		90EF2CEC192F2B4E00BDC549 /* sr_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */; };
 		90EF2CED192F2B4E00BDC549 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */; };
 		90EF2CEE192F2B4E00BDC549 /* SRRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EF2CE9192F2B4E00BDC549 /* SRRefreshView.m */; };
@@ -358,7 +354,6 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
-		D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D257873B1B43EC7000B0E69F /* RobotListViewController.m */; };
 		D25AA3571E8D29C8006BF820 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA34B1E8D29C8006BF820 /* check@2x.png */; };
 		D25AA3581E8D29C8006BF820 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D25AA34C1E8D29C8006BF820 /* default_avatar@2x.png */; };
 		D25AA35A1E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D25AA3501E8D29C8006BF820 /* EMGroupTransferOwnerViewController.m */; };
@@ -971,10 +966,6 @@
 		9003D7861939D8D000DC38A4 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		905326B319333E8E00F064D7 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
-		906083D51B71F894008574B4 /* EMRobotChatTextBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRobotChatTextBubbleView.h; sourceTree = "<group>"; };
-		906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRobotChatTextBubbleView.m; sourceTree = "<group>"; };
-		906083D71B71F894008574B4 /* EMRotbotChatViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRotbotChatViewCell.h; sourceTree = "<group>"; };
-		906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRotbotChatViewCell.m; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* ChatDemo-UI3.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI3.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -994,10 +985,6 @@
 		90AFCFD51ECE9B45007BBD33 /* ChatViewController+ShareFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ChatViewController+ShareFile.m"; sourceTree = "<group>"; };
 		90AFCFD61ECE9B45007BBD33 /* ShareFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareFilesViewController.h; sourceTree = "<group>"; };
 		90AFCFD71ECE9B45007BBD33 /* ShareFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareFilesViewController.m; sourceTree = "<group>"; };
-		90B42A331B65E62C00968342 /* RobotChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotChatViewController.h; sourceTree = "<group>"; };
-		90B42A341B65E62C00968342 /* RobotChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RobotChatViewController.m; sourceTree = "<group>"; };
-		90B42A351B65E62C00968342 /* RobotManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotManager.h; sourceTree = "<group>"; };
-		90B42A361B65E62C00968342 /* RobotManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RobotManager.m; sourceTree = "<group>"; };
 		90EF2CE5192F2B4E00BDC549 /* sr_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sr_refresh.png; sourceTree = "<group>"; };
 		90EF2CE6192F2B4E00BDC549 /* sr_refresh@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sr_refresh@2X.png"; sourceTree = "<group>"; };
 		90EF2CE7192F2B4E00BDC549 /* SRDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRDefine.h; sourceTree = "<group>"; };
@@ -1014,8 +1001,6 @@
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ChatDemo-UI3.0-Info.plist"; sourceTree = "<group>"; };
 		D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChatDemo-UI3.0-Prefix.pch"; sourceTree = "<group>"; };
-		D257873A1B43EC7000B0E69F /* RobotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotListViewController.h; sourceTree = "<group>"; };
-		D257873B1B43EC7000B0E69F /* RobotListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RobotListViewController.m; sourceTree = "<group>"; };
 		D25AA34B1E8D29C8006BF820 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		D25AA34C1E8D29C8006BF820 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		D25AA34F1E8D29C8006BF820 /* EMGroupTransferOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupTransferOwnerViewController.h; sourceTree = "<group>"; };
@@ -2155,7 +2140,6 @@
 				3A3F279921F1AE59001A6327 /* Home */,
 				3A386E881DE5539C000F3D8E /* Call */,
 				D2CB22591B60CB08001BC741 /* Profile */,
-				D25787391B43EC7000B0E69F /* Robot */,
 				28BFD62F1B01D40500D0ADEC /* Chatroom */,
 				3C914D7019514BBD0002DAD3 /* ChatGroup */,
 				9003D7761939D8D000DC38A4 /* Chat */,
@@ -2203,23 +2187,6 @@
 				D29A6BB11B72098D002324BB /* Parse.framework */,
 			);
 			path = Parse;
-			sourceTree = "<group>";
-		};
-		D25787391B43EC7000B0E69F /* Robot */ = {
-			isa = PBXGroup;
-			children = (
-				906083D51B71F894008574B4 /* EMRobotChatTextBubbleView.h */,
-				906083D61B71F894008574B4 /* EMRobotChatTextBubbleView.m */,
-				906083D71B71F894008574B4 /* EMRotbotChatViewCell.h */,
-				906083D81B71F894008574B4 /* EMRotbotChatViewCell.m */,
-				D257873A1B43EC7000B0E69F /* RobotListViewController.h */,
-				D257873B1B43EC7000B0E69F /* RobotListViewController.m */,
-				90B42A331B65E62C00968342 /* RobotChatViewController.h */,
-				90B42A341B65E62C00968342 /* RobotChatViewController.m */,
-				90B42A351B65E62C00968342 /* RobotManager.h */,
-				90B42A361B65E62C00968342 /* RobotManager.m */,
-			);
-			path = Robot;
 			sourceTree = "<group>";
 		};
 		D2A910791C83E7890025AD0A /* appicon */ = {
@@ -2912,7 +2879,6 @@
 				3A420BA1220162BA007648AE /* EMChatBarCallView.m in Sources */,
 				3A3F298F21F1B742001A6327 /* EMMessageModel.m in Sources */,
 				3A3F2A2521F1C36C001A6327 /* EMAlertController.m in Sources */,
-				D257873C1B43EC7000B0E69F /* RobotListViewController.m in Sources */,
 				3A3F297C21F1AF88001A6327 /* EMConversationsViewController.m in Sources */,
 				3A2F294621537E7E00F86EB5 /* CallSettingViewController.m in Sources */,
 				3A3F297821F1AF88001A6327 /* EMBadgeLabel.m in Sources */,
@@ -2926,7 +2892,6 @@
 				3A2F294321537E7E00F86EB5 /* Call1v1VideoViewController.m in Sources */,
 				3C914D8419514BBD0002DAD3 /* GroupListViewController.m in Sources */,
 				90011F921AE4BF090088D549 /* EMAlertView.m in Sources */,
-				90B42A371B65E62C00968342 /* RobotChatViewController.m in Sources */,
 				D2B61E331BC7BEA6007CB53E /* ConversationListController.m in Sources */,
 				3A3F294521F1AF23001A6327 /* EMSearchBar.m in Sources */,
 				3A3F28B221F1AE80001A6327 /* EMRegisterViewController.m in Sources */,
@@ -2950,7 +2915,6 @@
 				3A313E9322002CCB0077D350 /* EMRecordAudioViewController.m in Sources */,
 				9003D86E1939D8D000DC38A4 /* ChatViewController.m in Sources */,
 				3A3F28C921F1AE98001A6327 /* EMGeneralViewController.m in Sources */,
-				906083D91B71F894008574B4 /* EMRobotChatTextBubbleView.m in Sources */,
 				3A3F28E021F1AED1001A6327 /* EMInviteFriendViewController.m in Sources */,
 				3A313E9422002CCB0077D350 /* EMChatBar.m in Sources */,
 				3A420BBA22018DC0007648AE /* EMAudioHelper.m in Sources */,
@@ -2960,7 +2924,6 @@
 				3C3EB2FC19545FFD00E1AE9E /* PublicGroupListViewController.m in Sources */,
 				3A3F294D21F1AF31001A6327 /* XHSearchResultController.m in Sources */,
 				3A3F28D121F1AEB3001A6327 /* EMAvatarNameCell.m in Sources */,
-				906083DA1B71F894008574B4 /* EMRotbotChatViewCell.m in Sources */,
 				3A32AB841DDEBF4600E03E27 /* UIViewController+SearchController.m in Sources */,
 				3A3F293221F1AF17001A6327 /* EMInviteGroupMemberViewController.m in Sources */,
 				3A3F28A421F1AE76001A6327 /* EMQRCodeViewController.m in Sources */,
@@ -3008,7 +2971,6 @@
 				90AFCFDC1ECE9B45007BBD33 /* ShareFilesViewController.m in Sources */,
 				3A3F28A521F1AE76001A6327 /* WSLNativeScanTool.m in Sources */,
 				3A42E47821F9D79B00374C6C /* EMGroupSharedFilesViewController.m in Sources */,
-				90B42A381B65E62C00968342 /* RobotManager.m in Sources */,
 				3AF6A6571E1F5BD40022E835 /* EMGroupMembersViewController.m in Sources */,
 				3A3F2A1321F1C35E001A6327 /* UIViewController+Util.m in Sources */,
 				3A2F294721537E7E00F86EB5 /* EMButton.m in Sources */,
