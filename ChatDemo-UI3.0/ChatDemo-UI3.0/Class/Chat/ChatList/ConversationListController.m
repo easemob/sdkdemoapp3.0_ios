@@ -13,8 +13,6 @@
 #import "ConversationListController.h"
 
 #import "ChatViewController.h"
-#import "RobotManager.h"
-#import "RobotChatViewController.h"
 #import "EMRealtimeSearch.h"
 #import "ChatDemoHelper.h"
 #import "EMDingMessageHelper.h"
@@ -27,9 +25,9 @@
 - (NSString*)showName
 {
     if (self.type == EMConversationTypeChat) {
-        if ([[RobotManager sharedInstance] isRobotWithUsername:self.conversationId]) {
-            return [[RobotManager sharedInstance] getRobotNickWithUsername:self.conversationId];
-        }
+//        if ([[RobotManager sharedInstance] isRobotWithUsername:self.conversationId]) {
+//            return [[RobotManager sharedInstance] getRobotNickWithUsername:self.conversationId];
+//        }
 //        return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
         return self.conversationId;
     } else if (self.type == EMConversationTypeGroupChat) {
@@ -136,17 +134,21 @@
 {
     if (conversationModel) {
         EMConversation *conversation = conversationModel.conversation;
-        if (conversation) {
-            if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
-                RobotChatViewController *chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-                chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
-                [self.navigationController pushViewController:chatController animated:YES];
-            } else {
-                UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-                chatController.title = conversationModel.title;
-                [self.navigationController pushViewController:chatController animated:YES];
-            }
-        }
+        UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+        chatController.title = conversationModel.title;
+        [self.navigationController pushViewController:chatController animated:YES];
+        
+//        if (conversation) {
+//            if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
+//                RobotChatViewController *chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+//                chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
+//                [self.navigationController pushViewController:chatController animated:YES];
+//            } else {
+//                UIViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+//                chatController.title = conversationModel.title;
+//                [self.navigationController pushViewController:chatController animated:YES];
+//            }
+//        }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
         [self.tableView reloadData];
     }
@@ -159,15 +161,15 @@
 {
     EaseConversationModel *model = [[EaseConversationModel alloc] initWithConversation:conversation];
     if (model.conversation.type == EMConversationTypeChat) {
-        if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
-            model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
-        } else {
+//        if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
+//            model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
+//        } else {
 //            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:conversation.conversationId];
 //            if (profileEntity) {
 //                model.title = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
 //                model.avatarURLPath = profileEntity.imageUrl;
 //            }
-        }
+//        }
     } else if (model.conversation.type == EMConversationTypeGroupChat) {
         NSString *imageName = @"groupPublicHeader";
         if (![conversation.ext objectForKey:@"subject"])
@@ -326,13 +328,16 @@
         id<IConversationModel> model = [weakSelf.resultController.displaySource objectAtIndex:indexPath.row];
         EMConversation *conversation = model.conversation;
         ChatViewController *chatController;
-        if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
-            chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-            chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
-        }else {
-            chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-            chatController.title = [conversation showName];
-        }
+        chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+        chatController.title = [conversation showName];
+        
+//        if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
+//            chatController = [[RobotChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+//            chatController.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
+//        }else {
+//            chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+//            chatController.title = [conversation showName];
+//        }
         [weakSelf.navigationController pushViewController:chatController animated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
         [weakSelf.tableView reloadData];
