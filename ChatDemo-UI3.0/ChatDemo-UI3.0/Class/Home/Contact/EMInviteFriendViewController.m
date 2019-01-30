@@ -15,7 +15,6 @@
 
 @property (nonatomic, strong) EMSearchBar *searchBar;
 
-@property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *invitedUsers;
 
 @end
@@ -26,7 +25,6 @@
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
-    self.dataArray = [[NSMutableArray alloc] init];
     self.invitedUsers = [[NSMutableArray alloc] init];
     
     [self _setupViews];

@@ -12,6 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMMessageModel : NSObject
 
+@property (nonatomic, strong) EMMessage *emModel;
+
+@property (nonatomic) EMMessageDirection direction;
+
+@property (nonatomic) EMMessageBodyType type;
+
+@property (nonatomic) BOOL isPlaying;
+
+- (instancetype)initWithEMMessage:(EMMessage *)aMsg;
+
 @end
 
 NS_ASSUME_NONNULL_END

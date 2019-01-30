@@ -13,12 +13,9 @@
 #import "UserProfileViewController.h"
 
 #import "ChatViewController.h"
-#import "UserProfileManager.h"
 #import "UIImageView+HeadImage.h"
 
 @interface UserProfileViewController ()
-
-@property (strong, nonatomic) UserProfileEntity *user;
 
 @property (strong, nonatomic) UIImageView *headImageView;
 @property (strong, nonatomic) UILabel *usernameLabel;
@@ -101,12 +98,7 @@
         cell.detailTextLabel.text = self.usernameLabel.text;
     } else if (indexPath.row == 2) {
         cell.textLabel.text = NSLocalizedString(@"setting.profileNickname", @"Nickname");
-        UserProfileEntity *entity = [[UserProfileManager sharedInstance] getUserProfileByUsername:_username];
-        if (entity && entity.nickname.length>0) {
-            cell.detailTextLabel.text = entity.nickname;
-        } else {
-            cell.detailTextLabel.text = _username;
-        }
+        cell.detailTextLabel.text = _username;
 //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
@@ -139,15 +131,15 @@
 
 - (void)loadUserProfile
 {
-    [self hideHud];
-    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
-    __weak typeof(self) weakself = self;
-    [[UserProfileManager sharedInstance] loadUserProfileInBackground:@[_username] saveToLoacal:YES completion:^(BOOL success, NSError *error) {
-        [weakself hideHud];
-        if (success) {
-            [weakself.tableView reloadData];
-        }
-    }];
+//    [self hideHud];
+//    [self showHudInView:self.view hint:NSLocalizedString(@"loadData", @"Load data...")];
+//    __weak typeof(self) weakself = self;
+//    [[UserProfileManager sharedInstance] loadUserProfileInBackground:@[_username] saveToLoacal:YES completion:^(BOOL success, NSError *error) {
+//        [weakself hideHud];
+//        if (success) {
+//            [weakself.tableView reloadData];
+//        }
+//    }];
 }
 
 - (void)back

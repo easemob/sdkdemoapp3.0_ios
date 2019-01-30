@@ -15,7 +15,6 @@
 #import "ChatViewController.h"
 #import "RobotManager.h"
 #import "RobotChatViewController.h"
-#import "UserProfileManager.h"
 #import "EMRealtimeSearch.h"
 #import "ChatDemoHelper.h"
 #import "EMDingMessageHelper.h"
@@ -31,7 +30,8 @@
         if ([[RobotManager sharedInstance] isRobotWithUsername:self.conversationId]) {
             return [[RobotManager sharedInstance] getRobotNickWithUsername:self.conversationId];
         }
-        return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
+//        return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
+        return self.conversationId;
     } else if (self.type == EMConversationTypeGroupChat) {
         if ([self.ext objectForKey:@"subject"] || [self.ext objectForKey:@"isPublic"]) {
             return [self.ext objectForKey:@"subject"];
@@ -162,11 +162,11 @@
         if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
             model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
         } else {
-            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:conversation.conversationId];
-            if (profileEntity) {
-                model.title = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-                model.avatarURLPath = profileEntity.imageUrl;
-            }
+//            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:conversation.conversationId];
+//            if (profileEntity) {
+//                model.title = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+//                model.avatarURLPath = profileEntity.imageUrl;
+//            }
         }
     } else if (model.conversation.type == EMConversationTypeGroupChat) {
         NSString *imageName = @"groupPublicHeader";
@@ -230,10 +230,10 @@
         
         if (lastMessage.direction == EMMessageDirectionReceive) {
             NSString *from = lastMessage.from;
-            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:from];
-            if (profileEntity) {
-                from = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-            }
+//            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:from];
+//            if (profileEntity) {
+//                from = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+//            }
             latestMessageTitle = [NSString stringWithFormat:@"%@: %@", from, latestMessageTitle];
         }
         

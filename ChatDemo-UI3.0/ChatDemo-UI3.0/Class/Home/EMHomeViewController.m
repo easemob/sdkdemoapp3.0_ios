@@ -20,6 +20,8 @@
 
 @interface EMHomeViewController ()<UITabBarDelegate, EMChatManagerDelegate, EMNotificationsDelegate>
 
+@property (nonatomic) BOOL isViewAppear;
+
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
 
@@ -38,7 +40,6 @@
     
     //监听消息接收，主要更新会话tabbaritem的badge
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-    //监听会话，主要更新会话tabbaritem的badge
     //监听通知申请，主要更新联系人tabbaritem的badge
     [[EMNotificationHelper shared] addDelegate:self];
 }
@@ -48,7 +49,15 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
+    self.isViewAppear = YES;
     [self _loadTabBarItemsBadge];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.isViewAppear = NO;
 }
 
 - (void)dealloc
@@ -164,7 +173,9 @@
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    [self _loadConversationTabBarItemBadge];
+    if (self.isViewAppear) {
+        [self _loadConversationTabBarItemBadge];
+    }
 }
 
 #pragma mark - EMNotificationsDelegate

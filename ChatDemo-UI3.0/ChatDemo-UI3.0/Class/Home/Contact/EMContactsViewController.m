@@ -209,16 +209,16 @@
 
     if (section == 0) {
         if (row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"contact"];
             cell.nameLabel.text = @"添加好友";
         } else if (row == 2) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"group"];
             cell.nameLabel.text = @"群组";
         } else if (row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"chatroom"];
             cell.nameLabel.text = @"聊天室";
         } else if (row == 4) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"call"];
             cell.nameLabel.text = @"多人视频";
         }
     } else {

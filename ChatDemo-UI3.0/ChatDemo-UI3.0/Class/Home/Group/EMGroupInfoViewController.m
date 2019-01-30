@@ -10,6 +10,8 @@
 
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
+#import "EMGroupSharedFilesViewController.h"
+#import "EMGroupSettingsViewController.h"
 
 @interface EMGroupInfoViewController ()
 
@@ -39,7 +41,14 @@
     // Uncomment the following line to preserve selection between presentations.
     [self _setupSubviews];
     
+//    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+    
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
+}
+
+- (void)dealloc
+{
+//    [[EMClient sharedClient].groupManager removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -133,7 +142,8 @@
     } else if (section == 3) {
         if (row == 0) {
             cell.textLabel.text = @"共享文件";
-            cell.detailTextLabel.text = @([self.group.sharedFileList count]).stringValue;
+            cell.detailTextLabel.text = @"";
+//            cell.detailTextLabel.text = @([self.group.sharedFileList count]).stringValue;
         } else if (row == 1) {
             cell.textLabel.text = @"群组设置";
             cell.detailTextLabel.text = nil;
@@ -180,10 +190,40 @@
         } else if (row == 3) {
             
         }
+    } else if (section == 3) {
+        if (row == 0) {
+            EMGroupSharedFilesViewController *controller = [[EMGroupSharedFilesViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 1) {
+            EMGroupSettingsViewController *controller = [[EMGroupSettingsViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     }
 }
 
+//#pragma mark - EMGroupManagerDelegate
+//
+//- (void)groupFileListDidUpdate:(EMGroup *)aGroup
+//               addedSharedFile:(EMGroupSharedFile *)aSharedFile
+//{
+//    [self _reloadSharedFilesCell];
+//}
+//
+//- (void)groupFileListDidUpdate:(EMGroup *)aGroup
+//             removedSharedFile:(NSString *)aFileId
+//{
+//    [self _reloadSharedFilesCell];
+//}
+
 #pragma mark - Data
+
+//- (void)_reloadSharedFilesCell
+//{
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
+//    [self.tableView beginUpdates];
+//    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    [self.tableView endUpdates];
+//}
 
 - (void)_fetchGroupWithId:(NSString *)aGroupId
                 isShowHUD:(BOOL)aIsShowHUD

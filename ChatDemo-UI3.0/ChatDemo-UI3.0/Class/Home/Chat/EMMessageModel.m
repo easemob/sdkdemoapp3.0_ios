@@ -10,4 +10,23 @@
 
 @implementation EMMessageModel
 
+- (instancetype)initWithEMMessage:(EMMessage *)aMsg
+{
+    self = [super init];
+    if (self) {
+        _emModel = aMsg;
+        _direction = aMsg.direction;
+        _type = aMsg.body.type;
+        
+//        if (aMsg.direction == EMMessageDirectionSend) {
+//            EMImageMessageBody *body = (EMImageMessageBody *)aMsg.body;
+//            if ([body.thumbnailLocalPath length] > 0) {
+//                _image = [UIImage imageWithContentsOfFile:body.thumbnailLocalPath];
+//            }
+//        }
+    }
+    
+    return self;
+}
+
 @end

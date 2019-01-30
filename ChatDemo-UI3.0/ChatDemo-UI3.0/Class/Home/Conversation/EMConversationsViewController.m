@@ -9,13 +9,13 @@
 #import "EMConversationsViewController.h"
 
 #import "EMRealtimeSearch.h"
-
 #import "EMConversationHelper.h"
+
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
-#import "ChatViewController.h"
+#import "EMChatViewController.h"
 
-@interface EMConversationsViewController()<EMChatManagerDelegate, XHSearchControllerDelegate>
+@interface EMConversationsViewController()<EMChatManagerDelegate, XHSearchControllerDelegate, EMConversationsDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
@@ -31,6 +31,7 @@
     [self _setupSubviews];
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMConversationHelper shared] addDelegate:self];
     [self _loadAllConversationsFromDBWithIsShowHud:YES];
 }
 
@@ -58,6 +59,7 @@
 - (void)dealloc
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[EMConversationHelper shared] removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -124,9 +126,8 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         EMConversationModel *model = [weakself.resultController.dataArray objectAtIndex:row];
-        EMConversation *conversation = model.emModel;
-        ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-        [weakself.resultController.navigationController pushViewController:chatController animated:YES];
+        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+        [weakself.resultController.navigationController pushViewController:controller animated:YES];
     }];
 }
 
@@ -167,9 +168,8 @@
     
     NSInteger row = indexPath.row;
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
-    EMConversation *conversation = model.emModel;
-    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-    [self.navigationController pushViewController:chatController animated:YES];
+    EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -201,7 +201,10 @@
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     if (self.isViewAppear) {
-        [self.tableView reloadData];
+        if (!self.isNeedReload) {
+            self.isNeedReload = YES;
+            [self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:1];
+        }
     } else {
         self.isNeedReload = YES;
     }
@@ -241,7 +244,36 @@
     }];
 }
 
+#pragma mark - EMConversationsDelegate
+
+- (void)didConversationUnreadCountZero:(EMConversationModel *)aConversation
+{
+    NSInteger index = [self.dataArray indexOfObject:aConversation];
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+}
+
 #pragma mark - Data
+
+- (void)_reSortedConversationModelsAndReloadView
+{
+    if (self.isViewAppear && self.isNeedReload) {
+        NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
+            EMMessage *message1 = [obj1.emModel latestMessage];
+            EMMessage *message2 = [obj2.emModel latestMessage];
+            if(message1.timestamp > message2.timestamp) {
+                return(NSComparisonResult)NSOrderedAscending;
+            } else {
+                return(NSComparisonResult)NSOrderedDescending;
+            }}];
+        [self.dataArray removeAllObjects];
+        [self.dataArray addObjectsFromArray:sorted];
+        [self.tableView reloadData];
+        
+        self.isNeedReload = NO;
+    }
+}
 
 - (void)_loadAllConversationsFromDBWithIsShowHud:(BOOL)aIsShowHUD
 {
@@ -266,12 +298,14 @@
         NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
         [weakself.dataArray addObjectsFromArray:models];
         
-        if (aIsShowHUD) {
-            [weakself hideHud];
-        }
-        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
-        
-        [weakself.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (aIsShowHUD) {
+                [weakself hideHud];
+            }
+            
+            [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
+            [weakself.tableView reloadData];
+        });
     });
 }
 

@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (EMConversationModel *)modelFromGroup:(EMGroup *)aGroup;
 
-+ (void)markAllAsRead:(EMConversation *)aConversation;
++ (void)markAllAsRead:(EMConversationModel *)aConversationModel;
 
 @end
 
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (void)didConversationUnreadCountUpdate:(EMConversation *)aConversation;
+- (void)didConversationUnreadCountZero:(EMConversationModel *)aConversation;
 
 @end
 

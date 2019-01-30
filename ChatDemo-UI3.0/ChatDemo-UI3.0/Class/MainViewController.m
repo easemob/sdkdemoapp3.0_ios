@@ -14,7 +14,6 @@
 #import "MainViewController.h"
 
 #import "ChatViewController.h"
-#import "UserProfileManager.h"
 #import "ChatDemoHelper.h"
 
 #import "EMGlobalVariables.h"
@@ -257,7 +256,8 @@ static NSString *kGroupName = @"GroupName";
         }
 
         do {
-            NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
+//            NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
+            NSString *title = message.from;
             if (message.chatType == EMChatTypeGroupChat) {
                 NSDictionary *ext = message.ext;
                 if (ext && ext[kGroupMessageAtList]) {

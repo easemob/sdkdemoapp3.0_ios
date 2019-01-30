@@ -36,6 +36,16 @@ static EMConversationHelper *shared = nil;
 
 @implementation EMConversationHelper
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _delegates = (EMMulticastDelegate<EMConversationsDelegate> *)[[EMMulticastDelegate alloc] init];
+    }
+    
+    return self;
+}
+
 + (instancetype)shared
 {
     static dispatch_once_t onceToken;
@@ -117,11 +127,12 @@ static EMConversationHelper *shared = nil;
     return model;
 }
 
-+ (void)markAllAsRead:(EMConversation *)aConversation
++ (void)markAllAsRead:(EMConversationModel *)aConversationModel
 {
-    [aConversation markAllMessagesAsRead:nil];
+    [aConversationModel.emModel markAllMessagesAsRead:nil];
     
-    [[EMConversationHelper shared].delegates didConversationUnreadCountUpdate:aConversation];
+    EMConversationHelper *helper = [EMConversationHelper shared];
+    [helper.delegates didConversationUnreadCountZero:aConversationModel];
 }
 
 @end

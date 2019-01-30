@@ -14,7 +14,6 @@
 
 #import "ChatroomDetailViewController.h"
 #import "UserProfileViewController.h"
-#import "UserProfileManager.h"
 #import "ChatDemoHelper.h"
 #import "EMChooseViewController.h"
 #import "ContactSelectionViewController.h"
@@ -380,11 +379,11 @@
     id<IMessageModel> model = nil;
     model = [[EaseMessageModel alloc] initWithMessage:message];
     model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.nickname];
-    if (profileEntity) {
-        model.avatarURLPath = profileEntity.imageUrl;
-        model.nickname = profileEntity.nickname;
-    }
+//    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.nickname];
+//    if (profileEntity) {
+//        model.avatarURLPath = profileEntity.imageUrl;
+//        model.nickname = profileEntity.nickname;
+//    }
     model.failImageName = @"imageDownloadFail";
     
     model.isDing = [EMDingMessageHelper isDingMessage:message];
@@ -499,10 +498,10 @@
     if ([selectedSources count]) {
         EaseAtTarget *target = [[EaseAtTarget alloc] init];
         target.userId = selectedSources.firstObject;
-        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:target.userId];
-        if (profileEntity) {
-            target.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-        }
+//        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:target.userId];
+//        if (profileEntity) {
+//            target.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+//        }
         if (_selectedCallback) {
             _selectedCallback(target);
         }
