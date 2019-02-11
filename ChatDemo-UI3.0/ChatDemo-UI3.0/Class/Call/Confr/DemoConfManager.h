@@ -13,8 +13,6 @@
 @class EMConferenceViewController;
 @interface DemoConfManager : NSObject
 
-#if DEMO_CALL == 1
-
 + (instancetype)sharedManager;
 
 - (void)inviteMemberWithConfType:(EMConferenceType)aConfType
@@ -27,7 +25,5 @@
 
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy;
-
-#endif
 
 @end

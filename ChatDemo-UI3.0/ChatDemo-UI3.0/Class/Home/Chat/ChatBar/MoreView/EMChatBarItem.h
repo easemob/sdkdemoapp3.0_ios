@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMChatBarItem : UIControl
 
+@property (nonatomic) CGFloat titleHeightRatio;
+
 - (instancetype)initWithImage:(UIImage *)aImage
                         title:(NSString *)aTitle;
 

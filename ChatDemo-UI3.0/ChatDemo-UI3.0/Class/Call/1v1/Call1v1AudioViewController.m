@@ -18,8 +18,6 @@
 
 @implementation Call1v1AudioViewController
 
-#if DEMO_CALL == 1
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -82,7 +80,5 @@
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }
-
-#endif
 
 @end

@@ -60,7 +60,7 @@
     
     self.showRefreshHeader = YES;
 
-    self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefault"];
+    self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultRedFont"];
     self.leaveCell.textLabel.textColor = [UIColor redColor];
     self.leaveCell.textLabel.text = @"退出群组";
 }

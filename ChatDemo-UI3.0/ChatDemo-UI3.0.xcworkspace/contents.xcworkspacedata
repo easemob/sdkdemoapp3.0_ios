@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../../rtc-ios/RtcSDK/RtcSDK.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../../emclient-linux/ios_build/build/ioseasemob.xcodeproj">
    </FileRef>
    <FileRef

@@ -8,13 +8,10 @@
 
 #import "EMChatBar.h"
 
-#import "EMRecordAudioViewController.h"
-#import "EMChatBarCallView.h"
-
 #define kInputViewMinHeight 40
 #define kInputViewMaxHeight 120
 
-@interface EMChatBar()<UITextViewDelegate, EMChatBarCallViewDelegate>
+@interface EMChatBar()<UITextViewDelegate>
 
 @property (nonatomic) CGFloat version;
 
@@ -23,10 +20,7 @@
 @property (nonatomic, strong) NSMutableArray<UIButton *> *buttonArray;
 @property (nonatomic, strong) UIButton *selectedButton;
 
-@property (nonatomic, strong) EMRecordAudioViewController *recordAudioController;
-
 @property (nonatomic, strong) UIView *currentMoreView;
-@property (nonatomic, strong) EMChatBarCallView *moreCallView;
 
 @end
 
@@ -89,7 +83,8 @@
 
 - (void)_setupButtonsView
 {
-    NSInteger count = 7;
+//    NSInteger count = 7;
+    NSInteger count = 6;
     CGFloat width = [UIScreen mainScreen].bounds.size.width / count;
     
     self.buttonArray = [[NSMutableArray alloc] init];
@@ -110,7 +105,7 @@
     UIButton *emojiButton = [[UIButton alloc] init];
     [emojiButton setImage:[UIImage imageNamed:@"tabbar_chat_gray"] forState:UIControlStateNormal];
     [emojiButton setImage:[UIImage imageNamed:@"tabbar_chat_blue"] forState:UIControlStateSelected];
-    [emojiButton addTarget:self action:@selector(emojiButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:emojiButton];
     [emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.buttonsView);
@@ -168,41 +163,23 @@
         make.top.equalTo(self.buttonsView);
         make.left.equalTo(adressButton.mas_right);
         make.bottom.equalTo(adressButton);
-        make.width.mas_equalTo(width);
+//        make.width.mas_equalTo(width);
+        make.right.equalTo(self.buttonsView);
     }];
     [self.buttonArray addObject:callButton];
     
-    UIButton *moreButton = [[UIButton alloc] init];
-    [moreButton setImage:[UIImage imageNamed:@"tabbar_chat_gray"] forState:UIControlStateNormal];
-    [moreButton setImage:[UIImage imageNamed:@"tabbar_chat_blue"] forState:UIControlStateSelected];
-    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:moreButton];
-    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(callButton.mas_right);
-        make.bottom.equalTo(callButton);
-        make.right.equalTo(self.buttonsView);
-    }];
-    [self.buttonArray addObject:moreButton];
-}
-
-- (EMRecordAudioViewController *)recordAudioController
-{
-    if (_recordAudioController == nil) {
-        _recordAudioController = [[EMRecordAudioViewController alloc] init];
-    }
-    
-    return _recordAudioController;
-}
-
-- (EMChatBarCallView *)moreCallView
-{
-    if (_moreCallView == nil) {
-        _moreCallView = [[EMChatBarCallView alloc] init];
-        _moreCallView.delegate = self;
-    }
-    
-    return _moreCallView;
+//    UIButton *moreButton = [[UIButton alloc] init];
+//    [moreButton setImage:[UIImage imageNamed:@"tabbar_chat_gray"] forState:UIControlStateNormal];
+//    [moreButton setImage:[UIImage imageNamed:@"tabbar_chat_blue"] forState:UIControlStateSelected];
+//    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.buttonsView addSubview:moreButton];
+//    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.buttonsView);
+//        make.left.equalTo(callButton.mas_right);
+//        make.bottom.equalTo(callButton);
+//        make.right.equalTo(self.buttonsView);
+//    }];
+//    [self.buttonArray addObject:moreButton];
 }
 
 #pragma mark - UITextViewDelegate
@@ -241,26 +218,6 @@
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputViewDidChange:)]) {
         [self.delegate inputViewDidChange:self.inputView];
-    }
-}
-
-#pragma mark - EMChatBarCallViewDelegate
-
-- (void)chatBarCallViewAudioDidSelected
-{
-    [self callButtonAction:self.selectedButton];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidAudioCallAction)]) {
-        [self.delegate chatBarDidAudioCallAction];
-    }
-}
-
-- (void)chatBarCallViewVideoDidSelected
-{
-    [self callButtonAction:self.selectedButton];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidVideoCallAction)]) {
-        [self.delegate chatBarDidVideoCallAction];
     }
 }
 
@@ -316,7 +273,23 @@
     }
 }
 
-- (void)_clearMoreViewAndSelectedButton
+#pragma mark - Public
+
+- (void)clearInputViewText
+{
+    self.inputView.text = nil;
+    [self _updateInputViewHeight];
+}
+
+- (void)inputViewAppendText:(NSString *)aText
+{
+    if ([aText length] > 0) {
+        self.inputView.text = [NSString stringWithFormat:@"%@%@", self.inputView.text, aText];
+        [self _updateInputViewHeight];
+    }
+}
+
+- (void)clearMoreViewAndSelectedButton
 {
     if (self.currentMoreView) {
         [self.currentMoreView removeFromSuperview];
@@ -330,44 +303,12 @@
     }
 }
 
-#pragma mark - Public
-
-- (void)clearInputViewText
-{
-    self.inputView.text = nil;
-    [self _updateInputViewHeight];
-}
-
 #pragma mark - Action
 
-- (void)audioButtonAction:(UIButton *)aButton
+- (void)_buttonAction:(UIButton *)aButton
 {
-    aButton.selected = !aButton.selected;
-    if (self.currentMoreView) {
-        [self.currentMoreView removeFromSuperview];
-    }
+    [self.inputView resignFirstResponder];
     
-    if (aButton.selected) {
-        self.selectedButton.selected = NO;
-        self.selectedButton = aButton;
-    }
-}
-
-- (void)emojiButtonAction:(UIButton *)aButton
-{
-    aButton.selected = !aButton.selected;
-    if (self.currentMoreView) {
-        [self.currentMoreView removeFromSuperview];
-    }
-    
-    if (aButton.selected) {
-        self.selectedButton.selected = NO;
-        self.selectedButton = aButton;
-    }
-}
-
-- (void)callButtonAction:(UIButton *)aButton
-{
     aButton.selected = !aButton.selected;
     if (self.currentMoreView) {
         [self.currentMoreView removeFromSuperview];
@@ -385,18 +326,64 @@
     
     if (aButton.selected) {
         self.selectedButton = aButton;
-        self.currentMoreView = self.moreCallView;
-        [self addSubview:self.moreCallView];
-        [self.moreCallView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self);
-            make.right.equalTo(self);
-            make.bottom.equalTo(self).offset(-10);
-        }];
-        [self _remakeButtonsViewConstraints];
-        
-        //        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarHeightDidChanged)]) {
-        //            [self.delegate chatBarHeightDidChanged];
-        //        }
+    }
+}
+
+- (void)audioButtonAction:(UIButton *)aButton
+{
+    [self _buttonAction:aButton];
+    if (aButton.selected) {
+        if (self.recordAudioView) {
+            self.currentMoreView = self.recordAudioView;
+            [self addSubview:self.recordAudioView];
+            [self.recordAudioView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self);
+                make.right.equalTo(self);
+                make.bottom.equalTo(self);
+//                make.height.equalTo(@100);
+            }];
+            [self _remakeButtonsViewConstraints];
+        }
+    }
+}
+
+- (void)emoticonButtonAction:(UIButton *)aButton
+{
+    [self _buttonAction:aButton];
+    if (aButton.selected) {
+        if (self.moreEmoticonView) {
+            self.currentMoreView = self.moreEmoticonView;
+            [self addSubview:self.moreEmoticonView];
+            [self.moreEmoticonView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self);
+                make.right.equalTo(self);
+                make.bottom.equalTo(self);
+                make.height.mas_equalTo(self.moreEmoticonView.viewHeight);
+            }];
+            [self _remakeButtonsViewConstraints];
+        }
+    }
+}
+
+- (void)callButtonAction:(UIButton *)aButton
+{
+    [self _buttonAction:aButton];
+    
+    if (aButton.selected) {
+        if (self.moreCallView) {
+            self.currentMoreView = self.moreCallView;
+            [self addSubview:self.moreCallView];
+            [self.moreCallView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self);
+                make.right.equalTo(self);
+                make.bottom.equalTo(self).offset(-10);
+            }];
+            [self _remakeButtonsViewConstraints];
+            
+//            if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarHeightDidChanged)]) {
+//                [self.delegate chatBarHeightDidChanged];
+//            }
+        }
     }
 }
 
@@ -415,7 +402,7 @@
 
 - (void)cameraButtonAction:(UIButton *)aButton
 {
-    [self _clearMoreViewAndSelectedButton];
+    [self clearMoreViewAndSelectedButton];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidCameraAction)]) {
         [self.delegate chatBarDidCameraAction];
@@ -424,7 +411,7 @@
 
 - (void)photoButtonAction:(UIButton *)aButton
 {
-    [self _clearMoreViewAndSelectedButton];
+    [self clearMoreViewAndSelectedButton];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidPhotoAction)]) {
         [self.delegate chatBarDidPhotoAction];
@@ -433,7 +420,7 @@
 
 - (void)addressButtonAction:(UIButton *)aButton
 {
-    [self _clearMoreViewAndSelectedButton];
+    [self clearMoreViewAndSelectedButton];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidLocationAction)]) {
         [self.delegate chatBarDidLocationAction];

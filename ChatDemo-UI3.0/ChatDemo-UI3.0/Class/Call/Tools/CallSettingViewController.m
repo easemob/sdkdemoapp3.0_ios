@@ -245,7 +245,6 @@
 
 //弹出提示的代理方法
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-#if DEMO_CALL == 1
     if ([alertView cancelButtonIndex] != buttonIndex) {
         //获取文本输入框
         UITextField *textField = [alertView textFieldAtIndex:0];
@@ -272,7 +271,6 @@
             [[DemoCallManager sharedManager] saveCallOptions];
         }
     }
-#endif
 }
 
 #pragma mark - Action
@@ -281,12 +279,9 @@
 {
     [self.tableView reloadData];
     
-#if DEMO_CALL == 1
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.isFixedVideoResolution = control.on;
     [[DemoCallManager sharedManager] saveCallOptions];
-    
-#endif
 }
 
 - (void)showCallInfoChanged:(UISwitch *)control
@@ -298,11 +293,9 @@
 
 - (void)callPushChanged:(UISwitch *)control
 {
-#if DEMO_CALL == 1
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.isSendPushIfOffline = control.on;
     [[DemoCallManager sharedManager] saveCallOptions];
-#endif
 }
 
 - (void)cameraSwitchValueChanged:(UISwitch *)control

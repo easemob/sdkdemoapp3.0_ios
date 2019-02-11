@@ -23,7 +23,6 @@ static bool isHeadphone()
 
 @interface EMCallViewController : UIViewController
 
-#if DEMO_CALL == 1
 
 @property (nonatomic, strong) UILabel *statusLabel;
 
@@ -40,7 +39,5 @@ static bool isHeadphone()
 - (void)minimizeAction;
 
 - (void)hangupAction;
-
-#endif
 
 @end

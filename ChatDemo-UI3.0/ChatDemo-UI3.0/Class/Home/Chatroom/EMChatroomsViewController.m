@@ -9,9 +9,11 @@
 #import "EMChatroomsViewController.h"
 
 #import "EMRealtimeSearch.h"
+#import "EMConversationHelper.h"
 
 #import "EMAvatarNameCell.h"
 #import "EMCreateChatroomViewController.h"
+#import "EMChatViewController.h"
 
 #import "ChatViewController.h"
 
@@ -145,9 +147,14 @@
     } else {
         chatroom = [self.searchResults objectAtIndex:indexPath.row];
     }
-    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:chatroom.chatroomId conversationType:EMConversationTypeChatRoom];
-    chatController.title = chatroom.subject;
-    [self.navigationController pushViewController:chatController animated:YES];
+    
+    EMConversationModel *model = [EMConversationHelper modelFromChatroom:chatroom];
+    EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+//    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:chatroom.chatroomId conversationType:EMConversationTypeChatRoom];
+//    chatController.title = chatroom.subject;
+//    [self.navigationController pushViewController:chatController animated:YES];
 }
 
 #pragma mark - EMSearchBarDelegate

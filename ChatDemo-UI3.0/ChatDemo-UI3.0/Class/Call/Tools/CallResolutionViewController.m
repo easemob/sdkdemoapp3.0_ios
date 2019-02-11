@@ -9,10 +9,7 @@
 #import "CallResolutionViewController.h"
 
 #import "ChatDemoHelper.h"
-
-#if DEMO_CALL == 1
 #import "DemoCallManager.h"
-#endif
 
 @interface CallResolutionViewController ()
 
@@ -27,11 +24,9 @@
     
     self.title = @"视频分辨率";
     
-#if DEMO_CALL == 1
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     int row = options.videoResolution;
     self.selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
-#endif
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,11 +41,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#if DEMO_CALL == 1
     return 4;
-#endif
-    
-    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -101,12 +92,10 @@
         UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
         newCell.accessoryType = UITableViewCellAccessoryCheckmark;
         
-#if DEMO_CALL == 1
         EMCallVideoResolution resolution = (EMCallVideoResolution)indexPath.row;
         EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.videoResolution = resolution;
         [[DemoCallManager sharedManager] saveCallOptions];
-#endif
     }
     
     self.selectedIndexPath = indexPath;

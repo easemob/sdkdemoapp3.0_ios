@@ -12,6 +12,7 @@
 #import <AVKit/AVKit.h>
 #import "EMChatViewController.h"
 
+#import "DemoConfManager.h"
 #import "EMAudioHelper.h"
 #import "EMImageBrowser.h"
 #import "EMConversationHelper.h"
@@ -20,9 +21,10 @@
 #import "EMChatBar.h"
 #import "EMMessageCell.h"
 #import "EMGroupInfoViewController.h"
+#import "EMChatroomInfoViewController.h"
 #import "EMLocationViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic) BOOL isFirstLoadFromDB;
@@ -109,6 +111,8 @@
         make.bottom.equalTo(self.view);
     }];
     
+    [self _setupChatBarMoreViews];
+    
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -167,6 +171,20 @@
     }
 }
 
+- (void)_setupChatBarMoreViews
+{
+    EMChatBarRecordAudioView *recordView = [[EMChatBarRecordAudioView alloc] init];
+    self.chatBar.recordAudioView = recordView;
+    
+    EMChatBarEmoticonView *moreEmoticonView = [[EMChatBarEmoticonView alloc] init];
+    moreEmoticonView.delegate = self;
+    self.chatBar.moreEmoticonView = moreEmoticonView;
+    
+    EMChatBarCallView *moreCallView = [[EMChatBarCallView alloc] initWithChatType:self.conversationModel.emModel.type];
+    moreCallView.delegate = self;
+    self.chatBar.moreCallView = moreCallView;
+}
+
 #pragma mark - Getter
 
 - (UIImagePickerController *)imagePicker
@@ -211,6 +229,7 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self.view endEditing:YES];
+    [self.chatBar clearMoreViewAndSelectedButton];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -394,9 +413,7 @@
 - (BOOL)inputView:(EMTextView *)aInputView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
-        [self _sendTextAction:aInputView.text];
-        
-        [self.chatBar clearInputViewText];
+        [self _sendTextAction:aInputView.text ext:nil];
         
         return NO;
     }
@@ -448,14 +465,63 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)chatBarDidAudioCallAction
+#pragma mark - EMChatBarCallViewDelegate
+
+- (void)chatBarCallViewAudioDidSelected
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_MAKE1V1CALL object:@{@"chatter":self.conversationModel.emModel.conversationId, @"type":@(EMCallTypeVoice)}];
+    [self.chatBar clearMoreViewAndSelectedButton];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_MAKE1V1CALL object:@{@"chatter":self.conversationModel.emModel.conversationId, @"type":@(EMCallTypeVoice)}];
 }
 
-- (void)chatBarDidVideoCallAction
+- (void)chatBarCallViewVideoDidSelected
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_MAKE1V1CALL object:@{@"chatter":self.conversationModel.emModel.conversationId, @"type":@(EMCallTypeVideo)}];
+    [self.chatBar clearMoreViewAndSelectedButton];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_MAKE1V1CALL object:@{@"chatter":self.conversationModel.emModel.conversationId, @"type":@(EMCallTypeVideo)}];
+}
+
+- (void)chatBarCallViewConferenceDidSelected
+{
+    [self.chatBar clearMoreViewAndSelectedButton];
+    
+    ConfInviteType inviteType = ConfInviteTypeUser;
+    if (self.conversationModel.emModel.type == EMChatTypeGroupChat) {
+        inviteType = ConfInviteTypeGroup;
+    } else if (self.conversationModel.emModel.type == EMChatTypeChatRoom) {
+        inviteType = ConfInviteTypeChatroom;
+    }
+    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:self.conversationModel.emModel.conversationId chatType:(EMChatType)self.conversationModel.emModel.type popFromController:self.navigationController];
+}
+
+- (void)chatBarCallViewLiveDidSelected
+{
+    [self.chatBar clearMoreViewAndSelectedButton];
+    
+    ConfInviteType inviteType = ConfInviteTypeUser;
+    if (self.conversationModel.emModel.type == EMChatTypeGroupChat) {
+        inviteType = ConfInviteTypeGroup;
+    } else if (self.conversationModel.emModel.type == EMChatTypeChatRoom) {
+        inviteType = ConfInviteTypeChatroom;
+    }
+    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:self.conversationModel.emModel.conversationId chatType:(EMChatType)self.conversationModel.emModel.type popFromController:self.navigationController];
+}
+
+#pragma mark - EMChatBarEmoticonViewDelegate
+
+- (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
+{
+    if (aModel.type == EMEmotionDefault) {
+        [self.chatBar inputViewAppendText:aModel.name];
+    } if (aModel.type == EMEmotionGif) {
+        NSDictionary *ext = @{@"em_is_big_expression":@(YES), @"em_expression_id":aModel.name};
+        [self _sendTextAction:aModel.name ext:ext];
+    }
+}
+
+- (void)didChatBarEmoticonViewSendAction
+{
+    [self _sendTextAction:self.chatBar.inputView.text ext:nil];
 }
 
 #pragma mark - EMMessageCellDelegate
@@ -839,11 +905,13 @@
         EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversationModel.emModel.conversationId];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
-        
+        EMChatroomInfoViewController *controller = [[EMChatroomInfoViewController alloc] initWithChatroomId:self.conversationModel.emModel.conversationId];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
 - (void)_sendMessageWithBody:(EMMessageBody *)aBody
+                         ext:(NSDictionary *)aExt
                     isUpload:(BOOL)aIsUpload
 {
     if (!([EMClient sharedClient].options.isAutoTransferMessageAttachments) && aIsUpload) {
@@ -853,7 +921,7 @@
     
     NSString *from = [[EMClient sharedClient] currentUsername];
     NSString *to = self.conversationModel.emModel.conversationId;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:nil];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     
     __weak typeof(self) weakself = self;
@@ -873,7 +941,13 @@
 }
 
 - (void)_sendTextAction:(NSString *)aText
+                    ext:(NSDictionary *)aExt
 {
+    [self.chatBar clearInputViewText];
+    if ([aText length] == 0) {
+        return;
+    }
+    
     //TODO: 处理@
     //messageExt
     
@@ -881,26 +955,26 @@
 //    NSString *sendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:aText];
     
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
-    [self _sendMessageWithBody:body isUpload:NO];
+    [self _sendMessageWithBody:body ext:aExt isUpload:NO];
 }
 
 - (void)_sendImageDataAction:(NSData *)aImageData
 {
     EMImageMessageBody *body = [[EMImageMessageBody alloc] initWithData:aImageData displayName:@"image"];
-    [self _sendMessageWithBody:body isUpload:YES];
+    [self _sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
 - (void)_sendLocationAction:(CLLocationCoordinate2D)aCoord
                     address:(NSString *)aAddress
 {
     EMLocationMessageBody *body = [[EMLocationMessageBody alloc] initWithLatitude:aCoord.latitude longitude:aCoord.longitude address:aAddress];
-    [self _sendMessageWithBody:body isUpload:NO];
+    [self _sendMessageWithBody:body ext:nil isUpload:NO];
 }
 
 - (void)_sendVideoAction:(NSURL *)aUrl
 {
     EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithLocalPath:[aUrl path] displayName:@"video.mp4"];
-    [self _sendMessageWithBody:body isUpload:YES];
+    [self _sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
 @end

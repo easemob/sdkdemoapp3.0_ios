@@ -8,7 +8,7 @@
 
 #import "ShareFilesViewController.h"
 #import "ChatViewController.h"
-#import "UserProfileManager.h"
+//#import "UserProfileManager.h"
 
 @interface ShareFilesViewController () <EMUserListViewControllerDelegate,EMUserListViewControllerDataSource>
 {
@@ -88,12 +88,12 @@
                            modelForBuddy:(NSString *)buddy
 {
     id<IUserModel> model = nil;
-    model = [[EaseUserModel alloc] initWithBuddy:buddy];
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
-    if (profileEntity) {
-        model.nickname= profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-        model.avatarURLPath = profileEntity.imageUrl;
-    }
+//    model = [[EaseUserModel alloc] initWithBuddy:buddy];
+//    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
+//    if (profileEntity) {
+//        model.nickname= profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+//        model.avatarURLPath = profileEntity.imageUrl;
+//    }
     return model;
 }
 
@@ -102,11 +102,11 @@
 {
     id<IUserModel> model = nil;
     model = [self.dataArray objectAtIndex:indexPath.row];
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
-    if (profileEntity) {
-        model.nickname= profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-        model.avatarURLPath = profileEntity.imageUrl;
-    }
+//    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
+//    if (profileEntity) {
+//        model.nickname= profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+//        model.avatarURLPath = profileEntity.imageUrl;
+//    }
     return model;
 }
 

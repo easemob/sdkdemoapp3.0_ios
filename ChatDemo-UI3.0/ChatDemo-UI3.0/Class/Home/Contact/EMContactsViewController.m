@@ -46,7 +46,7 @@
     [[EMNotificationHelper shared] addDelegate:self];
     [self didNotificationsUnreadCountUpdate:[EMNotificationHelper shared].unreadCount];
     
-    [self _loadAllContactsFromDB];
+    [self _fetchContactsFromServerWithIsShowHUD:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -505,8 +505,11 @@
     [self.tableView reloadData];
 }
 
-- (void)tableViewDidTriggerHeaderRefresh
+- (void)_fetchContactsFromServerWithIsShowHUD:(BOOL)aIsShowHUD
 {
+    if (aIsShowHUD) {
+        [self showHudInView:self.view hint:@"获取好友..."];
+    }
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aContactsList, EMError *aContactsError) {
         if (!aContactsError) {
@@ -515,6 +518,10 @@
         }
         
         [[EMClient sharedClient].contactManager getBlackListFromServerWithCompletion:^(NSArray *aBlackList, EMError *aError) {
+            if (aIsShowHUD) {
+                [weakself hideHud];
+            }
+            
             if (!aError) {
                 [weakself _sortAllContacts:weakself.allContacts];
             }
@@ -522,6 +529,11 @@
             [weakself.tableView reloadData];
         }];
     }];
+}
+
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    [self _fetchContactsFromServerWithIsShowHUD:NO];
 }
 
 @end

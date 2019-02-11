@@ -8,6 +8,12 @@
 
 #import "EMChatBarItem.h"
 
+@interface EMChatBarItem()
+
+@property (nonatomic, strong) UILabel *label;
+
+@end
+
 @implementation EMChatBarItem
 
 - (instancetype)initWithImage:(UIImage *)aImage
@@ -15,10 +21,22 @@
 {
     self = [super init];
     if (self) {
+        _titleHeightRatio = 0.3;
         [self _setupSubviewsWithImage:aImage title:aTitle];
     }
     
     return self;
+}
+
+- (void)setTitleHeightRatio:(CGFloat)titleHeightRatio
+{
+    if (_titleHeightRatio != titleHeightRatio) {
+        _titleHeightRatio = titleHeightRatio;
+        
+        [self.label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self).multipliedBy(titleHeightRatio);
+        }];
+    }
 }
 
 #pragma mark - Subviews
@@ -36,16 +54,16 @@
         make.top.equalTo(self);
     }];
     
-    UILabel *label = [[UILabel alloc] init];
-    label.textColor = [UIColor grayColor];
-    label.font = [UIFont systemFontOfSize:13];
-    label.text = aTitle;
-    [self addSubview:label];
-    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgView.mas_bottom);
+    self.label = [[UILabel alloc] init];
+    self.label.textColor = [UIColor grayColor];
+    self.label.font = [UIFont systemFontOfSize:13];
+    self.label.text = aTitle;
+    [self addSubview:self.label];
+    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(imgView.mas_bottom).offset(5);
         make.centerX.equalTo(self);
         make.bottom.equalTo(self);
-        make.height.equalTo(self).multipliedBy(0.3);
+//        make.height.equalTo(self).multipliedBy(self.titleHeightRatio);
     }];
 }
 

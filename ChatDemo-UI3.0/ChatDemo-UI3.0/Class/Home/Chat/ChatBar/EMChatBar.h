@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #import "EMTextView.h"
+#import "EMChatBarCallView.h"
+#import "EMChatBarEmoticonView.h"
+#import "EMChatBarRecordAudioView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,7 +24,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIView *buttonsView;
 
+@property (nonatomic, strong) EMChatBarRecordAudioView *recordAudioView;
+@property (nonatomic, strong) EMChatBarEmoticonView *moreEmoticonView;
+@property (nonatomic, strong) EMChatBarCallView *moreCallView;
+
 - (void)clearInputViewText;
+
+- (void)inputViewAppendText:(NSString *)aText;
+
+- (void)clearMoreViewAndSelectedButton;
 
 @end
 
@@ -41,9 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)chatBarDidLocationAction;
 
 //- (void)chatBarHeightDidChanged;
-
-- (void)chatBarDidAudioCallAction;
-- (void)chatBarDidVideoCallAction;
 
 @end
 

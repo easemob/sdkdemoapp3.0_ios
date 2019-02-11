@@ -8,8 +8,6 @@
 
 #import "DemoConfManager.h"
 
-#if DEMO_CALL == 1
-
 #import <Hyphenate/Hyphenate.h>
 
 #import "DemoCallManager.h"
@@ -27,11 +25,8 @@ static DemoConfManager *confManager = nil;
 
 @end
 
-#endif
 
 @implementation DemoConfManager
-
-#if DEMO_CALL == 1
 
 - (instancetype)init
 {
@@ -201,8 +196,5 @@ static DemoConfManager *confManager = nil;
     
     gIsCalling = NO;
 }
-
-
-#endif
 
 @end

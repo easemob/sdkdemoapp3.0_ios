@@ -13,8 +13,6 @@
 
 @interface EM1v1CallViewController : EMCallViewController<EMStreamViewDelegate>
 
-#if DEMO_CALL == 1
-
 @property (nonatomic, strong) UILabel *remoteNameLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 
@@ -32,7 +30,5 @@
 - (void)updateStreamingStatus:(EMCallStreamingStatus)aStatus;
 
 - (void)clearDataAndView;
-
-#endif
 
 @end

@@ -16,9 +16,7 @@
 #import <Bugly/Bugly.h>
 
 #import "ChatDemoHelper.h"
-#if DEMO_CALL == 1
 #import "DemoCallManager.h"
-#endif
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
@@ -134,6 +132,24 @@
 
 #pragma mark - Demo
 
+- (void)_initDemo
+{
+#ifdef DEBUG
+#else
+    //环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
+    //如果你自己的项目也要使用bugly，请按照bugly官方教程自行配置
+    [Bugly startWithAppId:nil];
+#endif
+    
+    //注册登录状态监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    
+    //注册推送
+    [self _registerRemoteNotification];
+    
+    [DemoCallManager sharedManager];
+}
+
 //注册远程通知
 - (void)_registerRemoteNotification
 {
@@ -168,26 +184,6 @@
         UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
     }
-#endif
-}
-
-- (void)_initDemo
-{
-#ifdef DEBUG
-#else
-    //环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
-    //如果你自己的项目也要使用bugly，请按照bugly官方教程自行配置
-    [Bugly startWithAppId:nil];
-#endif
-    
-    //注册登录状态监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
-    
-    //注册推送
-    [self _registerRemoteNotification];
-    
-#if DEMO_CALL == 1
-    [DemoCallManager sharedManager];
 #endif
 }
 

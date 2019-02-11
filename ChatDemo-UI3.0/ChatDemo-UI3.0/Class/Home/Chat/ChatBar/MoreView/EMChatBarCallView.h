@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<EMChatBarCallViewDelegate> delegate;
 
+- (instancetype)initWithChatType:(EMConversationType)aChatType;
+
 @end
 
 @protocol EMChatBarCallViewDelegate <NSObject>
@@ -24,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)chatBarCallViewAudioDidSelected;
 
 - (void)chatBarCallViewVideoDidSelected;
+
+- (void)chatBarCallViewConferenceDidSelected;
+
+- (void)chatBarCallViewLiveDidSelected;
 
 @end
 

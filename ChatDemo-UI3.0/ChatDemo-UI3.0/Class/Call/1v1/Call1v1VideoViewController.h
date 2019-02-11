@@ -10,8 +10,4 @@
 
 @interface Call1v1VideoViewController : EM1v1CallViewController
 
-#if DEMO_CALL == 1
-
-#endif
-
 @end

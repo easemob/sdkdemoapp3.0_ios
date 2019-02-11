@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (EMConversationModel *)modelFromGroup:(EMGroup *)aGroup;
 
++ (EMConversationModel *)modelFromChatroom:(EMChatroom *)aChatroom;
+
 + (void)markAllAsRead:(EMConversationModel *)aConversationModel;
 
 @end

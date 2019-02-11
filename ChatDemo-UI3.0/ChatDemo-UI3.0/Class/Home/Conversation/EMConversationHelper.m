@@ -127,6 +127,19 @@ static EMConversationHelper *shared = nil;
     return model;
 }
 
++ (EMConversationModel *)modelFromChatroom:(EMChatroom *)aChatroom
+{
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aChatroom.chatroomId type:EMConversationTypeChatRoom createIfNotExist:YES];
+    EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
+    model.name = aChatroom.subject;
+    
+    NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
+    [ext setObject:aChatroom.subject forKey:@"subject"];
+    conversation.ext = ext;
+    
+    return model;
+}
+
 + (void)markAllAsRead:(EMConversationModel *)aConversationModel
 {
     [aConversationModel.emModel markAllMessagesAsRead:nil];

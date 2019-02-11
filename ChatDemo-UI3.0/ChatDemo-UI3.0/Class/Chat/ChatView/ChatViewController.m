@@ -25,9 +25,7 @@
 
 #import "EMDemoOptions.h"
 
-#if DEMO_CALL == 1
 #import "DemoConfManager.h"
-#endif
 
 @interface ChatViewController ()<UIAlertViewDelegate,EMClientDelegate, EMChooseViewDelegate>
 {
@@ -293,9 +291,7 @@
 - (void)messageViewController:(EaseMessageViewController *)viewController
     didSelectCallMessageModel:(id<IMessageModel>)messageModel
 {
-#if DEMO_CALL == 1
     [[DemoConfManager sharedManager] handleMessageToJoinConference:messageModel.message];
-#endif
 }
 
 - (void)messageViewController:(EaseMessageViewController *)viewController

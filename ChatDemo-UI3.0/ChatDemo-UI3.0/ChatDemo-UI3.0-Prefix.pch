@@ -15,23 +15,18 @@
     #import <Foundation/Foundation.h>
 
     #import "ChatDemoUIDefine.h"
-    #import "EMAlertView.h"
     #import "TTGlobalUICommon.h"
 
-#define DEMO_CALL 1
-
-#if DEMO_CALL == 1
-    #import <Hyphenate/Hyphenate.h>
-#else
-    #import <HyphenateLite/HyphenateLite.h>
-#endif
-
-    #import "EaseUI.h"
 
     //3.5.4
+    #import <Hyphenate/Hyphenate.h>
+
     #import "Masonry.h"
+
     #import "EMColorDefine.h"
+
     #import "UIViewController+Util.h"
+    #import "UIViewController+HUD.h"
 
     #import "EMAlertController.h"
 

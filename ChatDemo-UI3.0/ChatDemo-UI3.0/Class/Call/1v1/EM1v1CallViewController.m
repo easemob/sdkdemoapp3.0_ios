@@ -19,8 +19,6 @@
 
 @implementation EM1v1CallViewController
 
-#if DEMO_CALL == 1
-
 - (instancetype)initWithCallSession:(EMCallSession *)aCallSession
 {
     self = [super init];
@@ -424,7 +422,5 @@
     [[DemoCallManager sharedManager] answerCall:self.callSession.callId];
     self.callStatus = EMCallSessionStatusAccepted;
 }
-
-#endif
 
 @end

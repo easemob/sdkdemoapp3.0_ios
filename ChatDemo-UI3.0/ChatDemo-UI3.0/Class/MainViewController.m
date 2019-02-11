@@ -24,14 +24,9 @@ static NSString *kMessageType = @"MessageType";
 static NSString *kConversationChatter = @"ConversationChatter";
 static NSString *kGroupName = @"GroupName";
 
-#if DEMO_CALL == 1
-#import <Hyphenate/Hyphenate.h>
 #import "DemoConfManager.h"
 
 @interface MainViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
-#else
-@interface MainViewController () <UIAlertViewDelegate>
-#endif
 {
     UIBarButtonItem *_addFriendItem;
     EMConnectionState _connectionState;

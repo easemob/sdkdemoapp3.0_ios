@@ -13,8 +13,6 @@
 
 @interface DemoCallManager : NSObject
 
-#if DEMO_CALL == 1
-
 + (instancetype)sharedManager;
 
 - (void)answerCall:(NSString *)aCallId;
@@ -23,7 +21,5 @@
                reason:(EMCallEndReason)aReason;
 
 - (void)saveCallOptions;
-
-#endif
 
 @end

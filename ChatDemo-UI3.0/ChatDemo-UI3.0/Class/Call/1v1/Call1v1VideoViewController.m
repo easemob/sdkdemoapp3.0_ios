@@ -30,9 +30,6 @@
 @end
 
 @implementation Call1v1VideoViewController
-
-#if DEMO_CALL == 1
-
 @synthesize callStatus = _callStatus;
 
 - (void)viewDidLoad {
@@ -384,8 +381,6 @@
         [self presentViewController:alertController animated:YES completion:nil];
     }
 }
-#endif
-
 #endif
 
 @end

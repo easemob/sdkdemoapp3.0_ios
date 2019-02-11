@@ -8,8 +8,6 @@
 
 #import "DemoCallManager.h"
 
-#if DEMO_CALL == 1
-
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
@@ -38,11 +36,8 @@ static DemoCallManager *callManager = nil;
 
 @end
 
-#endif
 
 @implementation DemoCallManager
-
-#if DEMO_CALL == 1
 
 - (instancetype)init
 {
@@ -432,7 +427,5 @@ static DemoCallManager *callManager = nil;
     [self _endCallWithId:aCallId isNeedHangup:YES reason:aReason];
 }
 
-
-#endif
 
 @end

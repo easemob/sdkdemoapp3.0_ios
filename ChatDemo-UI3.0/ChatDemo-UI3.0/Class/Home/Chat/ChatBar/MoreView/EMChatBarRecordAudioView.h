@@ -1,5 +1,5 @@
 //
-//  EMRecordAudioViewController.h
+//  EMChatBarRecordAudioView.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/29.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMRecordAudioViewController : UIViewController
+@interface EMChatBarRecordAudioView : UIView
 
 @end
 
