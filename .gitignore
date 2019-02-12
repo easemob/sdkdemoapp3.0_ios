@@ -4,3 +4,4 @@ ChatDemo-UI3.0/Podfile.lock
 xcuserdata/
 .DS_Store
 ChatDemo-UI3.0/ChatDemo-UI3.0/EaseUIFiles
+**/EaseUIResource.bundle/
