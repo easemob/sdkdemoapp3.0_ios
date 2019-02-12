@@ -11,14 +11,13 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
-#import "EaseSDKHelper.h"
 #import "DemoConfManager.h"
 
 #import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 
-#ifdef DEBUG
+#ifdef ENABLE_RECORDER_PLUGIN
 #import "EMCallRecorderPlugin.h"
 #endif
 
@@ -65,7 +64,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_MAKE1V1CALL object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:CALL_1V1 object:nil];
 }
 
 #pragma mark - private
@@ -80,7 +79,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
     
-#ifdef DEBUG
+#ifdef ENABLE_RECORDER_PLUGIN
     //录制相关功能初始化
     [EMCallRecorderPlugin initGlobalConfig];
 #endif
@@ -97,7 +96,7 @@ static DemoCallManager *callManager = nil;
     }
     [[EMClient sharedClient].callManager setCallOptions:options];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:KNOTIFICATION_MAKE1V1CALL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_1V1 object:nil];
     
 //    __weak typeof(self) weakSelf = self;
 //    self.callCenter = [[CTCallCenter alloc] init];
@@ -147,9 +146,10 @@ static DemoCallManager *callManager = nil;
         return ;
     }
     
-    if ([EaseSDKHelper shareHelper].isShowingimagePicker) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
-    }
+    //TODO: code
+//    if ([EaseSDKHelper shareHelper].isShowingimagePicker) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
+//    }
     
     if(gIsCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];

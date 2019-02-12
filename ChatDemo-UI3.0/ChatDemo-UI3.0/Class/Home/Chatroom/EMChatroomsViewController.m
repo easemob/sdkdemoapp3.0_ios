@@ -15,8 +15,6 @@
 #import "EMCreateChatroomViewController.h"
 #import "EMChatViewController.h"
 
-#import "ChatViewController.h"
-
 @interface EMChatroomsViewController ()
 
 @end

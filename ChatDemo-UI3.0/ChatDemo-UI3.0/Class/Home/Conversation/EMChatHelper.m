@@ -8,7 +8,7 @@
 
 #import "EMChatHelper.h"
 
-#import "EaseEmoji.h"
+#import "EMEmojiHelper.h"
 
 @implementation EMChatHelper
 
@@ -16,7 +16,7 @@
 
 + (NSString *)convertToCommonEmoticons:(NSString *)text
 {
-    int allEmoticsCount = (int)[EaseEmoji allEmoji].count;
+    int allEmoticsCount = (int)[EMEmojiHelper getAllEmojis].count;
     NSMutableString *retText = [[NSMutableString alloc] initWithString:text];
     for(int i = 0; i < allEmoticsCount; ++i) {
         NSRange range;
@@ -281,9 +281,9 @@
     if ([text length] == 0) {
         return @"";
     }
-    int allEmoticsCount = (int)[[EaseEmoji allEmoji] count];
+    int allEmoticsCount = (int)[[EMEmojiHelper getAllEmojis] count];
     NSMutableString *retText = [[NSMutableString alloc] initWithString:text];
-    for(int i=0; i<allEmoticsCount; ++i) {
+    for(int i = 0; i < allEmoticsCount; ++i) {
         NSRange range;
         range.location = 0;
         range.length = retText.length;

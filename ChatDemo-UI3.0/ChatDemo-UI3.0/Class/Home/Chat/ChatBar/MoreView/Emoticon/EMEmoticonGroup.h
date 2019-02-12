@@ -10,11 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//typedef NS_ENUM(NSUInteger, EMEmotionType) {
-//    EMEmotionEmoji = 0,
-//    EMEmotionPng,
-//    EMEmotionGif,
-//};
+typedef NS_ENUM(NSUInteger, EMEmotionType) {
+    EMEmotionTypeEmoji = 0,
+    EMEmotionTypePng,
+    EMEmotionTypeGif,
+};
 
 @interface EMEmoticonModel : NSObject
 

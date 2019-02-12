@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMGroupInfoViewController : EMRefreshTableViewController
 
+@property (nonatomic, copy) void (^leaveOrDestroyCompletion)(void);
+
 - (instancetype)initWithGroupId:(NSString *)aGroupId;
 
 @end

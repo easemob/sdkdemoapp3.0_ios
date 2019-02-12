@@ -10,7 +10,7 @@
 
 #import "EMButton.h"
 
-#ifdef DEBUG
+#ifdef ENABLE_RECORDER_PLUGIN
 #import "EMCallRecorderPlugin.h"
 #endif
 
@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UIView *minVideoView;
 @property (nonatomic, strong) EMButton *switchCameraButton;
 
-#ifdef DEBUG
+#ifdef ENABLE_RECORDER_PLUGIN
 @property (nonatomic, strong) EMButton *recorderButton;
 @property (nonatomic, strong) EMButton *picButton;
 #endif
@@ -112,7 +112,7 @@
         make.bottom.equalTo(self.switchCameraButton.mas_top).offset(-30);
     }];
     
-#ifdef DEBUG
+#ifdef ENABLE_RECORDER_PLUGIN
     self.recorderButton = [[EMButton alloc] initWithTitle:@"录制" target:self action:@selector(recorderButtonAction)];
     [self.recorderButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.recorderButton setImage:[UIImage imageNamed:@"recorder_gray"] forState:UIControlStateNormal];
@@ -157,7 +157,7 @@
         make.right.equalTo(self.view).offset(-15);
     }];
     
-    self.callSession.localVideoView = [[EMCallLocalView alloc] init];
+    self.callSession.localVideoView = [[EMCallLocalVideoView alloc] init];
     self.callSession.localVideoView.scaleMode = EMCallViewScaleModeAspectFill;
     [self.minVideoView addSubview:self.callSession.localVideoView];
     [self.view bringSubviewToFront:self.minVideoView];
@@ -194,7 +194,7 @@
 - (void)_setupRemoteVideoView
 {
     if (self.callSession.remoteVideoView == nil) {
-        self.callSession.remoteVideoView = [[EMCallRemoteView alloc] init];
+        self.callSession.remoteVideoView = [[EMCallRemoteVideoView alloc] init];
         self.callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
         self.callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
         self.callSession.remoteVideoView.userInteractionEnabled = YES;
@@ -324,7 +324,7 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-#ifdef DEBUG
+#ifdef ENABLE_RECORDER_PLUGIN
 - (void)takeRemoteVideoPicture
 {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

@@ -8,6 +8,8 @@
 
 #import "EMBlacklistViewController.h"
 
+#import "EMChineseToPinyin.h"
+
 @interface EMBlacklistViewController ()
 
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
@@ -137,7 +139,7 @@
     //名字分section
     for (NSString *username in dataArray) {
         //getUserName是实现中文拼音检索的核心，见NameIndex类
-        NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:username];
+        NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:username];
         NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
         
         NSMutableArray *array = [sortedArray objectAtIndex:section];
@@ -147,10 +149,10 @@
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
-            NSString *firstLetter1 = [EaseChineseToPinyin pinyinFromChineseString:obj1];
+            NSString *firstLetter1 = [EMChineseToPinyin pinyinFromChineseString:obj1];
             firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
             
-            NSString *firstLetter2 = [EaseChineseToPinyin pinyinFromChineseString:obj2];
+            NSString *firstLetter2 = [EMChineseToPinyin pinyinFromChineseString:obj2];
             firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];

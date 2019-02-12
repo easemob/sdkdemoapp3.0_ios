@@ -8,7 +8,7 @@
 
 #import "EMConversationCell.h"
 
-#import "NSDate+Category.h"
+#import "EMDateHelper.h"
 #import "EMConversationHelper.h"
 
 static NSString *kConversation_IsRead = @"kHaveAtMessage";
@@ -117,7 +117,7 @@ static int kConversation_AtAll = 2;
 //                                        convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
 //            latestMessageTitle = didReceiveText;
             
-            if ([lastMessage.ext objectForKey:MESSAGE_ATTR_IS_BIG_EXPRESSION]) {
+            if ([lastMessage.ext objectForKey:MSG_EXT_GIF]) {
                 latestMessageTitle = @"[动画表情]";
             } else {
                 //code

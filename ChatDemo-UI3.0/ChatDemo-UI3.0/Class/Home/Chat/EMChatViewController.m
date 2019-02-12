@@ -6,16 +6,18 @@
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import <Photos/Photos.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-#import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
+#import <Photos/Photos.h>
+#import <AVFoundation/AVFoundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "EMChatViewController.h"
 
 #import "DemoConfManager.h"
 #import "EMAudioHelper.h"
 #import "EMImageBrowser.h"
 #import "EMConversationHelper.h"
+#import "EMCDDeviceManager.h"
 #import "EMMessageModel.h"
 
 #import "EMChatBar.h"
@@ -60,10 +62,14 @@
     
     [self _setupChatSubviews];
     
-    self.isFirstLoadFromDB = YES;
-    [self tableViewDidTriggerHeaderRefresh];
-    
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    
+    if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
+        [self _joinChatroom];
+    } else {
+        self.isFirstLoadFromDB = YES;
+        [self tableViewDidTriggerHeaderRefresh];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -387,12 +393,10 @@
         __block NSUInteger index = NSNotFound;
         __block EMMessageModel *reloadModel = nil;
         [self.dataArray enumerateObjectsUsingBlock:^(EMMessageModel *model, NSUInteger idx, BOOL *stop) {
-            if ([model conformsToProtocol:@protocol(IMessageModel)]) {
-                if ([model.emModel.messageId isEqualToString:aMessage.messageId]) {
-                    reloadModel = model;
-                    index = idx;
-                    *stop = YES;
-                }
+            if ([model.emModel.messageId isEqualToString:aMessage.messageId]) {
+                reloadModel = model;
+                index = idx;
+                *stop = YES;
             }
         }];
         
@@ -471,14 +475,14 @@
 {
     [self.chatBar clearMoreViewAndSelectedButton];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_MAKE1V1CALL object:@{@"chatter":self.conversationModel.emModel.conversationId, @"type":@(EMCallTypeVoice)}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:self.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
 }
 
 - (void)chatBarCallViewVideoDidSelected
 {
     [self.chatBar clearMoreViewAndSelectedButton];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_MAKE1V1CALL object:@{@"chatter":self.conversationModel.emModel.conversationId, @"type":@(EMCallTypeVideo)}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:self.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
 }
 
 - (void)chatBarCallViewConferenceDidSelected
@@ -511,17 +515,17 @@
 
 - (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
 {
-    if (aModel.type == EMEmotionDefault) {
+    if (aModel.type == EMEmotionTypeEmoji) {
         [self.chatBar inputViewAppendText:aModel.name];
-    } if (aModel.type == EMEmotionGif) {
-        NSDictionary *ext = @{@"em_is_big_expression":@(YES), @"em_expression_id":aModel.name};
+    } if (aModel.type == EMEmotionTypeGif) {
+        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.name};
         [self _sendTextAction:aModel.name ext:ext];
     }
 }
 
 - (void)didChatBarEmoticonViewSendAction
 {
-    [self _sendTextAction:self.chatBar.inputView.text ext:nil];
+    [self _sendTextAction:self.chatBar.textView.text ext:nil];
 }
 
 #pragma mark - EMMessageCellDelegate
@@ -771,6 +775,22 @@
 }
 
 #pragma mark - Private
+
+- (void)_joinChatroom
+{
+    __weak typeof(self) weakself = self;
+    [self showHudInView:self.view hint:@"加入聊天室..."];
+    [[EMClient sharedClient].roomManager joinChatroom:self.conversationModel.emModel.conversationId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [weakself hideHud];
+        if (aError) {
+            [EMAlertController showErrorAlert:@"加入聊天室失败"];
+            [weakself.navigationController popViewControllerAnimated:YES];
+        } else {
+            weakself.isFirstLoadFromDB = YES;
+            [weakself tableViewDidTriggerHeaderRefresh];
+        }
+    }];
+}
 
 - (void)_scrollToBottomRow
 {

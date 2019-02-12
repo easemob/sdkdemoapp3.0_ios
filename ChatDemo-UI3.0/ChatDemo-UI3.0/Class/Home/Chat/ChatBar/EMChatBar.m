@@ -8,8 +8,8 @@
 
 #import "EMChatBar.h"
 
-#define kInputViewMinHeight 40
-#define kInputViewMaxHeight 120
+#define ktextViewMinHeight 40
+#define ktextViewMaxHeight 120
 
 @interface EMChatBar()<UITextViewDelegate>
 
@@ -31,7 +31,7 @@
     self = [super init];
     if (self) {
         _version = [[[UIDevice currentDevice] systemVersion] floatValue];
-        _previousTextViewContentHeight = kInputViewMinHeight;
+        _previousTextViewContentHeight = ktextViewMinHeight;
         [self _setupSubviews];
     }
     
@@ -54,18 +54,18 @@
         make.height.equalTo(@1);
     }];
     
-    self.inputView = [[EMTextView alloc] init];
-    self.inputView.delegate = self;
-    self.inputView.placeholder = @"请输入消息内容";
-    self.inputView.font = [UIFont systemFontOfSize:16];
-    self.inputView.returnKeyType = UIReturnKeySend;
-    self.inputView.backgroundColor = [UIColor clearColor];
-    [self addSubview:self.inputView];
-    [self.inputView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.textView = [[EMTextView alloc] init];
+    self.textView.delegate = self;
+    self.textView.placeholder = @"请输入消息内容";
+    self.textView.font = [UIFont systemFontOfSize:16];
+    self.textView.returnKeyType = UIReturnKeySend;
+    self.textView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.textView];
+    [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(5);
         make.left.equalTo(self).offset(8);
         make.right.equalTo(self).offset(-8);
-        make.height.mas_equalTo(kInputViewMinHeight);
+        make.height.mas_equalTo(ktextViewMinHeight);
     }];
     
     self.buttonsView = [[UIView alloc] init];
@@ -73,7 +73,7 @@
     [self _setupButtonsView];
     [self addSubview:self.buttonsView];
     [self.buttonsView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.inputView.mas_bottom).offset(5);
+        make.top.equalTo(self.textView.mas_bottom).offset(5);
         make.left.equalTo(self);
         make.right.equalTo(self);
         make.height.equalTo(@50);
@@ -206,7 +206,7 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputView:shouldChangeTextInRange:replacementText:)]) {
-        return [self.delegate inputView:self.inputView shouldChangeTextInRange:range replacementText:text];
+        return [self.delegate inputView:self.textView shouldChangeTextInRange:range replacementText:text];
     } 
     
     return YES;
@@ -214,32 +214,32 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self _updateInputViewHeight];
+    [self _updatetextViewHeight];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputViewDidChange:)]) {
-        [self.delegate inputViewDidChange:self.inputView];
+        [self.delegate inputViewDidChange:self.textView];
     }
 }
 
 #pragma mark - Private
 
-- (CGFloat)_getInputViewContontHeight
+- (CGFloat)_gettextViewContontHeight
 {
     if (self.version >= 7.0) {
-        return ceilf([self.inputView sizeThatFits:self.inputView.frame.size].height);
+        return ceilf([self.textView sizeThatFits:self.textView.frame.size].height);
     } else {
-        return self.inputView.contentSize.height;
+        return self.textView.contentSize.height;
     }
 }
 
-- (void)_updateInputViewHeight
+- (void)_updatetextViewHeight
 {
-    CGFloat height = [self _getInputViewContontHeight];
-    if (height < kInputViewMinHeight) {
-        height = kInputViewMinHeight;
+    CGFloat height = [self _gettextViewContontHeight];
+    if (height < ktextViewMinHeight) {
+        height = ktextViewMinHeight;
     }
-    if (height > kInputViewMaxHeight) {
-        height = kInputViewMaxHeight;
+    if (height > ktextViewMaxHeight) {
+        height = ktextViewMaxHeight;
     }
     
     if (height == self.previousTextViewContentHeight) {
@@ -247,7 +247,7 @@
     }
     
     self.previousTextViewContentHeight = height;
-    [self.inputView mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(height);
     }];
 }
@@ -256,7 +256,7 @@
 {
     if (self.currentMoreView) {
         [self.buttonsView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.inputView.mas_bottom).offset(5);
+            make.top.equalTo(self.textView.mas_bottom).offset(5);
             make.left.equalTo(self);
             make.right.equalTo(self);
             make.height.equalTo(@55);
@@ -264,7 +264,7 @@
         }];
     } else {
         [self.buttonsView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.inputView.mas_bottom).offset(5);
+            make.top.equalTo(self.textView.mas_bottom).offset(5);
             make.left.equalTo(self);
             make.right.equalTo(self);
             make.height.equalTo(@55);
@@ -277,15 +277,15 @@
 
 - (void)clearInputViewText
 {
-    self.inputView.text = nil;
-    [self _updateInputViewHeight];
+    self.textView.text = @"";
+    [self _updatetextViewHeight];
 }
 
-- (void)inputViewAppendText:(NSString *)aText
+- (void)textViewAppendText:(NSString *)aText
 {
     if ([aText length] > 0) {
-        self.inputView.text = [NSString stringWithFormat:@"%@%@", self.inputView.text, aText];
-        [self _updateInputViewHeight];
+        self.textView.text = [NSString stringWithFormat:@"%@%@", self.textView.text, aText];
+        [self _updatetextViewHeight];
     }
 }
 
@@ -307,7 +307,7 @@
 
 - (void)_buttonAction:(UIButton *)aButton
 {
-    [self.inputView resignFirstResponder];
+    [self.textView resignFirstResponder];
     
     aButton.selected = !aButton.selected;
     if (self.currentMoreView) {

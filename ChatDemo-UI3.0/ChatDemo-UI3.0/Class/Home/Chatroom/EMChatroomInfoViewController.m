@@ -185,11 +185,11 @@
     }
     [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:aChatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
         [weakself hideHud];
-        if (!aError) {
+        if (aChatroom) {
             weakself.chatroom = aChatroom;
             weakself.isOwner = [aChatroom.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
             [weakself.tableView reloadData];
-        } else {
+        } else if (aError) {
             [EMAlertController showErrorAlert:@"获取聊天室详情失败"];
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];

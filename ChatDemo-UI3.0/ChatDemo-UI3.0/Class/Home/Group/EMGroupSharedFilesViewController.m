@@ -8,11 +8,10 @@
 
 #import <Photos/Photos.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "EMGroupSharedFilesViewController.h"
 
 #import "EMAvatarNameCell.h"
-
-#import "EMMemberCell.h"
 
 @interface EMGroupSharedFilesViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMGroupManagerDelegate>
 

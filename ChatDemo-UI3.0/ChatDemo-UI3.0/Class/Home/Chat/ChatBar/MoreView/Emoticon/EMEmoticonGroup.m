@@ -90,7 +90,7 @@
 {
     _model = model;
     
-    if (model.type == EMEmotionDefault) {
+    if (model.type == EMEmotionTypeEmoji) {
         self.label.font = [UIFont fontWithName:@"AppleColorEmoji" size:29.0];
     }
     self.label.text = model.name;

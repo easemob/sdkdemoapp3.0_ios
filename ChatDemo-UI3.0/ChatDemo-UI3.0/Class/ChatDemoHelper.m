@@ -13,10 +13,6 @@
 #import "ChatDemoHelper.h"
 
 #import "AppDelegate.h"
-#import "MBProgressHUD.h"
-
-#import "EaseSDKHelper.h"
-#import "EMDingMessageHelper.h"
 
 #import "EMGlobalVariables.h"
 #import "EMNotificationHelper.h"
@@ -36,7 +32,6 @@ static ChatDemoHelper *helper = nil;
 
 - (void)dealloc
 {
-    [[EMDingMessageHelper sharedHelper] save];
     [[EMClient sharedClient] removeDelegate:self];
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
@@ -49,14 +44,14 @@ static ChatDemoHelper *helper = nil;
 {
     self = [super init];
     if (self) {
-        [self initHelper];
+        [self _initHelper];
     }
     return self;
 }
 
 #pragma mark - init
 
-- (void)initHelper
+- (void)_initHelper
 {
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
@@ -102,9 +97,9 @@ static ChatDemoHelper *helper = nil;
             }
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakself.conversationListVC) {
-                [weakself.conversationListVC refreshDataSource];
-            }
+//            if (weakself.conversationListVC) {
+//                [weakself.conversationListVC refreshDataSource];
+//            }
             
 //            [gMainController setupUnreadMessageCount];
         });
@@ -129,7 +124,7 @@ static ChatDemoHelper *helper = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
     } else if([[EMClient sharedClient] isConnected]){
         UIView *view = gHomeController.view;
-        [MBProgressHUD showHUDAddedTo:view animated:YES];
+        [gHomeController showHudInView:gHomeController.view hint:@"加载数据..."];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL flag = [[EMClient sharedClient] migrateDatabaseToLatestSDK];
             if (flag) {
@@ -137,7 +132,7 @@ static ChatDemoHelper *helper = nil;
                 [self asyncConversationFromDB];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideAllHUDsForView:view animated:YES];
+                [gHomeController hideHud];
             });
         });
     }
@@ -294,21 +289,21 @@ static ChatDemoHelper *helper = nil;
 {
 //    [gMainController setupUnreadMessageCount];
     
-    if (self.conversationListVC) {
-        [_conversationListVC refreshDataSource];
-    }
+//    if (self.conversationListVC) {
+//        [_conversationListVC refreshDataSource];
+//    }
 }
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
-        if ([EMDingMessageHelper isDingMessage:message]) {
-            EMMessage *ack = [[EMDingMessageHelper sharedHelper] createDingAckForMessage:message];
-            if (ack) {
-                [[EMClient sharedClient].chatManager sendMessage:ack progress:nil completion:nil];
-            }
-        }
+//        if ([EMDingMessageHelper isDingMessage:message]) {
+//            EMMessage *ack = [[EMDingMessageHelper sharedHelper] createDingAckForMessage:message];
+//            if (ack) {
+//                [[EMClient sharedClient].chatManager sendMessage:ack progress:nil completion:nil];
+//            }
+//        }
         
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
 
@@ -331,36 +326,36 @@ static ChatDemoHelper *helper = nil;
 #endif
         }
         
-        if (_chatVC == nil) {
-            _chatVC = [self _getCurrentChatView];
-        }
-        BOOL isChatting = NO;
-        if (_chatVC) {
-            isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
-        }
-        if (_chatVC == nil || !isChatting || state == UIApplicationStateBackground) {
-            [self _handleReceivedAtMessage:message];
-            
-            if (self.conversationListVC) {
-                [_conversationListVC refresh];
-            }
-            
+//        if (_chatVC == nil) {
+//            _chatVC = [self _getCurrentChatView];
+//        }
+//        BOOL isChatting = NO;
+//        if (_chatVC) {
+//            isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
+//        }
+//        if (_chatVC == nil || !isChatting || state == UIApplicationStateBackground) {
+//            [self _handleReceivedAtMessage:message];
+//
+//            if (self.conversationListVC) {
+//                [_conversationListVC refresh];
+//            }
+//
 //            if (gMainController) {
 //                [gMainController setupUnreadMessageCount];
 //            }
-            return;
-        }
-        
-        if (isChatting) {
-            isRefreshCons = NO;
-        }
+//            return;
+//        }
+//
+//        if (isChatting) {
+//            isRefreshCons = NO;
+//        }
     }
     
     if (isRefreshCons) {
-        if (self.conversationListVC) {
-            [_conversationListVC refresh];
-        }
-        
+//        if (self.conversationListVC) {
+//            [_conversationListVC refresh];
+//        }
+//
 //        if (gMainController) {
 //            [gMainController setupUnreadMessageCount];
 //        }
@@ -369,48 +364,48 @@ static ChatDemoHelper *helper = nil;
 
 - (void)messagesDidRecall:(NSArray *)aMessages
 {
-    for (EMMessage *msg in aMessages) {
-        NSString *text;
-        if ([msg.from isEqualToString:[EMClient sharedClient].currentUsername]) {
-            text = [NSString stringWithFormat:NSLocalizedString(@"message.recall", @"You recall a message")];
-        } else {
-            text = [NSString stringWithFormat:NSLocalizedString(@"message.recallByOthers", @"%@ recall a message"),msg.from];
-        }
-        EMMessage *message = [EaseSDKHelper getTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
-        message.isRead = YES;
-        [message setTimestamp:msg.timestamp];
-        [message setLocalTime:msg.localTime];
-        EMConversationType conversatinType = EMConversationTypeChat;
-        switch (msg.chatType) {
-            case EMChatTypeChat:
-                conversatinType = EMConversationTypeChat;
-                break;
-            case EMChatTypeGroupChat:
-                conversatinType = EMConversationTypeGroupChat;
-                break;
-            case EMChatTypeChatRoom:
-                conversatinType = EMConversationTypeChatRoom;
-                break;
-            default:
-                break;
-        }
-        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:conversatinType createIfNotExist:NO];
-        NSDictionary *dict = msg.ext;
-        if (dict && [dict objectForKey:@"em_at_list"]) {
-            NSArray *atList = [dict objectForKey:@"em_at_list"];
-            if ([atList containsObject:[EMClient sharedClient].currentUsername]) {
-                NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
-                [conversationExt removeObjectForKey:kHaveUnreadAtMessage];
-                conversation.ext = conversationExt;
-            }
-        }
-        [conversation insertMessage:message error:nil];
-    }
-    
-    if (self.conversationListVC) {
-        [_conversationListVC refresh];
-    }
-    
+//    for (EMMessage *msg in aMessages) {
+//        NSString *text;
+//        if ([msg.from isEqualToString:[EMClient sharedClient].currentUsername]) {
+//            text = [NSString stringWithFormat:NSLocalizedString(@"message.recall", @"You recall a message")];
+//        } else {
+//            text = [NSString stringWithFormat:NSLocalizedString(@"message.recallByOthers", @"%@ recall a message"),msg.from];
+//        }
+//        EMMessage *message = [EaseSDKHelper getTextMessage:text to:msg.conversationId messageType:msg.chatType messageExt:@{@"em_recall":@(YES)}];
+//        message.isRead = YES;
+//        [message setTimestamp:msg.timestamp];
+//        [message setLocalTime:msg.localTime];
+//        EMConversationType conversatinType = EMConversationTypeChat;
+//        switch (msg.chatType) {
+//            case EMChatTypeChat:
+//                conversatinType = EMConversationTypeChat;
+//                break;
+//            case EMChatTypeGroupChat:
+//                conversatinType = EMConversationTypeGroupChat;
+//                break;
+//            case EMChatTypeChatRoom:
+//                conversatinType = EMConversationTypeChatRoom;
+//                break;
+//            default:
+//                break;
+//        }
+//        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:conversatinType createIfNotExist:NO];
+//        NSDictionary *dict = msg.ext;
+//        if (dict && [dict objectForKey:MSG_EXT_GROUP_AT]) {
+//            NSArray *atList = [dict objectForKey:MSG_EXT_GROUP_AT];
+//            if ([atList containsObject:[EMClient sharedClient].currentUsername]) {
+//                NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];
+//                [conversationExt removeObjectForKey:kHaveUnreadAtMessage];
+//                conversation.ext = conversationExt;
+//            }
+//        }
+//        [conversation insertMessage:message error:nil];
+//    }
+//
+//    if (self.conversationListVC) {
+//        [_conversationListVC refresh];
+//    }
+//
 //    if (gMainController) {
 //        [gMainController setupUnreadMessageCount];
 //    }
@@ -418,14 +413,14 @@ static ChatDemoHelper *helper = nil;
 
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
 {
-    for (EMMessage *message in aCmdMessages) {
-        if ([EMDingMessageHelper isDingMessageAck:message]) {
-            NSString *msgId = [[EMDingMessageHelper sharedHelper] addDingMessageAck:message];
-            if (_chatVC) {
-                [_chatVC reloadDingCellWithAckMessageId:msgId];
-            }
-        }
-    }
+//    for (EMMessage *message in aCmdMessages) {
+//        if ([EMDingMessageHelper isDingMessageAck:message]) {
+//            NSString *msgId = [[EMDingMessageHelper sharedHelper] addDingMessageAck:message];
+//            if (_chatVC) {
+//                [_chatVC reloadDingCellWithAckMessageId:msgId];
+//            }
+//        }
+//    }
 }
 
 #pragma mark - EMGroupManagerDelegate
@@ -856,27 +851,27 @@ static ChatDemoHelper *helper = nil;
     return ret;
 }
 
-- (ChatViewController*)_getCurrentChatView
-{
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gHomeController.navigationController.viewControllers];
-    ChatViewController *chatViewContrller = nil;
-    for (id viewController in viewControllers)
-    {
-        if ([viewController isKindOfClass:[ChatViewController class]])
-        {
-            chatViewContrller = viewController;
-            break;
-        }
-    }
-    return chatViewContrller;
-}
+//- (ChatViewController*)_getCurrentChatView
+//{
+//    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gHomeController.navigationController.viewControllers];
+//    ChatViewController *chatViewContrller = nil;
+//    for (id viewController in viewControllers)
+//    {
+//        if ([viewController isKindOfClass:[ChatViewController class]])
+//        {
+//            chatViewContrller = viewController;
+//            break;
+//        }
+//    }
+//    return chatViewContrller;
+//}
 
 - (void)_clearHelper
 {
     gHomeController = nil;
     
-    self.conversationListVC = nil;
-    self.chatVC = nil;
+//    self.conversationListVC = nil;
+//    self.chatVC = nil;
     
     [[EMClient sharedClient] logout:NO];
 }
@@ -890,9 +885,9 @@ static ChatDemoHelper *helper = nil;
     NSString *loginUser = [EMClient sharedClient].currentUsername;
     NSDictionary *ext = aMessage.ext;
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aMessage.conversationId type:EMConversationTypeGroupChat createIfNotExist:NO];
-    if (loginUser && conversation && ext && [ext objectForKey:kGroupMessageAtList]) {
-        id target = [ext objectForKey:kGroupMessageAtList];
-        if ([target isKindOfClass:[NSString class]] && [(NSString*)target compare:kGroupMessageAtAll options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+    if (loginUser && conversation && ext && [ext objectForKey:MSG_EXT_GROUP_AT]) {
+        id target = [ext objectForKey:MSG_EXT_GROUP_AT];
+        if ([target isKindOfClass:[NSString class]] && [(NSString*)target compare:MSG_EXT_GROUP_ATALL options:NSCaseInsensitiveSearch] == NSOrderedSame) {
             NSNumber *atAll = conversation.ext[kHaveUnreadAtMessage];
             if ([atAll intValue] != kAtAllMessage) {
                 NSMutableDictionary *conversationExt = conversation.ext ? [conversation.ext mutableCopy] : [NSMutableDictionary dictionary];

@@ -11,6 +11,7 @@
 #import "EMRealtimeSearch.h"
 #import "EMNotificationHelper.h"
 #import "EMConversationHelper.h"
+#import "EMChineseToPinyin.h"
 
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
@@ -433,7 +434,7 @@
     
     //按首字母分组
     for (NSString *contact in contactArray) {
-        NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:contact];
+        NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:contact];
         NSInteger section;
         if (firstLetter.length > 0) {
             section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
@@ -448,10 +449,10 @@
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(NSString *contact1, NSString *contact2) {
-            NSString *firstLetter1 = [EaseChineseToPinyin pinyinFromChineseString:contact1];
+            NSString *firstLetter1 = [EMChineseToPinyin pinyinFromChineseString:contact1];
             firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
             
-            NSString *firstLetter2 = [EaseChineseToPinyin pinyinFromChineseString:contact2];
+            NSString *firstLetter2 = [EMChineseToPinyin pinyinFromChineseString:contact2];
             firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];

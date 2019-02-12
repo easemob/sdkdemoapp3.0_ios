@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<EMChatBarDelegate> delegate;
 
-@property (nonatomic, strong) EMTextView *inputView;
+@property (nonatomic, strong) EMTextView *textView;
 
 @property (nonatomic, strong) UIView *buttonsView;
 

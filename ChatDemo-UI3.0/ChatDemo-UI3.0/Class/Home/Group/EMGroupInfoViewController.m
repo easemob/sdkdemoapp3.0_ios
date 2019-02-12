@@ -12,6 +12,7 @@
 #import "EMTextViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 #import "EMGroupSettingsViewController.h"
+#import "EMAnnouncementViewController.h"
 
 @interface EMGroupInfoViewController ()
 
@@ -56,6 +57,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(groupAnnouncementAction)];
     self.title = @"群组信息";
     
     self.showRefreshHeader = YES;
@@ -198,6 +200,10 @@
             EMGroupSettingsViewController *controller = [[EMGroupSettingsViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:controller animated:YES];
         }
+    } else if (section == 4) {
+        if (row == 0) {
+            [self _leaveOrDestroyGroupAction];
+        }
     }
 }
 
@@ -238,6 +244,11 @@
         if (!aError) {
             weakself.group = aGroup;
             weakself.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
+            if (weakself.isOwner) {
+                weakself.leaveCell.textLabel.text = @"销毁群组";
+            } else {
+                weakself.leaveCell.textLabel.text = @"退出群组";
+            }
             [weakself.tableView reloadData];
         } else {
             [EMAlertController showErrorAlert:@"获取群组详情失败"];
@@ -253,6 +264,21 @@
 }
 
 #pragma mark - Action
+
+- (void)groupAnnouncementAction
+{
+    __weak typeof(self) weakself = self;
+    [self showHudInView:self.view hint:@"获取群组公告..."];
+    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, EMError *aError) {
+        if (!aError) {
+            EMAnnouncementViewController *controller = [[EMAnnouncementViewController alloc] initWithString:aAnnouncement placeholder:@"请输入群组名称"];
+            controller.title = @"群组公告";
+            [weakself.navigationController pushViewController:controller animated:YES];
+        } else {
+            [EMAlertController showErrorAlert:@"获取群组公告失败"];
+        }
+    }];
+}
 
 - (void)_updateGroupNameAction
 {
@@ -309,6 +335,28 @@
         
         return NO;
     }];
+}
+
+- (void)_leaveOrDestroyGroupAction
+{
+    __weak typeof(self) weakself = self;
+    void (^block)(EMError *aError) = ^(EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            if (weakself.leaveOrDestroyCompletion) {
+                weakself.leaveOrDestroyCompletion();
+            }
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    if (self.isOwner) {
+        [self showHudInView:self.view hint:@"销毁群组..."];
+        [[EMClient sharedClient].groupManager destroyGroup:self.groupId finishCompletion:block];
+    } else {
+        [self showHudInView:self.view hint:@"离开群组..."];
+        [[EMClient sharedClient].groupManager leaveGroup:self.groupId completion:block];
+    }
 }
 
 @end

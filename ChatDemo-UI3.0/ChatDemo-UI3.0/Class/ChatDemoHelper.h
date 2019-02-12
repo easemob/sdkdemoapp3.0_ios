@@ -12,9 +12,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ConversationListController.h"
-
-#import "ChatViewController.h"
+//#import "ConversationListController.h"
+//
+//#import "ChatViewController.h"
 
 #define kHaveUnreadAtMessage    @"kHaveAtMessage"
 #define kAtYouMessage           1
@@ -22,9 +22,9 @@
 
 @interface ChatDemoHelper : NSObject <EMClientDelegate, EMMultiDevicesDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate>
 
-@property (nonatomic, weak) ConversationListController *conversationListVC;
-
-@property (nonatomic, weak) ChatViewController *chatVC;
+//@property (nonatomic, weak) ConversationListController *conversationListVC;
+//
+//@property (nonatomic, weak) ChatViewController *chatVC;
 
 + (instancetype)shareHelper;
 

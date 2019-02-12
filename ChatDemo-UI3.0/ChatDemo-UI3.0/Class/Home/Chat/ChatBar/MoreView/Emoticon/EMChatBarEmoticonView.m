@@ -136,13 +136,13 @@
     NSArray *emojis = [EMEmojiHelper getAllEmojis];
     NSMutableArray *models1 = [[NSMutableArray alloc] init];
     for (NSString *emoji in emojis) {
-        EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionDefault];
+        EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionTypeEmoji];
         model.name = emoji;
         model.original = emoji;
         [models1 addObject:model];
     }
     NSString *tagImgName = [models1[0] name];
-    EMEmoticonGroup *group1 = [[EMEmoticonGroup alloc] initWithType:EMEmotionDefault dataArray:models1 icon:tagImgName rowCount:3 colCount:7];
+    EMEmoticonGroup *group1 = [[EMEmoticonGroup alloc] initWithType:EMEmotionTypeEmoji dataArray:models1 icon:tagImgName rowCount:3 colCount:7];
     [self.groups addObject:group1];
     
     NSMutableArray *models2 = [[NSMutableArray alloc] init];
@@ -150,14 +150,14 @@
     int index = 0;
     for (NSString *name in names) {
         ++index;
-        EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionGif];
+        EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionTypeGif];
         model.name = [NSString stringWithFormat:@"[示例%d]", index];
         model.imgName = [NSString stringWithFormat:@"%@_cover", name];
         model.original = name;
         [models2 addObject:model];
     }
     tagImgName = [models2[0] imgName];
-    EMEmoticonGroup *group2 = [[EMEmoticonGroup alloc] initWithType:EMEmotionGif dataArray:models2 icon:[UIImage imageNamed:tagImgName] rowCount:2 colCount:4];
+    EMEmoticonGroup *group2 = [[EMEmoticonGroup alloc] initWithType:EMEmotionTypeGif dataArray:models2 icon:[UIImage imageNamed:tagImgName] rowCount:2 colCount:4];
     [self.groups addObject:group2];
 }
 
