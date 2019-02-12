@@ -146,8 +146,6 @@
     
     //注册推送
     [self _registerRemoteNotification];
-    
-    [DemoCallManager sharedManager];
 }
 
 //注册远程通知
@@ -199,10 +197,13 @@
             gHomeController = homeController;
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
+        
         ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
         [demoHelper asyncGroupFromServer];
         [demoHelper asyncConversationFromDB];
         [demoHelper asyncPushOptions];
+        
+        [DemoCallManager sharedManager];
     } else {//登录失败加载登录页面控制器
         gHomeController = nil;
         
