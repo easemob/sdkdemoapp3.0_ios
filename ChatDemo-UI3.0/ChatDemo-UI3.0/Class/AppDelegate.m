@@ -198,11 +198,12 @@
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
         
-        ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
-        [demoHelper asyncGroupFromServer];
-        [demoHelper asyncConversationFromDB];
-        [demoHelper asyncPushOptions];
+//        ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
+//        [demoHelper asyncGroupFromServer];
+//        [demoHelper asyncConversationFromDB];
+//        [demoHelper asyncPushOptions];
         
+        [ChatDemoHelper shareHelper];
         [DemoCallManager sharedManager];
     } else {//登录失败加载登录页面控制器
         gHomeController = nil;
