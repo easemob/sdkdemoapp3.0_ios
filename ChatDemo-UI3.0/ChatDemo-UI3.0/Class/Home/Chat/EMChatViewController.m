@@ -906,6 +906,8 @@
 
 - (void)backAction
 {
+    [EMConversationHelper resortConversationsLatestMessage];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

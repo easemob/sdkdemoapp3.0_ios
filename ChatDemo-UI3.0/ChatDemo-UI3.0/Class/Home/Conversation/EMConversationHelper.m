@@ -145,7 +145,13 @@ static EMConversationHelper *shared = nil;
     [aConversationModel.emModel markAllMessagesAsRead:nil];
     
     EMConversationHelper *helper = [EMConversationHelper shared];
-    [helper.delegates didConversationUnreadCountZero:aConversationModel];
+    [helper.delegates didConversationUnreadCountToZero:aConversationModel];
+}
+
++ (void)resortConversationsLatestMessage
+{
+    EMConversationHelper *helper = [EMConversationHelper shared];
+    [helper.delegates didResortConversationsLatestMessage];
 }
 
 @end

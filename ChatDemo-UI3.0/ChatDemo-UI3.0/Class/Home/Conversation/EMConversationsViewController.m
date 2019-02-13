@@ -19,6 +19,7 @@
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
+@property (nonatomic) BOOL isNeedReloadSorted;
 
 @end
 
@@ -41,7 +42,11 @@
     
     self.navigationController.navigationBarHidden = YES;
     self.isViewAppear = YES;
-    if (self.isNeedReload) {
+    if (self.isNeedReloadSorted) {
+        self.isNeedReloadSorted = NO;
+        [self _loadAllConversationsFromDBWithIsShowHud:NO];
+        
+    } else if (self.isNeedReload) {
         self.isNeedReload = NO;
         [self.tableView reloadData];
     }
@@ -54,6 +59,7 @@
     self.navigationController.navigationBarHidden = NO;
     self.isViewAppear = NO;
     self.isNeedReload = NO;
+    self.isNeedReloadSorted = NO;
 }
 
 - (void)dealloc
@@ -195,7 +201,11 @@
 
 - (void)conversationListDidUpdate:(NSArray *)aConversationList
 {
-    [self _loadAllConversationsFromDBWithIsShowHud:NO];
+    if (self.isViewAppear) {
+        self.isNeedReloadSorted = YES;
+    } else {
+        [self _loadAllConversationsFromDBWithIsShowHud:NO];
+    }
 }
 
 - (void)messagesDidReceive:(NSArray *)aMessages
@@ -203,7 +213,7 @@
     if (self.isViewAppear) {
         if (!self.isNeedReload) {
             self.isNeedReload = YES;
-            [self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:1];
+            [self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:0.8];
         }
     } else {
         self.isNeedReload = YES;
@@ -246,12 +256,17 @@
 
 #pragma mark - EMConversationsDelegate
 
-- (void)didConversationUnreadCountZero:(EMConversationModel *)aConversation
+- (void)didConversationUnreadCountToZero:(EMConversationModel *)aConversation
 {
     NSInteger index = [self.dataArray indexOfObject:aConversation];
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
+}
+
+- (void)didResortConversationsLatestMessage
+{
+    [self _loadAllConversationsFromDBWithIsShowHud:NO];
 }
 
 #pragma mark - Data
@@ -305,6 +320,7 @@
             
             [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
             [weakself.tableView reloadData];
+            weakself.isNeedReload = NO;
         });
     });
 }
@@ -315,10 +331,5 @@
 }
 
 #pragma mark - Action
-
-- (void)deleteConversationAction:(EMConversation *)aConversation
-{
-    [[EMClient sharedClient].chatManager deleteConversation:aConversation.conversationId isDeleteMessages:YES completion:nil];
-}
 
 @end

@@ -38,7 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (EMConversationModel *)modelFromChatroom:(EMChatroom *)aChatroom;
 
+//调用该方法，会触发[EMConversationsDelegate didConversationUnreadCountToZero:]
 + (void)markAllAsRead:(EMConversationModel *)aConversationModel;
+
+//调用该方法，会触发[EMConversationsDelegate didResortConversationsLatestMessage]
++ (void)resortConversationsLatestMessage;
 
 @end
 
@@ -47,7 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (void)didConversationUnreadCountZero:(EMConversationModel *)aConversation;
+- (void)didConversationUnreadCountToZero:(EMConversationModel *)aConversation;
+
+- (void)didResortConversationsLatestMessage;
 
 @end
 
