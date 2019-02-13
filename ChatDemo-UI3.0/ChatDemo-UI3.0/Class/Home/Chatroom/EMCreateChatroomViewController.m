@@ -138,7 +138,7 @@
         }];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (row == 1 || row == 2) {
-        EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.detail placeholder:@"请输入聊天室简介"];
+        EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.detail placeholder:@"请输入聊天室简介" isEditable:YES];
         controller.title = @"聊天室简介";
         [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
             weakself.detail = aString;

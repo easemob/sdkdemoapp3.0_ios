@@ -12,7 +12,6 @@
 #import "EMTextViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 #import "EMGroupSettingsViewController.h"
-#import "EMAnnouncementViewController.h"
 
 @interface EMGroupInfoViewController ()
 
@@ -270,9 +269,30 @@
     __weak typeof(self) weakself = self;
     [self showHudInView:self.view hint:@"获取群组公告..."];
     [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, EMError *aError) {
+        [weakself hideHud];
         if (!aError) {
-            EMAnnouncementViewController *controller = [[EMAnnouncementViewController alloc] initWithString:aAnnouncement placeholder:@"请输入群组名称"];
+            BOOL isEditable = weakself.isOwner;
+            if (!isEditable) {
+                isEditable = [weakself.group.adminList containsObject:[EMClient sharedClient].currentUsername];
+            }
+            EMTextViewController *controller = [[EMTextViewController alloc] initWithString:aAnnouncement placeholder:@"请输入群组公告" isEditable:isEditable];
             controller.title = @"群组公告";
+            
+            __weak typeof(controller) weakController = controller;
+            [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
+                [weakController showHudInView:weakController.view hint:@"更新群组公告..."];
+                [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakself.groupId announcement:aString completion:^(EMGroup *aGroup, EMError *aError) {
+                    [weakController hideHud];
+                    if (aError) {
+                        [EMAlertController showErrorAlert:@"更新群组公告失败"];
+                    } else {
+                        [weakController.navigationController popViewControllerAnimated:YES];
+                    }
+                }];
+                
+                return NO;
+            }];
+            
             [weakself.navigationController pushViewController:controller animated:YES];
         } else {
             [EMAlertController showErrorAlert:@"获取群组公告失败"];
@@ -313,7 +333,7 @@
 
 - (void)_updateGroupDetailAction
 {
-    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.group.description placeholder:@"请输入群组简介"];
+    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.group.description placeholder:@"请输入群组简介" isEditable:self.isOwner];
     controller.title = @"群组简介";
     [self.navigationController pushViewController:controller animated:YES];
     

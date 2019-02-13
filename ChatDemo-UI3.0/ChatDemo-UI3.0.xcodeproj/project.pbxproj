@@ -270,7 +270,6 @@
 		3ACFA1852211828100B16331 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ACFA1842211828000B16331 /* WebRTC.framework */; };
 		3ACFA1862211828100B16331 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3ACFA1842211828000B16331 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3ACFA1C022118CBD00B16331 /* EMTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFA1BF22118CBD00B16331 /* EMTextView.m */; };
-		3ACFA1C322118CF400B16331 /* EMAnnouncementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFA1C222118CF400B16331 /* EMAnnouncementViewController.m */; };
 		3ACFCD8921524B18009F488D /* animate_00033.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACFCD3F21524B18009F488D /* animate_00033.png */; };
 		3ACFCD8A21524B18009F488D /* animate_00027.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACFCD4021524B18009F488D /* animate_00027.png */; };
 		3ACFCD8B21524B18009F488D /* animate_00026.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ACFCD4121524B18009F488D /* animate_00026.png */; };
@@ -912,8 +911,6 @@
 		3ACFA1842211828000B16331 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../rtc-ios/RtcSDK/RtcSDK/3rdParth/webrtc/lib71/WebRTC.framework"; sourceTree = "<group>"; };
 		3ACFA1BE22118CBD00B16331 /* EMTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMTextView.h; sourceTree = "<group>"; };
 		3ACFA1BF22118CBD00B16331 /* EMTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMTextView.m; sourceTree = "<group>"; };
-		3ACFA1C122118CF400B16331 /* EMAnnouncementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMAnnouncementViewController.h; sourceTree = "<group>"; };
-		3ACFA1C222118CF400B16331 /* EMAnnouncementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMAnnouncementViewController.m; sourceTree = "<group>"; };
 		3ACFCD3F21524B18009F488D /* animate_00033.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00033.png; sourceTree = "<group>"; };
 		3ACFCD4021524B18009F488D /* animate_00027.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00027.png; sourceTree = "<group>"; };
 		3ACFCD4121524B18009F488D /* animate_00026.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00026.png; sourceTree = "<group>"; };
@@ -1437,8 +1434,6 @@
 				3A3F2A7021F1C98E001A6327 /* EMGroupInfoViewController.m */,
 				3A55B1CD21FABF68001DB6C6 /* EMGroupSettingsViewController.h */,
 				3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */,
-				3ACFA1C122118CF400B16331 /* EMAnnouncementViewController.h */,
-				3ACFA1C222118CF400B16331 /* EMAnnouncementViewController.m */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -2938,7 +2933,6 @@
 				3A55B1CF21FABF68001DB6C6 /* EMGroupSettingsViewController.m in Sources */,
 				3A2F2E502153AD2300F86EB5 /* Live2ViewController.m in Sources */,
 				3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */,
-				3ACFA1C322118CF400B16331 /* EMAnnouncementViewController.m in Sources */,
 				3A3F28CC21F1AE98001A6327 /* EMCallSettingsViewController.m in Sources */,
 				3A3F2A7121F1C98E001A6327 /* EMGroupInfoViewController.m in Sources */,
 				3ACFA08122116DCC00B16331 /* EMCDDeviceManager+Microphone.m in Sources */,

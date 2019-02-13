@@ -265,7 +265,7 @@
 - (void)_updateDetail
 {
     __weak typeof(self) weakself = self;
-    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.detail placeholder:@"请输入群组简介"];
+    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.detail placeholder:@"请输入群组简介" isEditable:YES];
     controller.title = @"群组简介";
     [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         weakself.detail = aString;

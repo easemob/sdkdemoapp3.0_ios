@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSString *originalString;
 @property (nonatomic, strong) NSString *placeholder;
+@property (nonatomic) BOOL isEditable;
 
 @property (nonatomic, strong) EMTextView *textView;
 
@@ -23,11 +24,13 @@
 
 - (instancetype)initWithString:(NSString *)aString
                    placeholder:(NSString *)aPlaceholder
+                    isEditable:(BOOL)aIsEditable
 {
     self = [super init];
     if (self) {
         _originalString = aString;
         _placeholder = aPlaceholder;
+        _isEditable = aIsEditable;
     }
     
     return self;
@@ -44,7 +47,9 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    if (self.isEditable) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    }
     
     self.view.backgroundColor = kColor_LightGray;
     UIView *bgView = [[UIView alloc] init];
@@ -64,6 +69,7 @@
     self.textView.placeholder = self.placeholder;
     self.textView.returnKeyType = UIReturnKeyDone;
     self.textView.text = self.originalString;
+    self.textView.editable = self.isEditable;
     [self.view addSubview:self.textView];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);

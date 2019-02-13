@@ -8,6 +8,8 @@
 
 #import "EMChatroomInfoViewController.h"
 
+#import "EMTextViewController.h"
+
 @interface EMChatroomInfoViewController ()
 
 @property (nonatomic, strong) NSString *chatroomId;
@@ -49,6 +51,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(chatroomAnnouncementAction)];
     self.title = @"聊天室信息";
     
     self.showRefreshHeader = YES;
@@ -187,6 +190,7 @@
         [weakself hideHud];
         if (aChatroom) {
             weakself.chatroom = aChatroom;
+            weakself.chatroomId = aChatroom.chatroomId;
             weakself.isOwner = [aChatroom.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
             [weakself.tableView reloadData];
         } else if (aError) {
@@ -200,6 +204,44 @@
 {
     self.page = 1;
     [self _fetchChatroomWithId:self.chatroomId isShowHUD:NO];
+}
+
+#pragma mark - Action
+
+- (void)chatroomAnnouncementAction
+{
+    __weak typeof(self) weakself = self;
+    [self showHudInView:self.view hint:@"获取聊天室公告..."];
+    [[EMClient sharedClient].roomManager getChatroomAnnouncementWithId:self.chatroomId completion:^(NSString *aAnnouncement, EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            BOOL isEditable = weakself.isOwner;
+            if (!isEditable) {
+                isEditable = [weakself.chatroom.adminList containsObject:[EMClient sharedClient].currentUsername];
+            }
+            EMTextViewController *controller = [[EMTextViewController alloc] initWithString:aAnnouncement placeholder:@"请输入聊天室公告" isEditable:isEditable];
+            controller.title = @"聊天室公告";
+            
+            __weak typeof(controller) weakController = controller;
+            [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
+                [weakController showHudInView:weakController.view hint:@"更新聊天室公告..."];
+                [[EMClient sharedClient].roomManager updateChatroomAnnouncementWithId:weakself.chatroomId announcement:aString completion:^(EMChatroom *aChatroom, EMError *aError) {
+                    [weakController hideHud];
+                    if (aError) {
+                        [EMAlertController showErrorAlert:@"更新聊天室公告失败"];
+                    } else {
+                        [weakController.navigationController popViewControllerAnimated:YES];
+                    }
+                }];
+                
+                return NO;
+            }];
+            
+            [weakself.navigationController pushViewController:controller animated:YES];
+        } else {
+            [EMAlertController showErrorAlert:@"获取聊天室公告失败"];
+        }
+    }];
 }
 
 @end
