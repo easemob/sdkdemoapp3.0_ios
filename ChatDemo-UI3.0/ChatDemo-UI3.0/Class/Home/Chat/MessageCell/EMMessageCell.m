@@ -92,7 +92,7 @@
     _avatarView.userInteractionEnabled = YES;
     [self.contentView addSubview:_avatarView];
     if (self.direction == EMMessageDirectionSend) {
-        _avatarView.image = [UIImage imageNamed:@"user_1"];
+        _avatarView.image = [UIImage imageNamed:@"user_3"];
         [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
             make.right.equalTo(self.contentView).offset(-10);

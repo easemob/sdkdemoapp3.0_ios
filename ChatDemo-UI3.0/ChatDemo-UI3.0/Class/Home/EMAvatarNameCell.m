@@ -41,10 +41,21 @@
     _avatarView = [[UIImageView alloc] init];
     [self.contentView addSubview:_avatarView];
     [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(5);
+        make.top.equalTo(self.contentView).offset(8);
         make.left.equalTo(self.contentView).offset(15);
-        make.bottom.equalTo(self.contentView).offset(-5);
+        make.bottom.equalTo(self.contentView).offset(-8);
         make.width.equalTo(self.avatarView.mas_height).multipliedBy(1);
+    }];
+    
+    _detailLabel = [[UILabel alloc] init];
+    _detailLabel.backgroundColor = [UIColor clearColor];
+    _detailLabel.font = [UIFont systemFontOfSize:15];
+    _detailLabel.textColor = [UIColor grayColor];
+    [self.contentView addSubview:_detailLabel];
+    [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.avatarView.mas_right).offset(8);
+        make.right.equalTo(self.contentView).offset(-15);
+        make.bottom.equalTo(self.contentView).offset(-8);
     }];
     
     _nameLabel = [[UILabel alloc] init];
@@ -57,20 +68,7 @@
         make.top.equalTo(self.contentView).offset(8);
         make.left.equalTo(self.avatarView.mas_right).offset(8);
         make.right.equalTo(self.contentView).offset(-15);
-//        make.bottom.equalTo(self.contentView).offset(-5);
-    }];
-    
-    _detailLabel = [[UILabel alloc] init];
-    _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _detailLabel.backgroundColor = [UIColor clearColor];
-    _detailLabel.font = [UIFont systemFontOfSize:15];
-    _detailLabel.textColor = [UIColor grayColor];
-    [self.contentView addSubview:_detailLabel];
-    [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.mas_bottom);
-        make.left.equalTo(self.nameLabel);
-        make.right.equalTo(self.nameLabel);
-        make.bottom.equalTo(self.contentView).offset(-8);
+        make.bottom.equalTo(self.detailLabel.mas_top);
     }];
 }
 

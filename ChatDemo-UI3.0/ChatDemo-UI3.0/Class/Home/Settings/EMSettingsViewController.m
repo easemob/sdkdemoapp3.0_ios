@@ -8,6 +8,8 @@
 
 #import "EMSettingsViewController.h"
 
+#import "EMAvatarNameCell.h"
+
 #import "EMAccountViewController.h"
 #import "EMBlacklistViewController.h"
 #import "EMDevicesViewController.h"
@@ -18,6 +20,8 @@
 @interface EMSettingsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) EMAvatarNameCell *userCell;
 
 @end
 
@@ -63,6 +67,16 @@
         make.height.equalTo(@60);
     }];
     
+    self.userCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
+    self.userCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    self.userCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.userCell.nameLabel.font = [UIFont systemFontOfSize:18];
+    self.userCell.detailLabel.font = [UIFont systemFontOfSize:15];
+    self.userCell.detailLabel.textColor = [UIColor grayColor];
+    self.userCell.avatarView.image = [UIImage imageNamed:@"user_3"];
+    self.userCell.nameLabel.text = [EMClient sharedClient].currentUsername;
+    self.userCell.detailLabel.text = [EMClient sharedClient].pushOptions.displayName;
+    
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -106,54 +120,34 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = nil;
-    
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     if (section == 0) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCellImageSubtitle"];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            cell.textLabel.font = [UIFont systemFontOfSize:18];
-            cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
-            cell.detailTextLabel.textColor = [UIColor grayColor];
-            cell.imageView.image = [UIImage imageNamed:@"user_3"];
-            [cell.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(cell.textLabel.mas_bottom).offset(3);
-                make.left.equalTo(cell.textLabel);
-                make.right.equalTo(cell.contentView).offset(-10);
-                make.bottom.lessThanOrEqualTo(cell.contentView);
-            }];
+        return self.userCell;
+    }
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    if (section == 1) {
+        if (row == 0) {
+            cell.textLabel.text = @"黑名单";
+        } else if (row == 1) {
+            cell.textLabel.text = @"多端多设备管理";
         }
-        cell.textLabel.text = [EMClient sharedClient].currentUsername;
-        cell.detailTextLabel.text = [EMClient sharedClient].pushOptions.displayName;
-    } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (section == 2) {
+        if (row == 0) {
+            cell.textLabel.text = @"通用";
+        } else if (row == 1) {
+            cell.textLabel.text = @"隐私";
         }
-        
-        if (section == 1) {
-            if (row == 0) {
-                cell.textLabel.text = @"黑名单";
-            } else if (row == 1) {
-                cell.textLabel.text = @"多端多设备管理";
-            }
-        } else if (section == 2) {
-            if (row == 0) {
-                cell.textLabel.text = @"通用";
-            } else if (row == 1) {
-                cell.textLabel.text = @"隐私";
-            }
-        } else if (section == 3) {
-            if (row == 0) {
-                cell.textLabel.text = @"实时音视频";
-            }
+    } else if (section == 3) {
+        if (row == 0) {
+            cell.textLabel.text = @"实时音视频";
         }
     }
     

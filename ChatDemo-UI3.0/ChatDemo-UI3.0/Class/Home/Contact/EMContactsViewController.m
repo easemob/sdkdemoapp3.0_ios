@@ -102,7 +102,7 @@
     [self _setupSearchResultController];
     
     self.notifCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMNotificationsCell"];
-    self.notifCell.avatarView.image = [UIImage imageNamed:@""];
+    self.notifCell.avatarView.image = [UIImage imageNamed:@"notification"];
     self.notifCell.nameLabel.text = @"申请与通知";
     
     self.notifBadgeLabel = [[UILabel alloc] init];
