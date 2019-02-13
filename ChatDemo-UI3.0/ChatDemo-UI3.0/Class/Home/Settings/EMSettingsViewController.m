@@ -100,16 +100,12 @@
     NSInteger count = 0;
     switch (section) {
         case 0:
+        case 3:
             count = 1;
             break;
         case 1:
-            count = 2;
-            break;
         case 2:
             count = 2;
-            break;
-        case 3:
-            count = 1;
             break;
             
         default:
@@ -160,7 +156,7 @@
 {
     CGFloat height = 55;
     if (indexPath.section == 0 && indexPath.row == 0) {
-        height = 80;
+        height = 70;
     }
     
     return height;

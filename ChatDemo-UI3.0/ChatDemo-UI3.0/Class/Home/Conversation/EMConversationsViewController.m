@@ -95,7 +95,7 @@
 - (void)_setupSearchResultController
 {
     __weak typeof(self) weakself = self;
-    self.resultController.tableView.rowHeight = 50;
+    self.resultController.tableView.rowHeight = 60;
     [self.resultController setCellForRowAtIndexPathCompletion:^UITableViewCell *(UITableView *tableView, NSIndexPath *indexPath) {
         NSString *cellIdentifier = @"EMConversationCell";
         EMConversationCell *cell = (EMConversationCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
