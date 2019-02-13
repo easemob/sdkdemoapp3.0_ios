@@ -281,7 +281,7 @@
     [self _updatetextViewHeight];
 }
 
-- (void)textViewAppendText:(NSString *)aText
+- (void)inputViewAppendText:(NSString *)aText
 {
     if ([aText length] > 0) {
         self.textView.text = [NSString stringWithFormat:@"%@%@", self.textView.text, aText];

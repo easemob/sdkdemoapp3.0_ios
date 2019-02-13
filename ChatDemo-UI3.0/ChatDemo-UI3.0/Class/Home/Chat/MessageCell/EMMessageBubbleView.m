@@ -7,9 +7,10 @@
 //
 
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <FLAnimatedImageView+WebCache.h>
 #import "EMMessageBubbleView.h"
 
-#import "EMMessageModel.h"
+#import "EMEmoticonGroup.h"
 
 #define kEMMessageImageSize 120
 
@@ -24,12 +25,14 @@
 
 @property (nonatomic, strong) UIImageView *imgView;
 
+@property (nonatomic, strong) FLAnimatedImageView *gifView;
+
 @end
 
 @implementation EMMessageBubbleView
 
 - (instancetype)initWithDirection:(EMMessageDirection)aDirection
-                             type:(EMMessageBodyType)aType
+                             type:(EMMessageType)aType
 {
     self = [super init];
     if (self) {
@@ -76,19 +79,27 @@
         _imgView = [[UIImageView alloc] init];
         _imgView.contentMode = UIViewContentModeScaleAspectFit;
         _imgView.clipsToBounds = YES;
-        //        _imgView.hidden = YES;
     }
     
     return _imgView;
 }
 
+- (FLAnimatedImageView *)gifView
+{
+    if (_gifView == nil) {
+        _gifView = [[FLAnimatedImageView alloc] init];
+    }
+    
+    return _gifView;
+}
+
 #pragma mark - Subviews
 
 - (void)_initViewsWithDirection:(EMMessageDirection)aDirection
-                           type:(EMMessageBodyType)aType
+                           type:(EMMessageType)aType
 {
     BOOL isNeedBg = YES;
-    if (aType == EMMessageBodyTypeText) {
+    if (aType == EMMessageTypeText) {
         [self addSubview:self.textLabel];
         [self.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_top).offset(10);
@@ -100,7 +111,7 @@
         if (aDirection == EMMessageDirectionSend) {
             self.textLabel.textColor = [UIColor whiteColor];
         }
-    } else if (aType == EMMessageBodyTypeImage) {
+    } else if (aType == EMMessageTypeImage) {
         isNeedBg = NO;
         self.layer.borderColor = [UIColor grayColor].CGColor;
         self.layer.borderWidth = 2;
@@ -112,7 +123,7 @@
 ////            make.right.equalTo(self.mas_right).offset(-10);
 //            make.edges.equalTo(self);
 //        }];
-    } else if (aType == EMMessageBodyTypeVoice) {
+    } else if (aType == EMMessageTypeVoice) {
         if (aDirection == EMMessageDirectionSend) {
             self.imgView.image = [UIImage imageNamed:@"msg_send_audio"];
             self.imgView.animationImages = @[[UIImage imageNamed:@"msg_send_audio01"], [UIImage imageNamed:@"msg_send_audio02"], [UIImage imageNamed:@"msg_send_audio"]];
@@ -136,7 +147,7 @@
             make.right.equalTo(self.imgView.mas_left).offset(-10);
             make.bottom.equalTo(self).offset(-10);
         }];
-    } else if (aType == EMMessageBodyTypeVideo) {
+    } else if (aType == EMMessageTypeVideo) {
         isNeedBg = NO;
         self.layer.borderColor = [UIColor grayColor].CGColor;
         self.layer.borderWidth = 2;
@@ -145,10 +156,10 @@
         [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(self);
         }];
-    } else if (aType == EMMessageBodyTypeLocation || aType == EMMessageBodyTypeFile) {
-        if (aType == EMMessageBodyTypeLocation) {
+    } else if (aType == EMMessageTypeLocation || aType == EMMessageTypeFile) {
+        if (aType == EMMessageTypeLocation) {
             self.imgView.image = [UIImage imageNamed:@"image"];
-        } else if (aType == EMMessageBodyTypeFile) {
+        } else if (aType == EMMessageTypeFile) {
             self.imgView.image = [UIImage imageNamed:@"file"];
         }
         [self addSubview:self.imgView];
@@ -172,6 +183,13 @@
             make.bottom.equalTo(self).offset(-10);
             make.left.equalTo(self.textLabel);
             make.right.equalTo(self.textLabel);
+        }];
+    } else if (aType == EMMessageTypeExtGif) {
+        isNeedBg = NO;
+        [self addSubview:self.gifView];
+        [self.gifView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+            make.width.height.lessThanOrEqualTo(@100);
         }];
     }
     
@@ -274,26 +292,42 @@
     [self _setThumbnailImageWithLocalPath:imgPath remotePath:body.thumbnailRemotePath imgSize:imgSize];
 }
 
+- (void)_setExtGifModel:(EMMessageModel *)aModel
+{
+    NSString *name = [(EMTextMessageBody *)aModel.emModel.body text];
+    EMEmoticonGroup *group = [EMEmoticonGroup getGifGroup];
+    for (EMEmoticonModel *model in group.dataArray) {
+        if ([model.name isEqualToString:name]) {
+            NSString *path = [[NSBundle mainBundle] pathForResource:model.original ofType:@"gif"];
+            NSData *imageData = [NSData dataWithContentsOfFile:path];
+            self.gifView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:imageData];;
+            break;
+        }
+    }
+}
+
 - (void)setModel:(EMMessageModel *)model
 {
-    EMMessageBodyType type = model.type;
-    if (type == EMMessageBodyTypeText) {
+    EMMessageType type = model.type;
+    if (type == EMMessageTypeText) {
         EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
         self.textLabel.text = body.text;
-    } else if (type == EMMessageBodyTypeImage) {
+    } else if (type == EMMessageTypeImage) {
         [self _setImageModel:model];
-    } else if (type == EMMessageBodyTypeVoice) {
+    } else if (type == EMMessageTypeVoice) {
         [self _setAudioModel:model];
-    }  else if (type == EMMessageBodyTypeVideo) {
+    }  else if (type == EMMessageTypeVideo) {
         [self _setVideoModel:model];
-    } else if (type == EMMessageBodyTypeLocation) {
+    } else if (type == EMMessageTypeLocation) {
         EMLocationMessageBody *body = (EMLocationMessageBody *)model.emModel.body;
         self.textLabel.text = body.address;
         self.detailLabel.text = [NSString stringWithFormat:@"纬度:%.2lf°, 经度:%.2lf°", body.latitude, body.longitude];
-    } else if (type == EMMessageBodyTypeFile) {
+    } else if (type == EMMessageTypeFile) {
         EMFileMessageBody *body = (EMFileMessageBody *)model.emModel.body;
         self.textLabel.text = body.displayName;
         self.detailLabel.text = [NSString stringWithFormat:@"%.2lf MB",(float)body.fileLength / (1024 * 1024)];
+    } else if (type == EMMessageTypeExtGif) {
+        [self _setExtGifModel:model];
     }
 }
 

@@ -8,8 +8,6 @@
 
 #import "EMMessageCell.h"
 
-#import "EMMessageModel.h"
-
 #import "EMMessageBubbleView.h"
 #import "EMMessageStatusView.h"
 
@@ -28,7 +26,7 @@
 @implementation EMMessageCell
 
 - (instancetype)initWithDirection:(EMMessageDirection)aDirection
-                             type:(EMMessageBodyType)aType
+                             type:(EMMessageType)aType
 {
     NSString *identifier = [EMMessageCell cellIdentifierWithDirection:aDirection type:aType];
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -54,25 +52,27 @@
 #pragma mark - Class Methods
 
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
-                                     type:(EMMessageBodyType)aType
+                                     type:(EMMessageType)aType
 {
     NSString *identifier = @"EMMsgCellDirectionSend";
     if (aDirection == EMMessageDirectionReceive) {
         identifier = @"EMMsgCellDirectionRecv";
     }
     
-    if (aType == EMMessageBodyTypeText) {
+    if (aType == EMMessageTypeText) {
         identifier = [NSString stringWithFormat:@"%@Text", identifier];
-    } else if (aType == EMMessageBodyTypeImage) {
+    } else if (aType == EMMessageTypeImage) {
         identifier = [NSString stringWithFormat:@"%@Image", identifier];
-    } else if (aType == EMMessageBodyTypeVoice) {
+    } else if (aType == EMMessageTypeVoice) {
         identifier = [NSString stringWithFormat:@"%@Voice", identifier];
-    } else if (aType == EMMessageBodyTypeVideo) {
+    } else if (aType == EMMessageTypeVideo) {
         identifier = [NSString stringWithFormat:@"%@Video", identifier];
-    } else if (aType == EMMessageBodyTypeLocation) {
+    } else if (aType == EMMessageTypeLocation) {
         identifier = [NSString stringWithFormat:@"%@Location", identifier];
-    } else if (aType == EMMessageBodyTypeFile) {
+    } else if (aType == EMMessageTypeFile) {
         identifier = [NSString stringWithFormat:@"%@File", identifier];
+    } else if (aType == EMMessageTypeExtGif) {
+        identifier = [NSString stringWithFormat:@"%@ExtGif", identifier];
     }
     
     return identifier;
@@ -80,7 +80,7 @@
 
 #pragma mark - Subviews
 
-- (void)_setupViewsWithType:(EMMessageBodyType)aType
+- (void)_setupViewsWithType:(EMMessageType)aType
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.backgroundColor = kColor_LightGray;
@@ -105,6 +105,17 @@
             make.left.equalTo(self.contentView).offset(10);
             make.width.height.equalTo(@40);
         }];
+        
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.font = [UIFont systemFontOfSize:13];
+        _nameLabel.textColor = [UIColor grayColor];
+        [self.contentView addSubview:_nameLabel];
+        [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.avatarView);
+            make.left.equalTo(self.avatarView.mas_right).offset(8);
+            make.right.equalTo(self.contentView).offset(-10);
+            make.right.equalTo(@15);
+        }];
     }
     
     _bubbleView = [[EMMessageBubbleView alloc] initWithDirection:self.direction type:aType];
@@ -119,17 +130,6 @@
             make.right.equalTo(self.avatarView.mas_left).offset(-10);
         }];
     } else {
-        _nameLabel = [[UILabel alloc] init];
-        _nameLabel.font = [UIFont systemFontOfSize:13];
-        _nameLabel.textColor = [UIColor grayColor];
-        [self.contentView addSubview:_nameLabel];
-        [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.avatarView);
-            make.left.equalTo(self.avatarView.mas_right).offset(8);
-            make.right.equalTo(self.contentView).offset(-10);
-            make.right.equalTo(@15);
-        }];
-        
         [_bubbleView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
             make.bottom.equalTo(self.contentView).offset(-15);

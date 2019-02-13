@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class EMMessageModel;
+#import "EMMessageModel.h"
+
 @interface EMMessageBubbleView : UIImageView
 
 @property (nonatomic, strong) EMMessageModel *model;
 
 - (instancetype)initWithDirection:(EMMessageDirection)aDirection
-                             type:(EMMessageBodyType)aType;
+                             type:(EMMessageType)aType;
 
 @end

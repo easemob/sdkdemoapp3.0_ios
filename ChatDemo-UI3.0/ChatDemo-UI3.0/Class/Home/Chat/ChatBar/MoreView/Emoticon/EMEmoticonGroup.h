@@ -50,6 +50,8 @@ typedef NS_ENUM(NSUInteger, EMEmotionType) {
                     rowCount:(NSInteger)aRowCount
                     colCount:(NSInteger)aColCount;
 
++ (instancetype)getGifGroup;
+
 @end
 
 @interface EMEmoticonCell : UICollectionViewCell

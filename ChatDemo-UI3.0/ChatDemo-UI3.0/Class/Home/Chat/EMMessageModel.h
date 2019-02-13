@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, EMMessageType) {
+    EMMessageTypeText = 1,
+    EMMessageTypeImage,
+    EMMessageTypeVideo,
+    EMMessageTypeLocation,
+    EMMessageTypeVoice,
+    EMMessageTypeFile,
+    EMMessageTypeCmd,
+    EMMessageTypeExtGif,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EMMessageModel : NSObject
@@ -16,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) EMMessageDirection direction;
 
-@property (nonatomic) EMMessageBodyType type;
+@property (nonatomic) EMMessageType type;
 
 @property (nonatomic) BOOL isPlaying;
 

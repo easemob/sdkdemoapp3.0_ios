@@ -9,6 +9,8 @@ target 'ChatDemo-UI3.0' do
     pod 'MJRefresh'
     pod 'MBProgressHUD', '~> 1.1.0'
     pod 'SDWebImage', '~> 4.0'
+    pod 'SDWebImage/GIF'
+    pod 'FLAnimatedImage', '~> 1.0'
 
     #pod 'Hyphenate'
 

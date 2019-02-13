@@ -111,19 +111,7 @@ static int kConversation_AtAll = 2;
     EMMessageBody *messageBody = lastMessage.body;
     switch (messageBody.type) {
         case EMMessageBodyTypeText:
-        {
-//            // 表情映射。
-//            NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-//                                        convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
-//            latestMessageTitle = didReceiveText;
-            
-            if ([lastMessage.ext objectForKey:MSG_EXT_GIF]) {
-                latestMessageTitle = @"[动画表情]";
-            } else {
-                //code
-                latestMessageTitle = ((EMTextMessageBody *)messageBody).text;
-            }
-        }
+            latestMessageTitle = ((EMTextMessageBody *)messageBody).text;
             break;
         case EMMessageBodyTypeImage:
             latestMessageTitle = @"[图片]";

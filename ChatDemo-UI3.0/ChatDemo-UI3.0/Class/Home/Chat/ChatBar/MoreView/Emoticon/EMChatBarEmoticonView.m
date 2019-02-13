@@ -145,20 +145,7 @@
     EMEmoticonGroup *group1 = [[EMEmoticonGroup alloc] initWithType:EMEmotionTypeEmoji dataArray:models1 icon:tagImgName rowCount:3 colCount:7];
     [self.groups addObject:group1];
     
-    NSMutableArray *models2 = [[NSMutableArray alloc] init];
-    NSArray *names = @[@"icon_002",@"icon_007",@"icon_010",@"icon_012",@"icon_013",@"icon_018",@"icon_019",@"icon_020",@"icon_021",@"icon_022",@"icon_024",@"icon_027",@"icon_029",@"icon_030",@"icon_035",@"icon_040"];
-    int index = 0;
-    for (NSString *name in names) {
-        ++index;
-        EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionTypeGif];
-        model.name = [NSString stringWithFormat:@"[示例%d]", index];
-        model.imgName = [NSString stringWithFormat:@"%@_cover", name];
-        model.original = name;
-        [models2 addObject:model];
-    }
-    tagImgName = [models2[0] imgName];
-    EMEmoticonGroup *group2 = [[EMEmoticonGroup alloc] initWithType:EMEmotionTypeGif dataArray:models2 icon:[UIImage imageNamed:tagImgName] rowCount:2 colCount:4];
-    [self.groups addObject:group2];
+    [self.groups addObject:[EMEmoticonGroup getGifGroup]];
 }
 
 #pragma mark - EMEmoticonViewDelegate

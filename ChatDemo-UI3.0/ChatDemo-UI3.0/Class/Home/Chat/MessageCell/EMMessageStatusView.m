@@ -105,7 +105,7 @@
             [_activityView stopAnimating];
             [_activityView removeFromSuperview];
             
-            self.label.text = aIsReadAcked ? @"已读" : @"";
+            self.label.text = aIsReadAcked ? @"已读" : nil;
             [self addSubview:self.label];
             [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self);
@@ -119,9 +119,9 @@
             [_activityView removeFromSuperview];
         }
     } else if (self.isReadAcked != aIsReadAcked && aStatus == EMMessageStatusSucceed) {
-        self.isReadAcked = aIsReadAcked;
-        self.label.text = aIsReadAcked ? @"已读" : @"";
+        self.label.text = aIsReadAcked ? @"已读" : nil;
     }
+    self.isReadAcked = aIsReadAcked;
 }
 
 #pragma mark - Action

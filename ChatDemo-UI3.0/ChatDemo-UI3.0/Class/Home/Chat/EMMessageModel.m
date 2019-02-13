@@ -16,14 +16,16 @@
     if (self) {
         _emModel = aMsg;
         _direction = aMsg.direction;
-        _type = aMsg.body.type;
         
-//        if (aMsg.direction == EMMessageDirectionSend) {
-//            EMImageMessageBody *body = (EMImageMessageBody *)aMsg.body;
-//            if ([body.thumbnailLocalPath length] > 0) {
-//                _image = [UIImage imageWithContentsOfFile:body.thumbnailLocalPath];
-//            }
-//        }
+        if (aMsg.body.type == EMMessageBodyTypeText) {
+            if ([aMsg.ext objectForKey:MSG_EXT_GIF]) {
+                _type = EMMessageTypeExtGif;
+            } else {
+                _type = EMMessageTypeText;
+            }
+        } else {
+            _type = (EMMessageType)aMsg.body.type;
+        }
     }
     
     return self;

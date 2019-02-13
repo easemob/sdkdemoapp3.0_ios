@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "EMMessageModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EMMessageCellDelegate;
 
-@class EMMessageModel;
 @interface EMMessageCell : UITableViewCell
 
 @property (nonatomic, weak) id<EMMessageCellDelegate> delegate;
@@ -22,10 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) EMMessageModel *model;
 
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
-                                     type:(EMMessageBodyType)aType;
+                                     type:(EMMessageType)aType;
 
 - (instancetype)initWithDirection:(EMMessageDirection)aDirection
-                             type:(EMMessageBodyType)aType;
+                             type:(EMMessageType)aType;
 
 @end
 
