@@ -201,7 +201,7 @@
 
 - (void)conversationListDidUpdate:(NSArray *)aConversationList
 {
-    if (self.isViewAppear) {
+    if (!self.isViewAppear) {
         self.isNeedReloadSorted = YES;
     } else {
         [self _loadAllConversationsFromDBWithIsShowHud:NO];
@@ -266,28 +266,26 @@
 
 - (void)didResortConversationsLatestMessage
 {
-    [self _loadAllConversationsFromDBWithIsShowHud:NO];
+    [self _reSortedConversationModelsAndReloadView];
 }
 
 #pragma mark - Data
 
 - (void)_reSortedConversationModelsAndReloadView
 {
-    if (self.isViewAppear && self.isNeedReload) {
-        NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
-            EMMessage *message1 = [obj1.emModel latestMessage];
-            EMMessage *message2 = [obj2.emModel latestMessage];
-            if(message1.timestamp > message2.timestamp) {
-                return(NSComparisonResult)NSOrderedAscending;
-            } else {
-                return(NSComparisonResult)NSOrderedDescending;
-            }}];
-        [self.dataArray removeAllObjects];
-        [self.dataArray addObjectsFromArray:sorted];
-        [self.tableView reloadData];
-        
-        self.isNeedReload = NO;
-    }
+    NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
+        EMMessage *message1 = [obj1.emModel latestMessage];
+        EMMessage *message2 = [obj2.emModel latestMessage];
+        if(message1.timestamp > message2.timestamp) {
+            return(NSComparisonResult)NSOrderedAscending;
+        } else {
+            return(NSComparisonResult)NSOrderedDescending;
+        }}];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:sorted];
+    [self.tableView reloadData];
+    
+    self.isNeedReload = NO;
 }
 
 - (void)_loadAllConversationsFromDBWithIsShowHud:(BOOL)aIsShowHUD
