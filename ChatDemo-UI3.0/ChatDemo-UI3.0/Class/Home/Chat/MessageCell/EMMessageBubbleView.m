@@ -12,10 +12,13 @@
 
 #import "EMEmoticonGroup.h"
 
-#define kEMMessageImageSize 120
+#define kEMMsgImageDefaultSize 120
+#define kEMMsgImageMinWidth 50
+#define kEMMsgImageMaxWidth 150
+#define kEMMsgImageMaxHeight 300
 
-#define kEMMessageAudioMinWidth 30
-#define kEMMessageAudioMaxWidth 120
+#define kEMMsgAudioMinWidth 30
+#define kEMMsgAudioMaxWidth 120
 
 @interface EMMessageBubbleView()
 
@@ -113,16 +116,9 @@
         }
     } else if (aType == EMMessageTypeImage) {
         isNeedBg = NO;
-        self.layer.borderColor = [UIColor grayColor].CGColor;
-        self.layer.borderWidth = 2;
-//        [self addSubview:self.imgView];
-//        [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-////            make.top.equalTo(self.mas_top).offset(10);
-////            make.bottom.equalTo(self.mas_bottom).offset(-10);
-////            make.left.equalTo(self.mas_left).offset(10);
-////            make.right.equalTo(self.mas_right).offset(-10);
-//            make.edges.equalTo(self);
-//        }];
+        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.layer.borderWidth = 1;
+        self.contentMode = UIViewContentModeScaleAspectFill;
     } else if (aType == EMMessageTypeVoice) {
         if (aDirection == EMMessageDirectionSend) {
             self.imgView.image = [UIImage imageNamed:@"msg_send_audio"];
@@ -204,6 +200,35 @@
 
 #pragma mark - Setter
 
+- (CGSize)_getImageSize:(CGSize)aSize
+{
+    CGSize retSize = CGSizeMake(kEMMsgImageDefaultSize, kEMMsgImageDefaultSize);
+    do {
+        if (aSize.width == 0 || aSize.height == 0) {
+            break;
+        }
+        
+        NSInteger tmpWidth = aSize.width;
+        if (aSize.width < kEMMsgImageMinWidth) {
+            tmpWidth = kEMMsgImageMinWidth;
+        }
+        if (aSize.width > kEMMsgImageMaxWidth) {
+            tmpWidth = kEMMsgImageMaxWidth;
+        }
+        
+        NSInteger tmpHeight = tmpWidth / aSize.width * aSize.height;
+        if (tmpHeight > kEMMsgImageMaxHeight) {
+            tmpHeight = kEMMsgImageMaxHeight;
+        }
+        
+        retSize.width = tmpWidth;
+        retSize.height = tmpHeight;
+        
+    } while (0);
+
+    return retSize;
+}
+
 - (void)_setThumbnailImageWithLocalPath:(NSString *)aLocalPath
                              remotePath:(NSString *)aRemotePath
                                 imgSize:(CGSize)aSize
@@ -215,21 +240,10 @@
     
     __weak typeof(self) weakself = self;
     void (^block)(CGSize aSize) = ^(CGSize aSize) {
-        if (aSize.width == 0 || aSize.height == 0) {
-            aSize.width = kEMMessageImageSize;
-            aSize.height = kEMMessageImageSize;
-        } else if (aSize.width > aSize.height) {
-            CGFloat height =  kEMMessageImageSize / aSize.width * aSize.height;
-            aSize.height = height;
-            aSize.width = kEMMessageImageSize;
-        } else {
-            CGFloat width = kEMMessageImageSize / aSize.height * aSize.width;
-            aSize.width = width;
-            aSize.height = kEMMessageImageSize;
-        }
+        CGSize layoutSize = [weakself _getImageSize:aSize];
         [weakself mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo(aSize.width);
-            make.height.mas_equalTo(aSize.height);
+            make.width.mas_equalTo(layoutSize.width);
+            make.height.mas_equalTo(layoutSize.height);
         }];
     };
     
@@ -270,11 +284,11 @@
         [self.imgView stopAnimating];
     }
     
-    CGFloat width = kEMMessageAudioMinWidth * body.duration / 10;
-    if (width > kEMMessageAudioMaxWidth) {
-        width = kEMMessageAudioMaxWidth;
-    } else if (width < kEMMessageAudioMinWidth) {
-        width = kEMMessageAudioMinWidth;
+    CGFloat width = kEMMsgAudioMinWidth * body.duration / 10;
+    if (width > kEMMsgAudioMaxWidth) {
+        width = kEMMsgAudioMaxWidth;
+    } else if (width < kEMMsgAudioMinWidth) {
+        width = kEMMsgAudioMinWidth;
     }
     [self.textLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(width);
