@@ -90,8 +90,8 @@
     self.buttonArray = [[NSMutableArray alloc] init];
     
     UIButton *audioButton = [[UIButton alloc] init];
-    [audioButton setImage:[UIImage imageNamed:@"chat_audio"] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateSelected];
+    [audioButton setImage:[UIImage imageNamed:@"chatbar_audio"] forState:UIControlStateNormal];
+    [audioButton setImage:[UIImage imageNamed:@"chatbar_audio_blue"] forState:UIControlStateSelected];
     [audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:audioButton];
     [audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,8 +103,8 @@
     [self.buttonArray addObject:audioButton];
     
     UIButton *emojiButton = [[UIButton alloc] init];
-    [emojiButton setImage:[UIImage imageNamed:@"chat_face"] forState:UIControlStateNormal];
-    [emojiButton setImage:[UIImage imageNamed:@"chat_face_blue"] forState:UIControlStateSelected];
+    [emojiButton setImage:[UIImage imageNamed:@"chatbar_face"] forState:UIControlStateNormal];
+    [emojiButton setImage:[UIImage imageNamed:@"chatbar_face_blue"] forState:UIControlStateSelected];
     [emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:emojiButton];
     [emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,8 +116,8 @@
     [self.buttonArray addObject:emojiButton];
     
     UIButton *cameraButton = [[UIButton alloc] init];
-    [cameraButton setImage:[UIImage imageNamed:@"chat_camera"] forState:UIControlStateNormal];
-    [cameraButton setImage:[UIImage imageNamed:@"chat_camera_blue"] forState:UIControlStateHighlighted];
+    [cameraButton setImage:[UIImage imageNamed:@"chatbar_camera"] forState:UIControlStateNormal];
+    [cameraButton setImage:[UIImage imageNamed:@"chatbar_camera_blue"] forState:UIControlStateHighlighted];
     [cameraButton addTarget:self action:@selector(cameraButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:cameraButton];
     [cameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,8 +129,8 @@
     [self.buttonArray addObject:cameraButton];
     
     UIButton *photoButton = [[UIButton alloc] init];
-    [photoButton setImage:[UIImage imageNamed:@"chat_photo"] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageNamed:@"chat_photo_blue"] forState:UIControlStateHighlighted];
+    [photoButton setImage:[UIImage imageNamed:@"chatbar_photo"] forState:UIControlStateNormal];
+    [photoButton setImage:[UIImage imageNamed:@"chatbar_photo_blue"] forState:UIControlStateHighlighted];
     [photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:photoButton];
     [photoButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -142,8 +142,8 @@
     [self.buttonArray addObject:photoButton];
     
     UIButton *adressButton = [[UIButton alloc] init];
-    [adressButton setImage:[UIImage imageNamed:@"chat_map"] forState:UIControlStateNormal];
-    [adressButton setImage:[UIImage imageNamed:@"chat_map_blue"] forState:UIControlStateHighlighted];
+    [adressButton setImage:[UIImage imageNamed:@"chatbar_map"] forState:UIControlStateNormal];
+    [adressButton setImage:[UIImage imageNamed:@"chatbar_map_blue"] forState:UIControlStateHighlighted];
     [adressButton addTarget:self action:@selector(addressButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:adressButton];
     [adressButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,8 +155,8 @@
     [self.buttonArray addObject:adressButton];
     
     UIButton *callButton = [[UIButton alloc] init];
-    [callButton setImage:[UIImage imageNamed:@"chat_call"] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageNamed:@"chat_call_blue"] forState:UIControlStateSelected];
+    [callButton setImage:[UIImage imageNamed:@"chatbar_call"] forState:UIControlStateNormal];
+    [callButton setImage:[UIImage imageNamed:@"chatbar_call_blue"] forState:UIControlStateSelected];
     [callButton addTarget:self action:@selector(callButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:callButton];
     [callButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -169,8 +169,8 @@
     [self.buttonArray addObject:callButton];
     
 //    UIButton *moreButton = [[UIButton alloc] init];
-//    [moreButton setImage:[UIImage imageNamed:@"chat_extend"] forState:UIControlStateNormal];
-//    [moreButton setImage:[UIImage imageNamed:@"chat_extend_blue"] forState:UIControlStateSelected];
+//    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend"] forState:UIControlStateNormal];
+//    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend_blue"] forState:UIControlStateSelected];
 //    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.buttonsView addSubview:moreButton];
 //    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -340,7 +340,6 @@
                 make.left.equalTo(self);
                 make.right.equalTo(self);
                 make.bottom.equalTo(self);
-//                make.height.equalTo(@100);
             }];
             [self _remakeButtonsViewConstraints];
         }

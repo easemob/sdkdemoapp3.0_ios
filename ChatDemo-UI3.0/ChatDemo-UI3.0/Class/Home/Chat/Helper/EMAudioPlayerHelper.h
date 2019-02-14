@@ -1,5 +1,5 @@
 //
-//  EMAudioHelper.h
+//  EMAudioPlayerHelper.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/1/29.
@@ -9,20 +9,6 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-@interface EMAudioRecordHelper : NSObject
-
-+ (instancetype)sharedHelper;
-
-- (void)startRecordWithPath:(NSString *)aPath
-                 completion:(void(^)(NSError *error))aCompletion;
-
--(void)stopRecordWithCompletion:(void(^)(NSString *aPath))aCompletion;
-
--(void)cancelRecord;
-
-@end
-
 
 @interface EMAudioPlayerHelper : NSObject
 

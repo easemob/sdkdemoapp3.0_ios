@@ -14,7 +14,7 @@
 #import "EMChatViewController.h"
 
 #import "DemoConfManager.h"
-#import "EMAudioHelper.h"
+#import "EMAudioPlayerHelper.h"
 #import "EMImageBrowser.h"
 #import "EMConversationHelper.h"
 #import "EMCDDeviceManager.h"
@@ -180,6 +180,7 @@
 - (void)_setupChatBarMoreViews
 {
     EMChatBarRecordAudioView *recordView = [[EMChatBarRecordAudioView alloc] init];
+    recordView.delegate = self;
     self.chatBar.recordAudioView = recordView;
     
     EMChatBarEmoticonView *moreEmoticonView = [[EMChatBarEmoticonView alloc] init];
