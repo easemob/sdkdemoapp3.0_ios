@@ -64,10 +64,9 @@ static int kConversation_AtAll = 2;
     _nameLabel.font = [UIFont systemFontOfSize:18];
     [self.contentView addSubview:_nameLabel];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(8);
+        make.bottom.equalTo(self.contentView.mas_centerY);
         make.left.equalTo(self.avatarView.mas_right).offset(8);
         make.right.equalTo(self.timeLabel.mas_left);
-        make.height.equalTo(@22);
     }];
     
     _badgeLabel = [[EMBadgeLabel alloc] init];
@@ -88,11 +87,10 @@ static int kConversation_AtAll = 2;
     _detailLabel.textColor = [UIColor grayColor];
     [self.contentView addSubview:_detailLabel];
     [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.mas_bottom);
+        make.top.equalTo(self.contentView.mas_centerY).offset(3);
         make.left.equalTo(self.nameLabel);
         make.right.equalTo(self.badgeLabel.mas_left).offset(-5);
         make.bottom.equalTo(self.contentView).offset(-8);
-        make.height.equalTo(@22);
     }];
 }
 

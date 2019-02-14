@@ -169,10 +169,10 @@
 - (void)_setupNavigationBarRightItem
 {
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
-        UIImage *image = [[UIImage imageNamed:@"close_gray"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *image = [[UIImage imageNamed:@"chat_clear"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
     } else {
-        UIImage *image = [[UIImage imageNamed:@"search_gray"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *image = [[UIImage imageNamed:@"chat_info"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(groupOrChatroomInfoAction)];
     }
 }
@@ -311,7 +311,7 @@
 - (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
                           isMarkRead:(BOOL)aIsMarkRead
 {
-    if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat || [UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+    if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
         return NO;
     }
     

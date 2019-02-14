@@ -11,6 +11,14 @@
 #import "EMMessageBubbleView.h"
 #import "EMMessageStatusView.h"
 
+#import "EMMsgTextBubbleView.h"
+#import "EMMsgImageBubbleView.h"
+#import "EMMsgAudioBubbleView.h"
+#import "EMMsgVideoBubbleView.h"
+#import "EMMsgLocationBubbleView.h"
+#import "EMMsgFileBubbleView.h"
+#import "EMMsgExtGifBubbleView.h"
+
 @interface EMMessageCell()
 
 @property (nonatomic, strong) UIImageView *avatarView;
@@ -114,11 +122,10 @@
             make.top.equalTo(self.avatarView);
             make.left.equalTo(self.avatarView.mas_right).offset(8);
             make.right.equalTo(self.contentView).offset(-10);
-            make.right.equalTo(@15);
         }];
     }
     
-    _bubbleView = [[EMMessageBubbleView alloc] initWithDirection:self.direction type:aType];
+    _bubbleView = [self _getBubbleViewWithType:aType];
     _bubbleView.userInteractionEnabled = YES;
     _bubbleView.clipsToBounds = YES;
     [self.contentView addSubview:_bubbleView];
@@ -165,6 +172,38 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
     [self.bubbleView addGestureRecognizer:tap];
+}
+
+- (EMMessageBubbleView *)_getBubbleViewWithType:(EMMessageType)aType
+{
+    EMMessageBubbleView *bubbleView = nil;
+    switch (aType) {
+        case EMMessageTypeText:
+            bubbleView = [[EMMsgTextBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+        case EMMessageTypeImage:
+            bubbleView = [[EMMsgImageBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+        case EMMessageTypeVoice:
+            bubbleView = [[EMMsgAudioBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+        case EMMessageTypeVideo:
+            bubbleView = [[EMMsgVideoBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+        case EMMessageTypeLocation:
+            bubbleView = [[EMMsgLocationBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+        case EMMessageTypeFile:
+            bubbleView = [[EMMsgFileBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+        case EMMessageTypeExtGif:
+            bubbleView = [[EMMsgExtGifBubbleView alloc] initWithDirection:self.direction type:aType];
+            break;
+            
+        default:
+            break;
+    }
+    return bubbleView;
 }
 
 #pragma mark - Setter

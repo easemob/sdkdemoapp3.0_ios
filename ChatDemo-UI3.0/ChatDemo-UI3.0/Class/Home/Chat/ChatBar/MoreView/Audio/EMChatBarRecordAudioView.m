@@ -8,8 +8,6 @@
 
 #import "EMChatBarRecordAudioView.h"
 
-#import "EMAudioHelper.h"
-
 @interface EMChatBarRecordAudioView()
 
 @property (nonatomic) NSInteger timeLength;
@@ -39,20 +37,18 @@
 - (void)_setupSubviews
 {
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.titleLabel.font = [UIFont systemFontOfSize:18];
     self.titleLabel.textColor = [UIColor grayColor];
     self.titleLabel.text = @"按住录音";
     [self addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-20);
+        make.bottom.equalTo(self).offset(-30);
         make.height.equalTo(@20);
     }];
     
     self.recordButton = [[UIButton alloc] init];
-    self.recordButton.backgroundColor = [UIColor redColor];
-    self.recordButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.recordButton setImage:[UIImage imageNamed:@"msg_video"] forState:UIControlStateNormal];
+    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchBegin) forControlEvents:UIControlEventTouchDown];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchEnd) forControlEvents:UIControlEventTouchUpInside];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelBegin) forControlEvents:UIControlEventTouchDragOutside];
@@ -63,8 +59,8 @@
     [self.recordButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
         make.bottom.equalTo(self.titleLabel.mas_top).offset(-15);
-        make.width.height.equalTo(@50);
-        make.top.equalTo(self).offset(80);
+        make.width.height.equalTo(@80);
+        make.top.equalTo(self).offset(100);
     }];
 }
 
@@ -88,6 +84,7 @@
 - (void)recordButtonTouchBegin
 {
     self.titleLabel.text = @"松手发送";
+    
     [self _startRecord];
 }
 
@@ -96,11 +93,13 @@
     [self _stopRecord];
     
     self.titleLabel.text = @"按住录音";
+    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelBegin
 {
     self.titleLabel.text = @"松手取消";
+    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_red"] forState:UIControlStateNormal];
     
     [self _stopRecord];
 }
@@ -108,11 +107,14 @@
 - (void)recordButtonTouchCancelCancel
 {
     self.titleLabel.text = @"松手发送";
+    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelEnd
 {
     self.titleLabel.text = @"按住录音";
+    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
+    
     [self _stopRecord];
 }
 
