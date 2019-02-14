@@ -454,9 +454,29 @@
 {
     [self.view endEditing:YES];
     
-    self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    [self presentViewController:self.imagePicker animated:YES completion:nil];
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            switch (status) {
+                case PHAuthorizationStatusAuthorized: //已获取权限
+                {
+                    self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+                    [self presentViewController:self.imagePicker animated:YES completion:nil];
+                }
+                    break;
+                case PHAuthorizationStatusDenied: //用户已经明确否认了这一照片数据的应用程序访问
+                    [EMAlertController showErrorAlert:@"不允许访问相册"];
+                    break;
+                case PHAuthorizationStatusRestricted://此应用程序没有被授权访问的照片数据。可能是家长控制权限
+                    [EMAlertController showErrorAlert:@"没有授权访问相册"];
+                    break;
+                    
+                default:
+                    [EMAlertController showErrorAlert:@"访问相册失败"];
+                    break;
+            }
+        });
+    }];
 }
 
 - (void)chatBarDidLocationAction
