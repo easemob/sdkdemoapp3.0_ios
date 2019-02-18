@@ -9,10 +9,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import "EMAudioPlayerHelper.h"
 
+#import "amrFileCodec.h"
+
 static EMAudioPlayerHelper *playerHelper = nil;
 @interface EMAudioPlayerHelper()<AVAudioPlayerDelegate>
 
-@property (nonatomic) BOOL isPlaying;
 @property (nonatomic, strong) NSString *playingPath;
 
 @property (nonatomic, strong) AVAudioPlayer *player;
@@ -36,7 +37,6 @@ static EMAudioPlayerHelper *playerHelper = nil;
 {
     self = [super init];
     if (self) {
-        _isPlaying = NO;
     }
     
     return self;
@@ -78,6 +78,47 @@ static EMAudioPlayerHelper *playerHelper = nil;
     }
 }
 
+#pragma mark - Private
+
++ (int)isMP3File:(NSString *)aFilePath
+{
+    const char *filePath = [aFilePath cStringUsingEncoding:NSASCIIStringEncoding];
+    return isMP3File(filePath);
+}
+
++ (int)amrToWav:(NSString*)aAmrPath wavSavePath:(NSString*)aWavPath
+{
+    
+    if (EM_DecodeAMRFileToWAVEFile([aAmrPath cStringUsingEncoding:NSASCIIStringEncoding], [aWavPath cStringUsingEncoding:NSASCIIStringEncoding]))
+        return 0; // success
+    
+    return 1;   // failed
+}
+
+- (NSString *)_convertAudioFile:(NSString *)aPath
+{
+    NSString *retPath = [[aPath stringByDeletingPathExtension] stringByAppendingPathExtension:@"wav"];
+    do {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:retPath]) {
+            break;
+        }
+        
+        if ([EMAudioPlayerHelper isMP3File:retPath]) {
+            retPath = aPath;
+            break;
+        }
+        
+        [EMAudioPlayerHelper amrToWav:aPath wavSavePath:retPath];
+        if (![fileManager fileExistsAtPath:retPath]) {
+            retPath = nil;
+        }
+        
+    } while (0);
+    
+    return retPath;
+}
+
 #pragma mark - Public
 
 - (void)startPlayerWithPath:(NSString *)aPath
@@ -92,10 +133,16 @@ static EMAudioPlayerHelper *playerHelper = nil;
             break;
         }
         
-        if (self.isPlaying && [self.playingPath isEqualToString:aPath]) {
+        if (self.player && self.player.isPlaying && [self.playingPath isEqualToString:aPath]) {
             break;
         } else {
             [self stopPlayer];
+        }
+        
+        aPath = [self _convertAudioFile:aPath];
+        if ([aPath length] == 0) {
+            error = [NSError errorWithDomain:@"转换音频格式失败" code:-1 userInfo:nil];
+            break;
         }
         
         self.model = aModel;
@@ -108,13 +155,24 @@ static EMAudioPlayerHelper *playerHelper = nil;
             break;
         }
         
-        self.isPlaying = YES;
         self.playingPath = aPath;
         [self setPlayerFinished:aCompleton];
         
         self.player.delegate = self;
-        [self.player prepareToPlay];
-        [self.player play];
+        BOOL ret = [self.player prepareToPlay];
+        if (ret) {
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            [audioSession setCategory:AVAudioSessionCategoryPlayback error:&error];
+            if (error) {
+                break;
+            }
+        }
+        
+        ret = [self.player play];
+        if (!ret) {
+            [self stopPlayer];
+            error = [NSError errorWithDomain:@"AVAudioPlayer播放失败" code:-1 userInfo:nil];
+        }
         
     } while (0);
     

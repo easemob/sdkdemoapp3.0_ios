@@ -436,7 +436,7 @@ static ChatDemoHelper *helper = nil;
     }
     
     if (str.length > 0) {
-        TTAlertNoTitle(str);
+        [EMAlertController showInfoAlert:str];
     }
     
 //    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:gMainController.navigationController.viewControllers];

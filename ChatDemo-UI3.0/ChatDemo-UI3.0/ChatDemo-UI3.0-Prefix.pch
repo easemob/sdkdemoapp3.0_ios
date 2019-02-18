@@ -14,10 +14,6 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
-    #import "ChatDemoUIDefine.h"
-    #import "TTGlobalUICommon.h"
-
-
     //3.5.4
     #import <Hyphenate/Hyphenate.h>
 

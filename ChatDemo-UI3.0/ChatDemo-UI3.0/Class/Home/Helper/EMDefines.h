@@ -9,6 +9,9 @@
 #ifndef EMDefines_h
 #define EMDefines_h
 
+//账号状态
+#define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
+
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"
 #define MSG_EXT_GIF @"em_is_big_expression"

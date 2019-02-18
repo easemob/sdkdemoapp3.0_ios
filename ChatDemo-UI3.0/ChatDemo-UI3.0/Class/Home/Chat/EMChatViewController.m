@@ -17,7 +17,6 @@
 #import "EMAudioPlayerHelper.h"
 #import "EMImageBrowser.h"
 #import "EMConversationHelper.h"
-#import "EMCDDeviceManager.h"
 #import "EMMessageModel.h"
 
 #import "EMChatBar.h"
@@ -26,7 +25,7 @@
 #import "EMChatroomInfoViewController.h"
 #import "EMLocationViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic) BOOL isFirstLoadFromDB;
@@ -179,7 +178,8 @@
 
 - (void)_setupChatBarMoreViews
 {
-    EMChatBarRecordAudioView *recordView = [[EMChatBarRecordAudioView alloc] init];
+    NSString *path = [self _getAudioOrVideoPath];
+    EMChatBarRecordAudioView *recordView = [[EMChatBarRecordAudioView alloc] initWithRecordPath:path];
     recordView.delegate = self;
     self.chatBar.recordAudioView = recordView;
     
@@ -190,6 +190,17 @@
     EMChatBarCallView *moreCallView = [[EMChatBarCallView alloc] initWithChatType:self.conversationModel.emModel.type];
     moreCallView.delegate = self;
     self.chatBar.moreCallView = moreCallView;
+}
+
+- (NSString *)_getAudioOrVideoPath
+{
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    path = [path stringByAppendingPathComponent:@"EMDemoRecord"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+    return path;
 }
 
 #pragma mark - Getter
@@ -490,6 +501,44 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+#pragma mark - EMChatBarRecordAudioViewDelegate
+
+- (void)chatBarRecordAudioViewStartRecord
+{
+    
+}
+
+- (void)chatBarRecordAudioViewStopRecord:(NSString *)aPath
+                              timeLength:(NSInteger)aTimeLength
+{
+    EMVoiceMessageBody *body = [[EMVoiceMessageBody alloc] initWithLocalPath:aPath displayName:@"audio"];
+    body.duration = (int)aTimeLength;
+    [self _sendMessageWithBody:body ext:nil isUpload:YES];
+}
+
+- (void)chatBarRecordAudioViewCancelRecord
+{
+    
+}
+
+#pragma mark - EMChatBarEmoticonViewDelegate
+
+- (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
+{
+    if (aModel.type == EMEmotionTypeEmoji) {
+        [self.chatBar inputViewAppendText:aModel.name];
+    } if (aModel.type == EMEmotionTypeGif) {
+        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.name};
+        [self _sendTextAction:aModel.name ext:ext];
+    }
+}
+
+- (void)didChatBarEmoticonViewSendAction
+{
+    [self _sendTextAction:self.chatBar.textView.text ext:nil];
+}
+
+
 #pragma mark - EMChatBarCallViewDelegate
 
 - (void)chatBarCallViewAudioDidSelected
@@ -530,23 +579,6 @@
         inviteType = ConfInviteTypeChatroom;
     }
     [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:self.conversationModel.emModel.conversationId chatType:(EMChatType)self.conversationModel.emModel.type popFromController:self.navigationController];
-}
-
-#pragma mark - EMChatBarEmoticonViewDelegate
-
-- (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
-{
-    if (aModel.type == EMEmotionTypeEmoji) {
-        [self.chatBar inputViewAppendText:aModel.name];
-    } if (aModel.type == EMEmotionTypeGif) {
-        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.name};
-        [self _sendTextAction:aModel.name ext:ext];
-    }
-}
-
-- (void)didChatBarEmoticonViewSendAction
-{
-    [self _sendTextAction:self.chatBar.textView.text ext:nil];
 }
 
 #pragma mark - EMMessageCellDelegate
@@ -655,9 +687,9 @@
         aModel.isPlaying = YES;
         [weakself.tableView reloadData];
         
-        [[EMCDDeviceManager sharedInstance] enableProximitySensor];
+//        [[EMCDDeviceManager sharedInstance] enableProximitySensor];
         [[EMAudioPlayerHelper sharedHelper] startPlayerWithPath:body.localPath model:aModel completion:^(NSError * _Nonnull error) {
-            [[EMCDDeviceManager sharedInstance] disableProximitySensor];
+//            [[EMCDDeviceManager sharedInstance] disableProximitySensor];
             aModel.isPlaying = NO;
             [weakself.tableView reloadData];
         }];
@@ -674,7 +706,6 @@
     }
     
     [self showHudInView:self.view hint:@"下载语音..."];
-    
     [[EMClient sharedClient].chatManager downloadMessageAttachment:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakself hideHud];
         if (error) {
@@ -744,6 +775,20 @@
 - (void)_fileMessageCellDidSelected:(EMMessageCell *)aCell
 {
     
+}
+
+- (void)messageCellDidResend:(EMMessageModel *)aModel
+{
+    if (aModel.emModel.status != EMMessageStatusFailed && aModel.emModel.status != EMMessageStatusPending) {
+        return;
+    }
+    
+    __weak typeof(self) weakself = self;
+    [[[EMClient sharedClient] chatManager] resendMessage:aModel.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
+        [weakself.tableView reloadData];
+    }];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - KeyBoard
@@ -838,7 +883,7 @@
     
     if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
         AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset presetName:AVAssetExportPresetHighestQuality];
-        NSString *mp4Path = [NSString stringWithFormat:@"%@/%d%d.mp4", [EMCDDeviceManager dataPath], (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
+        NSString *mp4Path = [NSString stringWithFormat:@"%@/%d%d.mp4", [self _getAudioOrVideoPath], (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
         mp4Url = [NSURL fileURLWithPath:mp4Path];
         exportSession.outputURL = mp4Url;
         exportSession.shouldOptimizeForNetworkUse = YES;
@@ -927,6 +972,7 @@
 
 - (void)backAction
 {
+    [[EMAudioPlayerHelper sharedHelper] stopPlayer];
     [EMConversationHelper resortConversationsLatestMessage];
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -944,8 +990,12 @@
 
 - (void)groupOrChatroomInfoAction
 {
+    __weak typeof(self) weakself = self;
     if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
         EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversationModel.emModel.conversationId];
+        [controller setLeaveOrDestroyCompletion:^{
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         EMChatroomInfoViewController *controller = [[EMChatroomInfoViewController alloc] initWithChatroomId:self.conversationModel.emModel.conversationId];

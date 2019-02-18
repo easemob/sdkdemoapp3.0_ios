@@ -155,9 +155,9 @@
         }];
         __weak typeof(self) weakself = self;
         [_statusView setResendCompletion:^{
-//            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(messageCell:didResendMessageAction:)]) {
-//                [weakself.delegate messageCell:weakself didResendMessageAction:weakself.model];
-//            }
+            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(messageCellDidResend:)]) {
+                [weakself.delegate messageCellDidResend:weakself.model];
+            }
         }];
     } else {
         _statusView.backgroundColor = [UIColor redColor];
@@ -169,9 +169,6 @@
             make.width.height.equalTo(@8);
         }];
     }
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
-    [self.bubbleView addGestureRecognizer:tap];
 }
 
 - (EMMessageBubbleView *)_getBubbleViewWithType:(EMMessageType)aType
@@ -203,6 +200,11 @@
         default:
             break;
     }
+    if (bubbleView) {
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
+        [bubbleView addGestureRecognizer:tap];
+    }
+    
     return bubbleView;
 }
 

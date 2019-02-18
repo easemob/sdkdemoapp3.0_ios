@@ -15,13 +15,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<EMChatBarRecordAudioViewDelegate> delegate;
 
+- (instancetype)initWithRecordPath:(NSString *)aPath;
+
 @end
 
 @protocol EMChatBarRecordAudioViewDelegate <NSObject>
 
 - (void)chatBarRecordAudioViewStartRecord;
 
-- (void)chatBarRecordAudioViewStopRecord:(NSString *)aPath;
+- (void)chatBarRecordAudioViewStopRecord:(NSString *)aPath
+                              timeLength:(NSInteger)aTimeLength;
 
 - (void)chatBarRecordAudioViewCancelRecord;
 

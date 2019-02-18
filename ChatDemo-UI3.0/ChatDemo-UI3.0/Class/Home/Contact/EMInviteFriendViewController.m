@@ -89,7 +89,7 @@
     
     NSString *name = [self.dataArray objectAtIndex:indexPath.row];
     cell.nameLabel.text = name;
-    cell.avatarView.image = [UIImage imageNamed:@"user_4"];
+    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
     
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
     NSArray *blacks = [[EMClient sharedClient].contactManager getBlackList];

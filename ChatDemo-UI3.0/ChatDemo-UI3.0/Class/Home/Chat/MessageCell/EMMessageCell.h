@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)messageCellDidSelected:(EMMessageCell *)aCell;
 
+- (void)messageCellDidResend:(EMMessageModel *)aModel;
+
 @end
 
 NS_ASSUME_NONNULL_END

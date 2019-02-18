@@ -21,8 +21,8 @@
 {
     self = [super initWithDirection:aDirection type:aType];
     if (self) {
-        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.layer.borderWidth = 1;
+//        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        self.layer.borderWidth = 1;
         self.contentMode = UIViewContentModeScaleAspectFill;
     }
     

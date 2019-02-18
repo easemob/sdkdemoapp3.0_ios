@@ -15,7 +15,7 @@
 #import "EMJoinGroupViewController.h"
 #import "EMChatViewController.h"
 
-@interface EMGroupsViewController ()
+@interface EMGroupsViewController ()<EMMultiDevicesDelegate>
 
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
@@ -30,6 +30,13 @@
     
     self.page = 1;
     [self _fetchJoinedGroupsWithPage:self.page isHeader:YES isShowHUD:YES];
+    
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+}
+
+- (void)dealloc
+{
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -177,6 +184,33 @@
     }];
 }
 
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
+{
+    if ([aGroupId length] == 0) {
+        return;
+    }
+    
+    switch (aEvent) {
+        case EMMultiDevicesEventGroupCreate:
+        case EMMultiDevicesEventGroupJoin:
+        case EMMultiDevicesEventGroupDestroy:
+        case EMMultiDevicesEventGroupLeave:
+        case EMMultiDevicesEventGroupApplyAccept:
+        case EMMultiDevicesEventGroupInviteAccept:
+        {
+            [self getJoinedGroupsAndReloadView];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 #pragma mark - data
 
 - (void)_fetchJoinedGroupsWithPage:(NSInteger)aPage
@@ -215,6 +249,15 @@
 {
     self.page += 1;
     [self _fetchJoinedGroupsWithPage:self.page isHeader:NO isShowHUD:NO];
+}
+
+- (void)getJoinedGroupsAndReloadView
+{
+    NSArray *groups = [[EMClient sharedClient].groupManager getJoinedGroups];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:groups];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Action

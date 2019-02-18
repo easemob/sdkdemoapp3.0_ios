@@ -8,13 +8,17 @@
 
 #import "EMChatBarRecordAudioView.h"
 
+#import "EMAudioRecordHelper.h"
+
 @interface EMChatBarRecordAudioView()
 
+@property (nonatomic, strong) NSString *path;
+@property (nonatomic) NSInteger maxTimeSecond;
+
 @property (nonatomic) NSInteger timeLength;
-@property (nonatomic) BOOL isRecording;
+@property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic, strong) UIButton *recordButton;
-
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @end
@@ -22,10 +26,13 @@
 
 @implementation EMChatBarRecordAudioView
 
-- (instancetype)init
+- (instancetype)initWithRecordPath:(NSString *)aPath
 {
     self = [super init];
     if (self) {
+        _path = aPath;
+        _maxTimeSecond = 60;
+        
         [self _setupSubviews];
     }
     
@@ -64,18 +71,58 @@
     }];
 }
 
-#pragma mark - Private
+#pragma mark - Private Timer
+
+- (void)_startTimer
+{
+    
+}
+
+- (void)_stopTimer
+{
+    
+}
+
+#pragma mark - Private Record
 
 - (void)_startRecord
 {
     self.timeLength = 0;
-    self.isRecording = YES;
+    
+    NSString *recordPath = [self.path stringByAppendingFormat:@"/%.0f", [[NSDate date] timeIntervalSince1970] * 1000];
+    __weak typeof(self) weakself = self;
+    [[EMAudioRecordHelper sharedHelper] startRecordWithPath:recordPath completion:^(NSError * _Nonnull error) {
+        if (error) {
+            [weakself recordButtonTouchCancelEnd];
+            [EMAlertController showErrorAlert:error.domain];
+        } else {
+            [weakself _startTimer];
+            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(chatBarRecordAudioViewStartRecord)]) {
+                [weakself.delegate chatBarRecordAudioViewStartRecord];
+            }
+        }
+    }];
 }
 
 - (void)_stopRecord
 {
-    if (self.isRecording) {
-        self.isRecording = NO;
+    [self _stopTimer];
+    
+    __weak typeof(self) weakself = self;
+    [[EMAudioRecordHelper sharedHelper] stopRecordWithCompletion:^(NSString * _Nonnull aPath, NSInteger aTimeLength) {
+        if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(chatBarRecordAudioViewStopRecord:timeLength:)]) {
+            [weakself.delegate chatBarRecordAudioViewStopRecord:aPath timeLength:aTimeLength];
+        }
+    }];
+}
+
+- (void)_cancelRecord
+{
+    [self _stopTimer];
+    
+    [[EMAudioRecordHelper sharedHelper] cancelRecord];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarRecordAudioViewCancelRecord)]) {
+        [self.delegate chatBarRecordAudioViewCancelRecord];
     }
 }
 
@@ -115,7 +162,7 @@
     self.titleLabel.text = @"按住录音";
     [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
     
-    [self _stopRecord];
+    [self _cancelRecord];
 }
 
 @end

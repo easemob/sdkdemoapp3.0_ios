@@ -9,17 +9,18 @@
 #import <AVFoundation/AVFoundation.h>
 #import "EMAudioRecordHelper.h"
 
+#import "amrFileCodec.h"
+
 static EMAudioRecordHelper *recordHelper = nil;
 @interface EMAudioRecordHelper()<AVAudioRecorderDelegate>
 
-@property (nonatomic) BOOL isRecording;
 @property (nonatomic, strong) NSDate *startDate;
 @property (nonatomic, strong) NSDate *endDate;
 
 @property (nonatomic, strong) AVAudioRecorder *recorder;
 @property (nonatomic, strong) NSDictionary *recordSetting;
 
-@property (nonatomic, copy) void (^recordFinished)(NSString *aPath);
+@property (nonatomic, copy) void (^recordFinished)(NSString *aPath, NSInteger aTimeLength);
 
 @end
 
@@ -40,9 +41,7 @@ static EMAudioRecordHelper *recordHelper = nil;
 {
     self = [super init];
     if (self) {
-        _isRecording = NO;
-        
-        _recordSetting = @{AVSampleRateKey:@(8000.0), AVFormatIDKey:@(kAudioFormatLinearPCM), AVLinearPCMBitDepthKey:@(16), AVNumberOfChannelsKey:@(1)};
+        _recordSetting = @{AVSampleRateKey:@(8000.0), AVFormatIDKey:@(kAudioFormatLinearPCM), AVLinearPCMBitDepthKey:@(16), AVNumberOfChannelsKey:@(1), AVEncoderAudioQualityKey:@(AVAudioQualityHigh)};
         
     }
     
@@ -54,17 +53,59 @@ static EMAudioRecordHelper *recordHelper = nil;
     [self _stopRecord];
 }
 
+#pragma mark - Private
+
++ (int)wavPath:(NSString *)aWavPath toAmrPath:(NSString*)aAmrPath
+{
+    
+    if (EM_EncodeWAVEFileToAMRFile([aWavPath cStringUsingEncoding:NSASCIIStringEncoding], [aAmrPath cStringUsingEncoding:NSASCIIStringEncoding], 1, 16))
+        return 0;   // success
+    
+    return 1;   // failed
+}
+
+- (BOOL)_convertWAV:(NSString *)aWavPath toAMR:(NSString *)aAmrPath
+{
+    BOOL ret = NO;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:aAmrPath]) {
+        ret = YES;
+    } else if ([fileManager fileExistsAtPath:aWavPath]) {
+        [EMAudioRecordHelper wavPath:aWavPath toAmrPath:aAmrPath];
+        if ([fileManager fileExistsAtPath:aAmrPath]) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
+
 #pragma mark - AVAudioRecorderDelegate
 
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder
                            successfully:(BOOL)flag
 {
+    NSInteger timeLength = [[NSDate date] timeIntervalSinceDate:self.startDate];
     NSString *recordPath = [[self.recorder url] path];
     if (self.recordFinished) {
         if (!flag) {
             recordPath = nil;
         }
-        self.recordFinished(recordPath);
+        // Convert wav to amr
+        NSString *amrFilePath = [[recordPath stringByDeletingPathExtension] stringByAppendingPathExtension:@"amr"];
+        BOOL ret = [self _convertWAV:recordPath toAMR:amrFilePath];
+        if (ret) {
+            // Remove the wav
+            NSFileManager *fm = [NSFileManager defaultManager];
+            [fm removeItemAtPath:recordPath error:nil];
+            
+            amrFilePath = amrFilePath;
+        } else {
+            recordPath = nil;
+            timeLength = 0;
+        }
+        
+        self.recordFinished(amrFilePath, timeLength);
     }
     self.recorder = nil;
     self.recordFinished = nil;
@@ -84,7 +125,6 @@ static EMAudioRecordHelper *recordHelper = nil;
         [_recorder stop];
     }
     _recorder = nil;
-    self.isRecording = NO;
     self.recordFinished = nil;
 }
 
@@ -95,8 +135,18 @@ static EMAudioRecordHelper *recordHelper = nil;
 {
     NSError *error = nil;
     do {
-        if (self.isRecording) {
+        if (self.recorder && self.recorder.isRecording) {
             error = [NSError errorWithDomain:@"正在进行录制" code:-1 userInfo:nil];
+            break;
+        }
+        
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:&error];
+        if (!error){
+            [[AVAudioSession sharedInstance] setActive:YES error:&error];
+        }
+        
+        if (error) {
+            error = [NSError errorWithDomain:@"AVAudioSession SetCategory失败" code:-1 userInfo:nil];
             break;
         }
         
@@ -109,11 +159,18 @@ static EMAudioRecordHelper *recordHelper = nil;
             break;
         }
         
-        self.isRecording = YES;
-        self.startDate = [NSDate date];
-        self.recorder.meteringEnabled = YES;
-        self.recorder.delegate = self;
-        [self.recorder record];
+        BOOL ret = [self.recorder prepareToRecord];
+        if (ret) {
+            self.startDate = [NSDate date];
+            self.recorder.meteringEnabled = YES;
+            self.recorder.delegate = self;
+            ret = [self.recorder record];
+        }
+        
+        if (!ret) {
+            [self _stopRecord];
+            error = [NSError errorWithDomain:@"准备录制工作失败" code:-1 userInfo:nil];
+        }
         
     } while (0);
     
@@ -122,7 +179,7 @@ static EMAudioRecordHelper *recordHelper = nil;
     }
 }
 
--(void)stopRecordWithCompletion:(void(^)(NSString *aPath))aCompletion
+-(void)stopRecordWithCompletion:(void(^)(NSString *aPath, NSInteger aTimeLength))aCompletion
 {
     self.recordFinished = aCompletion;
     [self.recorder stop];

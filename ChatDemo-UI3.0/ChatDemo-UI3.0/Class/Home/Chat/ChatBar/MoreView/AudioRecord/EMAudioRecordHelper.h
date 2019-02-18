@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startRecordWithPath:(NSString *)aPath
                  completion:(void(^)(NSError *error))aCompletion;
 
--(void)stopRecordWithCompletion:(void(^)(NSString *aPath))aCompletion;
+-(void)stopRecordWithCompletion:(void(^)(NSString *aPath, NSInteger aTimeLength))aCompletion;
 
 -(void)cancelRecord;
 
