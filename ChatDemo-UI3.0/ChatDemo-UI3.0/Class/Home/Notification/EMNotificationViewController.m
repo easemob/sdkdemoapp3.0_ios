@@ -27,6 +27,7 @@
     
     [[EMNotificationHelper shared] addDelegate:self];
     
+    
     [self _setupViews];
 }
 

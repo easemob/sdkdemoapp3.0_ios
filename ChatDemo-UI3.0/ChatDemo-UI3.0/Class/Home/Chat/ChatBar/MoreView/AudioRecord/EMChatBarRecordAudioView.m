@@ -59,7 +59,6 @@
     [self.recordButton addTarget:self action:@selector(recordButtonTouchBegin) forControlEvents:UIControlEventTouchDown];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchEnd) forControlEvents:UIControlEventTouchUpInside];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelBegin) forControlEvents:UIControlEventTouchDragOutside];
-    [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelBegin) forControlEvents:UIControlEventTouchDragExit];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelCancel) forControlEvents:UIControlEventTouchDragInside];
     [self addSubview:self.recordButton];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelEnd) forControlEvents:UIControlEventTouchUpOutside];
@@ -147,8 +146,6 @@
 {
     self.titleLabel.text = @"松手取消";
     [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_red"] forState:UIControlStateNormal];
-    
-    [self _stopRecord];
 }
 
 - (void)recordButtonTouchCancelCancel

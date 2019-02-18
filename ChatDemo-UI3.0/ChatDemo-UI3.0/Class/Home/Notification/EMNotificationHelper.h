@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 @protocol EMNotificationsDelegate;
 @class EMMulticastDelegate;
-@interface EMNotificationHelper : NSObject <EMContactManagerDelegate, EMGroupManagerDelegate>
+@interface EMNotificationHelper : NSObject <EMMultiDevicesDelegate, EMContactManagerDelegate, EMGroupManagerDelegate>
 
 @property (nonatomic, strong, readonly) NSString *fileName;
 

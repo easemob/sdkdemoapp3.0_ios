@@ -18,7 +18,7 @@
 #define kTabbarItemTag_Contact 1
 #define kTabbarItemTag_Settings 2
 
-@interface EMHomeViewController ()<UITabBarDelegate, EMChatManagerDelegate, EMNotificationsDelegate>
+@interface EMHomeViewController ()<UITabBarDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMNotificationsDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 
@@ -38,6 +38,8 @@
     // Do any additional setup after loading the view.
     [self _setupSubviews];
     
+    //多设备通知
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     //监听消息接收，主要更新会话tabbaritem的badge
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     //监听通知申请，主要更新联系人tabbaritem的badge
@@ -62,6 +64,7 @@
 
 - (void)dealloc
 {
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMNotificationHelper shared] removeDelegate:self];
 }
@@ -167,6 +170,36 @@
             make.bottom.equalTo(self.tabBar.mas_top);
         }];
     }
+}
+
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)_showMultiAlertController:(NSString *)aTitle
+                          message:(NSString *)aMessage
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:aTitle message:aMessage preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:okAction];
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    [rootViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)multiDevicesContactEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                  username:(NSString *)aTarget
+                                       ext:(NSString *)aExt
+{
+    NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aTarget, aExt];
+    [self _showMultiAlertController:@"O(∩_∩)O多设备事件[好友]" message:message];
+}
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
+{
+    NSString *message = [NSString stringWithFormat:@"%li-%@-%@", (long)aEvent, aGroupId, aExt];
+    [self _showMultiAlertController:@"O(∩_∩)O多设备事件[群组]" message:message];
 }
 
 #pragma mark - EMChatManagerDelegate

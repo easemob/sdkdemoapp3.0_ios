@@ -25,7 +25,7 @@
 #import "EMChatroomInfoViewController.h"
 #import "EMLocationViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic) BOOL isFirstLoadFromDB;
@@ -61,6 +61,7 @@
     
     [self _setupChatSubviews];
     
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
@@ -93,6 +94,7 @@
 - (void)dealloc
 {
     self.isViewDidAppear = NO;
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -316,6 +318,20 @@
     
     //    self.isViewDidAppear = YES;
     //    [[EaseSDKHelper shareHelper] setIsShowingimagePicker:NO];
+}
+
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
+{
+    if (aEvent == EMMultiDevicesEventGroupDestroy || aEvent == EMMultiDevicesEventGroupLeave) {
+        if ([self.conversationModel.emModel.conversationId isEqualToString:aGroupId]) {
+            [self.navigationController popToViewController:self animated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
 }
 
 #pragma mark - EMChatManagerDelegate

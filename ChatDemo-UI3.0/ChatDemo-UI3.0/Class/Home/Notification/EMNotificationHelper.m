@@ -94,6 +94,7 @@ static EMNotificationHelper *shared = nil;
         
         _delegates = (EMMulticastDelegate<EMNotificationsDelegate> *)[[EMMulticastDelegate alloc] init];
         
+        [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
         [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
         [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
         
@@ -107,6 +108,7 @@ static EMNotificationHelper *shared = nil;
 {
     [self.delegates removeAllDelegates];
     
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
 }
@@ -210,6 +212,70 @@ static EMNotificationHelper *shared = nil;
     
     [self.delegates didNotificationsUpdate];
 }
+
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesContactEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                  username:(NSString *)aTarget
+                                       ext:(NSString *)aExt
+{
+    if (aEvent == EMMultiDevicesEventContactAccept || aEvent == EMMultiDevicesEventContactDecline) {
+        for (EMNotificationModel *model in self.notificationList) {
+            if (model.type == EMNotificationModelTypeContact && [model.sender isEqualToString:aTarget]) {
+                if (!model.isRead && self.unreadCount > 0) {
+                    model.isRead = YES;
+                    --_unreadCount;
+                    
+                    if (self.isCheckUnreadCount) {
+                        [self.delegates didNotificationsUnreadCountUpdate:_unreadCount];
+                    }
+                }
+                model.status = aEvent == EMMultiDevicesEventContactAccept ? EMNotificationModelStatusAgreed : EMNotificationModelStatusDeclined;
+                [self archive];
+                [self.delegates didNotificationsUpdate];
+                
+                break;
+            }
+        }
+    }
+}
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
+{
+    if (aEvent == EMMultiDevicesEventGroupInviteDecline || aEvent == EMMultiDevicesEventGroupInviteAccept || aEvent == EMMultiDevicesEventGroupApplyAccept || aEvent == EMMultiDevicesEventGroupApplyDecline) {
+        EMNotificationModelType type = EMNotificationModelTypeGroupInvite;
+        if (aEvent == EMMultiDevicesEventGroupApplyAccept || aEvent == EMMultiDevicesEventGroupApplyDecline) {
+            type = EMNotificationModelTypeGroupJoin;
+        }
+        
+        EMNotificationModelStatus status = EMNotificationModelStatusAgreed;
+        if (aEvent == EMMultiDevicesEventGroupInviteDecline || aEvent == EMMultiDevicesEventGroupApplyDecline) {
+            status = EMNotificationModelStatusDeclined;
+        }
+        
+        for (EMNotificationModel *model in self.notificationList) {
+            if (model.type == EMNotificationModelTypeGroupJoin && [model.groupId isEqualToString:aGroupId]) {
+                if (!model.isRead && self.unreadCount > 0) {
+                    model.isRead = YES;
+                    --_unreadCount;
+                    
+                    if (self.isCheckUnreadCount) {
+                        [self.delegates didNotificationsUnreadCountUpdate:_unreadCount];
+                    }
+                }
+                
+                model.status = status;
+                [self archive];
+                [self.delegates didNotificationsUpdate];
+                
+                break;
+            }
+        }
+    }
+}
+
 
 #pragma mark - EMContactManagerDelegate
 

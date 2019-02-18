@@ -23,7 +23,7 @@
 
 #import "DemoConfManager.h"
 
-@interface EMContactsViewController ()<XHSearchControllerDelegate, EMNotificationsDelegate>
+@interface EMContactsViewController ()<EMMultiDevicesDelegate, XHSearchControllerDelegate, EMNotificationsDelegate>
 
 @property (nonatomic, strong) NSMutableArray *allContacts;
 @property (nonatomic, strong) NSMutableArray *sectionTitles;
@@ -48,6 +48,8 @@
     [self didNotificationsUnreadCountUpdate:[EMNotificationHelper shared].unreadCount];
     
     [self _fetchContactsFromServerWithIsShowHUD:YES];
+    
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -67,6 +69,8 @@
 - (void)dealloc
 {
     [[EMNotificationHelper shared] removeDelegate:self];
+    
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -353,6 +357,26 @@
     }
 }
 
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesContactEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                  username:(NSString *)aTarget
+                                       ext:(NSString *)aExt
+{
+    switch (aEvent) {
+        case EMMultiDevicesEventContactRemove:
+        case EMMultiDevicesEventContactAccept:
+        case EMMultiDevicesEventContactBan:
+        case EMMultiDevicesEventContactAllow:
+            [self _loadAllContactsFromDB];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
 #pragma mark - XHSearchControllerDelegate
 
 - (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
@@ -457,7 +481,6 @@
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
         }];
-        
         
         [sortedArray replaceObjectAtIndex:i withObject:[NSMutableArray arrayWithArray:array]];
     }

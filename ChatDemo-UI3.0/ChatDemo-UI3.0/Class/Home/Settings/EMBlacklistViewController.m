@@ -10,7 +10,7 @@
 
 #import "EMChineseToPinyin.h"
 
-@interface EMBlacklistViewController ()
+@interface EMBlacklistViewController ()<EMMultiDevicesDelegate>
 
 @property (strong, nonatomic) NSMutableArray *sectionTitles;
 
@@ -26,6 +26,13 @@
     
     [self _setupSubviews];
     [self tableViewDidTriggerHeaderRefresh];
+    
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+}
+
+- (void)dealloc
+{
+    [[EMClient sharedClient] removeMultiDevicesDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -117,6 +124,17 @@
     return existTitles;
 }
 
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesContactEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                  username:(NSString *)aTarget
+                                       ext:(NSString *)aExt
+{
+    if (aEvent == EMMultiDevicesEventContactBan || aEvent == EMMultiDevicesEventContactAllow) {
+        [self loadBlacklistFromDB];
+    }
+}
+
 #pragma mark - Data
 
 - (NSArray *)_sortDataArray:(NSArray *)dataArray
@@ -176,6 +194,14 @@
         
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     }];
+}
+
+- (void)loadBlacklistFromDB
+{
+    NSArray *array = [[EMClient sharedClient].contactManager getContacts];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:[self _sortDataArray:array]];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Action
