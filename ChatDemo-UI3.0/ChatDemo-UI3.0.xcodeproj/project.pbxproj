@@ -232,6 +232,7 @@
 		3A4974BA221BA92600CFC19A /* group_create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4974B6221BA92600CFC19A /* group_create@2x.png */; };
 		3A4974BE221BC0DD00CFC19A /* EMAddBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974BD221BC0DD00CFC19A /* EMAddBlacklistViewController.m */; };
 		3A4974C1221BC11F00CFC19A /* EMBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C0221BC11F00CFC19A /* EMBlacklistViewController.m */; };
+		3A4974C4221BED1000CFC19A /* EMGroupOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */; };
 		3A55B1CF21FABF68001DB6C6 /* EMGroupSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A8AF4B7221A5B4000688170 /* msg_send_audio02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF499221A5B3E00688170 /* msg_send_audio02@3x.png */; };
@@ -871,6 +872,8 @@
 		3A4974BD221BC0DD00CFC19A /* EMAddBlacklistViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMAddBlacklistViewController.m; sourceTree = "<group>"; };
 		3A4974BF221BC11F00CFC19A /* EMBlacklistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBlacklistViewController.h; sourceTree = "<group>"; };
 		3A4974C0221BC11F00CFC19A /* EMBlacklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBlacklistViewController.m; sourceTree = "<group>"; };
+		3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupOwnerViewController.m; sourceTree = "<group>"; };
+		3A4974C3221BED0F00CFC19A /* EMGroupOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupOwnerViewController.h; sourceTree = "<group>"; };
 		3A55B1CD21FABF68001DB6C6 /* EMGroupSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupSettingsViewController.h; sourceTree = "<group>"; };
 		3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupSettingsViewController.m; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
@@ -1615,6 +1618,8 @@
 		3A3F27E221F1AE59001A6327 /* Group */ = {
 			isa = PBXGroup;
 			children = (
+				3A4974C3221BED0F00CFC19A /* EMGroupOwnerViewController.h */,
+				3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */,
 				3A497477221BA85F00CFC19A /* GroupImgs */,
 				3A42E47621F9D79B00374C6C /* EMGroupSharedFilesViewController.h */,
 				3A42E47721F9D79B00374C6C /* EMGroupSharedFilesViewController.m */,
@@ -3159,6 +3164,7 @@
 				3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */,
 				3A34CA422215537F00BAB0B5 /* EMMsgImageBubbleView.m in Sources */,
 				3A3F28CC21F1AE98001A6327 /* EMCallSettingsViewController.m in Sources */,
+				3A4974C4221BED1000CFC19A /* EMGroupOwnerViewController.m in Sources */,
 				3A3F2A7121F1C98E001A6327 /* EMGroupInfoViewController.m in Sources */,
 				3A420BC422018DCA007648AE /* EMMessageStatusView.m in Sources */,
 				3ACFA11E22117CD300B16331 /* MWZoomingScrollView.m in Sources */,

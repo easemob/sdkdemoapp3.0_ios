@@ -207,14 +207,6 @@
 
 #pragma mark - EMSearchBarDelegate
 
-- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
-{
-    [super searchBarCancelButtonAction:searchBar];
-    
-    [self.searchResults removeAllObjects];
-    [self.searchResultTableView reloadData];
-}
-
 - (void)searchTextDidChangeWithString:(NSString *)aString
 {
     __weak typeof(self) weakself = self;

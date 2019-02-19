@@ -75,6 +75,9 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.isSearching = NO;
+    
+    [self.searchResults removeAllObjects];
+    [self.searchResultTableView reloadData];
     [self.searchResultTableView removeFromSuperview];
 }
 

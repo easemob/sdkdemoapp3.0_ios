@@ -10,6 +10,7 @@
 
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
+#import "EMGroupOwnerViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 #import "EMGroupSettingsViewController.h"
 
@@ -189,7 +190,7 @@
         } else if (row == 2) {
             [self _updateGroupDetailAction];
         } else if (row == 3) {
-            
+            [self _updateGroupOnwerAction];
         }
     } else if (section == 3) {
         if (row == 0) {
@@ -230,6 +231,18 @@
 //    [self.tableView endUpdates];
 //}
 
+- (void)_resetGroup:(EMGroup *)aGroup
+{
+    self.group = aGroup;
+    self.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
+    if (self.isOwner) {
+        self.leaveCell.textLabel.text = @"销毁群组";
+    } else {
+        self.leaveCell.textLabel.text = @"退出群组";
+    }
+    [self.tableView reloadData];
+}
+
 - (void)_fetchGroupWithId:(NSString *)aGroupId
                 isShowHUD:(BOOL)aIsShowHUD
 {
@@ -241,14 +254,7 @@
     [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(EMGroup *aGroup, EMError *aError) {
         [weakself hideHud];
         if (!aError) {
-            weakself.group = aGroup;
-            weakself.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
-            if (weakself.isOwner) {
-                weakself.leaveCell.textLabel.text = @"销毁群组";
-            } else {
-                weakself.leaveCell.textLabel.text = @"退出群组";
-            }
-            [weakself.tableView reloadData];
+            [weakself _resetGroup:aGroup];
         } else {
             [EMAlertController showErrorAlert:@"获取群组详情失败"];
         }
@@ -318,9 +324,7 @@
         [[EMClient sharedClient].groupManager updateGroupSubject:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
             [weakController hideHud];
             if (!aError) {
-                weakself.group = aGroup;
-                weakself.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
-                [weakself.tableView reloadData];
+                [weakself _resetGroup:aGroup];
                 [weakController.navigationController popViewControllerAnimated:YES];
             } else {
                 [EMAlertController showErrorAlert:@"更新群组名称失败"];
@@ -344,9 +348,7 @@
         [[EMClient sharedClient].groupManager updateDescription:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
             [weakController hideHud];
             if (!aError) {
-                weakself.group = aGroup;
-                weakself.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
-                [weakself.tableView reloadData];
+                [weakself _resetGroup:aGroup];
                 [weakController.navigationController popViewControllerAnimated:YES];
             } else {
                 [EMAlertController showErrorAlert:@"更新群组简介失败"];
@@ -355,6 +357,16 @@
         
         return NO;
     }];
+}
+
+- (void)_updateGroupOnwerAction
+{
+    EMGroupOwnerViewController *controller = [[EMGroupOwnerViewController alloc] initWithGroup:self.group];
+    __weak typeof(self) weakself = self;
+    [controller setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
+        [weakself _resetGroup:aGroup];
+    }];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)_leaveOrDestroyGroupAction
