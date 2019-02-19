@@ -178,7 +178,7 @@ static int kConversation_AtAll = 2;
     if (conversation.type == EMConversationTypeChat) {
         self.avatarView.image = [UIImage imageNamed:@"user_2"];
     } else {
-        self.avatarView.image = [UIImage imageNamed:@"user_2"];
+        self.avatarView.image = [UIImage imageNamed:@"group_avatar"];
     }
     self.nameLabel.text = model.name;
     self.detailLabel.attributedText = [self _getDetailWithModel:conversation];

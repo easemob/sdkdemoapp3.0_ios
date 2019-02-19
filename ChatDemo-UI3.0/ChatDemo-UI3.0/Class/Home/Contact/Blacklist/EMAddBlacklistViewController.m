@@ -1,41 +1,45 @@
 //
-//  EMInviteFriendViewController.m
+//  EMAddBlacklistViewController.m
 //  ChatDemo-UI3.0
 //
-//  Created by XieYajie on 2019/1/10.
+//  Created by XieYajie on 2019/2/19.
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMInviteFriendViewController.h"
+#import "EMAddBlacklistViewController.h"
+
+#import "EMRealtimeSearch.h"
 
 #import "EMSearchBar.h"
 #import "EMAvatarNameCell.h"
 
-@interface EMInviteFriendViewController ()<UITextFieldDelegate, EMSearchBarDelegate, EMAvatarNameCellDelegate>
+@interface EMAddBlacklistViewController ()<EMSearchBarDelegate, EMAvatarNameCellDelegate>
+
+@property (nonatomic, strong) NSArray *contacts;
+@property (nonatomic, strong) NSArray *blacklist;
 
 @property (nonatomic, strong) EMSearchBar *searchBar;
 
-@property (nonatomic, strong) NSMutableArray *invitedUsers;
-
 @end
 
-@implementation EMInviteFriendViewController
+@implementation EMAddBlacklistViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    self.contacts = [[EMClient sharedClient].contactManager getContacts];
+    self.blacklist = [[EMClient sharedClient].contactManager getBlackList];
     
-    // Uncomment the following line to preserve selection between presentations.
-    self.invitedUsers = [[NSMutableArray alloc] init];
-    
-    [self _setupViews];
+    [self _setupSubviews];
 }
 
 #pragma mark - Subviews
 
-- (void)_setupViews
+- (void)_setupSubviews
 {
-    [self addPopBackLeftItem];
-    self.title = @"添加好友";
+    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
+    self.title = @"添加至黑名单";
+    self.view.backgroundColor = [UIColor whiteColor];
     
     self.searchBar = [[EMSearchBar alloc] init];
     self.searchBar.delegate = self;
@@ -68,11 +72,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:@"UITableViewCellInviteFriend"];
+    EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:@"UITableViewCellBlacklist"];
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellInviteFriend"];
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellBlacklist"];
         cell.delegate = self;
         
         UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 35)];
@@ -80,9 +84,9 @@
         rightButton.backgroundColor = kColor_Blue;
         rightButton.titleLabel.font = [UIFont systemFontOfSize:16];
         rightButton.layer.cornerRadius = 5;
-        [rightButton setTitle:@"添加好友" forState:UIControlStateNormal];
+        [rightButton setTitle:@"拉黑用户" forState:UIControlStateNormal];
         [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [rightButton setTitle:@"已申请" forState:UIControlStateDisabled];
+        [rightButton setTitle:@"已拉黑" forState:UIControlStateDisabled];
         [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
         cell.accessoryButton = rightButton;
     }
@@ -92,14 +96,8 @@
     cell.avatarView.image = [UIImage imageNamed:@"user_2"];
     cell.indexPath = indexPath;
     
-    NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-    NSArray *blacks = [[EMClient sharedClient].contactManager getBlackList];
-    if ([contacts containsObject:name] || [blacks containsObject:name]) {
+    if ([self.blacklist containsObject:name]) {
         cell.accessoryButton.enabled = NO;
-        [cell.accessoryButton setTitle:@"已添加" forState:UIControlStateDisabled];
-        cell.accessoryButton.backgroundColor = kColor_Gray;
-    } else if ([self.invitedUsers containsObject:name]) {
-        [cell.accessoryButton setTitle:@"已申请" forState:UIControlStateDisabled];
         cell.accessoryButton.backgroundColor = kColor_Gray;
     } else {
         cell.accessoryButton.enabled = YES;
@@ -108,48 +106,66 @@
     
     return cell;
 }
-                
+
 #pragma mark - EMAvatarNameCellDelegate
 
 - (void)cellAccessoryButtonAction:(EMAvatarNameCell *)aCell
 {
     NSString *name = [self.dataArray objectAtIndex:aCell.indexPath.row];
     
-    [self showHudInView:self.view hint:@"发送好友请求..."];
+    [self showHudInView:self.view hint:@"拉黑用户..."];
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].contactManager addContact:name message:nil completion:^(NSString *aUsername, EMError *aError) {
+    [[EMClient sharedClient].contactManager addUserToBlackList:name completion:^(NSString *aUsername, EMError *aError) {
         [weakself hideHud];
         if (aError) {
-            [EMAlertController showErrorAlert:@"添加失败"];
+            [EMAlertController showErrorAlert:@"拉黑用户失败"];
         } else {
-            [weakself.invitedUsers addObject:name];
+            weakself.contacts = [[EMClient sharedClient].contactManager getContacts];
+            weakself.blacklist = [[EMClient sharedClient].contactManager getBlackList];
             
             aCell.accessoryButton.enabled = NO;
-            [aCell.accessoryButton setTitle:@"已申请" forState:UIControlStateDisabled];
             aCell.accessoryButton.backgroundColor = kColor_Gray;
             
-            [EMAlertController showSuccessAlert:@"已发出好友申请"];
+            [EMAlertController showSuccessAlert:@"拉黑用户成功"];
         }
     }];
 }
-                
+
 #pragma mark - EMSearchBarDelegate
-                
+
 - (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
 {
+    [[EMRealtimeSearch shared] realtimeSearchStop];
+    
     [self.dataArray removeAllObjects];
     [self.tableView reloadData];
 }
-                
+
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
-    [self.view endEditing:YES];
+    [self searchTextDidChangeWithString:aString];
+}
+
+- (void)searchTextDidChangeWithString:(NSString *)aString
+{
+    __weak typeof(self) weakself = self;
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.contacts searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.dataArray removeAllObjects];
+            [weakself.dataArray addObjectsFromArray:results];
+            [weakself.tableView reloadData];
+        });
+    }];
+}
+
+#pragma mark - Action
+
+- (void)backAction
+{
+    [[EMRealtimeSearch shared] realtimeSearchStop];
     
-    [self.dataArray removeAllObjects];
-    if ([aString length] > 0) {
-        [self.dataArray addObject:aString];
-    }
-    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CONTACT_BLACKLIST_RELOAD object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -81,7 +81,7 @@
     if (tableView == self.tableView && indexPath.section == 0) {
         cell.detailLabel.text = nil;
         if (indexPath.row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"chatroom_create"];
             cell.nameLabel.text = @"创建聊天室";
         }
         
@@ -95,7 +95,7 @@
         chatroom = [self.searchResults objectAtIndex:indexPath.row];
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+    cell.avatarView.image = [UIImage imageNamed:@"chatroom_avatar"];
     if ([chatroom.subject length]) {
         cell.nameLabel.text = chatroom.subject;
     } else {

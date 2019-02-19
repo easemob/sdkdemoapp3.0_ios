@@ -29,4 +29,8 @@
 //实时音视频1v1呼叫
 #define CALL_1V1 @"EMMake1v1Call"
 
+//用户黑名单
+#define CONTACT_BLACKLIST_UPDATE @"EMContactBlacklistUpdate"
+#define CONTACT_BLACKLIST_RELOAD @"EMContactReloadBlacklist"
+
 #endif /* EMDefines_h */

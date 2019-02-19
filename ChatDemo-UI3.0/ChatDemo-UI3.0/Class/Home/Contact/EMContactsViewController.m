@@ -50,6 +50,8 @@
     [self _fetchContactsFromServerWithIsShowHUD:YES];
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_loadAllContactsFromDB) name:CONTACT_BLACKLIST_UPDATE object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,8 +71,8 @@
 - (void)dealloc
 {
     [[EMNotificationHelper shared] removeDelegate:self];
-    
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Subviews
@@ -375,7 +377,6 @@
             break;
     }
 }
-
 
 #pragma mark - XHSearchControllerDelegate
 

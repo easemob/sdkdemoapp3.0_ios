@@ -6,11 +6,11 @@
 //  Copyright © 2018 XieYajie. All rights reserved.
 //
 
-#import "EMRefreshTableViewController.h"
+#import "EMSearchViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMBlacklistViewController : EMRefreshTableViewController
+@interface EMBlacklistViewController : EMSearchViewController
 
 @end
 

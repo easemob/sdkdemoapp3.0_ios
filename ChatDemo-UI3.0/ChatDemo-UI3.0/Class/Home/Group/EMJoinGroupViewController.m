@@ -96,7 +96,7 @@
     }
     
     EMGroup *group = [self.dataArray objectAtIndex:indexPath.row];
-    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+    cell.avatarView.image = [UIImage imageNamed:@"group_avatar"];
     if ([group.subject length]) {
         cell.nameLabel.text = group.subject;
     } else {

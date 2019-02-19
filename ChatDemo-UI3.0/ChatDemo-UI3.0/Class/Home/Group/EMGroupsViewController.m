@@ -91,10 +91,10 @@
     if (tableView == self.tableView && indexPath.section == 0) {
         cell.detailLabel.text = nil;
         if (indexPath.row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"group_create"];
             cell.nameLabel.text = @"创建群组";
         } else if (indexPath.row == 1) {
-            cell.avatarView.image = [UIImage imageNamed:@""];
+            cell.avatarView.image = [UIImage imageNamed:@"group_join"];
             cell.nameLabel.text = @"加入群组";
         }
         
@@ -108,7 +108,7 @@
         group = [self.searchResults objectAtIndex:indexPath.row];
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+    cell.avatarView.image = [UIImage imageNamed:@"group_avatar"];
     if ([group.subject length]) {
         cell.nameLabel.text = group.subject;
     } else {
