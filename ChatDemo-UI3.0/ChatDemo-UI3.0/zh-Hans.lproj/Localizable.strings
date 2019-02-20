@@ -226,7 +226,7 @@
 "group.removeSharedFile" = "群组:%@ 删除文件ID: %@";
 "group.leaved" = "从群组中离开";
 "group.kicked" = "你被踢出群组: %@ [%@]";
-"group.destroyed" = "群组被销毁: %@ [%@]";
+"group.destroyed" = "群组被解散: %@ [%@]";
 "group.muteSuccess" = "禁言成功";
 "group.inviteSomeone" = "%@ 邀请你加入群组: %@ [%@]";
 "group.declinedInvite" = "%@ 拒绝群组 %@ [%@] 的入群邀请";

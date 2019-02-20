@@ -9,18 +9,22 @@
 #import <UIKit/UIKit.h>
 
 #import "EMMessageModel.h"
+#import "EMMessageBubbleView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EMMessageCellDelegate;
-
 @interface EMMessageCell : UITableViewCell
 
 @property (nonatomic, weak) id<EMMessageCellDelegate> delegate;
 
+@property (nonatomic, strong, readonly) EMMessageBubbleView *bubbleView;
+
 @property (nonatomic) EMMessageDirection direction;
 
 @property (nonatomic, strong) EMMessageModel *model;
+
+@property (nonatomic, strong) NSIndexPath *indexPath;
 
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
                                      type:(EMMessageType)aType;
@@ -35,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void)messageCellDidSelected:(EMMessageCell *)aCell;
+
+- (void)messageCellDidLongPress:(EMMessageCell *)aCell;
 
 - (void)messageCellDidResend:(EMMessageModel *)aModel;
 

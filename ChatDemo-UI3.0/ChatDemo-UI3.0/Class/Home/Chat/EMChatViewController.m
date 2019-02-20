@@ -13,6 +13,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "EMChatViewController.h"
 
+#import "EMDateHelper.h"
 #import "DemoConfManager.h"
 #import "EMAudioPlayerHelper.h"
 #import "EMImageBrowser.h"
@@ -21,9 +22,11 @@
 
 #import "EMChatBar.h"
 #import "EMMessageCell.h"
+#import "EMMessageTimeCell.h"
 #import "EMGroupInfoViewController.h"
 #import "EMChatroomInfoViewController.h"
 #import "EMLocationViewController.h"
+#import "EMMsgTranspondViewController.h"
 
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
@@ -38,7 +41,18 @@
 @property (nonatomic, strong) UILabel *titleDetailLabel;
 
 @property (nonatomic, strong) EMChatBar *chatBar;
-@property (strong, nonatomic) UIImagePickerController *imagePicker;
+@property (nonatomic, strong) UIImagePickerController *imagePicker;
+
+//长按操作栏
+@property (strong, nonatomic) NSIndexPath *menuIndexPath;
+@property (nonatomic, strong) UIMenuController *menuController;
+@property (nonatomic, strong) UIMenuItem *deleteMenuItem;
+@property (nonatomic, strong) UIMenuItem *copyMenuItem;
+@property (nonatomic, strong) UIMenuItem *recallMenuItem;
+@property (nonatomic, strong) UIMenuItem *transpondMenuItem;
+
+//消息格式化
+@property (nonatomic) NSTimeInterval msgTimelTag;
 
 @end
 
@@ -58,6 +72,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.msgQueue = dispatch_queue_create("emmessage.com", NULL);
+    self.msgTimelTag = -1;
     
     [self _setupChatSubviews];
     
@@ -97,6 +112,11 @@
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
 }
 
 #pragma mark - Subviews
@@ -229,19 +249,44 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EMMessageModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    NSString *identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
-    EMMessageCell *cell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    id obj = [self.dataArray objectAtIndex:indexPath.row];
     
-    // Configure the cell...
-    if (cell == nil) {
-        cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
-        cell.delegate = self;
+    NSString *cellString = nil;
+    if ([obj isKindOfClass:[NSString class]]) {
+        cellString = (NSString *)obj;
+    } else if ([obj isKindOfClass:[EMMessageModel class]]) {
+        EMMessageModel *model = (EMMessageModel *)obj;
+        if (model.type == EMMessageTypeExtRecall) {
+            cellString = @"您撤回一条消息";
+        }
     }
     
-    cell.model = model;
-    
-    return cell;
+    if ([cellString length] > 0) {
+        EMMessageTimeCell *cell = (EMMessageTimeCell *)[tableView dequeueReusableCellWithIdentifier:@"EMMessageTimeCell"];
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[EMMessageTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMMessageTimeCell"];
+        }
+        
+        cell.timeLabel.text = cellString;
+        
+        return cell;
+    } else {
+        EMMessageModel *model = (EMMessageModel *)obj;
+        NSString *identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+        EMMessageCell *cell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        // Configure the cell...
+        if (cell == nil) {
+            cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+            cell.delegate = self;
+        }
+        
+        cell.indexPath = indexPath;
+        cell.model = model;
+        
+        return cell;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -318,126 +363,6 @@
     
     //    self.isViewDidAppear = YES;
     //    [[EaseSDKHelper shareHelper] setIsShowingimagePicker:NO];
-}
-
-#pragma mark - EMMultiDevicesDelegate
-
-- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
-                                 groupId:(NSString *)aGroupId
-                                     ext:(id)aExt
-{
-    if (aEvent == EMMultiDevicesEventGroupDestroy || aEvent == EMMultiDevicesEventGroupLeave) {
-        if ([self.conversationModel.emModel.conversationId isEqualToString:aGroupId]) {
-            [self.navigationController popToViewController:self animated:YES];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    }
-}
-
-#pragma mark - EMChatManagerDelegate
-
-- (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
-                          isMarkRead:(BOOL)aIsMarkRead
-{
-    if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
-        return NO;
-    }
-    
-    EMMessageBody *body = aMessage.body;
-    if (!aIsMarkRead && (body.type == EMMessageBodyTypeVideo || body.type == EMMessageBodyTypeVoice || body.type == EMMessageBodyTypeImage)) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (void)messagesDidReceive:(NSArray *)aMessages
-{
-    __weak typeof(self) weakself = self;
-    dispatch_async(self.msgQueue, ^{
-        NSString *conId = weakself.conversationModel.emModel.conversationId;
-        NSMutableArray *sorted = [[NSMutableArray alloc] init];
-        for (int i = 0; i < [aMessages count]; i++) {
-            EMMessage *msg = aMessages[i];
-            if (![msg.conversationId isEqualToString:conId]) {
-                continue;
-            }
-            
-            EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:msg];
-            [sorted addObject:model];
-            
-            if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
-            }
-            [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
-        }
-        [weakself.dataArray addObjectsFromArray:sorted];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.tableView reloadData];
-            [weakself _scrollToBottomRow];
-        });
-    });
-}
-
-- (void)messagesDidRead:(NSArray *)aMessages
-{
-    __weak typeof(self) weakself = self;
-    dispatch_async(self.msgQueue, ^{
-        NSString *conId = weakself.conversationModel.emModel.conversationId;
-        __block BOOL isReladView = NO;
-        for (EMMessage *message in aMessages) {
-            if (![conId isEqualToString:message.conversationId]){
-                continue;
-            }
-            
-            [weakself.dataArray enumerateObjectsUsingBlock:^(EMMessageModel *model, NSUInteger idx, BOOL *stop) {
-                if ([model.emModel.messageId isEqualToString:message.messageId]) {
-                    model.emModel.isReadAcked = YES;
-                    isReladView = YES;
-                    *stop = YES;
-                }
-            }];
-        }
-        
-        if (isReladView) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself.tableView reloadData];
-            });
-        }
-    });
-}
-
-- (void)messageStatusDidChange:(EMMessage *)aMessage
-                         error:(EMError *)aError
-{
-    __weak typeof(self) weakself = self;
-    dispatch_async(self.msgQueue, ^{
-        NSString *conId = weakself.conversationModel.emModel.conversationId;
-        if (![conId isEqualToString:aMessage.conversationId]){
-            return ;
-        }
-        
-        __block NSUInteger index = NSNotFound;
-        __block EMMessageModel *reloadModel = nil;
-        [self.dataArray enumerateObjectsUsingBlock:^(EMMessageModel *model, NSUInteger idx, BOOL *stop) {
-            if ([model.emModel.messageId isEqualToString:aMessage.messageId]) {
-                reloadModel = model;
-                index = idx;
-                *stop = YES;
-            }
-        }];
-        
-        if (index != NSNotFound) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself.dataArray replaceObjectAtIndex:index withObject:reloadModel];
-                [weakself.tableView beginUpdates];
-                [weakself.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                [weakself.tableView endUpdates];
-            });
-        }
-        
-    });
 }
 
 #pragma mark - EMChatBarDelegate
@@ -653,7 +578,7 @@
         if (error) {
             [EMAlertController showErrorAlert:@"下载原图失败"];
         } else {
-            if (!message.isReadAcked) {
+            if (message.direction == EMMessageDirectionReceive && !message.isReadAcked) {
                 [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
             }
             
@@ -662,7 +587,7 @@
             if (image) {
                 [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:self];
             } else {
-                [EMAlertController showErrorAlert:@"获取本地原图失败"];
+                [EMAlertController showErrorAlert:@"获取原图失败"];
             }
         }
     }];
@@ -793,6 +718,12 @@
     
 }
 
+- (void)messageCellDidLongPress:(EMMessageCell *)aCell
+{
+    self.menuIndexPath = aCell.indexPath;
+    [self _showMenuViewController:aCell model:aCell.model];
+}
+
 - (void)messageCellDidResend:(EMMessageModel *)aModel
 {
     if (aModel.emModel.status != EMMessageStatusFailed && aModel.emModel.status != EMMessageStatusPending) {
@@ -806,6 +737,130 @@
     
     [self.tableView reloadData];
 }
+
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
+{
+    if (aEvent == EMMultiDevicesEventGroupDestroy || aEvent == EMMultiDevicesEventGroupLeave) {
+        if ([self.conversationModel.emModel.conversationId isEqualToString:aGroupId]) {
+            [self.navigationController popToViewController:self animated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+}
+
+#pragma mark - EMChatManagerDelegate
+
+- (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
+                          isMarkRead:(BOOL)aIsMarkRead
+{
+    if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
+        return NO;
+    }
+    
+    EMMessageBody *body = aMessage.body;
+    if (!aIsMarkRead && (body.type == EMMessageBodyTypeVideo || body.type == EMMessageBodyTypeVoice || body.type == EMMessageBodyTypeImage)) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)messagesDidReceive:(NSArray *)aMessages
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(self.msgQueue, ^{
+        NSString *conId = weakself.conversationModel.emModel.conversationId;
+        NSMutableArray *msgArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < [aMessages count]; i++) {
+            EMMessage *msg = aMessages[i];
+            if (![msg.conversationId isEqualToString:conId]) {
+                continue;
+            }
+            
+            if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
+                [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+            }
+            [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
+            [msgArray addObject:msg];
+        }
+        
+        NSArray *formated = [weakself _formatMessages:msgArray];
+        [weakself.dataArray addObjectsFromArray:formated];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.tableView reloadData];
+            [weakself _scrollToBottomRow];
+        });
+    });
+}
+
+- (void)messagesDidRead:(NSArray *)aMessages
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(self.msgQueue, ^{
+        NSString *conId = weakself.conversationModel.emModel.conversationId;
+        __block BOOL isReladView = NO;
+        for (EMMessage *message in aMessages) {
+            if (![conId isEqualToString:message.conversationId]){
+                continue;
+            }
+            
+            [weakself.dataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([obj isKindOfClass:[EMMessageModel class]]) {
+                    EMMessageModel *model = (EMMessageModel *)obj;
+                    if ([model.emModel.messageId isEqualToString:message.messageId]) {
+                        model.emModel.isReadAcked = YES;
+                        isReladView = YES;
+                        *stop = YES;
+                    }
+                }
+            }];
+        }
+        
+        if (isReladView) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.tableView reloadData];
+            });
+        }
+    });
+}
+
+- (void)messageStatusDidChange:(EMMessage *)aMessage
+                         error:(EMError *)aError
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(self.msgQueue, ^{
+        NSString *conId = weakself.conversationModel.emModel.conversationId;
+        if (![conId isEqualToString:aMessage.conversationId]){
+            return ;
+        }
+        
+        __block NSUInteger index = NSNotFound;
+        __block EMMessageModel *reloadModel = nil;
+        [self.dataArray enumerateObjectsUsingBlock:^(EMMessageModel *model, NSUInteger idx, BOOL *stop) {
+            if ([model.emModel.messageId isEqualToString:aMessage.messageId]) {
+                reloadModel = model;
+                index = idx;
+                *stop = YES;
+            }
+        }];
+        
+        if (index != NSNotFound) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.dataArray replaceObjectAtIndex:index withObject:reloadModel];
+                [weakself.tableView beginUpdates];
+                [weakself.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                [weakself.tableView endUpdates];
+            });
+        }
+        
+    });
+}
+
 
 #pragma mark - KeyBoard
 
@@ -936,26 +991,334 @@
     return mp4Url;
 }
 
+#pragma mark - Menu Controller
+
+- (UIMenuController *)menuController
+{
+    if (_menuController == nil) {
+        _menuController = [UIMenuController sharedMenuController];
+    }
+    
+    return _menuController;
+}
+
+- (UIMenuItem *)deleteMenuItem
+{
+    if (_deleteMenuItem == nil) {
+        _deleteMenuItem = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMenuItemAction:)];
+    }
+    
+    return _deleteMenuItem;
+}
+
+- (UIMenuItem *)copyMenuItem
+{
+    if (_copyMenuItem == nil) {
+        _copyMenuItem = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMenuItemAction:)];
+    }
+    
+    return _copyMenuItem;
+}
+
+- (UIMenuItem *)transpondMenuItem
+{
+    if (_transpondMenuItem == nil) {
+        _transpondMenuItem = [[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(transpondMenuItemAction:)];
+    }
+    
+    return _transpondMenuItem;
+}
+
+- (UIMenuItem *)recallMenuItem
+{
+    if (_recallMenuItem == nil) {
+        _recallMenuItem = [[UIMenuItem alloc] initWithTitle:@"撤回" action:@selector(recallMenuItemAction:)];
+    }
+    
+    return _recallMenuItem;
+}
+
+- (void)deleteMenuItemAction:(UIMenuItem *)aItem
+{
+    if (self.menuIndexPath == nil) {
+        return;
+    }
+    
+    EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    [self.conversationModel.emModel deleteMessageWithId:model.emModel.messageId error:nil];
+    
+    NSMutableIndexSet *indexs = [NSMutableIndexSet indexSetWithIndex:self.menuIndexPath.row];
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithObjects:self.menuIndexPath, nil];
+    if (self.menuIndexPath.row - 1 >= 0) {
+        id nextMessage = nil;
+        id prevMessage = [self.dataArray objectAtIndex:(self.menuIndexPath.row - 1)];
+        if (self.menuIndexPath.row + 1 < [self.dataArray count]) {
+            nextMessage = [self.dataArray objectAtIndex:(self.menuIndexPath.row + 1)];
+        }
+        if ((!nextMessage || [nextMessage isKindOfClass:[NSString class]]) && [prevMessage isKindOfClass:[NSString class]]) {
+            [indexs addIndex:self.menuIndexPath.row - 1];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:(self.menuIndexPath.row - 1) inSection:0]];
+        }
+    }
+    
+    [self.dataArray removeObjectsAtIndexes:indexs];
+    [self.tableView reloadData];
+    
+    if ([self.dataArray count] == 0) {
+        self.msgTimelTag = -1;
+    }
+    
+    self.menuIndexPath = nil;
+}
+
+- (void)copyMenuItemAction:(UIMenuItem *)aItem
+{
+    if (self.menuIndexPath == nil) {
+        return;
+    }
+    
+    EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = body.text;
+    
+    self.menuIndexPath = nil;
+}
+
+- (void)transpondMenuItemAction:(UIMenuItem *)aItem
+{
+    if (self.menuIndexPath == nil) {
+        return;
+    }
+    
+    EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    EMMsgTranspondViewController *controller = [[EMMsgTranspondViewController alloc] initWithModel:model];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    __weak typeof(self) weakself = self;
+    [controller setDoneCompletion:^(EMMessageModel * _Nonnull aModel, NSString * _Nonnull aUsername) {
+        [weakself _transpondMsg:aModel toUser:aUsername];
+    }];
+    
+    self.menuIndexPath = nil;
+}
+
+- (void)recallMenuItemAction:(UIMenuItem *)aItem
+{
+    if (self.menuIndexPath == nil) {
+        return;
+    }
+    
+    NSIndexPath *indexPath = self.menuIndexPath;
+    __weak typeof(self) weakself = self;
+    EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    [[EMClient sharedClient].chatManager recallMessage:model.emModel completion:^(EMMessage *aMessage, EMError *aError) {
+        if (aError) {
+            [EMAlertController showErrorAlert:aError.errorDescription];
+        } else {
+            EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:@"您撤回一条消息"];
+            NSString *from = [[EMClient sharedClient] currentUsername];
+            NSString *to = self.conversationModel.emModel.conversationId;
+            EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:@{MSG_EXT_RECALL:@(YES)}];
+            message.chatType = (EMChatType)self.conversationModel.emModel.type;
+            message.isRead = YES;
+            message.timestamp = model.emModel.timestamp;
+            message.localTime = model.emModel.localTime;
+            [weakself.conversationModel.emModel insertMessage:message error:nil];
+            
+            EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:message];
+            [weakself.dataArray replaceObjectAtIndex:indexPath.row withObject:model];
+            [weakself.tableView reloadData];
+        }
+    }];
+    
+    self.menuIndexPath = nil;
+}
+
+- (void)_showMenuViewController:(EMMessageCell *)aCell
+                          model:(EMMessageModel *)aModel
+{
+    [self becomeFirstResponder];
+    
+    NSMutableArray *items = [[NSMutableArray alloc] init];
+    if (aModel.type == EMMessageTypeText) {
+        [items addObject:self.copyMenuItem];
+        [items addObject:self.transpondMenuItem];
+    } else if (aModel.type == EMMessageTypeLocation || aModel.type == EMMessageTypeImage || aModel.type == EMMessageTypeVideo) {
+        [items addObject:self.transpondMenuItem];
+    }
+    [items addObject:self.deleteMenuItem];
+    
+    if (aModel.emModel.direction == EMMessageDirectionSend) {
+        [items addObject:self.recallMenuItem];
+    }
+    
+    [self.menuController setMenuItems:items];
+    [self.menuController setTargetRect:aCell.bubbleView.frame inView:aCell];
+    [self.menuController setMenuVisible:YES animated:NO];
+}
+
+#pragma mark - Transpond Message
+
+- (void)_forwardMsgWithBody:(EMMessageBody *)aBody
+                         to:(NSString *)aTo
+                        ext:(NSDictionary *)aExt
+                 completion:(void (^)(EMMessage *message))aCompletionBlock
+{
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aTo from:from to:aTo body:aBody ext:aExt];
+    message.chatType = EMChatTypeChat;
+    
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        if (error) {
+            [weakself.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
+            [EMAlertController showErrorAlert:@"转发消息失败"];
+        } else {
+            if (aCompletionBlock) {
+                aCompletionBlock(message);
+            }
+            [EMAlertController showSuccessAlert:@"转发消息成功"];
+        }
+    }];
+}
+
+- (void)_forwardImageMsg:(EMMessage *)aMsg
+                  toUser:(NSString *)aUsername
+{
+    NSString *thumbnailLocalPath = [(EMImageMessageBody *)aMsg.body thumbnailLocalPath];
+    
+    __weak typeof(self) weakself = self;
+    void (^block)(EMMessage *aMessage) = ^(EMMessage *aMessage) {
+        EMImageMessageBody *oldBody = (EMImageMessageBody *)aMessage.body;
+        EMImageMessageBody *newBody = [[EMImageMessageBody alloc] initWithData:nil thumbnailData:[NSData dataWithContentsOfFile:oldBody.thumbnailLocalPath]];
+        newBody.thumbnailRemotePath = oldBody.thumbnailRemotePath;
+        newBody.remotePath = oldBody.remotePath;
+        
+        [weakself _forwardMsgWithBody:newBody to:aUsername ext:aMsg.ext completion:^(EMMessage *message) {
+            [(EMImageMessageBody *)message.body setLocalPath:oldBody.localPath];
+            [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
+        }];
+    };
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:thumbnailLocalPath]) {
+        [[EMClient sharedClient].chatManager downloadMessageThumbnail:aMsg progress:nil completion:^(EMMessage *message, EMError *error) {
+            if (error) {
+                [EMAlertController showErrorAlert:@"转发消息失败"];
+            } else {
+                block(aMsg);
+            }
+        }];
+    } else {
+        block(aMsg);
+    }
+}
+
+- (void)_forwardVideoMsg:(EMMessage *)aMsg
+                  toUser:(NSString *)aUsername
+{
+    EMVideoMessageBody *oldBody = (EMVideoMessageBody *)aMsg.body;
+
+    __weak typeof(self) weakself = self;
+    void (^block)(EMMessage *aMessage) = ^(EMMessage *aMessage) {
+        EMVideoMessageBody *newBody = [[EMVideoMessageBody alloc] initWithLocalPath:oldBody.localPath displayName:oldBody.displayName];
+        newBody.thumbnailLocalPath = oldBody.thumbnailLocalPath;
+        
+        [weakself _forwardMsgWithBody:newBody to:aUsername ext:aMsg.ext completion:^(EMMessage *message) {
+            [(EMVideoMessageBody *)message.body setLocalPath:[(EMVideoMessageBody *)aMessage.body localPath]];
+            [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
+        }];
+    };
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:oldBody.localPath]) {
+        [[EMClient sharedClient].chatManager downloadMessageAttachment:aMsg progress:nil completion:^(EMMessage *message, EMError *error) {
+            if (error) {
+                [EMAlertController showErrorAlert:@"转发消息失败"];
+            } else {
+                block(aMsg);
+            }
+        }];
+    } else {
+        block(aMsg);
+    }
+}
+
+- (void)_transpondMsg:(EMMessageModel *)aModel
+               toUser:(NSString *)aUsername
+{
+    EMMessageBodyType type = aModel.emModel.body.type;
+    if (type == EMMessageBodyTypeText || type == EMMessageBodyTypeLocation) {
+        [self _forwardMsgWithBody:aModel.emModel.body to:aUsername ext:aModel.emModel.ext completion:nil];
+    } else if (type == EMMessageBodyTypeImage) {
+        [self _forwardImageMsg:aModel.emModel toUser:aUsername];
+    } else if (type == EMMessageBodyTypeVideo) {
+        [self _forwardVideoMsg:aModel.emModel toUser:aUsername];
+    }
+}
+
+#pragma mark - Send Message
+
+- (void)_sendTextAction:(NSString *)aText
+                    ext:(NSDictionary *)aExt
+{
+    [self.chatBar clearInputViewText];
+    if ([aText length] == 0) {
+        return;
+    }
+    
+    //TODO: 处理@
+    //messageExt
+    
+    //TODO: 处理表情
+    //    NSString *sendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:aText];
+    
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
+    [self _sendMessageWithBody:body ext:aExt isUpload:NO];
+}
+
+- (void)_sendImageDataAction:(NSData *)aImageData
+{
+    EMImageMessageBody *body = [[EMImageMessageBody alloc] initWithData:aImageData displayName:@"image"];
+    [self _sendMessageWithBody:body ext:nil isUpload:YES];
+}
+
+- (void)_sendLocationAction:(CLLocationCoordinate2D)aCoord
+                    address:(NSString *)aAddress
+{
+    EMLocationMessageBody *body = [[EMLocationMessageBody alloc] initWithLatitude:aCoord.latitude longitude:aCoord.longitude address:aAddress];
+    [self _sendMessageWithBody:body ext:nil isUpload:NO];
+}
+
+- (void)_sendVideoAction:(NSURL *)aUrl
+{
+    EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithLocalPath:[aUrl path] displayName:@"video.mp4"];
+    [self _sendMessageWithBody:body ext:nil isUpload:YES];
+}
+
 
 #pragma mark - Data
 
-- (void)_sortedMessages:(NSArray<EMMessage *> *)aMessages
-          isInsertFirst:(BOOL)aIsInsertFirst
+- (NSArray *)_formatMessages:(NSArray<EMMessage *> *)aMessages
 {
-    NSMutableArray *sorted = [[NSMutableArray alloc] init];
+    NSMutableArray *formated = [[NSMutableArray alloc] init];
     for (int i = 0; i < [aMessages count]; i++) {
         EMMessage *msg = aMessages[i];
-        EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:msg];
-        if (!model.emModel.isReadAcked && (model.type == EMMessageBodyTypeText || model.type == EMMessageBodyTypeLocation)) {
+        if (!msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
             [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
         }
-        [sorted addObject:model];
+        
+        CGFloat interval = (self.msgTimelTag - msg.timestamp) / 1000;
+        if (self.msgTimelTag < 0 || interval > 60 || interval < -60) {
+            NSString *timeStr = [EMDateHelper formattedTimeFromTimeInterval:msg.timestamp];
+            [formated addObject:timeStr];
+            self.msgTimelTag = msg.timestamp;
+        }
+        
+        EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:msg];
+        [formated addObject:model];
     }
-    if (aIsInsertFirst) {
-        [self.dataArray insertObjects:sorted atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [sorted count])]];
-    } else {
-        [self.dataArray addObjectsFromArray:sorted];
-    }
+    
+    return formated;
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
@@ -967,8 +1330,9 @@
             weakself.moreMsgId = msg.messageId;
             
             dispatch_async(self.msgQueue, ^{
-                [weakself _sortedMessages:aMessages isInsertFirst:YES];
-                
+                NSArray *formated = [weakself _formatMessages:aMessages];
+                [weakself.dataArray insertObjects:formated atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [formated count])]];
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakself.tableView reloadData];
                     
@@ -1038,52 +1402,15 @@
         [weakself.tableView reloadData];
     }];
     
-    EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:message];
-    [self.dataArray addObject:model];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(self.dataArray.count - 1) inSection:0];
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-    [self.tableView endUpdates];
-    
-    [self _scrollToBottomRow];
-}
-
-- (void)_sendTextAction:(NSString *)aText
-                    ext:(NSDictionary *)aExt
-{
-    [self.chatBar clearInputViewText];
-    if ([aText length] == 0) {
-        return;
-    }
-    
-    //TODO: 处理@
-    //messageExt
-    
-    //TODO: 处理表情
-//    NSString *sendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:aText];
-    
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
-    [self _sendMessageWithBody:body ext:aExt isUpload:NO];
-}
-
-- (void)_sendImageDataAction:(NSData *)aImageData
-{
-    EMImageMessageBody *body = [[EMImageMessageBody alloc] initWithData:aImageData displayName:@"image"];
-    [self _sendMessageWithBody:body ext:nil isUpload:YES];
-}
-
-- (void)_sendLocationAction:(CLLocationCoordinate2D)aCoord
-                    address:(NSString *)aAddress
-{
-    EMLocationMessageBody *body = [[EMLocationMessageBody alloc] initWithLatitude:aCoord.latitude longitude:aCoord.longitude address:aAddress];
-    [self _sendMessageWithBody:body ext:nil isUpload:NO];
-}
-
-- (void)_sendVideoAction:(NSURL *)aUrl
-{
-    EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithLocalPath:[aUrl path] displayName:@"video.mp4"];
-    [self _sendMessageWithBody:body ext:nil isUpload:YES];
+    dispatch_async(self.msgQueue, ^{
+        NSArray *formated = [weakself _formatMessages:@[message]];
+        [weakself.dataArray addObjectsFromArray:formated];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.tableView reloadData];
+            [weakself _scrollToBottomRow];
+        });
+    });
 }
 
 @end

@@ -20,6 +20,8 @@
         if (aMsg.body.type == EMMessageBodyTypeText) {
             if ([aMsg.ext objectForKey:MSG_EXT_GIF]) {
                 _type = EMMessageTypeExtGif;
+            } else if ([aMsg.ext objectForKey:MSG_EXT_RECALL]) {
+                _type = EMMessageTypeExtRecall;
             } else {
                 _type = EMMessageTypeText;
             }

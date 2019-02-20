@@ -200,6 +200,8 @@
 		3A3F2A6D21F1C39E001A6327 /* user_2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A3F2A6721F1C39E001A6327 /* user_2@3x.png */; };
 		3A3F2A6E21F1C39E001A6327 /* user_3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A3F2A6821F1C39E001A6327 /* user_3@3x.png */; };
 		3A3F2A7121F1C98E001A6327 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F2A7021F1C98E001A6327 /* EMGroupInfoViewController.m */; };
+		3A4052F2221D071D009A5025 /* EMMessageTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4052F1221D071D009A5025 /* EMMessageTimeCell.m */; };
+		3A4052F8221D3428009A5025 /* EMMsgTranspondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4052F7221D3428009A5025 /* EMMsgTranspondViewController.m */; };
 		3A420BBA22018DC0007648AE /* EMAudioPlayerHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BB822018DBF007648AE /* EMAudioPlayerHelper.mm */; };
 		3A420BBB22018DC0007648AE /* EMImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BB922018DBF007648AE /* EMImageBrowser.m */; };
 		3A420BC322018DCA007648AE /* EMMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BC022018DCA007648AE /* EMMessageCell.m */; };
@@ -233,6 +235,7 @@
 		3A4974BE221BC0DD00CFC19A /* EMAddBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974BD221BC0DD00CFC19A /* EMAddBlacklistViewController.m */; };
 		3A4974C1221BC11F00CFC19A /* EMBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C0221BC11F00CFC19A /* EMBlacklistViewController.m */; };
 		3A4974C4221BED1000CFC19A /* EMGroupOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */; };
+		3A4974C7221BFF4700CFC19A /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C6221BFF4700CFC19A /* EMGroupAdminsViewController.m */; };
 		3A55B1CF21FABF68001DB6C6 /* EMGroupSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A8AF4B7221A5B4000688170 /* msg_send_audio02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF499221A5B3E00688170 /* msg_send_audio02@3x.png */; };
@@ -831,6 +834,10 @@
 		3A3F2A6821F1C39E001A6327 /* user_3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_3@3x.png"; sourceTree = "<group>"; };
 		3A3F2A6F21F1C98E001A6327 /* EMGroupInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupInfoViewController.h; sourceTree = "<group>"; };
 		3A3F2A7021F1C98E001A6327 /* EMGroupInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupInfoViewController.m; sourceTree = "<group>"; };
+		3A4052F0221D071D009A5025 /* EMMessageTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMessageTimeCell.h; sourceTree = "<group>"; };
+		3A4052F1221D071D009A5025 /* EMMessageTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMessageTimeCell.m; sourceTree = "<group>"; };
+		3A4052F6221D3428009A5025 /* EMMsgTranspondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMsgTranspondViewController.h; sourceTree = "<group>"; };
+		3A4052F7221D3428009A5025 /* EMMsgTranspondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMsgTranspondViewController.m; sourceTree = "<group>"; };
 		3A420BB622018DBF007648AE /* EMAudioPlayerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAudioPlayerHelper.h; sourceTree = "<group>"; };
 		3A420BB722018DBF007648AE /* EMImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMImageBrowser.h; sourceTree = "<group>"; };
 		3A420BB822018DBF007648AE /* EMAudioPlayerHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EMAudioPlayerHelper.mm; sourceTree = "<group>"; };
@@ -874,6 +881,8 @@
 		3A4974C0221BC11F00CFC19A /* EMBlacklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBlacklistViewController.m; sourceTree = "<group>"; };
 		3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupOwnerViewController.m; sourceTree = "<group>"; };
 		3A4974C3221BED0F00CFC19A /* EMGroupOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupOwnerViewController.h; sourceTree = "<group>"; };
+		3A4974C5221BFF4700CFC19A /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
+		3A4974C6221BFF4700CFC19A /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
 		3A55B1CD21FABF68001DB6C6 /* EMGroupSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupSettingsViewController.h; sourceTree = "<group>"; };
 		3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupSettingsViewController.m; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
@@ -1620,6 +1629,8 @@
 			children = (
 				3A4974C3221BED0F00CFC19A /* EMGroupOwnerViewController.h */,
 				3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */,
+				3A4974C5221BFF4700CFC19A /* EMGroupAdminsViewController.h */,
+				3A4974C6221BFF4700CFC19A /* EMGroupAdminsViewController.m */,
 				3A497477221BA85F00CFC19A /* GroupImgs */,
 				3A42E47621F9D79B00374C6C /* EMGroupSharedFilesViewController.h */,
 				3A42E47721F9D79B00374C6C /* EMGroupSharedFilesViewController.m */,
@@ -1713,6 +1724,8 @@
 				3A3F298B21F1B2A0001A6327 /* EMChatViewController.m */,
 				3A313E882200090E0077D350 /* EMLocationViewController.h */,
 				3A313E892200090E0077D350 /* EMLocationViewController.m */,
+				3A4052F6221D3428009A5025 /* EMMsgTranspondViewController.h */,
+				3A4052F7221D3428009A5025 /* EMMsgTranspondViewController.m */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1855,6 +1868,8 @@
 				3A420BC022018DCA007648AE /* EMMessageCell.m */,
 				3A420BBE22018DCA007648AE /* EMMessageStatusView.h */,
 				3A420BC122018DCA007648AE /* EMMessageStatusView.m */,
+				3A4052F0221D071D009A5025 /* EMMessageTimeCell.h */,
+				3A4052F1221D071D009A5025 /* EMMessageTimeCell.m */,
 			);
 			path = MessageCell;
 			sourceTree = "<group>";
@@ -3162,6 +3177,7 @@
 				3A2F2E502153AD2300F86EB5 /* Live2ViewController.m in Sources */,
 				3A34CA482215553B00BAB0B5 /* EMMsgFileBubbleView.m in Sources */,
 				3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */,
+				3A4052F2221D071D009A5025 /* EMMessageTimeCell.m in Sources */,
 				3A34CA422215537F00BAB0B5 /* EMMsgImageBubbleView.m in Sources */,
 				3A3F28CC21F1AE98001A6327 /* EMCallSettingsViewController.m in Sources */,
 				3A4974C4221BED1000CFC19A /* EMGroupOwnerViewController.m in Sources */,
@@ -3213,6 +3229,7 @@
 				3ACFA14722117CF600B16331 /* PSTCollectionViewUpdateItem.m in Sources */,
 				3A2F2AF121537EF300F86EB5 /* EMCallOptions+NSCoding.m in Sources */,
 				3A420BD62201B9A8007648AE /* EMChatBarItem.m in Sources */,
+				3A4052F8221D3428009A5025 /* EMMsgTranspondViewController.m in Sources */,
 				90911034192EEA70008A48AA /* main.m in Sources */,
 				3ACFA12422117CD300B16331 /* MWTapDetectingView.m in Sources */,
 				3ACFA041221165BF00B16331 /* EMRefreshTableViewController.m in Sources */,
@@ -3246,6 +3263,7 @@
 				3A3F28B021F1AE80001A6327 /* EMSDKOptionsViewController.m in Sources */,
 				3A3F297A21F1AF88001A6327 /* EMConversationCell.m in Sources */,
 				3A8AF51E221ABE0E00688170 /* EMNotificationHelper.m in Sources */,
+				3A4974C7221BFF4700CFC19A /* EMGroupAdminsViewController.m in Sources */,
 				3A34CAE622156E1200BAB0B5 /* EMChatBarRecordAudioView.m in Sources */,
 				3ACFA14E22117CF600B16331 /* PSTCollectionViewLayout.m in Sources */,
 				3A3F294421F1AF23001A6327 /* EMChatroomsViewController.m in Sources */,

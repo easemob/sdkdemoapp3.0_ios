@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, EMMessageType) {
     EMMessageTypeFile,
     EMMessageTypeCmd,
     EMMessageTypeExtGif,
+    EMMessageTypeExtRecall,
 };
 
 NS_ASSUME_NONNULL_BEGIN

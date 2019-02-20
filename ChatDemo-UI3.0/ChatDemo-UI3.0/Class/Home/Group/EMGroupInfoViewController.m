@@ -11,6 +11,7 @@
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
 #import "EMGroupOwnerViewController.h"
+#import "EMGroupAdminsViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 #import "EMGroupSettingsViewController.h"
 
@@ -192,6 +193,11 @@
         } else if (row == 3) {
             [self _updateGroupOnwerAction];
         }
+    } else if (section == 2) {
+        if (row == 0) {
+            EMGroupAdminsViewController *controller = [[EMGroupAdminsViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     } else if (section == 3) {
         if (row == 0) {
             EMGroupSharedFilesViewController *controller = [[EMGroupSharedFilesViewController alloc] initWithGroup:self.group];
@@ -236,7 +242,7 @@
     self.group = aGroup;
     self.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
     if (self.isOwner) {
-        self.leaveCell.textLabel.text = @"销毁群组";
+        self.leaveCell.textLabel.text = @"解散群组";
     } else {
         self.leaveCell.textLabel.text = @"退出群组";
     }
@@ -383,7 +389,7 @@
     };
     
     if (self.isOwner) {
-        [self showHudInView:self.view hint:@"销毁群组..."];
+        [self showHudInView:self.view hint:@"解散群组..."];
         [[EMClient sharedClient].groupManager destroyGroup:self.groupId finishCompletion:block];
     } else {
         [self showHudInView:self.view hint:@"离开群组..."];

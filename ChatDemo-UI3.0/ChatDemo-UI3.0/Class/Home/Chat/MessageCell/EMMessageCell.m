@@ -8,7 +8,6 @@
 
 #import "EMMessageCell.h"
 
-#import "EMMessageBubbleView.h"
 #import "EMMessageStatusView.h"
 
 #import "EMMsgTextBubbleView.h"
@@ -24,8 +23,6 @@
 @property (nonatomic, strong) UIImageView *avatarView;
 
 @property (nonatomic, strong) UILabel *nameLabel;
-
-@property (nonatomic, strong) EMMessageBubbleView *bubbleView;
 
 @property (nonatomic, strong) EMMessageStatusView *statusView;
 
@@ -203,6 +200,9 @@
     if (bubbleView) {
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewTapAction:)];
         [bubbleView addGestureRecognizer:tap];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewLongPressAction:)];
+        [bubbleView addGestureRecognizer:longPress];
     }
     
     return bubbleView;
@@ -231,6 +231,15 @@
     if (aTap.state == UIGestureRecognizerStateEnded) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(messageCellDidSelected:)]) {
             [self.delegate messageCellDidSelected:self];
+        }
+    }
+}
+
+- (void)bubbleViewLongPressAction:(UILongPressGestureRecognizer *)aLongPress
+{
+    if (aLongPress.state == UIGestureRecognizerStateBegan) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(messageCellDidLongPress:)]) {
+            [self.delegate messageCellDidLongPress:self];
         }
     }
 }
