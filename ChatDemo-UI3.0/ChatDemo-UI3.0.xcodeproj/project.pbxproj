@@ -206,7 +206,6 @@
 		3A420BBB22018DC0007648AE /* EMImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BB922018DBF007648AE /* EMImageBrowser.m */; };
 		3A420BC322018DCA007648AE /* EMMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BC022018DCA007648AE /* EMMessageCell.m */; };
 		3A420BC422018DCA007648AE /* EMMessageStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BC122018DCA007648AE /* EMMessageStatusView.m */; };
-		3A420BD52201B9A8007648AE /* EMChatBarCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BD12201B9A8007648AE /* EMChatBarCallView.m */; };
 		3A420BD62201B9A8007648AE /* EMChatBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BD22201B9A8007648AE /* EMChatBarItem.m */; };
 		3A42E47821F9D79B00374C6C /* EMGroupSharedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A42E47721F9D79B00374C6C /* EMGroupSharedFilesViewController.m */; };
 		3A497475221BA82B00CFC19A /* chatroom_avatar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A497473221BA82A00CFC19A /* chatroom_avatar@3x.png */; };
@@ -846,8 +845,6 @@
 		3A420BBE22018DCA007648AE /* EMMessageStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMMessageStatusView.h; sourceTree = "<group>"; };
 		3A420BC022018DCA007648AE /* EMMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageCell.m; sourceTree = "<group>"; };
 		3A420BC122018DCA007648AE /* EMMessageStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageStatusView.m; sourceTree = "<group>"; };
-		3A420BCF2201B9A8007648AE /* EMChatBarCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatBarCallView.h; sourceTree = "<group>"; };
-		3A420BD12201B9A8007648AE /* EMChatBarCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatBarCallView.m; sourceTree = "<group>"; };
 		3A420BD22201B9A8007648AE /* EMChatBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatBarItem.m; sourceTree = "<group>"; };
 		3A420BD42201B9A8007648AE /* EMChatBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatBarItem.h; sourceTree = "<group>"; };
 		3A42E47621F9D79B00374C6C /* EMGroupSharedFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupSharedFilesViewController.h; sourceTree = "<group>"; };
@@ -1892,8 +1889,6 @@
 				3A33AACF2202969600CFBBF6 /* Emoticon */,
 				3A420BD42201B9A8007648AE /* EMChatBarItem.h */,
 				3A420BD22201B9A8007648AE /* EMChatBarItem.m */,
-				3A420BCF2201B9A8007648AE /* EMChatBarCallView.h */,
-				3A420BD12201B9A8007648AE /* EMChatBarCallView.m */,
 			);
 			path = MoreView;
 			sourceTree = "<group>";
@@ -3258,7 +3253,6 @@
 				3A3F2A0C21F1C353001A6327 /* EMRealtimeSearch.m in Sources */,
 				3ACFA14522117CF600B16331 /* PSTGridLayoutRow.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
-				3A420BD52201B9A8007648AE /* EMChatBarCallView.m in Sources */,
 				3A2F294521537E7E00F86EB5 /* CallResolutionViewController.m in Sources */,
 				3A3F28B021F1AE80001A6327 /* EMSDKOptionsViewController.m in Sources */,
 				3A3F297A21F1AF88001A6327 /* EMConversationCell.m in Sources */,

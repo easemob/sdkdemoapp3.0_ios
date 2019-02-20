@@ -28,7 +28,7 @@
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarCallViewDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic) BOOL isFirstLoadFromDB;
@@ -208,10 +208,6 @@
     EMChatBarEmoticonView *moreEmoticonView = [[EMChatBarEmoticonView alloc] init];
     moreEmoticonView.delegate = self;
     self.chatBar.moreEmoticonView = moreEmoticonView;
-    
-    EMChatBarCallView *moreCallView = [[EMChatBarCallView alloc] initWithChatType:self.conversationModel.emModel.type];
-    moreCallView.delegate = self;
-    self.chatBar.moreCallView = moreCallView;
 }
 
 - (NSString *)_getAudioOrVideoPath
@@ -442,6 +438,51 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)chatBarDidCallAction
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"实时通话类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    __weak typeof(self) weakself = self;
+    if (self.conversationModel.emModel.type == EMConversationTypeChat) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"语音通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakself.chatBar clearMoreViewAndSelectedButton];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"视频通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakself.chatBar clearMoreViewAndSelectedButton];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
+        }]];
+    } else {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"会议模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakself.chatBar clearMoreViewAndSelectedButton];
+            
+            ConfInviteType inviteType = ConfInviteTypeUser;
+            if (weakself.conversationModel.emModel.type == EMChatTypeGroupChat) {
+                inviteType = ConfInviteTypeGroup;
+            } else if (weakself.conversationModel.emModel.type == EMChatTypeChatRoom) {
+                inviteType = ConfInviteTypeChatroom;
+            }
+            [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:weakself.conversationModel.emModel.conversationId chatType:(EMChatType)weakself.conversationModel.emModel.type popFromController:weakself.navigationController];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"直播模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakself.chatBar clearMoreViewAndSelectedButton];
+            
+            ConfInviteType inviteType = ConfInviteTypeUser;
+            if (weakself.conversationModel.emModel.type == EMChatTypeGroupChat) {
+                inviteType = ConfInviteTypeGroup;
+            } else if (weakself.conversationModel.emModel.type == EMChatTypeChatRoom) {
+                inviteType = ConfInviteTypeChatroom;
+            }
+            [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:weakself.conversationModel.emModel.conversationId chatType:(EMChatType)weakself.conversationModel.emModel.type popFromController:weakself.navigationController];
+        }]];
+    }
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 #pragma mark - EMChatBarRecordAudioViewDelegate
 
 - (void)chatBarRecordAudioViewStartRecord
@@ -477,49 +518,6 @@
 - (void)didChatBarEmoticonViewSendAction
 {
     [self _sendTextAction:self.chatBar.textView.text ext:nil];
-}
-
-
-#pragma mark - EMChatBarCallViewDelegate
-
-- (void)chatBarCallViewAudioDidSelected
-{
-    [self.chatBar clearMoreViewAndSelectedButton];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:self.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
-}
-
-- (void)chatBarCallViewVideoDidSelected
-{
-    [self.chatBar clearMoreViewAndSelectedButton];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:self.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
-}
-
-- (void)chatBarCallViewConferenceDidSelected
-{
-    [self.chatBar clearMoreViewAndSelectedButton];
-    
-    ConfInviteType inviteType = ConfInviteTypeUser;
-    if (self.conversationModel.emModel.type == EMChatTypeGroupChat) {
-        inviteType = ConfInviteTypeGroup;
-    } else if (self.conversationModel.emModel.type == EMChatTypeChatRoom) {
-        inviteType = ConfInviteTypeChatroom;
-    }
-    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:self.conversationModel.emModel.conversationId chatType:(EMChatType)self.conversationModel.emModel.type popFromController:self.navigationController];
-}
-
-- (void)chatBarCallViewLiveDidSelected
-{
-    [self.chatBar clearMoreViewAndSelectedButton];
-    
-    ConfInviteType inviteType = ConfInviteTypeUser;
-    if (self.conversationModel.emModel.type == EMChatTypeGroupChat) {
-        inviteType = ConfInviteTypeGroup;
-    } else if (self.conversationModel.emModel.type == EMChatTypeChatRoom) {
-        inviteType = ConfInviteTypeChatroom;
-    }
-    [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:self.conversationModel.emModel.conversationId chatType:(EMChatType)self.conversationModel.emModel.type popFromController:self.navigationController];
 }
 
 #pragma mark - EMMessageCellDelegate

@@ -366,23 +366,10 @@
 
 - (void)callButtonAction:(UIButton *)aButton
 {
-    [self _buttonAction:aButton];
+    [self clearMoreViewAndSelectedButton];
     
-    if (aButton.selected) {
-        if (self.moreCallView) {
-            self.currentMoreView = self.moreCallView;
-            [self addSubview:self.moreCallView];
-            [self.moreCallView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self);
-                make.right.equalTo(self);
-                make.bottom.equalTo(self).offset(-10);
-            }];
-            [self _remakeButtonsViewConstraints];
-            
-//            if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarHeightDidChanged)]) {
-//                [self.delegate chatBarHeightDidChanged];
-//            }
-        }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidCallAction)]) {
+        [self.delegate chatBarDidCallAction];
     }
 }
 
