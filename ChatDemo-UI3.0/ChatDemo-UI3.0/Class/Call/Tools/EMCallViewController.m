@@ -24,15 +24,16 @@
     
     [self _setupCallControllerSubviews];
     
-    //监测耳机状态，如果是插入耳机状态，不显示扬声器按钮
-    self.speakerButton.hidden = isHeadphone();
-    
-    self.speakerButton.selected = NO;
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    [audioSession setActive:YES error:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAudioRouteChanged:)   name:AVAudioSessionRouteChangeNotification object:[AVAudioSession sharedInstance]];
+    
+    //监测耳机状态，如果是插入耳机或者蓝牙状态，不显示扬声器按钮
+    if (isHeadphone()) {
+        self.speakerButton.hidden = YES;
+    }else {
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setActive:YES error:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

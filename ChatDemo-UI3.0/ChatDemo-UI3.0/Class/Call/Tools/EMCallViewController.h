@@ -14,8 +14,12 @@ static bool isHeadphone()
 {
     AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
     for (AVAudioSessionPortDescription* desc in [route outputs]) {
-        if ([[desc portType] isEqualToString:AVAudioSessionPortHeadphones])
+        if ([desc.portType isEqualToString:AVAudioSessionPortBluetoothA2DP]
+            || [desc.portType isEqualToString:AVAudioSessionPortHeadphones]
+            || [desc.portType isEqualToString:AVAudioSessionPortBluetoothLE]
+            || [desc.portType isEqualToString:AVAudioSessionPortBluetoothHFP]) {
             return YES;
+        }
     }
     
     return NO;

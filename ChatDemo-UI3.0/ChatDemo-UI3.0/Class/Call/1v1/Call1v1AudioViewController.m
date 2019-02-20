@@ -24,11 +24,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self _setupSubviews];
-    
-    //默认不开启扬声器
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    [audioSession setActive:YES error:nil];
 }
 
 - (void)didReceiveMemoryWarning {

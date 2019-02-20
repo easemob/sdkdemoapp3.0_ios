@@ -35,9 +35,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    [audioSession setActive:YES error:nil];
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
@@ -51,7 +48,6 @@
     
     //监测耳机状态，如果是插入耳机状态，不显示扬声器按钮
     self.speakerButton.hidden = isHeadphone();
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAudioRouteChanged:)   name:AVAudioSessionRouteChangeNotification object:[AVAudioSession sharedInstance]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -249,42 +245,6 @@
     if (self.callDurationTimer) {
         [self.callDurationTimer invalidate];
         self.callDurationTimer = nil;
-    }
-}
-
-#pragma mark - NSNotification
-
-- (void)handleAudioRouteChanged:(NSNotification *)aNotif
-{
-    NSDictionary *interuptionDict = aNotif.userInfo;
-    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
-    switch (routeChangeReason) {
-        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
-        {
-            //插入耳机
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.speakerButton.hidden = YES;
-            });
-        }
-            break;
-        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
-        {
-            //拔出耳机
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.speakerButton.hidden = NO;
-                if (self.speakerButton.isSelected) {
-                    [self speakerButtonAction];
-                }
-            });
-            
-            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-            [audioSession setActive:YES error:nil];
-        }
-            break;
-        case AVAudioSessionRouteChangeReasonCategoryChange:
-            // called at start - also when other audio wants to play
-            break;
     }
 }
 
