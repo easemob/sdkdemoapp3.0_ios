@@ -1,23 +1,24 @@
 //
-//  EMGroupAdminsViewController.m
+//  EMGroupMembersViewController.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/2/19.
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMGroupAdminsViewController.h"
+#import "EMGroupMembersViewController.h"
 
 #import "EMAvatarNameCell.h"
 
-@interface EMGroupAdminsViewController ()
+@interface EMGroupMembersViewController ()
 
 @property (nonatomic, strong) EMGroup *group;
+@property (nonatomic, strong) NSString *cursor;
 @property (nonatomic) BOOL isUpdated;
 
 @end
 
-@implementation EMGroupAdminsViewController
+@implementation EMGroupMembersViewController
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup
 {
@@ -32,10 +33,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.cursor = nil;
     self.isUpdated = NO;
     
     [self _setupSubviews];
-    [self _fetchGroupAdminsWithIsShowHUD:YES];
+    [self _fetchGroupMembersWithIsHeader:YES isShowHUD:YES];
 }
 
 #pragma mark - Subviews
@@ -43,7 +45,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-    self.title = @"群组管理员";
+    self.title = @"群组普通成员";
     self.showRefreshHeader = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -86,7 +88,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
+    return (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) ? YES : NO;
 }
 
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -109,24 +111,29 @@
     }];
     muteAction.backgroundColor = [UIColor colorWithRed: 116 / 255.0 green: 134 / 255.0 blue: 147 / 255.0 alpha:1.0];
     
-    UITableViewRowAction *adminAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"降权" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        [weakself _adminToMember:userName];
-    }];
-    adminAction.backgroundColor = [UIColor blackColor];
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+        UITableViewRowAction *adminAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"升权" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [weakself _memberToAdmin:userName];
+        }];
+        adminAction.backgroundColor = [UIColor blackColor];
+        
+        return @[deleteAction, blackAction, muteAction, adminAction];
+    }
     
-    return @[deleteAction, blackAction, muteAction, adminAction];
+    return @[deleteAction, blackAction, muteAction];
 }
 
 #pragma mark - Data
 
-- (void)_fetchGroupAdminsWithIsShowHUD:(BOOL)aIsShowHUD
+- (void)_fetchGroupMembersWithIsHeader:(BOOL)aIsHeader
+                             isShowHUD:(BOOL)aIsShowHUD
 {
     if (aIsShowHUD) {
-        [self showHudInView:self.view hint:@"获取群组管理员..."];
+        [self showHudInView:self.view hint:@"获取群组普通成员..."];
     }
     
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+    [[EMClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.group.groupId cursor:self.cursor pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
         if (aIsShowHUD) {
             [weakself hideHud];
         }
@@ -134,19 +141,30 @@
         if (aError) {
             [EMAlertController showErrorAlert:aError.errorDescription];
         } else {
-            weakself.group = aGroup;
+            weakself.cursor = aResult.cursor;
+            [weakself.dataArray addObjectsFromArray:aResult.list];
+            [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
             
-            [weakself.dataArray removeAllObjects];
-            [weakself.dataArray addObjectsFromArray:aGroup.adminList];
+            if ([aResult.list count] == 0 || [aResult.cursor length] == 0) {
+                weakself.showRefreshFooter = NO;
+            } else {
+                weakself.showRefreshFooter = YES;
+            }
+            
             [weakself.tableView reloadData];
         }
-        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     }];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    [self _fetchGroupAdminsWithIsShowHUD:NO];
+    self.cursor = nil;
+    [self _fetchGroupMembersWithIsHeader:YES isShowHUD:NO];
+}
+
+- (void)tableViewDidTriggerFooterRefresh
+{
+    [self _fetchGroupMembersWithIsHeader:NO isShowHUD:NO];
 }
 
 #pragma mark - Action
@@ -203,18 +221,18 @@
     }];
 }
 
-- (void)_adminToMember:(NSString *)aUsername
+- (void)_memberToAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"降为普通成员..."];
+    [self showHudInView:self.view hint:@"升级为管理员..."];
     
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].groupManager removeAdmin:aUsername fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+    [[EMClient sharedClient].groupManager addAdmin:aUsername toGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
         [weakself hideHud];
         if (aError) {
-            [EMAlertController showErrorAlert:@"降为普通成员失败"];
+            [EMAlertController showErrorAlert:@"升级为管理员失败"];
         } else {
             weakself.isUpdated = YES;
-            [EMAlertController showSuccessAlert:@"降为普通成员成功"];
+            [EMAlertController showSuccessAlert:@"升级为管理员成功"];
             [weakself.dataArray removeObject:aUsername];
             [weakself.tableView reloadData];
         }

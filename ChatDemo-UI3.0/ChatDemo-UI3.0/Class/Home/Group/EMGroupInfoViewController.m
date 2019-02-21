@@ -11,6 +11,7 @@
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
 #import "EMGroupOwnerViewController.h"
+#import "EMGroupMembersViewController.h"
 #import "EMGroupAdminsViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 #import "EMGroupSettingsViewController.h"
@@ -19,7 +20,6 @@
 
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) EMGroup *group;
-@property (nonatomic) BOOL isOwner;
 
 @property (nonatomic, strong) UITableViewCell *leaveCell;
 
@@ -46,11 +46,14 @@
 //    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
 }
 
 - (void)dealloc
 {
 //    [[EMClient sharedClient].groupManager removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Subviews
@@ -81,7 +84,7 @@
     } else if (section == 1) {
         count = 1;
     }  else if (section == 2) {
-        count = self.isOwner ? 3 : 1;
+        count = self.group.permissionType == EMGroupPermissionTypeOwner ? 3 : 1;
     } else if (section == 3) {
         count = 2;
     } else if (section == 4) {
@@ -116,20 +119,24 @@
         } else if (row == 1) {
             cell.textLabel.text = @"名称";
             cell.detailTextLabel.text = self.group.subject;
-            cell.accessoryType = self.isOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.group.permissionType == EMGroupPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 2) {
             cell.textLabel.text = @"简介";
             cell.detailTextLabel.text = self.group.description;
-            cell.accessoryType = self.isOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.group.permissionType == EMGroupPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 3) {
             cell.textLabel.text = @"群主";
             cell.detailTextLabel.text = self.group.owner;
-            cell.accessoryType = self.isOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.group.permissionType == EMGroupPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         }
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"群组成员";
-            cell.detailTextLabel.text = @([self.group.memberList count]).stringValue;
+            if ([self.group.memberList count] > 0) {
+                cell.detailTextLabel.text = @([self.group.memberList count]).stringValue;
+            } else {
+                cell.detailTextLabel.text = nil;
+            }
         }
     }  else if (section == 2) {
         if (row == 0) {
@@ -146,7 +153,6 @@
         if (row == 0) {
             cell.textLabel.text = @"共享文件";
             cell.detailTextLabel.text = @"";
-//            cell.detailTextLabel.text = @([self.group.sharedFileList count]).stringValue;
         } else if (row == 1) {
             cell.textLabel.text = @"群组设置";
             cell.detailTextLabel.text = nil;
@@ -185,13 +191,18 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 0 && self.isOwner) {
+    if (section == 0 && self.group.permissionType == EMGroupPermissionTypeOwner) {
         if (row == 1) {
             [self _updateGroupNameAction];
         } else if (row == 2) {
             [self _updateGroupDetailAction];
         } else if (row == 3) {
             [self _updateGroupOnwerAction];
+        }
+    } else if (section == 1) {
+        if (row == 0) {
+            EMGroupMembersViewController *controller = [[EMGroupMembersViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 2) {
         if (row == 0) {
@@ -240,8 +251,7 @@
 - (void)_resetGroup:(EMGroup *)aGroup
 {
     self.group = aGroup;
-    self.isOwner = [aGroup.owner isEqualToString:[EMClient sharedClient].currentUsername] ? YES : NO;
-    if (self.isOwner) {
+    if (aGroup.permissionType == EMGroupPermissionTypeOwner) {
         self.leaveCell.textLabel.text = @"解散群组";
     } else {
         self.leaveCell.textLabel.text = @"退出群组";
@@ -274,6 +284,18 @@
     [self _fetchGroupWithId:self.groupId isShowHUD:NO];
 }
 
+#pragma mark - NSNotification
+
+- (void)handleGroupInfoUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    if (!group || ![group.groupId isEqualToString:self.groupId]) {
+        return;
+    }
+    
+    [self _fetchGroupWithId:self.groupId isShowHUD:NO];
+}
+
 #pragma mark - Action
 
 - (void)groupAnnouncementAction
@@ -283,9 +305,9 @@
     [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, EMError *aError) {
         [weakself hideHud];
         if (!aError) {
-            BOOL isEditable = weakself.isOwner;
-            if (!isEditable) {
-                isEditable = [weakself.group.adminList containsObject:[EMClient sharedClient].currentUsername];
+            BOOL isEditable = NO;
+            if (weakself.group.permissionType == EMGroupPermissionTypeOwner || weakself.group.permissionType == EMGroupPermissionTypeAdmin) {
+                isEditable = YES;
             }
             EMTextViewController *controller = [[EMTextViewController alloc] initWithString:aAnnouncement placeholder:@"请输入群组公告" isEditable:isEditable];
             controller.title = @"群组公告";
@@ -343,7 +365,8 @@
 
 - (void)_updateGroupDetailAction
 {
-    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.group.description placeholder:@"请输入群组简介" isEditable:self.isOwner];
+    BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
+    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.group.description placeholder:@"请输入群组简介" isEditable:isEditable];
     controller.title = @"群组简介";
     [self.navigationController pushViewController:controller animated:YES];
     
@@ -388,7 +411,7 @@
         }
     };
     
-    if (self.isOwner) {
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
         [self showHudInView:self.view hint:@"解散群组..."];
         [[EMClient sharedClient].groupManager destroyGroup:self.groupId finishCompletion:block];
     } else {

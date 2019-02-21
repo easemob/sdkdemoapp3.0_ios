@@ -36,4 +36,7 @@
 #define CONTACT_BLACKLIST_UPDATE @"EMContactBlacklistUpdate"
 #define CONTACT_BLACKLIST_RELOAD @"EMContactReloadBlacklist"
 
+//群组
+#define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
+
 #endif /* EMDefines_h */
