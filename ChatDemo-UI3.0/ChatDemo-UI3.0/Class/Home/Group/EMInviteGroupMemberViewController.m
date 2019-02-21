@@ -37,19 +37,7 @@
     self.selectedArray = [[NSMutableArray alloc] init];
     [self _setupSubviews];
     
-    NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-    if ([self.blocks count] > 0) {
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        for (NSString *user in contacts) {
-            if (![self.blocks containsObject:user]) {
-                [array addObject:user];
-            }
-        }
-    } else {
-        [self.dataArray addObjectsFromArray:contacts];
-    }
-
-    [self.tableView reloadData];
+    [self _fetchContactsWithIsShowHUD:YES];
 }
 
 #pragma mark - Subviews
@@ -70,7 +58,7 @@
     
     self.view.backgroundColor = kColor_LightGray;
     self.tableView.backgroundColor = kColor_LightGray;
-//    self.showRefreshHeader = YES;
+    self.showRefreshHeader = YES;
     
     UIView *bottomView = [[UIView alloc] init];
     bottomView.backgroundColor = [UIColor whiteColor];
@@ -220,6 +208,37 @@
             [weakself.searchResultTableView reloadData];
         });
     }];
+}
+
+#pragma mark - Data
+
+- (void)_fetchContactsWithIsShowHUD:(BOOL)aIsShowHUD
+{
+    [self showHudInView:self.view hint:@"获取联系人..."];
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            if ([weakself.blocks count] > 0) {
+                NSMutableArray *array = [[NSMutableArray alloc] init];
+                for (NSString *user in aList) {
+                    if (![weakself.blocks containsObject:user]) {
+                        [array addObject:user];
+                    }
+                }
+                [weakself.dataArray addObjectsFromArray:array];
+            } else {
+                [weakself.dataArray addObjectsFromArray:aList];
+            }
+            
+            [weakself.tableView reloadData];
+        }
+    }];
+}
+
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    [self _fetchContactsWithIsShowHUD:NO];
 }
 
 #pragma mark - Action
