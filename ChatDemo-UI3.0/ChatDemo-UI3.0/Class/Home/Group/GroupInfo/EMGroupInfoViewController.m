@@ -95,8 +95,14 @@
     if (section == 0) {
         count = 4;
     } else if (section == 1) {
-        count = 2;
-    }  else if (section == 2) {
+        if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && self.group.permissionType == EMGroupPermissionTypeOwner) {
+            count = 2;
+        } else if (self.group.setting.style == EMGroupStylePrivateMemberCanInvite) {
+            count = 2;
+        } else {
+            count = 1;
+        }
+    } else if (section == 2) {
         count = self.group.permissionType == EMGroupPermissionTypeOwner ? 3 : 1;
     } else if (section == 3) {
         count = 2;

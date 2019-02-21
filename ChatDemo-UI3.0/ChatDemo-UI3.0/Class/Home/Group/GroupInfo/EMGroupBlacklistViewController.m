@@ -127,7 +127,6 @@
                 [weakself.dataArray removeAllObjects];
             }
             [weakself.dataArray addObjectsFromArray:aList];
-            [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
             
             if ([aList count] == 0) {
                 weakself.showRefreshFooter = NO;
@@ -137,6 +136,8 @@
             
             [weakself.tableView reloadData];
         }
+        
+        [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
     }];
 }
 

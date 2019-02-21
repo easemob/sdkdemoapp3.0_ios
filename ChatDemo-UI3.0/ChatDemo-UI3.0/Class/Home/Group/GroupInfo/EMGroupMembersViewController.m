@@ -147,7 +147,6 @@
             
             weakself.cursor = aResult.cursor;
             [weakself.dataArray addObjectsFromArray:aResult.list];
-            [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
             
             if ([aResult.list count] == 0 || [aResult.cursor length] == 0) {
                 weakself.showRefreshFooter = NO;
@@ -157,6 +156,8 @@
             
             [weakself.tableView reloadData];
         }
+        
+        [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];
     }];
 }
 

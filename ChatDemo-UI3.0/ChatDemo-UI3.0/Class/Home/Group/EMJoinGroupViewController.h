@@ -6,11 +6,11 @@
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "EMRefreshViewController.h"
+#import "EMSearchViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMJoinGroupViewController : EMRefreshViewController
+@interface EMJoinGroupViewController : EMSearchViewController
 
 @end
 

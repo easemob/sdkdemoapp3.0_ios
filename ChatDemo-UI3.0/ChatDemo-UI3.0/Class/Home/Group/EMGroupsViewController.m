@@ -15,7 +15,7 @@
 #import "EMJoinGroupViewController.h"
 #import "EMChatViewController.h"
 
-@interface EMGroupsViewController ()<EMMultiDevicesDelegate>
+@interface EMGroupsViewController ()<EMMultiDevicesDelegate, EMGroupManagerDelegate>
 
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
@@ -32,11 +32,13 @@
     [self _fetchJoinedGroupsWithPage:self.page isHeader:YES isShowHUD:YES];
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)dealloc
 {
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
 }
 
 #pragma mark - Subviews
@@ -209,6 +211,15 @@
         default:
             break;
     }
+}
+
+#pragma mark - EMGroupManagerDelegate
+
+- (void)groupListDidUpdate:(NSArray *)aGroupList
+{
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:aGroupList];
+    [self.tableView reloadData];
 }
 
 #pragma mark - data
