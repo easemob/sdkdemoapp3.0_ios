@@ -248,7 +248,7 @@
 - (void)_updateName
 {
     __weak typeof(self) weakself = self;
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入群组名称"];
+    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入群组名称" isEditable:YES];
     controller.title = @"群组名称";
     [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         weakself.name = aString;

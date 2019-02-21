@@ -203,7 +203,7 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 0 && self.group.permissionType == EMGroupPermissionTypeOwner) {
+    if (section == 0) {
         if (row == 1) {
             [self _updateGroupNameAction];
         } else if (row == 2) {
@@ -334,7 +334,8 @@
 
 - (void)_updateGroupNameAction
 {
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.subject placeholder:@"请输入群组名称"];
+    BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
+    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.subject placeholder:@"请输入群组名称" isEditable:isEditable];
     controller.title = @"群组名称";
     [self.navigationController pushViewController:controller animated:YES];
     
@@ -388,6 +389,10 @@
 
 - (void)_updateGroupOnwerAction
 {
+    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+        return;
+    }
+    
     EMGroupOwnerViewController *controller = [[EMGroupOwnerViewController alloc] initWithGroup:self.group];
     __weak typeof(self) weakself = self;
     [controller setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {

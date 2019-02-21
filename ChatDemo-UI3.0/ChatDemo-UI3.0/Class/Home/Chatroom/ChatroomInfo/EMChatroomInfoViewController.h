@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMChatroomInfoViewController : EMRefreshTableViewController
 
+@property (nonatomic, copy) void (^leaveCompletion)(void);
+
 - (instancetype)initWithChatroomId:(NSString *)aChatroomId;
 
 @end

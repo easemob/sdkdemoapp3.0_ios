@@ -39,4 +39,7 @@
 //群组
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
 
+//聊天室
+#define CHATROOM_INFO_UPDATED @"EMChatroomInfoUpdated"
+
 #endif /* EMDefines_h */

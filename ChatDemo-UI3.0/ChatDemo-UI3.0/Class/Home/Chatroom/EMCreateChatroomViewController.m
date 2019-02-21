@@ -124,7 +124,7 @@
     NSInteger row = indexPath.row;
     __weak typeof(self) weakself = self;
     if (row == 0) {
-        EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入聊天室名称"];
+        EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.name placeholder:@"请输入聊天室名称" isEditable:YES];
         controller.title = @"聊天室名称";
         [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
             weakself.name = aString;

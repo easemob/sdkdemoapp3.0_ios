@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString *originalString;
 @property (nonatomic, strong) NSString *placeholder;
+@property (nonatomic) BOOL isEditable;
 
 @property (nonatomic, strong) UITextField *textField;
 
@@ -21,11 +22,13 @@
 
 - (instancetype)initWithString:(NSString *)aString
                    placeholder:(NSString *)aPlaceholder
+                    isEditable:(BOOL)aIsEditable
 {
     self = [super init];
     if (self) {
         _originalString = aString;
         _placeholder = aPlaceholder;
+        _isEditable = aIsEditable;
     }
     
     return self;
@@ -42,7 +45,9 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    if (self.isEditable) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    }
     
     self.view.backgroundColor = kColor_LightGray;
     UIView *bgView = [[UIView alloc] init];
@@ -59,10 +64,13 @@
     self.textField.delegate = self;
     self.textField.backgroundColor = [UIColor clearColor];
     self.textField.font = [UIFont systemFontOfSize:16];
-    self.textField.placeholder = self.placeholder;
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.text = self.originalString;
+    self.textField.enabled = self.isEditable;
+    if (self.isEditable) {
+        self.textField.placeholder = self.placeholder;
+    }
     [self.view addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);

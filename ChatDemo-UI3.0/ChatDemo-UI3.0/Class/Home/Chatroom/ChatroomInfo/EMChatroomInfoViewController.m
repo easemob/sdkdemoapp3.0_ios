@@ -9,6 +9,11 @@
 #import "EMChatroomInfoViewController.h"
 
 #import "EMTextViewController.h"
+#import "EMTextFieldViewController.h"
+#import "EMChatroomOwnerViewController.h"
+#import "EMChatroomMembersViewController.h"
+#import "EMChatroomAdminsViewController.h"
+#import "EMChatroomMutesViewController.h"
 
 @interface EMChatroomInfoViewController ()
 
@@ -39,11 +44,14 @@
     [self _setupSubviews];
     
     [self _fetchChatroomWithId:self.chatroomId isShowHUD:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleChatroomInfoUpdated:) name:CHATROOM_INFO_UPDATED object:nil];
 }
 
 - (void)dealloc
 {
     //    [[EMClient sharedClient].roomManager removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Subviews
@@ -56,6 +64,7 @@
     
     self.showRefreshHeader = YES;
     
+    self.tableView.rowHeight = 60;
     self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultRedFont"];
     self.leaveCell.textLabel.textColor = [UIColor redColor];
     self.leaveCell.textLabel.text = @"退出聊天室";
@@ -74,7 +83,10 @@
     } else if (section == 1) {
         count = 1;
     }  else if (section == 2) {
-        count = 2;
+        count = 1;
+        if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
+            count = 2;
+        }
     } else if (section == 3) {
         count = 1;
     }
@@ -107,20 +119,21 @@
         } else if (row == 1) {
             cell.textLabel.text = @"名称";
             cell.detailTextLabel.text = self.chatroom.subject;
-//            cell.accessoryType = self.isOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 2) {
             cell.textLabel.text = @"描述";
             cell.detailTextLabel.text = self.chatroom.description;
-//            cell.accessoryType = self.isOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 3) {
             cell.textLabel.text = @"Owner";
             cell.detailTextLabel.text = self.chatroom.owner;
-//            cell.accessoryType = self.isOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.accessoryType = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         }
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"聊天室成员";
-            cell.detailTextLabel.text = @([self.chatroom.memberList count]).stringValue;
+            cell.detailTextLabel.text = nil;
+//            cell.detailTextLabel.text = @([self.chatroom.memberList count]).stringValue;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }  else if (section == 2) {
@@ -139,11 +152,6 @@
 }
 
 #pragma mark - Table view delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 55;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -165,18 +173,44 @@
     NSInteger row = indexPath.row;
     if (section == 0) {
         if (row == 1) {
-            
+            [self _updateChatroomNameAction];
         } else if (row == 2) {
-            
+            [self _updateChatroomDetailAction];
         } else if (row == 3) {
-            
+            [self _updateChatroomOnwerAction];
+        }
+    } else if (section == 1) {
+        if (row == 0) {
+            EMChatroomMembersViewController *controller = [[EMChatroomMembersViewController alloc] initWithChatroom:self.chatroom];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 2) {
-        
+        if (row == 0) {
+            EMChatroomAdminsViewController *controller = [[EMChatroomAdminsViewController alloc] initWithChatroom:self.chatroom];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 1) {
+            EMChatroomMutesViewController *controller = [[EMChatroomMutesViewController alloc] initWithChatroom:self.chatroom];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+    } else if (section == 3) {
+        if (row == 0) {
+            [self _leaveChatroomAction];
+        }
     }
 }
 
 #pragma mark - Data
+
+- (void)_resetChatroom:(EMChatroom *)aChatroom
+{
+    self.chatroom = aChatroom;
+    if (aChatroom.permissionType == EMChatroomPermissionTypeOwner) {
+        self.leaveCell.textLabel.text = @"解散聊天室";
+    } else {
+        self.leaveCell.textLabel.text = @"退出聊天室";
+    }
+    [self.tableView reloadData];
+}
 
 - (void)_fetchChatroomWithId:(NSString *)aChatroomId
                    isShowHUD:(BOOL)aIsShowHUD
@@ -204,6 +238,18 @@
 {
     self.page = 1;
     [self _fetchChatroomWithId:self.chatroomId isShowHUD:NO];
+}
+
+#pragma mark - NSNotification
+
+- (void)handleChatroomInfoUpdated:(NSNotification *)aNotif
+{
+    EMChatroom *chatroom = aNotif.object;
+    if (!chatroom || ![chatroom.chatroomId isEqualToString:self.chatroomId]) {
+        return;
+    }
+    
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 #pragma mark - Action
@@ -242,6 +288,97 @@
             [EMAlertController showErrorAlert:@"获取聊天室公告失败"];
         }
     }];
+}
+
+- (void)_updateChatroomNameAction
+{
+    BOOL isEditable = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? YES : NO;
+    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.chatroom.subject placeholder:@"请输入聊天室名称" isEditable:isEditable];
+    controller.title = @"聊天室名称";
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    __weak typeof(self) weakself = self;
+    __weak typeof(controller) weakController = controller;
+    [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
+        if ([aString length] == 0) {
+            [EMAlertController showErrorAlert:@"聊天室名称不能为空"];
+            return NO;
+        }
+        
+        [weakController showHudInView:weakController.view hint:@"更新聊天室名称..."];
+        [[EMClient sharedClient].roomManager updateSubject:aString forChatroom:weakself.chatroom.chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+            [weakController hideHud];
+            if (!aError) {
+                [weakself _resetChatroom:aChatroom];
+                [weakController.navigationController popViewControllerAnimated:YES];
+            } else {
+                [EMAlertController showErrorAlert:@"更新聊天室名称失败"];
+            }
+        }];
+        
+        return NO;
+    }];
+}
+
+- (void)_updateChatroomDetailAction
+{
+    BOOL isEditable = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? YES : NO;
+    EMTextViewController *controller = [[EMTextViewController alloc] initWithString:self.chatroom.description placeholder:@"请输入聊天室简介" isEditable:isEditable];
+    controller.title = @"聊天室简介";
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    __weak typeof(self) weakself = self;
+    __weak typeof(controller) weakController = controller;
+    [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
+        [weakController showHudInView:weakController.view hint:@"更新聊天室简介..."];
+        [[EMClient sharedClient].roomManager updateDescription:aString forChatroom:weakself.chatroom.chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+            [weakController hideHud];
+            if (!aError) {
+                [weakself _resetChatroom:aChatroom];
+                [weakController.navigationController popViewControllerAnimated:YES];
+            } else {
+                [EMAlertController showErrorAlert:@"更新聊天室简介失败"];
+            }
+        }];
+        
+        return NO;
+    }];
+}
+
+- (void)_updateChatroomOnwerAction
+{
+    if (self.chatroom.permissionType != EMChatroomPermissionTypeOwner) {
+        return;
+    }
+    
+    EMChatroomOwnerViewController *controller = [[EMChatroomOwnerViewController alloc] initWithChatroom:self.chatroom];
+    __weak typeof(self) weakself = self;
+    [controller setSuccessCompletion:^(EMChatroom * _Nonnull aChatroom) {
+        [weakself _resetChatroom:aChatroom];
+    }];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)_leaveChatroomAction
+{
+    __weak typeof(self) weakself = self;
+    void (^block)(EMError *aError) = ^(EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            if (weakself.leaveCompletion) {
+                weakself.leaveCompletion();
+            }
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner) {
+        [self showHudInView:self.view hint:@"解散群组..."];
+        [[EMClient sharedClient].roomManager destroyChatroom:self.chatroom.chatroomId completion:block];
+    } else {
+        [self showHudInView:self.view hint:@"离开群组..."];
+        [[EMClient sharedClient].roomManager leaveChatroom:self.chatroom.chatroomId completion:block];
+    }
 }
 
 @end
