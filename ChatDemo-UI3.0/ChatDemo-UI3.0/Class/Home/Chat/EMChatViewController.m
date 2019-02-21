@@ -27,6 +27,7 @@
 #import "EMChatroomInfoViewController.h"
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
+#import "EMAtGroupMembersViewController.h"
 
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
@@ -53,6 +54,9 @@
 
 //消息格式化
 @property (nonatomic) NSTimeInterval msgTimelTag;
+
+//@
+@property (nonatomic) BOOL isWillInputAt;
 
 @end
 
@@ -370,12 +374,46 @@
 
 #pragma mark - EMChatBarDelegate
 
+- (void)_willInputAt:(EMTextView *)aInputView
+{
+    do {
+        if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
+            break;
+        }
+        
+        NSString *text = aInputView.text;
+//        if (![text hasSuffix:@"@"]) {
+//            break;
+//        }
+        
+        EMGroup *group = [EMGroup groupWithId:self.conversationModel.emModel.conversationId];
+        if (!group) {
+            break;
+        }
+        
+        [self.view endEditing:YES];
+        EMAtGroupMembersViewController *controller = [[EMAtGroupMembersViewController alloc] initWithGroup:group];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller setSelectedCompletion:^(NSString * _Nonnull aName) {
+            NSString *newStr = [NSString stringWithFormat:@"%@%@ ", text, aName];
+            aInputView.text = newStr;
+            aInputView.selectedRange = NSMakeRange(newStr.length, 0);
+            [aInputView becomeFirstResponder];
+        }];
+        
+    } while (0);
+}
+
 - (BOOL)inputView:(EMTextView *)aInputView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    self.isWillInputAt = NO;
     if ([text isEqualToString:@"\n"]) {
         [self _sendTextAction:aInputView.text ext:nil];
-        
         return NO;
+    } else if ([text isEqualToString:@"@"]) {
+        self.isWillInputAt = YES;
+    } else if ([text length] == 0) {
+        
     }
     
     return YES;
@@ -383,14 +421,13 @@
 
 - (void)inputViewDidChange:(EMTextView *)aInputView
 {
-//    NSString *text = aInputView.text;
-//    if ([text hasSuffix:@"@"]) {
-//        if ([self.delegate respondsToSelector:@selector(didInputAtInLocation:)]) {
-//            if ([self.delegate didInputAtInLocation:(text.length - 1)]) {
-//                [self _willShowInputTextViewToHeight:[self _getTextViewContentH:self.inputTextView]];
-//            }
-//        }
-//    }
+    if (self.isWillInputAt && self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
+        NSString *text = aInputView.text;
+        if ([text hasSuffix:@"@"]) {
+            self.isWillInputAt = NO;
+            [self _willInputAt:aInputView];
+        }
+    }
 }
 
 - (void)chatBarDidCameraAction

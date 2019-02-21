@@ -151,6 +151,7 @@
 		3A2B884F221E8B7C0063D7F6 /* EMChatroomBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8848221E8B7C0063D7F6 /* EMChatroomBlacklistViewController.m */; };
 		3A2B8850221E8B7C0063D7F6 /* EMChatroomAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B884A221E8B7C0063D7F6 /* EMChatroomAdminsViewController.m */; };
 		3A2B8851221E8B7C0063D7F6 /* EMChatroomOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B884C221E8B7C0063D7F6 /* EMChatroomOwnerViewController.m */; };
+		3A2B8854221EB2A30063D7F6 /* EMAtGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8852221EB2A30063D7F6 /* EMAtGroupMembersViewController.m */; };
 		3A2F294221537E7E00F86EB5 /* Call1v1AudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F292F21537E7E00F86EB5 /* Call1v1AudioViewController.m */; };
 		3A2F294321537E7E00F86EB5 /* Call1v1VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F293121537E7E00F86EB5 /* Call1v1VideoViewController.m */; };
 		3A2F294421537E7E00F86EB5 /* EM1v1CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F293321537E7E00F86EB5 /* EM1v1CallViewController.m */; };
@@ -736,6 +737,8 @@
 		3A2B884A221E8B7C0063D7F6 /* EMChatroomAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatroomAdminsViewController.m; sourceTree = "<group>"; };
 		3A2B884B221E8B7C0063D7F6 /* EMChatroomAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatroomAdminsViewController.h; sourceTree = "<group>"; };
 		3A2B884C221E8B7C0063D7F6 /* EMChatroomOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatroomOwnerViewController.m; sourceTree = "<group>"; };
+		3A2B8852221EB2A30063D7F6 /* EMAtGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMAtGroupMembersViewController.m; sourceTree = "<group>"; };
+		3A2B8853221EB2A30063D7F6 /* EMAtGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAtGroupMembersViewController.h; sourceTree = "<group>"; };
 		3A2F292E21537E7E00F86EB5 /* Call1v1VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Call1v1VideoViewController.h; sourceTree = "<group>"; };
 		3A2F292F21537E7E00F86EB5 /* Call1v1AudioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Call1v1AudioViewController.m; sourceTree = "<group>"; };
 		3A2F293021537E7E00F86EB5 /* EM1v1CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EM1v1CallViewController.h; sourceTree = "<group>"; };
@@ -1930,6 +1933,8 @@
 				3A313E892200090E0077D350 /* EMLocationViewController.m */,
 				3A4052F6221D3428009A5025 /* EMMsgTranspondViewController.h */,
 				3A4052F7221D3428009A5025 /* EMMsgTranspondViewController.m */,
+				3A2B8853221EB2A30063D7F6 /* EMAtGroupMembersViewController.h */,
+				3A2B8852221EB2A30063D7F6 /* EMAtGroupMembersViewController.m */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2017,7 +2022,6 @@
 				3A3F2A0821F1C353001A6327 /* EMRealtimeSearch.m */,
 				3AB4E8DC221274FD00A0F59A /* EMDateHelper.h */,
 				3AB4E8DD221274FD00A0F59A /* EMDateHelper.m */,
-				3ACFA05422116DCC00B16331 /* DeviceHelper */,
 				3A3F29C321F1C343001A6327 /* EMAlertController */,
 				3ACFA01B221165A500B16331 /* ViewController */,
 				3A3F29BD21F1C343001A6327 /* Category */,
@@ -2248,13 +2252,6 @@
 				3ACFA049221165CA00B16331 /* XHSearchResultController.m */,
 			);
 			path = SearchController;
-			sourceTree = "<group>";
-		};
-		3ACFA05422116DCC00B16331 /* DeviceHelper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DeviceHelper;
 			sourceTree = "<group>";
 		};
 		3ACFA08522117CBD00B16331 /* 3rdParty */ = {
@@ -3312,6 +3309,7 @@
 				3ACFA14522117CF600B16331 /* PSTGridLayoutRow.m in Sources */,
 				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
 				3A2F294521537E7E00F86EB5 /* CallResolutionViewController.m in Sources */,
+				3A2B8854221EB2A30063D7F6 /* EMAtGroupMembersViewController.m in Sources */,
 				3A3F28B021F1AE80001A6327 /* EMSDKOptionsViewController.m in Sources */,
 				3A3F297A21F1AF88001A6327 /* EMConversationCell.m in Sources */,
 				3A8AF51E221ABE0E00688170 /* EMNotificationHelper.m in Sources */,

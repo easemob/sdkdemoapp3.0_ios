@@ -1,5 +1,5 @@
 //
-//  EMGroupOwnerViewController.h
+//  EMAtGroupMembersViewController.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2019/2/19.
@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMGroupOwnerViewController : EMSearchViewController
+@interface EMAtGroupMembersViewController : EMSearchViewController
 
-@property (nonatomic, copy) void (^successCompletion)(EMGroup *aGroup);
+@property (nonatomic, copy) void (^selectedCompletion)(NSString *aName);
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup;
 
