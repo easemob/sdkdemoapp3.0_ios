@@ -74,7 +74,7 @@
     cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     cell.indexPath = indexPath;
     
-    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+    if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -141,6 +141,10 @@
         if (aError) {
             [EMAlertController showErrorAlert:aError.errorDescription];
         } else {
+            if (aIsHeader) {
+                [weakself.dataArray removeAllObjects];
+            }
+            
             weakself.cursor = aResult.cursor;
             [weakself.dataArray addObjectsFromArray:aResult.list];
             [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:NO];

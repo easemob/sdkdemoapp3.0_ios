@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void (^doneCompletion)(NSArray *aSelectedArray);
 
+- (instancetype)initWithBlocks:(NSArray *)aBlocks;
+
 @end
 
 NS_ASSUME_NONNULL_END

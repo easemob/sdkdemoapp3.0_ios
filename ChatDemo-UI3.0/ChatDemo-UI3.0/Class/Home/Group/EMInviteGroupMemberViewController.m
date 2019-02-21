@@ -12,12 +12,24 @@
 
 @interface EMInviteGroupMemberViewController ()
 
+@property (nonatomic, strong) NSArray *blocks;
+
 @property (nonatomic, strong) NSMutableArray *selectedArray;
 @property (nonatomic, strong) UILabel *selectedLabel;
 
 @end
 
 @implementation EMInviteGroupMemberViewController
+
+- (instancetype)initWithBlocks:(NSArray *)aBlocks
+{
+    self = [super init];
+    if (self) {
+        _blocks = aBlocks;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,7 +38,17 @@
     [self _setupSubviews];
     
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
-    [self.dataArray addObjectsFromArray:contacts];
+    if ([self.blocks count] > 0) {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        for (NSString *user in contacts) {
+            if (![self.blocks containsObject:user]) {
+                [array addObject:user];
+            }
+        }
+    } else {
+        [self.dataArray addObjectsFromArray:contacts];
+    }
+
     [self.tableView reloadData];
 }
 
@@ -48,7 +70,7 @@
     
     self.view.backgroundColor = kColor_LightGray;
     self.tableView.backgroundColor = kColor_LightGray;
-    self.showRefreshHeader = YES;
+//    self.showRefreshHeader = YES;
     
     UIView *bottomView = [[UIView alloc] init];
     bottomView.backgroundColor = [UIColor whiteColor];

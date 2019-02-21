@@ -315,7 +315,7 @@
         [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
             [weakself.members removeAllObjects];
             [weakself.members addObjectsFromArray:aSelectedArray];
-            weakself.inviteCountCell.detailTextLabel.text = @([self.members count]).stringValue;
+            weakself.inviteCountCell.detailTextLabel.text = @([weakself.members count]).stringValue;
         }];
     }
     

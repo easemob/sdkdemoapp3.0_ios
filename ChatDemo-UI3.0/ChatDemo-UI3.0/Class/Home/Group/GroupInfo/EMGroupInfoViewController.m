@@ -8,19 +8,25 @@
 
 #import "EMGroupInfoViewController.h"
 
+#import "EMAvatarNameCell.h"
+
 #import "EMTextFieldViewController.h"
 #import "EMTextViewController.h"
 #import "EMGroupOwnerViewController.h"
 #import "EMGroupMembersViewController.h"
 #import "EMGroupAdminsViewController.h"
+#import "EMGroupMutesViewController.h"
+#import "EMGroupBlacklistViewController.h"
 #import "EMGroupSharedFilesViewController.h"
 #import "EMGroupSettingsViewController.h"
+#import "EMInviteGroupMemberViewController.h"
 
 @interface EMGroupInfoViewController ()
 
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) EMGroup *group;
 
+@property (nonatomic, strong) EMAvatarNameCell *addMemberCell;
 @property (nonatomic, strong) UITableViewCell *leaveCell;
 
 @end
@@ -66,6 +72,13 @@
     
     self.showRefreshHeader = YES;
 
+    self.tableView.rowHeight = 60;
+    
+    self.addMemberCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
+    self.addMemberCell.avatarView.image = [UIImage imageNamed:@"group_join"];
+    self.addMemberCell.nameLabel.textColor = kColor_Blue;
+    self.addMemberCell.nameLabel.text = @"添加成员";
+    
     self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultRedFont"];
     self.leaveCell.textLabel.textColor = [UIColor redColor];
     self.leaveCell.textLabel.text = @"退出群组";
@@ -82,7 +95,7 @@
     if (section == 0) {
         count = 4;
     } else if (section == 1) {
-        count = 1;
+        count = 2;
     }  else if (section == 2) {
         count = self.group.permissionType == EMGroupPermissionTypeOwner ? 3 : 1;
     } else if (section == 3) {
@@ -99,6 +112,8 @@
     NSInteger row = indexPath.row;
     if (section == 4 && row == 0) {
         return self.leaveCell;
+    } else if (section == 1 && row == 1) {
+        return self.addMemberCell;
     }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCellStyleValue1"];
@@ -164,15 +179,6 @@
 
 #pragma mark - Table view delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 1 && indexPath.row == 1) {
-        return 75;
-    }
-    
-    return 55;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 20;
@@ -203,10 +209,18 @@
         if (row == 0) {
             EMGroupMembersViewController *controller = [[EMGroupMembersViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 1) {
+            [self addMemberAction];
         }
     } else if (section == 2) {
         if (row == 0) {
             EMGroupAdminsViewController *controller = [[EMGroupAdminsViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 1) {
+            EMGroupBlacklistViewController *controller = [[EMGroupBlacklistViewController alloc] initWithGroup:self.group];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (row == 2) {
+            EMGroupMutesViewController *controller = [[EMGroupMutesViewController alloc] initWithGroup:self.group];
             [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 3) {
@@ -224,29 +238,7 @@
     }
 }
 
-//#pragma mark - EMGroupManagerDelegate
-//
-//- (void)groupFileListDidUpdate:(EMGroup *)aGroup
-//               addedSharedFile:(EMGroupSharedFile *)aSharedFile
-//{
-//    [self _reloadSharedFilesCell];
-//}
-//
-//- (void)groupFileListDidUpdate:(EMGroup *)aGroup
-//             removedSharedFile:(NSString *)aFileId
-//{
-//    [self _reloadSharedFilesCell];
-//}
-
 #pragma mark - Data
-
-//- (void)_reloadSharedFilesCell
-//{
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
-//    [self.tableView beginUpdates];
-//    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    [self.tableView endUpdates];
-//}
 
 - (void)_resetGroup:(EMGroup *)aGroup
 {
@@ -418,6 +410,30 @@
         [self showHudInView:self.view hint:@"离开群组..."];
         [[EMClient sharedClient].groupManager leaveGroup:self.groupId completion:block];
     }
+}
+
+- (void)addMemberAction
+{
+    NSMutableArray *occupants = [[NSMutableArray alloc] init];
+    [occupants addObject:self.group.owner];
+    [occupants addObjectsFromArray:self.group.adminList];
+    [occupants addObjectsFromArray:self.group.memberList];
+    EMInviteGroupMemberViewController *controller = [[EMInviteGroupMemberViewController alloc] initWithBlocks:occupants];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    __weak typeof(self) weakself = self;
+    [controller setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
+        [weakself showHudInView:weakself.view hint:@"添加成员..."];
+        [[EMClient sharedClient].groupManager addMembers:aSelectedArray toGroup:weakself.groupId message:@"" completion:^(EMGroup *aGroup, EMError *aError) {
+            [weakself hideHud];
+            if (aError) {
+                [EMAlertController showErrorAlert:aError.errorDescription];
+            } else {
+                [weakself _fetchGroupWithId:weakself.groupId isShowHUD:NO];
+            }
+        }];
+    }];
 }
 
 @end

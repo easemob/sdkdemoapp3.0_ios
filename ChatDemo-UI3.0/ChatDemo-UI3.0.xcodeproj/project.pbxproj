@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B1B9EE1C3B80290087A74F /* MessageUI.framework */; };
-		3A2B8582221E4B140063D7F6 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8581221E4B140063D7F6 /* EMGroupMembersViewController.m */; };
 		3A2B8593221E4F620063D7F6 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2B858E221E4F620063D7F6 /* image@2x.png */; };
 		3A2B8594221E4F620063D7F6 /* chat_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2B858F221E4F620063D7F6 /* chat_info@2x.png */; };
 		3A2B8595221E4F620063D7F6 /* chat_clear@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2B8590221E4F620063D7F6 /* chat_clear@3x.png */; };
@@ -138,6 +137,14 @@
 		3A2B8808221E50E30063D7F6 /* animate_00029.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2B87C8221E50E20063D7F6 /* animate_00029.png */; };
 		3A2B8809221E50E30063D7F6 /* animate_00064.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2B87C9221E50E30063D7F6 /* animate_00064.png */; };
 		3A2B880A221E50E30063D7F6 /* animate_00035.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A2B87CA221E50E30063D7F6 /* animate_00035.png */; };
+		3A2B8837221E5E1E0063D7F6 /* EMGroupSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8828221E5E1D0063D7F6 /* EMGroupSettingsViewController.m */; };
+		3A2B8838221E5E1E0063D7F6 /* EMGroupMutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8829221E5E1D0063D7F6 /* EMGroupMutesViewController.m */; };
+		3A2B8839221E5E1E0063D7F6 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B882C221E5E1D0063D7F6 /* EMGroupInfoViewController.m */; };
+		3A2B883A221E5E1E0063D7F6 /* EMGroupSharedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B882F221E5E1D0063D7F6 /* EMGroupSharedFilesViewController.m */; };
+		3A2B883B221E5E1E0063D7F6 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8832221E5E1D0063D7F6 /* EMGroupAdminsViewController.m */; };
+		3A2B883C221E5E1E0063D7F6 /* EMGroupBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8834221E5E1D0063D7F6 /* EMGroupBlacklistViewController.m */; };
+		3A2B883D221E5E1E0063D7F6 /* EMGroupOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8835221E5E1E0063D7F6 /* EMGroupOwnerViewController.m */; };
+		3A2B883E221E5E1E0063D7F6 /* EMGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B8836221E5E1E0063D7F6 /* EMGroupMembersViewController.m */; };
 		3A2F294221537E7E00F86EB5 /* Call1v1AudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F292F21537E7E00F86EB5 /* Call1v1AudioViewController.m */; };
 		3A2F294321537E7E00F86EB5 /* Call1v1VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F293121537E7E00F86EB5 /* Call1v1VideoViewController.m */; };
 		3A2F294421537E7E00F86EB5 /* EM1v1CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F293321537E7E00F86EB5 /* EM1v1CallViewController.m */; };
@@ -316,7 +323,6 @@
 		3A3F2A6C21F1C39E001A6327 /* user_1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A3F2A6621F1C39E001A6327 /* user_1@3x.png */; };
 		3A3F2A6D21F1C39E001A6327 /* user_2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A3F2A6721F1C39E001A6327 /* user_2@3x.png */; };
 		3A3F2A6E21F1C39E001A6327 /* user_3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A3F2A6821F1C39E001A6327 /* user_3@3x.png */; };
-		3A3F2A7121F1C98E001A6327 /* EMGroupInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3F2A7021F1C98E001A6327 /* EMGroupInfoViewController.m */; };
 		3A4052F2221D071D009A5025 /* EMMessageTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4052F1221D071D009A5025 /* EMMessageTimeCell.m */; };
 		3A4052F8221D3428009A5025 /* EMMsgTranspondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4052F7221D3428009A5025 /* EMMsgTranspondViewController.m */; };
 		3A420BBA22018DC0007648AE /* EMAudioPlayerHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BB822018DBF007648AE /* EMAudioPlayerHelper.mm */; };
@@ -324,7 +330,6 @@
 		3A420BC322018DCA007648AE /* EMMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BC022018DCA007648AE /* EMMessageCell.m */; };
 		3A420BC422018DCA007648AE /* EMMessageStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BC122018DCA007648AE /* EMMessageStatusView.m */; };
 		3A420BD62201B9A8007648AE /* EMChatBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A420BD22201B9A8007648AE /* EMChatBarItem.m */; };
-		3A42E47821F9D79B00374C6C /* EMGroupSharedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A42E47721F9D79B00374C6C /* EMGroupSharedFilesViewController.m */; };
 		3A497475221BA82B00CFC19A /* chatroom_avatar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A497473221BA82A00CFC19A /* chatroom_avatar@3x.png */; };
 		3A497476221BA82B00CFC19A /* chatroom_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A497474221BA82A00CFC19A /* chatroom_avatar@2x.png */; };
 		3A49747B221BA85F00CFC19A /* group_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A497478221BA85F00CFC19A /* group_avatar@2x.png */; };
@@ -350,9 +355,6 @@
 		3A4974BA221BA92600CFC19A /* group_create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4974B6221BA92600CFC19A /* group_create@2x.png */; };
 		3A4974BE221BC0DD00CFC19A /* EMAddBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974BD221BC0DD00CFC19A /* EMAddBlacklistViewController.m */; };
 		3A4974C1221BC11F00CFC19A /* EMBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C0221BC11F00CFC19A /* EMBlacklistViewController.m */; };
-		3A4974C4221BED1000CFC19A /* EMGroupOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */; };
-		3A4974C7221BFF4700CFC19A /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4974C6221BFF4700CFC19A /* EMGroupAdminsViewController.m */; };
-		3A55B1CF21FABF68001DB6C6 /* EMGroupSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3A8AF4B7221A5B4000688170 /* msg_send_audio02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF499221A5B3E00688170 /* msg_send_audio02@3x.png */; };
 		3A8AF4B8221A5B4000688170 /* msg_recv_audio01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF49A221A5B3E00688170 /* msg_recv_audio01@3x.png */; };
@@ -572,8 +574,6 @@
 		3A27807C1DDB271400362CA7 /* libHyphenateFullSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateFullSDK.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphoneos/libHyphenateFullSDK.a"; sourceTree = "<group>"; };
 		3A2AB3BA21E3459C00C68A63 /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libffmpeg-ios-full.a"; path = "ChatDemo-UI3.0/Class/Call/plugin/libffmpeg-ios-full.a"; sourceTree = "<group>"; };
 		3A2AB3BB21E3459C00C68A63 /* libHyphenateAVRecorderPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHyphenateAVRecorderPlugin.a; path = "ChatDemo-UI3.0/Class/Call/plugin/libHyphenateAVRecorderPlugin.a"; sourceTree = "<group>"; };
-		3A2B8580221E4B140063D7F6 /* EMGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMembersViewController.h; sourceTree = "<group>"; };
-		3A2B8581221E4B140063D7F6 /* EMGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMembersViewController.m; sourceTree = "<group>"; };
 		3A2B858E221E4F620063D7F6 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		3A2B858F221E4F620063D7F6 /* chat_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_info@2x.png"; sourceTree = "<group>"; };
 		3A2B8590221E4F620063D7F6 /* chat_clear@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_clear@3x.png"; sourceTree = "<group>"; };
@@ -703,6 +703,22 @@
 		3A2B87C8221E50E20063D7F6 /* animate_00029.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00029.png; sourceTree = "<group>"; };
 		3A2B87C9221E50E30063D7F6 /* animate_00064.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00064.png; sourceTree = "<group>"; };
 		3A2B87CA221E50E30063D7F6 /* animate_00035.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00035.png; sourceTree = "<group>"; };
+		3A2B8827221E5E1D0063D7F6 /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
+		3A2B8828221E5E1D0063D7F6 /* EMGroupSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupSettingsViewController.m; sourceTree = "<group>"; };
+		3A2B8829221E5E1D0063D7F6 /* EMGroupMutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMutesViewController.m; sourceTree = "<group>"; };
+		3A2B882A221E5E1D0063D7F6 /* EMGroupSharedFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupSharedFilesViewController.h; sourceTree = "<group>"; };
+		3A2B882B221E5E1D0063D7F6 /* EMGroupInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupInfoViewController.h; sourceTree = "<group>"; };
+		3A2B882C221E5E1D0063D7F6 /* EMGroupInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupInfoViewController.m; sourceTree = "<group>"; };
+		3A2B882D221E5E1D0063D7F6 /* EMGroupOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupOwnerViewController.h; sourceTree = "<group>"; };
+		3A2B882E221E5E1D0063D7F6 /* EMGroupSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupSettingsViewController.h; sourceTree = "<group>"; };
+		3A2B882F221E5E1D0063D7F6 /* EMGroupSharedFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupSharedFilesViewController.m; sourceTree = "<group>"; };
+		3A2B8830221E5E1D0063D7F6 /* EMGroupMutesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMutesViewController.h; sourceTree = "<group>"; };
+		3A2B8831221E5E1D0063D7F6 /* EMGroupBlacklistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupBlacklistViewController.h; sourceTree = "<group>"; };
+		3A2B8832221E5E1D0063D7F6 /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
+		3A2B8833221E5E1D0063D7F6 /* EMGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupMembersViewController.h; sourceTree = "<group>"; };
+		3A2B8834221E5E1D0063D7F6 /* EMGroupBlacklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupBlacklistViewController.m; sourceTree = "<group>"; };
+		3A2B8835221E5E1E0063D7F6 /* EMGroupOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupOwnerViewController.m; sourceTree = "<group>"; };
+		3A2B8836221E5E1E0063D7F6 /* EMGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupMembersViewController.m; sourceTree = "<group>"; };
 		3A2F292E21537E7E00F86EB5 /* Call1v1VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Call1v1VideoViewController.h; sourceTree = "<group>"; };
 		3A2F292F21537E7E00F86EB5 /* Call1v1AudioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Call1v1AudioViewController.m; sourceTree = "<group>"; };
 		3A2F293021537E7E00F86EB5 /* EM1v1CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EM1v1CallViewController.h; sourceTree = "<group>"; };
@@ -950,8 +966,6 @@
 		3A3F2A6621F1C39E001A6327 /* user_1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_1@3x.png"; sourceTree = "<group>"; };
 		3A3F2A6721F1C39E001A6327 /* user_2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_2@3x.png"; sourceTree = "<group>"; };
 		3A3F2A6821F1C39E001A6327 /* user_3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_3@3x.png"; sourceTree = "<group>"; };
-		3A3F2A6F21F1C98E001A6327 /* EMGroupInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupInfoViewController.h; sourceTree = "<group>"; };
-		3A3F2A7021F1C98E001A6327 /* EMGroupInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupInfoViewController.m; sourceTree = "<group>"; };
 		3A4052F0221D071D009A5025 /* EMMessageTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMessageTimeCell.h; sourceTree = "<group>"; };
 		3A4052F1221D071D009A5025 /* EMMessageTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMessageTimeCell.m; sourceTree = "<group>"; };
 		3A4052F6221D3428009A5025 /* EMMsgTranspondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMsgTranspondViewController.h; sourceTree = "<group>"; };
@@ -966,8 +980,6 @@
 		3A420BC122018DCA007648AE /* EMMessageStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMessageStatusView.m; sourceTree = "<group>"; };
 		3A420BD22201B9A8007648AE /* EMChatBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatBarItem.m; sourceTree = "<group>"; };
 		3A420BD42201B9A8007648AE /* EMChatBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatBarItem.h; sourceTree = "<group>"; };
-		3A42E47621F9D79B00374C6C /* EMGroupSharedFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupSharedFilesViewController.h; sourceTree = "<group>"; };
-		3A42E47721F9D79B00374C6C /* EMGroupSharedFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupSharedFilesViewController.m; sourceTree = "<group>"; };
 		3A497473221BA82A00CFC19A /* chatroom_avatar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroom_avatar@3x.png"; sourceTree = "<group>"; };
 		3A497474221BA82A00CFC19A /* chatroom_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroom_avatar@2x.png"; sourceTree = "<group>"; };
 		3A497478221BA85F00CFC19A /* group_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_avatar@2x.png"; sourceTree = "<group>"; };
@@ -995,12 +1007,6 @@
 		3A4974BD221BC0DD00CFC19A /* EMAddBlacklistViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMAddBlacklistViewController.m; sourceTree = "<group>"; };
 		3A4974BF221BC11F00CFC19A /* EMBlacklistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMBlacklistViewController.h; sourceTree = "<group>"; };
 		3A4974C0221BC11F00CFC19A /* EMBlacklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMBlacklistViewController.m; sourceTree = "<group>"; };
-		3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupOwnerViewController.m; sourceTree = "<group>"; };
-		3A4974C3221BED0F00CFC19A /* EMGroupOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupOwnerViewController.h; sourceTree = "<group>"; };
-		3A4974C5221BFF4700CFC19A /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
-		3A4974C6221BFF4700CFC19A /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
-		3A55B1CD21FABF68001DB6C6 /* EMGroupSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupSettingsViewController.h; sourceTree = "<group>"; };
-		3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupSettingsViewController.m; sourceTree = "<group>"; };
 		3A595FA51D6D8EEB00504DB3 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "../../emclient-ios/newSDK/DerivedData/emsdk/Build/Products/Debug-iphonesimulator/libEaseUI.a"; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3A6FEF87218079100092EFA0 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../rtc-ios/RtcSDK/RtcSDK/3rdParth/webrtc/WebRTC.framework"; sourceTree = "<group>"; };
@@ -1473,6 +1479,29 @@
 			path = WaitAnimate;
 			sourceTree = "<group>";
 		};
+		3A2B880E221E5E100063D7F6 /* GroupInfo */ = {
+			isa = PBXGroup;
+			children = (
+				3A2B8827221E5E1D0063D7F6 /* EMGroupAdminsViewController.h */,
+				3A2B8832221E5E1D0063D7F6 /* EMGroupAdminsViewController.m */,
+				3A2B8831221E5E1D0063D7F6 /* EMGroupBlacklistViewController.h */,
+				3A2B8834221E5E1D0063D7F6 /* EMGroupBlacklistViewController.m */,
+				3A2B882B221E5E1D0063D7F6 /* EMGroupInfoViewController.h */,
+				3A2B882C221E5E1D0063D7F6 /* EMGroupInfoViewController.m */,
+				3A2B8833221E5E1D0063D7F6 /* EMGroupMembersViewController.h */,
+				3A2B8836221E5E1E0063D7F6 /* EMGroupMembersViewController.m */,
+				3A2B8830221E5E1D0063D7F6 /* EMGroupMutesViewController.h */,
+				3A2B8829221E5E1D0063D7F6 /* EMGroupMutesViewController.m */,
+				3A2B882D221E5E1D0063D7F6 /* EMGroupOwnerViewController.h */,
+				3A2B8835221E5E1E0063D7F6 /* EMGroupOwnerViewController.m */,
+				3A2B882E221E5E1D0063D7F6 /* EMGroupSettingsViewController.h */,
+				3A2B8828221E5E1D0063D7F6 /* EMGroupSettingsViewController.m */,
+				3A2B882A221E5E1D0063D7F6 /* EMGroupSharedFilesViewController.h */,
+				3A2B882F221E5E1D0063D7F6 /* EMGroupSharedFilesViewController.m */,
+			);
+			path = GroupInfo;
+			sourceTree = "<group>";
+		};
 		3A2F292D21537E7E00F86EB5 /* 1v1 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1778,15 +1807,8 @@
 		3A3F27E221F1AE59001A6327 /* Group */ = {
 			isa = PBXGroup;
 			children = (
-				3A4974C3221BED0F00CFC19A /* EMGroupOwnerViewController.h */,
-				3A4974C2221BED0F00CFC19A /* EMGroupOwnerViewController.m */,
-				3A4974C5221BFF4700CFC19A /* EMGroupAdminsViewController.h */,
-				3A4974C6221BFF4700CFC19A /* EMGroupAdminsViewController.m */,
-				3A2B8580221E4B140063D7F6 /* EMGroupMembersViewController.h */,
-				3A2B8581221E4B140063D7F6 /* EMGroupMembersViewController.m */,
 				3A497477221BA85F00CFC19A /* GroupImgs */,
-				3A42E47621F9D79B00374C6C /* EMGroupSharedFilesViewController.h */,
-				3A42E47721F9D79B00374C6C /* EMGroupSharedFilesViewController.m */,
+				3A2B880E221E5E100063D7F6 /* GroupInfo */,
 				3A3F292E21F1AF17001A6327 /* EMCreateGroupViewController.h */,
 				3A3F292C21F1AF17001A6327 /* EMCreateGroupViewController.m */,
 				3A3F293121F1AF17001A6327 /* EMGroupsViewController.h */,
@@ -1795,10 +1817,6 @@
 				3A3F292A21F1AF16001A6327 /* EMInviteGroupMemberViewController.m */,
 				3A3F293021F1AF17001A6327 /* EMJoinGroupViewController.h */,
 				3A3F292F21F1AF17001A6327 /* EMJoinGroupViewController.m */,
-				3A3F2A6F21F1C98E001A6327 /* EMGroupInfoViewController.h */,
-				3A3F2A7021F1C98E001A6327 /* EMGroupInfoViewController.m */,
-				3A55B1CD21FABF68001DB6C6 /* EMGroupSettingsViewController.h */,
-				3A55B1CE21FABF68001DB6C6 /* EMGroupSettingsViewController.m */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -3149,7 +3167,9 @@
 			files = (
 				3A34CA5722155B6A00BAB0B5 /* EMMsgExtGifBubbleView.m in Sources */,
 				3ACF9BE6221151D200B16331 /* EMChatroomInfoViewController.m in Sources */,
+				3A2B883C221E5E1E0063D7F6 /* EMGroupBlacklistViewController.m in Sources */,
 				3A2F294221537E7E00F86EB5 /* Call1v1AudioViewController.m in Sources */,
+				3A2B8838221E5E1E0063D7F6 /* EMGroupMutesViewController.m in Sources */,
 				90911126192EEBB8008A48AA /* AppDelegate.m in Sources */,
 				3A3F298F21F1B742001A6327 /* EMMessageModel.m in Sources */,
 				3ACFA14922117CF600B16331 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
@@ -3170,23 +3190,22 @@
 				3ACFA04D221165CA00B16331 /* XHSearchResultController.m in Sources */,
 				3ACFA14422117CF600B16331 /* PSTGridLayoutItem.m in Sources */,
 				3ACFA04B221165CA00B16331 /* UIViewController+Search.m in Sources */,
+				3A2B8837221E5E1E0063D7F6 /* EMGroupSettingsViewController.m in Sources */,
 				3A3F28B221F1AE80001A6327 /* EMRegisterViewController.m in Sources */,
 				3A4974C1221BC11F00CFC19A /* EMBlacklistViewController.m in Sources */,
 				3A420BBB22018DC0007648AE /* EMImageBrowser.m in Sources */,
-				3A55B1CF21FABF68001DB6C6 /* EMGroupSettingsViewController.m in Sources */,
 				3A2F2E502153AD2300F86EB5 /* Live2ViewController.m in Sources */,
 				3A34CA482215553B00BAB0B5 /* EMMsgFileBubbleView.m in Sources */,
 				3A2F2AF021537EF300F86EB5 /* DemoCallManager.m in Sources */,
 				3A4052F2221D071D009A5025 /* EMMessageTimeCell.m in Sources */,
 				3A34CA422215537F00BAB0B5 /* EMMsgImageBubbleView.m in Sources */,
 				3A3F28CC21F1AE98001A6327 /* EMCallSettingsViewController.m in Sources */,
-				3A4974C4221BED1000CFC19A /* EMGroupOwnerViewController.m in Sources */,
-				3A3F2A7121F1C98E001A6327 /* EMGroupInfoViewController.m in Sources */,
 				3A420BC422018DCA007648AE /* EMMessageStatusView.m in Sources */,
 				3ACFA11E22117CD300B16331 /* MWZoomingScrollView.m in Sources */,
 				3A3F28B121F1AE80001A6327 /* EMDemoOptions.m in Sources */,
 				3A2F2AF72153862900F86EB5 /* EMCallViewController.m in Sources */,
 				3A2F294821537E7E00F86EB5 /* ConfInviteUsersViewController.m in Sources */,
+				3A2B883D221E5E1E0063D7F6 /* EMGroupOwnerViewController.m in Sources */,
 				3ACFA14D22117CF600B16331 /* PSTCollectionViewData.m in Sources */,
 				3A34CA4B2215554A00BAB0B5 /* EMMsgLocationBubbleView.m in Sources */,
 				3A33AB062202A2E900CFBBF6 /* EMEmoticonGroup.m in Sources */,
@@ -3221,6 +3240,7 @@
 				3A3F297921F1AF88001A6327 /* EMConversationHelper.m in Sources */,
 				3ACFA14B22117CF600B16331 /* PSTCollectionViewItemKey.m in Sources */,
 				3A3F298C21F1B2A0001A6327 /* EMChatViewController.m in Sources */,
+				3A2B8839221E5E1E0063D7F6 /* EMGroupInfoViewController.m in Sources */,
 				3A3F297B21F1AF88001A6327 /* EMChatHelper.m in Sources */,
 				3ACFA0EA22117CBE00B16331 /* DACircularProgressView.m in Sources */,
 				3ACFA12322117CD300B16331 /* MWPhotoBrowser.m in Sources */,
@@ -3235,6 +3255,7 @@
 				3ACFA041221165BF00B16331 /* EMRefreshTableViewController.m in Sources */,
 				3ACFA14C22117CF600B16331 /* PSTGridLayoutInfo.m in Sources */,
 				3ACFA12122117CD300B16331 /* MWGridCell.m in Sources */,
+				3A2B883E221E5E1E0063D7F6 /* EMGroupMembersViewController.m in Sources */,
 				3A33AAE1220296A200CFBBF6 /* EMChatBarEmoticonView.m in Sources */,
 				3ACFA03B221165B500B16331 /* EMTextFieldViewController.m in Sources */,
 				3ACFA14F22117CF600B16331 /* PSTGridLayoutSection.m in Sources */,
@@ -3247,12 +3268,10 @@
 				3A3F28C721F1AE98001A6327 /* EMAccountViewController.m in Sources */,
 				3AB4E8DE221274FD00A0F59A /* EMDateHelper.m in Sources */,
 				3AADD26D215B9D1500B738BB /* EMStreamView.m in Sources */,
-				3A2B8582221E4B140063D7F6 /* EMGroupMembersViewController.m in Sources */,
 				3A3F28A621F1AE76001A6327 /* WSLScanView.m in Sources */,
 				3ACF9EDF221163CF00B16331 /* UIViewController+HUD.m in Sources */,
 				3ACFA040221165BF00B16331 /* EMRefreshViewController.m in Sources */,
 				3A3F28A521F1AE76001A6327 /* WSLNativeScanTool.m in Sources */,
-				3A42E47821F9D79B00374C6C /* EMGroupSharedFilesViewController.m in Sources */,
 				3A3F2A1321F1C35E001A6327 /* UIViewController+Util.m in Sources */,
 				3A2F294721537E7E00F86EB5 /* EMButton.m in Sources */,
 				3A2F2E4A21539B2B00F86EB5 /* MeetingViewController.m in Sources */,
@@ -3263,7 +3282,7 @@
 				3A3F28B021F1AE80001A6327 /* EMSDKOptionsViewController.m in Sources */,
 				3A3F297A21F1AF88001A6327 /* EMConversationCell.m in Sources */,
 				3A8AF51E221ABE0E00688170 /* EMNotificationHelper.m in Sources */,
-				3A4974C7221BFF4700CFC19A /* EMGroupAdminsViewController.m in Sources */,
+				3A2B883B221E5E1E0063D7F6 /* EMGroupAdminsViewController.m in Sources */,
 				3A34CAE622156E1200BAB0B5 /* EMChatBarRecordAudioView.m in Sources */,
 				3ACFA14E22117CF600B16331 /* PSTCollectionViewLayout.m in Sources */,
 				3A3F294421F1AF23001A6327 /* EMChatroomsViewController.m in Sources */,
@@ -3271,6 +3290,7 @@
 				3A3F293421F1AF17001A6327 /* EMGroupsViewController.m in Sources */,
 				3A3F28D221F1AEB3001A6327 /* EMHomeViewController.m in Sources */,
 				D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */,
+				3A2B883A221E5E1E0063D7F6 /* EMGroupSharedFilesViewController.m in Sources */,
 				3A3F28C621F1AE98001A6327 /* EMDevicesViewController.m in Sources */,
 				3A3F2A0D21F1C353001A6327 /* EMGlobalVariables.m in Sources */,
 				3A2F2AF42153800900F86EB5 /* EMConferenceViewController.m in Sources */,
