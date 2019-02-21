@@ -193,6 +193,13 @@
         UIImage *image = [[UIImage imageNamed:@"chat_clear"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
     } else {
+        if (self.conversationModel.emModel.type == EMConversationTypeGroupChat && (NSClassFromString(@"EMGroupInfoViewController")) == nil) {
+            return;
+        }
+        if (self.conversationModel.emModel.type == EMConversationTypeChatRoom && (NSClassFromString(@"EMChatroomInfoViewController")) == nil) {
+            return;
+        }
+        
         UIImage *image = [[UIImage imageNamed:@"chat_info"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(groupOrChatroomInfoAction)];
     }
