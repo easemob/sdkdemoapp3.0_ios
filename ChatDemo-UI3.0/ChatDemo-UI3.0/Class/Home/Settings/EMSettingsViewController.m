@@ -73,7 +73,7 @@
     self.userCell.nameLabel.font = [UIFont systemFontOfSize:18];
     self.userCell.detailLabel.font = [UIFont systemFontOfSize:15];
     self.userCell.detailLabel.textColor = [UIColor grayColor];
-    self.userCell.avatarView.image = [UIImage imageNamed:@"user_3"];
+    self.userCell.avatarView.image = [UIImage imageNamed:@"user_avatar_me"];
     self.userCell.nameLabel.text = [EMClient sharedClient].currentUsername;
     self.userCell.detailLabel.text = [EMClient sharedClient].pushOptions.displayName;
     

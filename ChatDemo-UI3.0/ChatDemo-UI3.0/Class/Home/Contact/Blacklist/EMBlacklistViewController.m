@@ -95,11 +95,11 @@
             cell.avatarView.image = [UIImage imageNamed:@"contact"];
             cell.nameLabel.text = @"添加至黑名单";
         } else {
-            cell.avatarView.image = [UIImage imageNamed:@"user_1"];
+            cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
             cell.nameLabel.text = [self.dataArray[section - 1] objectAtIndex:row];
         }
     } else {
-        cell.avatarView.image = [UIImage imageNamed:@"user_1"];
+        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
         cell.nameLabel.text = [self.searchResults objectAtIndex:row];
     }
     

@@ -140,7 +140,7 @@
         
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
         cell.nameLabel.text = contact;
         return cell;
     }];
@@ -230,7 +230,7 @@
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
-        cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
         cell.nameLabel.text = contact;
     }
     

@@ -82,7 +82,7 @@
         name = [self.searchResults objectAtIndex:indexPath.row];
     }
     cell.nameLabel.text = name;
-    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
     cell.indexPath = indexPath;
     
     return cell;

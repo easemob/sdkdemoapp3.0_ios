@@ -82,7 +82,7 @@
         cell.accessoryView = checkButton;
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
     cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     
     UIButton *checkButton = (UIButton *)cell.accessoryView;

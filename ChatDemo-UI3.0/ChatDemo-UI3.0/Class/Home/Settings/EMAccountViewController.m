@@ -38,7 +38,7 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = kColor_LightGray;
     
-    self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_3"]];
+    self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_avatar_me"]];
     self.headerView.frame = CGRectMake(0, 0, 60, 60);
     self.headerView.userInteractionEnabled = YES;
     

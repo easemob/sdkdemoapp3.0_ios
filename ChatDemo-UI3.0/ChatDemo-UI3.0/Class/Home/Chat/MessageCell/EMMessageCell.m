@@ -97,14 +97,14 @@
     _avatarView.userInteractionEnabled = YES;
     [self.contentView addSubview:_avatarView];
     if (self.direction == EMMessageDirectionSend) {
-        _avatarView.image = [UIImage imageNamed:@"user_3"];
+        _avatarView.image = [UIImage imageNamed:@"user_avatar_me"];
         [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
             make.right.equalTo(self.contentView).offset(-10);
             make.width.height.equalTo(@40);
         }];
     } else {
-        _avatarView.image = [UIImage imageNamed:@"user_2"];
+        _avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
         [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.contentView).offset(15);
             make.left.equalTo(self.contentView).offset(10);

@@ -135,7 +135,7 @@
     } else {
         name = [self.searchResults objectAtIndex:indexPath.row];
     }
-    cell.avatarView.image = [UIImage imageNamed:@"user_2"];
+    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
     cell.nameLabel.text = name;
     
     UIButton *checkButton = (UIButton *)cell.accessoryView;
