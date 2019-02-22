@@ -29,7 +29,7 @@
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic) BOOL isFirstLoadFromDB;
@@ -82,6 +82,8 @@
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillShowCallController:) name:CALL_SHOW_VIEW object:nil];
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
@@ -117,6 +119,8 @@
     self.isViewDidAppear = NO;
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
+    [[EMClient sharedClient].roomManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -905,6 +909,29 @@
     });
 }
 
+#pragma mark - EMGroupManagerDelegate
+
+- (void)didLeaveGroup:(EMGroup *)aGroup
+               reason:(EMGroupLeaveReason)aReason
+{
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeGroupChat && [aGroup.groupId isEqualToString:conversation.conversationId]) {
+        [self.navigationController popToViewController:self animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark - EMChatroomManagerDelegate
+
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason
+{
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:conversation.conversationId]) {
+        [self.navigationController popToViewController:self animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 
 #pragma mark - KeyBoard
 

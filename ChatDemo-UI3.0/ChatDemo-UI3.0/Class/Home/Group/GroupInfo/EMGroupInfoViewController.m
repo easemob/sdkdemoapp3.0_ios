@@ -21,7 +21,7 @@
 #import "EMGroupSettingsViewController.h"
 #import "EMInviteGroupMemberViewController.h"
 
-@interface EMGroupInfoViewController ()
+@interface EMGroupInfoViewController ()<EMMultiDevicesDelegate>
 
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) EMGroup *group;
@@ -53,6 +53,7 @@
     
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
     
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
 }
 
@@ -241,6 +242,32 @@
         if (row == 0) {
             [self _leaveOrDestroyGroupAction];
         }
+    }
+}
+
+#pragma mark - EMMultiDevicesDelegate
+
+- (void)multiDevicesGroupEventDidReceive:(EMMultiDevicesEvent)aEvent
+                                 groupId:(NSString *)aGroupId
+                                     ext:(id)aExt
+{
+    switch (aEvent) {
+        case EMMultiDevicesEventGroupKick:
+        case EMMultiDevicesEventGroupBan:
+        case EMMultiDevicesEventGroupAllow:
+        case EMMultiDevicesEventGroupAssignOwner:
+        case EMMultiDevicesEventGroupAddAdmin:
+        case EMMultiDevicesEventGroupRemoveAdmin:
+        case EMMultiDevicesEventGroupAddMute:
+        case EMMultiDevicesEventGroupRemoveMute:
+        {
+            if ([aGroupId isEqualToString:self.group.groupId]) {
+                [self.tableView reloadData];
+            }
+        }
+            
+        default:
+            break;
     }
 }
 

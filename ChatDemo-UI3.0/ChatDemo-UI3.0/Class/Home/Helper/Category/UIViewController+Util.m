@@ -40,4 +40,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)showAlertControllerWithMessage:(NSString *)aMsg
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"o(TωT)o" message:aMsg preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 @end

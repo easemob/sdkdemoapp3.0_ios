@@ -22,4 +22,6 @@
 
 //+ (BOOL)isUseChinese;
 
+- (void)showAlertControllerWithMessage:(NSString *)aMsg;
+
 @end

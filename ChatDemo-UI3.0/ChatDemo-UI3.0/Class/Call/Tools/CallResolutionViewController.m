@@ -8,7 +8,6 @@
 
 #import "CallResolutionViewController.h"
 
-#import "ChatDemoHelper.h"
 #import "DemoCallManager.h"
 
 @interface CallResolutionViewController ()

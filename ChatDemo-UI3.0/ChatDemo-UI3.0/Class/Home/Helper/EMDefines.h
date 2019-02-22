@@ -10,7 +10,7 @@
 #define EMDefines_h
 
 //账号状态
-#define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
+#define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"
@@ -21,9 +21,14 @@
 
 //@
 //群组消息ext的字段，用于存放被@的环信id数组
-#define MSG_EXT_GROUP_AT @"em_at_list"
+#define MSG_EXT_AT @"em_at_list"
 //群组消息ext字典中，kGroupMessageAtList字段的值，用于@所有人
-#define MSG_EXT_GROUP_ATALL @"all"
+#define MSG_EXT_ATALL @"all"
+
+#define kHaveUnreadAtMessage    @"kHaveAtMessage"
+#define kAtYouMessage           1
+#define kAtAllMessage           2
+
 
 //实时音视频
 #define CALL_CHATTER @"chatter"

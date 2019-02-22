@@ -23,7 +23,7 @@
 
 #import "DemoConfManager.h"
 
-@interface EMContactsViewController ()<EMMultiDevicesDelegate, XHSearchControllerDelegate, EMNotificationsDelegate>
+@interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, XHSearchControllerDelegate, EMNotificationsDelegate>
 
 @property (nonatomic, strong) NSMutableArray *allContacts;
 @property (nonatomic, strong) NSMutableArray *sectionTitles;
@@ -50,6 +50,7 @@
     [self _fetchContactsFromServerWithIsShowHUD:YES];
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_loadAllContactsFromDB) name:CONTACT_BLACKLIST_UPDATE object:nil];
 }
@@ -72,6 +73,7 @@
 {
     [[EMNotificationHelper shared] removeDelegate:self];
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
+    [[EMClient sharedClient].contactManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -376,6 +378,18 @@
         default:
             break;
     }
+}
+
+#pragma mark - EMContactManagerDelegate
+
+- (void)friendshipDidAddByUser:(NSString *)aUsername
+{
+    [self _loadAllContactsFromDB];
+}
+
+- (void)friendshipDidRemoveByUser:(NSString *)aUsername
+{
+    [self _loadAllContactsFromDB];
 }
 
 #pragma mark - XHSearchControllerDelegate

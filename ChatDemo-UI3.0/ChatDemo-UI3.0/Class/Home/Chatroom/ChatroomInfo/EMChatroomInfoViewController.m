@@ -15,7 +15,7 @@
 #import "EMChatroomAdminsViewController.h"
 #import "EMChatroomMutesViewController.h"
 
-@interface EMChatroomInfoViewController ()
+@interface EMChatroomInfoViewController ()<EMChatroomManagerDelegate>
 
 @property (nonatomic, strong) NSString *chatroomId;
 @property (nonatomic, strong) EMChatroom *chatroom;
@@ -45,12 +45,13 @@
     
     [self _fetchChatroomWithId:self.chatroomId isShowHUD:YES];
     
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleChatroomInfoUpdated:) name:CHATROOM_INFO_UPDATED object:nil];
 }
 
 - (void)dealloc
 {
-    //    [[EMClient sharedClient].roomManager removeDelegate:self];
+    [[EMClient sharedClient].roomManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -197,6 +198,40 @@
             [self _leaveChatroomAction];
         }
     }
+}
+
+#pragma mark - EMChatroomManagerDelegate
+
+- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+                addedMutedMembers:(NSArray *)aMutes
+                       muteExpire:(NSInteger)aMuteExpire
+{
+    [self _resetChatroom:aChatroom];
+}
+
+- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+              removedMutedMembers:(NSArray *)aMutes
+{
+    [self _resetChatroom:aChatroom];
+}
+
+- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+                        addedAdmin:(NSString *)aAdmin
+{
+    [self _resetChatroom:aChatroom];
+}
+
+- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+                      removedAdmin:(NSString *)aAdmin
+{
+    [self _resetChatroom:aChatroom];
+}
+
+- (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom
+                      newOwner:(NSString *)aNewOwner
+                      oldOwner:(NSString *)aOldOwner
+{
+    [self _resetChatroom:aChatroom];
 }
 
 #pragma mark - Data

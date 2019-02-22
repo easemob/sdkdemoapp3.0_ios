@@ -362,6 +362,7 @@
 		3A6D1429221F9B6100613662 /* user_avatar_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6D1424221F9B6100613662 /* user_avatar_blue@2x.png */; };
 		3A6D142A221F9B6100613662 /* user_avatar_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6D1425221F9B6100613662 /* user_avatar_gray@3x.png */; };
 		3A6D142B221F9B6100613662 /* user_avatar_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6D1426221F9B6100613662 /* user_avatar_blue@3x.png */; };
+		3A6D1431221FB81600613662 /* NSObject+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D1430221FB81600613662 /* NSObject+Alert.m */; };
 		3A8AF4B7221A5B4000688170 /* msg_send_audio02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF499221A5B3E00688170 /* msg_send_audio02@3x.png */; };
 		3A8AF4B8221A5B4000688170 /* msg_recv_audio01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF49A221A5B3E00688170 /* msg_recv_audio01@3x.png */; };
 		3A8AF4B9221A5B4000688170 /* msg_bg_send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A8AF49B221A5B3E00688170 /* msg_bg_send@2x.png */; };
@@ -451,11 +452,9 @@
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
-		3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6BBA081941A58C00A64684 /* XHMessageTextView.m */; };
 		3CBB931C1A14B227007FED9E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBB931B1A14B227007FED9E /* libsqlite3.dylib */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
 		49E4E3A45FCF3BDF071C93C1 /* libPods-ChatDemo-UI3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */; };
-		833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */; };
 		902DEC551931D934006CA75E /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 902DEC541931D934006CA75E /* libresolv.dylib */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -481,7 +480,7 @@
 		D2BF974F1AEB566B009E0D5C /* group_creategroup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF974C1AEB566B009E0D5C /* group_creategroup@2x.png */; };
 		D2BF97501AEB566B009E0D5C /* group_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF974D1AEB566B009E0D5C /* group_header@2x.png */; };
 		D2BF97511AEB566B009E0D5C /* group_joinpublicgroup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF974E1AEB566B009E0D5C /* group_joinpublicgroup@2x.png */; };
-		D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FFDB911C1687A30031425A /* ChatDemoHelper.m */; };
+		D2FFDB921C1687A30031425A /* EMDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FFDB911C1687A30031425A /* EMDemoHelper.m */; };
 		EB1975B21ADE0C77002E7E27 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB1975B11ADE0C77002E7E27 /* libc++.dylib */; };
 		EBD2AB071A7CDAC000D16528 /* chatListCellHead.png in Resources */ = {isa = PBXBuildFile; fileRef = EBD2AA3D1A7CDABF00D16528 /* chatListCellHead.png */; };
 		EBD2AB081A7CDAC000D16528 /* chatListCellHead@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBD2AA3E1A7CDABF00D16528 /* chatListCellHead@2x.png */; };
@@ -1027,6 +1026,8 @@
 		3A6D1424221F9B6100613662 /* user_avatar_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_avatar_blue@2x.png"; sourceTree = "<group>"; };
 		3A6D1425221F9B6100613662 /* user_avatar_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_avatar_gray@3x.png"; sourceTree = "<group>"; };
 		3A6D1426221F9B6100613662 /* user_avatar_blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_avatar_blue@3x.png"; sourceTree = "<group>"; };
+		3A6D142F221FB81600613662 /* NSObject+Alert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Alert.h"; sourceTree = "<group>"; };
+		3A6D1430221FB81600613662 /* NSObject+Alert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Alert.m"; sourceTree = "<group>"; };
 		3A6FEF87218079100092EFA0 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../rtc-ios/RtcSDK/RtcSDK/3rdParth/webrtc/WebRTC.framework"; sourceTree = "<group>"; };
 		3A7354472019F42900AB6CDB /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "ChatDemo-UI3.0/3rdparty/Fabric.framework"; sourceTree = "<group>"; };
 		3A7354482019F42900AB6CDB /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "ChatDemo-UI3.0/3rdparty/Crashlytics.framework"; sourceTree = "<group>"; };
@@ -1180,16 +1181,12 @@
 		3C3527421931D33A00385240 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3C3527441931D37900385240 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3C36CA691A1EDB6200CDDD48 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		3C6BBA071941A58C00A64684 /* XHMessageTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMessageTextView.h; sourceTree = "<group>"; };
-		3C6BBA081941A58C00A64684 /* XHMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMessageTextView.m; sourceTree = "<group>"; };
 		3CBB931B1A14B227007FED9E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		3D7401AB3CCB68618262CD2C /* Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-jdpay/Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig"; sourceTree = "<group>"; };
 		3EEDCE5B9CEC4FCA55263150 /* Pods-ChatDemo-UI3.0-jdpay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-jdpay.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-jdpay/Pods-ChatDemo-UI3.0-jdpay.release.xcconfig"; sourceTree = "<group>"; };
 		4BF2608D48F688059FCF872C /* libPods-ChatDemo-UI3.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C63AFA13E65D7A990D76BFD /* libPods-ChatDemo-UI3.0-jdpay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0-jdpay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		833E2D9C1DC723D600C5AB48 /* GettingMoreFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GettingMoreFooterView.h; sourceTree = "<group>"; };
-		833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GettingMoreFooterView.m; sourceTree = "<group>"; };
 		902DEC541931D934006CA75E /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		90911024192EEA70008A48AA /* ChatDemo-UI3.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatDemo-UI3.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1201,7 +1198,6 @@
 		909110EA192EEAED008A48AA /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
 		90911121192EEBB8008A48AA /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		90911122192EEBB8008A48AA /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		90911133192EEC59008A48AA /* ChatDemoUIDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatDemoUIDefine.h; sourceTree = "<group>"; };
 		90F1BECA1930491C00121AEC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		90F1BECC1930492300121AEC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1223,8 +1219,8 @@
 		D2BF974C1AEB566B009E0D5C /* group_creategroup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_creategroup@2x.png"; sourceTree = "<group>"; };
 		D2BF974D1AEB566B009E0D5C /* group_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_header@2x.png"; sourceTree = "<group>"; };
 		D2BF974E1AEB566B009E0D5C /* group_joinpublicgroup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_joinpublicgroup@2x.png"; sourceTree = "<group>"; };
-		D2FFDB901C1687A30031425A /* ChatDemoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatDemoHelper.h; sourceTree = "<group>"; };
-		D2FFDB911C1687A30031425A /* ChatDemoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatDemoHelper.m; sourceTree = "<group>"; };
+		D2FFDB901C1687A30031425A /* EMDemoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDemoHelper.h; sourceTree = "<group>"; };
+		D2FFDB911C1687A30031425A /* EMDemoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDemoHelper.m; sourceTree = "<group>"; };
 		D3C39570339FF343A13FC8AD /* Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-JDPay/Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig"; sourceTree = "<group>"; };
 		D6E3F8F563A890669766AA3C /* libPods-ChatDemo-UI3.0-JDPay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatDemo-UI3.0-JDPay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E121EEBE7134566FC8E14C2E /* Pods-ChatDemo-UI3.0-JDPay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-JDPay.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-JDPay/Pods-ChatDemo-UI3.0-JDPay.release.xcconfig"; sourceTree = "<group>"; };
@@ -1787,10 +1783,10 @@
 		3A3F279921F1AE59001A6327 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				3A3F29BA21F1C343001A6327 /* Helper */,
-				3A8AF50D221ABE0200688170 /* Notification */,
 				3A3F28CD21F1AEB3001A6327 /* EMHomeViewController.h */,
 				3A3F28D021F1AEB3001A6327 /* EMHomeViewController.m */,
+				3A3F29BA21F1C343001A6327 /* Helper */,
+				3A8AF50D221ABE0200688170 /* Notification */,
 				3A3F299021F1C343001A6327 /* Images */,
 				3A3F298921F1B281001A6327 /* Chat */,
 				3A3F280021F1AE59001A6327 /* Account */,
@@ -2019,6 +2015,8 @@
 				3ACF9EDE221163CF00B16331 /* UIViewController+HUD.m */,
 				3A3F2A0E21F1C35E001A6327 /* UIViewController+Util.h */,
 				3A3F2A1121F1C35E001A6327 /* UIViewController+Util.m */,
+				3A6D142F221FB81600613662 /* NSObject+Alert.h */,
+				3A6D1430221FB81600613662 /* NSObject+Alert.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2377,25 +2375,6 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		3C6BBA0319419EBD00A64684 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				833E2D9C1DC723D600C5AB48 /* GettingMoreFooterView.h */,
-				833E2D9D1DC723D600C5AB48 /* GettingMoreFooterView.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		3CBF90BC19302F5000AD68AE /* Custom */ = {
-			isa = PBXGroup;
-			children = (
-				3C6BBA071941A58C00A64684 /* XHMessageTextView.h */,
-				3C6BBA081941A58C00A64684 /* XHMessageTextView.m */,
-				3C6BBA0319419EBD00A64684 /* View */,
-			);
-			path = Custom;
-			sourceTree = "<group>";
-		};
 		62D218E3D6E4A02086A5A14A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2489,7 +2468,6 @@
 			isa = PBXGroup;
 			children = (
 				287094581DAC6E2900BCB3CD /* ChatDemo-UI3.0.entitlements */,
-				3CBF90BC19302F5000AD68AE /* Custom */,
 				90911120192EEBB8008A48AA /* Class */,
 				909110E4192EEAED008A48AA /* Category */,
 				90911039192EEA70008A48AA /* Images.xcassets */,
@@ -2505,7 +2483,6 @@
 				90911033192EEA70008A48AA /* main.m */,
 				D24A4A9B1BCE4B830007BB00 /* ChatDemo-UI3.0-Info.plist */,
 				D24A4A9C1BCE4B830007BB00 /* ChatDemo-UI3.0-Prefix.pch */,
-				90911133192EEC59008A48AA /* ChatDemoUIDefine.h */,
 				3AD29CC720A1AB6900B93EFE /* Settings.bundle */,
 				3AADCF21215B8C2900B738BB /* Localizable.strings */,
 				3AADCF27215B8CB000B738BB /* InfoPlist.strings */,
@@ -2529,8 +2506,8 @@
 				3A386E881DE5539C000F3D8E /* Call */,
 				90911121192EEBB8008A48AA /* AppDelegate.h */,
 				90911122192EEBB8008A48AA /* AppDelegate.m */,
-				D2FFDB901C1687A30031425A /* ChatDemoHelper.h */,
-				D2FFDB911C1687A30031425A /* ChatDemoHelper.m */,
+				D2FFDB901C1687A30031425A /* EMDemoHelper.h */,
+				D2FFDB911C1687A30031425A /* EMDemoHelper.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -3221,6 +3198,7 @@
 				3A2F294621537E7E00F86EB5 /* CallSettingViewController.m in Sources */,
 				3A3F297821F1AF88001A6327 /* EMBadgeLabel.m in Sources */,
 				3A3F28CA21F1AE98001A6327 /* EMSettingsViewController.m in Sources */,
+				3A6D1431221FB81600613662 /* NSObject+Alert.m in Sources */,
 				3A8AF507221A898700688170 /* amrFileCodec.mm in Sources */,
 				3A2F2C9B21538CF600F86EB5 /* DemoConfManager.m in Sources */,
 				3ACFA14A22117CF600B16331 /* PSTCollectionViewFlowLayout.m in Sources */,
@@ -3284,7 +3262,6 @@
 				3A3F297B21F1AF88001A6327 /* EMChatHelper.m in Sources */,
 				3ACFA0EA22117CBE00B16331 /* DACircularProgressView.m in Sources */,
 				3ACFA12322117CD300B16331 /* MWPhotoBrowser.m in Sources */,
-				3C6BBA091941A58C00A64684 /* XHMessageTextView.m in Sources */,
 				3ACFA04C221165CA00B16331 /* EMSearchBar.m in Sources */,
 				3A6D13EA221F99ED00613662 /* EMMulticastDelegate.m in Sources */,
 				3ACFA14722117CF600B16331 /* PSTCollectionViewUpdateItem.m in Sources */,
@@ -3319,7 +3296,6 @@
 				3A2F2E4A21539B2B00F86EB5 /* MeetingViewController.m in Sources */,
 				3A3F2A0C21F1C353001A6327 /* EMRealtimeSearch.m in Sources */,
 				3ACFA14522117CF600B16331 /* PSTGridLayoutRow.m in Sources */,
-				833E2D9E1DC723D600C5AB48 /* GettingMoreFooterView.m in Sources */,
 				3A2F294521537E7E00F86EB5 /* CallResolutionViewController.m in Sources */,
 				3A2B8854221EB2A30063D7F6 /* EMAtGroupMembersViewController.m in Sources */,
 				3A3F28B021F1AE80001A6327 /* EMSDKOptionsViewController.m in Sources */,
@@ -3334,7 +3310,7 @@
 				3A3F293421F1AF17001A6327 /* EMGroupsViewController.m in Sources */,
 				3A2B884D221E8B7C0063D7F6 /* EMChatroomMutesViewController.m in Sources */,
 				3A3F28D221F1AEB3001A6327 /* EMHomeViewController.m in Sources */,
-				D2FFDB921C1687A30031425A /* ChatDemoHelper.m in Sources */,
+				D2FFDB921C1687A30031425A /* EMDemoHelper.m in Sources */,
 				3A2B883A221E5E1E0063D7F6 /* EMGroupSharedFilesViewController.m in Sources */,
 				3A2B884E221E8B7C0063D7F6 /* EMChatroomMembersViewController.m in Sources */,
 				3A3F28C621F1AE98001A6327 /* EMDevicesViewController.m in Sources */,

@@ -22,6 +22,7 @@
     #import "EMDefines.h"
     #import "EMColorDefine.h"
 
+    #import "NSObject+Alert.h"
     #import "UIViewController+Util.h"
     #import "UIViewController+HUD.h"
 

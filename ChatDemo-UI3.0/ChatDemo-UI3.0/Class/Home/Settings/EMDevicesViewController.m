@@ -146,7 +146,7 @@
         if (!aError) {
             NSString *deviceName = [UIDevice currentDevice].name;
             if ([deviceName isEqualToString:device.deviceName]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+                [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
             } else {
                 [weakself.dataSource removeObjectAtIndex:aIndexPath.row];
                 [weakself.tableView deleteRowsAtIndexPaths:@[aIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -166,7 +166,7 @@
         if (aError) {
             [EMAlertController showErrorAlert:aError.errorDescription];
         } else {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
         }
     }];
 }

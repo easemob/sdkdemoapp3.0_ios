@@ -15,7 +15,8 @@
 
 #import <Bugly/Bugly.h>
 
-#import "ChatDemoHelper.h"
+#import "EMDemoHelper.h"
+#import "EMNotificationHelper.h"
 #import "DemoCallManager.h"
 
 #import "EMGlobalVariables.h"
@@ -124,9 +125,9 @@
         gIsInitializedSDK = YES;
         [[EMClient sharedClient] initializeSDKWithOptions:[demoOptions toOptions]];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@(YES)];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(YES)];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@(NO)];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@(NO)];
     }
 }
 
@@ -142,7 +143,7 @@
 #endif
     
     //注册登录状态监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:ACCOUNT_LOGIN_CHANGED object:nil];
     
     //注册推送
     [self _registerRemoteNotification];
@@ -198,12 +199,8 @@
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
         
-//        ChatDemoHelper *demoHelper = [ChatDemoHelper shareHelper];
-//        [demoHelper asyncGroupFromServer];
-//        [demoHelper asyncConversationFromDB];
-//        [demoHelper asyncPushOptions];
-        
-        [ChatDemoHelper shareHelper];
+        [EMDemoHelper shareHelper];
+        [EMNotificationHelper shared];
         [DemoCallManager sharedManager];
     } else {//登录失败加载登录页面控制器
         gHomeController = nil;
