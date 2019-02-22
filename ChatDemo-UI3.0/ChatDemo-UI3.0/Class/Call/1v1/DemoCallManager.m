@@ -92,7 +92,6 @@ static DemoCallManager *callManager = nil;
         options = [[EMClient sharedClient].callManager getCallOptions];
         options.isSendPushIfOffline = NO;
         options.videoResolution = EMCallVideoResolution640_480;
-        options.isFixedVideoResolution = YES;
     }
     [[EMClient sharedClient].callManager setCallOptions:options];
     
@@ -146,15 +145,12 @@ static DemoCallManager *callManager = nil;
         return ;
     }
     
-    //TODO: code
-//    if ([EaseSDKHelper shareHelper].isShowingimagePicker) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideImagePicker" object:nil];
-//    }
-    
     if(gIsCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_SHOW_VIEW object:nil];
     
     gIsCalling = YES;
     @synchronized (_callLock) {
@@ -323,6 +319,8 @@ static DemoCallManager *callManager = nil;
                 strongSelf.currentCall = aCallSession;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_SHOW_VIEW object:nil];
+                    
                     if (aType == EMCallTypeVideo) {
                         strongSelf.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:strongSelf.currentCall];
                     } else {

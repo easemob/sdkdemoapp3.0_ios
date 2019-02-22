@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showImages:(NSArray<UIImage *> *)aImageArray
     fromController:(UIViewController *)aController;
 
+- (void)dismissViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

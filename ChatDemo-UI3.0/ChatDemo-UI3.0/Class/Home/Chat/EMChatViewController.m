@@ -82,6 +82,7 @@
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillShowCallController:) name:CALL_SHOW_VIEW object:nil];
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
@@ -107,7 +108,8 @@
     [super viewWillDisappear:animated];
     
     self.isViewDidAppear = NO;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)dealloc
@@ -951,6 +953,15 @@
     } else {
         animation();
     }
+}
+
+#pragma mark - NSNotification
+
+- (void)handleWillShowCallController:(NSNotification *)aNotif
+{
+    [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+    [[EMImageBrowser sharedBrowser] dismissViewController];
+    [[EMAudioPlayerHelper sharedHelper] stopPlayer];
 }
 
 #pragma mark - Private

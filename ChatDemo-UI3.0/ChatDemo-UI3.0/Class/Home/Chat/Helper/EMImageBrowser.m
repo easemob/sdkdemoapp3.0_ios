@@ -21,6 +21,8 @@ static EMImageBrowser *browser = nil;
 
 @property (nonatomic, strong) UINavigationController *photoNavigationController;
 
+@property (nonatomic, strong) UIViewController *superController;
+
 @end
 
 
@@ -41,6 +43,7 @@ static EMImageBrowser *browser = nil;
     self = [super init];
     if (self) {
         _photoBrowser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+        _photoBrowser.delegate = self;
         _photoBrowser.displayActionButton = YES;
         _photoBrowser.displayNavArrows = YES;
         _photoBrowser.displaySelectionButtons = NO;
@@ -71,6 +74,11 @@ static EMImageBrowser *browser = nil;
     }
     
     return nil;
+}
+
+- (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser
+{
+    self.superController = nil;
 }
 
 #pragma mark - Private
@@ -116,7 +124,16 @@ static EMImageBrowser *browser = nil;
     
     self.photos = photoArray;
     [self.photoBrowser reloadData];
+    
+    self.superController = aController;
     [aController presentViewController:self.photoNavigationController animated:YES completion:nil];
+}
+
+- (void)dismissViewController
+{
+    [self.superController dismissViewControllerAnimated:YES completion:^{
+        self.superController = nil;
+    }];
 }
 
 @end
