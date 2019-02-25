@@ -19,7 +19,6 @@
 #import "EMNotificationViewController.h"
 #import "EMGroupsViewController.h"
 #import "EMChatroomsViewController.h"
-#import "EMChatViewController.h"
 
 #import "DemoConfManager.h"
 
@@ -178,9 +177,7 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        EMConversationModel *model = [EMConversationHelper modelFromContact:contact];
-        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
-        [weakself.resultController.navigationController pushViewController:controller animated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }];
 }
 
@@ -322,10 +319,7 @@
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
-        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:contact type:EMConversationTypeChat createIfNotExist:YES];
-        EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
-        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
-        [self.navigationController pushViewController:controller animated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }
 }
 

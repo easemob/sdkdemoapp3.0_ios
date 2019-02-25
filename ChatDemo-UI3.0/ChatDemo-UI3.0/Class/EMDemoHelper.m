@@ -8,10 +8,11 @@
 
 #import "EMDemoHelper.h"
 
-#import "AppDelegate.h"
-
 #import "EMGlobalVariables.h"
 #import "EMNotificationHelper.h"
+
+#import "EMConversationHelper.h"
+#import "EMChatViewController.h"
 
 static EMDemoHelper *helper = nil;
 @implementation EMDemoHelper
@@ -52,6 +53,8 @@ static EMDemoHelper *helper = nil;
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatController:) name:CHAT_PUSHVIEWCONTROLLER object:nil];
 }
 
 #pragma mark - EMClientDelegate
@@ -402,6 +405,36 @@ static EMDemoHelper *helper = nil;
         }
     }
     return ret;
+}
+
+#pragma mark - NSNotification
+
+- (void)handlePushChatController:(NSNotification *)aNotif
+{
+    id object = aNotif.object;
+    EMConversationModel *model = nil;
+    if ([object isKindOfClass:[NSString class]]) {
+        NSString *contact = (NSString *)object;
+        model = [EMConversationHelper modelFromContact:contact];
+    } else if ([object isKindOfClass:[EMGroup class]]) {
+        EMGroup *group = (EMGroup *)object;
+        model = [EMConversationHelper modelFromGroup:group];
+    } else if ([object isKindOfClass:[EMChatroom class]]) {
+        EMChatroom *chatroom = (EMChatroom *)object;
+        model = [EMConversationHelper modelFromChatroom:chatroom];
+    } else if ([object isKindOfClass:[EMConversationModel class]]) {
+        model = (EMConversationModel *)object;
+    }
+    
+    if (model) {
+        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIViewController *rootViewController = window.rootViewController;
+        if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nav = (UINavigationController *)rootViewController;
+            [nav pushViewController:controller animated:YES];
+        }
+    }
 }
 
 @end

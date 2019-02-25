@@ -8,12 +8,10 @@
 
 #import "EMGroupsViewController.h"
 
-#import "EMConversationHelper.h"
 #import "EMAvatarNameCell.h"
 #import "EMInviteGroupMemberViewController.h"
 #import "EMCreateGroupViewController.h"
 #import "EMJoinGroupViewController.h"
-#import "EMChatViewController.h"
 
 @interface EMGroupsViewController ()<EMMultiDevicesDelegate, EMGroupManagerDelegate>
 
@@ -158,9 +156,7 @@
         group = [self.searchResults objectAtIndex:indexPath.row];
     }
     
-    EMConversationModel *model = [EMConversationHelper modelFromGroup:group];
-    EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
-    [self.navigationController pushViewController:controller animated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:group];
 }
 
 #pragma mark - EMSearchBarDelegate

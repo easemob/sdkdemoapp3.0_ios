@@ -13,7 +13,6 @@
 
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
-#import "EMChatViewController.h"
 
 @interface EMConversationsViewController()<EMChatManagerDelegate, XHSearchControllerDelegate, EMConversationsDelegate>
 
@@ -132,8 +131,7 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         EMConversationModel *model = [weakself.resultController.dataArray objectAtIndex:row];
-        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
-        [weakself.resultController.navigationController pushViewController:controller animated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
     }];
 }
 
@@ -174,8 +172,7 @@
     
     NSInteger row = indexPath.row;
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
-    EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
-    [self.navigationController pushViewController:controller animated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -11,6 +11,7 @@
 
 //账号状态
 #define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
+#define CHAT_PUSHVIEWCONTROLLER @"EMPushChatViewController"
 
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"

@@ -13,7 +13,6 @@
 
 #import "EMAvatarNameCell.h"
 #import "EMCreateChatroomViewController.h"
-#import "EMChatViewController.h"
 
 @interface EMChatroomsViewController ()
 
@@ -146,13 +145,7 @@
         chatroom = [self.searchResults objectAtIndex:indexPath.row];
     }
     
-    EMConversationModel *model = [EMConversationHelper modelFromChatroom:chatroom];
-    EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
-    [self.navigationController pushViewController:controller animated:YES];
-    
-//    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:chatroom.chatroomId conversationType:EMConversationTypeChatRoom];
-//    chatController.title = chatroom.subject;
-//    [self.navigationController pushViewController:chatController animated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:chatroom];
 }
 
 #pragma mark - EMSearchBarDelegate
