@@ -11,7 +11,7 @@
       location = "group:../../emclient-ios.git/newSDK/HyphenateSDK.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ChatDemo-UI3.0.xcodeproj">
+      location = "group:/Users/xieyajie/Desktop/easemob/sdkdemoapp3.0_ios/ChatDemo-UI3.0/ChatDemo-UI3.0.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
