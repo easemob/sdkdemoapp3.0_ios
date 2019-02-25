@@ -11,7 +11,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
-#import "DemoConfManager.h"
+#import "EMCallOptions+NSCoding.h"
 
 #import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
@@ -64,7 +64,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:CALL_1V1 object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:CALL_MAKE1V1 object:nil];
 }
 
 #pragma mark - private
@@ -95,7 +95,7 @@ static DemoCallManager *callManager = nil;
     }
     [[EMClient sharedClient].callManager setCallOptions:options];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_1V1 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
     
 //    __weak typeof(self) weakSelf = self;
 //    self.callCenter = [[CTCallCenter alloc] init];
@@ -150,7 +150,7 @@ static DemoCallManager *callManager = nil;
         return;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_SHOW_VIEW object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_PUSH_VIEWCONTROLLER object:nil];
     
     gIsCalling = YES;
     @synchronized (_callLock) {
@@ -166,7 +166,9 @@ static DemoCallManager *callManager = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentController) {
                 self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                [gHomeController presentViewController:self.currentController animated:NO completion:nil];
+                UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+                UIViewController *rootViewController = window.rootViewController;
+                [rootViewController presentViewController:self.currentController animated:NO completion:nil];
             }
         });
     }
@@ -271,9 +273,10 @@ static DemoCallManager *callManager = nil;
         return;
     }
     
-    EMCallType type = (EMCallType)[[notify.object objectForKey:@"type"] integerValue];
+    EMCallType type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
+    NSString *chatter = [notify.object valueForKey:CALL_CHATTER] ;
     if (type == EMCallTypeVideo) {
-        [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
+        [self _makeCallWithUsername:chatter type:type isCustomVideoData:NO];
 //        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 //
 //        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -290,7 +293,7 @@ static DemoCallManager *callManager = nil;
 //
 //        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
     } else {
-        [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
+        [self _makeCallWithUsername:chatter type:type isCustomVideoData:NO];
     }
 }
 
@@ -319,7 +322,7 @@ static DemoCallManager *callManager = nil;
                 strongSelf.currentCall = aCallSession;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_SHOW_VIEW object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_PUSH_VIEWCONTROLLER object:nil];
                     
                     if (aType == EMCallTypeVideo) {
                         strongSelf.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:strongSelf.currentCall];
@@ -328,7 +331,9 @@ static DemoCallManager *callManager = nil;
                     }
                     
                     if (strongSelf.currentController) {
-                        [gHomeController presentViewController:strongSelf.currentController animated:NO completion:nil];
+                        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+                        UIViewController *rootViewController = window.rootViewController;
+                        [rootViewController presentViewController:strongSelf.currentController animated:NO completion:nil];
                     }
                 });
             }

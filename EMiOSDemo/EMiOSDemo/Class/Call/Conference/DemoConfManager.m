@@ -61,6 +61,8 @@ static DemoConfManager *confManager = nil;
 {
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].conferenceManager addDelegate:self delegateQueue:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMakeConference:) name:CALL_MAKECONFERENCE object:nil];
 }
 
 #pragma mark - EMChatManagerDelegate
@@ -172,7 +174,9 @@ static DemoConfManager *confManager = nil;
     if (controller) {
         gIsCalling = YES;
         self.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [gHomeController presentViewController:self.confNavController animated:NO completion:nil];
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIViewController *rootViewController = window.rootViewController;
+        [rootViewController presentViewController:self.confNavController animated:NO completion:nil];
     }
 }
 
@@ -195,6 +199,37 @@ static DemoConfManager *confManager = nil;
     }
     
     gIsCalling = NO;
+}
+
+#pragma mark - NSNotification
+
+- (void)handleMakeConference:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    EMConferenceType type = (EMConferenceType)[dic objectForKey:CALL_TYPE];
+    id model = [dic objectForKey:CALL_MODEL];
+    
+    NSString *conversationId = nil;
+    ConfInviteType inviteType = ConfInviteTypeUser;
+    EMChatType chatType = EMChatTypeChat;
+    if ([model isKindOfClass:[EMConversationModel class]]) {
+        EMConversationModel *cmodel = (EMConversationModel *)model;
+        conversationId = cmodel.emModel.conversationId;
+        chatType =(EMChatType)cmodel.emModel.type;
+        if (cmodel.emModel.type == EMChatTypeGroupChat) {
+            inviteType = ConfInviteTypeGroup;
+        } else if (cmodel.emModel.type == EMChatTypeChatRoom) {
+            inviteType = ConfInviteTypeChatroom;
+        }
+    }
+    
+    UIViewController *controller = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    if (controller == nil) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        controller = window.rootViewController;
+    }
+    
+    [self inviteMemberWithConfType:type inviteType:inviteType conversationId:conversationId chatType:chatType popFromController:controller];
 }
 
 @end

@@ -377,7 +377,9 @@
         self.floatingView.frame = self.localViewTmpFrame;
         self.floatingView = nil;
         
-        [gHomeController presentViewController:self.navigationController animated:NO completion:nil];
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIViewController *rootViewController = window.rootViewController;
+        [rootViewController presentViewController:self.navigationController animated:NO completion:nil];
         return;
     }
     

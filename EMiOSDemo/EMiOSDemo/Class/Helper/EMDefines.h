@@ -11,6 +11,12 @@
 
 //账号状态
 #define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
+
+#define NOTIF_PUSHVIEWCONTROLLER @"EMPushNotificationViewController"
+#define NOTIF_ID @"EMNotifId"
+#define NOTIF_NAVICONTROLLER @"EMNaviController"
+
+//聊天
 #define CHAT_PUSHVIEWCONTROLLER @"EMPushChatViewController"
 
 //消息动图
@@ -30,22 +36,29 @@
 #define kAtYouMessage           1
 #define kAtAllMessage           2
 
-
 //实时音视频
 #define CALL_CHATTER @"chatter"
 #define CALL_TYPE @"type"
-#define CALL_SHOW_VIEW @"EMWillShowCallView"
+#define CALL_PUSH_VIEWCONTROLLER @"EMPushCallViewController"
 //实时音视频1v1呼叫
-#define CALL_1V1 @"EMMake1v1Call"
+#define CALL_MAKE1V1 @"EMMake1v1Call"
+//实时音视频多人
+#define CALL_MODEL @"EMCallForModel"
+#define CALL_MAKECONFERENCE @"EMMakeConference"
 
 //用户黑名单
 #define CONTACT_BLACKLIST_UPDATE @"EMContactBlacklistUpdate"
 #define CONTACT_BLACKLIST_RELOAD @"EMContactReloadBlacklist"
 
 //群组
+#define GROUP_LIST_PUSHVIEWCONTROLLER @"EMPushGroupsViewController"
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
+#define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
 
 //聊天室
+#define CHATROOM_LIST_PUSHVIEWCONTROLLER @"EMPushChatroomsViewController"
 #define CHATROOM_INFO_UPDATED @"EMChatroomInfoUpdated"
+#define CHATROOM_INFO_PUSHVIEWCONTROLLER @"EMPushChatroomInfoViewController"
+
 
 #endif /* EMDefines_h */

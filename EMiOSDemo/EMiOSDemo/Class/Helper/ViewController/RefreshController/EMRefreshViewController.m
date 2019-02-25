@@ -20,6 +20,9 @@
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
     
     _page = 0;
     _showRefreshHeader = NO;

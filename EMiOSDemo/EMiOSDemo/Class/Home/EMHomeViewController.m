@@ -8,8 +8,6 @@
 
 #import "EMHomeViewController.h"
 
-#import "EMNotificationHelper.h"
-
 #import "EMConversationsViewController.h"
 #import "EMContactsViewController.h"
 #import "EMSettingsViewController.h"

@@ -1,5 +1,5 @@
 //
-//  XHSearchResultController.h
+//  EMSearchResultController.h
 //  DXStudio
 //
 //  Created by XieYajie on 22/09/2017.
@@ -8,7 +8,7 @@
 
 #import "EMRefreshViewController.h"
 
-@interface XHSearchResultController : EMRefreshViewController
+@interface EMSearchResultController : EMRefreshViewController
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 
@@ -27,7 +27,7 @@
 
 @end
 
-@protocol XHSearchControllerDelegate <NSObject>
+@protocol EMSearchControllerDelegate <NSObject>
 
 @optional
 

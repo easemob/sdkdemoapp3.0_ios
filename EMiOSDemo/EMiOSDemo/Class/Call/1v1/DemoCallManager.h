@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import <Hyphenate/Hyphenate.h>
-#import "EMCallOptions+NSCoding.h"
-
 @interface DemoCallManager : NSObject
 
 + (instancetype)sharedManager;

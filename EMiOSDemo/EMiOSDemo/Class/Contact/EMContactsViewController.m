@@ -9,20 +9,13 @@
 #import "EMContactsViewController.h"
 
 #import "EMRealtimeSearch.h"
-#import "EMNotificationHelper.h"
-#import "EMConversationHelper.h"
 #import "EMChineseToPinyin.h"
 
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
-#import "EMNotificationViewController.h"
-#import "EMGroupsViewController.h"
-#import "EMChatroomsViewController.h"
 
-#import "DemoConfManager.h"
-
-@interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, XHSearchControllerDelegate, EMNotificationsDelegate>
+@interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate, EMNotificationsDelegate>
 
 @property (nonatomic, strong) NSMutableArray *allContacts;
 @property (nonatomic, strong) NSMutableArray *sectionTitles;
@@ -292,24 +285,21 @@
             EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
-            EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
-            [self.navigationController pushViewController:controller animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIF_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
         } else if (row == 2) {
-            EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
         } else if (row == 3) {
-            EMChatroomsViewController *controller = [[EMChatroomsViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
         } else if (row == 4) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat popFromController:self.navigationController];
+                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
             }];
             [alertController addAction:defaultAction];
 
             UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:ConfInviteTypeUser conversationId:nil chatType:EMChatTypeChat popFromController:self.navigationController];
+                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
             }];
             [alertController addAction:mixAction];
 
@@ -386,7 +376,7 @@
     [self _loadAllContactsFromDB];
 }
 
-#pragma mark - XHSearchControllerDelegate
+#pragma mark - EMSearchControllerDelegate
 
 - (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
 {

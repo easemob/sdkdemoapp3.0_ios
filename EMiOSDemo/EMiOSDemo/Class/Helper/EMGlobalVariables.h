@@ -8,11 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "EMHomeViewController.h"
-
 NS_ASSUME_NONNULL_BEGIN
-
-extern EMHomeViewController *gHomeController;
 
 extern BOOL gIsInitializedSDK;
 

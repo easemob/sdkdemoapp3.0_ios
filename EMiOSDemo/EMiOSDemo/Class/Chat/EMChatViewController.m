@@ -13,18 +13,15 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "EMChatViewController.h"
 
-#import "EMDateHelper.h"
-#import "DemoConfManager.h"
-#import "EMAudioPlayerHelper.h"
 #import "EMImageBrowser.h"
+#import "EMDateHelper.h"
+#import "EMAudioPlayerHelper.h"
 #import "EMConversationHelper.h"
 #import "EMMessageModel.h"
 
 #import "EMChatBar.h"
 #import "EMMessageCell.h"
 #import "EMMessageTimeCell.h"
-#import "EMGroupInfoViewController.h"
-#import "EMChatroomInfoViewController.h"
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
@@ -84,7 +81,7 @@
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillShowCallController:) name:CALL_SHOW_VIEW object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillPushCallController:) name:CALL_PUSH_VIEWCONTROLLER object:nil];
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
@@ -496,34 +493,22 @@
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
         [alertController addAction:[UIAlertAction actionWithTitle:@"语音通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
-            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"视频通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
-            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
         }]];
     } else {
         [alertController addAction:[UIAlertAction actionWithTitle:@"会议模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
-            ConfInviteType inviteType = ConfInviteTypeUser;
-            if (weakself.conversationModel.emModel.type == EMChatTypeGroupChat) {
-                inviteType = ConfInviteTypeGroup;
-            } else if (weakself.conversationModel.emModel.type == EMChatTypeChatRoom) {
-                inviteType = ConfInviteTypeChatroom;
-            }
-            [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLargeCommunication inviteType:inviteType conversationId:weakself.conversationModel.emModel.conversationId chatType:(EMChatType)weakself.conversationModel.emModel.type popFromController:weakself.navigationController];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"直播模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
-            ConfInviteType inviteType = ConfInviteTypeUser;
-            if (weakself.conversationModel.emModel.type == EMChatTypeGroupChat) {
-                inviteType = ConfInviteTypeGroup;
-            } else if (weakself.conversationModel.emModel.type == EMChatTypeChatRoom) {
-                inviteType = ConfInviteTypeChatroom;
-            }
-            [[DemoConfManager sharedManager] inviteMemberWithConfType:EMConferenceTypeLive inviteType:inviteType conversationId:weakself.conversationModel.emModel.conversationId chatType:(EMChatType)weakself.conversationModel.emModel.type popFromController:weakself.navigationController];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLive), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
     }
     
@@ -984,7 +969,7 @@
 
 #pragma mark - NSNotification
 
-- (void)handleWillShowCallController:(NSNotification *)aNotif
+- (void)handleWillPushCallController:(NSNotification *)aNotif
 {
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
@@ -1450,16 +1435,10 @@
 
 - (void)groupOrChatroomInfoAction
 {
-    __weak typeof(self) weakself = self;
     if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
-        EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversationModel.emModel.conversationId];
-        [controller setLeaveOrDestroyCompletion:^{
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }];
-        [self.navigationController pushViewController:controller animated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_PUSHVIEWCONTROLLER object:@{NOTIF_ID:self.conversationModel.emModel.conversationId, NOTIF_NAVICONTROLLER:self.navigationController}];
     } else if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
-        EMChatroomInfoViewController *controller = [[EMChatroomInfoViewController alloc] initWithChatroomId:self.conversationModel.emModel.conversationId];
-        [self.navigationController pushViewController:controller animated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_INFO_PUSHVIEWCONTROLLER object:@{NOTIF_ID:self.conversationModel.emModel.conversationId, NOTIF_NAVICONTROLLER:self.navigationController}];
     }
 }
 

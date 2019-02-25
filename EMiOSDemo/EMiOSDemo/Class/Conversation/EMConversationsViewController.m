@@ -14,7 +14,7 @@
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
 
-@interface EMConversationsViewController()<EMChatManagerDelegate, XHSearchControllerDelegate, EMConversationsDelegate>
+@interface EMConversationsViewController()<EMChatManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
@@ -217,7 +217,7 @@
     }
 }
 
-#pragma mark - XHSearchControllerDelegate
+#pragma mark - EMSearchControllerDelegate
 
 - (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
 {

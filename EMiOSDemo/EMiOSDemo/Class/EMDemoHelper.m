@@ -9,10 +9,14 @@
 #import "EMDemoHelper.h"
 
 #import "EMGlobalVariables.h"
-#import "EMNotificationHelper.h"
 
 #import "EMConversationHelper.h"
+#import "EMNotificationViewController.h"
 #import "EMChatViewController.h"
+#import "EMGroupsViewController.h"
+#import "EMGroupInfoViewController.h"
+#import "EMChatroomsViewController.h"
+#import "EMChatroomInfoViewController.h"
 
 static EMDemoHelper *helper = nil;
 @implementation EMDemoHelper
@@ -42,6 +46,8 @@ static EMDemoHelper *helper = nil;
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - init
@@ -54,7 +60,12 @@ static EMDemoHelper *helper = nil;
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushNotificationController:) name:NOTIF_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatController:) name:CHAT_PUSHVIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupsController:) name:GROUP_LIST_PUSHVIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupInfoController:) name:GROUP_INFO_PUSHVIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomsController:) name:CHATROOM_LIST_PUSHVIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomInfoController:) name:CHATROOM_INFO_PUSHVIEWCONTROLLER object:nil];
 }
 
 #pragma mark - EMClientDelegate
@@ -125,15 +136,6 @@ static EMDemoHelper *helper = nil;
 }
 
 #pragma mark - EMChatManagerDelegate
-
-- (void)didUpdateConversationList:(NSArray *)aConversationList
-{
-//    [gMainController setupUnreadMessageCount];
-    
-//    if (self.conversationListVC) {
-//        [_conversationListVC refreshDataSource];
-//    }
-}
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
@@ -409,6 +411,19 @@ static EMDemoHelper *helper = nil;
 
 #pragma mark - NSNotification
 
+- (void)handlePushNotificationController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    if (navController == nil) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        navController = (UINavigationController *)window.rootViewController;
+    }
+    
+    EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
+    [navController pushViewController:controller animated:YES];
+}
+
 - (void)handlePushChatController:(NSNotification *)aNotif
 {
     id object = aNotif.object;
@@ -436,5 +451,66 @@ static EMDemoHelper *helper = nil;
         }
     }
 }
+
+- (void)handlePushGroupsController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    if (navController == nil) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        navController = (UINavigationController *)window.rootViewController;
+    }
+    
+    EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
+    [navController pushViewController:controller animated:YES];
+}
+
+- (void)handlePushGroupInfoController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    if ([dic count] == 0) {
+        return;
+    }
+    
+    NSString *groupId = [dic objectForKey:NOTIF_ID];
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+
+    EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:groupId];
+    [controller setLeaveOrDestroyCompletion:^{
+        [navController popViewControllerAnimated:YES];
+    }];
+    [navController pushViewController:controller animated:YES];
+}
+
+- (void)handlePushChatroomsController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    if (navController == nil) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        navController = (UINavigationController *)window.rootViewController;
+    }
+    
+    EMChatroomsViewController *controller = [[EMChatroomsViewController alloc] init];
+    [navController pushViewController:controller animated:YES];
+}
+
+- (void)handlePushChatroomInfoController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    if ([dic count] == 0) {
+        return;
+    }
+    
+    NSString *chatroomId = [dic objectForKey:NOTIF_ID];
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    
+    EMChatroomInfoViewController *controller = [[EMChatroomInfoViewController alloc] initWithChatroomId:chatroomId];
+    [controller setLeaveCompletion:^{
+        [navController popViewControllerAnimated:YES];
+    }];
+    [navController pushViewController:controller animated:YES];
+}
+
 
 @end

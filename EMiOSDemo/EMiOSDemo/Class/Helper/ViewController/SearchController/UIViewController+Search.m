@@ -31,12 +31,12 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
     objc_setAssociatedObject(self, SearchButtonKey, searchButton, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (XHSearchResultController *)resultController
+- (EMSearchResultController *)resultController
 {
     return objc_getAssociatedObject(self, ResultControllerKey);
 }
 
-- (void)setResultController:(XHSearchResultController *)resultController
+- (void)setResultController:(EMSearchResultController *)resultController
 {
     objc_setAssociatedObject(self, ResultControllerKey, resultController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -46,7 +46,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
     return objc_getAssociatedObject(self, ResultNavigationControllerKey);
 }
 
-- (void)setResultNavigationController:(XHSearchResultController *)resultNavigationController
+- (void)setResultNavigationController:(EMSearchResultController *)resultNavigationController
 {
     objc_setAssociatedObject(self, ResultNavigationControllerKey, resultNavigationController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -79,7 +79,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
     }
     
     if (self.resultNavigationController == nil) {
-        self.resultController = [[XHSearchResultController alloc] init];
+        self.resultController = [[EMSearchResultController alloc] init];
         self.resultController.searchBar.delegate = self;
         
         self.resultNavigationController = [[UINavigationController alloc] initWithRootViewController:self.resultController];
@@ -99,7 +99,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
+    if ([self conformsToProtocol:@protocol(EMSearchControllerDelegate)]
         && [self respondsToSelector:@selector(searchBarWillBeginEditing:)]) {
         [self performSelector:@selector(searchBarWillBeginEditing:)
                    withObject:searchBar];
@@ -112,7 +112,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 {
     if ([text isEqualToString:@"\n"]) {
         [searchBar resignFirstResponder];
-        if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
+        if ([self conformsToProtocol:@protocol(EMSearchControllerDelegate)]
             && [self respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
             [self performSelector:@selector(searchBarSearchButtonClicked:)
                        withObject:searchBar];
@@ -125,7 +125,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
+    if ([self conformsToProtocol:@protocol(EMSearchControllerDelegate)]
         && [self respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
         [self performSelector:@selector(searchTextDidChangeWithString:)
                    withObject:searchText];
@@ -136,7 +136,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 {
     [self cancelSearch];
     
-    if ([self conformsToProtocol:@protocol(XHSearchControllerDelegate)]
+    if ([self conformsToProtocol:@protocol(EMSearchControllerDelegate)]
         && [self respondsToSelector:@selector(searchBarCancelButtonAction:)]) {
         [self performSelector:@selector(searchBarCancelButtonAction:)
                    withObject:searchBar];

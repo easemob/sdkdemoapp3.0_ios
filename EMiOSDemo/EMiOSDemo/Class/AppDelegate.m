@@ -16,8 +16,8 @@
 #import <Bugly/Bugly.h>
 
 #import "EMDemoHelper.h"
-#import "EMNotificationHelper.h"
 #import "DemoCallManager.h"
+#import "DemoConfManager.h"
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
@@ -195,16 +195,14 @@
         navigationController = (UINavigationController *)self.window.rootViewController;
         if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[EMHomeViewController class]])) {
             EMHomeViewController *homeController = [[EMHomeViewController alloc] init];
-            gHomeController = homeController;
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
         
         [EMDemoHelper shareHelper];
         [EMNotificationHelper shared];
         [DemoCallManager sharedManager];
+        [DemoConfManager sharedManager];
     } else {//登录失败加载登录页面控制器
-        gHomeController = nil;
-        
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
         

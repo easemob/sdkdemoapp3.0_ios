@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "XHSearchResultController.h"
+#import "EMSearchResultController.h"
 
 @interface UIViewController (Search) <UISearchBarDelegate>
 
 @property (nonatomic, strong) UIButton *searchButton;
 
-@property (nonatomic, strong) XHSearchResultController *resultController;
+@property (nonatomic, strong) EMSearchResultController *resultController;
 
 @property (nonatomic, strong) UINavigationController *resultNavigationController;
 

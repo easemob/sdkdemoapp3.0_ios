@@ -1,20 +1,20 @@
 //
-//  XHSearchResultController.h
+//  EMSearchResultController.m
 //  DXStudio
 //
 //  Created by XieYajie on 22/09/2017.
 //  Copyright © 2017 dxstudio. All rights reserved.
 //
 
-#import "XHSearchResultController.h"
+#import "EMSearchResultController.h"
 
 #import "MJRefresh.h"
 
-@interface XHSearchResultController ()<UITableViewDelegate, UITableViewDataSource>
+@interface EMSearchResultController ()<UITableViewDelegate, UITableViewDataSource>
 
 @end
 
-@implementation XHSearchResultController
+@implementation EMSearchResultController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

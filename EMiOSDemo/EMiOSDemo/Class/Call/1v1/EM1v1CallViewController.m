@@ -290,7 +290,9 @@
     self.minButton.selected = NO;
     [self.floatingView removeFromSuperview];
     
-    [gHomeController presentViewController:self animated:NO completion:nil];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    [rootViewController presentViewController:self animated:NO completion:nil];
 }
 
 #pragma mark - Status
