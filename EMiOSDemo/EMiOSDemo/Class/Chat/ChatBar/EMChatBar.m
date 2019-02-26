@@ -77,7 +77,7 @@
         make.left.equalTo(self);
         make.right.equalTo(self);
         make.height.equalTo(@50);
-        make.bottom.equalTo(self);
+        make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
     }];
 }
 
@@ -189,7 +189,7 @@
     if (self.currentMoreView) {
         [self.currentMoreView removeFromSuperview];
         [self.buttonsView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self);
+            make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
         }];
     }
     
@@ -268,7 +268,7 @@
             make.left.equalTo(self);
             make.right.equalTo(self);
             make.height.equalTo(@55);
-            make.bottom.equalTo(self);
+            make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
         }];
     }
 }
@@ -339,7 +339,7 @@
             [self.recordAudioView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self);
                 make.right.equalTo(self);
-                make.bottom.equalTo(self);
+                make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
             }];
             [self _remakeButtonsViewConstraints];
         }
@@ -356,7 +356,7 @@
             [self.moreEmoticonView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self);
                 make.right.equalTo(self);
-                make.bottom.equalTo(self);
+                make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
                 make.height.mas_equalTo(self.moreEmoticonView.viewHeight);
             }];
             [self _remakeButtonsViewConstraints];

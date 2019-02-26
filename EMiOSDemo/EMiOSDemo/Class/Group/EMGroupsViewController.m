@@ -240,7 +240,7 @@
             }
             [weakself.dataArray addObjectsFromArray:aList];
             
-            weakself.showRefreshFooter = aList.count > 0 ? YES : NO;
+            weakself.showRefreshFooter = aList.count < 50 ? NO : YES;
             [weakself tableViewDidFinishTriggerHeader:aIsHeader reload:YES];
         }
     }];

@@ -142,7 +142,7 @@
     [self.chatBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-EMVIEWBOTTOMMARGIN);
+        make.bottom.equalTo(self.view);
     }];
     
     [self _setupChatBarMoreViews];
