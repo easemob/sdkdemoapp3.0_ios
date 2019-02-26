@@ -9,6 +9,18 @@
 #ifndef EMDefines_h
 #define EMDefines_h
 
+#define IS_iPhoneX (\
+{\
+BOOL isPhoneX = NO;\
+if (@available(iOS 11.0, *)) {\
+isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bottom > 0.0;\
+}\
+(isPhoneX);}\
+)
+
+#define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
+#define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
+
 //账号状态
 #define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 

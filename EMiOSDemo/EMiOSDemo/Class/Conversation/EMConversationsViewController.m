@@ -80,12 +80,19 @@
     titleLabel.font = [UIFont systemFontOfSize:28];
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(15);
+        make.left.equalTo(self.view).offset(EMVIEWTOPMARGIN + 15);
         make.top.equalTo(self.view).offset(20);
         make.height.equalTo(@60);
     }];
     
     [self enableSearchController];
+    [self.searchButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom);
+        make.left.equalTo(self.view).offset(15);
+        make.right.equalTo(self.view).offset(-15);
+        make.height.equalTo(@35);
+    }];
+    
     self.tableView.rowHeight = 60;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);

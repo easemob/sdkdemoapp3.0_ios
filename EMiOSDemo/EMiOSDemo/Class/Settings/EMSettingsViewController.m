@@ -62,7 +62,7 @@
     titleLabel.font = [UIFont systemFontOfSize:28];
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(15);
+        make.left.equalTo(self.view).offset(EMVIEWTOPMARGIN + 15);
         make.top.equalTo(self.view).offset(20);
         make.height.equalTo(@60);
     }];
