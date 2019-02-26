@@ -316,6 +316,7 @@
         [self.callSession.remoteVideoView removeFromSuperview];
         self.floatingView.displayView = self.callSession.remoteVideoView;
         [self.floatingView addSubview:self.callSession.remoteVideoView];
+        self.floatingView.enableVoice = self.floatingView.enableVoice;
         [self.callSession.remoteVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.floatingView);
         }];
