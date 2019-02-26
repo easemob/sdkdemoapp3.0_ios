@@ -38,7 +38,6 @@
 		3A45E0222223A21B00505786 /* EMSDKOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E01A2223A21B00505786 /* EMSDKOptionsViewController.m */; };
 		3A45E0232223A21B00505786 /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E01C2223A21B00505786 /* EMLoginViewController.m */; };
 		3A45E0242223A21B00505786 /* EMSDKOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E01E2223A21B00505786 /* EMSDKOptions.plist */; };
-		3A45E0252223A21B00505786 /* EMDemoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E01F2223A21B00505786 /* EMDemoOptions.m */; };
 		3A45E0312223A22600505786 /* unsecure@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E0262223A22500505786 /* unsecure@3x.png */; };
 		3A45E0322223A22600505786 /* qr@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E0272223A22500505786 /* qr@3x.png */; };
 		3A45E0332223A22600505786 /* secure@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E0282223A22500505786 /* secure@2x.png */; };
@@ -450,6 +449,7 @@
 		3A45E5422223D69800505786 /* checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53E2223D69800505786 /* checked@2x.png */; };
 		3A45E54D2223E4DD00505786 /* EMConversationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E54C2223E4DD00505786 /* EMConversationHelper.m */; };
 		3A45E8B422240DB200505786 /* EMNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E8B322240DB100505786 /* EMNotificationHelper.m */; };
+		3A45EAFA2224186400505786 /* EMDemoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45EAF82224186400505786 /* EMDemoOptions.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3ACFA1852211828100B16331 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ACFA1842211828000B16331 /* WebRTC.framework */; };
@@ -540,14 +540,12 @@
 		3A45DD772223A1FD00505786 /* EMRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRefreshTableViewController.h; sourceTree = "<group>"; };
 		3A45DE632223A1FD00505786 /* EMHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMHomeViewController.h; sourceTree = "<group>"; };
 		3A45DE642223A1FD00505786 /* EMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMHomeViewController.m; sourceTree = "<group>"; };
-		3A45E0182223A21B00505786 /* EMDemoOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDemoOptions.h; sourceTree = "<group>"; };
 		3A45E0192223A21B00505786 /* EMRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRegisterViewController.m; sourceTree = "<group>"; };
 		3A45E01A2223A21B00505786 /* EMSDKOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSDKOptionsViewController.m; sourceTree = "<group>"; };
 		3A45E01B2223A21B00505786 /* EMRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRegisterViewController.h; sourceTree = "<group>"; };
 		3A45E01C2223A21B00505786 /* EMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
 		3A45E01D2223A21B00505786 /* EMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		3A45E01E2223A21B00505786 /* EMSDKOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EMSDKOptions.plist; sourceTree = "<group>"; };
-		3A45E01F2223A21B00505786 /* EMDemoOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDemoOptions.m; sourceTree = "<group>"; };
 		3A45E0202223A21B00505786 /* EMSDKOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSDKOptionsViewController.h; sourceTree = "<group>"; };
 		3A45E0262223A22500505786 /* unsecure@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unsecure@3x.png"; sourceTree = "<group>"; };
 		3A45E0272223A22500505786 /* qr@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr@3x.png"; sourceTree = "<group>"; };
@@ -1083,6 +1081,8 @@
 		3A45E54C2223E4DD00505786 /* EMConversationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConversationHelper.m; sourceTree = "<group>"; };
 		3A45E8B222240DB100505786 /* EMNotificationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMNotificationHelper.h; sourceTree = "<group>"; };
 		3A45E8B322240DB100505786 /* EMNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMNotificationHelper.m; sourceTree = "<group>"; };
+		3A45EAF82224186400505786 /* EMDemoOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDemoOptions.m; sourceTree = "<group>"; };
+		3A45EAF92224186400505786 /* EMDemoOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDemoOptions.h; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -1551,8 +1551,6 @@
 		3A45DCD72223A1FC00505786 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				3A45E0182223A21B00505786 /* EMDemoOptions.h */,
-				3A45E01F2223A21B00505786 /* EMDemoOptions.m */,
 				3A45E01D2223A21B00505786 /* EMLoginViewController.h */,
 				3A45E01C2223A21B00505786 /* EMLoginViewController.m */,
 				3A45E01B2223A21B00505786 /* EMRegisterViewController.h */,
@@ -1613,6 +1611,8 @@
 			children = (
 				3A45E04A2223A25100505786 /* EMHeaders.h */,
 				3A45E0462223A25000505786 /* EMDefines.h */,
+				3A45EAF92224186400505786 /* EMDemoOptions.h */,
+				3A45EAF82224186400505786 /* EMDemoOptions.m */,
 				3A45E54B2223E4DD00505786 /* EMConversationHelper.h */,
 				3A45E54C2223E4DD00505786 /* EMConversationHelper.m */,
 				3A45E8B222240DB100505786 /* EMNotificationHelper.h */,
@@ -1954,12 +1954,12 @@
 			children = (
 				3A45E10F2223A32400505786 /* DemoCallManager.h */,
 				3A45E1152223A32500505786 /* DemoCallManager.m */,
+				3A45E10E2223A32400505786 /* EM1v1CallViewController.h */,
+				3A45E1122223A32500505786 /* EM1v1CallViewController.m */,
 				3A45E10B2223A32400505786 /* Call1v1AudioViewController.h */,
 				3A45E10D2223A32400505786 /* Call1v1AudioViewController.m */,
 				3A45E1132223A32500505786 /* Call1v1VideoViewController.h */,
 				3A45E10A2223A32400505786 /* Call1v1VideoViewController.m */,
-				3A45E10E2223A32400505786 /* EM1v1CallViewController.h */,
-				3A45E1122223A32500505786 /* EM1v1CallViewController.m */,
 				3A45E1142223A32500505786 /* EMCallOptions+NSCoding.h */,
 				3A45E10C2223A32400505786 /* EMCallOptions+NSCoding.m */,
 				3A45E1162223A32500505786 /* EMVideoInfoViewController.h */,
@@ -2796,6 +2796,7 @@
 				3A45DE882223A1FD00505786 /* EaseEmotionEscape.m in Sources */,
 				3A45E24F2223A3C300505786 /* EMChatBarEmoticonView.m in Sources */,
 				3A45DB4B22239DE200505786 /* EMDemoHelper.m in Sources */,
+				3A45EAFA2224186400505786 /* EMDemoOptions.m in Sources */,
 				3A45E0442223A23000505786 /* EMQRCodeViewController.m in Sources */,
 				3A45DA2622239DE200505786 /* main.m in Sources */,
 				3A45E3172223A43300505786 /* EMMessageCell.m in Sources */,
@@ -2814,7 +2815,6 @@
 				3A45E1092223A30C00505786 /* EMSearchBar.m in Sources */,
 				3A45E1072223A30C00505786 /* EMSearchResultController.m in Sources */,
 				3A45E4232223A52100505786 /* EMPrivacyViewController.m in Sources */,
-				3A45E0252223A21B00505786 /* EMDemoOptions.m in Sources */,
 				3A45E0DD2223A2CE00505786 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				3A45E3CB2223A4DC00505786 /* EMInviteGroupMemberViewController.m in Sources */,
 				3A45E3E02223A4E900505786 /* EMGroupBlacklistViewController.m in Sources */,

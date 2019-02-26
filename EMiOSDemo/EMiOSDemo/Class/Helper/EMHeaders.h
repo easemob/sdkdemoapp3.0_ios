@@ -19,5 +19,6 @@
 
 #import "EMAlertController.h"
 
+#import "EMDemoOptions.h"
 #import "EMNotificationHelper.h"
 #import "EMConversationHelper.h"
