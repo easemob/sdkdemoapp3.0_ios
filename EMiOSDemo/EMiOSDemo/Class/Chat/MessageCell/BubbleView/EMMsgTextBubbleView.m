@@ -56,10 +56,8 @@
 - (void)setModel:(EMMessageModel *)model
 {
     EMMessageType type = model.type;
-    if (type == EMMessageTypeText) {
-        EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
-        self.textLabel.text = body.text;
-    }
+    EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
+    self.textLabel.text = body.text;
 }
 
 @end

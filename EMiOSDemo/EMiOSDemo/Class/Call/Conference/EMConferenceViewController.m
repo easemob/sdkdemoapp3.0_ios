@@ -557,7 +557,7 @@
     NSString *tmpStr = self.type == EMConferenceTypeLive ? @"邀请你加入互动会议" : @"邀请你加入会议";
     NSString *currentUser = [EMClient sharedClient].currentUsername;
     EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:[[NSString alloc] initWithFormat:@"%@ %@: %@", currentUser, tmpStr, self.conference.confId]];
-    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:@{@"em_conference_op":@"invite",@"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_conference_type":@(self.type)}];
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:@{MSG_EXT_CALLOP:@"invite",MSG_EXT_CALLID:self.conference.confId, MSG_EXT_CALLPSWD:self.password, @"em_conference_type":@(self.type)}];
     //为了兼容旧版本
     if (self.type != EMConferenceTypeLive) {
         [ext setObject:self.conference.confId forKey:@"conferenceId"];

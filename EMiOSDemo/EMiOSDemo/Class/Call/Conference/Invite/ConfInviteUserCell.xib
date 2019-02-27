@@ -24,7 +24,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="3Zr-MT-aud">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_avatar_blue.png" translatesAutoresizingMaskIntoConstraints="NO" id="3Zr-MT-aud">
                         <rect key="frame" x="16" y="7.5" width="45" height="45"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="45" id="dtj-W4-tCN"/>
@@ -60,6 +60,6 @@
     </objects>
     <resources>
         <image name="uncheck.png" width="24" height="24"/>
-        <image name="user_2.png" width="200" height="200"/>
+        <image name="user_avatar_blue.png" width="200" height="200"/>
     </resources>
 </document>

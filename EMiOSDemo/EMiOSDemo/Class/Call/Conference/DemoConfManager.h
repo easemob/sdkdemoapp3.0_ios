@@ -21,8 +21,6 @@
                         chatType:(EMChatType)aChatType
                popFromController:(UIViewController *)aController;
 
-- (void)handleMessageToJoinConference:(EMMessage *)aMessage;
-
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy;
 

@@ -559,16 +559,18 @@
 
 - (void)messageCellDidSelected:(EMMessageCell *)aCell
 {
-    if (aCell.model.type == EMMessageBodyTypeImage) {
+    if (aCell.model.type == EMMessageTypeImage) {
         [self _imageMessageCellDidSelected:aCell];
-    } else if (aCell.model.type == EMMessageBodyTypeLocation) {
+    } else if (aCell.model.type == EMMessageTypeLocation) {
         [self _locationMessageCellDidSelected:aCell];
-    } else if (aCell.model.type == EMMessageBodyTypeVoice) {
+    } else if (aCell.model.type == EMMessageTypeVoice) {
         [self _audioMessageCellDidSelected:aCell];
-    } else if (aCell.model.type == EMMessageBodyTypeVideo) {
+    } else if (aCell.model.type == EMMessageTypeVideo) {
         [self _videoMessageCellDidSelected:aCell];
-    } else if (aCell.model.type == EMMessageBodyTypeFile) {
+    } else if (aCell.model.type == EMMessageTypeFile) {
         [self _fileMessageCellDidSelected:aCell];
+    } else if (aCell.model.type == EMMessageTypeExtCall) {
+        [self _callMessageCellDidSelected:aCell];
     }
 }
 
@@ -751,6 +753,11 @@
     
 }
 
+- (void)_callMessageCellDidSelected:(EMMessageCell *)aCell
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_SELECTCONFERENCECELL object:aCell.model.emModel];
+}
+
 - (void)messageCellDidLongPress:(EMMessageCell *)aCell
 {
     self.menuIndexPath = aCell.indexPath;
@@ -874,11 +881,14 @@
         
         __block NSUInteger index = NSNotFound;
         __block EMMessageModel *reloadModel = nil;
-        [self.dataArray enumerateObjectsUsingBlock:^(EMMessageModel *model, NSUInteger idx, BOOL *stop) {
-            if ([model.emModel.messageId isEqualToString:aMessage.messageId]) {
-                reloadModel = model;
-                index = idx;
-                *stop = YES;
+        [self.dataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([obj isKindOfClass:[EMMessageModel class]]) {
+                EMMessageModel *model = (EMMessageModel *)obj;
+                if ([model.emModel.messageId isEqualToString:aMessage.messageId]) {
+                    reloadModel = model;
+                    index = idx;
+                    *stop = YES;
+                }
             }
         }];
         

@@ -282,7 +282,7 @@
 
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:currentUser];
     EMTextMessageBody *textBody = [[EMTextMessageBody alloc] initWithText:msg];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:self.admin from:currentUser to:self.admin body:textBody ext:@{@"em_conference_id":self.conference.confId, @"em_conference_password":self.password, @"em_member_name":applyUid, @"em_conference_op":op}];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:self.admin from:currentUser to:self.admin body:textBody ext:@{MSG_EXT_CALLID:self.conference.confId, MSG_EXT_CALLPSWD:self.password, @"em_member_name":applyUid, MSG_EXT_CALLOP:op}];
     message.chatType = EMChatTypeChat;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
@@ -320,7 +320,7 @@
 
 - (void)handleRoleChangedMessage:(EMMessage *)aMessage
 {
-    NSString *confrId = [aMessage.ext objectForKey:@"em_conference_id"];
+    NSString *confrId = [aMessage.ext objectForKey:MSG_EXT_CALLID];
     if (![confrId isEqualToString:self.conference.confId]) {
         return;
     }
@@ -328,7 +328,7 @@
     EMTextMessageBody *textBody = (EMTextMessageBody *)aMessage.body;
     NSString *text = textBody.text;
     
-    NSString *op = [aMessage.ext objectForKey:@"em_conference_op"];
+    NSString *op = [aMessage.ext objectForKey:MSG_EXT_CALLOP];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:text message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"同意" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

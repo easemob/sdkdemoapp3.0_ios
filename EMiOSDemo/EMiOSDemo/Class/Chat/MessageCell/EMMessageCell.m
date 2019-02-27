@@ -64,7 +64,7 @@
         identifier = @"EMMsgCellDirectionRecv";
     }
     
-    if (aType == EMMessageTypeText) {
+    if (aType == EMMessageTypeText || aType == EMMessageTypeExtCall) {
         identifier = [NSString stringWithFormat:@"%@Text", identifier];
     } else if (aType == EMMessageTypeImage) {
         identifier = [NSString stringWithFormat:@"%@Image", identifier];
@@ -173,6 +173,7 @@
     EMMessageBubbleView *bubbleView = nil;
     switch (aType) {
         case EMMessageTypeText:
+        case EMMessageTypeExtCall:
             bubbleView = [[EMMsgTextBubbleView alloc] initWithDirection:self.direction type:aType];
             break;
         case EMMessageTypeImage:

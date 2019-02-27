@@ -23,7 +23,15 @@
             } else if ([aMsg.ext objectForKey:MSG_EXT_RECALL]) {
                 _type = EMMessageTypeExtRecall;
             } else {
-                _type = EMMessageTypeText;
+                NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
+                if ([conferenceId length] == 0) {
+                    conferenceId = [aMsg.ext objectForKey:MSG_EXT_CALLID];
+                }
+                if ([conferenceId length] > 0) {
+                    _type = EMMessageTypeExtCall;
+                } else {
+                    _type = EMMessageTypeText;
+                }
             }
         } else {
             _type = (EMMessageType)aMsg.body.type;

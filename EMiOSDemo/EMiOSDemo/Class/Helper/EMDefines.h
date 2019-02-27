@@ -38,6 +38,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 //消息撤回
 #define MSG_EXT_RECALL @"em_recall"
 
+//多人会议邀请
+#define MSG_EXT_CALLOP @"em_conference_op"
+#define MSG_EXT_CALLID @"em_conference_id"
+#define MSG_EXT_CALLPSWD @"em_conference_password"
+
 //@
 //群组消息ext的字段，用于存放被@的环信id数组
 #define MSG_EXT_AT @"em_at_list"
@@ -57,6 +62,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 //实时音视频多人
 #define CALL_MODEL @"EMCallForModel"
 #define CALL_MAKECONFERENCE @"EMMakeConference"
+#define CALL_SELECTCONFERENCECELL @"EMSelectConferenceCell"
 
 //用户黑名单
 #define CONTACT_BLACKLIST_UPDATE @"EMContactBlacklistUpdate"
