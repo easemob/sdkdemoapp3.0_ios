@@ -26,6 +26,7 @@
 @property (nonatomic, strong) EMConversationsViewController *conversationsController;
 @property (nonatomic, strong) EMContactsViewController *contactsController;
 @property (nonatomic, strong) EMSettingsViewController *settingsController;
+@property (nonatomic, strong) UIView *addView;
 
 @end
 
@@ -147,18 +148,26 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     NSInteger tag = item.tag;
-    UIView *addView = nil;
+    UIView *tmpView = nil;
     if (tag == kTabbarItemTag_Conversation) {
-        addView = self.conversationsController.view;
+        tmpView = self.conversationsController.view;
     } else if (tag == kTabbarItemTag_Contact) {
-        addView = self.contactsController.view;
+        tmpView = self.contactsController.view;
     } else if (tag == kTabbarItemTag_Settings) {
-        addView = self.settingsController.view;
+        tmpView = self.settingsController.view;
     }
     
-    if (addView) {
-        [self.view addSubview:addView];
-        [addView mas_makeConstraints:^(MASConstraintMaker *make) {
+    if (self.addView == tmpView) {
+        return;
+    } else {
+        [self.addView removeFromSuperview];
+        self.addView = nil;
+    }
+    
+    self.addView = tmpView;
+    if (self.addView) {
+        [self.view addSubview:self.addView];
+        [self.addView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view);
             make.left.equalTo(self.view);
             make.right.equalTo(self.view);
