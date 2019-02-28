@@ -78,7 +78,7 @@ static EMImageBrowser *browser = nil;
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser
 {
-    self.superController = nil;
+    [self dismissViewController];
 }
 
 #pragma mark - Private

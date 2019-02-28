@@ -17,7 +17,6 @@
     self = [super init];
     if (self) {
         _emModel = aModel;
-        
         _name = aModel.conversationId;
     }
     
