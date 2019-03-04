@@ -52,8 +52,6 @@
 
 - (void)_setupSubviews
 {
-    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
-    
     self.view.backgroundColor = [UIColor whiteColor];
     
     UILabel *titleLabel = [[UILabel alloc] init];

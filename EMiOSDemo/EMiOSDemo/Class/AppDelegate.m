@@ -205,12 +205,19 @@
     } else {//登录失败加载登录页面控制器
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-        
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:18], NSFontAttributeName, nil]];
     }
     
+    navigationController.view.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = navigationController;
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:18], NSFontAttributeName, nil]];
+    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
+    
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = [UIColor whiteColor];
+    }
 }
 
 @end

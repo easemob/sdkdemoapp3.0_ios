@@ -59,6 +59,15 @@
     self.isViewAppear = NO;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
 - (void)dealloc
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
@@ -73,9 +82,6 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
     
-    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
-    
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];

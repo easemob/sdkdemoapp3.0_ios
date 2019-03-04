@@ -133,7 +133,7 @@
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
     [self _setupNavigationBarTitle];
     [self _setupNavigationBarRightItem];
-    self.view.backgroundColor = kColor_LightGray;
+    self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
     
     self.chatBar = [[EMChatBar alloc] init];

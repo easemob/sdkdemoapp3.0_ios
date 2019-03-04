@@ -57,6 +57,15 @@
     self.navigationController.navigationBarHidden = NO;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
 #pragma mark - Subviews
 
 - (void)_setupSubviews

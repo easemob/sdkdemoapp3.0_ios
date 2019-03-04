@@ -73,8 +73,6 @@
 
 - (void)_setupSubviews
 {
-    [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
-    
     self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
     

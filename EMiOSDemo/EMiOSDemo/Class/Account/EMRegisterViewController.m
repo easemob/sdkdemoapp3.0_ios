@@ -91,7 +91,6 @@
     self.nameField.delegate = self;
     self.nameField.borderStyle = UITextBorderStyleNone;
     self.nameField.placeholder = @"用户ID";
-    self.nameField.keyboardType = UIKeyboardTypeNamePhonePad;
     self.nameField.returnKeyType = UIReturnKeyDone;
     self.nameField.font = [UIFont systemFontOfSize:17];
     self.nameField.rightViewMode = UITextFieldViewModeWhileEditing;
