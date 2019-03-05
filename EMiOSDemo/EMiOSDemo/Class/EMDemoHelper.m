@@ -442,7 +442,7 @@ static EMDemoHelper *helper = nil;
     }
     
     if (model) {
-        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversation:model];
+        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversationModel:model];
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = window.rootViewController;
         if ([rootViewController isKindOfClass:[UINavigationController class]]) {

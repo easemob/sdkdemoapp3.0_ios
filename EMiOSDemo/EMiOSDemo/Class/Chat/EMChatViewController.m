@@ -59,7 +59,20 @@
 
 @implementation EMChatViewController
 
-- (instancetype)initWithCoversation:(EMConversationModel *)aConversationModel
+- (instancetype)initWithConversationId:(NSString *)aId
+                                  type:(EMConversationType)aType
+                      createIfNotExist:(BOOL)aIsCreate
+{
+    self = [super init];
+    if (self) {
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aId type:aType createIfNotExist:aIsCreate];
+        _conversationModel = [[EMConversationModel alloc] initWithEMModel:conversation];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCoversationModel:(EMConversationModel *)aConversationModel
 {
     self = [super init];
     if (self) {
