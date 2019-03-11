@@ -103,8 +103,8 @@
         [self tableViewDidTriggerHeaderRefresh];
     }
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapViewAction:)];
-    [self.view addGestureRecognizer:tap];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
+    [self.tableView addGestureRecognizer:tap];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -308,7 +308,6 @@
             cell.delegate = self;
         }
         
-        cell.indexPath = indexPath;
         cell.model = model;
         
         return cell;
@@ -776,7 +775,7 @@
 
 - (void)messageCellDidLongPress:(EMMessageCell *)aCell
 {
-    self.menuIndexPath = aCell.indexPath;
+    self.menuIndexPath = [self.tableView indexPathForCell:aCell];
     [self _showMenuViewController:aCell model:aCell.model];
 }
 
@@ -1004,7 +1003,7 @@
 
 #pragma mark - Gesture Recognizer
 
-- (void)handleTapViewAction:(UITapGestureRecognizer *)aTap
+- (void)handleTapTableViewAction:(UITapGestureRecognizer *)aTap
 {
     if (aTap.state == UIGestureRecognizerStateEnded) {
         [self.view endEditing:YES];
@@ -1163,7 +1162,9 @@
     }
     
     [self.dataArray removeObjectsAtIndexes:indexs];
-    [self.tableView reloadData];
+    [self.tableView beginUpdates];
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
     
     if ([self.dataArray count] == 0) {
         self.msgTimelTag = -1;

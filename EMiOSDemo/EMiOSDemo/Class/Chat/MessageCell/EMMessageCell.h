@@ -24,8 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) EMMessageModel *model;
 
-@property (nonatomic, strong) NSIndexPath *indexPath;
-
 + (NSString *)cellIdentifierWithDirection:(EMMessageDirection)aDirection
                                      type:(EMMessageType)aType;
 
