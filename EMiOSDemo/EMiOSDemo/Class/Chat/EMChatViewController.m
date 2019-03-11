@@ -533,6 +533,20 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)chatBarDidShowMoreViewAction
+{
+    // 定义好动作
+    void (^animation)(void) = ^void(void) {
+        [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.chatBar.mas_top);
+        }];
+    };
+    
+    [UIView animateWithDuration:0.3 animations:animation completion:^(BOOL finished) {
+        [self _scrollToBottomRow];
+    }];
+}
+
 #pragma mark - EMChatBarRecordAudioViewDelegate
 
 - (void)chatBarRecordAudioViewStartRecord

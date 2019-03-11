@@ -82,9 +82,6 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     }
     
-    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar.layer setMasksToBounds:YES];
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.tabBar = [[UITabBar alloc] init];

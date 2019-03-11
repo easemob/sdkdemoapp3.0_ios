@@ -342,6 +342,10 @@
                 make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
             }];
             [self _remakeButtonsViewConstraints];
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidShowMoreViewAction)]) {
+                [self.delegate chatBarDidShowMoreViewAction];
+            }
         }
     }
 }
@@ -360,6 +364,10 @@
                 make.height.mas_equalTo(self.moreEmoticonView.viewHeight);
             }];
             [self _remakeButtonsViewConstraints];
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidShowMoreViewAction)]) {
+                [self.delegate chatBarDidShowMoreViewAction];
+            }
         }
     }
 }

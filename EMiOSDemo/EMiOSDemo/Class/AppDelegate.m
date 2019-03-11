@@ -207,6 +207,9 @@
         navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     }
     
+//    navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    [navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
+    [navigationController.navigationBar.layer setMasksToBounds:YES];
     navigationController.view.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = navigationController;
     
@@ -214,10 +217,10 @@
      [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, [UIFont systemFontOfSize:18], NSFontAttributeName, nil]];
     [[UITableViewHeaderFooterView appearance] setTintColor:kColor_LightGray];
     
-    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
-    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
-        statusBar.backgroundColor = [UIColor whiteColor];
-    }
+//    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+//    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+//        statusBar.backgroundColor = [UIColor whiteColor];
+//    }
 }
 
 @end
