@@ -102,6 +102,9 @@
         self.isFirstLoadFromDB = YES;
         [self tableViewDidTriggerHeaderRefresh];
     }
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapViewAction:)];
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -997,6 +1000,16 @@
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];
+}
+
+#pragma mark - Gesture Recognizer
+
+- (void)handleTapViewAction:(UITapGestureRecognizer *)aTap
+{
+    if (aTap.state == UIGestureRecognizerStateEnded) {
+        [self.view endEditing:YES];
+        [self.chatBar clearMoreViewAndSelectedButton];
+    }
 }
 
 #pragma mark - Private
