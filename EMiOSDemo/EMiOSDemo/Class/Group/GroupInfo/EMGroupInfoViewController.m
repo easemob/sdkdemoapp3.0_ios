@@ -416,7 +416,7 @@
 
 - (void)_updateGroupOnwerAction
 {
-    if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+    if (self.group.permissionType != EMGroupPermissionTypeOwner) {
         return;
     }
     
