@@ -278,10 +278,6 @@
     [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
         EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
         createController.inviteController = weakself.inviteController;
-        [createController setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
-            [weakself.dataArray insertObject:aGroup atIndex:0];
-            [weakself.tableView reloadData];
-        }];
         [weakself.navigationController pushViewController:createController animated:YES];
     }];
     
