@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<array>
+		<dict>
+			<key>title</key>
+			<string>Appkey:</string>
+			<key>getMethod</key>
+			<string>appkey</string>
+			<key>setMethod</key>
+			<string>setAppkey:</string>
+		</dict>
+		<dict>
+			<key>title</key>
+			<string>Apns Cert Name:</string>
+			<key>getMethod</key>
+			<string>apnsCertName</string>
+			<key>setMethod</key>
+			<string>setApnsCertName:</string>
+		</dict>
+	</array>
+	<array>
+		<dict>
+			<key>title</key>
+			<string>Specify Server:</string>
+			<key>getMethod</key>
+			<string>specifyServer</string>
+			<key>setMethod</key>
+			<string>setSpecifyServer:</string>
+			<key>getResultType</key>
+			<string>bool</string>
+		</dict>
+		<dict>
+			<key>title</key>
+			<string>IM Server:</string>
+			<key>getMethod</key>
+			<string>chatServer</string>
+			<key>setMethod</key>
+			<string>setChatServer:</string>
+		</dict>
+		<dict>
+			<key>title</key>
+			<string>IM Port:</string>
+			<key>getMethod</key>
+			<string>chatPort</string>
+			<key>setMethod</key>
+			<string>setChatPort:</string>
+			<key>getResultType</key>
+			<string>int</string>
+		</dict>
+		<dict>
+			<key>title</key>
+			<string>Rest Server:</string>
+			<key>getMethod</key>
+			<string>restServer</string>
+			<key>setMethod</key>
+			<string>setRestServer:</string>
+		</dict>
+	</array>
+	<array>
+		<dict>
+			<key>title</key>
+			<string>Https Only:</string>
+			<key>getMethod</key>
+			<string>usingHttpsOnly</string>
+			<key>setMethod</key>
+			<string>setUsingHttpsOnly:</string>
+			<key>getResultType</key>
+			<string>bool</string>
+		</dict>
+	</array>
+</array>
+</plist>
