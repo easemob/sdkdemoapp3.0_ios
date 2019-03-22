@@ -95,6 +95,7 @@
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillPushCallController:) name:CALL_PUSH_VIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
@@ -1008,6 +1009,17 @@
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];
+}
+
+- (void)handleCleanMessages:(NSNotification *)aNotif
+{
+    NSString *chatId = aNotif.object;
+    if (chatId && [chatId isEqualToString:self.conversationModel.emModel.conversationId]) {
+        [self.conversationModel.emModel deleteAllMessages:nil];
+        
+        [self.dataArray removeAllObjects];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - Gesture Recognizer

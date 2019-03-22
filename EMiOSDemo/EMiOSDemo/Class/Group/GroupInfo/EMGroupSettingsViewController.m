@@ -150,6 +150,17 @@
     return label;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.section == 2 && indexPath.row == 0) {
+        [self showHudInView:self.view hint:@"正在删除..."];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_CLEANMESSAGES object:self.group.groupId];
+        [self hideHud];
+    }
+}
+
 #pragma mark - Action
 
 - (void)shieldSwitchValueChanged

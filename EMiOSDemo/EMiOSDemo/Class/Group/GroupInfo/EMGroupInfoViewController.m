@@ -68,7 +68,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(groupAnnouncementAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"公告" style:UIBarButtonItemStylePlain target:self action:@selector(groupAnnouncementAction)];
     self.title = @"群组信息";
     
     self.showRefreshHeader = YES;

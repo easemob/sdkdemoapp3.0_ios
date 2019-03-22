@@ -30,6 +30,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 //聊天
 #define CHAT_PUSHVIEWCONTROLLER @"EMPushChatViewController"
+#define CHAT_CLEANMESSAGES @"EMChatCleanMessages"
 
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"
