@@ -444,13 +444,17 @@
 {
     __weak typeof(self) weakself = self;
     void (^block)(EMError *aError) = ^(EMError *aError) {
-        [weakself hideHud];
         if (!aError) {
-            if (weakself.leaveOrDestroyCompletion) {
-                weakself.leaveOrDestroyCompletion();
-            }
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }
+            [[EMClient sharedClient].chatManager deleteConversation:weakself.groupId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
+                [weakself hideHud];
+                if (weakself.leaveOrDestroyCompletion) {
+                    weakself.leaveOrDestroyCompletion();
+                }
+                [weakself.navigationController popViewControllerAnimated:YES];
+            }];
+        } else {
+            
+        }[weakself hideHud];
     };
     
     if (self.group.permissionType == EMGroupPermissionTypeOwner) {
