@@ -149,7 +149,7 @@ static DemoConfManager *confManager = nil;
 - (void)handleMakeConference:(NSNotification *)aNotif
 {
     NSDictionary *dic = aNotif.object;
-    EMConferenceType type = (EMConferenceType)[dic objectForKey:CALL_TYPE];
+    EMConferenceType type = (EMConferenceType)[[dic objectForKey:CALL_TYPE] integerValue];
     id model = [dic objectForKey:CALL_MODEL];
     
     NSString *conversationId = nil;
