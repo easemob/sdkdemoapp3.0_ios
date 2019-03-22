@@ -31,12 +31,16 @@
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
 }
 
 - (void)dealloc
 {
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Subviews
@@ -216,6 +220,23 @@
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:aGroupList];
     [self.tableView reloadData];
+}
+
+#pragma mark - NSNotification
+
+- (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    if (!group) {
+        return;
+    }
+    
+    NSString *groupId = group.groupId;
+    for (EMGroup *obj in self.dataArray) {
+        if ([obj.groupId isEqualToString:groupId]) {
+            [self.tableView reloadData];
+        }
+    }
 }
 
 #pragma mark - data

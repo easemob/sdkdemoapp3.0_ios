@@ -96,6 +96,7 @@
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillPushCallController:) name:CALL_PUSH_VIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
@@ -1019,6 +1020,20 @@
         
         [self.dataArray removeAllObjects];
         [self.tableView reloadData];
+    }
+}
+
+- (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    if (!group) {
+        return;
+    }
+    
+    NSString *groupId = group.groupId;
+    if ([groupId isEqualToString:self.conversationModel.emModel.conversationId]) {
+        self.conversationModel.name = group.subject;
+        self.titleLabel.text = group.subject;
     }
 }
 

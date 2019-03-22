@@ -33,6 +33,8 @@
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMConversationHelper shared] addDelegate:self];
     [self _loadAllConversationsFromDBWithIsShowHud:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -65,6 +67,7 @@
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMConversationHelper shared] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Subviews
@@ -271,6 +274,24 @@
 - (void)didResortConversationsLatestMessage
 {
     [self _reSortedConversationModelsAndReloadView];
+}
+
+#pragma mark - NSNotification
+
+- (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    if (!group) {
+        return;
+    }
+    
+    NSString *groupId = group.groupId;
+    for (EMConversationModel *model in self.dataArray) {
+        if ([model.emModel.conversationId isEqualToString:groupId]) {
+            model.name = group.subject;
+            [self.tableView reloadData];
+        }
+    }
 }
 
 #pragma mark - Data
