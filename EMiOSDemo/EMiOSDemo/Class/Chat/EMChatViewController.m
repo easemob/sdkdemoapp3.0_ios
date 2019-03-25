@@ -593,7 +593,7 @@
     if (aModel.type == EMEmotionTypeEmoji) {
         [self.chatBar inputViewAppendText:aModel.name];
     } if (aModel.type == EMEmotionTypeGif) {
-        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.name};
+        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.eId};
         [self _sendTextAction:aModel.name ext:ext];
     }
 }
