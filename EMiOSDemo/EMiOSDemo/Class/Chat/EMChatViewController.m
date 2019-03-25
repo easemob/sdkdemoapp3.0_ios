@@ -55,6 +55,10 @@
 //@
 @property (nonatomic) BOOL isWillInputAt;
 
+//Typing
+@property (nonatomic) BOOL isTyping;
+@property (nonatomic) BOOL enableTyping;
+
 @end
 
 @implementation EMChatViewController
@@ -98,6 +102,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
+    self.isTyping = NO;
+    self.enableTyping = NO;
+    if ([EMDemoOptions sharedOptions].isChatTyping && self.conversationModel.emModel.type == EMConversationTypeChat) {
+        self.enableTyping = YES;
+    }
+    
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
     } else {
@@ -125,6 +135,11 @@
     [super viewWillDisappear:animated];
     
     self.isViewDidAppear = NO;
+    
+    if (self.enableTyping && self.isTyping) {
+        [self _sendEndTyping];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -446,6 +461,13 @@
         if ([text hasSuffix:@"@"]) {
             self.isWillInputAt = NO;
             [self _willInputAt:aInputView];
+        }
+    }
+    
+    if (self.enableTyping) {
+        if (!self.isTyping) {
+            self.isTyping = YES;
+            [self _sendBeginTyping];
         }
     }
 }
@@ -940,6 +962,35 @@
     });
 }
 
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(self.msgQueue, ^{
+        NSString *conId = weakself.conversationModel.emModel.conversationId;
+        for (EMMessage *message in aCmdMessages) {
+            
+            if (![conId isEqualToString:message.conversationId]) {
+                continue;
+            }
+            
+            if (weakself.enableTyping) {
+                EMCmdMessageBody *body = (EMCmdMessageBody *)message.body;
+                NSString *str = @"";
+                if ([body.action isEqualToString:MSG_TYPING_BEGIN]) {
+                    str = @"正在输入...";
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.titleDetailLabel.text = str;
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself showHint:@"有透传消息"];
+                });
+            }
+        }
+    });
+}
+
 #pragma mark - EMGroupManagerDelegate
 
 - (void)didLeaveGroup:(EMGroup *)aGroup
@@ -1030,6 +1081,10 @@
         [UIView animateWithDuration:animationTime animations:animation];
     } else {
         animation();
+    }
+    
+    if (self.enableTyping) {
+        [self _sendEndTyping];
     }
 }
 
@@ -1442,6 +1497,10 @@
     
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
     [self _sendMessageWithBody:body ext:aExt isUpload:NO];
+    
+    if (self.enableTyping) {
+        [self _sendEndTyping];
+    }
 }
 
 - (void)_sendImageDataAction:(NSData *)aImageData
@@ -1463,6 +1522,29 @@
     [self _sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
+- (void)_sendBeginTyping
+{
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = self.conversationModel.emModel.conversationId;
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MSG_TYPING_BEGIN];
+    body.isDeliverOnlineOnly = YES;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
+    message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+}
+
+- (void)_sendEndTyping
+{
+    self.isTyping = NO;
+    
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = self.conversationModel.emModel.conversationId;
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MSG_TYPING_END];
+    body.isDeliverOnlineOnly = YES;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
+    message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+}
 
 #pragma mark - Data
 

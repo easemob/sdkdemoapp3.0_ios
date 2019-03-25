@@ -50,6 +50,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 //群组消息ext字典中，kGroupMessageAtList字段的值，用于@所有人
 #define MSG_EXT_ATALL @"all"
 
+//Typing
+#define MSG_TYPING_BEGIN @"TypingBegin"
+#define MSG_TYPING_END @"TypingEnd"
+
 #define kHaveUnreadAtMessage    @"kHaveAtMessage"
 #define kAtYouMessage           1
 #define kAtAllMessage           2
