@@ -944,6 +944,26 @@
 
 #pragma mark - EMChatroomManagerDelegate
 
+- (void)userDidJoinChatroom:(EMChatroom *)aChatroom
+                       user:(NSString *)aUsername
+{
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:conversation.conversationId]) {
+        NSString *str = [NSString stringWithFormat:@"%@ 进入聊天室", aUsername];
+        [self showHint:str];
+    }
+}
+
+- (void)userDidLeaveChatroom:(EMChatroom *)aChatroom
+                        user:(NSString *)aUsername
+{
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:conversation.conversationId]) {
+        NSString *str = [NSString stringWithFormat:@"%@ 离开聊天室", aUsername];
+        [self showHint:str];
+    }
+}
+
 - (void)didDismissFromChatroom:(EMChatroom *)aChatroom
                         reason:(EMChatroomBeKickedReason)aReason
 {
@@ -1492,6 +1512,11 @@
 {
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];
     [EMConversationHelper resortConversationsLatestMessage];
+    
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom) {
+        [[EMClient sharedClient].roomManager leaveChatroom:conversation.conversationId completion:nil];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }
