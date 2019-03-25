@@ -29,7 +29,7 @@
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
-@property (nonatomic) BOOL isFirstLoadFromDB;
+@property (nonatomic) BOOL isFirstLoadMsg;
 @property (nonatomic) BOOL isViewDidAppear;
 
 @property (nonatomic, strong) EMConversationModel *conversationModel;
@@ -101,7 +101,7 @@
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
     } else {
-        self.isFirstLoadFromDB = YES;
+        self.isFirstLoadMsg = YES;
         [self tableViewDidTriggerHeaderRefresh];
     }
     
@@ -1089,7 +1089,7 @@
             [EMAlertController showErrorAlert:@"加入聊天室失败"];
             [weakself.navigationController popViewControllerAnimated:YES];
         } else {
-            weakself.isFirstLoadFromDB = YES;
+            weakself.isFirstLoadMsg = YES;
             [weakself tableViewDidTriggerHeaderRefresh];
         }
     }];
@@ -1492,7 +1492,7 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
-    [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+    void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
         if (!aError && [aMessages count]) {
             EMMessage *msg = aMessages[0];
             weakself.moreMsgId = msg.messageId;
@@ -1500,12 +1500,12 @@
             dispatch_async(self.msgQueue, ^{
                 NSArray *formated = [weakself _formatMessages:aMessages];
                 [weakself.dataArray insertObjects:formated atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [formated count])]];
-
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakself.tableView reloadData];
                     
-                    if (weakself.isFirstLoadFromDB) {
-                        weakself.isFirstLoadFromDB = NO;
+                    if (weakself.isFirstLoadMsg) {
+                        weakself.isFirstLoadMsg = NO;
                         [weakself _scrollToBottomRow];
                     }
                 });
@@ -1513,7 +1513,16 @@
         }
         
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
-    }];
+    };
+    
+    if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
+        EMConversation *conversation = self.conversationModel.emModel;
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+            block(aResult.list, aError);
+         }];
+    } else {
+        [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
+    }
 }
 
 #pragma mark - Action
