@@ -602,21 +602,31 @@
 
 - (void)_imageMessageCellDidSelected:(EMMessageCell *)aCell
 {
-    EMImageMessageBody *body = (EMImageMessageBody*)aCell.model.emModel.body;
-     BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
-    
     __weak typeof(self) weakself = self;
+    void (^downloadThumbBlock)(EMMessageModel *aModel) = ^(EMMessageModel *aModel) {
+        [weakself showHint:@"获取缩略图..."];
+        [[EMClient sharedClient].chatManager downloadMessageThumbnail:aModel.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
+            if (!error) {
+                [weakself.tableView reloadData];
+            }
+        }];
+    };
+    
+    EMImageMessageBody *body = (EMImageMessageBody*)aCell.model.emModel.body;
+    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
     if (body.thumbnailDownloadStatus == EMDownloadStatusFailed) {
         if (isCustomDownload) {
             [self _showCustomTransferFileAlertView];
         } else {
-            [self showHint:@"获取缩略图..."];
-            [[EMClient sharedClient].chatManager downloadMessageThumbnail:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
-                if (!error) {
-                    [weakself.tableView reloadData];
-                }
-            }];
+            downloadThumbBlock(aCell.model);
         }
+        
+        return;
+    }
+    
+    BOOL isAutoDownloadThumbnail = [EMClient sharedClient].options.isAutoDownloadThumbnail;
+    if (body.thumbnailDownloadStatus == EMDownloadStatusPending && !isAutoDownloadThumbnail) {
+        downloadThumbBlock(aCell.model);
         return;
     }
     
