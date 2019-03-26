@@ -56,8 +56,10 @@
 - (void)setModel:(EMMessageModel *)model
 {
     EMMessageType type = model.type;
-    EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
-    self.textLabel.text = body.text;
+    if (type == EMMessageTypeText) {
+        EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
+        self.textLabel.text = [EMEmojiHelper convertEmoji:body.text];
+    }
 }
 
 @end

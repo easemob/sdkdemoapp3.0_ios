@@ -259,9 +259,7 @@
 		3A45E2452223A3A100505786 /* EMChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E23B2223A3A000505786 /* EMChatViewController.m */; };
 		3A45E2462223A3A100505786 /* EMAtGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E23C2223A3A000505786 /* EMAtGroupMembersViewController.m */; };
 		3A45E2472223A3A100505786 /* EMMsgTranspondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E2402223A3A000505786 /* EMMsgTranspondViewController.m */; };
-		3A45E24E2223A3C300505786 /* EMEmojiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E2482223A3C200505786 /* EMEmojiHelper.m */; };
 		3A45E24F2223A3C300505786 /* EMChatBarEmoticonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E2492223A3C200505786 /* EMChatBarEmoticonView.m */; };
-		3A45E2502223A3C300505786 /* EMEmoticonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E24C2223A3C300505786 /* EMEmoticonGroup.m */; };
 		3A45E2712223A3D600505786 /* icon_022_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E2512223A3D400505786 /* icon_022_cover.png */; };
 		3A45E2722223A3D600505786 /* icon_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E2522223A3D400505786 /* icon_010.gif */; };
 		3A45E2732223A3D600505786 /* icon_012.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E2532223A3D400505786 /* icon_012.gif */; };
@@ -451,6 +449,8 @@
 		3A45E8B422240DB200505786 /* EMNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E8B322240DB100505786 /* EMNotificationHelper.m */; };
 		3A45EAFA2224186400505786 /* EMDemoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45EAF82224186400505786 /* EMDemoOptions.m */; };
 		3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */; };
+		3A6C4214224A315C00AA5EDD /* EMEmojiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6C4210224A315C00AA5EDD /* EMEmojiHelper.m */; };
+		3A6C4215224A315C00AA5EDD /* EMEmoticonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6C4213224A315C00AA5EDD /* EMEmoticonGroup.m */; };
 		3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB62A121D926375000776F0 /* libbz2.tbd */; };
 		3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527401931D32C00385240 /* Security.framework */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
@@ -837,12 +837,8 @@
 		3A45E2402223A3A000505786 /* EMMsgTranspondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMsgTranspondViewController.m; sourceTree = "<group>"; };
 		3A45E2412223A3A000505786 /* EMChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatViewController.h; sourceTree = "<group>"; };
 		3A45E2422223A3A100505786 /* EMAtGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMAtGroupMembersViewController.h; sourceTree = "<group>"; };
-		3A45E2482223A3C200505786 /* EMEmojiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMEmojiHelper.m; sourceTree = "<group>"; };
 		3A45E2492223A3C200505786 /* EMChatBarEmoticonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatBarEmoticonView.m; sourceTree = "<group>"; };
 		3A45E24A2223A3C200505786 /* EMChatBarEmoticonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatBarEmoticonView.h; sourceTree = "<group>"; };
-		3A45E24B2223A3C300505786 /* EMEmoticonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMEmoticonGroup.h; sourceTree = "<group>"; };
-		3A45E24C2223A3C300505786 /* EMEmoticonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMEmoticonGroup.m; sourceTree = "<group>"; };
-		3A45E24D2223A3C300505786 /* EMEmojiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMEmojiHelper.h; sourceTree = "<group>"; };
 		3A45E2512223A3D400505786 /* icon_022_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_022_cover.png; sourceTree = "<group>"; };
 		3A45E2522223A3D400505786 /* icon_010.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_010.gif; sourceTree = "<group>"; };
 		3A45E2532223A3D400505786 /* icon_012.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_012.gif; sourceTree = "<group>"; };
@@ -1081,6 +1077,10 @@
 		3A45EAF82224186400505786 /* EMDemoOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMDemoOptions.m; sourceTree = "<group>"; };
 		3A45EAF92224186400505786 /* EMDemoOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDemoOptions.h; sourceTree = "<group>"; };
 		3A595FAB1D6DBBD100504DB3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		3A6C4210224A315C00AA5EDD /* EMEmojiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMEmojiHelper.m; sourceTree = "<group>"; };
+		3A6C4211224A315C00AA5EDD /* EMEmojiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMEmojiHelper.h; sourceTree = "<group>"; };
+		3A6C4212224A315C00AA5EDD /* EMEmoticonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMEmoticonGroup.h; sourceTree = "<group>"; };
+		3A6C4213224A315C00AA5EDD /* EMEmoticonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMEmoticonGroup.m; sourceTree = "<group>"; };
 		3AB62A0E1D926341000776F0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3AB62A101D92636E000776F0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		3AB62A121D926375000776F0 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -1232,10 +1232,6 @@
 			children = (
 				3A45E24A2223A3C200505786 /* EMChatBarEmoticonView.h */,
 				3A45E2492223A3C200505786 /* EMChatBarEmoticonView.m */,
-				3A45E24D2223A3C300505786 /* EMEmojiHelper.h */,
-				3A45E2482223A3C200505786 /* EMEmojiHelper.m */,
-				3A45E24B2223A3C300505786 /* EMEmoticonGroup.h */,
-				3A45E24C2223A3C300505786 /* EMEmoticonGroup.m */,
 				3A45DBEF2223A1FC00505786 /* Images */,
 				3A45DC112223A1FC00505786 /* Emoji */,
 			);
@@ -1614,6 +1610,10 @@
 				3A45E8B322240DB100505786 /* EMNotificationHelper.m */,
 				3A45E04E2223A25100505786 /* EMChineseToPinyin.h */,
 				3A45E0472223A25000505786 /* EMChineseToPinyin.m */,
+				3A6C4211224A315C00AA5EDD /* EMEmojiHelper.h */,
+				3A6C4210224A315C00AA5EDD /* EMEmojiHelper.m */,
+				3A6C4212224A315C00AA5EDD /* EMEmoticonGroup.h */,
+				3A6C4213224A315C00AA5EDD /* EMEmoticonGroup.m */,
 				3A45E04F2223A25100505786 /* EMColorDefine.h */,
 				3A45E04D2223A25100505786 /* EMDateHelper.h */,
 				3A45E0482223A25000505786 /* EMDateHelper.m */,
@@ -2326,6 +2326,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				"zh-Hans",
@@ -2694,9 +2695,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A45E3E12223A4E900505786 /* EMGroupInfoViewController.m in Sources */,
+				3A6C4215224A315C00AA5EDD /* EMEmoticonGroup.m in Sources */,
 				3A45E3322223A44200505786 /* EMMsgFileBubbleView.m in Sources */,
 				3A45E0B22223A2BA00505786 /* MWGridCell.m in Sources */,
-				3A45E2502223A3C300505786 /* EMEmoticonGroup.m in Sources */,
 				3A45E3182223A43300505786 /* EMMessageTimeCell.m in Sources */,
 				3A45E39E2223A4AD00505786 /* EMInviteFriendViewController.m in Sources */,
 				3A45E0E12223A2CE00505786 /* PSTCollectionView.m in Sources */,
@@ -2797,13 +2798,13 @@
 				3A45E3912223A48700505786 /* EMChatroomMutesViewController.m in Sources */,
 				3A45E3CC2223A4DC00505786 /* EMCreateGroupViewController.m in Sources */,
 				3A45E38C2223A48700505786 /* EMChatroomMembersViewController.m in Sources */,
-				3A45E24E2223A3C300505786 /* EMEmojiHelper.m in Sources */,
 				3A45E54D2223E4DD00505786 /* EMConversationHelper.m in Sources */,
 				3A45E2442223A3A100505786 /* EMLocationViewController.m in Sources */,
 				3A45E0212223A21B00505786 /* EMRegisterViewController.m in Sources */,
 				3A45E37E2223A47900505786 /* EMChatroomsViewController.m in Sources */,
 				3A45E0D62223A2CE00505786 /* PSTCollectionViewFlowLayout.m in Sources */,
 				3A45E11C2223A32500505786 /* EM1v1CallViewController.m in Sources */,
+				3A6C4214224A315C00AA5EDD /* EMEmojiHelper.m in Sources */,
 				3A45E3312223A44200505786 /* EMMsgExtGifBubbleView.m in Sources */,
 				3A45E1192223A32500505786 /* Call1v1AudioViewController.m in Sources */,
 				3A45E1092223A30C00505786 /* EMSearchBar.m in Sources */,

@@ -109,7 +109,10 @@ static int kConversation_AtAll = 2;
     EMMessageBody *messageBody = lastMessage.body;
     switch (messageBody.type) {
         case EMMessageBodyTypeText:
-            latestMessageTitle = ((EMTextMessageBody *)messageBody).text;
+        {
+            NSString *str = [EMEmojiHelper convertEmoji:((EMTextMessageBody *)messageBody).text];
+            latestMessageTitle = str;
+        }
             break;
         case EMMessageBodyTypeImage:
             latestMessageTitle = @"[图片]";
