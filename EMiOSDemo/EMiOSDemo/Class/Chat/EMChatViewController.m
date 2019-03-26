@@ -973,20 +973,14 @@
                 continue;
             }
             
-            if (weakself.enableTyping) {
-                EMCmdMessageBody *body = (EMCmdMessageBody *)message.body;
-                NSString *str = @"";
-                if ([body.action isEqualToString:MSG_TYPING_BEGIN]) {
-                    str = @"正在输入...";
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.titleDetailLabel.text = str;
-                });
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakself showHint:@"有透传消息"];
-                });
+            EMCmdMessageBody *body = (EMCmdMessageBody *)message.body;
+            NSString *str = @"";
+            if ([body.action isEqualToString:MSG_TYPING_BEGIN]) {
+                str = @"正在输入...";
             }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.titleDetailLabel.text = str;
+            });
         }
     });
 }
