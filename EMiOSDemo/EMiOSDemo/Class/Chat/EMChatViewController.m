@@ -718,7 +718,15 @@
                 oldModel.isPlaying = NO;
             }
         }
+        
+        if (!aModel.emModel.isReadAcked) {
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel completion:nil];
+        }
+        
         aModel.isPlaying = YES;
+        if (!aModel.emModel.isRead) {
+            aModel.emModel.isRead = YES;
+        }
         [weakself.tableView reloadData];
         
 //        [[EMCDDeviceManager sharedInstance] enableProximitySensor];
@@ -745,10 +753,6 @@
         if (error) {
             [EMAlertController showErrorAlert:@"下载语音失败"];
         } else {
-            if (!message.isReadAcked) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
-            }
-            
             playBlock(aCell.model);
         }
     }];
