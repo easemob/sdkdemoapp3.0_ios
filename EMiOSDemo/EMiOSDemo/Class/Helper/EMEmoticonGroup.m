@@ -57,6 +57,7 @@ EMEmoticonGroup *gGifGroup = nil;
     for (NSString *name in names) {
         ++index;
         EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionTypeGif];
+        model.eId = [NSString stringWithFormat:@"em%d",(1000 + index)];
         model.name = [NSString stringWithFormat:@"[示例%d]", index];
         model.imgName = [NSString stringWithFormat:@"%@_cover", name];
         model.original = name;

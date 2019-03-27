@@ -29,7 +29,7 @@
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
-@property (nonatomic) BOOL isFirstLoadFromDB;
+@property (nonatomic) BOOL isFirstLoadMsg;
 @property (nonatomic) BOOL isViewDidAppear;
 
 @property (nonatomic, strong) EMConversationModel *conversationModel;
@@ -54,6 +54,10 @@
 
 //@
 @property (nonatomic) BOOL isWillInputAt;
+
+//Typing
+@property (nonatomic) BOOL isTyping;
+@property (nonatomic) BOOL enableTyping;
 
 @end
 
@@ -95,11 +99,19 @@
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWillPushCallController:) name:CALL_PUSH_VIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
+    
+    self.isTyping = NO;
+    self.enableTyping = NO;
+    if ([EMDemoOptions sharedOptions].isChatTyping && self.conversationModel.emModel.type == EMConversationTypeChat) {
+        self.enableTyping = YES;
+    }
     
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
     } else {
-        self.isFirstLoadFromDB = YES;
+        self.isFirstLoadMsg = YES;
         [self tableViewDidTriggerHeaderRefresh];
     }
     
@@ -123,6 +135,11 @@
     [super viewWillDisappear:animated];
     
     self.isViewDidAppear = NO;
+    
+    if (self.enableTyping && self.isTyping) {
+        [self _sendEndTyping];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -446,6 +463,13 @@
             [self _willInputAt:aInputView];
         }
     }
+    
+    if (self.enableTyping) {
+        if (!self.isTyping) {
+            self.isTyping = YES;
+            [self _sendBeginTyping];
+        }
+    }
 }
 
 - (void)chatBarDidCameraAction
@@ -569,7 +593,7 @@
     if (aModel.type == EMEmotionTypeEmoji) {
         [self.chatBar inputViewAppendText:aModel.name];
     } if (aModel.type == EMEmotionTypeGif) {
-        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.name};
+        NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.eId};
         [self _sendTextAction:aModel.name ext:ext];
     }
 }
@@ -600,21 +624,31 @@
 
 - (void)_imageMessageCellDidSelected:(EMMessageCell *)aCell
 {
-    EMImageMessageBody *body = (EMImageMessageBody*)aCell.model.emModel.body;
-     BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
-    
     __weak typeof(self) weakself = self;
+    void (^downloadThumbBlock)(EMMessageModel *aModel) = ^(EMMessageModel *aModel) {
+        [weakself showHint:@"获取缩略图..."];
+        [[EMClient sharedClient].chatManager downloadMessageThumbnail:aModel.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
+            if (!error) {
+                [weakself.tableView reloadData];
+            }
+        }];
+    };
+    
+    EMImageMessageBody *body = (EMImageMessageBody*)aCell.model.emModel.body;
+    BOOL isCustomDownload = !([EMClient sharedClient].options.isAutoTransferMessageAttachments);
     if (body.thumbnailDownloadStatus == EMDownloadStatusFailed) {
         if (isCustomDownload) {
             [self _showCustomTransferFileAlertView];
         } else {
-            [self showHint:@"获取缩略图..."];
-            [[EMClient sharedClient].chatManager downloadMessageThumbnail:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
-                if (!error) {
-                    [weakself.tableView reloadData];
-                }
-            }];
+            downloadThumbBlock(aCell.model);
         }
+        
+        return;
+    }
+    
+    BOOL isAutoDownloadThumbnail = [EMClient sharedClient].options.isAutoDownloadThumbnail;
+    if (body.thumbnailDownloadStatus == EMDownloadStatusPending && !isAutoDownloadThumbnail) {
+        downloadThumbBlock(aCell.model);
         return;
     }
     
@@ -684,7 +718,18 @@
                 oldModel.isPlaying = NO;
             }
         }
+        
+        if (!aModel.emModel.isReadAcked) {
+            aModel.emModel.isReadAcked = YES;
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel completion:^(EMMessage *aMessage, EMError *aError) {
+                aModel.emModel.isReadAcked = YES;
+            }];
+        }
+        
         aModel.isPlaying = YES;
+        if (!aModel.emModel.isRead) {
+            aModel.emModel.isRead = YES;
+        }
         [weakself.tableView reloadData];
         
 //        [[EMCDDeviceManager sharedInstance] enableProximitySensor];
@@ -711,10 +756,6 @@
         if (error) {
             [EMAlertController showErrorAlert:@"下载语音失败"];
         } else {
-            if (!message.isReadAcked) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
-            }
-            
             playBlock(aCell.model);
         }
     }];
@@ -928,6 +969,29 @@
     });
 }
 
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(self.msgQueue, ^{
+        NSString *conId = weakself.conversationModel.emModel.conversationId;
+        for (EMMessage *message in aCmdMessages) {
+            
+            if (![conId isEqualToString:message.conversationId]) {
+                continue;
+            }
+            
+            EMCmdMessageBody *body = (EMCmdMessageBody *)message.body;
+            NSString *str = @"";
+            if ([body.action isEqualToString:MSG_TYPING_BEGIN]) {
+                str = @"正在输入...";
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.titleDetailLabel.text = str;
+            });
+        }
+    });
+}
+
 #pragma mark - EMGroupManagerDelegate
 
 - (void)didLeaveGroup:(EMGroup *)aGroup
@@ -941,6 +1005,26 @@
 }
 
 #pragma mark - EMChatroomManagerDelegate
+
+- (void)userDidJoinChatroom:(EMChatroom *)aChatroom
+                       user:(NSString *)aUsername
+{
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:conversation.conversationId]) {
+        NSString *str = [NSString stringWithFormat:@"%@ 进入聊天室", aUsername];
+        [self showHint:str];
+    }
+}
+
+- (void)userDidLeaveChatroom:(EMChatroom *)aChatroom
+                        user:(NSString *)aUsername
+{
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:conversation.conversationId]) {
+        NSString *str = [NSString stringWithFormat:@"%@ 离开聊天室", aUsername];
+        [self showHint:str];
+    }
+}
 
 - (void)didDismissFromChatroom:(EMChatroom *)aChatroom
                         reason:(EMChatroomBeKickedReason)aReason
@@ -999,6 +1083,10 @@
     } else {
         animation();
     }
+    
+    if (self.enableTyping) {
+        [self _sendEndTyping];
+    }
 }
 
 #pragma mark - NSNotification
@@ -1008,6 +1096,31 @@
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];
+}
+
+- (void)handleCleanMessages:(NSNotification *)aNotif
+{
+    NSString *chatId = aNotif.object;
+    if (chatId && [chatId isEqualToString:self.conversationModel.emModel.conversationId]) {
+        [self.conversationModel.emModel deleteAllMessages:nil];
+        
+        [self.dataArray removeAllObjects];
+        [self.tableView reloadData];
+    }
+}
+
+- (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    if (!group) {
+        return;
+    }
+    
+    NSString *groupId = group.groupId;
+    if ([groupId isEqualToString:self.conversationModel.emModel.conversationId]) {
+        self.conversationModel.name = group.subject;
+        self.titleLabel.text = group.subject;
+    }
 }
 
 #pragma mark - Gesture Recognizer
@@ -1032,7 +1145,7 @@
             [EMAlertController showErrorAlert:@"加入聊天室失败"];
             [weakself.navigationController popViewControllerAnimated:YES];
         } else {
-            weakself.isFirstLoadFromDB = YES;
+            weakself.isFirstLoadMsg = YES;
             [weakself tableViewDidTriggerHeaderRefresh];
         }
     }];
@@ -1385,6 +1498,10 @@
     
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
     [self _sendMessageWithBody:body ext:aExt isUpload:NO];
+    
+    if (self.enableTyping) {
+        [self _sendEndTyping];
+    }
 }
 
 - (void)_sendImageDataAction:(NSData *)aImageData
@@ -1406,6 +1523,29 @@
     [self _sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
+- (void)_sendBeginTyping
+{
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = self.conversationModel.emModel.conversationId;
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MSG_TYPING_BEGIN];
+    body.isDeliverOnlineOnly = YES;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
+    message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+}
+
+- (void)_sendEndTyping
+{
+    self.isTyping = NO;
+    
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = self.conversationModel.emModel.conversationId;
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:MSG_TYPING_END];
+    body.isDeliverOnlineOnly = YES;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
+    message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+}
 
 #pragma mark - Data
 
@@ -1435,7 +1575,7 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakself = self;
-    [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+    void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
         if (!aError && [aMessages count]) {
             EMMessage *msg = aMessages[0];
             weakself.moreMsgId = msg.messageId;
@@ -1443,12 +1583,12 @@
             dispatch_async(self.msgQueue, ^{
                 NSArray *formated = [weakself _formatMessages:aMessages];
                 [weakself.dataArray insertObjects:formated atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [formated count])]];
-
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakself.tableView reloadData];
                     
-                    if (weakself.isFirstLoadFromDB) {
-                        weakself.isFirstLoadFromDB = NO;
+                    if (weakself.isFirstLoadMsg) {
+                        weakself.isFirstLoadMsg = NO;
                         [weakself _scrollToBottomRow];
                     }
                 });
@@ -1456,7 +1596,16 @@
         }
         
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
-    }];
+    };
+    
+    if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
+        EMConversation *conversation = self.conversationModel.emModel;
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+            block(aResult.list, aError);
+         }];
+    } else {
+        [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
+    }
 }
 
 #pragma mark - Action
@@ -1465,6 +1614,11 @@
 {
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];
     [EMConversationHelper resortConversationsLatestMessage];
+    
+    EMConversation *conversation = self.conversationModel.emModel;
+    if (conversation.type == EMChatTypeChatRoom) {
+        [[EMClient sharedClient].roomManager leaveChatroom:conversation.conversationId completion:nil];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }

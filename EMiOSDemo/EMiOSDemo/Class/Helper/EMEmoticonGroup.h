@@ -18,6 +18,8 @@ typedef NS_ENUM(NSUInteger, EMEmotionType) {
 
 @interface EMEmoticonModel : NSObject
 
+@property (nonatomic, strong) NSString *eId;
+
 @property (nonatomic, strong) NSString *name;
 
 @property (nonatomic, strong) NSString *imgName;
