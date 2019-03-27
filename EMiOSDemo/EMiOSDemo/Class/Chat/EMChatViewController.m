@@ -720,7 +720,10 @@
         }
         
         if (!aModel.emModel.isReadAcked) {
-            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel completion:nil];
+            aModel.emModel.isReadAcked = YES;
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel completion:^(EMMessage *aMessage, EMError *aError) {
+                aModel.emModel.isReadAcked = YES;
+            }];
         }
         
         aModel.isPlaying = YES;
