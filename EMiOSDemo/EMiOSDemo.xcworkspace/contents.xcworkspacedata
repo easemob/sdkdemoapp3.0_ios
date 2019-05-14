@@ -2,13 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../emclient-linux/ios_build/build/ioseasemob.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../emclient-ios.git/newSDK/HyphenateSDK.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:EMiOSDemo.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../emclient-ios/newSDK/HyphenateSDK.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../emclient-linux/ios_build/build/ioseasemob.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -172,7 +172,11 @@ static DemoConfManager *confManager = nil;
         controller = window.rootViewController;
     }
     
-    [self inviteMemberWithConfType:type inviteType:inviteType conversationId:conversationId chatType:chatType popFromController:controller];
+    [self inviteMemberWithConfType:type
+                        inviteType:inviteType
+                    conversationId:conversationId
+                          chatType:chatType
+                 popFromController:controller];
 }
 
 - (void)handleSelectConferenceCell:(NSNotification *)aNotif
