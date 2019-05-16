@@ -77,7 +77,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(createChatroomAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(createGroupAction)];
     self.title = @"创建群组";
     
     self.tableView.backgroundColor = kColor_LightGray;
@@ -344,7 +344,7 @@
     [self.tableView reloadData];
 }
 
-- (void)createChatroomAction
+- (void)createGroupAction
 {
     if ([self.name length] == 0) {
         [EMAlertController showErrorAlert:@"请输入群组名称"];

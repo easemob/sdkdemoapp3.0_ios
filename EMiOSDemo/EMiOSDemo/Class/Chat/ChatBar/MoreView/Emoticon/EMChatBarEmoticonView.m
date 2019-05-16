@@ -137,6 +137,7 @@
     NSMutableArray *models1 = [[NSMutableArray alloc] init];
     for (NSString *emoji in emojis) {
         EMEmoticonModel *model = [[EMEmoticonModel alloc] initWithType:EMEmotionTypeEmoji];
+        model.eId = emoji;
         model.name = emoji;
         model.original = emoji;
         [models1 addObject:model];
