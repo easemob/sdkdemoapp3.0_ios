@@ -441,8 +441,6 @@
 		3A45E4222223A52100505786 /* EMServiceCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E4182223A52100505786 /* EMServiceCheckViewController.m */; };
 		3A45E4232223A52100505786 /* EMPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E41C2223A52100505786 /* EMPrivacyViewController.m */; };
 		3A45E4242223A52100505786 /* EMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E41D2223A52100505786 /* EMSettingsViewController.m */; };
-		3A45E4262223A71700505786 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45E4252223A71700505786 /* Hyphenate.framework */; };
-		3A45E4272223A71700505786 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45E4252223A71700505786 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A45E53F2223D69800505786 /* checked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53B2223D69800505786 /* checked@3x.png */; };
 		3A45E5402223D69800505786 /* uncheck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53C2223D69800505786 /* uncheck@3x.png */; };
 		3A45E5412223D69800505786 /* uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53D2223D69800505786 /* uncheck@2x.png */; };
@@ -458,6 +456,8 @@
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
+		906CD1AC228D073900C3CD50 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906CD1AA228D071F00C3CD50 /* Hyphenate.framework */; };
+		906CD1AD228D073900C3CD50 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 906CD1AA228D071F00C3CD50 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
@@ -470,13 +470,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3A6FEF7C218072CC0092EFA0 /* Embed Frameworks */ = {
+		906CD1A9228D070300C3CD50 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A45E4272223A71700505786 /* Hyphenate.framework in Embed Frameworks */,
+				906CD1AD228D073900C3CD50 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1069,7 +1069,6 @@
 		3A45E41B2223A52100505786 /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
 		3A45E41C2223A52100505786 /* EMPrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMPrivacyViewController.m; sourceTree = "<group>"; };
 		3A45E41D2223A52100505786 /* EMSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSettingsViewController.m; sourceTree = "<group>"; };
-		3A45E4252223A71700505786 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A45E53B2223D69800505786 /* checked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked@3x.png"; sourceTree = "<group>"; };
 		3A45E53C2223D69800505786 /* uncheck@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@3x.png"; sourceTree = "<group>"; };
 		3A45E53D2223D69800505786 /* uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@2x.png"; sourceTree = "<group>"; };
@@ -1098,6 +1097,7 @@
 		3EEDCE5B9CEC4FCA55263150 /* Pods-ChatDemo-UI3.0-jdpay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-jdpay.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-jdpay/Pods-ChatDemo-UI3.0-jdpay.release.xcconfig"; sourceTree = "<group>"; };
 		46BFBA1A8713EAD4480607C8 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
 		811D5862E2826B130515CB0F /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		906CD1AA228D071F00C3CD50 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1119,6 +1119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				906CD1AC228D073900C3CD50 /* Hyphenate.framework in Frameworks */,
 				3A45DBE22223A08900505786 /* libPods-EMiOSDemo.a in Frameworks */,
 				3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */,
 				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
@@ -1126,7 +1127,6 @@
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
-				3A45E4262223A71700505786 /* Hyphenate.framework in Frameworks */,
 				D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */,
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
@@ -2226,7 +2226,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				3A45E4252223A71700505786 /* Hyphenate.framework */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -2245,6 +2244,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				906CD1AA228D071F00C3CD50 /* Hyphenate.framework */,
 				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
 				3ACFA04E221168C000B16331 /* CoreServices.framework */,
 				3AB62A121D926375000776F0 /* libbz2.tbd */,
@@ -2286,8 +2286,8 @@
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
-				3A6FEF7C218072CC0092EFA0 /* Embed Frameworks */,
 				FBD982DA78DDC004639AE144 /* [CP] Copy Pods Resources */,
+				906CD1A9228D070300C3CD50 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2326,6 +2326,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				"zh-Hans",
