@@ -188,6 +188,11 @@
     }
 }
 
+- (void)conversationListDidUpdate:(NSArray *)aConversationList
+{
+    [self _loadConversationTabBarItemBadge];
+}
+
 #pragma mark - EMNotificationsDelegate
 
 - (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount

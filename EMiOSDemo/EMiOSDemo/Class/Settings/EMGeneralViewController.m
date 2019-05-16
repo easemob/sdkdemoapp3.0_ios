@@ -119,7 +119,7 @@
             cell.textLabel.text = @"自动登录";
             [switchControl setOn:[EMClient sharedClient].options.isAutoLogin animated:YES];
         } else if (row == 1) {
-            cell.textLabel.text = @"自动接收群组邀请";
+            cell.textLabel.text = @"自动接受群组邀请";
             [switchControl setOn:options.isAutoAcceptGroupInvitation animated:YES];
         } else if (row == 2) {
             cell.textLabel.text = @"群聊退出时删除会话";

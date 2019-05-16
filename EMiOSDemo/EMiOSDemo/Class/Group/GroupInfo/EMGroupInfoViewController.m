@@ -68,7 +68,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(groupAnnouncementAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"公告" style:UIBarButtonItemStylePlain target:self action:@selector(groupAnnouncementAction)];
     self.title = @"群组信息";
     
     self.showRefreshHeader = YES;
@@ -275,6 +275,18 @@
 
 - (void)_resetGroup:(EMGroup *)aGroup
 {
+    if (![self.group.subject isEqualToString:aGroup.subject]) {
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aGroup.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+        if (conversation) {
+            NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
+            [ext setObject:aGroup.subject forKey:@"subject"];
+            [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
+            conversation.ext = ext;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_SUBJECT_UPDATED object:aGroup];
+        }
+    }
+    
     self.group = aGroup;
     if (aGroup.permissionType == EMGroupPermissionTypeOwner) {
         self.leaveCell.textLabel.text = @"解散群组";
@@ -432,13 +444,17 @@
 {
     __weak typeof(self) weakself = self;
     void (^block)(EMError *aError) = ^(EMError *aError) {
-        [weakself hideHud];
         if (!aError) {
-            if (weakself.leaveOrDestroyCompletion) {
-                weakself.leaveOrDestroyCompletion();
-            }
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }
+            [[EMClient sharedClient].chatManager deleteConversation:weakself.groupId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
+                [weakself hideHud];
+                if (weakself.leaveOrDestroyCompletion) {
+                    weakself.leaveOrDestroyCompletion();
+                }
+                [weakself.navigationController popViewControllerAnimated:YES];
+            }];
+        } else {
+            
+        }[weakself hideHud];
     };
     
     if (self.group.permissionType == EMGroupPermissionTypeOwner) {

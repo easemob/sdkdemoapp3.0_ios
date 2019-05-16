@@ -88,11 +88,16 @@
         self.image = img;
         size = img.size;
     } else {
-        [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"image"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-//            if (error) {
-//                self.image = [UIImage imageNamed:@"msg_img_broken"];
-//            }
-        }];
+        BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
+        if (isAutoDownloadThumbnail) {
+            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                //            if (error) {
+                //                self.image = [UIImage imageNamed:@"msg_img_broken"];
+                //            }
+            }];
+        } else {
+            self.image = [UIImage imageNamed:@"msg_img_broken"];
+        }
     }
     
     block(size);

@@ -30,6 +30,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 //聊天
 #define CHAT_PUSHVIEWCONTROLLER @"EMPushChatViewController"
+#define CHAT_CLEANMESSAGES @"EMChatCleanMessages"
 
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"
@@ -48,6 +49,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define MSG_EXT_AT @"em_at_list"
 //群组消息ext字典中，kGroupMessageAtList字段的值，用于@所有人
 #define MSG_EXT_ATALL @"all"
+
+//Typing
+#define MSG_TYPING_BEGIN @"TypingBegin"
+#define MSG_TYPING_END @"TypingEnd"
 
 #define kHaveUnreadAtMessage    @"kHaveAtMessage"
 #define kAtYouMessage           1
@@ -71,6 +76,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 //群组
 #define GROUP_LIST_PUSHVIEWCONTROLLER @"EMPushGroupsViewController"
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
+#define GROUP_SUBJECT_UPDATED @"EMGroupSubjectUpdated"
 #define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
 
 //聊天室

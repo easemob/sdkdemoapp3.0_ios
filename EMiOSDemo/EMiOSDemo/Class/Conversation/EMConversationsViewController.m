@@ -14,7 +14,7 @@
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
 
-@interface EMConversationsViewController()<EMChatManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate>
+@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
@@ -31,8 +31,11 @@
     [self _setupSubviews];
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMConversationHelper shared] addDelegate:self];
     [self _loadAllConversationsFromDBWithIsShowHud:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -64,7 +67,9 @@
 - (void)dealloc
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMConversationHelper shared] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Subviews
@@ -224,6 +229,14 @@
     }
 }
 
+#pragma mark - EMGroupManagerDelegate
+
+- (void)didLeaveGroup:(EMGroup *)aGroup
+               reason:(EMGroupLeaveReason)aReason
+{
+    [[EMClient sharedClient].chatManager deleteConversation:aGroup.groupId isDeleteMessages:NO completion:nil];
+}
+
 #pragma mark - EMSearchControllerDelegate
 
 - (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
@@ -271,6 +284,24 @@
 - (void)didResortConversationsLatestMessage
 {
     [self _reSortedConversationModelsAndReloadView];
+}
+
+#pragma mark - NSNotification
+
+- (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    if (!group) {
+        return;
+    }
+    
+    NSString *groupId = group.groupId;
+    for (EMConversationModel *model in self.dataArray) {
+        if ([model.emModel.conversationId isEqualToString:groupId]) {
+            model.name = group.subject;
+            [self.tableView reloadData];
+        }
+    }
 }
 
 #pragma mark - Data
@@ -331,7 +362,5 @@
 {
     [self _loadAllConversationsFromDBWithIsShowHud:NO];
 }
-
-#pragma mark - Action
 
 @end
