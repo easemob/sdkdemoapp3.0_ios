@@ -5,3 +5,4 @@ xcuserdata/
 .DS_Store
 ChatDemo-UI3.0/ChatDemo-UI3.0/EaseUIFiles
 **/EaseUIResource.bundle/
+Pods/
