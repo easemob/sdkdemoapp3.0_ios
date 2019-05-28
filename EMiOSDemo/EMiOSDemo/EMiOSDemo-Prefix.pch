@@ -14,7 +14,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
-    //3.5.5
+    //3.6.0
     #import <Hyphenate/Hyphenate.h>
     #import "EMHeaders.h"
 

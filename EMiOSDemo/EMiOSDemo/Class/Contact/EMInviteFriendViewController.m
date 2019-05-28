@@ -115,6 +115,11 @@
 {
     NSString *name = [self.dataArray objectAtIndex:aCell.indexPath.row];
     
+    if([[name uppercaseString] isEqualToString:[EMClient.sharedClient.currentUsername uppercaseString]]) {
+        [EMAlertController showErrorAlert:@"无法添加自己为好友"];
+        return;
+    }
+    
     [self showHudInView:self.view hint:@"发送好友请求..."];
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].contactManager addContact:name message:nil completion:^(NSString *aUsername, EMError *aError) {
@@ -146,6 +151,7 @@
     [self.view endEditing:YES];
     
     [self.dataArray removeAllObjects];
+    
     if ([aString length] > 0) {
         [self.dataArray addObject:aString];
     }

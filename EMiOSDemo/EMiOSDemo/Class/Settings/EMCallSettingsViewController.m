@@ -52,7 +52,7 @@
             count = 1;
             break;
         case 1:
-            count = 2;
+            count = 4;
             break;
         case 2:
             count = 2;
@@ -76,18 +76,24 @@
     UISwitch *switchControl = nil;
     // Configure the cell...
     if (cell == nil) {
-        if (section != 2 && row == 0) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-            switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
-            switchControl.tag = 100 - section;
-            [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-            [cell.contentView addSubview:switchControl];
+        if (section != 2) {
+            if (row == 0 || row == 2 || row == 3) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+                switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
+                switchControl.tag = section + row + 10000;
+                [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+                [cell.contentView addSubview:switchControl];
+            }else {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+            }
         } else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    } else if (section != 2 && row == 0) {
-        switchControl = [cell.contentView viewWithTag:(100 - section)];
+    } else if (section != 2) {
+        if (row == 0 || row == 2 || row == 3) {
+            switchControl = [cell.contentView viewWithTag:(section + row + 10000)];
+        }
     }
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
@@ -101,11 +107,17 @@
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"显示视频通话信息";
-            [switchControl setOn:[EMDemoOptions sharedOptions].isShowCallInfo animated:YES];
+            [switchControl setOn:[EMDemoOptions sharedOptions].isShowCallInfo animated:NO];
         } else if (row == 1) {
             cell.textLabel.text = @"默认摄像头";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.detailTextLabel.text = [EMDemoOptions sharedOptions].isUseBackCamera ? @"后置摄像头" : @"前置摄像头";
+        } else if (row == 2) {
+            cell.textLabel.text = @"开启服务器录制";
+            [switchControl setOn:[EMDemoOptions sharedOptions].willRecord animated:NO];
+        } else if (row == 3) {
+            cell.textLabel.text = @"开启录制混流";
+            [switchControl setOn:[EMDemoOptions sharedOptions].willMergeStrem animated:NO];
         }
     } else if (section == 2) {
         if (row == 0) {
@@ -188,12 +200,20 @@
 - (void)cellSwitchValueChanged:(UISwitch *)aSwitch
 {
     NSInteger tag = aSwitch.tag;
-    if (tag == 0) {
+    if (tag == 0 + 10000) {
         EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.isSendPushIfOffline = aSwitch.on;
         [[DemoCallManager sharedManager] saveCallOptions];
-    } else if (tag == 1) {
+    } else if (tag == 2 + 10000) {
         [EMDemoOptions sharedOptions].isShowCallInfo = aSwitch.isOn;
+        [[EMDemoOptions sharedOptions] archive];
+    }
+    else if (tag == 3 + 10000) {
+        [EMDemoOptions sharedOptions].willRecord = aSwitch.isOn;
+        [[EMDemoOptions sharedOptions] archive];
+    }
+    else if (tag == 4 + 10000) {
+        [EMDemoOptions sharedOptions].willMergeStrem = aSwitch.isOn;
         [[EMDemoOptions sharedOptions] archive];
     }
 }

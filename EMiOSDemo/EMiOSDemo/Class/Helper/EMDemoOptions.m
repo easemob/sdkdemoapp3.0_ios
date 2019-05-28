@@ -35,6 +35,9 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isShowCallInfo = NO;
         self.isUseBackCamera = NO;
+        
+        self.willRecord = NO;
+        self.willMergeStrem = NO;
     }
     
     return self;
@@ -72,6 +75,9 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isShowCallInfo = [aDecoder decodeBoolForKey:kOptions_ShowCallInfo];
         self.isUseBackCamera = [aDecoder decodeBoolForKey:kOptions_UseBackCamera];
+
+        self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
+        self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
     }
     return self;
 }
@@ -103,6 +109,9 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.isShowCallInfo forKey:kOptions_ShowCallInfo];
     [aCoder encodeBool:self.isUseBackCamera forKey:kOptions_UseBackCamera];
+    
+    [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
+    [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -128,7 +137,8 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.isAutoDeliveryAck = self.isAutoDeliveryAck;
     retModel.isShowCallInfo = self.isShowCallInfo;
     retModel.isUseBackCamera = self.isUseBackCamera;
-    
+    retModel.willRecord = self.willRecord;
+    retModel.willMergeStrem = self.willMergeStrem;
     return retModel;
 }
 
@@ -172,7 +182,7 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.apnsCertName = self.apnsCertName;
     retOpt.usingHttpsOnly = self.usingHttpsOnly;
 
-    retOpt.enableConsoleLog = YES;
+    retOpt.enableConsoleLog = NO;
     if (self.specifyServer) {
         retOpt.enableDnsConfig = NO;
         retOpt.chatPort = self.chatPort;
@@ -189,7 +199,7 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.sortMessageByServerTime = self.isSortMessageByServerTime;
     
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
-    
+    retOpt.enableConsoleLog = YES;
     return retOpt;
 }
 

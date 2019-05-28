@@ -36,8 +36,21 @@
         if (aError) {
             [self hangupAction];
             
-            NSString *msg = weakself.isCreater ? @"创建会议失败" : @"加入会议失败";
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            NSString *title = weakself.isCreater ? @"创建会议失败" : @"加入会议失败";
+            NSString *msg = title;
+            switch (aError.code) {
+                case EMErrorServiceArrearages:
+                    msg = @"余额不足";
+                    break;
+                    
+                case EMErrorCallSpeakerFull:
+                    msg = @"主播人数达到上限";
+                    break;
+                default:
+                    break;
+            }
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
             
             return ;
@@ -65,7 +78,7 @@
     };
     
     if (self.isCreater) {
-        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:self.password completion:block];
+        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:self.password record:[EMDemoOptions sharedOptions].willRecord mergeStream:[EMDemoOptions sharedOptions].willMergeStrem completion:block];
     } else {
         [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.joinConfId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, weakself.password, aError);

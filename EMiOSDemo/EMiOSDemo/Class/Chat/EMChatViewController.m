@@ -544,7 +544,7 @@
             
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"直播模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"互动模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLive), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
@@ -720,9 +720,10 @@
         }
         
         if (!aModel.emModel.isReadAcked) {
-            aModel.emModel.isReadAcked = YES;
-            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel completion:^(EMMessage *aMessage, EMError *aError) {
-                aModel.emModel.isReadAcked = YES;
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel
+                                                         completion:^(EMMessage *aMessage, EMError *aError)
+            {
+            
             }];
         }
         

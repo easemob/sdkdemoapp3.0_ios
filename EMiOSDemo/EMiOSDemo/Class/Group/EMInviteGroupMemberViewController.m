@@ -219,6 +219,7 @@
     [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
         [weakself hideHud];
         if (!aError) {
+            [weakself.dataArray removeAllObjects];
             if ([weakself.blocks count] > 0) {
                 NSMutableArray *array = [[NSMutableArray alloc] init];
                 for (NSString *user in aList) {
@@ -227,12 +228,10 @@
                     }
                 }
                 [weakself.dataArray addObjectsFromArray:array];
-            } else {
-                [weakself.dataArray addObjectsFromArray:aList];
             }
-            
             [weakself.tableView reloadData];
         }
+        [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     }];
 }
 

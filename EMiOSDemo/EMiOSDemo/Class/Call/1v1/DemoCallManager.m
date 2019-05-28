@@ -17,10 +17,6 @@
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 
-#ifdef ENABLE_RECORDER_PLUGIN
-#import "EMCallRecorderPlugin.h"
-#endif
-
 static DemoCallManager *callManager = nil;
 
 @interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate, EMCallBuilderDelegate>
@@ -78,11 +74,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
-    
-#ifdef ENABLE_RECORDER_PLUGIN
-    //录制相关功能初始化
-    [EMCallRecorderPlugin initGlobalConfig];
-#endif
+ 
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
@@ -144,7 +136,6 @@ static DemoCallManager *callManager = nil;
     if (!aSession || [aSession.callId length] == 0) {
         return ;
     }
-    
     if(gIsCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
@@ -219,6 +210,15 @@ static DemoCallManager *callManager = nil;
                     break;
                 case EMCallEndReasonRemoteOffline:
                     reasonStr = @"对方不在线，无法接听通话";
+                    break;
+                case EMCallEndReasonNotEnable:
+                    reasonStr = @"服务未开通";
+                    break;
+                case EMCallEndReasonServiceArrearages:
+                    reasonStr = @"余额不足";
+                    break;
+                case EMCallEndReasonServiceForbidden:
+                    reasonStr = @"服务被拒绝";
                     break;
                 default:
                     break;
@@ -351,7 +351,10 @@ static DemoCallManager *callManager = nil;
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = aIsCustomVideo;
     
-    [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
+    [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername
+                                            record:[EMDemoOptions sharedOptions].willRecord
+                                       mergeStream:[EMDemoOptions sharedOptions].willMergeStrem
+                                               ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
         completionBlock(aCallSession, aError);
     }];
 }

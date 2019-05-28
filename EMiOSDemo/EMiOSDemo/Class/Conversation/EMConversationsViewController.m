@@ -316,8 +316,17 @@
         } else {
             return(NSComparisonResult)NSOrderedDescending;
         }}];
+
+    NSMutableArray *conversationModels = [NSMutableArray array];
+    for (EMConversationModel *model in sorted) {
+        if (!model.emModel.latestMessage) {
+            continue;
+        }
+        [conversationModels addObject:model];
+    }
+    
     [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:sorted];
+    [self.dataArray addObjectsFromArray:conversationModels];
     [self.tableView reloadData];
     
     self.isNeedReload = NO;

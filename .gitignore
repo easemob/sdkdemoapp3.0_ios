@@ -6,3 +6,6 @@ xcuserdata/
 ChatDemo-UI3.0/ChatDemo-UI3.0/EaseUIFiles
 **/EaseUIResource.bundle/
 Pods/
+**/WebRTC.framework
+**/xcshareddata/
+**/Hyphenate.framework
