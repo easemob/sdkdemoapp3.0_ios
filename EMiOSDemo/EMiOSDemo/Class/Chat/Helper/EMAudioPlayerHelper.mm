@@ -97,6 +97,10 @@ static EMAudioPlayerHelper *playerHelper = nil;
 
 - (NSString *)_convertAudioFile:(NSString *)aPath
 {
+    if ([[aPath pathExtension] isEqualToString:@"mp3"]) {
+        return aPath;
+    }
+    
     NSString *retPath = [[aPath stringByDeletingPathExtension] stringByAppendingPathExtension:@"wav"];
     do {
         NSFileManager *fileManager = [NSFileManager defaultManager];
