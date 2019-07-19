@@ -242,7 +242,7 @@ static DemoCallManager *callManager = nil;
                       status:(EMCallNetworkStatus)aStatus
 {
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
-//        [self.currentController setNetwork:aStatus];
+        [self.currentController setNetwork:aStatus];
     }
 }
 
@@ -350,13 +350,13 @@ static DemoCallManager *callManager = nil;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = aIsCustomVideo;
-    
+    options.isSendPushIfOffline = YES;
     [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername
                                             record:[EMDemoOptions sharedOptions].willRecord
                                        mergeStream:[EMDemoOptions sharedOptions].willMergeStrem
                                                ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
-        completionBlock(aCallSession, aError);
-    }];
+                                                   completionBlock(aCallSession, aError);
+                                               }];
 }
 
 #pragma mark - public

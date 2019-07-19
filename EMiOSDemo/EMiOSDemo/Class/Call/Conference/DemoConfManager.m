@@ -110,9 +110,9 @@ static DemoConfManager *confManager = nil;
         
         EMConferenceViewController *controller = nil;
         if (aConfType != EMConferenceTypeLive) {
-            controller = [[MeetingViewController alloc] initWithType:EMConferenceTypeLargeCommunication password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
+            controller = [[MeetingViewController alloc] initWithType:aConfType password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
         } else {
-            controller = [[Live2ViewController alloc] initWithType:EMConferenceTypeLive password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
+            controller = [[Live2ViewController alloc] initWithType:aConfType password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
         }
         controller.inviteType = aInviteType;
         

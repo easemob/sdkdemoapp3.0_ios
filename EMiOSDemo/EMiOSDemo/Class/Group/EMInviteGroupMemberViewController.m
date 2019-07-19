@@ -220,6 +220,7 @@
         [weakself hideHud];
         if (!aError) {
             [weakself.dataArray removeAllObjects];
+            NSMutableArray *ary = [NSMutableArray array];
             if ([weakself.blocks count] > 0) {
                 NSMutableArray *array = [[NSMutableArray alloc] init];
                 for (NSString *user in aList) {
@@ -227,8 +228,13 @@
                         [array addObject:user];
                     }
                 }
-                [weakself.dataArray addObjectsFromArray:array];
+                [ary addObjectsFromArray:array];
+            }else {
+                if (aList) {
+                    [ary addObjectsFromArray:aList];
+                }
             }
+            [self.dataArray addObjectsFromArray:ary];
             [weakself.tableView reloadData];
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];

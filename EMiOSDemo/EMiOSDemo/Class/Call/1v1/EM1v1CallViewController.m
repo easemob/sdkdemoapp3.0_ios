@@ -390,4 +390,28 @@
     self.callStatus = EMCallSessionStatusAccepted;
 }
 
+- (void)setNetwork:(EMCallNetworkStatus)status {
+    NSString *showInfo = @"";
+    switch (status) {
+        case EMCallNetworkStatusNormal:
+        {
+            showInfo = @"网络恢复正常";
+        }
+            break;
+        case EMCallNetworkStatusUnstable:
+        {
+            showInfo = @"网络状态不稳定";
+        }
+            break;
+        case EMCallNetworkStatusNoData:
+        {
+            showInfo = @"无数据";
+        }
+            break;
+        default:
+            break;
+    }
+    [self showHint:showInfo];
+}
+
 @end
