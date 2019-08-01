@@ -194,15 +194,14 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //在iOS8.0上，必须加上这个方法才能出发左划操作
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSInteger row = indexPath.row;
-        EMConversationModel *model = [self.dataArray objectAtIndex:row];
-        EMConversation *conversation = model.emModel;
-        [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:YES completion:nil];
-        [self.dataArray removeObjectAtIndex:row];
-        [self.tableView reloadData];
-    }
+    NSInteger row = indexPath.row;
+    EMConversationModel *model = [self.dataArray objectAtIndex:row];
+    EMConversation *conversation = model.emModel;
+    [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId
+                                           isDeleteMessages:YES
+                                                 completion:nil];
+    [self.dataArray removeObjectAtIndex:row];
+    [self.tableView reloadData];
 }
 
 #pragma mark - EMChatManagerDelegate
@@ -323,6 +322,9 @@
     NSMutableArray *conversationModels = [NSMutableArray array];
     for (EMConversationModel *model in sorted) {
         if (!model.emModel.latestMessage) {
+            [EMClient.sharedClient.chatManager deleteConversation:model.emModel.conversationId
+                                                 isDeleteMessages:NO
+                                                       completion:nil];
             continue;
         }
         [conversationModels addObject:model];

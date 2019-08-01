@@ -85,6 +85,10 @@ static DemoCallManager *callManager = nil;
         options.isSendPushIfOffline = NO;
         options.videoResolution = EMCallVideoResolution640_480;
     }
+    
+    // dujiepeng    
+    options.maxVideoKbps = 200;
+    options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];

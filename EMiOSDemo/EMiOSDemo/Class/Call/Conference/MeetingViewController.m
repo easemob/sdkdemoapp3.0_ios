@@ -62,8 +62,8 @@
         [weakself pubLocalStreamWithEnableVideo:NO completion:nil];
         
         //如果是创建者并且是从会话中触发
-        if (self.isCreater && [self.chatId length] > 0) {
-            [self sendInviteMessageWithChatId:self.chatId chatType:self.chatType];
+        if (weakself.isCreater && [weakself.chatId length] > 0) {
+            [weakself sendInviteMessageWithChatId:weakself.chatId chatType:weakself.chatType];
             [weakself showHint:@"已在群中发送邀请消息"];
         }
         

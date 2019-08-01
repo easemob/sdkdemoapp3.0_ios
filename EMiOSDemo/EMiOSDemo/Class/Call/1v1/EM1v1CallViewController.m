@@ -405,11 +405,14 @@
             break;
         case EMCallNetworkStatusNoData:
         {
-            showInfo = @"无数据";
+            showInfo = @"";
         }
             break;
         default:
             break;
+    }
+    if (showInfo.length == 0) {
+        return;
     }
     [self showHint:showInfo];
 }
