@@ -163,15 +163,13 @@ static int kConversation_AtAll = 2;
     EMMessage *lastMessage = [aConversation latestMessage];;
     if (lastMessage) {
         double timeInterval = lastMessage.timestamp ;
-        if(timeInterval > 140000000000) {
-            timeInterval = timeInterval / 1000;
-        }
-        NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-        [formatter setDateFormat:@"YYYY-MM-dd"];
-        latestMessageTime = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
+        latestMessageTime = [EMDateHelper formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
     return latestMessageTime;
 }
+
+
+
 
 - (void)setModel:(EMConversationModel *)model
 {

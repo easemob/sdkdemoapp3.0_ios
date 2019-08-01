@@ -439,8 +439,6 @@
 		3A45E4222223A52100505786 /* EMServiceCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E4182223A52100505786 /* EMServiceCheckViewController.m */; };
 		3A45E4232223A52100505786 /* EMPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E41C2223A52100505786 /* EMPrivacyViewController.m */; };
 		3A45E4242223A52100505786 /* EMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E41D2223A52100505786 /* EMSettingsViewController.m */; };
-		3A45E4262223A71700505786 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45E4252223A71700505786 /* Hyphenate.framework */; };
-		3A45E4272223A71700505786 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45E4252223A71700505786 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A45E53F2223D69800505786 /* checked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53B2223D69800505786 /* checked@3x.png */; };
 		3A45E5402223D69800505786 /* uncheck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53C2223D69800505786 /* uncheck@3x.png */; };
 		3A45E5412223D69800505786 /* uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53D2223D69800505786 /* uncheck@2x.png */; };
@@ -476,7 +474,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A45E4272223A71700505786 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1065,7 +1062,6 @@
 		3A45E41B2223A52100505786 /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
 		3A45E41C2223A52100505786 /* EMPrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMPrivacyViewController.m; sourceTree = "<group>"; };
 		3A45E41D2223A52100505786 /* EMSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSettingsViewController.m; sourceTree = "<group>"; };
-		3A45E4252223A71700505786 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A45E53B2223D69800505786 /* checked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked@3x.png"; sourceTree = "<group>"; };
 		3A45E53C2223D69800505786 /* uncheck@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@3x.png"; sourceTree = "<group>"; };
 		3A45E53D2223D69800505786 /* uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@2x.png"; sourceTree = "<group>"; };
@@ -1126,7 +1122,6 @@
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
-				3A45E4262223A71700505786 /* Hyphenate.framework in Frameworks */,
 				D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */,
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
@@ -2226,7 +2221,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				3A45E4252223A71700505786 /* Hyphenate.framework */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -2964,7 +2958,10 @@
 				EASEMOB_LIBNAME = "";
 				EASEMOB_ROOT = "";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EMiOSDemo/EMiOSDemo-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2975,7 +2972,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/EMiOSDemo/EMiOSDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3043,7 +3040,10 @@
 				EASEMOB_ROOT = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EMiOSDemo/EMiOSDemo-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3054,7 +3054,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/EMiOSDemo/EMiOSDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
