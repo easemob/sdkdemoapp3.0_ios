@@ -730,6 +730,19 @@
         if (!aModel.emModel.isRead) {
             aModel.emModel.isRead = YES;
         }
+        
+        EMMessage *chatMessage = aCell.model.emModel;
+        NSMutableDictionary *dict = [chatMessage.ext mutableCopy];
+        if (chatMessage.ext) {
+            if (![[dict objectForKey:@"isPlayed"] boolValue]) {
+                [dict setObject:@YES forKey:@"isPlayed"];
+                chatMessage.ext = [dict copy];
+            }
+        } else {
+            chatMessage.ext = @{@"isPlayed":@YES};
+        }
+        [[EMClient sharedClient].chatManager updateMessage:chatMessage completion:nil];
+        
         [weakself.tableView reloadData];
         
 //        [[EMCDDeviceManager sharedInstance] enableProximitySensor];
