@@ -59,6 +59,9 @@
 @property (nonatomic) BOOL isTyping;
 @property (nonatomic) BOOL enableTyping;
 
+//存EMMessage类型的消息数组
+@property (strong, nonatomic) NSMutableArray *messsagesSource;
+
 @end
 
 @implementation EMChatViewController
@@ -84,6 +87,14 @@
     }
     
     return self;
+}
+
+- (NSMutableArray *)messsagesSource
+{
+    if (_messsagesSource == nil) {
+        _messsagesSource = [NSMutableArray array];
+    }
+    return _messsagesSource;
 }
 
 - (void)viewDidLoad {
@@ -904,6 +915,7 @@
             }
             [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
             [msgArray addObject:msg];
+            [weakself.messsagesSource addObject:msg];
         }
         
         NSArray *formated = [weakself _formatMessages:msgArray];
@@ -1587,14 +1599,40 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
+    self.msgTimelTag = -1;
+    NSString *messageId = nil;
+    if ([self.messsagesSource count] > 0) {
+        messageId = [(EMMessage *)self.messsagesSource.firstObject messageId];
+    }
+    else {
+        messageId = nil;
+    }
+    [self _loadMessagesBefore:messageId];
+    
+}
+
+- (void)_loadMessagesBefore:(NSString*)messageId
+{
     __weak typeof(self) weakself = self;
     void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
         if (!aError && [aMessages count]) {
-            EMMessage *msg = aMessages[0];
-            weakself.moreMsgId = msg.messageId;
-            
             dispatch_async(self.msgQueue, ^{
                 NSArray *formated = [weakself _formatMessages:aMessages];
+                
+                NSInteger scrollToIndex = 0;
+                [weakself.messsagesSource insertObjects:aMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [aMessages count])]];
+                
+                id object = [weakself.dataArray firstObject];
+                if ([object isKindOfClass:[NSString class]]) {
+                    NSString *timestamp = object;
+                    [formated enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id model, NSUInteger idx, BOOL *stop) {
+                        if ([model isKindOfClass:[NSString class]] && [timestamp isEqualToString:model]) {
+                            [weakself.dataArray removeObjectAtIndex:0];
+                            *stop = YES;
+                        }
+                    }];
+                }
+                scrollToIndex = [weakself.dataArray count];
                 [weakself.dataArray insertObjects:formated atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [formated count])]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1613,11 +1651,11 @@
     
     if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         EMConversation *conversation = self.conversationModel.emModel;
-        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:messageId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
             block(aResult.list, aError);
-         }];
+        }];
     } else {
-        [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
+        [self.conversationModel.emModel loadMessagesStartFromId:messageId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
     }
 }
 
@@ -1642,6 +1680,7 @@
     [self.conversationModel.emModel deleteAllMessages:&error];
     if (!error) {
         [self.dataArray removeAllObjects];
+        [self.messsagesSource removeAllObjects];
         [self.tableView reloadData];
     }
 }
@@ -1668,7 +1707,7 @@
     NSString *to = self.conversationModel.emModel.conversationId;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
-    
+    [self.messsagesSource addObject:message];
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakself.tableView reloadData];
