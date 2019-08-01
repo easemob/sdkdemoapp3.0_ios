@@ -17,10 +17,6 @@
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 
-#ifdef ENABLE_RECORDER_PLUGIN
-#import "EMCallRecorderPlugin.h"
-#endif
-
 static DemoCallManager *callManager = nil;
 
 @interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate, EMCallBuilderDelegate>
@@ -78,11 +74,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
-    
-#ifdef ENABLE_RECORDER_PLUGIN
-    //录制相关功能初始化
-    [EMCallRecorderPlugin initGlobalConfig];
-#endif
+ 
     
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
@@ -93,6 +85,10 @@ static DemoCallManager *callManager = nil;
         options.isSendPushIfOffline = NO;
         options.videoResolution = EMCallVideoResolution640_480;
     }
+    
+    // dujiepeng    
+    options.maxVideoKbps = 200;
+    options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
@@ -144,7 +140,6 @@ static DemoCallManager *callManager = nil;
     if (!aSession || [aSession.callId length] == 0) {
         return ;
     }
-    
     if(gIsCalling || (self.currentCall && self.currentCall.status != EMCallSessionStatusDisconnected)){
         [[EMClient sharedClient].callManager endCall:aSession.callId reason:EMCallEndReasonBusy];
         return;
@@ -220,6 +215,15 @@ static DemoCallManager *callManager = nil;
                 case EMCallEndReasonRemoteOffline:
                     reasonStr = @"对方不在线，无法接听通话";
                     break;
+                case EMCallEndReasonNotEnable:
+                    reasonStr = @"服务未开通";
+                    break;
+                case EMCallEndReasonServiceArrearages:
+                    reasonStr = @"余额不足";
+                    break;
+                case EMCallEndReasonServiceForbidden:
+                    reasonStr = @"服务被拒绝";
+                    break;
                 default:
                     break;
             }
@@ -242,7 +246,7 @@ static DemoCallManager *callManager = nil;
                       status:(EMCallNetworkStatus)aStatus
 {
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
-//        [self.currentController setNetwork:aStatus];
+        [self.currentController setNetwork:aStatus];
     }
 }
 
@@ -350,10 +354,13 @@ static DemoCallManager *callManager = nil;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = aIsCustomVideo;
-    
-    [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
-        completionBlock(aCallSession, aError);
-    }];
+    options.isSendPushIfOffline = YES;
+    [[EMClient sharedClient].callManager startCall:aType remoteName:aUsername
+                                            record:[EMDemoOptions sharedOptions].willRecord
+                                       mergeStream:[EMDemoOptions sharedOptions].willMergeStrem
+                                               ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
+                                                   completionBlock(aCallSession, aError);
+                                               }];
 }
 
 #pragma mark - public

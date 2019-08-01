@@ -185,7 +185,7 @@
         });
     };
     
-    [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMConferenceTypeLive password:self.password completion:block];
+    [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMConferenceTypeLive password:self.password record:[EMDemoOptions sharedOptions].willRecord mergeStream:[EMDemoOptions sharedOptions].willMergeStrem completion:block];
 }
 
 - (void)_joinLive
@@ -335,11 +335,9 @@
         NSString *applyer = [aMessage.ext objectForKey:@"em_member_name"];
         if ([op isEqualToString:@"request_tobe_speaker"]) {
             [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleSpeaker completion:^(EMError *aError) {
-                //
             }];
         } else if ([op isEqualToString:@"request_tobe_audience"]) {
             [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleAudience completion:^(EMError *aError) {
-                //
             }];
         }
     }];

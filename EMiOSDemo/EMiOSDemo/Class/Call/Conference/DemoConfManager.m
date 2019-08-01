@@ -110,9 +110,9 @@ static DemoConfManager *confManager = nil;
         
         EMConferenceViewController *controller = nil;
         if (aConfType != EMConferenceTypeLive) {
-            controller = [[MeetingViewController alloc] initWithType:EMConferenceTypeLargeCommunication password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
+            controller = [[MeetingViewController alloc] initWithType:aConfType password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
         } else {
-            controller = [[Live2ViewController alloc] initWithType:EMConferenceTypeLive password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
+            controller = [[Live2ViewController alloc] initWithType:aConfType password:@"" inviteUsers:aInviteUsers chatId:aConversationId chatType:aChatType];
         }
         controller.inviteType = aInviteType;
         
@@ -172,7 +172,11 @@ static DemoConfManager *confManager = nil;
         controller = window.rootViewController;
     }
     
-    [self inviteMemberWithConfType:type inviteType:inviteType conversationId:conversationId chatType:chatType popFromController:controller];
+    [self inviteMemberWithConfType:type
+                        inviteType:inviteType
+                    conversationId:conversationId
+                          chatType:chatType
+                 popFromController:controller];
 }
 
 - (void)handleSelectConferenceCell:(NSNotification *)aNotif

@@ -544,7 +544,7 @@
             
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"直播模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"互动模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLive), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
@@ -720,9 +720,10 @@
         }
         
         if (!aModel.emModel.isReadAcked) {
-            aModel.emModel.isReadAcked = YES;
-            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel completion:^(EMMessage *aMessage, EMError *aError) {
-                aModel.emModel.isReadAcked = YES;
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel
+                                                         completion:^(EMMessage *aMessage, EMError *aError)
+            {
+            
             }];
         }
         
@@ -732,9 +733,7 @@
         }
         [weakself.tableView reloadData];
         
-//        [[EMCDDeviceManager sharedInstance] enableProximitySensor];
         [[EMAudioPlayerHelper sharedHelper] startPlayerWithPath:body.localPath model:aModel completion:^(NSError * _Nonnull error) {
-//            [[EMCDDeviceManager sharedInstance] disableProximitySensor];
             aModel.isPlaying = NO;
             [weakself.tableView reloadData];
         }];
@@ -862,6 +861,8 @@
 - (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
                           isMarkRead:(BOOL)aIsMarkRead
 {
+    // dujiepeng
+    return YES;
     if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
         return NO;
     }
@@ -901,6 +902,44 @@
             [weakself _scrollToBottomRow];
         });
     });
+}
+
+- (void)messagesDidRecall:(NSArray *)aMessages {
+    __block NSMutableArray *sameObject = [NSMutableArray array];
+    [aMessages enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        EMMessage *msg = (EMMessage *)obj;
+        [self.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:[EMMessageModel class]]) {
+                EMMessageModel *model = (EMMessageModel *)obj;
+                if ([model.emModel.messageId isEqualToString:msg.messageId]) {
+                    // 如果上一行是时间，且下一行也是时间
+                    if (idx - 1 >= 0) {
+                        id nextMessage = nil;
+                        id prevMessage = [self.dataArray objectAtIndex:(idx - 1)];
+                        if (idx + 1 < [self.dataArray count]) {
+                            nextMessage = [self.dataArray objectAtIndex:(idx + 1)];
+                        }
+                        if ((!nextMessage
+                             || [nextMessage isKindOfClass:[NSString class]])
+                            && [prevMessage isKindOfClass:[NSString class]]) {
+                            [sameObject addObject:prevMessage];
+                        }
+                    }
+                    
+                    [sameObject addObject:model];
+                    *stop = YES;
+                }
+            }
+        }];
+    }];
+    
+    if (sameObject.count > 0) {
+        for (id obj in sameObject) {
+            [self.dataArray removeObject:obj];
+        }
+        
+        [self.tableView reloadData];
+    }
 }
 
 - (void)messagesDidRead:(NSArray *)aMessages
@@ -1554,8 +1593,9 @@
     NSMutableArray *formated = [[NSMutableArray alloc] init];
     for (int i = 0; i < [aMessages count]; i++) {
         EMMessage *msg = aMessages[i];
-        if (!msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
+        if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
             [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+        } else if (msg.chatType == EMChatTypeGroupChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
         }
         
         CGFloat interval = (self.msgTimelTag - msg.timestamp) / 1000;
@@ -1655,7 +1695,6 @@
     NSString *to = self.conversationModel.emModel.conversationId;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
-    
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakself.tableView reloadData];

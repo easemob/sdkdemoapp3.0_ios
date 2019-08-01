@@ -697,4 +697,12 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)conferenceAttributesChanged:(EMCallConference *)aConference
+                    attributeAction:(EMConferenceAttributeAction)aAction
+                       attributeKey:(NSString *)attrKey
+                     attributeValue:(NSString *)attrValue
+{
+    
+}
+
 @end
