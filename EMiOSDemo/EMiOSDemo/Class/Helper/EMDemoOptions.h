@@ -34,6 +34,9 @@ static NSString *kOptions_AutoDeliveryAck = @"AutoDeliveryAck";
 static NSString *kOptions_ShowCallInfo = @"ShowCallInfo";
 static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 
+static NSString *kOptions_WillRecord = @"WillRecord";
+static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
+
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -71,6 +74,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL isShowCallInfo;
 @property (nonatomic) BOOL isUseBackCamera;
+
+@property (nonatomic) BOOL willRecord;
+@property (nonatomic) BOOL willMergeStrem;
+
+
 
 + (instancetype)sharedOptions;
 

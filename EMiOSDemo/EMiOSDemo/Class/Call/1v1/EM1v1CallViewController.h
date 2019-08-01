@@ -31,4 +31,6 @@
 
 - (void)clearDataAndView;
 
+- (void)setNetwork:(EMCallNetworkStatus)status;
+
 @end

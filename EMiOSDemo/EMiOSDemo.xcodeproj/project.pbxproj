@@ -15,7 +15,6 @@
 		3A45DB4B22239DE200505786 /* EMDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45D8FF22239DE200505786 /* EMDemoHelper.m */; };
 		3A45DBDF22239DE300505786 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45D9B022239DE200505786 /* AppDelegate.m */; };
 		3A45DBE022239DE300505786 /* EMiOSDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */; };
-		3A45DBE22223A08900505786 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 		3A45DE652223A1FD00505786 /* EMChatBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DBEB2223A1FC00505786 /* EMChatBarItem.m */; };
 		3A45DE882223A1FD00505786 /* EaseEmotionEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DC132223A1FC00505786 /* EaseEmotionEscape.m */; };
 		3A45DEAC2223A1FD00505786 /* EMChatBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DC3E2223A1FC00505786 /* EMChatBar.m */; };
@@ -439,8 +438,6 @@
 		3A45E4222223A52100505786 /* EMServiceCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E4182223A52100505786 /* EMServiceCheckViewController.m */; };
 		3A45E4232223A52100505786 /* EMPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E41C2223A52100505786 /* EMPrivacyViewController.m */; };
 		3A45E4242223A52100505786 /* EMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E41D2223A52100505786 /* EMSettingsViewController.m */; };
-		3A45E4262223A71700505786 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45E4252223A71700505786 /* Hyphenate.framework */; };
-		3A45E4272223A71700505786 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45E4252223A71700505786 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A45E53F2223D69800505786 /* checked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53B2223D69800505786 /* checked@3x.png */; };
 		3A45E5402223D69800505786 /* uncheck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53C2223D69800505786 /* uncheck@3x.png */; };
 		3A45E5412223D69800505786 /* uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E53D2223D69800505786 /* uncheck@2x.png */; };
@@ -458,6 +455,8 @@
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
+		9075EBA3229811950031DEF5 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */; };
+		9075EBA4229811950031DEF5 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
@@ -467,16 +466,17 @@
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
+		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3A6FEF7C218072CC0092EFA0 /* Embed Frameworks */ = {
+		9075EBA5229811950031DEF5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A45E4272223A71700505786 /* Hyphenate.framework in Embed Frameworks */,
+				9075EBA4229811950031DEF5 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,8 +484,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		19EF3C2EE0D0F35338E5D915 /* Pods-ChatDemo-UI3.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.release.xcconfig"; sourceTree = "<group>"; };
-		36A4609E613D169F9B157B21 /* Pods-ChatDemo-UI3.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0/Pods-ChatDemo-UI3.0.debug.xcconfig"; sourceTree = "<group>"; };
 		3A45D69B22239DE200505786 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3A45D69D22239DE200505786 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3A45D69E22239DE200505786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1065,7 +1063,6 @@
 		3A45E41B2223A52100505786 /* EMDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDevicesViewController.h; sourceTree = "<group>"; };
 		3A45E41C2223A52100505786 /* EMPrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMPrivacyViewController.m; sourceTree = "<group>"; };
 		3A45E41D2223A52100505786 /* EMSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSettingsViewController.m; sourceTree = "<group>"; };
-		3A45E4252223A71700505786 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A45E53B2223D69800505786 /* checked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked@3x.png"; sourceTree = "<group>"; };
 		3A45E53C2223D69800505786 /* uncheck@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@3x.png"; sourceTree = "<group>"; };
 		3A45E53D2223D69800505786 /* uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@2x.png"; sourceTree = "<group>"; };
@@ -1094,10 +1091,8 @@
 		3C3527441931D37900385240 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3C36CA691A1EDB6200CDDD48 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		3D7401AB3CCB68618262CD2C /* Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-jdpay/Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig"; sourceTree = "<group>"; };
-		3EEDCE5B9CEC4FCA55263150 /* Pods-ChatDemo-UI3.0-jdpay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-jdpay.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-jdpay/Pods-ChatDemo-UI3.0-jdpay.release.xcconfig"; sourceTree = "<group>"; };
-		46BFBA1A8713EAD4480607C8 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
-		811D5862E2826B130515CB0F /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9075EBA6229811D70031DEF5 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../RTC/webrtc-src/out/ios/WebRTC.framework"; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1109,9 +1104,9 @@
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D2B1B9EE1C3B80290087A74F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		D3C39570339FF343A13FC8AD /* Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-JDPay/Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig"; sourceTree = "<group>"; };
-		E121EEBE7134566FC8E14C2E /* Pods-ChatDemo-UI3.0-JDPay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo-UI3.0-JDPay.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatDemo-UI3.0-JDPay/Pods-ChatDemo-UI3.0-JDPay.release.xcconfig"; sourceTree = "<group>"; };
+		E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
 		EBF955E21ADD17700087E035 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1119,14 +1114,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A45DBE22223A08900505786 /* libPods-EMiOSDemo.a in Frameworks */,
 				3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */,
 				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
 				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
 				3AB62A131D926375000776F0 /* libbz2.tbd in Frameworks */,
 				921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */,
 				D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */,
-				3A45E4262223A71700505786 /* Hyphenate.framework in Frameworks */,
 				D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */,
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
@@ -1138,15 +1131,26 @@
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
+				9075EBA3229811950031DEF5 /* Hyphenate.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
+				FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D7E04333D4AA6666664610F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */,
+				E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		3A45D69922239DE200505786 /* EMiOSDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -2208,29 +2212,14 @@
 			path = ChatBarImgs;
 			sourceTree = "<group>";
 		};
-		62D218E3D6E4A02086A5A14A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				36A4609E613D169F9B157B21 /* Pods-ChatDemo-UI3.0.debug.xcconfig */,
-				19EF3C2EE0D0F35338E5D915 /* Pods-ChatDemo-UI3.0.release.xcconfig */,
-				3D7401AB3CCB68618262CD2C /* Pods-ChatDemo-UI3.0-jdpay.debug.xcconfig */,
-				3EEDCE5B9CEC4FCA55263150 /* Pods-ChatDemo-UI3.0-jdpay.release.xcconfig */,
-				D3C39570339FF343A13FC8AD /* Pods-ChatDemo-UI3.0-JDPay.debug.xcconfig */,
-				E121EEBE7134566FC8E14C2E /* Pods-ChatDemo-UI3.0-JDPay.release.xcconfig */,
-				811D5862E2826B130515CB0F /* Pods-EMiOSDemo.debug.xcconfig */,
-				46BFBA1A8713EAD4480607C8 /* Pods-EMiOSDemo.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				3A45E4252223A71700505786 /* Hyphenate.framework */,
+				9075EBA6229811D70031DEF5 /* WebRTC.framework */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
-				62D218E3D6E4A02086A5A14A /* Pods */,
+				1D7E04333D4AA6666664610F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2245,6 +2234,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */,
 				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
 				3ACFA04E221168C000B16331 /* CoreServices.framework */,
 				3AB62A121D926375000776F0 /* libbz2.tbd */,
@@ -2286,8 +2276,8 @@
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
-				3A6FEF7C218072CC0092EFA0 /* Embed Frameworks */,
-				FBD982DA78DDC004639AE144 /* [CP] Copy Pods Resources */,
+				50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */,
+				9075EBA5229811950031DEF5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2651,6 +2641,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A953713D7161DE906A0EF1EF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2667,24 +2679,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FBD982DA78DDC004639AE144 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh",
-				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2946,7 +2940,7 @@
 		};
 		90911051192EEA70008A48AA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 811D5862E2826B130515CB0F /* Pods-EMiOSDemo.debug.xcconfig */;
+			baseConfigurationReference = F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2957,6 +2951,7 @@
 				CODE_SIGN_ENTITLEMENTS = EMiOSDemo/EMiOSDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
@@ -2964,7 +2959,12 @@
 				EASEMOB_LIBNAME = "";
 				EASEMOB_ROOT = "";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EMiOSDemo",
+					"\"$(SRCROOT)/../../RTC/webrtc-src/out/ios\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EMiOSDemo/EMiOSDemo-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2975,7 +2975,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/EMiOSDemo/EMiOSDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3012,7 +3012,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.noui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3025,7 +3025,7 @@
 		};
 		90911052192EEA70008A48AA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46BFBA1A8713EAD4480607C8 /* Pods-EMiOSDemo.release.xcconfig */;
+			baseConfigurationReference = E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -3036,6 +3036,7 @@
 				CODE_SIGN_ENTITLEMENTS = EMiOSDemo/EMiOSDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
@@ -3043,7 +3044,11 @@
 				EASEMOB_ROOT = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EMiOSDemo",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EMiOSDemo/EMiOSDemo-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3054,7 +3059,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/EMiOSDemo/EMiOSDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3091,9 +3096,10 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.noui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";

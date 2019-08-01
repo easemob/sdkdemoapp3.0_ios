@@ -10,10 +10,6 @@
 
 #import "EMButton.h"
 
-#ifdef ENABLE_RECORDER_PLUGIN
-#import "EMCallRecorderPlugin.h"
-#endif
-
 #define TAG_MINVIDEOVIEW_LOCAL 100
 #define TAG_MINVIDEOVIEW_REMOTE 200
 
@@ -21,11 +17,6 @@
 
 @property (nonatomic, strong) UIView *minVideoView;
 @property (nonatomic, strong) EMButton *switchCameraButton;
-
-#ifdef ENABLE_RECORDER_PLUGIN
-@property (nonatomic, strong) EMButton *recorderButton;
-@property (nonatomic, strong) EMButton *picButton;
-#endif
 
 @end
 
@@ -111,33 +102,6 @@
         make.right.equalTo(self.view).offset(-20);
         make.bottom.equalTo(self.switchCameraButton.mas_top).offset(-30);
     }];
-    
-#ifdef ENABLE_RECORDER_PLUGIN
-    self.recorderButton = [[EMButton alloc] initWithTitle:@"录制" target:self action:@selector(recorderButtonAction)];
-    [self.recorderButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.recorderButton setImage:[UIImage imageNamed:@"recorder_gray"] forState:UIControlStateNormal];
-    [self.recorderButton setTitle:@"停止录屏" forState:UIControlStateSelected];
-    [self.recorderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-    [self.recorderButton setImage:[UIImage imageNamed:@"recorder_white"] forState:UIControlStateSelected];
-    [self.view addSubview:self.recorderButton];
-    [self.recorderButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(padding);
-        make.bottom.equalTo(self.switchCameraButton.mas_top).offset(-20);
-        make.width.mas_equalTo(width);
-        make.height.mas_equalTo(height);
-    }];
-    
-    self.picButton = [[EMButton alloc] initWithTitle:@"截图" target:self action:@selector(takeRemoteVideoPicture)];
-    [self.picButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.picButton setImage:[UIImage imageNamed:@"grid_white"] forState:UIControlStateNormal];
-    [self.view addSubview:self.picButton];
-    [self.picButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.recorderButton.mas_right).offset(padding);
-        make.bottom.equalTo(self.recorderButton);
-        make.width.mas_equalTo(width);
-        make.height.mas_equalTo(height);
-    }];
-#endif
     
     //初始化自己视频显示的页面
     width = 80;
@@ -326,64 +290,5 @@
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }
-
-#ifdef ENABLE_RECORDER_PLUGIN
-- (void)takeRemoteVideoPicture
-{
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"HyphenateSDK/image"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL isDir = YES;
-    if (![fileManager fileExistsAtPath:filePath isDirectory:&isDir]) {
-        [fileManager createDirectoryAtPath:filePath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    NSTimeInterval time = [[NSDate date] timeIntervalSince1970] * 1000;
-    NSString *fileName = [NSString stringWithFormat:@"%@/%.0f.jpeg", filePath, time];
-    [[EMCallRecorderPlugin sharedInstance] screenCaptureToFilePath:fileName error:nil];
-}
-
-- (void)recorderButtonAction
-{
-    self.recorderButton.selected = !self.recorderButton.isSelected;
-
-    if (!self.recorderButton.isSelected) {
-        if (self.recorderButton.tag == 100) {
-            [[EMCallRecorderPlugin sharedInstance]   stopAudioRecordWithCompletion:^(NSString *aFilePath, EMError *aError) {
-                NSLog(@"录制语音路径：%@", aFilePath);
-            }];
-        } else if (self.recorderButton.tag == 200) {
-            NSString *path = [[EMCallRecorderPlugin sharedInstance] stopVideoRecording:nil];
-            NSLog(@"录制音视频路径：%@", path);
-        }
-    } else {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"录制" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"录制语音" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.recorderButton.tag = 100;
-            [[EMCallRecorderPlugin sharedInstance] startAudioRecordWithCompletion:^(EMError *aError) {
-                //
-            }];
-        }];
-        [alertController addAction:defaultAction];
-
-        UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"录制视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.recorderButton.tag = 200;
-            NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            NSString *filePath = [path stringByAppendingPathComponent:@"HyphenateSDK/video"];
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            BOOL isDir = YES;
-            if (![fileManager fileExistsAtPath:filePath isDirectory:&isDir]) {
-                [fileManager createDirectoryAtPath:filePath withIntermediateDirectories:YES attributes:nil error:nil];
-            }
-            [[EMCallRecorderPlugin sharedInstance] startVideoRecordingToFilePath:filePath error:nil];
-        }];
-        [alertController addAction:mixAction];
-
-        [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:nil]];
-
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-}
-#endif
 
 @end

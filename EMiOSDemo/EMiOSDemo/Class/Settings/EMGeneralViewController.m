@@ -66,7 +66,7 @@
             count = 3;
             break;
         case 5:
-            count = 2;
+            count = 3;
             break;
             
         default:
@@ -155,6 +155,9 @@
         } else if (row == 1) {
             cell.textLabel.text = @"邮件发送日志";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }else if (row == 2) {
+            cell.textLabel.text = @"导出日志到文件目录";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
     
@@ -223,6 +226,8 @@
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
             [self sendLogEmailAction];
+        } else if (row == 2) {
+            [self saveLogToDocument];
         }
     }
 }
@@ -401,5 +406,20 @@
     }];
 }
 
+- (void)saveLogToDocument {
+    __weak typeof(self) weakSelf = self;
+    [[EMClient sharedClient] getLogFilesPathWithCompletion:^(NSString *aPath, EMError *aError) {
+        if (!aPath) {
+            [EMAlertController showErrorAlert:@"日志获取失败"];
+            return ;
+        }
+        
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *toPath = [NSString stringWithFormat:@"%@/Documents/", NSHomeDirectory()];
+        [fm copyItemAtPath:aPath toPath:toPath error:nil];
+        
+        [EMAlertController showSuccessAlert:@"已将文件移动到沙箱"];
+    }];
+}
 
 @end

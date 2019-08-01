@@ -154,11 +154,7 @@
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"群组成员";
-            if ([self.group.memberList count] > 0) {
-                cell.detailTextLabel.text = @([self.group.memberList count]).stringValue;
-            } else {
-                cell.detailTextLabel.text = nil;
-            }
+            cell.detailTextLabel.text = @(self.group.occupantsCount - self.group.adminList.count - 1).stringValue;
         }
     }  else if (section == 2) {
         if (row == 0) {

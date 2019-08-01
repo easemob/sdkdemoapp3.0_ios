@@ -505,7 +505,9 @@
             completion:(void (^)(EMError *aError))aCompletion
 {
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].contactManager deleteContact:aContact isDeleteConversation:NO completion:^(NSString *aUsername, EMError *aError) {
+    [[EMClient sharedClient].contactManager deleteContact:aContact
+                                     isDeleteConversation:YES
+                                               completion:^(NSString *aUsername, EMError *aError) {
         [weakself hideHud];
         if (aError) {
             [EMAlertController showErrorAlert:@"删除好友失败"];

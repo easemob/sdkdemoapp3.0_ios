@@ -416,6 +416,7 @@
     if (!gIsInitializedSDK) {
         gIsInitializedSDK = YES;
         EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
+        
         [[EMClient sharedClient] initializeSDKWithOptions:options];
     }
     
