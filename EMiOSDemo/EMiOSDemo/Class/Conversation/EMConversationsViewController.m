@@ -14,6 +14,7 @@
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
 
+#define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 @interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
@@ -172,7 +173,21 @@
     NSInteger row = indexPath.row;
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
     cell.model = model;
-    
+    // 实现会话置顶
+    NSDictionary *ext = model.emModel.ext;
+    if (ext != nil) {
+        if ([ext objectForKey:@"topRowStatus"]) {
+            if ([[ext objectForKey:@"topRowStatus"] isEqualToString:@"offTopStatus"]) {
+                cell.backgroundColor = RGBCOLOR(237, 236, 237);
+            } else {
+                cell.backgroundColor = [UIColor whiteColor];
+            }
+        } else {
+            cell.backgroundColor = [UIColor whiteColor];
+        }
+    } else {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     return cell;
 }
 
@@ -193,17 +208,62 @@
     return YES;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    //在iOS8.0上，必须加上这个方法才能出发左划操作
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        NSInteger row = indexPath.row;
+//        EMConversationModel *model = [self.dataArray objectAtIndex:row];
+//        EMConversation *conversation = model.emModel;
+//        [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:YES completion:nil];
+//        [self.dataArray removeObjectAtIndex:row];
+//        [self.tableView reloadData];
+//    }
+//}
+
+// 实现会话置顶
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //在iOS8.0上，必须加上这个方法才能出发左划操作
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSInteger row = indexPath.row;
-        EMConversationModel *model = [self.dataArray objectAtIndex:row];
+    NSInteger row = indexPath.row;
+    EMConversationModel *model = [self.dataArray objectAtIndex:row];
+    UITableViewRowAction * deleteRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         EMConversation *conversation = model.emModel;
         [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:YES completion:nil];
         [self.dataArray removeObjectAtIndex:row];
+        EMConversationCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.backgroundColor = [UIColor whiteColor];
         [self.tableView reloadData];
+    }];
+    deleteRowAction.backgroundColor = [UIColor redColor];
+    
+    NSString *title = nil;
+    NSString *topStatus = nil;
+    NSDictionary *dict = model.emModel.ext;
+    if (dict != nil) {
+        if ([dict objectForKey:@"topRowStatus"]) {
+            if ([[dict objectForKey:@"topRowStatus"] isEqualToString:@"offTopStatus"]) {
+                title = @"取消置顶";
+                topStatus = @"onTopStatus";
+            } else {
+                title = @"置顶";
+                topStatus = @"offTopStatus";
+            }
+        } else {
+            title = @"置顶";
+            topStatus = @"offTopStatus";
+        }
+    } else {
+        title = @"置顶";
+        topStatus = @"offTopStatus";
     }
+    
+    UITableViewRowAction * topRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        NSString *timeSp = [NSString stringWithFormat:@"%lld", (long long)[[NSDate date] timeIntervalSince1970] * 1000];
+        model.emModel.ext = @{@"topRowStatus":topStatus,@"topTime":timeSp};
+        [self tableViewDidTriggerHeaderRefresh];
+    }];
+    topRowAction.backgroundColor = [UIColor blueColor];
+    return @[deleteRowAction,topRowAction];
 }
 
 #pragma mark - EMChatManagerDelegate
@@ -308,31 +368,48 @@
 
 - (void)_reSortedConversationModelsAndReloadView
 {
-    NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
-        EMMessage *message1 = [obj1.emModel latestMessage];
-        EMMessage *message2 = [obj2.emModel latestMessage];
-        if(message1.timestamp > message2.timestamp) {
-            return(NSComparisonResult)NSOrderedAscending;
-        } else {
-            return(NSComparisonResult)NSOrderedDescending;
-        }}];
-    [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:sorted];
-    [self.tableView reloadData];
-    
-    self.isNeedReload = NO;
+//    NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
+//        EMMessage *message1 = [obj1.emModel latestMessage];
+//        EMMessage *message2 = [obj2.emModel latestMessage];
+//        if(message1.timestamp > message2.timestamp) {
+//            return(NSComparisonResult)NSOrderedAscending;
+//        } else {
+//            return(NSComparisonResult)NSOrderedDescending;
+//        }}];
+//    [self.dataArray removeAllObjects];
+//    [self.dataArray addObjectsFromArray:sorted];
+//    [self.tableView reloadData];
+//
+//    self.isNeedReload = NO;
+    [self _loadAllConversationsFromDBWithIsShowHud:NO];
 }
 
+// 实现会话置顶
 - (void)_loadAllConversationsFromDBWithIsShowHud:(BOOL)aIsShowHUD
 {
     if (aIsShowHUD) {
         [self showHudInView:self.view hint:@"加载会话列表..."];
     }
-    
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableArray *topMuteArray = [NSMutableArray array];
+        NSMutableArray *defaultMuteArray = [NSMutableArray array];
+        NSMutableArray *sumMuteArray = [NSMutableArray array];
         NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
-        NSArray *sorted = [conversations sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation *obj2) {
+        for (EMConversation *con in conversations) {
+            NSLog(@"from:%@  to:%@", con.latestMessage.from, con.latestMessage.to);
+            if ([con.ext objectForKey:@"topRowStatus"]) {
+                if ([[con.ext objectForKey:@"topRowStatus"] isEqualToString:@"offTopStatus"]) {
+                    [topMuteArray addObject:con];
+                } else {
+                    [defaultMuteArray addObject:con];
+                }
+            } else {
+                [defaultMuteArray addObject:con];
+            }
+        }
+        
+        NSArray *defaultSorted = [defaultMuteArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation *obj2) {
             EMMessage *message1 = [obj1 latestMessage];
             EMMessage *message2 = [obj2 latestMessage];
             if(message1.timestamp > message2.timestamp) {
@@ -341,16 +418,39 @@
                 return(NSComparisonResult)NSOrderedDescending;
             }}];
         
-        [weakself.dataArray removeAllObjects];
+        if (topMuteArray.count != 0) {
+            if (topMuteArray.count > 1) {
+                NSArray *topSorted = [topMuteArray sortedArrayUsingComparator:^(EMConversation *obj1, EMConversation *obj2) {
+                    long long timestamp1 = [[obj1.ext objectForKey:@"topTime"] longLongValue];
+                    long long timestamp2 = [[obj2.ext objectForKey:@"topTime"] longLongValue];
+                    if(timestamp1 > timestamp2) {
+                        return(NSComparisonResult)NSOrderedDescending;
+                    } else {
+                        return(NSComparisonResult)NSOrderedAscending;
+                    }}];
+                
+                for (EMConversation *conversation in topSorted) {
+                    [sumMuteArray addObject:conversation];
+                }
+            } else {
+                for (EMConversation *conversation in topMuteArray) {
+                    [sumMuteArray addObject:conversation];
+                }
+            }
+        }
         
-        NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
+        for (EMConversation *conversation in defaultSorted) {
+            [sumMuteArray addObject:conversation];
+        }
+        NSArray *sumArray = [sumMuteArray copy];
+        [weakself.dataArray removeAllObjects];
+        NSArray *models = [EMConversationHelper modelsFromEMConversations:sumArray];
         [weakself.dataArray addObjectsFromArray:models];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (aIsShowHUD) {
                 [weakself hideHud];
             }
-            
             [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
             [weakself.tableView reloadData];
             weakself.isNeedReload = NO;

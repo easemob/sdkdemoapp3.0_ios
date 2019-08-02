@@ -162,7 +162,6 @@ static int kConversation_AtAll = 2;
     NSString *latestMessageTime = @"";
     EMMessage *lastMessage = [aConversation latestMessage];;
     if (lastMessage) {
-        double timeInterval = lastMessage.timestamp ;
         latestMessageTime = [EMDateHelper formattedTimeFromTimeInterval:lastMessage.timestamp];
     }
     return latestMessageTime;

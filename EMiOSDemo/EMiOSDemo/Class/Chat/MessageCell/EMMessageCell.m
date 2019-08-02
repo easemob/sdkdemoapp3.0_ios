@@ -220,10 +220,8 @@
     } else {
         self.nameLabel.text = model.emModel.from;
         if (model.type == EMMessageBodyTypeVoice) {
-            self.statusView.hidden = model.emModel.isReadAcked;
-        } else {
             self.statusView.hidden = [[model.emModel.ext objectForKey:@"isPlayed"] boolValue];
-        }
+        } 
     }
 }
 

@@ -8,7 +8,7 @@
       location = "group:../../emclient-ios.git/newSDK/HyphenateSDK.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:EMiOSDemo.xcodeproj">
+      location = "group:/Users/easemob-dn0164/Desktop/iOS-demo/sdkdemoapp3.0_ios/EMiOSDemo/EMiOSDemo.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
