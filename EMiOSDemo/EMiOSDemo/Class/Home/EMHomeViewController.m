@@ -11,6 +11,7 @@
 #import "EMConversationsViewController.h"
 #import "EMContactsViewController.h"
 #import "EMSettingsViewController.h"
+#import "EMRemindManager.h"
 
 #define kTabbarItemTag_Conversation 0
 #define kTabbarItemTag_Contact 1
@@ -214,11 +215,9 @@
         unreadCount += conversation.unreadMessagesCount;
     }
     
-    if (unreadCount > 0) {
-        self.conversationsController.tabBarItem.badgeValue = @(unreadCount).stringValue;
-    } else {
-        self.conversationsController.tabBarItem.badgeValue = nil;
-    }
+    NSString *unreadCountStr = unreadCount > 0 ? @(unreadCount).stringValue : nil;
+    self.conversationsController.tabBarItem.badgeValue = unreadCountStr;
+    [EMRemindManager updateApplicationIconBadgeNumber:unreadCount];
 }
 
 - (void)_loadTabBarItemsBadge
