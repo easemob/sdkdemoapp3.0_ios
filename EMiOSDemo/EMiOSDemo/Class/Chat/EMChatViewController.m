@@ -1593,6 +1593,10 @@
     NSMutableArray *formated = [[NSMutableArray alloc] init];
     for (int i = 0; i < [aMessages count]; i++) {
         EMMessage *msg = aMessages[i];
+        // cmd消息不展示
+        if(msg.body.type == EMMessageBodyTypeCmd) {
+            continue;
+        }
         if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
             [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
         } else if (msg.chatType == EMChatTypeGroupChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
