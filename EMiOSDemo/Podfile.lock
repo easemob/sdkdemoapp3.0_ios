@@ -21,7 +21,7 @@ DEPENDENCIES:
   - SDWebImage/GIF
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Bugly
     - FLAnimatedImage
     - Masonry
@@ -37,6 +37,6 @@ SPEC CHECKSUMS:
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
 
-PODFILE CHECKSUM: cb58bb0165627ec44ebf7b9a9c3c0a822d47d500
+PODFILE CHECKSUM: 7e8cd84b806d999a88cdd0a40cca331c57da39c7
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.8.0.beta.1

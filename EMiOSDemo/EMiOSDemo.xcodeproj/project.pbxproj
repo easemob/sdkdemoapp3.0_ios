@@ -2295,7 +2295,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = "___FULLUSERNAME___";
+				ORGANIZATIONNAME = ___FULLUSERNAME___;
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -2646,15 +2646,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 			);
