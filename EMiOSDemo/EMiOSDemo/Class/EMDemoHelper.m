@@ -17,6 +17,7 @@
 #import "EMGroupInfoViewController.h"
 #import "EMChatroomsViewController.h"
 #import "EMChatroomInfoViewController.h"
+#import "EMRemindManager.h"
 
 static EMDemoHelper *helper = nil;
 @implementation EMDemoHelper
@@ -139,27 +140,8 @@ static EMDemoHelper *helper = nil;
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    for (EMMessage *message in aMessages) {
-        BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
-
-        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-        if (needShowNotification) {
-#if !TARGET_IPHONE_SIMULATOR
-            switch (state) {
-                case UIApplicationStateActive:
-//                    [gMainController playSoundAndVibration];
-                    break;
-                case UIApplicationStateInactive:
-//                    [gMainController playSoundAndVibration];
-                    break;
-                case UIApplicationStateBackground:
-//                    [gMainController showNotificationWithMessage:message];
-                    break;
-                default:
-                    break;
-            }
-#endif
-        }
+    for (EMMessage *msg in aMessages) {
+        [EMRemindManager remindMessage:msg];
     }
 }
 

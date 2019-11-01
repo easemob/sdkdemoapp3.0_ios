@@ -475,9 +475,9 @@
 		3CDAFE69236C43E9009E38EE /* animate_00053.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDAFE29236C43E9009E38EE /* animate_00053.png */; };
 		3CDAFE6B236C47E4009E38EE /* pin-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDAFE6A236C47E4009E38EE /* pin-white.png */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
-		9075EBA3229811950031DEF5 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		90AE9446230D2CDC00A905E5 /* EMRemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AE9445230D2CDC00A905E5 /* EMRemindManager.m */; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
 		90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECE1930492B00121AEC /* AddressBook.framework */; };
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
@@ -1120,12 +1120,12 @@
 		3CDAFE29236C43E9009E38EE /* animate_00053.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00053.png; sourceTree = "<group>"; };
 		3CDAFE6A236C47E4009E38EE /* pin-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin-white.png"; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9075EBA6229811D70031DEF5 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../../RTC/webrtc-src/out/ios/WebRTC.framework"; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9091102B192EEA70008A48AA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		90AE9444230D2CDC00A905E5 /* EMRemindManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMRemindManager.h; sourceTree = "<group>"; };
+		90AE9445230D2CDC00A905E5 /* EMRemindManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRemindManager.m; sourceTree = "<group>"; };
 		90F1BECC1930492300121AEC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -1160,7 +1160,6 @@
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
-				9075EBA3229811950031DEF5 /* Hyphenate.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
@@ -1651,6 +1650,8 @@
 				3A45E04F2223A25100505786 /* EMColorDefine.h */,
 				3A45E04D2223A25100505786 /* EMDateHelper.h */,
 				3A45E0482223A25000505786 /* EMDateHelper.m */,
+				90AE9444230D2CDC00A905E5 /* EMRemindManager.h */,
+				90AE9445230D2CDC00A905E5 /* EMRemindManager.m */,
 				3A45E0502223A25100505786 /* EMGlobalVariables.h */,
 				3A45E0492223A25000505786 /* EMGlobalVariables.m */,
 				3A45E0452223A25000505786 /* EMRealtimeSearch.h */,
@@ -2286,7 +2287,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				9075EBA6229811D70031DEF5 /* WebRTC.framework */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -2305,7 +2305,6 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9075EB9A2297AB8D0031DEF5 /* Hyphenate.framework */,
 				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
 				3ACFA04E221168C000B16331 /* CoreServices.framework */,
 				3AB62A121D926375000776F0 /* libbz2.tbd */,
@@ -2827,6 +2826,7 @@
 				3A45E32D2223A44200505786 /* EMMsgRecallBubbleView.m in Sources */,
 				3A45E0232223A21B00505786 /* EMLoginViewController.m in Sources */,
 				3A45E40E2223A51300505786 /* EMNotificationCell.m in Sources */,
+				90AE9446230D2CDC00A905E5 /* EMRemindManager.m in Sources */,
 				3A45E2462223A3A100505786 /* EMAtGroupMembersViewController.m in Sources */,
 				3A45E0EA2223A2EB00505786 /* EMTextView.m in Sources */,
 				3A45E0DC2223A2CE00505786 /* PSTCollectionViewData.m in Sources */,
@@ -3068,7 +3068,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/EMiOSDemo",
-					"\"$(SRCROOT)/../../RTC/webrtc-src/out/ios\"",
+					"\"$(SRCROOT)/../../RTC/webrtc-src/out/ios64\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EMiOSDemo/EMiOSDemo-Prefix.pch";
