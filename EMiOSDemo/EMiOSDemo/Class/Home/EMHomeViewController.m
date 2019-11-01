@@ -133,14 +133,16 @@
     self.contactsController.tabBarItem = contItem;
     [self addChildViewController:self.contactsController];
     
+    UITabBarItem *readReceiptItem = [self _setupTabBarItemWithTitle:@"发现" imgName:@"icon-tab发现unselected" selectedImgName:@"icon-tab发现" tag:kTabbarItemTag_Settings];
+    
     self.settingsController = [[EMSettingsViewController alloc] init];
-    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"tabbar_settings_gray" selectedImgName:@"tabbar_settings_blue" tag:kTabbarItemTag_Settings];
+    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"我" imgName:@"icon-tab我unselected" selectedImgName:@"icon-tab我" tag:kTabbarItemTag_Settings];
     self.settingsController.tabBarItem = settingsItem;
     [self addChildViewController:self.settingsController];
     
     self.viewControllers = @[self.conversationsController, self.contactsController, self.settingsController];
     
-    [self.tabBar setItems:@[consItem, contItem, settingsItem]];
+    [self.tabBar setItems:@[consItem, contItem, readReceiptItem,settingsItem]];
     
     self.tabBar.selectedItem = consItem;
     [self tabBar:self.tabBar didSelectItem:consItem];

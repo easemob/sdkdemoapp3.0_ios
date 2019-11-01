@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) EMMessageType type;
 
+@property (nonatomic) BOOL isReadReceipt;
+
 @property (nonatomic) BOOL isPlaying;
 
 - (instancetype)initWithEMMessage:(EMMessage *)aMsg;

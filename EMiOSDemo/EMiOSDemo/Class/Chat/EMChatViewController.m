@@ -26,14 +26,14 @@
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 @property (nonatomic) BOOL isFirstLoadMsg;
 @property (nonatomic) BOOL isViewDidAppear;
 
 @property (nonatomic, strong) EMConversationModel *conversationModel;
-@property (nonatomic, strong) NSString *moreMsgId;
+@property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *titleDetailLabel;
@@ -247,14 +247,19 @@
 
 - (void)_setupChatBarMoreViews
 {
+    //语音
     NSString *path = [self _getAudioOrVideoPath];
     EMChatBarRecordAudioView *recordView = [[EMChatBarRecordAudioView alloc] initWithRecordPath:path];
     recordView.delegate = self;
     self.chatBar.recordAudioView = recordView;
-    
+    //表情
     EMChatBarEmoticonView *moreEmoticonView = [[EMChatBarEmoticonView alloc] init];
     moreEmoticonView.delegate = self;
     self.chatBar.moreEmoticonView = moreEmoticonView;
+    //更多
+    EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
+    moreFunction.delegate = self;
+    self.chatBar.moreFunctionView = moreFunction;
 }
 
 - (NSString *)_getAudioOrVideoPath
@@ -324,9 +329,7 @@
             cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
             cell.delegate = self;
         }
-        
         cell.model = model;
-        
         return cell;
     }
 }
@@ -526,35 +529,56 @@
 
 - (void)chatBarDidCallAction
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"实时通话类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    self.alertController = [UIAlertController alertControllerWithTitle:@"实时通话类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     __weak typeof(self) weakself = self;
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"语音通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"语音通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"视频通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"视频通话" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
         }]];
     } else {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"会议模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"会议模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"互动模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"互动模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLive), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
     }
     
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
     }]];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
+    [self presentViewController:self.alertController animated:YES completion:nil];
+}
+
+//阅读回执跳转
+- (void)chatBarMoreFunctionReadReceipt
+{
+    EMReadReceiptMsgViewController *readReceipt = [[EMReadReceiptMsgViewController alloc]init];
+    readReceipt.delegate = self;
+    readReceipt.modalPresentationStyle = 0;
+    //[self.navigationController pushViewController:readReceipt animated:NO];
+    [self presentViewController:readReceipt animated:NO completion:nil];
+}
+//阅读回执发送信息
+- (void)sendReadReceiptMsg:(NSString *)msg
+{
+    NSString *str = msg;
+    NSLog(@"\n%@",str);
+    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
+        [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
+    }else {
+        [self _sendTextAction:str ext:nil];
+    }
 }
 
 - (void)chatBarDidShowMoreViewAction
@@ -578,6 +602,10 @@
 {
     EMVoiceMessageBody *body = [[EMVoiceMessageBody alloc] initWithLocalPath:aPath displayName:@"audio"];
     body.duration = (int)aTimeLength;
+    if(body.duration < 1){
+        [self showHint:@"按键时间太短."];
+        return;
+    }
     [self _sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
@@ -605,6 +633,16 @@
 
 #pragma mark - EMMessageCellDelegate
 
+//阅读回执
+- (void)messageReadReceipt:(EMMessageCell *)aCell
+{
+    EMReadReceiptMsgViewController *readReceiptControl = [[EMReadReceiptMsgViewController alloc]initWithMessageCell:aCell];
+    readReceiptControl.modalPresentationStyle = 0;
+    //[self.navigationController pushViewController:readReceiptControl animated:NO];
+    [self presentViewController:readReceiptControl animated:NO completion:nil];
+    
+}
+
 - (void)messageCellDidSelected:(EMMessageCell *)aCell
 {
     if (aCell.model.type == EMMessageTypeImage) {
@@ -619,6 +657,8 @@
         [self _fileMessageCellDidSelected:aCell];
     } else if (aCell.model.type == EMMessageTypeExtCall) {
         [self _callMessageCellDidSelected:aCell];
+    } else if (aCell.model.type == EMMessageTypeText) {
+        
     }
 }
 
@@ -941,7 +981,7 @@
         [self.tableView reloadData];
     }
 }
-
+//　收到已读回执
 - (void)messagesDidRead:(NSArray *)aMessages
 {
     __weak typeof(self) weakself = self;
@@ -1044,7 +1084,7 @@
 }
 
 #pragma mark - EMChatroomManagerDelegate
-
+//有用户加入聊天室
 - (void)userDidJoinChatroom:(EMChatroom *)aChatroom
                        user:(NSString *)aUsername
 {
@@ -1298,7 +1338,7 @@
     
     return _recallMenuItem;
 }
-
+//删除消息
 - (void)deleteMenuItemAction:(UIMenuItem *)aItem
 {
     if (self.menuIndexPath == nil) {
@@ -1572,7 +1612,7 @@
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
 }
-
+//正在输入
 - (void)_sendEndTyping
 {
     self.isTyping = NO;
@@ -1591,9 +1631,11 @@
 - (NSArray *)_formatMessages:(NSArray<EMMessage *> *)aMessages
 {
     NSMutableArray *formated = [[NSMutableArray alloc] init];
+
     for (int i = 0; i < [aMessages count]; i++) {
         EMMessage *msg = aMessages[i];
-        if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
+        if (msg.chatType == EMChatTypeChat && msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
+            //
             [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
         } else if (msg.chatType == EMChatTypeGroupChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
         }
@@ -1644,6 +1686,14 @@
             block(aResult.list, aError);
          }];
     } else {
+        /*
+        *  从数据库获取指定数量的消息，取到的消息按时间排序，并且不包含参考的消息，如果参考消息的ID为空，则从最新消息取
+        *
+        *  @param aMessageId       参考消息的ID
+        *  @param count            获取的条数
+        *  @param aDirection       消息搜索方向
+        *  @param aCompletionBlock 完成的回调
+         */
         [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
     }
 }
@@ -1662,7 +1712,7 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+//删除该会话所有消息，同时清除内存和数据库中的消息
 - (void)deleteAllMessageAction
 {
     EMError *error = nil;
@@ -1681,7 +1731,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_INFO_PUSHVIEWCONTROLLER object:@{NOTIF_ID:self.conversationModel.emModel.conversationId, NOTIF_NAVICONTROLLER:self.navigationController}];
     }
 }
-
+//发送消息体
 - (void)_sendMessageWithBody:(EMMessageBody *)aBody
                          ext:(NSDictionary *)aExt
                     isUpload:(BOOL)aIsUpload

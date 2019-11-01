@@ -27,7 +27,11 @@ static DemoCallManager *callManager = nil;
 
 @property (strong, nonatomic) NSTimer *timeoutTimer;
 
+@property (strong, nonatomic) NSTimer *offlineTimer;
+
 @property (nonatomic, strong) CTCallCenter *callCenter;
+
+@property (nonatomic, strong) NSString *chatter;
 
 @end
 
@@ -110,17 +114,28 @@ static DemoCallManager *callManager = nil;
 
 #pragma mark - Call Timeout Before Answered
 
-- (void)_timeoutBeforeCallAnswered
+- (void)_timeoutBeforeCallAnswered:(NSTimer *)timer
 {
+    NSString *reason = (NSString *)[timer userInfo]; //必须放在本timer关闭之前使用，不然会出现野指针错误
     [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = nil;
+    if(reason) {
+        alertView = [[UIAlertView alloc] initWithTitle:nil message:reason delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    }else {
+        alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    }
+    NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
+    NSString *fromStr = [EMClient sharedClient].currentUsername;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:_chatter from:fromStr to:_chatter body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     [alertView show];
 }
 
 - (void)_startCallTimeoutTimer
 {
-    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:50 target:self selector:@selector(_timeoutBeforeCallAnswered) userInfo:nil repeats:NO];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:nil repeats:NO];
 }
 
 - (void)_stopCallTimeoutTimer
@@ -137,6 +152,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)callDidReceive:(EMCallSession *)aSession
 {
+    
     if (!aSession || [aSession.callId length] == 0) {
         return ;
     }
@@ -162,8 +178,19 @@ static DemoCallManager *callManager = nil;
             if (self.currentController) {
                 self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
                 UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+                id nextResponder = nil;
                 UIViewController *rootViewController = window.rootViewController;
-                [rootViewController presentViewController:self.currentController animated:NO completion:nil];
+                if(rootViewController.presentedViewController){
+                    nextResponder = rootViewController.presentedViewController;
+                }else{
+                    UIView *frontView = [[window subviews] objectAtIndex:0];
+                    nextResponder = [frontView nextResponder];
+                }
+                if([nextResponder isKindOfClass:[UINavigationController class]]){
+                    UIViewController *nav = (UIViewController *)nextResponder;
+                    nextResponder = nav.childViewControllers.lastObject;
+                }
+                [nextResponder presentViewController:self.currentController animated:NO completion:nil];
             }
         });
     }
@@ -254,13 +281,19 @@ static DemoCallManager *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
+    /*
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
     message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];*/
     
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+    //开关打开发消息并一直呼，否则挂断发消息
+    if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
+        [self _stopCallTimeoutTimer];
+        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
+    }
 }
 
 #pragma mark - NSNotification
@@ -278,9 +311,9 @@ static DemoCallManager *callManager = nil;
     }
     
     EMCallType type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
-    NSString *chatter = [notify.object valueForKey:CALL_CHATTER] ;
+    _chatter = [notify.object valueForKey:CALL_CHATTER] ;
     if (type == EMCallTypeVideo) {
-        [self _makeCallWithUsername:chatter type:type isCustomVideoData:NO];
+        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
 //        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 //
 //        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -297,7 +330,7 @@ static DemoCallManager *callManager = nil;
 //
 //        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
     } else {
-        [self _makeCallWithUsername:chatter type:type isCustomVideoData:NO];
+        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
     }
 }
 
@@ -341,7 +374,6 @@ static DemoCallManager *callManager = nil;
                     }
                 });
             }
-            
             [weakSelf _startCallTimeoutTimer];
         }
         else {
@@ -351,7 +383,6 @@ static DemoCallManager *callManager = nil;
     };
     
     gIsCalling = YES;
-    
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.enableCustomizeVideoData = aIsCustomVideo;
     options.isSendPushIfOffline = YES;

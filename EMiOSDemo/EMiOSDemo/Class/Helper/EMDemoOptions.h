@@ -31,6 +31,8 @@ static NSString *kOptions_LoggedinPassword = @"LoggedinPassword";
 static NSString *kOptions_ChatTyping = @"ChatTyping";
 static NSString *kOptions_AutoDeliveryAck = @"AutoDeliveryAck";
 
+static NSString *kOptions_OfflineHangup = @"OfflineHangup";
+
 static NSString *kOptions_ShowCallInfo = @"ShowCallInfo";
 static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 
@@ -71,6 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL isChatTyping;
 @property (nonatomic) BOOL isAutoDeliveryAck;
+
+@property (nonatomic) BOOL isOfflineHangup;
 
 @property (nonatomic) BOOL isShowCallInfo;
 @property (nonatomic) BOOL isUseBackCamera;

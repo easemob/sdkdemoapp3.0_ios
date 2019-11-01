@@ -83,8 +83,8 @@
 
 - (void)_setupButtonsView
 {
-//    NSInteger count = 7;
-    NSInteger count = 6;
+    NSInteger count = 7;
+    //NSInteger count = 6;
     CGFloat width = [UIScreen mainScreen].bounds.size.width / count;
     
     self.buttonArray = [[NSMutableArray alloc] init];
@@ -163,23 +163,23 @@
         make.top.equalTo(self.buttonsView);
         make.left.equalTo(adressButton.mas_right);
         make.bottom.equalTo(adressButton);
-//        make.width.mas_equalTo(width);
-        make.right.equalTo(self.buttonsView);
+        make.width.mas_equalTo(width);
+        //make.right.equalTo(self.buttonsView);
     }];
     [self.buttonArray addObject:callButton];
     
-//    UIButton *moreButton = [[UIButton alloc] init];
-//    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend"] forState:UIControlStateNormal];
-//    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend_blue"] forState:UIControlStateSelected];
-//    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.buttonsView addSubview:moreButton];
-//    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.buttonsView);
-//        make.left.equalTo(callButton.mas_right);
-//        make.bottom.equalTo(callButton);
-//        make.right.equalTo(self.buttonsView);
-//    }];
-//    [self.buttonArray addObject:moreButton];
+    UIButton *moreButton = [[UIButton alloc] init];
+    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend"] forState:UIControlStateNormal];
+    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend_blue"] forState:UIControlStateSelected];
+    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonsView addSubview:moreButton];
+    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.buttonsView);
+        make.left.equalTo(callButton.mas_right);
+        make.bottom.equalTo(callButton);
+        make.right.equalTo(self.buttonsView);
+    }];
+    [self.buttonArray addObject:moreButton];
 }
 
 #pragma mark - UITextViewDelegate
@@ -371,6 +371,27 @@
         }
     }
 }
+//更多
+- (void)moreButtonAction:(UIButton *)aButton
+{
+    [self _buttonAction:aButton];
+    if (aButton.selected){
+        if(self.moreFunctionView) {
+            self.currentMoreView = self.moreFunctionView;
+            [self addSubview:self.moreFunctionView];
+            [self.moreFunctionView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self);
+                make.right.equalTo(self);
+                make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
+                make.height.mas_equalTo(@150);
+            }];
+            [self _remakeButtonsViewConstraints];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidShowMoreViewAction)]) {
+                [self.delegate chatBarDidShowMoreViewAction];
+            }
+        }
+    }
+}
 
 - (void)callButtonAction:(UIButton *)aButton
 {
@@ -378,19 +399,6 @@
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidCallAction)]) {
         [self.delegate chatBarDidCallAction];
-    }
-}
-
-- (void)moreButtonAction:(UIButton *)aButton
-{
-    aButton.selected = !aButton.selected;
-    if (self.currentMoreView) {
-        [self.currentMoreView removeFromSuperview];
-    }
-
-    if (aButton.selected) {
-        self.selectedButton.selected = NO;
-        self.selectedButton = aButton;
     }
 }
 
