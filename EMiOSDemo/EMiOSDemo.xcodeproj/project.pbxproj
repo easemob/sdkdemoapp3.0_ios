@@ -2278,6 +2278,7 @@
 				90911022192EEA70008A48AA /* Resources */,
 				50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */,
 				9075EBA5229811950031DEF5 /* Embed Frameworks */,
+				82A54C8C05C8D07943FAE83B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2657,6 +2658,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		82A54C8C05C8D07943FAE83B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
+				"${PODS_ROOT}/Hyphenate/iOS_Pods_IMFullSDK_V3.6.1/Hyphenate.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A953713D7161DE906A0EF1EF /* [CP] Check Pods Manifest.lock */ = {
