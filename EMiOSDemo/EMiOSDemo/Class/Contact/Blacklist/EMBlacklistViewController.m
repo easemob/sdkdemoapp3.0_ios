@@ -71,7 +71,7 @@
         if (section == 0) {
             count = 1;
         } else {
-            count = [self.dataArray[section - 1] count];
+            count = [(NSArray *)self.dataArray[section - 1] count];
         }
     } else {
         count = [self.searchResults count];
@@ -190,7 +190,7 @@
     NSMutableArray *existTitles = [NSMutableArray array];
     //section数组为空的title过滤掉，不显示
     for (int i = 0; i < [self.sectionTitles count]; i++) {
-        if ([self.dataArray[i] count] > 0) {
+        if ([((NSArray *)self.dataArray[i]) count] > 0) {
             [existTitles addObject:[self.sectionTitles objectAtIndex:i]];
         }
     }

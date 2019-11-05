@@ -30,8 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDirection:(EMMessageDirection)aDirection
                              type:(EMMessageType)aType;
 
-@property (nonatomic, strong) UIButton *readReceiptBtn;//阅读回执按钮
-
 @end
 
 
@@ -44,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)messageCellDidResend:(EMMessageModel *)aModel;
 
-- (void)messageReadReceipt:(EMMessageCell *)aCell;
+- (void)messageReadReceiptDetil:(EMMessageCell *)aCell;
 
 @end
 

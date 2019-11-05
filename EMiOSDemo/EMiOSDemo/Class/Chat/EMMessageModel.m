@@ -16,7 +16,8 @@
     if (self) {
         _emModel = aMsg;
         _direction = aMsg.direction;
-        _isReadReceipt = false;
+        //_readReceiptCount = aMsg
+        //_isReadReceipt = false;
         if (aMsg.body.type == EMMessageBodyTypeText) {
             if ([aMsg.ext objectForKey:MSG_EXT_GIF]) {
                 _type = EMMessageTypeExtGif;
@@ -33,9 +34,14 @@
                     _type = EMMessageTypeText;
                 }
             }
+            if (aMsg.isNeedGroupAck) {
+                NSLog(@"\ncount:  %d",aMsg.groupAckCount);
+                _readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d）",aMsg.groupAckCount];
+            }
+            /*
             if ([aMsg.ext objectForKey:MSG_EXT_READ_RECEIPT]){ //阅读回执
                 _isReadReceipt = true;
-            }
+            }*/
         } else {
             _type = (EMMessageType)aMsg.body.type;
         }

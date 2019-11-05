@@ -29,6 +29,7 @@
 @property (nonatomic, strong) EMAvatarNameCell *addMemberCell;
 @property (nonatomic, strong) UITableViewCell *leaveCell;
 
+
 @end
 
 @implementation EMGroupInfoViewController

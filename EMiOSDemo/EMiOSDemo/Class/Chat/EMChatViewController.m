@@ -18,6 +18,7 @@
 #import "EMAudioPlayerHelper.h"
 #import "EMConversationHelper.h"
 #import "EMMessageModel.h"
+#import "EMReadReceiptMemberModel.h"
 
 #import "EMChatBar.h"
 #import "EMMessageCell.h"
@@ -26,9 +27,10 @@
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,IEMChatManager>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
+
 @property (nonatomic) BOOL isFirstLoadMsg;
 @property (nonatomic) BOOL isViewDidAppear;
 
@@ -40,6 +42,11 @@
 
 @property (nonatomic, strong) EMChatBar *chatBar;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+
+@property (nonatomic, strong) EMGroup *group;
+//阅读回执
+@property (nonatomic, strong) EMReadReceiptMsgViewController *readReceiptControl;
+
 
 //长按操作栏
 @property (strong, nonatomic) NSIndexPath *menuIndexPath;
@@ -329,6 +336,7 @@
             cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
             cell.delegate = self;
         }
+
         cell.model = model;
         return cell;
     }
@@ -563,11 +571,11 @@
 //阅读回执跳转
 - (void)chatBarMoreFunctionReadReceipt
 {
-    EMReadReceiptMsgViewController *readReceipt = [[EMReadReceiptMsgViewController alloc]init];
-    readReceipt.delegate = self;
-    readReceipt.modalPresentationStyle = 0;
+    self.readReceiptControl = [[EMReadReceiptMsgViewController alloc]init];
+    self.readReceiptControl.delegate = self;
+    self.readReceiptControl.modalPresentationStyle = 0;
     //[self.navigationController pushViewController:readReceipt animated:NO];
-    [self presentViewController:readReceipt animated:NO completion:nil];
+    [self presentViewController:self.readReceiptControl animated:NO completion:nil];
 }
 //阅读回执发送信息
 - (void)sendReadReceiptMsg:(NSString *)msg
@@ -575,7 +583,20 @@
     NSString *str = msg;
     NSLog(@"\n%@",str);
     if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
-        [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
+        [[EMClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.conversationModel.emModel.conversationId completion:^(EMGroup *aGroup, EMError *aError) {
+            NSLog(@"\n -------- sendError:   %@",aError);
+            if (!aError) {
+                self.group = aGroup;
+                //是群主才可以发送阅读回执信息
+                if (self.group.permissionType == EMGroupPermissionTypeOwner) {
+                    [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
+                } else {
+                    [self _sendTextAction:str ext:nil];
+                }
+            } else {
+                [EMAlertController showErrorAlert:@"获取群组失败"];
+            }
+        }];
     }else {
         [self _sendTextAction:str ext:nil];
     }
@@ -633,13 +654,13 @@
 
 #pragma mark - EMMessageCellDelegate
 
-//阅读回执
-- (void)messageReadReceipt:(EMMessageCell *)aCell
+//阅读回执详情
+- (void)messageReadReceiptDetil:(EMMessageCell *)aCell
 {
-    EMReadReceiptMsgViewController *readReceiptControl = [[EMReadReceiptMsgViewController alloc]initWithMessageCell:aCell];
-    readReceiptControl.modalPresentationStyle = 0;
+    self.readReceiptControl = [[EMReadReceiptMsgViewController alloc]initWithMessageCell:aCell groupId:self.conversationModel.emModel.conversationId];
+    self.readReceiptControl.modalPresentationStyle = 0;
     //[self.navigationController pushViewController:readReceiptControl animated:NO];
-    [self presentViewController:readReceiptControl animated:NO completion:nil];
+    [self presentViewController:self.readReceiptControl animated:NO completion:nil];
     
 }
 
@@ -926,7 +947,14 @@
             if (![msg.conversationId isEqualToString:conId]) {
                 continue;
             }
-            
+            if (msg.isNeedGroupAck && !msg.isReadAcked) {
+                [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(EMError *error) {
+                    if (error) {
+                        NSLog(@"\n ------ error   %@",error.errorDescription);
+                    }
+                }];
+                //msg.isReadAcked = YES;
+            }
             if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
                 [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
             }
@@ -981,6 +1009,63 @@
         [self.tableView reloadData];
     }
 }
+//为了从home会话列表切进来触发 群组阅读回执 和 消息已读回执
+- (void)sendDidReadReceipt
+{
+    __weak typeof(self) weakself = self;
+    NSString *conId = weakself.conversationModel.emModel.conversationId;
+    void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
+        if (!aError && [aMessages count]) {
+            for (int i = 0; i < [aMessages count]; i++) {
+                   EMMessage *msg = aMessages[i];
+                   if (![msg.conversationId isEqualToString:conId]) {
+                       continue;
+                   }
+                   if (msg.isNeedGroupAck && !msg.isReadAcked) {
+                       [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(EMError *error) {
+                           if (error) {
+                               NSLog(@"\n ------ error   %@",error.errorDescription);
+                           }
+                       }];
+                       //msg.isReadAcked = YES;
+                   }
+                   if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
+                       [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+                   }
+                   [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
+               }
+        }
+    };
+    
+    [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:self.conversationModel.emModel.unreadMessagesCount searchDirection:EMMessageSearchDirectionUp completion:block];
+    
+}
+
+//收到群消息已读回执
+- (void)groupMessageDidRead:(EMMessage *)aMessage groupAcks:(NSArray *)aGroupAcks
+{
+
+    EMMessageModel *msgModel;
+    EMGroupMessageAck *msgAck = aGroupAcks[0];
+    for (int i=0; i<[self.dataArray count]; i++) {
+        if([self.dataArray[i] isKindOfClass:[EMMessageModel class]]){
+            msgModel = (EMMessageModel *)self.dataArray[i];
+        }else{
+            continue;
+        }
+        if([msgModel.emModel.messageId isEqualToString:msgAck.messageId]){
+            msgModel.readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d)",msgModel.emModel.groupAckCount];
+            [self.dataArray setObject:msgModel atIndexedSubscript:i];
+            __weak typeof(self) weakself = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.tableView reloadData];
+                [weakself _scrollToBottomRow];
+            });
+            break;
+        }
+    }
+}
+
 //　收到已读回执
 - (void)messagesDidRead:(NSArray *)aMessages
 {
@@ -1696,6 +1781,7 @@
          */
         [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
     }
+    [self sendDidReadReceipt];
 }
 
 #pragma mark - Action
@@ -1744,6 +1830,12 @@
     NSString *from = [[EMClient sharedClient] currentUsername];
     NSString *to = self.conversationModel.emModel.conversationId;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:aBody ext:aExt];
+    
+    //是否需要发送阅读回执
+    if([aExt objectForKey:MSG_EXT_READ_RECEIPT]) {
+        message.isNeedGroupAck = YES;
+    }
+    
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
@@ -1753,7 +1845,7 @@
     dispatch_async(self.msgQueue, ^{
         NSArray *formated = [weakself _formatMessages:@[message]];
         [weakself.dataArray addObjectsFromArray:formated];
-        
+       
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.tableView reloadData];
             [weakself _scrollToBottomRow];

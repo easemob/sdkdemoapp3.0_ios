@@ -16,7 +16,6 @@
 #import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
-#import "EMChatViewController.h"
 
 static DemoCallManager *callManager = nil;
 
