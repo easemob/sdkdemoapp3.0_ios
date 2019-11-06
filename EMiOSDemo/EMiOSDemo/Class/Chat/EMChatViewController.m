@@ -657,7 +657,7 @@
 //阅读回执详情
 - (void)messageReadReceiptDetil:(EMMessageCell *)aCell
 {
-    self.readReceiptControl = [[EMReadReceiptMsgViewController alloc]initWithMessageCell:aCell groupId:self.conversationModel.emModel.conversationId];
+    self.readReceiptControl = [[EMReadReceiptMsgViewController alloc] initWithMessageCell:aCell groupId:self.conversationModel.emModel.conversationId];
     self.readReceiptControl.modalPresentationStyle = 0;
     //[self.navigationController pushViewController:readReceiptControl animated:NO];
     [self presentViewController:self.readReceiptControl animated:NO completion:nil];
