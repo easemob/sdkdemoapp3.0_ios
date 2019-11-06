@@ -1027,9 +1027,8 @@
                                NSLog(@"\n ------ error   %@",error.errorDescription);
                            }
                        }];
-                       //msg.isReadAcked = YES;
                    }
-                   if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
+                   if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO] && (weakself.conversationModel.emModel.type == EMConversationTypeChat)) {
                        [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
                    }
                    [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
