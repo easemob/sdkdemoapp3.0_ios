@@ -16,6 +16,7 @@
 #import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
+#import "EMChatViewController.h"
 
 static DemoCallManager *callManager = nil;
 
@@ -32,6 +33,8 @@ static DemoCallManager *callManager = nil;
 @property (nonatomic, strong) CTCallCenter *callCenter;
 
 @property (nonatomic, strong) NSString *chatter;
+
+@property (nonatomic, strong) UIAlertController *alertView;
 
 @end
 
@@ -90,12 +93,14 @@ static DemoCallManager *callManager = nil;
         options.videoResolution = EMCallVideoResolution640_480;
     }
     
-    // dujiepeng    
+    // dujiepeng
     options.maxVideoKbps = 200;
     options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeAlertView:) name:@"didAlert" object:nil];
     
 //    __weak typeof(self) weakSelf = self;
 //    self.callCenter = [[CTCallCenter alloc] init];
@@ -177,10 +182,27 @@ static DemoCallManager *callManager = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentController) {
                 self.currentController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-                UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-                id nextResponder = nil;
-                UIViewController *rootViewController = window.rootViewController;
-                if(rootViewController.presentedViewController){
+                
+                if(self.alertView) {
+                    [self.alertView dismissViewControllerAnimated:NO completion:nil];
+                    self.alertView = nil;
+                }
+                
+                UIViewController *rootViewController = [[UIApplication sharedApplication].delegate window].rootViewController;
+                //id nextResponder = nil;
+                
+                UIViewController *parent = [[UIViewController alloc]init];
+                parent = rootViewController;
+                /*
+                while ((parent = rootViewController.presentedViewController) != nil ) {
+                    rootViewController = parent;
+                }
+                
+                while ([rootViewController isKindOfClass:[UINavigationController class]]) {
+                    rootViewController = [(UINavigationController *)rootViewController topViewController];
+                }
+                
+                /*if(rootViewController.presentedViewController){
                     nextResponder = rootViewController.presentedViewController;
                 }else{
                     UIView *frontView = [[window subviews] objectAtIndex:0];
@@ -189,11 +211,18 @@ static DemoCallManager *callManager = nil;
                 if([nextResponder isKindOfClass:[UINavigationController class]]){
                     UIViewController *nav = (UIViewController *)nextResponder;
                     nextResponder = nav.childViewControllers.lastObject;
-                }
-                [nextResponder presentViewController:self.currentController animated:NO completion:nil];
+                }*/
+                
+                self.currentController.modalPresentationStyle = 0;
+
+                [rootViewController presentViewController:self.currentController animated:NO completion:nil];
             }
         });
     }
+}
+
+- (void)closeAlertView:(NSNotification*)notify {
+    self.alertView =  (UIAlertController *)[notify.object valueForKey:@"alert"];
 }
 
 - (void)callDidConnect:(EMCallSession *)aSession
@@ -370,6 +399,7 @@ static DemoCallManager *callManager = nil;
                     if (strongSelf.currentController) {
                         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
                         UIViewController *rootViewController = window.rootViewController;
+                        strongSelf.currentController.modalPresentationStyle = 0;
                         [rootViewController presentViewController:strongSelf.currentController animated:NO completion:nil];
                     }
                 });

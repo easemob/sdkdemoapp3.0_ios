@@ -27,7 +27,7 @@
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,IEMChatManager>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 
@@ -733,7 +733,7 @@
             [EMAlertController showErrorAlert:@"下载原图失败"];
         } else {
             if (message.direction == EMMessageDirectionReceive && !message.isReadAcked) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
+                [[EMClient sharedClient].chatManager sendMessageReadAck:message.messageId toUser:message.conversationId completion:nil];
             }
             
             NSString *localPath = [(EMImageMessageBody *)message.body localPath];
@@ -781,11 +781,7 @@
         }
         
         if (!aModel.emModel.isReadAcked) {
-            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel
-                                                         completion:^(EMMessage *aMessage, EMError *aError)
-            {
-            
-            }];
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel.messageId toUser:aModel.emModel.conversationId completion:nil];
         }
         
         aModel.isPlaying = YES;
@@ -865,7 +861,8 @@
                 [EMAlertController showErrorAlert:@"下载视频失败"];
             } else {
                 if (!message.isReadAcked) {
-                    [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
+                    [[EMClient sharedClient].chatManager sendMessageReadAck:message.messageId toUser:message.conversationId completion:nil];
+                    
                 }
                 playBlock([(EMVideoMessageBody*)message.body localPath]);
             }
@@ -922,8 +919,6 @@
 - (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
                           isMarkRead:(BOOL)aIsMarkRead
 {
-    // dujiepeng
-    return YES;
     if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
         return NO;
     }
@@ -953,10 +948,9 @@
                         NSLog(@"\n ------ error   %@",error.errorDescription);
                     }
                 }];
-                //msg.isReadAcked = YES;
             }
             if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+                [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
             }
             [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
             [msgArray addObject:msg];
@@ -1015,6 +1009,7 @@
     __weak typeof(self) weakself = self;
     NSString *conId = weakself.conversationModel.emModel.conversationId;
     void (^block)(NSArray *aMessages, EMError *aError) = ^(NSArray *aMessages, EMError *aError) {
+        NSLog(@"\n-------unread:  %d     messageCount:    %lu     msgid:    %@",self.conversationModel.emModel.unreadMessagesCount,(unsigned long)[aMessages count],self.moreMsgId);
         if (!aError && [aMessages count]) {
             for (int i = 0; i < [aMessages count]; i++) {
                    EMMessage *msg = aMessages[i];
@@ -1029,9 +1024,9 @@
                        }];
                    }
                    if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO] && (weakself.conversationModel.emModel.type == EMConversationTypeChat)) {
-                       [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+                       [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
+                       [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
                    }
-                   [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
                }
         }
     };
@@ -1054,6 +1049,8 @@
         }
         if([msgModel.emModel.messageId isEqualToString:msgAck.messageId]){
             msgModel.readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d)",msgModel.emModel.groupAckCount];
+            msgModel.emModel.isReadAcked = YES;
+            [[EMClient sharedClient].chatManager sendMessageReadAck:msgModel.emModel.messageId toUser:msgModel.emModel.conversationId completion:nil];
             [self.dataArray setObject:msgModel atIndexedSubscript:i];
             __weak typeof(self) weakself = self;
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1720,7 +1717,7 @@
         EMMessage *msg = aMessages[i];
         if (msg.chatType == EMChatTypeChat && msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
             //
-            [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+            [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
         } else if (msg.chatType == EMChatTypeGroupChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
         }
         
@@ -1779,8 +1776,10 @@
         *  @param aCompletionBlock 完成的回调
          */
         [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
+        if(self.conversationModel.emModel.unreadMessagesCount > 0){
+            [self sendDidReadReceipt];
+        }
     }
-    [self sendDidReadReceipt];
 }
 
 #pragma mark - Action

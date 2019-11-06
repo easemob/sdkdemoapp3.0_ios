@@ -357,7 +357,7 @@
         
         [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }]];
-        
+        alertController.modalPresentationStyle = 0;
         [self presentViewController:alertController animated:YES completion:nil];
     } else {
         EMQRCodeViewController *controller = [[EMQRCodeViewController alloc] init];
@@ -380,6 +380,7 @@
                 [weakself.pswdField becomeFirstResponder];
             }
         }];
+        controller.modalPresentationStyle = 0;
         [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
 }
