@@ -194,7 +194,7 @@
         return 5;
     }
     
-    return [self.dataArray[section - 1] count];
+    return [(NSArray *)(self.dataArray[section - 1]) count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

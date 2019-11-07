@@ -33,6 +33,8 @@ static EMDemoOptions *sharedOptions = nil;
         self.isChatTyping = NO;
         self.isAutoDeliveryAck = NO;
         
+        self.isOfflineHangup = NO;
+        
         self.isShowCallInfo = NO;
         self.isUseBackCamera = NO;
         
@@ -73,6 +75,8 @@ static EMDemoOptions *sharedOptions = nil;
         self.isChatTyping = [aDecoder decodeBoolForKey:kOptions_ChatTyping];
         self.isAutoDeliveryAck = [aDecoder decodeBoolForKey:kOptions_AutoDeliveryAck];
         
+        self.isOfflineHangup = [aDecoder decodeBoolForKey:kOptions_OfflineHangup];
+        
         self.isShowCallInfo = [aDecoder decodeBoolForKey:kOptions_ShowCallInfo];
         self.isUseBackCamera = [aDecoder decodeBoolForKey:kOptions_UseBackCamera];
 
@@ -107,6 +111,8 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.isChatTyping forKey:kOptions_ChatTyping];
     [aCoder encodeBool:self.isAutoDeliveryAck forKey:kOptions_AutoDeliveryAck];
     
+    [aCoder encodeBool:self.isOfflineHangup forKey:kOptions_OfflineHangup];
+    
     [aCoder encodeBool:self.isShowCallInfo forKey:kOptions_ShowCallInfo];
     [aCoder encodeBool:self.isUseBackCamera forKey:kOptions_UseBackCamera];
     
@@ -135,6 +141,7 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.loggedInPassword = self.loggedInPassword;
     retModel.isChatTyping = self.isChatTyping;
     retModel.isAutoDeliveryAck = self.isAutoDeliveryAck;
+    retModel.isOfflineHangup = self.isOfflineHangup;
     retModel.isShowCallInfo = self.isShowCallInfo;
     retModel.isUseBackCamera = self.isUseBackCamera;
     retModel.willRecord = self.willRecord;

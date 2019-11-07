@@ -91,8 +91,7 @@
     return (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) ? YES : NO;
 }
 
-- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
     
     __weak typeof(self) weakself = self;
@@ -110,7 +109,6 @@
         [weakself _muteAdmin:userName];
     }];
     muteAction.backgroundColor = [UIColor colorWithRed: 116 / 255.0 green: 134 / 255.0 blue: 147 / 255.0 alpha:1.0];
-    
     if (self.group.permissionType == EMGroupPermissionTypeOwner) {
         UITableViewRowAction *adminAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"升权" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
             [weakself _memberToAdmin:userName];
