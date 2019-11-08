@@ -43,7 +43,7 @@
     self.answerButton.enabled = NO;
     self.callStatus = self.callSession.status;
     [self.waitImgView startAnimating];
-    
+    [self floatingView];//初始化视频小窗
     //监测耳机状态，如果是插入耳机状态，不显示扬声器按钮
     self.speakerButton.hidden = isHeadphone();
 }
@@ -187,6 +187,7 @@
 
 - (void)_updateFloatingViewWithStreamingStatus:(EMCallStreamingStatus)aStatus
 {
+    //空值，所以未初始化之前不会有任何内容，即就是不会设置上静音图标
     if (!_floatingView) {
         return;
     }
@@ -255,6 +256,7 @@
     
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIViewController *rootViewController = window.rootViewController;
+    self.modalPresentationStyle = 0;
     [rootViewController presentViewController:self animated:NO completion:nil];
 }
 
@@ -350,7 +352,7 @@
 }
 
 #pragma mark - Action
-
+//点击麦克风
 - (void)microphoneButtonAction
 {
     self.microphoneButton.selected = !self.microphoneButton.selected;
@@ -369,7 +371,7 @@
 - (void)minimizeAction
 {
 }
-
+//1v1挂断触发事件
 - (void)hangupAction
 {
     [self clearDataAndView];

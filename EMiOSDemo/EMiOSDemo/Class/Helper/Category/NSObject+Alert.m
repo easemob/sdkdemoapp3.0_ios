@@ -17,6 +17,7 @@
     
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIViewController *rootViewController = window.rootViewController;
+    aAlert.modalPresentationStyle = 0;
     [rootViewController presentViewController:aAlert animated:YES completion:nil];
 }
 

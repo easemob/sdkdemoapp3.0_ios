@@ -45,6 +45,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"o(TωT)o" message:aMsg preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:okAction];
+    alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

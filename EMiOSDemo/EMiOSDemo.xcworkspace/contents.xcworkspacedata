@@ -5,18 +5,6 @@
       location = "group:EMiOSDemo.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../emclient-ios/newSDK/HyphenateSDK.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../rtc-ios/rtcsdk/RtcSDK.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../RTC/webrtc-src/out/ios/products.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../emclient-linux/ios_build/build/ioseasemob.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

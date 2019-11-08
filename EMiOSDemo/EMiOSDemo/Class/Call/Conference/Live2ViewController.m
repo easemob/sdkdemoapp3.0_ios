@@ -18,7 +18,7 @@
 @end
 
 @implementation Live2ViewController
-
+//加入会议者
 - (instancetype)initWithJoinConfId:(NSString *)aConfId
                           password:(NSString *)aPassword
                              admin:(NSString *)aAdmin
@@ -148,7 +148,7 @@
         [self _joinLive];
     }
 }
-
+//创建直播房间
 - (void)_createLive
 {
     __weak typeof(self) weakself = self;
@@ -184,10 +184,10 @@
             }
         });
     };
-    
+    //创建并加入房间
     [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMConferenceTypeLive password:self.password record:[EMDemoOptions sharedOptions].willRecord mergeStream:[EMDemoOptions sharedOptions].willMergeStrem completion:block];
 }
-
+//加入直播房间
 - (void)_joinLive
 {
     __weak typeof(self) weakself = self;
@@ -239,6 +239,7 @@
     
     [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:nil]];
     
+    alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -347,6 +348,7 @@
     }
     
     [alertController addAction:okAction];
+    alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
