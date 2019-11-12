@@ -1715,6 +1715,10 @@
 
     for (int i = 0; i < [aMessages count]; i++) {
         EMMessage *msg = aMessages[i];
+        // cmd消息不展示
+        if(msg.body.type == EMMessageBodyTypeCmd) {
+            continue;
+        }
         if (msg.chatType == EMChatTypeChat && msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
             //
             [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
