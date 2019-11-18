@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+static NSString *kConversation_IsRead = @"kHaveAtMessage";//群聊@功能
+static NSString *kConversation_AtYou = @"1";
+static NSString *kConversation_AtAll = @"2";
+
+static NSString *kConversation_Draft = @"kDraft";//草稿
 
 @interface EMConversationModel : NSObject
 

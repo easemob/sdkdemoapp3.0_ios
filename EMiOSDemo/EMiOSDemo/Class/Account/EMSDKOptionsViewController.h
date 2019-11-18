@@ -11,7 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class EMDemoOptions;
-@interface EMSDKOptionsViewController : UITableViewController
+@interface EMSDKOptionsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic) UITableView *tableView;
 
 - (instancetype)initWithEnableEdit:(BOOL)aEnableEdit
                finishCompletion:(void (^)(EMDemoOptions *aOptions))aFinishBlock;

@@ -239,6 +239,7 @@
     
     [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:nil]];
     
+    alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -347,6 +348,7 @@
     }
     
     [alertController addAction:okAction];
+    alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

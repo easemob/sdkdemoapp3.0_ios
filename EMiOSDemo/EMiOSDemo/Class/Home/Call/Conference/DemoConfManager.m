@@ -117,10 +117,12 @@ static DemoConfManager *confManager = nil;
         controller.inviteType = aInviteType;
         
         weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+        weakSelf.confNavController.modalPresentationStyle = 0;
         [aController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }];
     //互动会议模式不需要邀请成员
     if(aConfType != EMConferenceTypeLive){
+        controller.modalPresentationStyle = 0;
         [aController presentViewController:controller animated:NO completion:nil];
     }else{
         gIsCalling = YES;
@@ -134,6 +136,7 @@ static DemoConfManager *confManager = nil;
         controller.inviteType = aInviteType;
         
         weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+        weakSelf.confNavController.modalPresentationStyle = 0;
         [aController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }
 }
@@ -254,6 +257,7 @@ static DemoConfManager *confManager = nil;
         self.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = window.rootViewController;
+        self.confNavController.modalPresentationStyle = 0;
         [rootViewController presentViewController:self.confNavController animated:NO completion:nil];
     }
 }

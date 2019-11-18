@@ -315,8 +315,15 @@
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
-		3C4CECAB2373E6D500A37140 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4CEC972373D87800A37140 /* Hyphenate.framework */; };
-		3C4CECAC2373E6D500A37140 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4CEC972373D87800A37140 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3C37DEE92382477D00399AE8 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C37DEE82382477C00399AE8 /* Hyphenate.framework */; };
+		3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */; };
+		3C37DEF323824A7700399AE8 /* icon-tab会话@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DEED23824A7200399AE8 /* icon-tab会话@3x.png */; };
+		3C37DEF423824A7700399AE8 /* icon-tab会话@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DEEE23824A7200399AE8 /* icon-tab会话@2x.png */; };
+		3C37DEF523824A7700399AE8 /* icon-tab会话unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DEEF23824A7400399AE8 /* icon-tab会话unselected.png */; };
+		3C37DEF623824A7700399AE8 /* icon-tab会话.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DEF023824A7400399AE8 /* icon-tab会话.png */; };
+		3C37DEF723824A7700399AE8 /* icon-tab会话unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DEF123824A7500399AE8 /* icon-tab会话unselected@2x.png */; };
+		3C37DEF823824A7700399AE8 /* icon-tab会话unselected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DEF223824A7600399AE8 /* icon-tab会话unselected@3x.png */; };
+		3C37DEFC23824EBB00399AE8 /* PellTableViewSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C37DEFA23824EBA00399AE8 /* PellTableViewSelect.m */; };
 		3CA8BB16236BFEBD00EE519E /* EMMoreFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0B236BFEBD00EE519E /* EMMoreFunctionView.m */; };
 		3CA8BB17236BFEBD00EE519E /* EMReadReceiptMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0C236BFEBD00EE519E /* EMReadReceiptMsgViewController.m */; };
 		3CA8BB18236BFEBD00EE519E /* EMReadReceiptTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0D236BFEBD00EE519E /* EMReadReceiptTableViewCell.m */; };
@@ -489,20 +496,6 @@
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
 		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		3C4CECAD2373E6D600A37140 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				3C4CECAC2373E6D500A37140 /* Hyphenate.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3A45D69B22239DE200505786 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -955,6 +948,17 @@
 		3C3527421931D33A00385240 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3C3527441931D37900385240 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3C36CA691A1EDB6200CDDD48 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3C37DEE82382477C00399AE8 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
+		3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMErrorAlertViewController.m; sourceTree = "<group>"; };
+		3C37DEEB2382486100399AE8 /* EMErrorAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMErrorAlertViewController.h; sourceTree = "<group>"; };
+		3C37DEED23824A7200399AE8 /* icon-tab会话@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab会话@3x.png"; sourceTree = "<group>"; };
+		3C37DEEE23824A7200399AE8 /* icon-tab会话@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab会话@2x.png"; sourceTree = "<group>"; };
+		3C37DEEF23824A7400399AE8 /* icon-tab会话unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab会话unselected.png"; sourceTree = "<group>"; };
+		3C37DEF023824A7400399AE8 /* icon-tab会话.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab会话.png"; sourceTree = "<group>"; };
+		3C37DEF123824A7500399AE8 /* icon-tab会话unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab会话unselected@2x.png"; sourceTree = "<group>"; };
+		3C37DEF223824A7600399AE8 /* icon-tab会话unselected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab会话unselected@3x.png"; sourceTree = "<group>"; };
+		3C37DEFA23824EBA00399AE8 /* PellTableViewSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PellTableViewSelect.m; sourceTree = "<group>"; };
+		3C37DEFB23824EBA00399AE8 /* PellTableViewSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PellTableViewSelect.h; sourceTree = "<group>"; };
 		3C4CEC972373D87800A37140 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hyphenate.framework; path = ../../Hyphenate.framework; sourceTree = "<group>"; };
 		3CA8BB05236BFEBD00EE519E /* EMReadReceiptMemberModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMReadReceiptMemberModel.h; sourceTree = "<group>"; };
 		3CA8BB0B236BFEBD00EE519E /* EMMoreFunctionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMoreFunctionView.m; sourceTree = "<group>"; };
@@ -1177,7 +1181,7 @@
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
-				3C4CECAB2373E6D500A37140 /* Hyphenate.framework in Frameworks */,
+				3C37DEE92382477D00399AE8 /* Hyphenate.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
@@ -1200,6 +1204,7 @@
 		3A45D69922239DE200505786 /* EMiOSDemo */ = {
 			isa = PBXGroup;
 			children = (
+				3C37DEE82382477C00399AE8 /* Hyphenate.framework */,
 				3A45D72222239DE200505786 /* Class */,
 				3A45D72022239DE200505786 /* main.m */,
 				3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */,
@@ -1593,6 +1598,8 @@
 		3A45DCD72223A1FC00505786 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				3C37DEEB2382486100399AE8 /* EMErrorAlertViewController.h */,
+				3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */,
 				3A45E01D2223A21B00505786 /* EMLoginViewController.h */,
 				3A45E01C2223A21B00505786 /* EMLoginViewController.m */,
 				3A45E01B2223A21B00505786 /* EMRegisterViewController.h */,
@@ -1640,6 +1647,7 @@
 		3A45DCF42223A1FC00505786 /* Conversation */ = {
 			isa = PBXGroup;
 			children = (
+				3C37DEF923824EBA00399AE8 /* CXPopView */,
 				3A45E3BD2223A4CC00505786 /* EMConversationCell.h */,
 				3A45E3BC2223A4CC00505786 /* EMConversationCell.m */,
 				3A45E3BA2223A4CC00505786 /* EMConversationsViewController.h */,
@@ -1999,6 +2007,12 @@
 		3A45DE562223A1FD00505786 /* HomeImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C37DEF023824A7400399AE8 /* icon-tab会话.png */,
+				3C37DEEE23824A7200399AE8 /* icon-tab会话@2x.png */,
+				3C37DEED23824A7200399AE8 /* icon-tab会话@3x.png */,
+				3C37DEEF23824A7400399AE8 /* icon-tab会话unselected.png */,
+				3C37DEF123824A7500399AE8 /* icon-tab会话unselected@2x.png */,
+				3C37DEF223824A7600399AE8 /* icon-tab会话unselected@3x.png */,
 				3CA8BB22236C115F00EE519E /* icon-tab我unselected.png */,
 				3CA8BB23236C116000EE519E /* icon-tab我unselected@2x.png */,
 				3CA8BB27236C116000EE519E /* icon-tab我unselected@3x.png */,
@@ -2060,6 +2074,15 @@
 				3A45E2ED2223A41500505786 /* chatbar_photo@3x.png */,
 			);
 			path = ChatBarImgs;
+			sourceTree = "<group>";
+		};
+		3C37DEF923824EBA00399AE8 /* CXPopView */ = {
+			isa = PBXGroup;
+			children = (
+				3C37DEFA23824EBA00399AE8 /* PellTableViewSelect.m */,
+				3C37DEFB23824EBA00399AE8 /* PellTableViewSelect.h */,
+			);
+			path = CXPopView;
 			sourceTree = "<group>";
 		};
 		3CA8BB04236BFEBD00EE519E /* MoreFunction */ = {
@@ -2366,7 +2389,6 @@
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
 				50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */,
-				3C4CECAD2373E6D600A37140 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2384,7 +2406,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = ___FULLUSERNAME___;
+				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -2465,6 +2487,7 @@
 				3A45E2892223A3D600505786 /* icon_027.gif in Resources */,
 				3A45E2722223A3D600505786 /* icon_010.gif in Resources */,
 				3A45E3672223A45500505786 /* msg_fail@3x.png in Resources */,
+				3C37DEF723824A7700399AE8 /* icon-tab会话unselected@2x.png in Resources */,
 				3A45E3B22223A4C000505786 /* group@2x.png in Resources */,
 				3A45E2FB2223A41600505786 /* chatbar_map_blue@3x.png in Resources */,
 				3A45E3ED2223A4F300505786 /* group_join@3x.png in Resources */,
@@ -2484,6 +2507,7 @@
 				3CA8BC97236C3A8000EE519E /* minimize_white@2x.png in Resources */,
 				3CA8BB30236C116200EE519E /* icon-tab我@3x.png in Resources */,
 				3CDAFE4D236C43E9009E38EE /* animate_00046.png in Resources */,
+				3C37DEF623824A7700399AE8 /* icon-tab会话.png in Resources */,
 				3CDAFE4C236C43E9009E38EE /* animate_00028.png in Resources */,
 				3CA8BC7D236C3A8000EE519E /* recorder_white@3x.png in Resources */,
 				3A45E0F62223A30000505786 /* alert_success@3x.png in Resources */,
@@ -2554,6 +2578,7 @@
 				3A45E0922223A28F00505786 /* user_avatar_me@3x.png in Resources */,
 				3CDAFE68236C43E9009E38EE /* animate_00037.png in Resources */,
 				3A45E36C2223A45500505786 /* msg_send_audio02@3x.png in Resources */,
+				3C37DEF423824A7700399AE8 /* icon-tab会话@2x.png in Resources */,
 				3A45E3B72223A4C000505786 /* contact@2x.png in Resources */,
 				3CDAFE45236C43E9009E38EE /* animate_00077.png in Resources */,
 				3A45E0352223A22600505786 /* device_disable@3x.png in Resources */,
@@ -2651,6 +2676,7 @@
 				3A45E27C2223A3D600505786 /* icon_002_cover.png in Resources */,
 				3CDAFE60236C43E9009E38EE /* animate_00036.png in Resources */,
 				3A45E03A2223A22600505786 /* device@2x.png in Resources */,
+				3C37DEF523824A7700399AE8 /* icon-tab会话unselected.png in Resources */,
 				3A45E4042223A50400505786 /* tabbar_chat_blue@3x.png in Resources */,
 				3CA8BB2C236C116200EE519E /* icon-tab我@2x.png in Resources */,
 				3A45E0332223A22600505786 /* secure@2x.png in Resources */,
@@ -2680,6 +2706,7 @@
 				3A45E0FA2223A30000505786 /* alert_default@2x.png in Resources */,
 				3CA8BC80236C3A8000EE519E /* grid_gray@3x.png in Resources */,
 				3CDAFE2C236C43E9009E38EE /* animate_00086.png in Resources */,
+				3C37DEF323824A7700399AE8 /* icon-tab会话@3x.png in Resources */,
 				3A45E3622223A45500505786 /* msg_img_broken@3x.png in Resources */,
 				3A45E4032223A50400505786 /* tabbar_contacts_blue@3x.png in Resources */,
 				3A45E3682223A45500505786 /* msg_bg_recv@3x.png in Resources */,
@@ -2696,6 +2723,7 @@
 				3CA8BC89236C3A8000EE519E /* speaker_white@2x.png in Resources */,
 				3A45E3032223A41600505786 /* chatbar_call@2x.png in Resources */,
 				3CA8BCA4236C3A8000EE519E /* video_white@2x.png in Resources */,
+				3C37DEF823824A7700399AE8 /* icon-tab会话unselected@3x.png in Resources */,
 				3CDAFE38236C43E9009E38EE /* animate_00065.png in Resources */,
 				3CA8BC85236C3A8000EE519E /* grid_white@2x.png in Resources */,
 				3A45E0F52223A30000505786 /* alert_success@2x.png in Resources */,
@@ -2799,6 +2827,7 @@
 				3CA8BC13236C3A7E00EE519E /* Call1v1VideoViewController.m in Sources */,
 				3A45E0FB2223A30000505786 /* EMAlertController.m in Sources */,
 				3CA8BB16236BFEBD00EE519E /* EMMoreFunctionView.m in Sources */,
+				3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */,
 				3A45E38F2223A48700505786 /* EMChatroomAdminsViewController.m in Sources */,
 				3A45DF3E2223A1FD00505786 /* wav.mm in Sources */,
 				3CDAFDE5236C4180009E38EE /* Call1v1AudioViewController.m in Sources */,
@@ -2897,6 +2926,7 @@
 				3A45DA2622239DE200505786 /* main.m in Sources */,
 				3A45E3172223A43300505786 /* EMMessageCell.m in Sources */,
 				3A45E3912223A48700505786 /* EMChatroomMutesViewController.m in Sources */,
+				3C37DEFC23824EBB00399AE8 /* PellTableViewSelect.m in Sources */,
 				3A45E3CC2223A4DC00505786 /* EMCreateGroupViewController.m in Sources */,
 				3A45E38C2223A48700505786 /* EMChatroomMembersViewController.m in Sources */,
 				3A45E54D2223E4DD00505786 /* EMConversationHelper.m in Sources */,

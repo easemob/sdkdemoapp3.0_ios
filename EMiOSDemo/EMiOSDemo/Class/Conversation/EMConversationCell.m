@@ -11,9 +11,6 @@
 #import "EMDateHelper.h"
 #import "EMConversationHelper.h"
 
-static NSString *kConversation_IsRead = @"kHaveAtMessage";
-static int kConversation_AtYou = 1;
-static int kConversation_AtAll = 2;
 
 @interface EMConversationCell()
 

@@ -256,6 +256,7 @@
     
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIViewController *rootViewController = window.rootViewController;
+    self.modalPresentationStyle = 0;
     [rootViewController presentViewController:self animated:NO completion:nil];
 }
 

@@ -26,6 +26,7 @@
 
 @property (nonatomic, strong) EMMessageStatusView *statusView;
 
+@property (nonatomic, strong) UIButton *readReceiptBtn;//阅读回执按钮
 
 @end
 
@@ -176,7 +177,7 @@
 - (void)setCellIsReadReceipt{
     _readReceiptBtn = [[UIButton alloc]init];
     _readReceiptBtn.layer.cornerRadius = 5;
-    [_readReceiptBtn setTitle:@"阅读回执，已读用户（)" forState:UIControlStateNormal];
+    //[_readReceiptBtn setTitle:self.model.readReceiptCount forState:UIControlStateNormal];
     _readReceiptBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     _readReceiptBtn.backgroundColor = [UIColor lightGrayColor];
     [_readReceiptBtn.titleLabel setTextColor:[UIColor whiteColor]];
@@ -241,6 +242,7 @@
     _model = model;
     self.bubbleView.model = model;
     if (model.direction == EMMessageDirectionSend) {
+        
         [self.statusView setSenderStatus:model.emModel.status isReadAcked:model.emModel.isReadAcked];
     } else {
         self.nameLabel.text = model.emModel.from;
@@ -248,8 +250,9 @@
             self.statusView.hidden = model.emModel.isReadAcked;
         }
     }
-    if(model.isReadReceipt) {
+    if(model.emModel.isNeedGroupAck) {
         self.readReceiptBtn.hidden = NO;
+        [self.readReceiptBtn setTitle:_model.readReceiptCount forState:UIControlStateNormal];
     }else{
         self.readReceiptBtn.hidden = YES;
     }
@@ -258,8 +261,8 @@
 #pragma mark - Action
 
 - (void)readReceiptDetilAction {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(messageReadReceipt:)]) {
-        [self.delegate messageReadReceipt:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(messageReadReceiptDetil:)]) {
+        [self.delegate messageReadReceiptDetil:self];
     }
 }
 

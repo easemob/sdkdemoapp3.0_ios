@@ -19,6 +19,15 @@
 @property (nonatomic, strong) NSArray *plistArray;
 @property (nonatomic, strong) NSMutableArray *cellArray;
 
+@property (nonatomic, strong) UIButton *backButton;
+@property (nonatomic, strong) UISwitch *sw;
+
+@property (nonatomic, strong) UIButton *loginButton;
+@property (nonatomic, strong) UIView *viewArrow;
+@property (nonatomic, strong) CAGradientLayer *gl;
+@property (nonatomic, strong) CAGradientLayer *backGl;
+@property (nonatomic, strong) UILabel *loginLabel;
+
 @end
 
 @implementation EMSDKOptionsViewController
@@ -26,7 +35,7 @@
 - (instancetype)initWithEnableEdit:(BOOL)aEnableEdit
                   finishCompletion:(void (^)(EMDemoOptions *aOptions))aFinishBlock
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         self.demoOptions = [[EMDemoOptions sharedOptions] copy];
         self.enableEdit = aEnableEdit;
@@ -41,19 +50,19 @@
     
     // Uncomment the following line to preserve selection between presentations.
     self.plistArray = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"EMSDKOptions" ofType:@"plist"]];
-    
+
     [self _setupSubviews];
-    
     [self.tableView reloadData];
+    self.tableView.hidden = YES;
 }
 
 #pragma mark - Subviews
 
 - (void)_setupSubviews
 {
-    [self addPopBackLeftItem];
+    //[self addPopBackLeftItem];
     self.title = @"SDK配置";
-    
+
     if (self.enableEdit) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveOptionsAction)];
     } else {
@@ -64,14 +73,89 @@
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    self.navigationItem.rightBarButtonItem.enabled = self.enableEdit;
+    //self.navigationItem.rightBarButtonItem.enabled = self.enableEdit;
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    //self.view.backgroundColor = [UIColor whiteColor];
+    
+    UIImageView *imageView=[[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    imageView.image=[UIImage imageNamed:@"BootPage"];
+    [self.view insertSubview:imageView atIndex:0];
+    
+    self.backButton = [[UIButton alloc]init];
+    [self.backButton setBackgroundImage:[UIImage imageNamed:@"24 ／ arrows ／ arrow-left"] forState:UIControlStateNormal];
+    [self.backButton addTarget:self action:@selector(backBackion) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.backButton];
+    [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(40);
+        make.left.equalTo(self.view).offset(8);
+        make.height.equalTo(@24);
+        make.width.equalTo(@24);
+    }];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.numberOfLines = 0;
+    titleLabel.text = @"使用自定义服务器？";
+    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.textColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    //titleLabel.textColor = [UIColor blueColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.backButton.mas_bottom).offset(20);
+        make.left.equalTo(self.view).offset(8);
+        make.width.equalTo(@170);
+        make.height.equalTo(@25);
+    }];
+    
+    self.sw = [[UISwitch alloc] init];
+    [self.sw addTarget:self action:@selector(switchServerChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.sw];
+    [self.sw mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view).offset(-8);
+        make.centerY.equalTo(titleLabel);
+    }];
+    
+    [self.sw setOn:false];
+    self.sw.enabled = true;//启用控件
     
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    self.tableView.backgroundColor = kColor_LightGray;
+    //self.tableView.layer.cornerRadius = 25;
+    self.tableView.layer.masksToBounds = YES;
+    //self.tableView.layer.shouldRasterize = YES;
+    [self.tableView setBackgroundView:nil];
+    [self.tableView setBackgroundView:[[UIView alloc] init]];
+    self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    [self.tableView  setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(8);
+        make.right.equalTo(self.view).offset(-8);
+        make.top.equalTo(titleLabel.mas_bottom).offset(20);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-8);
+    }];
     [self _setupCells];
+}
+
+
+//是否使用自定义服务器
+- (void)switchServerChanged:(UISwitch *)sw
+{
+    if(sw.on) {
+        self.tableView.hidden = NO;
+        [self gl];
+        _gl.frame = CGRectMake(0,0,_loginButton.frame.size.width,_loginButton.frame.size.height);
+        [self.loginButton.layer addSublayer:self.gl];
+    }else{
+        self.tableView.hidden = YES;
+    }
+}
+
+- (void)backBackion
+{
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (NSInteger)_tagWithSection:(NSInteger)aSection
@@ -130,8 +214,53 @@
     NSMutableArray *array = [[NSMutableArray alloc] init];
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.textColor = kColor_Blue;
-    cell.textLabel.text = @"还原默认配置";
+    
+    self.loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    _loginButton.layer.cornerRadius = 25;
+    _loginButton.backgroundColor = [UIColor clearColor];
+    //[_loginButton.layer insertSublayer:self.gl atIndex:0];
+    
+    [_loginButton addTarget:self action:@selector(saveOptionsAction) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:_loginButton];
+    [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(cell.contentView);
+        make.top.equalTo(cell.contentView.mas_top).offset(5);
+        make.bottom.equalTo(cell.contentView.mas_bottom).offset(-5);
+    }];
+    
+    self.loginLabel = [[UILabel alloc] init];
+    _loginLabel.numberOfLines = 0;
+    _loginLabel.font = [UIFont systemFontOfSize:16];
+    _loginLabel.text = @"保存配置";
+    [_loginLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
+    _loginLabel.textAlignment = NSTextAlignmentCenter;
+    [cell.contentView addSubview:_loginLabel];
+    [_loginLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.loginButton);
+        make.centerX.equalTo(self.loginButton);
+        make.width.equalTo(@120);
+        make.height.equalTo(@23);
+    }];
+    
+    _loginButton.alpha = 1;
+    _loginLabel.alpha = 1;
+    
+    self.viewArrow = [[UIView alloc] init];
+    _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
+    _viewArrow.layer.cornerRadius = 20;
+    [cell.contentView addSubview:_viewArrow];
+    [_viewArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@43);
+        make.right.equalTo(self.loginButton.mas_right).offset(-6);
+        make.top.equalTo(self.loginButton.mas_top).offset(6);
+        make.height.equalTo(self.loginButton.mas_height).offset(-12);
+    }];
+    _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;
+    
+    //cell.textLabel.textColor = kColor_Blue;
+    //cell.textLabel.text = @"还原默认配置";
+    cell.layer.cornerRadius = 20;
+    cell.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     [array addObject:cell];
     [self.cellArray addObject:array];
 }
@@ -187,6 +316,9 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = aTitle;
+    
+    cell.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    cell.layer.cornerRadius = 20;
     
     return cell;
 }
@@ -282,19 +414,41 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Configure the cell...
     UITableViewCell *cell = [self.cellArray[indexPath.section] objectAtIndex:indexPath.row];
-    
+    cell.backgroundColor = [UIColor clearColor];
+    UIView *backView = [[UIView alloc]init];
+    backView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    backView.layer.cornerRadius = 20;
+    [cell.contentView insertSubview:backView atIndex:0];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.contentView.mas_top).offset(5);
+        make.bottom.equalTo(cell.contentView.mas_bottom).offset(-5);
+        make.left.right.equalTo(cell.contentView);
+    }];
+    if(indexPath.section == 3) {
+        backView.backgroundColor = [UIColor clearColor];
+    }
     return cell;
 }
 
 #pragma mark - Table view delegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    /*
     if (section == 0 && !self.enableEdit) {
         return 50;
+    }*/
+    if (section == 0 &&  !self.enableEdit) {
+        [self.loginButton removeTarget:self action:@selector(saveOptionsAction) forControlEvents:UIControlEventAllEvents];
+        self.loginLabel.text = @"还原默认配置";
+        return 50;
     }
-    
-    return 20;
+    return 0;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -305,8 +459,10 @@
         label.numberOfLines = 0;
         label.font = [UIFont systemFontOfSize:13];
         label.textColor = [UIColor lightGrayColor];
-        label.text = @"demo已经绑定以下环境设置，如果需要修改配置请点击\"还原默认配置\"重新启动App";
+        label.text = @"demo已经绑定以下环境设置，如果需要修改配置请双击\"还原默认配置\"重新启动App";
         [view addSubview:label];
+        view.layer.cornerRadius = 25;
+        view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
         return view;
     }
     
@@ -315,11 +471,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    /*
     if (section == [self.cellArray count] - 1) {
         return 20;
-    }
+    }*/
     
-    return 1;
+    return 0;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -346,7 +503,7 @@
             
             [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             }]];
-            
+            alertController.modalPresentationStyle = 0;
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }
@@ -359,6 +516,9 @@
     NSInteger tag = textField.tag;
     NSString *value = textField.text;
     [self _setOptionsValueWithTag:tag value:value];
+
+    textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -397,7 +557,31 @@
         self.finishCompletion(demoOptions);
     }
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (UITableView *)tableView
+{
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] init];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+    }
+    
+    return _tableView;
+}
+
+- (CAGradientLayer *)gl{
+    if(_gl == nil){
+        _gl = [CAGradientLayer layer];
+        _gl.startPoint = CGPointMake(0.15, 0.5);
+        _gl.endPoint = CGPointMake(1, 0.5);
+        _gl.colors = @[(__bridge id)[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:90/255.0 green:93/255.0 blue:208/255.0 alpha:1.0].CGColor];
+        _gl.locations = @[@(0), @(1.0f)];
+        _gl.cornerRadius = 25;
+    }
+    
+    return _gl;
 }
 
 @end
