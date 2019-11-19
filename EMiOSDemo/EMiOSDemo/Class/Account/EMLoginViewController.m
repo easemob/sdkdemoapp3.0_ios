@@ -561,9 +561,9 @@
     
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     if (isTokenLogin) {
-        [[EMClient sharedClient] loginWithUsername:name token:pswd completion:finishBlock];
+        [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
     } else {
-        [[EMClient sharedClient] loginWithUsername:name password:pswd completion:finishBlock];
+        [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
     }
 }
 

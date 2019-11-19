@@ -14,11 +14,26 @@
 #import "EMConversationCell.h"
 #import "UIViewController+Search.h"
 
-@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate>
+#import "PellTableViewSelect.h"
+#import "EMInviteGroupMemberViewController.h"
+#import "EMCreateGroupViewController.h"
+#import "EMInviteFriendViewController.h"
+
+@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate,EMConversationCellDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
 @property (nonatomic) BOOL isNeedReloadSorted;
+
+@property (nonatomic, strong) UIMenuItem *deleteMenuItem;
+@property (nonatomic, strong) UIMenuItem *stickMenuItem;
+@property (nonatomic, strong) UIMenuItem *cancelStickMenuItem;
+@property (nonatomic, strong) UIMenuController *menuController;
+@property (strong, nonatomic) NSIndexPath *menuIndexPath;
+
+@property (nonatomic, strong) UIButton *addImageBtn;
+
+@property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
 @end
 
@@ -80,22 +95,32 @@
     self.showRefreshHeader = YES;
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"聊天";
+    titleLabel.text = @"会话";
     titleLabel.textColor = [UIColor blackColor];
-    titleLabel.font = [UIFont systemFontOfSize:28];
+    titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(EMVIEWTOPMARGIN + 15);
-        make.top.equalTo(self.view).offset(20);
-        make.height.equalTo(@60);
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view).offset(35);
+        make.height.equalTo(@25);
+    }];
+    
+    self.addImageBtn = [[UIButton alloc]init];
+    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
+    [self.addImageBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.addImageBtn];
+    [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@24);
+        make.centerY.equalTo(titleLabel);
+        make.right.equalTo(self.view).offset(-15);
     }];
     
     [self enableSearchController];
     [self.searchButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom);
+        make.top.equalTo(titleLabel.mas_bottom).offset(15);
         make.left.equalTo(self.view).offset(15);
         make.right.equalTo(self.view).offset(-15);
-        make.height.equalTo(@35);
+        make.height.equalTo(@36);
     }];
     
     self.tableView.rowHeight = 60;
@@ -107,6 +132,66 @@
     }];
     
     [self _setupSearchResultController];
+}
+
+#pragma mark - moreAction
+- (void)moreAction
+{
+    
+    // 弹出QQ的自定义视图
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-175, self.addImageBtn.frame.origin.y + 24, 165, 156) selectData:@[@"音视频会议",@"创建群组",@"添加好友"] images:@[@"icon-音视频会议",@"icon-创建群组",@"icon-添加好友"] locationY:-8 action:^(NSInteger index){
+        if(index == 0) {
+            [self avConfrence];
+        } else if (index == 1) {
+            [self createGroup];
+        } else {
+            [self addFriend];
+        }
+    } animated:YES];
+}
+
+//音视频会议
+- (void)avConfrence
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
+    }];
+    [alertController addAction:defaultAction];
+
+    UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
+    }];
+    [alertController addAction:mixAction];
+
+    [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
+
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+//创建群组
+- (void)createGroup
+{
+    self.inviteController = nil;
+    self.inviteController = [[EMInviteGroupMemberViewController alloc] init];
+    __weak typeof(self) weakself = self;
+    [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
+        EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
+        createController.inviteController = weakself.inviteController;
+        [weakself.navigationController pushViewController:createController animated:YES];
+    }];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.inviteController];
+    navController.modalPresentationStyle = 0;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+//添加好友
+- (void)addFriend
+{
+    EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)_setupSearchResultController
@@ -172,6 +257,17 @@
     NSInteger row = indexPath.row;
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
     cell.model = model;
+    cell.delegate = self;
+    [cell setSeparatorInset:UIEdgeInsetsMake(0, cell.avatarView.frame.size.height + 23, 0, 1)];
+
+    //置顶是已选中状态，背景变色
+    if([model.emModel.ext objectForKey:CONVERSATION_STICK]) {
+        //cell.backgroundColor = [UIColor grayColor];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cell setSelected:YES animated:NO];
+        });
+        //cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    }
     
     return cell;
 }
@@ -180,7 +276,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     NSInteger row = indexPath.row;
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
@@ -224,6 +319,23 @@
     if (self.isViewAppear) {
         if (!self.isNeedReload) {
             self.isNeedReload = YES;
+            for (EMMessage *msg in aMessages) {
+                if(msg.body.type == EMMessageBodyTypeText) {
+                    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
+                    //群聊@提醒功能
+                    NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
+                    if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
+                        NSMutableDictionary *dic;
+                        if (conversation.ext) {
+                            dic = [[NSMutableDictionary alloc]initWithDictionary:conversation.ext];
+                        } else {
+                            dic = [[NSMutableDictionary alloc]init];
+                        }
+                        [dic setValue:kConversation_AtYou forKey:kConversation_IsRead];
+                        [conversation setExt:dic];
+                    };
+                }
+            }
             [self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:0.8];
         }
     } else {
@@ -288,6 +400,15 @@
     [self _reSortedConversationModelsAndReloadView];
 }
 
+#pragma mark - EMConversationCellDelegate
+//长按
+- (void)conversationCellDidLongPress:(EMConversationCell *)aCell
+{
+    self.menuIndexPath = [self.tableView indexPathForCell:aCell];
+    [self _menuViewController:aCell];
+    
+}
+
 #pragma mark - NSNotification
 
 - (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
@@ -306,7 +427,137 @@
     }
 }
 
+#pragma mark - UIMenuController
+
+//删除会话
+- (void)_deleteConversation
+{
+    NSInteger row = self.menuIndexPath.row;
+    EMConversationModel *model = [self.dataArray objectAtIndex:row];
+    EMConversation *conversation = model.emModel;
+    [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId
+                                           isDeleteMessages:YES
+                                                 completion:nil];
+    [self.dataArray removeObjectAtIndex:row];
+    [self.tableView reloadData];
+}
+
+//置顶
+- (void)_stickConversation
+{
+    EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    
+    [self.dataArray exchangeObjectAtIndex:self.menuIndexPath.row withObjectAtIndex:0];
+    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.menuIndexPath.section];
+    [self.tableView moveRowAtIndexPath:self.menuIndexPath toIndexPath:firstIndexPath];
+    
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
+    [ext setValue:@"stick" forKey:CONVERSATION_STICK];
+    
+    [conversationModel.emModel setExt:ext];
+    
+}
+
+//取消置顶
+- (void)_cancelStickConversation
+{
+    EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
+    [ext setValue:nil forKey:CONVERSATION_STICK];
+    [conversationModel.emModel setExt:ext];
+    [self.tableView reloadData];
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+//UIMenuController弹起防止滑动时出现bug
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    UIMenuController * menu = [UIMenuController sharedMenuController];
+    [menu setMenuVisible:NO animated:YES];
+}
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
+    
+    if (action ==@selector(_deleteConversation) || action ==@selector(_stickConversation) || action == @selector(_cancelStickConversation)){
+        
+        return YES;
+        
+    }
+    
+    return NO;//隐藏系统默认的菜单项
+}
+//UIMenuController菜单
+- (void)_menuViewController:(EMConversationCell *)aCell
+{
+    //[self canBecomeFirstResponder];
+    [self becomeFirstResponder];
+    NSMutableArray *items = [[NSMutableArray alloc] init];
+    if([aCell.model.emModel.ext objectForKey:CONVERSATION_STICK]) {
+        [items addObject:self.cancelStickMenuItem];
+        [items addObject:self.deleteMenuItem];
+    } else {
+        [items addObject:self.stickMenuItem];
+        [items addObject:self.deleteMenuItem];
+    }
+    [self.menuController setMenuItems:items];
+    [self.menuController setTargetRect:aCell.frame inView:self.tableView];
+    [self.menuController setMenuVisible:YES animated:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:aCell selector:@selector(setSelectedStatus) name:UIMenuControllerDidHideMenuNotification object:nil];
+}
+
 #pragma mark - Data
+
+//会话置顶重排序
+- (NSArray *)_stickSortedConversation:(NSArray *)originArray
+{
+    NSMutableArray *stickArray = [[NSMutableArray alloc]init];
+    [stickArray addObjectsFromArray:originArray];
+    EMConversation *conversation = nil;
+    /*
+    int last = (int)([originArray count] - 1);
+    for (int i = last; i > -1 ; i--) {
+        conversation = originArray[i];
+        if([conversation.ext objectForKey:CONVERSATION_STICK]) {
+            [stickArray exchangeObjectAtIndex:i withObjectAtIndex:last];
+        }
+    }*/
+    
+    for (int i = 0; i < [originArray count]; i++) {
+        conversation = originArray[i];
+        if([conversation.ext objectForKey:CONVERSATION_STICK]) {
+            [stickArray exchangeObjectAtIndex:i withObjectAtIndex:0];
+        }
+    }
+
+    return [stickArray copy];
+}
+
+//会话model置顶冲排序
+- (NSArray *)_stickSortedConversationModels:(NSArray *)modelArray
+{
+    NSMutableArray *stickModelArray = [[NSMutableArray alloc]init];
+    [stickModelArray addObjectsFromArray:modelArray];
+    EMConversationModel *conversationModel = nil;
+    /*
+    int last = (int)([modelArray count] - 1);
+    for (int i = last; i > -1 ; i--) {
+        conversationModel = modelArray[i];
+        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK]) {
+            [stickModelArray exchangeObjectAtIndex:i withObjectAtIndex:last];
+        }
+    }*/
+    
+    for (int i = 0; i < [modelArray count]; i++) {
+        conversationModel = modelArray[i];
+        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK]) {
+            [stickModelArray exchangeObjectAtIndex:i withObjectAtIndex:0];
+        }
+    }
+
+    return [stickModelArray copy];
+}
 
 - (void)_reSortedConversationModelsAndReloadView
 {
@@ -318,7 +569,7 @@
         } else {
             return(NSComparisonResult)NSOrderedDescending;
         }}];
-
+    sorted = [self _stickSortedConversationModels:sorted];//置顶重排序
     NSMutableArray *conversationModels = [NSMutableArray array];
     for (EMConversationModel *model in sorted) {
         if (!model.emModel.latestMessage) {
@@ -353,10 +604,12 @@
                 return(NSComparisonResult)NSOrderedAscending;
             } else {
                 return(NSComparisonResult)NSOrderedDescending;
-            }}];
+            }
+            
+        }];
         
         [weakself.dataArray removeAllObjects];
-        
+        sorted = [self _stickSortedConversation:sorted];//置顶重排序
         NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
         [weakself.dataArray addObjectsFromArray:models];
         
@@ -375,6 +628,42 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _loadAllConversationsFromDBWithIsShowHud:NO];
+}
+
+- (UIMenuItem *)deleteMenuItem
+{
+    if (_deleteMenuItem == nil) {
+        _deleteMenuItem = [[UIMenuItem alloc] initWithTitle:@"删除会话" action:@selector(_deleteConversation)];
+    }
+    
+    return _deleteMenuItem;
+}
+
+- (UIMenuItem *)stickMenuItem
+{
+    if (_stickMenuItem == nil) {
+        _stickMenuItem = [[UIMenuItem alloc] initWithTitle:@"置顶" action:@selector(_stickConversation)];
+    }
+    
+    return _stickMenuItem;
+}
+
+- (UIMenuItem *)cancelStickMenuItem
+{
+    if (_cancelStickMenuItem == nil) {
+        _cancelStickMenuItem = [[UIMenuItem alloc] initWithTitle:@"取消置顶" action:@selector(_cancelStickConversation)];
+    }
+    
+    return _cancelStickMenuItem;
+}
+
+- (UIMenuController *)menuController
+{
+    if (_menuController == nil) {
+        _menuController = [UIMenuController sharedMenuController];
+    }
+    
+    return _menuController;
 }
 
 @end

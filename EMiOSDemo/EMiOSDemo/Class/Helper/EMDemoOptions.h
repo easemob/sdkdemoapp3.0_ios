@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString *kOptions_Appkey = @"Appkey";
+static NSString * _Nullable kOptions_Appkey = @"Appkey";
 static NSString *kOptions_ApnsCertname = @"ApnsCertname";
 static NSString *kOptions_HttpsOnly = @"HttpsOnly";
 

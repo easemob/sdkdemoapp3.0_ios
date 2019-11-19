@@ -14,6 +14,8 @@
 #import "EMAvatarNameCell.h"
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
+#import "PellTableViewSelect.h"
+#import "EMJoinGroupViewController.h"
 
 @interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate, EMNotificationsDelegate>
 
@@ -22,6 +24,8 @@
 
 @property (nonatomic, strong) EMAvatarNameCell *notifCell;
 @property (nonatomic, strong) UILabel *notifBadgeLabel;
+
+@property (nonatomic, strong) UIButton *addImageBtn;
 
 @end
 
@@ -77,19 +81,29 @@
     self.showRefreshHeader = YES;
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"联系人";
+    titleLabel.text = @"通讯录";
     titleLabel.textColor = [UIColor blackColor];
-    titleLabel.font = [UIFont systemFontOfSize:28];
+    titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(EMVIEWTOPMARGIN + 15);
-        make.top.equalTo(self.view).offset(20);
-        make.height.equalTo(@60);
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view).offset(35);
+        make.height.equalTo(@25);
+    }];
+    
+    self.addImageBtn = [[UIButton alloc]init];
+    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-加群"] forState:UIControlStateNormal];
+    [self.addImageBtn addTarget:self action:@selector(addAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.addImageBtn];
+    [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@24);
+        make.centerY.equalTo(titleLabel);
+        make.right.equalTo(self.view).offset(-15);
     }];
     
     [self enableSearchController];
     [self.searchButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom);
+        make.top.equalTo(titleLabel.mas_bottom).offset(15);
         make.left.equalTo(self.view).offset(15);
         make.right.equalTo(self.view).offset(-15);
         make.height.equalTo(@35);
@@ -202,6 +216,7 @@
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     if (section == 0 && row == 1) {//申请cell特殊化，需要显示角标
+        [self.notifCell setSeparatorInset:UIEdgeInsetsMake(0, self.notifCell.avatarView.frame.size.height + 23, 0, 1)];
         return self.notifCell;
     }
     
@@ -213,13 +228,13 @@
 
     if (section == 0) {
         if (row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@"contact"];
-            cell.nameLabel.text = @"添加好友";
+            cell.avatarView.image = [UIImage imageNamed:@"新的好友"];
+            cell.nameLabel.text = @"新的好友";
         } else if (row == 2) {
-            cell.avatarView.image = [UIImage imageNamed:@"group"];
-            cell.nameLabel.text = @"群组";
+            cell.avatarView.image = [UIImage imageNamed:@"群聊"];
+            cell.nameLabel.text = @"群聊";
         } else if (row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@"chatroom"];
+            cell.avatarView.image = [UIImage imageNamed:@"聊天室"];
             cell.nameLabel.text = @"聊天室";
         } else if (row == 4) {
             cell.avatarView.image = [UIImage imageNamed:@"call"];
@@ -230,7 +245,7 @@
         cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
         cell.nameLabel.text = contact;
     }
-    
+    [cell setSeparatorInset:UIEdgeInsetsMake(0, cell.avatarView.frame.size.height + 23, 0, 1)];
     return cell;
 }
 
@@ -559,6 +574,34 @@
             [weakself.tableView reloadData];
         }];
     }];
+}
+
+#pragma mark - moreAction
+- (void)addAction
+{
+    // 弹出QQ的自定义视图
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 120, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
+           NSLog(@"选择%ld",index);
+        if(index == 0) {
+            [self lookForSomeOne];
+        } else if (index == 1) {
+            [self findGroup];
+        }
+    } animated:YES];
+}
+
+//找人
+- (void)lookForSomeOne
+{
+    EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+//找群
+- (void)findGroup
+{
+    EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh

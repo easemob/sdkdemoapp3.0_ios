@@ -10,8 +10,11 @@
 
 #import "EMBadgeLabel.h"
 
+@protocol EMConversationCellDelegate;
 @class EMConversationModel;
 @interface EMConversationCell : UITableViewCell
+
+@property (nonatomic, weak) id<EMConversationCellDelegate> delegate;
 
 @property (nonatomic, strong) UIImageView *avatarView;
 
@@ -24,5 +27,17 @@
 @property (nonatomic, strong) EMBadgeLabel *badgeLabel;
 
 @property (nonatomic, strong) EMConversationModel *model;
+
+- (void)setSelectedStatus;
+
+@end
+
+@protocol EMConversationCellDelegate <NSObject>
+
+@optional
+
+- (void)conversatioonCellDidTouchEnd:(EMConversationCell *)aCell;
+
+- (void)conversationCellDidLongPress:(EMConversationCell *)aCell;
 
 @end

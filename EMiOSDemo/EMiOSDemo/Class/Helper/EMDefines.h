@@ -21,6 +21,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
 #define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
 
+//会话
+#define CONVERSATION_STICK @"stick"
+
 //账号状态
 #define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 

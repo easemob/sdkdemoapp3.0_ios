@@ -12,7 +12,7 @@
 #import "EMConversationHelper.h"
 
 
-@interface EMConversationCell()
+@interface EMConversationCell()<UIGestureRecognizerDelegate>
 
 @end
 
@@ -21,12 +21,17 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        [self _setupSubview];
-    }
+   self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+   if (self){
+       self.selectionStyle = UITableViewCellSelectionStyleDefault;
+       self.selectedBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)];
+       self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:233/255.0 green:233/255.0 blue:233/255.0 alpha:1.0];
+       self.contentView.backgroundColor = [UIColor whiteColor];
+       self.backgroundColor = [UIColor whiteColor];
+       [self _setupSubview];
+   }
+   return self;
     
-    return self;
 }
 
 #pragma mark - private layout subviews
@@ -89,6 +94,50 @@
         make.right.equalTo(self.badgeLabel.mas_left).offset(-5);
         make.bottom.equalTo(self.contentView).offset(-8);
     }];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapAction:)];
+    tap.delegate = self;
+    [self addGestureRecognizer:tap];
+    tap.delaysTouchesBegan = YES;
+    tap.delaysTouchesEnded = YES;
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(cellLongPressAction:)];
+    [self addGestureRecognizer:longPress];
+
+    self.selectionStyle = UITableViewCellSelectionStyleGray;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - Action
+
+- (void)cellTapAction:(UITapGestureRecognizer *)aTap
+{
+    if(aTap.state == UIGestureRecognizerStateBegan) {
+    }
+
+}
+
+- (void)cellLongPressAction:(UILongPressGestureRecognizer *)aLongPress
+{
+    if (aLongPress.state == UIGestureRecognizerStateBegan) {
+        self.selected = YES;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(conversationCellDidLongPress:)]) {
+            [self.delegate conversationCellDidLongPress:self];
+        }
+    }
+}
+
+- (void)setSelectedStatus
+{
+    if(![self.model.emModel.ext objectForKey:CONVERSATION_STICK]) {
+        self.selected = NO;
+    }
 }
 
 #pragma mark - setter
@@ -136,15 +185,20 @@
 //    }
     
     NSDictionary *ext = aConversation.ext;
-    if (ext && [ext[kConversation_IsRead] intValue] == kConversation_AtAll) {
+    if (ext && [ext[kConversation_IsRead] isEqualToString:kConversation_AtAll]) {
         NSString *allMsg = @"[有全体消息]";
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", allMsg, latestMessageTitle];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
         [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, allMsg.length)];
         
-    } else if (ext && [ext[kConversation_IsRead] intValue] == kConversation_AtYou) {
+    } else if (ext && [ext[kConversation_IsRead] isEqualToString:kConversation_AtYou]) {
         NSString *atStr = @"[有人@我]";
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, latestMessageTitle];
+        attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
+        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
+    } else if (ext && [ext objectForKey:kConversation_Draft]){
+        NSString *atStr = @"[草稿]";
+        latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, [ext objectForKey:kConversation_Draft]];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
         [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
     } else {
@@ -192,5 +246,16 @@
         self.badgeLabel.hidden = NO;
     }
 }
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+    {
+        [super setSelected:selected animated:animated];
+        self.badgeLabel.backgroundColor = [UIColor redColor];
+    }
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+    {
+        [super setHighlighted:highlighted animated:animated];
+        self.badgeLabel.backgroundColor = [UIColor redColor];
+    }
 
 @end

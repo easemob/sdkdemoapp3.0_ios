@@ -37,7 +37,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.title = @"加入群组";
+    self.title = @"加群";
     
     self.showRefreshHeader = YES;
     self.searchBar.textField.placeholder = @"搜索群组ID";
