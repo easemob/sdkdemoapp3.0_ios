@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UITableView *searchResultTableView;
 
+- (void)keyBoardWillShow:(NSNotification *)note;
+
+- (void)keyBoardWillHide:(NSNotification *)note;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -55,12 +55,12 @@
     }];
     
     if (self.direction == EMMessageDirectionSend) {
-        self.imgView.image = [UIImage imageNamed:@"msg_send_audio"];
-        self.imgView.animationImages = @[[UIImage imageNamed:@"msg_send_audio01"], [UIImage imageNamed:@"msg_send_audio02"], [UIImage imageNamed:@"msg_send_audio"]];
+        self.imgView.image = [UIImage imageNamed:@"语音声波send"];
+        self.imgView.animationImages = @[[UIImage imageNamed:@"语音声波备份 2"], [UIImage imageNamed:@"语音声波备份"], [UIImage imageNamed:@"语音声波send"]];
         self.textLabel.textColor = [UIColor whiteColor];
     } else {
-        self.imgView.image = [UIImage imageNamed:@"msg_recv_audio"];
-        self.imgView.animationImages = @[[UIImage imageNamed:@"msg_recv_audio01"], [UIImage imageNamed:@"msg_recv_audio02"], [UIImage imageNamed:@"msg_recv_audio"]];
+        self.imgView.image = [UIImage imageNamed:@"语音声波"];
+        self.imgView.animationImages = @[[UIImage imageNamed:@"语音声波备份 5"], [UIImage imageNamed:@"语音声波备份 4"], [UIImage imageNamed:@"语音声波"]];
         self.textLabel.textColor = [UIColor blackColor];
     }
 }

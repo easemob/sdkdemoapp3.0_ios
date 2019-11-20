@@ -21,6 +21,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
 #define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
 
+//会话
+#define CONVERSATION_STICK @"stick"
+#define CONVERSATION_ID @"convwesationId"
+#define CONVERSATION_OBJECT @"convwesationObject"
+
 //账号状态
 #define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 
@@ -36,8 +41,20 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define MSG_EXT_GIF_ID @"em_expression_id"
 #define MSG_EXT_GIF @"em_is_big_expression"
 
+#define MSG_EXT_READ_RECEIPT @"em_read_receipt"
+
 //消息撤回
 #define MSG_EXT_RECALL @"em_recall"
+
+//新通知
+#define MSG_EXT_NEWNOTI @"em_noti"
+
+//加群/好友 成功
+#define NOTIF_ADD_SOCIAL_CONTACT @"EMAddSocialContact"
+
+//加群/好友 类型
+#define NOTI_EXT_ADDFRIEND @"add_friend"
+#define NOTI_EXT_ADDGROUP @"add_group"
 
 //多人会议邀请
 #define MSG_EXT_CALLOP @"em_conference_op"
@@ -78,6 +95,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
 #define GROUP_SUBJECT_UPDATED @"EMGroupSubjectUpdated"
 #define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
+#define GROUP_INFO_REFRESH @"EMGroupInfoRefresh"
 
 //聊天室
 #define CHATROOM_LIST_PUSHVIEWCONTROLLER @"EMPushChatroomsViewController"

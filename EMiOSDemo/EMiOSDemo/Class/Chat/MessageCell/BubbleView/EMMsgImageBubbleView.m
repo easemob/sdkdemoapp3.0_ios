@@ -23,6 +23,7 @@
     if (self) {
 //        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //        self.layer.borderWidth = 1;
+        self.layer.cornerRadius = 2;
         self.contentMode = UIViewContentModeScaleAspectFill;
     }
     
@@ -38,7 +39,7 @@
         if (aSize.width == 0 || aSize.height == 0) {
             break;
         }
-        
+        CGFloat maxWidth = [UIScreen mainScreen].bounds.size.width / 2 - 60.0;
         NSInteger tmpWidth = aSize.width;
         if (aSize.width < kEMMsgImageMinWidth) {
             tmpWidth = kEMMsgImageMinWidth;

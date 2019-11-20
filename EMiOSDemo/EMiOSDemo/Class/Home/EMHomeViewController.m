@@ -125,23 +125,25 @@
 - (void)_setupChildController
 {
     self.conversationsController = [[EMConversationsViewController alloc] init];
-    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"聊天" imgName:@"tabbar_chat_gray" selectedImgName:@"tabbar_chat_blue" tag:kTabbarItemTag_Conversation];
+    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"会话" imgName:@"tabbar_chat_gray" selectedImgName:@"tabbar_chat_blue" tag:kTabbarItemTag_Conversation];
     self.conversationsController.tabBarItem = consItem;
     [self addChildViewController:self.conversationsController];
     
     self.contactsController = [[EMContactsViewController alloc] init];
-    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"联系人" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
+    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"通讯录" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
     self.contactsController.tabBarItem = contItem;
     [self addChildViewController:self.contactsController];
     
+    UITabBarItem *discoverItem = [self _setupTabBarItemWithTitle:@"发现" imgName:@"icon-tab发现unselected" selectedImgName:@"icon-tab发现" tag:kTabbarItemTag_Settings];
+    
     self.settingsController = [[EMSettingsViewController alloc] init];
-    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"tabbar_settings_gray" selectedImgName:@"tabbar_settings_blue" tag:kTabbarItemTag_Settings];
+    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"我" imgName:@"icon-tab我unselected" selectedImgName:@"icon-tab我" tag:kTabbarItemTag_Settings];
     self.settingsController.tabBarItem = settingsItem;
     [self addChildViewController:self.settingsController];
     
     self.viewControllers = @[self.conversationsController, self.contactsController, self.settingsController];
     
-    [self.tabBar setItems:@[consItem, contItem, settingsItem]];
+    [self.tabBar setItems:@[consItem, contItem, discoverItem,settingsItem]];
     
     self.tabBar.selectedItem = consItem;
     [self tabBar:self.tabBar didSelectItem:consItem];

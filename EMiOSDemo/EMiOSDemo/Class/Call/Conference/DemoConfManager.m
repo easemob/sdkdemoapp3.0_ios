@@ -119,10 +119,25 @@ static DemoConfManager *confManager = nil;
         weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
         [aController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }];
-    
-    [aController presentViewController:controller animated:NO completion:nil];
+    //互动会议模式不需要邀请成员
+    if(aConfType != EMConferenceTypeLive){
+        [aController presentViewController:controller animated:NO completion:nil];
+    }else{
+        gIsCalling = YES;
+        
+        EMConferenceViewController *controller = nil;
+        if (aConfType != EMConferenceTypeLive) {
+            controller = [[MeetingViewController alloc] initWithType:aConfType password:@"" inviteUsers:nil chatId:aConversationId chatType:aChatType];
+        } else {
+            controller = [[Live2ViewController alloc] initWithType:aConfType password:@"" inviteUsers:nil chatId:aConversationId chatType:aChatType];
+        }
+        controller.inviteType = aInviteType;
+        
+        weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [aController presentViewController:weakSelf.confNavController animated:NO completion:nil];
+    }
 }
-
+//关闭会议
 - (void)endConference:(EMCallConference *)aCall
             isDestroy:(BOOL)aIsDestroy
 {
@@ -145,7 +160,7 @@ static DemoConfManager *confManager = nil;
 }
 
 #pragma mark - NSNotification
-
+//会议发起人
 - (void)handleMakeConference:(NSNotification *)aNotif
 {
     NSDictionary *dic = aNotif.object;
@@ -178,7 +193,7 @@ static DemoConfManager *confManager = nil;
                           chatType:chatType
                  popFromController:controller];
 }
-
+//会议接收者
 - (void)handleSelectConferenceCell:(NSNotification *)aNotif
 {
     id obj = aNotif.object;

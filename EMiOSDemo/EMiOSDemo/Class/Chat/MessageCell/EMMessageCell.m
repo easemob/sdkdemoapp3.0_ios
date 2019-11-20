@@ -26,12 +26,15 @@
 
 @property (nonatomic, strong) EMMessageStatusView *statusView;
 
+@property (nonatomic, strong) UIButton *readReceiptBtn;//阅读回执按钮
+
 @end
 
 @implementation EMMessageCell
 
 - (instancetype)initWithDirection:(EMMessageDirection)aDirection
                              type:(EMMessageType)aType
+
 {
     NSString *identifier = [EMMessageCell cellIdentifierWithDirection:aDirection type:aType];
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -166,6 +169,29 @@
             make.width.height.equalTo(@8);
         }];
     }
+    
+    [self setCellIsReadReceipt];
+    
+}
+
+- (void)setCellIsReadReceipt{
+    _readReceiptBtn = [[UIButton alloc]init];
+    _readReceiptBtn.layer.cornerRadius = 5;
+    //[_readReceiptBtn setTitle:self.model.readReceiptCount forState:UIControlStateNormal];
+    _readReceiptBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _readReceiptBtn.backgroundColor = [UIColor lightGrayColor];
+    [_readReceiptBtn.titleLabel setTextColor:[UIColor whiteColor]];
+    _readReceiptBtn.titleLabel.font = [UIFont systemFontOfSize: 10.0];
+    [_readReceiptBtn addTarget:self action:@selector(readReceiptDetilAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:_readReceiptBtn];
+    if(self.direction == EMMessageDirectionSend) {
+        [_readReceiptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.bubbleView.mas_bottom).offset(2);
+            make.right.equalTo(self.bubbleView.mas_right);
+            make.width.equalTo(@130);
+            make.height.equalTo(@15);
+        }];
+    }
 }
 
 - (EMMessageBubbleView *)_getBubbleViewWithType:(EMMessageType)aType
@@ -216,6 +242,7 @@
     _model = model;
     self.bubbleView.model = model;
     if (model.direction == EMMessageDirectionSend) {
+        
         [self.statusView setSenderStatus:model.emModel.status isReadAcked:model.emModel.isReadAcked];
     } else {
         self.nameLabel.text = model.emModel.from;
@@ -223,9 +250,21 @@
             self.statusView.hidden = model.emModel.isReadAcked;
         }
     }
+    if(model.emModel.isNeedGroupAck) {
+        self.readReceiptBtn.hidden = NO;
+        [self.readReceiptBtn setTitle:_model.readReceiptCount forState:UIControlStateNormal];
+    }else{
+        self.readReceiptBtn.hidden = YES;
+    }
 }
 
 #pragma mark - Action
+
+- (void)readReceiptDetilAction {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(messageReadReceiptDetil:)]) {
+        [self.delegate messageReadReceiptDetil:self];
+    }
+}
 
 - (void)bubbleViewTapAction:(UITapGestureRecognizer *)aTap
 {

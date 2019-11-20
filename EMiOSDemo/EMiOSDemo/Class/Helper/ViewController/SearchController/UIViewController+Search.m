@@ -60,9 +60,9 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
     if (self.searchButton == nil) {
         self.searchButton = [[UIButton alloc] init];
         self.searchButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        self.searchButton.backgroundColor = kColor_LightGray;
-        self.searchButton.titleLabel.font = [UIFont systemFontOfSize:15];
-        self.searchButton.layer.cornerRadius = 8;
+        self.searchButton.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+        self.searchButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        self.searchButton.layer.cornerRadius = 18;
         self.searchButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
         self.searchButton.titleEdgeInsets = UIEdgeInsetsMake(0, 18, 0, 0);
         [self.searchButton setTitle:@"搜索" forState:UIControlStateNormal];
@@ -149,6 +149,7 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 {
     [self.resultController.searchBar becomeFirstResponder];
     self.resultController.searchBar.showsCancelButton = YES;
+    self.resultNavigationController.modalPresentationStyle = 0;
     [self presentViewController:self.resultNavigationController animated:YES completion:nil];
 //
 //    [self.resultController.view mas_makeConstraints:^(MASConstraintMaker *make) {

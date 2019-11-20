@@ -16,12 +16,15 @@
     if (self) {
         _emModel = aMsg;
         _direction = aMsg.direction;
-        
         if (aMsg.body.type == EMMessageBodyTypeText) {
             if ([aMsg.ext objectForKey:MSG_EXT_GIF]) {
                 _type = EMMessageTypeExtGif;
             } else if ([aMsg.ext objectForKey:MSG_EXT_RECALL]) {
                 _type = EMMessageTypeExtRecall;
+            } else if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDFRIEND]) {
+                _type = EMMessageTypeExtNewFriend;
+            } else if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDGROUP]) {
+                _type = EMMessageTypeExtAddGroup;
             } else {
                 NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
                 if ([conferenceId length] == 0) {
@@ -32,6 +35,12 @@
                 } else {
                     _type = EMMessageTypeText;
                 }
+            }
+            if (aMsg.isNeedGroupAck) {
+                _readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d）",aMsg.groupAckCount];
+            }
+            if(aMsg.isNeedGroupAck  && aMsg.status == EMMessageStatusFailed) {
+                _readReceiptCount = @"只有群主支持本格式消息";
             }
         } else {
             _type = (EMMessageType)aMsg.body.type;

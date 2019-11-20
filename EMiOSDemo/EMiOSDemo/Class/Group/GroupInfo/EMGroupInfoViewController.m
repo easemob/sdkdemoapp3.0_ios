@@ -55,6 +55,12 @@
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadInfo) name:GROUP_INFO_REFRESH object:nil];
+}
+
+- (void)reloadInfo
+{
+    [self.tableView reloadData];
 }
 
 - (void)dealloc
@@ -96,7 +102,7 @@
     if (section == 0) {
         count = 4;
     } else if (section == 1) {
-        if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && self.group.permissionType == EMGroupPermissionTypeOwner) {
+        if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType  == EMGroupPermissionTypeAdmin)) {
             count = 2;
         } else if (self.group.setting.style == EMGroupStylePrivateMemberCanInvite) {
             count = 2;
@@ -104,13 +110,13 @@
             count = 1;
         }
     } else if (section == 2) {
-        count = self.group.permissionType == EMGroupPermissionTypeOwner ? 3 : 1;
+        count = (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) ? 3 : 1;
     } else if (section == 3) {
         count = 2;
     } else if (section == 4) {
         count = 1;
     }
-    
+
     return count;
 }
 

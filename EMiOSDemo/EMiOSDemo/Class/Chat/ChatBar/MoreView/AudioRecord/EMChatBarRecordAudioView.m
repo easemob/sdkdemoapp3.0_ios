@@ -83,7 +83,7 @@
 }
 
 #pragma mark - Private Record
-
+//开始录语音消息
 - (void)_startRecord
 {
     self.timeLength = 0;
@@ -102,7 +102,7 @@
         }
     }];
 }
-
+//停止录语音消息并发送语音消息
 - (void)_stopRecord
 {
     [self _stopTimer];

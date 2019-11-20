@@ -58,12 +58,42 @@
     self.textView.delegate = self;
     self.textView.placeholder = @"请输入消息内容";
     self.textView.font = [UIFont systemFontOfSize:16];
+    self.textView.textAlignment = NSTextAlignmentLeft;
+    if (@available(iOS 11.1, *)) {
+        self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
+    } else {
+        // Fallback on earlier versions
+    }
     self.textView.returnKeyType = UIReturnKeySend;
-    self.textView.backgroundColor = [UIColor clearColor];
+    self.textView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    self.textView.layer.cornerRadius = 20;
     [self addSubview:self.textView];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(5);
         make.left.equalTo(self).offset(8);
+        make.right.equalTo(self).offset(-65);
+        make.height.mas_equalTo(ktextViewMinHeight);
+    }];
+    
+    self.sendBtn = [[UIButton alloc]init];
+    /*
+    if(self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]){
+        self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
+        self.sendBtn.tag = 1;
+    }else{
+        self.sendBtn.backgroundColor = [UIColor lightGrayColor];
+        self.sendBtn.tag = 0;
+    }*/
+    self.sendBtn.backgroundColor = [UIColor lightGrayColor];
+    self.sendBtn.tag = 0;
+    [self.sendBtn setTitle:@"发送" forState:UIControlStateNormal];
+    self.sendBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    [self.sendBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.sendBtn.layer.cornerRadius = 3;
+    [self addSubview:self.sendBtn];
+    [self.sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(5);
+        make.left.equalTo(self.textView.mas_right).offset(2);
         make.right.equalTo(self).offset(-8);
         make.height.mas_equalTo(ktextViewMinHeight);
     }];
@@ -79,19 +109,20 @@
         make.height.equalTo(@50);
         make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
     }];
+
 }
 
 - (void)_setupButtonsView
 {
-//    NSInteger count = 7;
-    NSInteger count = 6;
+    NSInteger count = 7;
+    //NSInteger count = 6;
     CGFloat width = [UIScreen mainScreen].bounds.size.width / count;
     
     self.buttonArray = [[NSMutableArray alloc] init];
     
     UIButton *audioButton = [[UIButton alloc] init];
-    [audioButton setImage:[UIImage imageNamed:@"chatbar_audio"] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageNamed:@"chatbar_audio_blue"] forState:UIControlStateSelected];
+    [audioButton setImage:[UIImage imageNamed:@"语音"] forState:UIControlStateNormal];
+    [audioButton setImage:[UIImage imageNamed:@"语音_selected"] forState:UIControlStateSelected];
     [audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:audioButton];
     [audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,8 +134,8 @@
     [self.buttonArray addObject:audioButton];
     
     UIButton *emojiButton = [[UIButton alloc] init];
-    [emojiButton setImage:[UIImage imageNamed:@"chatbar_face"] forState:UIControlStateNormal];
-    [emojiButton setImage:[UIImage imageNamed:@"chatbar_face_blue"] forState:UIControlStateSelected];
+    [emojiButton setImage:[UIImage imageNamed:@"gif"] forState:UIControlStateNormal];
+    [emojiButton setImage:[UIImage imageNamed:@"gif(1)"] forState:UIControlStateSelected];
     [emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:emojiButton];
     [emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,8 +147,8 @@
     [self.buttonArray addObject:emojiButton];
     
     UIButton *cameraButton = [[UIButton alloc] init];
-    [cameraButton setImage:[UIImage imageNamed:@"chatbar_camera"] forState:UIControlStateNormal];
-    [cameraButton setImage:[UIImage imageNamed:@"chatbar_camera_blue"] forState:UIControlStateHighlighted];
+    [cameraButton setImage:[UIImage imageNamed:@"相机"] forState:UIControlStateNormal];
+    [cameraButton setImage:[UIImage imageNamed:@"相机(1)"] forState:UIControlStateHighlighted];
     [cameraButton addTarget:self action:@selector(cameraButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:cameraButton];
     [cameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,8 +160,8 @@
     [self.buttonArray addObject:cameraButton];
     
     UIButton *photoButton = [[UIButton alloc] init];
-    [photoButton setImage:[UIImage imageNamed:@"chatbar_photo"] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageNamed:@"chatbar_photo_blue"] forState:UIControlStateHighlighted];
+    [photoButton setImage:[UIImage imageNamed:@"图片"] forState:UIControlStateNormal];
+    [photoButton setImage:[UIImage imageNamed:@"图片(1)"] forState:UIControlStateHighlighted];
     [photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:photoButton];
     [photoButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,31 +186,42 @@
     [self.buttonArray addObject:adressButton];
     
     UIButton *callButton = [[UIButton alloc] init];
-    [callButton setImage:[UIImage imageNamed:@"chatbar_call"] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageNamed:@"chatbar_call_blue"] forState:UIControlStateSelected];
+    [callButton setImage:[UIImage imageNamed:@"电话"] forState:UIControlStateNormal];
+    [callButton setImage:[UIImage imageNamed:@"电话(1)"] forState:UIControlStateSelected];
     [callButton addTarget:self action:@selector(callButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:callButton];
     [callButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.buttonsView);
         make.left.equalTo(adressButton.mas_right);
         make.bottom.equalTo(adressButton);
-//        make.width.mas_equalTo(width);
-        make.right.equalTo(self.buttonsView);
+        make.width.mas_equalTo(width);
+        //make.right.equalTo(self.buttonsView);
     }];
     [self.buttonArray addObject:callButton];
     
-//    UIButton *moreButton = [[UIButton alloc] init];
-//    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend"] forState:UIControlStateNormal];
-//    [moreButton setImage:[UIImage imageNamed:@"chatbar_extend_blue"] forState:UIControlStateSelected];
-//    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.buttonsView addSubview:moreButton];
-//    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.buttonsView);
-//        make.left.equalTo(callButton.mas_right);
-//        make.bottom.equalTo(callButton);
-//        make.right.equalTo(self.buttonsView);
-//    }];
-//    [self.buttonArray addObject:moreButton];
+    UIButton *moreButton = [[UIButton alloc] init];
+    [moreButton setImage:[UIImage imageNamed:@"加"] forState:UIControlStateNormal];
+    [moreButton setImage:[UIImage imageNamed:@"加(1)"] forState:UIControlStateSelected];
+    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonsView addSubview:moreButton];
+    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.buttonsView);
+        make.left.equalTo(callButton.mas_right);
+        make.bottom.equalTo(callButton);
+        make.right.equalTo(self.buttonsView);
+    }];
+    [self.buttonArray addObject:moreButton];
+}
+
+- (void)textChangedExt
+{
+    if (self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]) {
+        self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
+        self.sendBtn.tag = 1;
+    } else {
+        self.sendBtn.backgroundColor = [UIColor lightGrayColor];
+        self.sendBtn.tag = 0;
+    }
 }
 
 #pragma mark - UITextViewDelegate
@@ -205,6 +247,8 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    NSLog(@"\n%@   %@",text,self.textView.text);
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputView:shouldChangeTextInRange:replacementText:)]) {
         return [self.delegate inputView:self.textView shouldChangeTextInRange:range replacementText:text];
     } 
@@ -214,6 +258,13 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]) {
+        self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
+        self.sendBtn.tag = 1;
+    } else {
+        self.sendBtn.backgroundColor = [UIColor lightGrayColor];
+        self.sendBtn.tag = 0;
+    }
     [self _updatetextViewHeight];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputViewDidChange:)]) {
@@ -278,6 +329,7 @@
 - (void)clearInputViewText
 {
     self.textView.text = @"";
+    [self textChangedExt];
     [self _updatetextViewHeight];
 }
 
@@ -285,6 +337,7 @@
 {
     if ([aText length] > 0) {
         self.textView.text = [NSString stringWithFormat:@"%@%@", self.textView.text, aText];
+        [self textChangedExt];
         [self _updatetextViewHeight];
     }
 }
@@ -371,6 +424,27 @@
         }
     }
 }
+//更多
+- (void)moreButtonAction:(UIButton *)aButton
+{
+    [self _buttonAction:aButton];
+    if (aButton.selected){
+        if(self.moreFunctionView) {
+            self.currentMoreView = self.moreFunctionView;
+            [self addSubview:self.moreFunctionView];
+            [self.moreFunctionView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self);
+                make.right.equalTo(self);
+                make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
+                make.height.mas_equalTo(@150);
+            }];
+            [self _remakeButtonsViewConstraints];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidShowMoreViewAction)]) {
+                [self.delegate chatBarDidShowMoreViewAction];
+            }
+        }
+    }
+}
 
 - (void)callButtonAction:(UIButton *)aButton
 {
@@ -378,19 +452,6 @@
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidCallAction)]) {
         [self.delegate chatBarDidCallAction];
-    }
-}
-
-- (void)moreButtonAction:(UIButton *)aButton
-{
-    aButton.selected = !aButton.selected;
-    if (self.currentMoreView) {
-        [self.currentMoreView removeFromSuperview];
-    }
-
-    if (aButton.selected) {
-        self.selectedButton.selected = NO;
-        self.selectedButton = aButton;
     }
 }
 
