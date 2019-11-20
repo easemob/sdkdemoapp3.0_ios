@@ -39,7 +39,7 @@ static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 static NSString *kOptions_WillRecord = @"WillRecord";
 static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
 
-#define DEF_APPKEY @"easemob-demo#dujiepeng"
+#define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN
 
