@@ -349,17 +349,10 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSInteger section = indexPath.section - 1;
         NSString *contact = self.dataArray[section][indexPath.row];
-        __weak typeof(self) weakself = self;
         [self showHudInView:self.view hint:@"删除好友..."];
         [self _deleteContact:contact completion:^(EMError *aError) {
             if (!aError) {
-                NSMutableArray *array = weakself.dataArray[section];
-                [array removeObjectAtIndex:indexPath.row];
-                if ([array count] == 0) {
-                    [weakself.dataArray removeObjectAtIndex:section];
-                    [weakself.sectionTitles removeObjectAtIndex:section];
-                }
-                [weakself.tableView reloadData];
+                
             }
         }];
     }

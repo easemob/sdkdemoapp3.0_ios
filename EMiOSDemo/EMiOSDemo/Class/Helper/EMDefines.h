@@ -23,6 +23,8 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 //会话
 #define CONVERSATION_STICK @"stick"
+#define CONVERSATION_ID @"convwesationId"
+#define CONVERSATION_OBJECT @"convwesationObject"
 
 //账号状态
 #define ACCOUNT_LOGIN_CHANGED @"loginStateChange"
@@ -43,6 +45,16 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 //消息撤回
 #define MSG_EXT_RECALL @"em_recall"
+
+//新通知
+#define MSG_EXT_NEWNOTI @"em_noti"
+
+//加群/好友 成功
+#define NOTIF_ADD_SOCIAL_CONTACT @"EMAddSocialContact"
+
+//加群/好友 类型
+#define NOTI_EXT_ADDFRIEND @"add_friend"
+#define NOTI_EXT_ADDGROUP @"add_group"
 
 //多人会议邀请
 #define MSG_EXT_CALLOP @"em_conference_op"

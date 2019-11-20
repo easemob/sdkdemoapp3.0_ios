@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIView *buttonsView;
 
+@property (nonatomic, strong) UIButton *sendBtn;
+
 @property (nonatomic, strong) EMChatBarRecordAudioView *recordAudioView;
 @property (nonatomic, strong) EMChatBarEmoticonView *moreEmoticonView;
 @property (nonatomic, strong) EMMoreFunctionView *moreFunctionView;
@@ -33,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)inputViewAppendText:(NSString *)aText;
 
 - (void)clearMoreViewAndSelectedButton;
+
+- (void)textChangedExt;
 
 @end
 

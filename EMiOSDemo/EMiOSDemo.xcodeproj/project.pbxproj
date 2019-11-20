@@ -313,6 +313,30 @@
 		3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527401931D32C00385240 /* Security.framework */; };
 		3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AAFE194050A00076FF0B /* CoreLocation.framework */; };
 		3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C06AB0219405D330076FF0B /* MapKit.framework */; };
+		3C0C331B238403F90071BDDD /* backleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3318238403F70071BDDD /* backleft.png */; };
+		3C0C331C238403F90071BDDD /* backleft@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3319238403F80071BDDD /* backleft@3x.png */; };
+		3C0C331D238403F90071BDDD /* backleft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C331A238403F80071BDDD /* backleft@2x.png */; };
+		3C0C3321238404530071BDDD /* 语音声波send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C331E2384044F0071BDDD /* 语音声波send@2x.png */; };
+		3C0C3322238404530071BDDD /* 语音声波send@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C331F238404510071BDDD /* 语音声波send@3x.png */; };
+		3C0C3323238404530071BDDD /* 语音声波send.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3320238404520071BDDD /* 语音声波send.png */; };
+		3C0C33332384DE870071BDDD /* 语音声波备份 2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33242384DE750071BDDD /* 语音声波备份 2@3x.png */; };
+		3C0C33342384DE870071BDDD /* 语音声波备份.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33252384DE760071BDDD /* 语音声波备份.png */; };
+		3C0C33352384DE870071BDDD /* 语音声波备份 3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33262384DE770071BDDD /* 语音声波备份 3@2x.png */; };
+		3C0C33362384DE870071BDDD /* 语音声波备份 4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33272384DE780071BDDD /* 语音声波备份 4@2x.png */; };
+		3C0C33372384DE870071BDDD /* 语音声波备份 2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33282384DE7A0071BDDD /* 语音声波备份 2@2x.png */; };
+		3C0C33382384DE870071BDDD /* 语音声波备份 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33292384DE7B0071BDDD /* 语音声波备份 3.png */; };
+		3C0C33392384DE870071BDDD /* 语音声波备份 5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C332A2384DE7C0071BDDD /* 语音声波备份 5@2x.png */; };
+		3C0C333A2384DE870071BDDD /* 语音声波备份@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C332B2384DE7D0071BDDD /* 语音声波备份@2x.png */; };
+		3C0C333B2384DE870071BDDD /* 语音声波备份@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C332C2384DE7E0071BDDD /* 语音声波备份@3x.png */; };
+		3C0C333C2384DE870071BDDD /* 语音声波备份 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C332D2384DE800071BDDD /* 语音声波备份 2.png */; };
+		3C0C333D2384DE870071BDDD /* 语音声波备份 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C332E2384DE810071BDDD /* 语音声波备份 4.png */; };
+		3C0C333E2384DE870071BDDD /* 语音声波备份 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C332F2384DE830071BDDD /* 语音声波备份 5.png */; };
+		3C0C333F2384DE870071BDDD /* 语音声波备份 3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33302384DE840071BDDD /* 语音声波备份 3@3x.png */; };
+		3C0C33402384DE870071BDDD /* 语音声波备份 5@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33312384DE860071BDDD /* 语音声波备份 5@3x.png */; };
+		3C0C33412384DE870071BDDD /* 语音声波备份 4@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33322384DE860071BDDD /* 语音声波备份 4@3x.png */; };
+		3C0C334523851F140071BDDD /* 群资料.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334223851F120071BDDD /* 群资料.png */; };
+		3C0C334623851F140071BDDD /* 群资料@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334323851F130071BDDD /* 群资料@2x.png */; };
+		3C0C334723851F140071BDDD /* 群资料@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334423851F140071BDDD /* 群资料@3x.png */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */; };
@@ -367,6 +391,64 @@
 		3C37DF56238251EE00399AE8 /* icon-音视频会议@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DF41238251ED00399AE8 /* icon-音视频会议@2x.png */; };
 		3C5A157E23827287002CAE4E /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C37DEE82382477C00399AE8 /* Hyphenate.framework */; };
 		3C5A157F23827287002CAE4E /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3C37DEE82382477C00399AE8 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3C5A15842383A5E6002CAE4E /* gif.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15812383A5E4002CAE4E /* gif.png */; };
+		3C5A15852383A5E6002CAE4E /* gif@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15822383A5E5002CAE4E /* gif@2x.png */; };
+		3C5A15862383A5E6002CAE4E /* gif@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15832383A5E6002CAE4E /* gif@3x.png */; };
+		3C5A159F2383A696002CAE4E /* 路径.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15872383A67E002CAE4E /* 路径.png */; };
+		3C5A15A02383A696002CAE4E /* 图片.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15882383A67F002CAE4E /* 图片.png */; };
+		3C5A15A12383A696002CAE4E /* 图片@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15892383A680002CAE4E /* 图片@2x.png */; };
+		3C5A15A22383A696002CAE4E /* 加@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A158A2383A680002CAE4E /* 加@3x.png */; };
+		3C5A15A32383A696002CAE4E /* 图片@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A158B2383A681002CAE4E /* 图片@3x.png */; };
+		3C5A15A42383A696002CAE4E /* 相机@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A158C2383A682002CAE4E /* 相机@2x.png */; };
+		3C5A15A62383A696002CAE4E /* 电话@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A158E2383A684002CAE4E /* 电话@2x.png */; };
+		3C5A15A72383A696002CAE4E /* 加@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A158F2383A685002CAE4E /* 加@2x.png */; };
+		3C5A15A82383A696002CAE4E /* 路径@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15902383A686002CAE4E /* 路径@3x.png */; };
+		3C5A15A92383A696002CAE4E /* 路径@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15912383A687002CAE4E /* 路径@2x.png */; };
+		3C5A15AA2383A696002CAE4E /* 视频@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15922383A688002CAE4E /* 视频@2x.png */; };
+		3C5A15AB2383A696002CAE4E /* 相机@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15932383A68A002CAE4E /* 相机@3x.png */; };
+		3C5A15AC2383A696002CAE4E /* 相机.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15942383A68B002CAE4E /* 相机.png */; };
+		3C5A15AD2383A696002CAE4E /* 语音@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15952383A68C002CAE4E /* 语音@2x.png */; };
+		3C5A15AF2383A696002CAE4E /* 视频@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15972383A68E002CAE4E /* 视频@3x.png */; };
+		3C5A15B02383A696002CAE4E /* 视频.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15982383A68F002CAE4E /* 视频.png */; };
+		3C5A15B12383A696002CAE4E /* 电话.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15992383A690002CAE4E /* 电话.png */; };
+		3C5A15B22383A696002CAE4E /* 电话@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A159A2383A691002CAE4E /* 电话@3x.png */; };
+		3C5A15B32383A696002CAE4E /* 加.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A159B2383A692002CAE4E /* 加.png */; };
+		3C5A15B42383A696002CAE4E /* 语音.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A159C2383A693002CAE4E /* 语音.png */; };
+		3C5A15B52383A696002CAE4E /* 语音@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A159D2383A694002CAE4E /* 语音@3x.png */; };
+		3C5A15C32383A6EA002CAE4E /* icon叹号@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15B72383A6D9002CAE4E /* icon叹号@2x.png */; };
+		3C5A15C42383A6EA002CAE4E /* 语音声波.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15B82383A6DA002CAE4E /* 语音声波.png */; };
+		3C5A15C52383A6EA002CAE4E /* icon加载.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15B92383A6DC002CAE4E /* icon加载.png */; };
+		3C5A15C72383A6EA002CAE4E /* icon叹号@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15BB2383A6DE002CAE4E /* icon叹号@3x.png */; };
+		3C5A15C82383A6EA002CAE4E /* icon叹号.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15BC2383A6E0002CAE4E /* icon叹号.png */; };
+		3C5A15CB2383A6EA002CAE4E /* icon加载@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15BF2383A6E6002CAE4E /* icon加载@3x.png */; };
+		3C5A15CC2383A6EA002CAE4E /* 语音声波@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C02383A6E7002CAE4E /* 语音声波@2x.png */; };
+		3C5A15CD2383A6EA002CAE4E /* icon加载@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C12383A6E8002CAE4E /* icon加载@2x.png */; };
+		3C5A15CE2383A6EA002CAE4E /* 语音声波@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C22383A6E9002CAE4E /* 语音声波@3x.png */; };
+		3C5A15D62383A6FA002CAE4E /* 用户资料.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15D02383A6F5002CAE4E /* 用户资料.png */; };
+		3C5A15D82383A6FA002CAE4E /* 用户资料@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15D22383A6F8002CAE4E /* 用户资料@2x.png */; };
+		3C5A15DA2383A6FA002CAE4E /* 用户资料@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15D42383A6F9002CAE4E /* 用户资料@3x.png */; };
+		3C5A15DE2383A7A5002CAE4E /* 语音_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15DB2383A7A2002CAE4E /* 语音_selected@2x.png */; };
+		3C5A15DF2383A7A5002CAE4E /* 语音_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15DC2383A7A3002CAE4E /* 语音_selected.png */; };
+		3C5A15E02383A7A5002CAE4E /* 语音_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15DD2383A7A4002CAE4E /* 语音_selected@3x.png */; };
+		3C5A160B2383A903002CAE4E /* 电话(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16052383A8FE002CAE4E /* 电话(1).png */; };
+		3C5A160C2383A903002CAE4E /* 加(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16062383A8FF002CAE4E /* 加(1)@3x.png */; };
+		3C5A160D2383A903002CAE4E /* 加(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16072383A900002CAE4E /* 加(1).png */; };
+		3C5A160E2383A903002CAE4E /* 电话(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16082383A901002CAE4E /* 电话(1)@3x.png */; };
+		3C5A160F2383A903002CAE4E /* 电话(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16092383A901002CAE4E /* 电话(1)@2x.png */; };
+		3C5A16102383A903002CAE4E /* 加(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A160A2383A903002CAE4E /* 加(1)@2x.png */; };
+		3C5A16172383A95F002CAE4E /* 视频(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16112383A959002CAE4E /* 视频(1)@2x.png */; };
+		3C5A16182383A95F002CAE4E /* 图片(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16122383A95A002CAE4E /* 图片(1)@2x.png */; };
+		3C5A16192383A95F002CAE4E /* 图片(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16132383A95B002CAE4E /* 图片(1)@3x.png */; };
+		3C5A161A2383A95F002CAE4E /* 视频(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16142383A95C002CAE4E /* 视频(1)@3x.png */; };
+		3C5A161B2383A95F002CAE4E /* 视频(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16152383A95D002CAE4E /* 视频(1).png */; };
+		3C5A161C2383A95F002CAE4E /* 图片(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16162383A95F002CAE4E /* 图片(1).png */; };
+		3C5A16202383A96A002CAE4E /* 相机(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A161D2383A968002CAE4E /* 相机(1)@3x.png */; };
+		3C5A16212383A96A002CAE4E /* 相机(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A161E2383A969002CAE4E /* 相机(1).png */; };
+		3C5A16222383A96A002CAE4E /* 相机(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A161F2383A96A002CAE4E /* 相机(1)@2x.png */; };
+		3C5A16262383A998002CAE4E /* gif(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16232383A996002CAE4E /* gif(1)@2x.png */; };
+		3C5A16272383A998002CAE4E /* gif(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16242383A997002CAE4E /* gif(1)@3x.png */; };
+		3C5A16282383A998002CAE4E /* gif(1).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A16252383A998002CAE4E /* gif(1).png */; };
+		3C5A162B2383EA06002CAE4E /* LoadingCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5A162A2383EA06002CAE4E /* LoadingCALayer.m */; };
 		3CA8BB16236BFEBD00EE519E /* EMMoreFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0B236BFEBD00EE519E /* EMMoreFunctionView.m */; };
 		3CA8BB17236BFEBD00EE519E /* EMReadReceiptMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0C236BFEBD00EE519E /* EMReadReceiptMsgViewController.m */; };
 		3CA8BB18236BFEBD00EE519E /* EMReadReceiptTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0D236BFEBD00EE519E /* EMReadReceiptTableViewCell.m */; };
@@ -998,6 +1080,30 @@
 		3ACFA04E221168C000B16331 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		3C06AAFE194050A00076FF0B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3C06AB0219405D330076FF0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		3C0C3318238403F70071BDDD /* backleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backleft.png; sourceTree = "<group>"; };
+		3C0C3319238403F80071BDDD /* backleft@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backleft@3x.png"; sourceTree = "<group>"; };
+		3C0C331A238403F80071BDDD /* backleft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backleft@2x.png"; sourceTree = "<group>"; };
+		3C0C331E2384044F0071BDDD /* 语音声波send@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波send@2x.png"; sourceTree = "<group>"; };
+		3C0C331F238404510071BDDD /* 语音声波send@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波send@3x.png"; sourceTree = "<group>"; };
+		3C0C3320238404520071BDDD /* 语音声波send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波send.png"; sourceTree = "<group>"; };
+		3C0C33242384DE750071BDDD /* 语音声波备份 2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 2@3x.png"; sourceTree = "<group>"; };
+		3C0C33252384DE760071BDDD /* 语音声波备份.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份.png"; sourceTree = "<group>"; };
+		3C0C33262384DE770071BDDD /* 语音声波备份 3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 3@2x.png"; sourceTree = "<group>"; };
+		3C0C33272384DE780071BDDD /* 语音声波备份 4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 4@2x.png"; sourceTree = "<group>"; };
+		3C0C33282384DE7A0071BDDD /* 语音声波备份 2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 2@2x.png"; sourceTree = "<group>"; };
+		3C0C33292384DE7B0071BDDD /* 语音声波备份 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 3.png"; sourceTree = "<group>"; };
+		3C0C332A2384DE7C0071BDDD /* 语音声波备份 5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 5@2x.png"; sourceTree = "<group>"; };
+		3C0C332B2384DE7D0071BDDD /* 语音声波备份@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份@2x.png"; sourceTree = "<group>"; };
+		3C0C332C2384DE7E0071BDDD /* 语音声波备份@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份@3x.png"; sourceTree = "<group>"; };
+		3C0C332D2384DE800071BDDD /* 语音声波备份 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 2.png"; sourceTree = "<group>"; };
+		3C0C332E2384DE810071BDDD /* 语音声波备份 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 4.png"; sourceTree = "<group>"; };
+		3C0C332F2384DE830071BDDD /* 语音声波备份 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 5.png"; sourceTree = "<group>"; };
+		3C0C33302384DE840071BDDD /* 语音声波备份 3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 3@3x.png"; sourceTree = "<group>"; };
+		3C0C33312384DE860071BDDD /* 语音声波备份 5@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 5@3x.png"; sourceTree = "<group>"; };
+		3C0C33322384DE860071BDDD /* 语音声波备份 4@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波备份 4@3x.png"; sourceTree = "<group>"; };
+		3C0C334223851F120071BDDD /* 群资料.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "群资料.png"; sourceTree = "<group>"; };
+		3C0C334323851F130071BDDD /* 群资料@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "群资料@2x.png"; sourceTree = "<group>"; };
+		3C0C334423851F140071BDDD /* 群资料@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "群资料@3x.png"; sourceTree = "<group>"; };
 		3C1CEF7E196EA37600DBA56B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3C27F9101A1C8FCD008272EF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C3527401931D32C00385240 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1058,6 +1164,65 @@
 		3C37DF40238251ED00399AE8 /* icon-添加好友.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-添加好友.png"; sourceTree = "<group>"; };
 		3C37DF41238251ED00399AE8 /* icon-音视频会议@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-音视频会议@2x.png"; sourceTree = "<group>"; };
 		3C4CEC972373D87800A37140 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hyphenate.framework; path = ../../Hyphenate.framework; sourceTree = "<group>"; };
+		3C5A15812383A5E4002CAE4E /* gif.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gif.png; sourceTree = "<group>"; };
+		3C5A15822383A5E5002CAE4E /* gif@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gif@2x.png"; sourceTree = "<group>"; };
+		3C5A15832383A5E6002CAE4E /* gif@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gif@3x.png"; sourceTree = "<group>"; };
+		3C5A15872383A67E002CAE4E /* 路径.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "路径.png"; sourceTree = "<group>"; };
+		3C5A15882383A67F002CAE4E /* 图片.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图片.png"; sourceTree = "<group>"; };
+		3C5A15892383A680002CAE4E /* 图片@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图片@2x.png"; sourceTree = "<group>"; };
+		3C5A158A2383A680002CAE4E /* 加@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加@3x.png"; sourceTree = "<group>"; };
+		3C5A158B2383A681002CAE4E /* 图片@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图片@3x.png"; sourceTree = "<group>"; };
+		3C5A158C2383A682002CAE4E /* 相机@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机@2x.png"; sourceTree = "<group>"; };
+		3C5A158E2383A684002CAE4E /* 电话@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电话@2x.png"; sourceTree = "<group>"; };
+		3C5A158F2383A685002CAE4E /* 加@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加@2x.png"; sourceTree = "<group>"; };
+		3C5A15902383A686002CAE4E /* 路径@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "路径@3x.png"; sourceTree = "<group>"; };
+		3C5A15912383A687002CAE4E /* 路径@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "路径@2x.png"; sourceTree = "<group>"; };
+		3C5A15922383A688002CAE4E /* 视频@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频@2x.png"; sourceTree = "<group>"; };
+		3C5A15932383A68A002CAE4E /* 相机@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机@3x.png"; sourceTree = "<group>"; };
+		3C5A15942383A68B002CAE4E /* 相机.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机.png"; sourceTree = "<group>"; };
+		3C5A15952383A68C002CAE4E /* 语音@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音@2x.png"; sourceTree = "<group>"; };
+		3C5A15972383A68E002CAE4E /* 视频@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频@3x.png"; sourceTree = "<group>"; };
+		3C5A15982383A68F002CAE4E /* 视频.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频.png"; sourceTree = "<group>"; };
+		3C5A15992383A690002CAE4E /* 电话.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电话.png"; sourceTree = "<group>"; };
+		3C5A159A2383A691002CAE4E /* 电话@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电话@3x.png"; sourceTree = "<group>"; };
+		3C5A159B2383A692002CAE4E /* 加.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加.png"; sourceTree = "<group>"; };
+		3C5A159C2383A693002CAE4E /* 语音.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音.png"; sourceTree = "<group>"; };
+		3C5A159D2383A694002CAE4E /* 语音@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音@3x.png"; sourceTree = "<group>"; };
+		3C5A15B72383A6D9002CAE4E /* icon叹号@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon叹号@2x.png"; sourceTree = "<group>"; };
+		3C5A15B82383A6DA002CAE4E /* 语音声波.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波.png"; sourceTree = "<group>"; };
+		3C5A15B92383A6DC002CAE4E /* icon加载.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon加载.png"; sourceTree = "<group>"; };
+		3C5A15BB2383A6DE002CAE4E /* icon叹号@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon叹号@3x.png"; sourceTree = "<group>"; };
+		3C5A15BC2383A6E0002CAE4E /* icon叹号.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon叹号.png"; sourceTree = "<group>"; };
+		3C5A15BF2383A6E6002CAE4E /* icon加载@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon加载@3x.png"; sourceTree = "<group>"; };
+		3C5A15C02383A6E7002CAE4E /* 语音声波@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波@2x.png"; sourceTree = "<group>"; };
+		3C5A15C12383A6E8002CAE4E /* icon加载@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon加载@2x.png"; sourceTree = "<group>"; };
+		3C5A15C22383A6E9002CAE4E /* 语音声波@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波@3x.png"; sourceTree = "<group>"; };
+		3C5A15D02383A6F5002CAE4E /* 用户资料.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "用户资料.png"; sourceTree = "<group>"; };
+		3C5A15D22383A6F8002CAE4E /* 用户资料@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "用户资料@2x.png"; sourceTree = "<group>"; };
+		3C5A15D42383A6F9002CAE4E /* 用户资料@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "用户资料@3x.png"; sourceTree = "<group>"; };
+		3C5A15DB2383A7A2002CAE4E /* 语音_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音_selected@2x.png"; sourceTree = "<group>"; };
+		3C5A15DC2383A7A3002CAE4E /* 语音_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音_selected.png"; sourceTree = "<group>"; };
+		3C5A15DD2383A7A4002CAE4E /* 语音_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音_selected@3x.png"; sourceTree = "<group>"; };
+		3C5A16052383A8FE002CAE4E /* 电话(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电话(1).png"; sourceTree = "<group>"; };
+		3C5A16062383A8FF002CAE4E /* 加(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加(1)@3x.png"; sourceTree = "<group>"; };
+		3C5A16072383A900002CAE4E /* 加(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加(1).png"; sourceTree = "<group>"; };
+		3C5A16082383A901002CAE4E /* 电话(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电话(1)@3x.png"; sourceTree = "<group>"; };
+		3C5A16092383A901002CAE4E /* 电话(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电话(1)@2x.png"; sourceTree = "<group>"; };
+		3C5A160A2383A903002CAE4E /* 加(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加(1)@2x.png"; sourceTree = "<group>"; };
+		3C5A16112383A959002CAE4E /* 视频(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频(1)@2x.png"; sourceTree = "<group>"; };
+		3C5A16122383A95A002CAE4E /* 图片(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图片(1)@2x.png"; sourceTree = "<group>"; };
+		3C5A16132383A95B002CAE4E /* 图片(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图片(1)@3x.png"; sourceTree = "<group>"; };
+		3C5A16142383A95C002CAE4E /* 视频(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频(1)@3x.png"; sourceTree = "<group>"; };
+		3C5A16152383A95D002CAE4E /* 视频(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频(1).png"; sourceTree = "<group>"; };
+		3C5A16162383A95F002CAE4E /* 图片(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图片(1).png"; sourceTree = "<group>"; };
+		3C5A161D2383A968002CAE4E /* 相机(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机(1)@3x.png"; sourceTree = "<group>"; };
+		3C5A161E2383A969002CAE4E /* 相机(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机(1).png"; sourceTree = "<group>"; };
+		3C5A161F2383A96A002CAE4E /* 相机(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "相机(1)@2x.png"; sourceTree = "<group>"; };
+		3C5A16232383A996002CAE4E /* gif(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gif(1)@2x.png"; sourceTree = "<group>"; };
+		3C5A16242383A997002CAE4E /* gif(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gif(1)@3x.png"; sourceTree = "<group>"; };
+		3C5A16252383A998002CAE4E /* gif(1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gif(1).png"; sourceTree = "<group>"; };
+		3C5A16292383EA06002CAE4E /* LoadingCALayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingCALayer.h; sourceTree = "<group>"; };
+		3C5A162A2383EA06002CAE4E /* LoadingCALayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingCALayer.m; sourceTree = "<group>"; };
 		3CA8BB05236BFEBD00EE519E /* EMReadReceiptMemberModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMReadReceiptMemberModel.h; sourceTree = "<group>"; };
 		3CA8BB0B236BFEBD00EE519E /* EMMoreFunctionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMoreFunctionView.m; sourceTree = "<group>"; };
 		3CA8BB0C236BFEBD00EE519E /* EMReadReceiptMsgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMReadReceiptMsgViewController.m; sourceTree = "<group>"; };
@@ -1463,6 +1628,8 @@
 				3A45E3112223A43300505786 /* EMMessageStatusView.m */,
 				3A45E3132223A43300505786 /* EMMessageTimeCell.h */,
 				3A45E3142223A43300505786 /* EMMessageTimeCell.m */,
+				3C5A16292383EA06002CAE4E /* LoadingCALayer.h */,
+				3C5A162A2383EA06002CAE4E /* LoadingCALayer.m */,
 				3A45DC442223A1FC00505786 /* BubbleView */,
 				3A45DC582223A1FC00505786 /* MsgCellImgs */,
 			);
@@ -1497,6 +1664,33 @@
 		3A45DC582223A1FC00505786 /* MsgCellImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C0C332D2384DE800071BDDD /* 语音声波备份 2.png */,
+				3C0C33282384DE7A0071BDDD /* 语音声波备份 2@2x.png */,
+				3C0C33242384DE750071BDDD /* 语音声波备份 2@3x.png */,
+				3C0C33292384DE7B0071BDDD /* 语音声波备份 3.png */,
+				3C0C33262384DE770071BDDD /* 语音声波备份 3@2x.png */,
+				3C0C33302384DE840071BDDD /* 语音声波备份 3@3x.png */,
+				3C0C332E2384DE810071BDDD /* 语音声波备份 4.png */,
+				3C0C33272384DE780071BDDD /* 语音声波备份 4@2x.png */,
+				3C0C33322384DE860071BDDD /* 语音声波备份 4@3x.png */,
+				3C0C332F2384DE830071BDDD /* 语音声波备份 5.png */,
+				3C0C332A2384DE7C0071BDDD /* 语音声波备份 5@2x.png */,
+				3C0C33312384DE860071BDDD /* 语音声波备份 5@3x.png */,
+				3C0C33252384DE760071BDDD /* 语音声波备份.png */,
+				3C0C332B2384DE7D0071BDDD /* 语音声波备份@2x.png */,
+				3C0C332C2384DE7E0071BDDD /* 语音声波备份@3x.png */,
+				3C0C3320238404520071BDDD /* 语音声波send.png */,
+				3C0C331E2384044F0071BDDD /* 语音声波send@2x.png */,
+				3C0C331F238404510071BDDD /* 语音声波send@3x.png */,
+				3C5A15B82383A6DA002CAE4E /* 语音声波.png */,
+				3C5A15C02383A6E7002CAE4E /* 语音声波@2x.png */,
+				3C5A15C22383A6E9002CAE4E /* 语音声波@3x.png */,
+				3C5A15B92383A6DC002CAE4E /* icon加载.png */,
+				3C5A15C12383A6E8002CAE4E /* icon加载@2x.png */,
+				3C5A15BF2383A6E6002CAE4E /* icon加载@3x.png */,
+				3C5A15BC2383A6E0002CAE4E /* icon叹号.png */,
+				3C5A15B72383A6D9002CAE4E /* icon叹号@2x.png */,
+				3C5A15BB2383A6DE002CAE4E /* icon叹号@3x.png */,
 				3A45E3482223A45400505786 /* msg_bg_recv@2x.png */,
 				3A45E34A2223A45400505786 /* msg_bg_recv@3x.png */,
 				3A45E3392223A45300505786 /* msg_bg_send@2x.png */,
@@ -1534,6 +1728,15 @@
 		3A45DC7A2223A1FC00505786 /* ChatImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C0C334223851F120071BDDD /* 群资料.png */,
+				3C0C334323851F130071BDDD /* 群资料@2x.png */,
+				3C0C334423851F140071BDDD /* 群资料@3x.png */,
+				3C0C3318238403F70071BDDD /* backleft.png */,
+				3C0C331A238403F80071BDDD /* backleft@2x.png */,
+				3C0C3319238403F80071BDDD /* backleft@3x.png */,
+				3C5A15D02383A6F5002CAE4E /* 用户资料.png */,
+				3C5A15D22383A6F8002CAE4E /* 用户资料@2x.png */,
+				3C5A15D42383A6F9002CAE4E /* 用户资料@3x.png */,
 				3A45E3712223A46400505786 /* chat_clear@2x.png */,
 				3A45E3742223A46500505786 /* chat_clear@3x.png */,
 				3A45E3732223A46500505786 /* chat_info@2x.png */,
@@ -2183,6 +2386,51 @@
 		3A45E29F2223A40400505786 /* ChatBarImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C5A16052383A8FE002CAE4E /* 电话(1).png */,
+				3C5A16092383A901002CAE4E /* 电话(1)@2x.png */,
+				3C5A16082383A901002CAE4E /* 电话(1)@3x.png */,
+				3C5A16072383A900002CAE4E /* 加(1).png */,
+				3C5A160A2383A903002CAE4E /* 加(1)@2x.png */,
+				3C5A16062383A8FF002CAE4E /* 加(1)@3x.png */,
+				3C5A16152383A95D002CAE4E /* 视频(1).png */,
+				3C5A16112383A959002CAE4E /* 视频(1)@2x.png */,
+				3C5A16142383A95C002CAE4E /* 视频(1)@3x.png */,
+				3C5A16162383A95F002CAE4E /* 图片(1).png */,
+				3C5A16122383A95A002CAE4E /* 图片(1)@2x.png */,
+				3C5A16132383A95B002CAE4E /* 图片(1)@3x.png */,
+				3C5A161E2383A969002CAE4E /* 相机(1).png */,
+				3C5A161F2383A96A002CAE4E /* 相机(1)@2x.png */,
+				3C5A161D2383A968002CAE4E /* 相机(1)@3x.png */,
+				3C5A16252383A998002CAE4E /* gif(1).png */,
+				3C5A16232383A996002CAE4E /* gif(1)@2x.png */,
+				3C5A16242383A997002CAE4E /* gif(1)@3x.png */,
+				3C5A15992383A690002CAE4E /* 电话.png */,
+				3C5A158E2383A684002CAE4E /* 电话@2x.png */,
+				3C5A159A2383A691002CAE4E /* 电话@3x.png */,
+				3C5A159B2383A692002CAE4E /* 加.png */,
+				3C5A158F2383A685002CAE4E /* 加@2x.png */,
+				3C5A158A2383A680002CAE4E /* 加@3x.png */,
+				3C5A15872383A67E002CAE4E /* 路径.png */,
+				3C5A15912383A687002CAE4E /* 路径@2x.png */,
+				3C5A15902383A686002CAE4E /* 路径@3x.png */,
+				3C5A15982383A68F002CAE4E /* 视频.png */,
+				3C5A15922383A688002CAE4E /* 视频@2x.png */,
+				3C5A15972383A68E002CAE4E /* 视频@3x.png */,
+				3C5A15882383A67F002CAE4E /* 图片.png */,
+				3C5A15892383A680002CAE4E /* 图片@2x.png */,
+				3C5A158B2383A681002CAE4E /* 图片@3x.png */,
+				3C5A15942383A68B002CAE4E /* 相机.png */,
+				3C5A158C2383A682002CAE4E /* 相机@2x.png */,
+				3C5A15932383A68A002CAE4E /* 相机@3x.png */,
+				3C5A15DC2383A7A3002CAE4E /* 语音_selected.png */,
+				3C5A15DB2383A7A2002CAE4E /* 语音_selected@2x.png */,
+				3C5A15DD2383A7A4002CAE4E /* 语音_selected@3x.png */,
+				3C5A159C2383A693002CAE4E /* 语音.png */,
+				3C5A15952383A68C002CAE4E /* 语音@2x.png */,
+				3C5A159D2383A694002CAE4E /* 语音@3x.png */,
+				3C5A15812383A5E4002CAE4E /* gif.png */,
+				3C5A15822383A5E5002CAE4E /* gif@2x.png */,
+				3C5A15832383A5E6002CAE4E /* gif@3x.png */,
 				3A45E2E32223A41500505786 /* chatbar_audio_blue@2x.png */,
 				3A45E2E52223A41500505786 /* chatbar_audio_blue@3x.png */,
 				3A45E2EC2223A41500505786 /* chatbar_audio@2x.png */,
@@ -2613,8 +2861,10 @@
 				3CA8BC9D236C3A8000EE519E /* speaker_gray@2x.png in Resources */,
 				3A45E3572223A45500505786 /* msg_bg_send@2x.png in Resources */,
 				3CDAFE69236C43E9009E38EE /* animate_00053.png in Resources */,
+				3C5A15A12383A696002CAE4E /* 图片@2x.png in Resources */,
 				3CA8BB34236C116200EE519E /* icon-tab发现.png in Resources */,
 				3CDAFE33236C43E9009E38EE /* animate_00074.png in Resources */,
+				3C5A16102383A903002CAE4E /* 加(1)@2x.png in Resources */,
 				3A45E2812223A3D600505786 /* icon_030_cover.png in Resources */,
 				3A45DF582223A1FD00505786 /* MWPhotoBrowser.bundle in Resources */,
 				3CDAFE53236C43E9009E38EE /* animate_00087.png in Resources */,
@@ -2623,6 +2873,7 @@
 				3A45E3FE2223A50400505786 /* tabbar_contacts_gray@2x.png in Resources */,
 				3CA8BB2F236C116200EE519E /* icon-tab我unselected@2x.png in Resources */,
 				3A45E3592223A45500505786 /* msg_img_broken@2x.png in Resources */,
+				3C5A15CE2383A6EA002CAE4E /* 语音声波@3x.png in Resources */,
 				3CDAFE5B236C43E9009E38EE /* animate_00030.png in Resources */,
 				3A45E3562223A45500505786 /* msg_send_audio01@3x.png in Resources */,
 				3CDAFE2B236C43E9009E38EE /* animate_00063.png in Resources */,
@@ -2632,12 +2883,14 @@
 				3C37DF292382512800399AE8 /* 聊天室@3x.png in Resources */,
 				3A45E2892223A3D600505786 /* icon_027.gif in Resources */,
 				3C37DF46238251ED00399AE8 /* icon-音视频会议.png in Resources */,
+				3C5A16192383A95F002CAE4E /* 图片(1)@3x.png in Resources */,
 				3A45E2722223A3D600505786 /* icon_010.gif in Resources */,
 				3A45E3672223A45500505786 /* msg_fail@3x.png in Resources */,
 				3C37DEF723824A7700399AE8 /* icon-tab会话unselected@2x.png in Resources */,
 				3A45E3B22223A4C000505786 /* group@2x.png in Resources */,
 				3A45E2FB2223A41600505786 /* chatbar_map_blue@3x.png in Resources */,
 				3A45E3ED2223A4F300505786 /* group_join@3x.png in Resources */,
+				3C0C33382384DE870071BDDD /* 语音声波备份 3.png in Resources */,
 				3CA8BC74236C3A8000EE519E /* talking_green@3x.png in Resources */,
 				3CDAFE52236C43E9009E38EE /* animate_00041.png in Resources */,
 				3A45E3522223A45500505786 /* msg_video_white@3x.png in Resources */,
@@ -2645,42 +2898,57 @@
 				3A45E4062223A50400505786 /* tabbar_settings_gray@2x.png in Resources */,
 				3C37DF192382508500399AE8 /* 显示密码@2x.png in Resources */,
 				3CA8BB2D236C116200EE519E /* icon-tab发现unselected.png in Resources */,
+				3C5A15A82383A696002CAE4E /* 路径@3x.png in Resources */,
 				3A45E2712223A3D600505786 /* icon_022_cover.png in Resources */,
+				3C5A15C72383A6EA002CAE4E /* icon叹号@3x.png in Resources */,
 				3CA8BC83236C3A8000EE519E /* role_white@2x.png in Resources */,
+				3C5A160E2383A903002CAE4E /* 电话(1)@3x.png in Resources */,
 				3A45E2862223A3D600505786 /* icon_027_cover.png in Resources */,
 				3A45E5422223D69800505786 /* checked@2x.png in Resources */,
 				3A45E08A2223A28F00505786 /* close_white@3x.png in Resources */,
 				3CDAFE2F236C43E9009E38EE /* animate_00084.png in Resources */,
+				3C5A15B52383A696002CAE4E /* 语音@3x.png in Resources */,
 				3CA8BC9A236C3A8000EE519E /* switchCamera_gray@2x.png in Resources */,
 				3CA8BC97236C3A8000EE519E /* minimize_white@2x.png in Resources */,
+				3C5A15A02383A696002CAE4E /* 图片.png in Resources */,
 				3CA8BB30236C116200EE519E /* icon-tab我@3x.png in Resources */,
 				3CDAFE4D236C43E9009E38EE /* animate_00046.png in Resources */,
 				3C37DF282382512800399AE8 /* 新的好友@3x.png in Resources */,
+				3C0C33332384DE870071BDDD /* 语音声波备份 2@3x.png in Resources */,
 				3C37DEF623824A7700399AE8 /* icon-tab会话.png in Resources */,
 				3CDAFE4C236C43E9009E38EE /* animate_00028.png in Resources */,
 				3CA8BC7D236C3A8000EE519E /* recorder_white@3x.png in Resources */,
 				3A45E0F62223A30000505786 /* alert_success@3x.png in Resources */,
 				3C37DF45238251ED00399AE8 /* icon-search@2x.png in Resources */,
 				3A45E53F2223D69800505786 /* checked@3x.png in Resources */,
+				3C5A15D62383A6FA002CAE4E /* 用户资料.png in Resources */,
 				3CA8BC7A236C3A8000EE519E /* answer@2x.png in Resources */,
+				3C5A15862383A5E6002CAE4E /* gif@3x.png in Resources */,
 				3A45E3542223A45500505786 /* msg_recv_audio02@2x.png in Resources */,
 				3CA8BCA6236C3A8000EE519E /* minimize_white@3x.png in Resources */,
 				3CA8BC2D236C3A7F00EE519E /* floating_voice@3x.png in Resources */,
+				3C5A15AA2383A696002CAE4E /* 视频@2x.png in Resources */,
 				3CDAFE5A236C43E9009E38EE /* animate_00072.png in Resources */,
+				3C0C331D238403F90071BDDD /* backleft@2x.png in Resources */,
 				3A45E3962223A49E00505786 /* chatroom_avatar@2x.png in Resources */,
 				3CA8BC96236C3A8000EE519E /* minimize_gray@2x.png in Resources */,
 				3C37DF112382508500399AE8 /* 24 ／ arrows ／ arrow-left.png in Resources */,
 				3C37DF142382508500399AE8 /* icon失败.png in Resources */,
+				3C5A15DA2383A6FA002CAE4E /* 用户资料@3x.png in Resources */,
 				3C37DF102382508500399AE8 /* 显示密码@3x.png in Resources */,
 				3CDAFE67236C43E9009E38EE /* animate_00048.png in Resources */,
 				3A45E0872223A28F00505786 /* back_gary@2x.png in Resources */,
 				3CA8BB31236C116200EE519E /* icon-tab发现unselected@2x.png in Resources */,
+				3C5A15AF2383A696002CAE4E /* 视频@3x.png in Resources */,
 				3A45E0372223A22600505786 /* qr@2x.png in Resources */,
 				3CA8BC7E236C3A8000EE519E /* micphone_gray@3x.png in Resources */,
 				3CA8BCA2236C3A8000EE519E /* hangup@2x.png in Resources */,
 				3A45E0F72223A30000505786 /* alert_default@3x.png in Resources */,
+				3C5A15A92383A696002CAE4E /* 路径@2x.png in Resources */,
 				3A45E30E2223A41600505786 /* chatbar_call@3x.png in Resources */,
 				3A45E28C2223A3D600505786 /* icon_012_cover.png in Resources */,
+				3C5A161A2383A95F002CAE4E /* 视频(1)@3x.png in Resources */,
+				3C5A159F2383A696002CAE4E /* 路径.png in Resources */,
 				3CA8BC78236C3A8000EE519E /* role_gray@3x.png in Resources */,
 				3C37DF272382512800399AE8 /* 群聊@2x.png in Resources */,
 				3A45E5402223D69800505786 /* uncheck@3x.png in Resources */,
@@ -2691,18 +2959,24 @@
 				3A45E4012223A50400505786 /* tabbar_settings_blue@3x.png in Resources */,
 				3A45E2992223A3E500505786 /* chat_audio_red@3x.png in Resources */,
 				3A45E2832223A3D600505786 /* icon_013_cover.png in Resources */,
+				3C0C331B238403F90071BDDD /* backleft.png in Resources */,
 				3A45E3B02223A4C000505786 /* call@2x.png in Resources */,
+				3C0C33362384DE870071BDDD /* 语音声波备份 4@2x.png in Resources */,
 				3C37DF51238251ED00399AE8 /* icon-加群.png in Resources */,
+				3C5A160B2383A903002CAE4E /* 电话(1).png in Resources */,
 				3A45E30D2223A41600505786 /* chatbar_face@2x.png in Resources */,
 				3CA8BC99236C3A8000EE519E /* video_white@3x.png in Resources */,
 				3CA8BC30236C3A7F00EE519E /* bg_micro@2x.png in Resources */,
 				3CDAFE3A236C43E9009E38EE /* animate_00085.png in Resources */,
+				3C0C333F2384DE870071BDDD /* 语音声波备份 3@3x.png in Resources */,
 				3CA8BCA5236C3A8000EE519E /* switchCamera_white@2x.png in Resources */,
 				3A45E3692223A45500505786 /* msg_recv_audio01@2x.png in Resources */,
 				3A45E0342223A22600505786 /* unsecure@2x.png in Resources */,
+				3C5A15DF2383A7A5002CAE4E /* 语音_selected.png in Resources */,
 				3A45D9B322239DE200505786 /* Localizable.strings in Resources */,
 				3C37DF4F238251ED00399AE8 /* icon-加群@3x.png in Resources */,
 				3CDAFE42236C43E9009E38EE /* animate_00059.png in Resources */,
+				3C5A15CD2383A6EA002CAE4E /* icon加载@2x.png in Resources */,
 				3CDAFE3C236C43E9009E38EE /* animate_00039.png in Resources */,
 				3A45E2FA2223A41600505786 /* chatbar_camera@2x.png in Resources */,
 				3C37DF55238251EE00399AE8 /* icon-添加好友.png in Resources */,
@@ -2717,19 +2991,24 @@
 				3A45E3632223A45500505786 /* msg_recv_audio@3x.png in Resources */,
 				3A45E0942223A28F00505786 /* user_avatar_gray@3x.png in Resources */,
 				3CDAFE3F236C43E9009E38EE /* animate_00073.png in Resources */,
+				3C5A15E02383A7A5002CAE4E /* 语音_selected@3x.png in Resources */,
 				3A45E03B2223A22600505786 /* secure@3x.png in Resources */,
 				3CDAFE41236C43E9009E38EE /* animate_00067.png in Resources */,
+				3C5A15852383A5E6002CAE4E /* gif@2x.png in Resources */,
 				3A45E2752223A3D600505786 /* icon_029_cover.png in Resources */,
 				3A45E0892223A28F00505786 /* close_gray@2x.png in Resources */,
 				3CDAFE55236C43E9009E38EE /* animate_00069.png in Resources */,
+				3C0C331C238403F90071BDDD /* backleft@3x.png in Resources */,
 				3A45E08D2223A28F00505786 /* group_avatar@3x.png in Resources */,
 				3A45E3B32223A4C000505786 /* chatroom@2x.png in Resources */,
 				3A45E35E2223A45500505786 /* msg_send_audio@2x.png in Resources */,
+				3C0C33372384DE870071BDDD /* 语音声波备份 2@2x.png in Resources */,
 				3A45E0362223A22600505786 /* device_disable@2x.png in Resources */,
 				3A45E0312223A22600505786 /* unsecure@3x.png in Resources */,
 				3CDAFE37236C43E9009E38EE /* animate_00050.png in Resources */,
 				3CA8BC95236C3A8000EE519E /* recorder_gray@2x.png in Resources */,
 				3A45E30F2223A41600505786 /* chatbar_face_blue@2x.png in Resources */,
+				3C5A15AC2383A696002CAE4E /* 相机.png in Resources */,
 				3A45E2FC2223A41600505786 /* chatbar_extend@2x.png in Resources */,
 				3A45E3552223A45500505786 /* msg_location@2x.png in Resources */,
 				3A45E0922223A28F00505786 /* user_avatar_me@3x.png in Resources */,
@@ -2738,17 +3017,25 @@
 				3C37DEF423824A7700399AE8 /* icon-tab会话@2x.png in Resources */,
 				3A45E3B72223A4C000505786 /* contact@2x.png in Resources */,
 				3CDAFE45236C43E9009E38EE /* animate_00077.png in Resources */,
+				3C5A160F2383A903002CAE4E /* 电话(1)@2x.png in Resources */,
 				3A45E0352223A22600505786 /* device_disable@3x.png in Resources */,
 				3A45E28D2223A3D600505786 /* icon_020.gif in Resources */,
 				3A45E3012223A41600505786 /* chatbar_audio_blue@3x.png in Resources */,
+				3C0C3321238404530071BDDD /* 语音声波send@2x.png in Resources */,
+				3C0C333A2384DE870071BDDD /* 语音声波备份@2x.png in Resources */,
 				3A45E3582223A45500505786 /* msg_location_white@2x.png in Resources */,
 				3A45DBE022239DE300505786 /* EMiOSDemo-Info.plist in Resources */,
+				3C5A15A42383A696002CAE4E /* 相机@2x.png in Resources */,
 				3A45E0322223A22600505786 /* qr@3x.png in Resources */,
 				3A45E0FD2223A30000505786 /* alert_info@3x.png in Resources */,
+				3C5A16262383A998002CAE4E /* gif(1)@2x.png in Resources */,
 				3C37DF172382508500399AE8 /* icon失败@3x.png in Resources */,
 				3A45E3002223A41600505786 /* chatbar_map_blue@2x.png in Resources */,
+				3C5A15D82383A6FA002CAE4E /* 用户资料@2x.png in Resources */,
 				3C37DF2A2382512800399AE8 /* 群聊@3x.png in Resources */,
 				3A45E36F2223A45500505786 /* msg_file@3x.png in Resources */,
+				3C0C334623851F140071BDDD /* 群资料@2x.png in Resources */,
+				3C5A16172383A95F002CAE4E /* 视频(1)@2x.png in Resources */,
 				3CA8BC7F236C3A8000EE519E /* talking_green@2x.png in Resources */,
 				3A45E0F82223A30000505786 /* alert_error@2x.png in Resources */,
 				3A45E0932223A28F00505786 /* search_gray@3x.png in Resources */,
@@ -2776,15 +3063,19 @@
 				3A45E2F92223A41600505786 /* chatbar_extend@3x.png in Resources */,
 				3CDAFE3B236C43E9009E38EE /* animate_00027.png in Resources */,
 				3A45E0912223A28F00505786 /* user_avatar_blue@3x.png in Resources */,
+				3C5A15B12383A696002CAE4E /* 电话.png in Resources */,
 				3A45E3022223A41600505786 /* chatbar_extend_blue@2x.png in Resources */,
 				3A45E3B52223A4C000505786 /* videocs_theme@2x.png in Resources */,
 				3A45E35A2223A45500505786 /* msg_fail@2x.png in Resources */,
 				3CA8BC86236C3A8000EE519E /* bg_connecting@3x.png in Resources */,
 				3A45E2882223A3D600505786 /* icon_040_cover.png in Resources */,
+				3C5A15AB2383A696002CAE4E /* 相机@3x.png in Resources */,
 				3A45E35F2223A45500505786 /* msg_file_white@2x.png in Resources */,
 				3A45E36B2223A45500505786 /* msg_send_audio02@2x.png in Resources */,
+				3C5A15C42383A6EA002CAE4E /* 语音声波.png in Resources */,
 				3A45E3762223A46500505786 /* chat_clear@2x.png in Resources */,
 				3CA8BC9E236C3A8000EE519E /* invite_white@2x.png in Resources */,
+				3C5A15B32383A696002CAE4E /* 加.png in Resources */,
 				3A45E3B42223A4C000505786 /* group@3x.png in Resources */,
 				3CDAFE3E236C43E9009E38EE /* animate_00035.png in Resources */,
 				3A45DA2722239DE200505786 /* Images.xcassets in Resources */,
@@ -2795,21 +3086,26 @@
 				3CDAFE4F236C43E9009E38EE /* animate_00054.png in Resources */,
 				3A45E0862223A28F00505786 /* close_white@2x.png in Resources */,
 				3A45E2842223A3D600505786 /* icon_021_cover.png in Resources */,
+				3C5A161B2383A95F002CAE4E /* 视频(1).png in Resources */,
+				3C0C333B2384DE870071BDDD /* 语音声波备份@3x.png in Resources */,
 				3A45E0392223A22600505786 /* scanLine@2x.png in Resources */,
 				3CA8BC9B236C3A8000EE519E /* hangup@3x.png in Resources */,
 				3CA8BC77236C3A8000EE519E /* kbps_gray@3x.png in Resources */,
 				3CA8BC73236C3A8000EE519E /* grid_gray@2x.png in Resources */,
+				3C5A160D2383A903002CAE4E /* 加(1).png in Resources */,
 				3CA8BC2F236C3A7F00EE519E /* video_gray@3x.png in Resources */,
 				3CA8BC2C236C3A7F00EE519E /* video_gray@2x.png in Resources */,
 				3CDAFE47236C43E9009E38EE /* animate_00034.png in Resources */,
 				3A45E3B62223A4C000505786 /* notification@3x.png in Resources */,
 				3A45E3602223A45500505786 /* msg_recv_audio02@3x.png in Resources */,
+				3C5A15B02383A696002CAE4E /* 视频.png in Resources */,
 				3A45E0FC2223A30000505786 /* alert_info@2x.png in Resources */,
 				3A45E08F2223A28F00505786 /* group_avatar@2x.png in Resources */,
 				3CA8BC2B236C3A7F00EE519E /* bg_micro@3x.png in Resources */,
 				3CDAFE34236C43E9009E38EE /* animate_00081.png in Resources */,
 				3CDAFE57236C43E9009E38EE /* animate_00044.png in Resources */,
 				3CDAFE5C236C43E9009E38EE /* animate_00080.png in Resources */,
+				3C5A16202383A96A002CAE4E /* 相机(1)@3x.png in Resources */,
 				3CDAFE59236C43E9009E38EE /* animate_00033.png in Resources */,
 				3A45E28B2223A3D600505786 /* icon_007.gif in Resources */,
 				3CDAFE61236C43E9009E38EE /* animate_00031.png in Resources */,
@@ -2819,6 +3115,7 @@
 				3A45E08C2223A28F00505786 /* user_avatar_blue@2x.png in Resources */,
 				3A45E35C2223A45500505786 /* msg_send_audio01@2x.png in Resources */,
 				3C37DF4D238251ED00399AE8 /* icon-添加好友@3x.png in Resources */,
+				3C0C3322238404530071BDDD /* 语音声波send@3x.png in Resources */,
 				3A45E2F52223A41600505786 /* chatbar_call_blue@2x.png in Resources */,
 				3A45E08E2223A28F00505786 /* back_gary@3x.png in Resources */,
 				3A45E3082223A41600505786 /* chatbar_audio@2x.png in Resources */,
@@ -2829,20 +3126,26 @@
 				3CDAFE46236C43E9009E38EE /* animate_00029.png in Resources */,
 				3A45E35D2223A45500505786 /* msg_video_white@2x.png in Resources */,
 				3A45E36E2223A45500505786 /* msg_recv_audio01@3x.png in Resources */,
+				3C0C334723851F140071BDDD /* 群资料@3x.png in Resources */,
 				3A45E3992223A49E00505786 /* chatroom_create@3x.png in Resources */,
 				3A45E3AC2223A4C000505786 /* call@3x.png in Resources */,
 				3CDAFE58236C43E9009E38EE /* animate_00079.png in Resources */,
 				3CA8BC7B236C3A8000EE519E /* role_gray@2x.png in Resources */,
+				3C5A15CB2383A6EA002CAE4E /* icon加载@3x.png in Resources */,
 				3C37DF0E2382508500399AE8 /* 显示密码.png in Resources */,
 				3A45E2782223A3D600505786 /* icon_019.gif in Resources */,
+				3C0C33392384DE870071BDDD /* 语音声波备份 5@2x.png in Resources */,
 				3A45E3FF2223A50400505786 /* tabbar_chat_gray@3x.png in Resources */,
+				3C0C333E2384DE870071BDDD /* 语音声波备份 5.png in Resources */,
 				3A45E2802223A3D600505786 /* icon_022.gif in Resources */,
 				3A45E3042223A41600505786 /* chatbar_map@3x.png in Resources */,
 				3A45E3972223A49E00505786 /* chatroom_avatar@3x.png in Resources */,
+				3C5A15C82383A6EA002CAE4E /* icon叹号.png in Resources */,
 				3A45E27C2223A3D600505786 /* icon_002_cover.png in Resources */,
 				3CDAFE60236C43E9009E38EE /* animate_00036.png in Resources */,
 				3C37DF50238251ED00399AE8 /* icon-search.png in Resources */,
 				3A45E03A2223A22600505786 /* device@2x.png in Resources */,
+				3C5A16272383A998002CAE4E /* gif(1)@3x.png in Resources */,
 				3C37DEF523824A7700399AE8 /* icon-tab会话unselected.png in Resources */,
 				3A45E4042223A50400505786 /* tabbar_chat_blue@3x.png in Resources */,
 				3CA8BB2C236C116200EE519E /* icon-tab我@2x.png in Resources */,
@@ -2850,29 +3153,37 @@
 				3A45E0332223A22600505786 /* secure@2x.png in Resources */,
 				3A45E30A2223A41600505786 /* chatbar_photo@2x.png in Resources */,
 				3CDAFE2A236C43E9009E38EE /* animate_00075.png in Resources */,
+				3C5A15A62383A696002CAE4E /* 电话@2x.png in Resources */,
 				3C37DF47238251ED00399AE8 /* icon-add@2x.png in Resources */,
+				3C5A15A32383A696002CAE4E /* 图片@3x.png in Resources */,
 				3A45E0882223A28F00505786 /* close_gray@3x.png in Resources */,
 				3A45E27D2223A3D600505786 /* icon_010_cover.png in Resources */,
+				3C5A15A22383A696002CAE4E /* 加@3x.png in Resources */,
 				3A45E3AF2223A4C000505786 /* videocs_theme@3x.png in Resources */,
 				3C37DF132382508500399AE8 /* 编组 4.png in Resources */,
 				3CDAFE64236C43E9009E38EE /* animate_00071.png in Resources */,
 				3A45E27B2223A3D600505786 /* icon_029.gif in Resources */,
 				3CDAFE2E236C43E9009E38EE /* animate_00078.png in Resources */,
+				3C5A161C2383A95F002CAE4E /* 图片(1).png in Resources */,
 				3CDAFE31236C43E9009E38EE /* animate_00068.png in Resources */,
 				3A45E0382223A22600505786 /* device@3x.png in Resources */,
 				3CDAFE3D236C43E9009E38EE /* animate_00058.png in Resources */,
 				3A45E3FC2223A50400505786 /* tabbar_contacts_gray@3x.png in Resources */,
 				3C37DF2B2382512800399AE8 /* 新的好友.png in Resources */,
 				3CA8BC8E236C3A8000EE519E /* kbps_white@2x.png in Resources */,
+				3C0C33412384DE870071BDDD /* 语音声波备份 4@3x.png in Resources */,
 				3CA8BC9F236C3A8000EE519E /* invite_white@3x.png in Resources */,
 				3C37DF53238251ED00399AE8 /* icon-加群@2x.png in Resources */,
 				3A45E3532223A45500505786 /* msg_file@2x.png in Resources */,
+				3C0C333C2384DE870071BDDD /* 语音声波备份 2.png in Resources */,
 				3CDAFE5E236C43E9009E38EE /* animate_00038.png in Resources */,
 				3CA8BCA0236C3A8000EE519E /* mute_red@3x.png in Resources */,
 				3A45E3AD2223A4C000505786 /* chatroom@3x.png in Resources */,
 				3CDAFE40236C43E9009E38EE /* animate_00066.png in Resources */,
 				3A45E2902223A3D600505786 /* icon_020_cover.png in Resources */,
 				3A45E3FB2223A50400505786 /* tabbar_settings_gray@3x.png in Resources */,
+				3C5A15AD2383A696002CAE4E /* 语音@2x.png in Resources */,
+				3C0C33352384DE870071BDDD /* 语音声波备份 3@2x.png in Resources */,
 				3A45E3752223A46500505786 /* image@2x.png in Resources */,
 				3CDAFE63236C43E9009E38EE /* animate_00055.png in Resources */,
 				3A45E0FA2223A30000505786 /* alert_default@2x.png in Resources */,
@@ -2886,8 +3197,10 @@
 				3A45E30B2223A41600505786 /* chatbar_call_blue@3x.png in Resources */,
 				3A45E2F82223A41600505786 /* chatbar_face_blue@3x.png in Resources */,
 				3CDAFE48236C43E9009E38EE /* animate_00026.png in Resources */,
+				3C5A16222383A96A002CAE4E /* 相机(1)@2x.png in Resources */,
 				3CA8BB2E236C116200EE519E /* icon-tab我unselected.png in Resources */,
 				3CA8BC10236C3A7E00EE519E /* EMVideoInfoViewController.xib in Resources */,
+				3C5A15B42383A696002CAE4E /* 语音.png in Resources */,
 				3CDAFE6B236C47E4009E38EE /* pin-white.png in Resources */,
 				3CA8BCA1236C3A8000EE519E /* speaker_gray@3x.png in Resources */,
 				3C37DF44238251ED00399AE8 /* icon-search@3x.png in Resources */,
@@ -2906,26 +3219,40 @@
 				3CA8BCA3236C3A8000EE519E /* switchCamera_gray@3x.png in Resources */,
 				3A45E3EB2223A4F300505786 /* group_create@2x.png in Resources */,
 				3CA8BC94236C3A8000EE519E /* role_white@3x.png in Resources */,
+				3C0C3323238404530071BDDD /* 语音声波send.png in Resources */,
 				3C37DF4B238251ED00399AE8 /* icon-创建群组.png in Resources */,
+				3C5A160C2383A903002CAE4E /* 加(1)@3x.png in Resources */,
 				3A45E08B2223A28F00505786 /* user_avatar_gray@2x.png in Resources */,
 				3CDAFE4E236C43E9009E38EE /* animate_00049.png in Resources */,
 				3CDAFE62236C43E9009E38EE /* animate_00061.png in Resources */,
 				3A45E27A2223A3D600505786 /* icon_024.gif in Resources */,
 				3A45E5412223D69800505786 /* uncheck@2x.png in Resources */,
+				3C5A15B22383A696002CAE4E /* 电话@3x.png in Resources */,
 				3CA8BB36236C116200EE519E /* icon-tab发现@3x.png in Resources */,
+				3C0C33402384DE870071BDDD /* 语音声波备份 5@3x.png in Resources */,
 				3A45E2852223A3D600505786 /* icon_018_cover.png in Resources */,
 				3CDAFE35236C43E9009E38EE /* animate_00060.png in Resources */,
+				3C5A16282383A998002CAE4E /* gif(1).png in Resources */,
+				3C5A15C52383A6EA002CAE4E /* icon加载.png in Resources */,
 				3CA8BC2E236C3A7F00EE519E /* floating_voice@2x.png in Resources */,
+				3C5A15CC2383A6EA002CAE4E /* 语音声波@2x.png in Resources */,
+				3C5A16182383A95F002CAE4E /* 图片(1)@2x.png in Resources */,
+				3C5A15842383A5E6002CAE4E /* gif.png in Resources */,
 				3A45E2742223A3D600505786 /* icon_030.gif in Resources */,
 				3CA8BB33236C116200EE519E /* icon-tab我unselected@3x.png in Resources */,
 				3CDAFE4A236C43E9009E38EE /* animate_00052.png in Resources */,
+				3C5A15DE2383A7A5002CAE4E /* 语音_selected@2x.png in Resources */,
 				3CA8BC9C236C3A8000EE519E /* mute_red@2x.png in Resources */,
 				3A45E2FE2223A41600505786 /* chatbar_map@2x.png in Resources */,
 				3A45E29B2223A3E500505786 /* chat_audio_blue@2x.png in Resources */,
+				3C5A16212383A96A002CAE4E /* 相机(1).png in Resources */,
 				3C37DF42238251ED00399AE8 /* icon-创建群组@3x.png in Resources */,
+				3C5A15C32383A6EA002CAE4E /* icon叹号@2x.png in Resources */,
 				3CA8BB37236C116200EE519E /* icon-tab我.png in Resources */,
 				3A45E36A2223A45500505786 /* msg_file_white@3x.png in Resources */,
+				3C0C33342384DE870071BDDD /* 语音声波备份.png in Resources */,
 				3CDAFE4B236C43E9009E38EE /* animate_00045.png in Resources */,
+				3C5A15A72383A696002CAE4E /* 加@2x.png in Resources */,
 				3A45E3612223A45500505786 /* msg_location_white@3x.png in Resources */,
 				3A45E0F92223A30000505786 /* alert_error@3x.png in Resources */,
 				3A45E3072223A41600505786 /* chatbar_audio@3x.png in Resources */,
@@ -2938,6 +3265,7 @@
 				3C37DF56238251EE00399AE8 /* icon-音视频会议@2x.png in Resources */,
 				3A45E4002223A50400505786 /* tabbar_contacts_blue@2x.png in Resources */,
 				3CA8BC92236C3A8000EE519E /* invite_gray@3x.png in Resources */,
+				3C0C334523851F140071BDDD /* 群资料.png in Resources */,
 				3A45E36D2223A45500505786 /* msg_recv_audio@2x.png in Resources */,
 				3A45E0902223A28F00505786 /* navbar_white@3x.png in Resources */,
 				3C37DF162382508500399AE8 /* icon失败@2x.png in Resources */,
@@ -2946,6 +3274,7 @@
 				3A45E29A2223A3E500505786 /* chat_audio_blue@3x.png in Resources */,
 				3CDAFE51236C43E9009E38EE /* animate_00025.png in Resources */,
 				3A45E3782223A46500505786 /* chat_info@2x.png in Resources */,
+				3C0C333D2384DE870071BDDD /* 语音声波备份 4.png in Resources */,
 				3C37DF4C238251ED00399AE8 /* icon-add.png in Resources */,
 				3CA8BC87236C3A8000EE519E /* kbps_white@3x.png in Resources */,
 			);
@@ -3001,6 +3330,7 @@
 				3A6C4215224A315C00AA5EDD /* EMEmoticonGroup.m in Sources */,
 				3A45E3322223A44200505786 /* EMMsgFileBubbleView.m in Sources */,
 				3A45E0B22223A2BA00505786 /* MWGridCell.m in Sources */,
+				3C5A162B2383EA06002CAE4E /* LoadingCALayer.m in Sources */,
 				3A45E3182223A43300505786 /* EMMessageTimeCell.m in Sources */,
 				3A45E39E2223A4AD00505786 /* EMInviteFriendViewController.m in Sources */,
 				3A45E0E12223A2CE00505786 /* PSTCollectionView.m in Sources */,

@@ -19,7 +19,7 @@ static EMDemoOptions *sharedOptions = nil;
     if (self) {
         [self _initServerOptions];
         
-        self.isDeleteMessagesWhenExitGroup = NO;
+        self.isDeleteMessagesWhenExitGroup = YES;
         self.isAutoAcceptGroupInvitation = NO;
         self.isAutoTransferMessageAttachments = YES;
         self.isAutoDownloadThumbnail = YES;

@@ -19,7 +19,7 @@
 #import "EMCreateGroupViewController.h"
 #import "EMInviteFriendViewController.h"
 
-@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate,EMConversationCellDelegate>
+@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate,EMConversationCellDelegate,EMContactManagerDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
@@ -48,9 +48,12 @@
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMConversationHelper shared] addDelegate:self];
+    [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [self _loadAllConversationsFromDBWithIsShowHud:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AgreeJoinGroupInvite:) name:NOTIF_ADD_SOCIAL_CONTACT object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -398,6 +401,66 @@
 - (void)didResortConversationsLatestMessage
 {
     [self _reSortedConversationModelsAndReloadView];
+}
+
+#pragma mark - EMContactManagerDelegate
+
+//收到好友请求被同意/同意
+- (void)friendshipDidAddByUser:(NSString *)aUsername
+{
+    [self notificationMsg:aUsername aUserName:aUsername conversationType:EMConversationTypeChat];
+}
+
+#pragma mark - EMGroupManagerDelegate
+
+//群主同意用户A的入群申请后，用户A会接收到该回调
+- (void)joinGroupRequestDidApprove:(EMGroup *)aGroup
+{
+    [self notificationMsg:aGroup.groupId aUserName:EMClient.sharedClient.currentUsername conversationType:EMConversationTypeGroupChat];
+}
+
+//有用户加入群组
+- (void)userDidJoinGroup:(EMGroup *)aGroup
+                    user:(NSString *)aUsername
+{
+    [self notificationMsg:aGroup.groupId aUserName:aUsername conversationType:EMConversationTypeGroupChat];
+}
+
+#pragma mark - noti
+//加群邀请被同意
+- (void)AgreeJoinGroupInvite:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    [self notificationMsg:[dic objectForKey:CONVERSATION_ID] aUserName:[dic objectForKey:CONVERSATION_OBJECT] conversationType:EMConversationTypeGroupChat];
+}
+
+//加好友，加群 成功通知
+- (void)notificationMsg:(NSString *)conversationId aUserName:(NSString *)aUserName conversationType:(EMConversationType)aType
+{
+    EMConversationType conversationType = aType;
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:conversationId type:conversationType createIfNotExist:YES];
+    EMTextMessageBody *body;
+    NSString *to = conversationId;
+    EMMessage *message;
+    if (conversationType == EMChatTypeChat) {
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"你与%@已经成为好友，开始聊天吧",aUserName]];
+        message = [[EMMessage alloc] initWithConversationID:to from:EMClient.sharedClient.currentUsername to:to body:body ext:@{MSG_EXT_NEWNOTI:NOTI_EXT_ADDFRIEND}];
+    } else if (conversationType == EMChatTypeGroupChat) {
+        if ([aUserName isEqualToString:EMClient.sharedClient.currentUsername]) {
+            body = [[EMTextMessageBody alloc] initWithText:@"你已加入本群，开始发言吧"];
+        } else {
+            body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"%@ 加入了群聊",aUserName]];
+        }
+        message = [[EMMessage alloc] initWithConversationID:to from:aUserName to:to body:body ext:@{MSG_EXT_NEWNOTI:NOTI_EXT_ADDGROUP}];
+    }
+    message.chatType = (EMChatType)conversation.type;
+    message.isRead = YES;
+    [conversation insertMessage:message error:nil];
+    if ([aUserName isEqualToString:EMClient.sharedClient.currentUsername] || conversationType == EMChatTypeChat) {
+        EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
+        [self.dataArray addObject:model];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - EMConversationCellDelegate

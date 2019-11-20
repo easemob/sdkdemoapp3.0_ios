@@ -62,12 +62,12 @@
         make.bottom.equalTo(self);
         make.height.mas_equalTo(self.bottomHeight);
     }];
-    
+    /*
     self.sendButton = [[UIButton alloc] init];
     self.sendButton.backgroundColor = kColor_Blue;
     [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
-    
+     */
     self.bottomScrollView = [[UIScrollView alloc] init];
     self.bottomScrollView.scrollEnabled = NO;
     self.bottomScrollView.backgroundColor = kColor_LightGray;
@@ -179,8 +179,9 @@
     aButton.selected = YES;
     aButton.backgroundColor = [UIColor whiteColor];
     self.selectedButton = aButton;
-    
+    /*
     if (tag == 0) {
+        
         [self.bottomView addSubview:self.sendButton];
         [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.bottomView);
@@ -199,7 +200,7 @@
         [self.bottomScrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
         }];
-    }
+    }*/
     
     //TODO:code
     EMEmoticonView *view = self.emotionViews[tag];

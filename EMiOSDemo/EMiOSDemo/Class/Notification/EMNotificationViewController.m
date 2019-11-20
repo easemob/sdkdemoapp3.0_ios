@@ -121,6 +121,9 @@
     } else if (aModel.type == EMNotificationModelTypeGroupInvite) {
         [[EMClient sharedClient].groupManager acceptInvitationFromGroup:aModel.groupId inviter:aModel.sender completion:^(EMGroup *aGroup, EMError *aError) {
             block(aError);
+            if (!aError) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIF_ADD_SOCIAL_CONTACT object:@{CONVERSATION_ID:aModel.groupId,CONVERSATION_OBJECT:EMClient.sharedClient.currentUsername}];
+            }
         }];
     } else if (aModel.type == EMNotificationModelTypeGroupJoin) {
         [[EMClient sharedClient].groupManager approveJoinGroupRequest:aModel.groupId sender:aModel.sender completion:^(EMGroup *aGroup, EMError *aError) {
@@ -155,10 +158,12 @@
     } else if (aModel.type == EMNotificationModelTypeGroupInvite) {
         [[EMClient sharedClient].groupManager declineGroupInvitation:aModel.groupId inviter:aModel.sender reason:nil completion:^(EMError *aError) {
             block(aError);
+
         }];
     } else if (aModel.type == EMNotificationModelTypeGroupJoin) {
         [[EMClient sharedClient].groupManager declineJoinGroupRequest:aModel.groupId sender:aModel.sender reason:nil completion:^(EMGroup *aGroup, EMError *aError) {
             block(aError);
+           
         }];
     }
 }

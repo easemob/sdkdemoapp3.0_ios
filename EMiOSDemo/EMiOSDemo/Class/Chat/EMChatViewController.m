@@ -146,6 +146,7 @@
     //草稿
     if ([self.conversationModel.emModel.ext objectForKey:kConversation_Draft]) {
         self.chatBar.textView.text = [self.conversationModel.emModel.ext objectForKey:kConversation_Draft];
+        [self.chatBar textChangedExt];
         [ext setValue:nil forKey:kConversation_Draft];
         [self.conversationModel.emModel setExt:ext];
     }
@@ -185,10 +186,10 @@
 
 - (void)_setupChatSubviews
 {
-    [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"backleft"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     [self _setupNavigationBarTitle];
     [self _setupNavigationBarRightItem];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     self.showRefreshHeader = YES;
     
     self.chatBar = [[EMChatBar alloc] init];
@@ -200,6 +201,8 @@
         make.bottom.equalTo(self.view);
     }];
     
+    [self.chatBar.sendBtn addTarget:self action:@selector(_sendText) forControlEvents:UIControlEventTouchUpInside];
+    //加号更多
     [self _setupChatBarMoreViews];
     
     self.tableView.backgroundColor = kColor_LightGray;
@@ -244,15 +247,17 @@
     
     self.navigationItem.titleView = titleView;
     
+    /*
     if (self.conversationModel.emModel.type != EMConversationTypeChat) {
         self.titleDetailLabel.text = self.conversationModel.emModel.conversationId;
-    }
+    }*/
+    
 }
 
 - (void)_setupNavigationBarRightItem
 {
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
-        UIImage *image = [[UIImage imageNamed:@"chat_clear"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *image = [[UIImage imageNamed:@"用户资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
     } else {
         if (self.conversationModel.emModel.type == EMConversationTypeGroupChat && (NSClassFromString(@"EMGroupInfoViewController")) == nil) {
@@ -262,7 +267,7 @@
             return;
         }
         
-        UIImage *image = [[UIImage imageNamed:@"chat_info"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *image = [[UIImage imageNamed:@"群资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(groupOrChatroomInfoAction)];
     }
 }
@@ -279,9 +284,11 @@
     moreEmoticonView.delegate = self;
     self.chatBar.moreEmoticonView = moreEmoticonView;
     //更多
-    EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
-    moreFunction.delegate = self;
-    self.chatBar.moreFunctionView = moreFunction;
+    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
+        EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
+        moreFunction.delegate = self;
+        self.chatBar.moreFunctionView = moreFunction;
+    }
 }
 
 - (NSString *)_getAudioOrVideoPath
@@ -328,6 +335,9 @@
         EMMessageModel *model = (EMMessageModel *)obj;
         if (model.type == EMMessageTypeExtRecall) {
             cellString = @"您撤回一条消息";
+        }
+        if (model.type == EMMessageTypeExtNewFriend || model.type == EMMessageTypeExtAddGroup) {
+            cellString = ((EMTextMessageBody *)(model.emModel.body)).text;
         }
     }
     
@@ -603,11 +613,7 @@
             if (!aError) {
                 self.group = aGroup;
                 //是群主才可以发送阅读回执信息
-                if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-                    [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
-                } else {
-                    [self _sendTextAction:str ext:nil];
-                }
+                [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
             } else {
                 [EMAlertController showErrorAlert:@"获取群组失败"];
             }
@@ -1158,7 +1164,7 @@
             EMCmdMessageBody *body = (EMCmdMessageBody *)message.body;
             NSString *str = @"";
             if ([body.action isEqualToString:MSG_TYPING_BEGIN]) {
-                str = @"正在输入...";
+                str = @"对方正在输入...";
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.titleDetailLabel.text = str;
@@ -1177,6 +1183,14 @@
         [self.navigationController popToViewController:self animated:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+//有用户加入群组
+- (void)userDidJoinGroup:(EMGroup *)aGroup
+                    user:(NSString *)aUsername
+{
+    [self.tableView reloadData];
+    [self _scrollToBottomRow];
 }
 
 #pragma mark - EMChatroomManagerDelegate
@@ -1657,10 +1671,19 @@
 
 #pragma mark - Send Message
 
+- (void)_sendText
+{
+    if(self.chatBar.sendBtn.tag == 1){
+        [self _sendTextAction:self.chatBar.textView.text ext:nil];
+    }
+}
+
 - (void)_sendTextAction:(NSString *)aText
                     ext:(NSDictionary *)aExt
 {
-    [self.chatBar clearInputViewText];
+    if(![aExt objectForKey:MSG_EXT_GIF]){
+        [self.chatBar clearInputViewText];
+    }
     if ([aText length] == 0) {
         return;
     }
@@ -1859,18 +1882,15 @@
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        [weakself.tableView reloadData];
-    }];
-    
-    dispatch_async(self.msgQueue, ^{
         NSArray *formated = [weakself _formatMessages:@[message]];
-        [weakself.dataArray addObjectsFromArray:formated];
-       
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.tableView reloadData];
-            [weakself _scrollToBottomRow];
-        });
-    });
+         [weakself.dataArray addObjectsFromArray:formated];
+        
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [weakself.tableView reloadData];
+             [weakself _scrollToBottomRow];
+         });
+        //[weakself.tableView reloadData];
+    }];
 }
 
 @end

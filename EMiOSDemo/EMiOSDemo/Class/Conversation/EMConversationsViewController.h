@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMConversationsViewController : EMRefreshViewController
 
+- (void)notificationMsg:(NSString *)conversationId aUserName:(NSString *)aUserName conversationType:(EMConversationType)aType;
+
 @end
 
 NS_ASSUME_NONNULL_END
