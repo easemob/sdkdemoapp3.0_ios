@@ -150,7 +150,7 @@
     if (self.direction == EMMessageDirectionSend) {
         [_statusView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.bubbleView.mas_centerY);
-            make.right.equalTo(self.bubbleView.mas_left).offset(-8);
+            make.right.equalTo(self.bubbleView.mas_left).offset(-5);
             make.height.equalTo(@20);
         }];
         __weak typeof(self) weakself = self;

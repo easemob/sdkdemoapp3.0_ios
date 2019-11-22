@@ -337,6 +337,45 @@
 		3C0C334523851F140071BDDD /* 群资料.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334223851F120071BDDD /* 群资料.png */; };
 		3C0C334623851F140071BDDD /* 群资料@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334323851F130071BDDD /* 群资料@2x.png */; };
 		3C0C334723851F140071BDDD /* 群资料@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334423851F140071BDDD /* 群资料@3x.png */; };
+		3C0C334B238684580071BDDD /* 语音通话.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3348238684540071BDDD /* 语音通话.png */; };
+		3C0C334C238684580071BDDD /* 语音通话@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3349238684550071BDDD /* 语音通话@2x.png */; };
+		3C0C334D238684580071BDDD /* 语音通话@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334A238684570071BDDD /* 语音通话@3x.png */; };
+		3C0C3351238684EE0071BDDD /* 视频右@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334E238684EA0071BDDD /* 视频右@3x.png */; };
+		3C0C3352238684EE0071BDDD /* 视频右@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C334F238684EB0071BDDD /* 视频右@2x.png */; };
+		3C0C3353238684EE0071BDDD /* 视频右.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3350238684ED0071BDDD /* 视频右.png */; };
+		3C0C335C2386A8130071BDDD /* 形状(2).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33562386A8130071BDDD /* 形状(2).png */; };
+		3C0C335D2386A8130071BDDD /* 形状(2)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33572386A8130071BDDD /* 形状(2)@2x.png */; };
+		3C0C335E2386A8130071BDDD /* 形状(2)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33582386A8130071BDDD /* 形状(2)@3x.png */; };
+		3C0C335F2386A8130071BDDD /* 形状.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33592386A8130071BDDD /* 形状.png */; };
+		3C0C33602386A8130071BDDD /* 形状@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C335A2386A8130071BDDD /* 形状@2x.png */; };
+		3C0C33612386A8130071BDDD /* 形状@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C335B2386A8130071BDDD /* 形状@3x.png */; };
+		3C0C3374238784990071BDDD /* audioSlide03-blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33622387847A0071BDDD /* audioSlide03-blue@3x.png */; };
+		3C0C3375238784990071BDDD /* audioSlide03-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33632387847B0071BDDD /* audioSlide03-white.png */; };
+		3C0C3376238784990071BDDD /* audioSlide01-blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33642387847D0071BDDD /* audioSlide01-blue@3x.png */; };
+		3C0C3377238784990071BDDD /* audioSlide03-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33652387847F0071BDDD /* audioSlide03-blue@2x.png */; };
+		3C0C3378238784990071BDDD /* audioSlide02-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3366238784800071BDDD /* audioSlide02-white@2x.png */; };
+		3C0C3379238784990071BDDD /* audioSlide01-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3367238784810071BDDD /* audioSlide01-white@2x.png */; };
+		3C0C337A238784990071BDDD /* audioSlide01-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3368238784830071BDDD /* audioSlide01-white@3x.png */; };
+		3C0C337B238784990071BDDD /* audioSlide02-blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3369238784850071BDDD /* audioSlide02-blue@3x.png */; };
+		3C0C337C238784990071BDDD /* audioSlide02-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C336A238784860071BDDD /* audioSlide02-blue.png */; };
+		3C0C337D2387849A0071BDDD /* audioSlide03-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C336B238784890071BDDD /* audioSlide03-white@2x.png */; };
+		3C0C337E2387849A0071BDDD /* audioSlide01-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C336C2387848C0071BDDD /* audioSlide01-white.png */; };
+		3C0C337F2387849A0071BDDD /* audioSlide02-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C336D2387848E0071BDDD /* audioSlide02-blue@2x.png */; };
+		3C0C33802387849A0071BDDD /* audioSlide01-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C336E238784900071BDDD /* audioSlide01-blue@2x.png */; };
+		3C0C33812387849A0071BDDD /* audioSlide02-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C336F238784920071BDDD /* audioSlide02-white.png */; };
+		3C0C33822387849A0071BDDD /* audioSlide02-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3370238784930071BDDD /* audioSlide02-white@3x.png */; };
+		3C0C33832387849A0071BDDD /* audioSlide03-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3371238784950071BDDD /* audioSlide03-white@3x.png */; };
+		3C0C33842387849A0071BDDD /* audioSlide01-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3372238784960071BDDD /* audioSlide01-blue.png */; };
+		3C0C33852387849A0071BDDD /* audioSlide03-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C3373238784980071BDDD /* audioSlide03-blue.png */; };
+		3C0C338923879E350071BDDD /* video-me@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C338623879E320071BDDD /* video-me@2x.png */; };
+		3C0C338A23879E350071BDDD /* video-me.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C338723879E330071BDDD /* video-me.png */; };
+		3C0C338B23879E350071BDDD /* video-me@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C338823879E340071BDDD /* video-me@3x.png */; };
+		3C0C338F23879E700071BDDD /* 形状(3)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C338C23879E6D0071BDDD /* 形状(3)@2x.png */; };
+		3C0C339023879E700071BDDD /* 形状(3).png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C338D23879E6E0071BDDD /* 形状(3).png */; };
+		3C0C339123879E700071BDDD /* 形状(3)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C338E23879E700071BDDD /* 形状(3)@3x.png */; };
+		3C0C33952387D02E0071BDDD /* 目标点@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33922387D02C0071BDDD /* 目标点@3x.png */; };
+		3C0C33962387D02E0071BDDD /* 目标点.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33932387D02D0071BDDD /* 目标点.png */; };
+		3C0C33972387D02E0071BDDD /* 目标点@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33942387D02E0071BDDD /* 目标点@2x.png */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */; };
@@ -1104,6 +1143,45 @@
 		3C0C334223851F120071BDDD /* 群资料.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "群资料.png"; sourceTree = "<group>"; };
 		3C0C334323851F130071BDDD /* 群资料@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "群资料@2x.png"; sourceTree = "<group>"; };
 		3C0C334423851F140071BDDD /* 群资料@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "群资料@3x.png"; sourceTree = "<group>"; };
+		3C0C3348238684540071BDDD /* 语音通话.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音通话.png"; sourceTree = "<group>"; };
+		3C0C3349238684550071BDDD /* 语音通话@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音通话@2x.png"; sourceTree = "<group>"; };
+		3C0C334A238684570071BDDD /* 语音通话@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音通话@3x.png"; sourceTree = "<group>"; };
+		3C0C334E238684EA0071BDDD /* 视频右@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频右@3x.png"; sourceTree = "<group>"; };
+		3C0C334F238684EB0071BDDD /* 视频右@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频右@2x.png"; sourceTree = "<group>"; };
+		3C0C3350238684ED0071BDDD /* 视频右.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "视频右.png"; sourceTree = "<group>"; };
+		3C0C33562386A8130071BDDD /* 形状(2).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状(2).png"; sourceTree = "<group>"; };
+		3C0C33572386A8130071BDDD /* 形状(2)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状(2)@2x.png"; sourceTree = "<group>"; };
+		3C0C33582386A8130071BDDD /* 形状(2)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状(2)@3x.png"; sourceTree = "<group>"; };
+		3C0C33592386A8130071BDDD /* 形状.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状.png"; sourceTree = "<group>"; };
+		3C0C335A2386A8130071BDDD /* 形状@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状@2x.png"; sourceTree = "<group>"; };
+		3C0C335B2386A8130071BDDD /* 形状@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状@3x.png"; sourceTree = "<group>"; };
+		3C0C33622387847A0071BDDD /* audioSlide03-blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide03-blue@3x.png"; sourceTree = "<group>"; };
+		3C0C33632387847B0071BDDD /* audioSlide03-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide03-white.png"; sourceTree = "<group>"; };
+		3C0C33642387847D0071BDDD /* audioSlide01-blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide01-blue@3x.png"; sourceTree = "<group>"; };
+		3C0C33652387847F0071BDDD /* audioSlide03-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide03-blue@2x.png"; sourceTree = "<group>"; };
+		3C0C3366238784800071BDDD /* audioSlide02-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide02-white@2x.png"; sourceTree = "<group>"; };
+		3C0C3367238784810071BDDD /* audioSlide01-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide01-white@2x.png"; sourceTree = "<group>"; };
+		3C0C3368238784830071BDDD /* audioSlide01-white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide01-white@3x.png"; sourceTree = "<group>"; };
+		3C0C3369238784850071BDDD /* audioSlide02-blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide02-blue@3x.png"; sourceTree = "<group>"; };
+		3C0C336A238784860071BDDD /* audioSlide02-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide02-blue.png"; sourceTree = "<group>"; };
+		3C0C336B238784890071BDDD /* audioSlide03-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide03-white@2x.png"; sourceTree = "<group>"; };
+		3C0C336C2387848C0071BDDD /* audioSlide01-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide01-white.png"; sourceTree = "<group>"; };
+		3C0C336D2387848E0071BDDD /* audioSlide02-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide02-blue@2x.png"; sourceTree = "<group>"; };
+		3C0C336E238784900071BDDD /* audioSlide01-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide01-blue@2x.png"; sourceTree = "<group>"; };
+		3C0C336F238784920071BDDD /* audioSlide02-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide02-white.png"; sourceTree = "<group>"; };
+		3C0C3370238784930071BDDD /* audioSlide02-white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide02-white@3x.png"; sourceTree = "<group>"; };
+		3C0C3371238784950071BDDD /* audioSlide03-white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide03-white@3x.png"; sourceTree = "<group>"; };
+		3C0C3372238784960071BDDD /* audioSlide01-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide01-blue.png"; sourceTree = "<group>"; };
+		3C0C3373238784980071BDDD /* audioSlide03-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audioSlide03-blue.png"; sourceTree = "<group>"; };
+		3C0C338623879E320071BDDD /* video-me@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-me@2x.png"; sourceTree = "<group>"; };
+		3C0C338723879E330071BDDD /* video-me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-me.png"; sourceTree = "<group>"; };
+		3C0C338823879E340071BDDD /* video-me@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-me@3x.png"; sourceTree = "<group>"; };
+		3C0C338C23879E6D0071BDDD /* 形状(3)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状(3)@2x.png"; sourceTree = "<group>"; };
+		3C0C338D23879E6E0071BDDD /* 形状(3).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状(3).png"; sourceTree = "<group>"; };
+		3C0C338E23879E700071BDDD /* 形状(3)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "形状(3)@3x.png"; sourceTree = "<group>"; };
+		3C0C33922387D02C0071BDDD /* 目标点@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "目标点@3x.png"; sourceTree = "<group>"; };
+		3C0C33932387D02D0071BDDD /* 目标点.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "目标点.png"; sourceTree = "<group>"; };
+		3C0C33942387D02E0071BDDD /* 目标点@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "目标点@2x.png"; sourceTree = "<group>"; };
 		3C1CEF7E196EA37600DBA56B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3C27F9101A1C8FCD008272EF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C3527401931D32C00385240 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1607,6 +1685,7 @@
 		3A45DC172223A1FC00505786 /* AudioRecord */ = {
 			isa = PBXGroup;
 			children = (
+				3C0C33552386A8130071BDDD /* audioImg */,
 				3A45E2932223A3E500505786 /* chat_audio_blue@2x.png */,
 				3A45E2922223A3E500505786 /* chat_audio_blue@3x.png */,
 				3A45E2972223A3E500505786 /* chat_audio_red@2x.png */,
@@ -1664,6 +1743,15 @@
 		3A45DC582223A1FC00505786 /* MsgCellImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C0C33932387D02D0071BDDD /* 目标点.png */,
+				3C0C33942387D02E0071BDDD /* 目标点@2x.png */,
+				3C0C33922387D02C0071BDDD /* 目标点@3x.png */,
+				3C0C3350238684ED0071BDDD /* 视频右.png */,
+				3C0C334F238684EB0071BDDD /* 视频右@2x.png */,
+				3C0C334E238684EA0071BDDD /* 视频右@3x.png */,
+				3C0C3348238684540071BDDD /* 语音通话.png */,
+				3C0C3349238684550071BDDD /* 语音通话@2x.png */,
+				3C0C334A238684570071BDDD /* 语音通话@3x.png */,
 				3C0C332D2384DE800071BDDD /* 语音声波备份 2.png */,
 				3C0C33282384DE7A0071BDDD /* 语音声波备份 2@2x.png */,
 				3C0C33242384DE750071BDDD /* 语音声波备份 2@3x.png */,
@@ -2386,6 +2474,9 @@
 		3A45E29F2223A40400505786 /* ChatBarImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C0C338723879E330071BDDD /* video-me.png */,
+				3C0C338623879E320071BDDD /* video-me@2x.png */,
+				3C0C338823879E340071BDDD /* video-me@3x.png */,
 				3C5A16052383A8FE002CAE4E /* 电话(1).png */,
 				3C5A16092383A901002CAE4E /* 电话(1)@2x.png */,
 				3C5A16082383A901002CAE4E /* 电话(1)@3x.png */,
@@ -2461,6 +2552,40 @@
 				3A45E2ED2223A41500505786 /* chatbar_photo@3x.png */,
 			);
 			path = ChatBarImgs;
+			sourceTree = "<group>";
+		};
+		3C0C33552386A8130071BDDD /* audioImg */ = {
+			isa = PBXGroup;
+			children = (
+				3C0C3372238784960071BDDD /* audioSlide01-blue.png */,
+				3C0C336E238784900071BDDD /* audioSlide01-blue@2x.png */,
+				3C0C33642387847D0071BDDD /* audioSlide01-blue@3x.png */,
+				3C0C336C2387848C0071BDDD /* audioSlide01-white.png */,
+				3C0C3367238784810071BDDD /* audioSlide01-white@2x.png */,
+				3C0C3368238784830071BDDD /* audioSlide01-white@3x.png */,
+				3C0C336A238784860071BDDD /* audioSlide02-blue.png */,
+				3C0C336D2387848E0071BDDD /* audioSlide02-blue@2x.png */,
+				3C0C3369238784850071BDDD /* audioSlide02-blue@3x.png */,
+				3C0C336F238784920071BDDD /* audioSlide02-white.png */,
+				3C0C3366238784800071BDDD /* audioSlide02-white@2x.png */,
+				3C0C3370238784930071BDDD /* audioSlide02-white@3x.png */,
+				3C0C3373238784980071BDDD /* audioSlide03-blue.png */,
+				3C0C33652387847F0071BDDD /* audioSlide03-blue@2x.png */,
+				3C0C33622387847A0071BDDD /* audioSlide03-blue@3x.png */,
+				3C0C33632387847B0071BDDD /* audioSlide03-white.png */,
+				3C0C336B238784890071BDDD /* audioSlide03-white@2x.png */,
+				3C0C3371238784950071BDDD /* audioSlide03-white@3x.png */,
+				3C0C338D23879E6E0071BDDD /* 形状(3).png */,
+				3C0C338C23879E6D0071BDDD /* 形状(3)@2x.png */,
+				3C0C338E23879E700071BDDD /* 形状(3)@3x.png */,
+				3C0C33562386A8130071BDDD /* 形状(2).png */,
+				3C0C33572386A8130071BDDD /* 形状(2)@2x.png */,
+				3C0C33582386A8130071BDDD /* 形状(2)@3x.png */,
+				3C0C33592386A8130071BDDD /* 形状.png */,
+				3C0C335A2386A8130071BDDD /* 形状@2x.png */,
+				3C0C335B2386A8130071BDDD /* 形状@3x.png */,
+			);
+			path = audioImg;
 			sourceTree = "<group>";
 		};
 		3C37DEF923824EBA00399AE8 /* CXPopView */ = {
@@ -2835,7 +2960,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C37DF262382512800399AE8 /* 聊天室.png in Resources */,
+				3C0C3351238684EE0071BDDD /* 视频右@3x.png in Resources */,
 				3A45E3772223A46500505786 /* chat_info@3x.png in Resources */,
+				3C0C334D238684580071BDDD /* 语音通话@3x.png in Resources */,
+				3C0C33852387849A0071BDDD /* audioSlide03-blue.png in Resources */,
 				3A45E2F72223A41600505786 /* chatbar_face@3x.png in Resources */,
 				3CA8BC75236C3A8000EE519E /* micphone_gray@2x.png in Resources */,
 				3A45E2F62223A41600505786 /* chatbar_camera@3x.png in Resources */,
@@ -2854,10 +2982,12 @@
 				3A45E0242223A21B00505786 /* EMSDKOptions.plist in Resources */,
 				3CA8BC8A236C3A8000EE519E /* ring_gray@2x.png in Resources */,
 				3A45E2822223A3D600505786 /* icon_019_cover.png in Resources */,
+				3C0C33802387849A0071BDDD /* audioSlide01-blue@2x.png in Resources */,
 				3A45E3062223A41600505786 /* chatbar_camera_blue@3x.png in Resources */,
 				3A45E3982223A49E00505786 /* chatroom_create@2x.png in Resources */,
 				3CDAFE49236C43E9009E38EE /* animate_00088.png in Resources */,
 				3C37DF2C2382512800399AE8 /* 新的好友@2x.png in Resources */,
+				3C0C334B238684580071BDDD /* 语音通话.png in Resources */,
 				3CA8BC9D236C3A8000EE519E /* speaker_gray@2x.png in Resources */,
 				3A45E3572223A45500505786 /* msg_bg_send@2x.png in Resources */,
 				3CDAFE69236C43E9009E38EE /* animate_00053.png in Resources */,
@@ -2888,6 +3018,7 @@
 				3A45E3672223A45500505786 /* msg_fail@3x.png in Resources */,
 				3C37DEF723824A7700399AE8 /* icon-tab会话unselected@2x.png in Resources */,
 				3A45E3B22223A4C000505786 /* group@2x.png in Resources */,
+				3C0C3374238784990071BDDD /* audioSlide03-blue@3x.png in Resources */,
 				3A45E2FB2223A41600505786 /* chatbar_map_blue@3x.png in Resources */,
 				3A45E3ED2223A4F300505786 /* group_join@3x.png in Resources */,
 				3C0C33382384DE870071BDDD /* 语音声波备份 3.png in Resources */,
@@ -2896,9 +3027,11 @@
 				3A45E3522223A45500505786 /* msg_video_white@3x.png in Resources */,
 				3A45E27E2223A3D600505786 /* icon_013.gif in Resources */,
 				3A45E4062223A50400505786 /* tabbar_settings_gray@2x.png in Resources */,
+				3C0C33832387849A0071BDDD /* audioSlide03-white@3x.png in Resources */,
 				3C37DF192382508500399AE8 /* 显示密码@2x.png in Resources */,
 				3CA8BB2D236C116200EE519E /* icon-tab发现unselected.png in Resources */,
 				3C5A15A82383A696002CAE4E /* 路径@3x.png in Resources */,
+				3C0C33822387849A0071BDDD /* audioSlide02-white@3x.png in Resources */,
 				3A45E2712223A3D600505786 /* icon_022_cover.png in Resources */,
 				3C5A15C72383A6EA002CAE4E /* icon叹号@3x.png in Resources */,
 				3CA8BC83236C3A8000EE519E /* role_white@2x.png in Resources */,
@@ -2921,6 +3054,7 @@
 				3A45E0F62223A30000505786 /* alert_success@3x.png in Resources */,
 				3C37DF45238251ED00399AE8 /* icon-search@2x.png in Resources */,
 				3A45E53F2223D69800505786 /* checked@3x.png in Resources */,
+				3C0C335F2386A8130071BDDD /* 形状.png in Resources */,
 				3C5A15D62383A6FA002CAE4E /* 用户资料.png in Resources */,
 				3CA8BC7A236C3A8000EE519E /* answer@2x.png in Resources */,
 				3C5A15862383A5E6002CAE4E /* gif@3x.png in Resources */,
@@ -2952,15 +3086,18 @@
 				3CA8BC78236C3A8000EE519E /* role_gray@3x.png in Resources */,
 				3C37DF272382512800399AE8 /* 群聊@2x.png in Resources */,
 				3A45E5402223D69800505786 /* uncheck@3x.png in Resources */,
+				3C0C3353238684EE0071BDDD /* 视频右.png in Resources */,
 				3CDAFE2D236C43E9009E38EE /* animate_00083.png in Resources */,
 				3A45E3EC2223A4F300505786 /* group_join@2x.png in Resources */,
 				3CDAFE50236C43E9009E38EE /* animate_00056.png in Resources */,
 				3CA8BC82236C3A8000EE519E /* recorder_gray@3x.png in Resources */,
 				3A45E4012223A50400505786 /* tabbar_settings_blue@3x.png in Resources */,
 				3A45E2992223A3E500505786 /* chat_audio_red@3x.png in Resources */,
+				3C0C334C238684580071BDDD /* 语音通话@2x.png in Resources */,
 				3A45E2832223A3D600505786 /* icon_013_cover.png in Resources */,
 				3C0C331B238403F90071BDDD /* backleft.png in Resources */,
 				3A45E3B02223A4C000505786 /* call@2x.png in Resources */,
+				3C0C338A23879E350071BDDD /* video-me.png in Resources */,
 				3C0C33362384DE870071BDDD /* 语音声波备份 4@2x.png in Resources */,
 				3C37DF51238251ED00399AE8 /* icon-加群.png in Resources */,
 				3C5A160B2383A903002CAE4E /* 电话(1).png in Resources */,
@@ -2986,6 +3123,7 @@
 				3A45E30C2223A41600505786 /* chatbar_camera_blue@2x.png in Resources */,
 				3A45E2FD2223A41600505786 /* chatbar_photo_blue@3x.png in Resources */,
 				3A45E2872223A3D600505786 /* icon_021.gif in Resources */,
+				3C0C3376238784990071BDDD /* audioSlide01-blue@3x.png in Resources */,
 				3A45E3662223A45500505786 /* msg_bg_recv@2x.png in Resources */,
 				3A45E3FD2223A50400505786 /* tabbar_settings_blue@2x.png in Resources */,
 				3A45E3632223A45500505786 /* msg_recv_audio@3x.png in Resources */,
@@ -3019,6 +3157,8 @@
 				3CDAFE45236C43E9009E38EE /* animate_00077.png in Resources */,
 				3C5A160F2383A903002CAE4E /* 电话(1)@2x.png in Resources */,
 				3A45E0352223A22600505786 /* device_disable@3x.png in Resources */,
+				3C0C3352238684EE0071BDDD /* 视频右@2x.png in Resources */,
+				3C0C337C238784990071BDDD /* audioSlide02-blue.png in Resources */,
 				3A45E28D2223A3D600505786 /* icon_020.gif in Resources */,
 				3A45E3012223A41600505786 /* chatbar_audio_blue@3x.png in Resources */,
 				3C0C3321238404530071BDDD /* 语音声波send@2x.png in Resources */,
@@ -3026,9 +3166,11 @@
 				3A45E3582223A45500505786 /* msg_location_white@2x.png in Resources */,
 				3A45DBE022239DE300505786 /* EMiOSDemo-Info.plist in Resources */,
 				3C5A15A42383A696002CAE4E /* 相机@2x.png in Resources */,
+				3C0C3378238784990071BDDD /* audioSlide02-white@2x.png in Resources */,
 				3A45E0322223A22600505786 /* qr@3x.png in Resources */,
 				3A45E0FD2223A30000505786 /* alert_info@3x.png in Resources */,
 				3C5A16262383A998002CAE4E /* gif(1)@2x.png in Resources */,
+				3C0C33612386A8130071BDDD /* 形状@3x.png in Resources */,
 				3C37DF172382508500399AE8 /* icon失败@3x.png in Resources */,
 				3A45E3002223A41600505786 /* chatbar_map_blue@2x.png in Resources */,
 				3C5A15D82383A6FA002CAE4E /* 用户资料@2x.png in Resources */,
@@ -3045,9 +3187,11 @@
 				3A45E0852223A28F00505786 /* search_gray@2x.png in Resources */,
 				3CA8BC8D236C3A8000EE519E /* speaker_white@3x.png in Resources */,
 				3A45E28A2223A3D600505786 /* icon_018.gif in Resources */,
+				3C0C33602386A8130071BDDD /* 形状@2x.png in Resources */,
 				3A45E28E2223A3D600505786 /* icon_002.gif in Resources */,
 				3CA8BC88236C3A8000EE519E /* micphone_white@2x.png in Resources */,
 				3C37DF252382512800399AE8 /* 聊天室@2x.png in Resources */,
+				3C0C337B238784990071BDDD /* audioSlide02-blue@3x.png in Resources */,
 				3CDAFE36236C43E9009E38EE /* animate_00070.png in Resources */,
 				3A45D9B422239DE200505786 /* InfoPlist.strings in Resources */,
 				3CA8BC98236C3A8000EE519E /* switchCamera_white@3x.png in Resources */,
@@ -3070,11 +3214,13 @@
 				3CA8BC86236C3A8000EE519E /* bg_connecting@3x.png in Resources */,
 				3A45E2882223A3D600505786 /* icon_040_cover.png in Resources */,
 				3C5A15AB2383A696002CAE4E /* 相机@3x.png in Resources */,
+				3C0C337F2387849A0071BDDD /* audioSlide02-blue@2x.png in Resources */,
 				3A45E35F2223A45500505786 /* msg_file_white@2x.png in Resources */,
 				3A45E36B2223A45500505786 /* msg_send_audio02@2x.png in Resources */,
 				3C5A15C42383A6EA002CAE4E /* 语音声波.png in Resources */,
 				3A45E3762223A46500505786 /* chat_clear@2x.png in Resources */,
 				3CA8BC9E236C3A8000EE519E /* invite_white@2x.png in Resources */,
+				3C0C3377238784990071BDDD /* audioSlide03-blue@2x.png in Resources */,
 				3C5A15B32383A696002CAE4E /* 加.png in Resources */,
 				3A45E3B42223A4C000505786 /* group@3x.png in Resources */,
 				3CDAFE3E236C43E9009E38EE /* animate_00035.png in Resources */,
@@ -3085,8 +3231,10 @@
 				3CA8BC91236C3A8000EE519E /* bg_connecting@2x.png in Resources */,
 				3CDAFE4F236C43E9009E38EE /* animate_00054.png in Resources */,
 				3A45E0862223A28F00505786 /* close_white@2x.png in Resources */,
+				3C0C335D2386A8130071BDDD /* 形状(2)@2x.png in Resources */,
 				3A45E2842223A3D600505786 /* icon_021_cover.png in Resources */,
 				3C5A161B2383A95F002CAE4E /* 视频(1).png in Resources */,
+				3C0C338B23879E350071BDDD /* video-me@3x.png in Resources */,
 				3C0C333B2384DE870071BDDD /* 语音声波备份@3x.png in Resources */,
 				3A45E0392223A22600505786 /* scanLine@2x.png in Resources */,
 				3CA8BC9B236C3A8000EE519E /* hangup@3x.png in Resources */,
@@ -3096,6 +3244,7 @@
 				3CA8BC2F236C3A7F00EE519E /* video_gray@3x.png in Resources */,
 				3CA8BC2C236C3A7F00EE519E /* video_gray@2x.png in Resources */,
 				3CDAFE47236C43E9009E38EE /* animate_00034.png in Resources */,
+				3C0C3375238784990071BDDD /* audioSlide03-white.png in Resources */,
 				3A45E3B62223A4C000505786 /* notification@3x.png in Resources */,
 				3A45E3602223A45500505786 /* msg_recv_audio02@3x.png in Resources */,
 				3C5A15B02383A696002CAE4E /* 视频.png in Resources */,
@@ -3103,6 +3252,8 @@
 				3A45E08F2223A28F00505786 /* group_avatar@2x.png in Resources */,
 				3CA8BC2B236C3A7F00EE519E /* bg_micro@3x.png in Resources */,
 				3CDAFE34236C43E9009E38EE /* animate_00081.png in Resources */,
+				3C0C337D2387849A0071BDDD /* audioSlide03-white@2x.png in Resources */,
+				3C0C335C2386A8130071BDDD /* 形状(2).png in Resources */,
 				3CDAFE57236C43E9009E38EE /* animate_00044.png in Resources */,
 				3CDAFE5C236C43E9009E38EE /* animate_00080.png in Resources */,
 				3C5A16202383A96A002CAE4E /* 相机(1)@3x.png in Resources */,
@@ -3119,6 +3270,7 @@
 				3A45E2F52223A41600505786 /* chatbar_call_blue@2x.png in Resources */,
 				3A45E08E2223A28F00505786 /* back_gary@3x.png in Resources */,
 				3A45E3082223A41600505786 /* chatbar_audio@2x.png in Resources */,
+				3C0C335E2386A8130071BDDD /* 形状(2)@3x.png in Resources */,
 				3C37DF4E238251ED00399AE8 /* icon-创建群组@2x.png in Resources */,
 				3A45E2762223A3D600505786 /* icon_035_cover.png in Resources */,
 				3CA8BC90236C3A8000EE519E /* video_gray@2x 2.png in Resources */,
@@ -3129,15 +3281,18 @@
 				3C0C334723851F140071BDDD /* 群资料@3x.png in Resources */,
 				3A45E3992223A49E00505786 /* chatroom_create@3x.png in Resources */,
 				3A45E3AC2223A4C000505786 /* call@3x.png in Resources */,
+				3C0C339023879E700071BDDD /* 形状(3).png in Resources */,
 				3CDAFE58236C43E9009E38EE /* animate_00079.png in Resources */,
 				3CA8BC7B236C3A8000EE519E /* role_gray@2x.png in Resources */,
 				3C5A15CB2383A6EA002CAE4E /* icon加载@3x.png in Resources */,
+				3C0C337A238784990071BDDD /* audioSlide01-white@3x.png in Resources */,
 				3C37DF0E2382508500399AE8 /* 显示密码.png in Resources */,
 				3A45E2782223A3D600505786 /* icon_019.gif in Resources */,
 				3C0C33392384DE870071BDDD /* 语音声波备份 5@2x.png in Resources */,
 				3A45E3FF2223A50400505786 /* tabbar_chat_gray@3x.png in Resources */,
 				3C0C333E2384DE870071BDDD /* 语音声波备份 5.png in Resources */,
 				3A45E2802223A3D600505786 /* icon_022.gif in Resources */,
+				3C0C338923879E350071BDDD /* video-me@2x.png in Resources */,
 				3A45E3042223A41600505786 /* chatbar_map@3x.png in Resources */,
 				3A45E3972223A49E00505786 /* chatroom_avatar@3x.png in Resources */,
 				3C5A15C82383A6EA002CAE4E /* icon叹号.png in Resources */,
@@ -3146,6 +3301,8 @@
 				3C37DF50238251ED00399AE8 /* icon-search.png in Resources */,
 				3A45E03A2223A22600505786 /* device@2x.png in Resources */,
 				3C5A16272383A998002CAE4E /* gif(1)@3x.png in Resources */,
+				3C0C33842387849A0071BDDD /* audioSlide01-blue.png in Resources */,
+				3C0C33972387D02E0071BDDD /* 目标点@2x.png in Resources */,
 				3C37DEF523824A7700399AE8 /* icon-tab会话unselected.png in Resources */,
 				3A45E4042223A50400505786 /* tabbar_chat_blue@3x.png in Resources */,
 				3CA8BB2C236C116200EE519E /* icon-tab我@2x.png in Resources */,
@@ -3176,10 +3333,13 @@
 				3C37DF53238251ED00399AE8 /* icon-加群@2x.png in Resources */,
 				3A45E3532223A45500505786 /* msg_file@2x.png in Resources */,
 				3C0C333C2384DE870071BDDD /* 语音声波备份 2.png in Resources */,
+				3C0C33962387D02E0071BDDD /* 目标点.png in Resources */,
 				3CDAFE5E236C43E9009E38EE /* animate_00038.png in Resources */,
+				3C0C33952387D02E0071BDDD /* 目标点@3x.png in Resources */,
 				3CA8BCA0236C3A8000EE519E /* mute_red@3x.png in Resources */,
 				3A45E3AD2223A4C000505786 /* chatroom@3x.png in Resources */,
 				3CDAFE40236C43E9009E38EE /* animate_00066.png in Resources */,
+				3C0C338F23879E700071BDDD /* 形状(3)@2x.png in Resources */,
 				3A45E2902223A3D600505786 /* icon_020_cover.png in Resources */,
 				3A45E3FB2223A50400505786 /* tabbar_settings_gray@3x.png in Resources */,
 				3C5A15AD2383A696002CAE4E /* 语音@2x.png in Resources */,
@@ -3218,17 +3378,20 @@
 				3A45E2772223A3D600505786 /* icon_024_cover.png in Resources */,
 				3CA8BCA3236C3A8000EE519E /* switchCamera_gray@3x.png in Resources */,
 				3A45E3EB2223A4F300505786 /* group_create@2x.png in Resources */,
+				3C0C3379238784990071BDDD /* audioSlide01-white@2x.png in Resources */,
 				3CA8BC94236C3A8000EE519E /* role_white@3x.png in Resources */,
 				3C0C3323238404530071BDDD /* 语音声波send.png in Resources */,
 				3C37DF4B238251ED00399AE8 /* icon-创建群组.png in Resources */,
 				3C5A160C2383A903002CAE4E /* 加(1)@3x.png in Resources */,
 				3A45E08B2223A28F00505786 /* user_avatar_gray@2x.png in Resources */,
+				3C0C339123879E700071BDDD /* 形状(3)@3x.png in Resources */,
 				3CDAFE4E236C43E9009E38EE /* animate_00049.png in Resources */,
 				3CDAFE62236C43E9009E38EE /* animate_00061.png in Resources */,
 				3A45E27A2223A3D600505786 /* icon_024.gif in Resources */,
 				3A45E5412223D69800505786 /* uncheck@2x.png in Resources */,
 				3C5A15B22383A696002CAE4E /* 电话@3x.png in Resources */,
 				3CA8BB36236C116200EE519E /* icon-tab发现@3x.png in Resources */,
+				3C0C33812387849A0071BDDD /* audioSlide02-white.png in Resources */,
 				3C0C33402384DE870071BDDD /* 语音声波备份 5@3x.png in Resources */,
 				3A45E2852223A3D600505786 /* icon_018_cover.png in Resources */,
 				3CDAFE35236C43E9009E38EE /* animate_00060.png in Resources */,
@@ -3269,6 +3432,7 @@
 				3A45E36D2223A45500505786 /* msg_recv_audio@2x.png in Resources */,
 				3A45E0902223A28F00505786 /* navbar_white@3x.png in Resources */,
 				3C37DF162382508500399AE8 /* icon失败@2x.png in Resources */,
+				3C0C337E2387849A0071BDDD /* audioSlide01-white.png in Resources */,
 				3A45E2FF2223A41600505786 /* chatbar_audio_blue@2x.png in Resources */,
 				3CA8BC84236C3A8000EE519E /* invite_gray@2x.png in Resources */,
 				3A45E29A2223A3E500505786 /* chat_audio_blue@3x.png in Resources */,

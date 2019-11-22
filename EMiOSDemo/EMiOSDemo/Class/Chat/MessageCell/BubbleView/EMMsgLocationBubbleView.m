@@ -18,7 +18,7 @@
         if (self.direction == EMMessageDirectionSend) {
             self.iconView.image = [UIImage imageNamed:@"msg_location_white"];
         } else {
-            self.iconView.image = [UIImage imageNamed:@"msg_location"];
+            self.iconView.image = [UIImage imageNamed:@"目标点"];
         }
     }
     

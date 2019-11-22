@@ -109,6 +109,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
+    //主叫方才能发送通话信息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+    
     self.isTyping = NO;
     self.enableTyping = NO;
     if ([EMDemoOptions sharedOptions].isChatTyping && self.conversationModel.emModel.type == EMConversationTypeChat) {
@@ -591,6 +594,20 @@
     }]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
     [self presentViewController:self.alertController animated:YES completion:nil];
+}
+
+//通话结束消息
+- (void)sendCallEndMsg:(NSNotification*)noti
+{
+    EMTextMessageBody *body;
+    if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""]){
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
+    } else {
+        body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
+    }
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setValue:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
+    [self _sendMessageWithBody:body ext:dict isUpload:NO];
 }
 
 //阅读回执跳转
@@ -1189,6 +1206,7 @@
 - (void)userDidJoinGroup:(EMGroup *)aGroup
                     user:(NSString *)aUsername
 {
+    [self tableViewDidTriggerHeaderRefresh];
     [self.tableView reloadData];
     [self _scrollToBottomRow];
 }

@@ -17,9 +17,21 @@
 
 @property (nonatomic) NSInteger timeLength;
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic) int recordDuration;
 
 @property (nonatomic, strong) UIButton *recordButton;
 @property (nonatomic, strong) UILabel *titleLabel;
+
+@property (nonatomic, strong) UIImageView *img三;
+@property (nonatomic, strong) UIImageView *img二;
+@property (nonatomic, strong) UIImageView *img一;
+
+@property (nonatomic, strong) UIImageView *img1;
+@property (nonatomic, strong) UIImageView *img2;
+@property (nonatomic, strong) UIImageView *img3;
+
+@property (nonatomic, strong) UIView *countView;
+@property (nonatomic, strong) UILabel *countLabel;
 
 @end
 
@@ -32,7 +44,8 @@
     if (self) {
         _path = aPath;
         _maxTimeSecond = 60;
-        
+        self.countLabel = [[UILabel alloc]init];
+        self.countView = [[UIView alloc]init];
         [self _setupSubviews];
     }
     
@@ -43,19 +56,12 @@
 
 - (void)_setupSubviews
 {
-    self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.font = [UIFont systemFontOfSize:18];
-    self.titleLabel.textColor = [UIColor grayColor];
-    self.titleLabel.text = @"按住录音";
-    [self addSubview:self.titleLabel];
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self);
-        make.bottom.equalTo(self).offset(-30);
-        make.height.equalTo(@20);
-    }];
+    self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     
     self.recordButton = [[UIButton alloc] init];
-    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
+    [self.recordButton setBackgroundColor:[UIColor whiteColor]];
+    [self.recordButton setImage:[UIImage imageNamed:@"形状(3)"] forState:UIControlStateNormal];
+    self.recordButton.layer.cornerRadius = 40;
     [self.recordButton addTarget:self action:@selector(recordButtonTouchBegin) forControlEvents:UIControlEventTouchDown];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchEnd) forControlEvents:UIControlEventTouchUpInside];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelBegin) forControlEvents:UIControlEventTouchDragOutside];
@@ -64,22 +70,175 @@
     [self.recordButton addTarget:self action:@selector(recordButtonTouchCancelEnd) forControlEvents:UIControlEventTouchUpOutside];
     [self.recordButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.bottom.equalTo(self.titleLabel.mas_top).offset(-15);
         make.width.height.equalTo(@80);
-        make.top.equalTo(self).offset(100);
+        make.bottom.equalTo(self).offset(-25);
     }];
+    
+    self.titleLabel = [[UILabel alloc] init];
+    self.titleLabel.font = [UIFont systemFontOfSize:18];
+    self.titleLabel.textColor = [UIColor grayColor];
+    self.titleLabel.text = @"按住说话";
+    [self addSubview:self.titleLabel];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(30);
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self.recordButton.mas_top).offset(-20);
+        make.height.equalTo(@20);
+    }];
+    
+    self.countView.hidden = YES;
+    [self _setupAnimationViews];
+    
+}
+
+- (void)_setupAnimationViews
+{
+    
+    [self addSubview:self.countView];
+    [self.countView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(30);
+        make.centerX.equalTo(self);
+        make.bottom.equalTo(self.recordButton.mas_top).offset(-20);
+        make.height.equalTo(@20);
+    }];
+    
+    self.countLabel.text = @"00:00";
+    self.countLabel.font = [UIFont systemFontOfSize:14.0];
+    self.countLabel.textAlignment = NSTextAlignmentCenter;
+    [self.countView addSubview:self.countLabel];
+    [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self);
+        make.height.equalTo(self.countView);
+        make.bottom.lessThanOrEqualTo(self.countView.mas_bottom);
+        make.width.equalTo(@50);
+    }];
+    
+    [self _setupImgViews];
+    [self _setupImgs];
+    
+    [self.countView addSubview:_img三];
+    [self.countView addSubview:_img二];
+    [self.countView addSubview:_img一];
+    
+    [self.countView addSubview:_img1];
+    [self.countView addSubview:_img2];
+    [self.countView addSubview:_img3];
+    
+    self.img一.clipsToBounds = YES;
+    [self.img一 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.countLabel);
+        make.right.equalTo(self.countLabel.mas_left).equalTo(@-15);
+    }];
+    [self.img二 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.countLabel);
+        make.right.equalTo(self.img一.mas_left).equalTo(@-2);
+    }];
+    [self.img三 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.countLabel);
+        make.right.equalTo(self.img二.mas_left).equalTo(@-2);
+    }];
+    
+    [self.img1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.countLabel);
+        make.right.equalTo(self.countLabel.mas_right).equalTo(@15);
+    }];
+    [self.img2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.countLabel);
+        make.left.equalTo(self.img1.mas_right).equalTo(@2);
+    }];
+    [self.img3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.countLabel);
+        make.left.equalTo(self.img2.mas_right).equalTo(@2);
+    }];
+    
 }
 
 #pragma mark - Private Timer
 
+- (void)_setupImgs
+{
+    self.img三.image = [UIImage imageNamed:@"audioSlide03-white"];
+    self.img二.image = [UIImage imageNamed:@"audioSlide02-white"];
+    self.img一.image = [UIImage imageNamed:@"audioSlide01-white"];
+    
+    self.img1.image = [UIImage imageNamed:@"audioSlide01-white"];
+    self.img2.image = [UIImage imageNamed:@"audioSlide02-white"];
+    self.img3.image = [UIImage imageNamed:@"audioSlide03-white"];
+}
+
+- (void)_setupImgViews
+{
+    self.img三 = [[UIImageView alloc]init];
+    self.img二 = [[UIImageView alloc]init];
+    self.img一 = [[UIImageView alloc]init];
+    self.img1 = [[UIImageView alloc]init];
+    self.img2 = [[UIImageView alloc]init];
+    self.img3 = [[UIImageView alloc]init];
+}
+
+#pragma mark - Timer
+
+- (void)_updateRecordDuration
+{
+    self.recordDuration += 1;
+    int hour = self.recordDuration / 3600;
+    int m = (self.recordDuration - hour * 3600) / 60;
+    int s = self.recordDuration - hour * 3600 - m * 60;
+    
+    if (hour > 0) {
+        self.countLabel.text = [NSString stringWithFormat:@"%i:%i:%i", hour, m, s];
+    }
+    else if(m > 0){
+        self.countLabel.text = [NSString stringWithFormat:@"%i:%i", m, s];
+    }
+    else{
+        self.countLabel.text = [NSString stringWithFormat:@"00:%i", s];
+    }
+    [self _setupImgAnimation:self.recordDuration];
+}
+
+- (void)_setupImgAnimation:(int)duration
+{
+    int selected = duration % 3;
+    switch (selected) {
+        case 1:
+            [self _setupImgs];
+            self.img一.image = [UIImage imageNamed:@"audioSlide01-blue"];
+            self.img1.image = [UIImage imageNamed:@"audioSlide01-blue"];
+            break;
+        case 2:
+            self.img二.image = [UIImage imageNamed:@"audioSlide02-blue"];
+            self.img2.image = [UIImage imageNamed:@"audioSlide02-blue"];
+            break;
+        case 0:
+            self.img三.image = [UIImage imageNamed:@"audioSlide03-blue"];
+            self.img3.image = [UIImage imageNamed:@"audioSlide03-blue"];
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)_startTimer
 {
+    [self _stopTimer];
     
+    self.recordDuration = 0;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(_updateRecordDuration) userInfo:nil repeats:YES];
+    self.titleLabel.hidden = YES;
+    self.countView.hidden = NO;
 }
 
 - (void)_stopTimer
 {
-    
+    self.countView.hidden = YES;
+    self.countLabel.text = @"00:00";
+    [self _setupImgs];
+    self.titleLabel.hidden = NO;
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
 }
 
 #pragma mark - Private Record
@@ -87,7 +246,7 @@
 - (void)_startRecord
 {
     self.timeLength = 0;
-    
+    [self _startTimer];
     NSString *recordPath = [self.path stringByAppendingFormat:@"/%.0f", [[NSDate date] timeIntervalSince1970] * 1000];
     __weak typeof(self) weakself = self;
     [[EMAudioRecordHelper sharedHelper] startRecordWithPath:recordPath completion:^(NSError * _Nonnull error) {
@@ -138,26 +297,30 @@
 {
     [self _stopRecord];
     
-    self.titleLabel.text = @"按住录音";
-    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
+    self.titleLabel.text = @"按住说话";
+    [self.recordButton setImage:[UIImage imageNamed:@"形状(3)"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelBegin
 {
+    self.titleLabel.hidden = NO;
+    self.countView.hidden = YES;
     self.titleLabel.text = @"松手取消";
-    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_red"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"形状(2)"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelCancel
 {
+    self.titleLabel.hidden = YES;
+    self.countView.hidden = NO;
     self.titleLabel.text = @"松手发送";
-    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"形状"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelEnd
 {
-    self.titleLabel.text = @"按住录音";
-    [self.recordButton setBackgroundImage:[UIImage imageNamed:@"chat_audio_blue"] forState:UIControlStateNormal];
+    self.titleLabel.text = @"按住说话";
+    [self.recordButton setImage:[UIImage imageNamed:@"形状(3)"] forState:UIControlStateNormal];
     
     [self _cancelRecord];
 }

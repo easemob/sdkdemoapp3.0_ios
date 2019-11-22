@@ -154,7 +154,7 @@ static DemoCallManager *callManager = nil;
 }
 
 #pragma mark - EMCallManagerDelegate
-
+//用户A拨打用户B，用户B会收到这个回调。  被叫方
 - (void)callDidReceive:(EMCallSession *)aSession
 {
     
@@ -216,6 +216,7 @@ static DemoCallManager *callManager = nil;
                 self.currentController.modalPresentationStyle = 0;
 
                 [rootViewController presentViewController:self.currentController animated:NO completion:nil];
+                self->_callDirection = EMCOMMUNICATE_DICT_CALLEDPARTY;
             }
         });
     }
@@ -244,11 +245,32 @@ static DemoCallManager *callManager = nil;
             reason:(EMCallEndReason)aReason
              error:(EMError *)aError
 {
-    if (![aSession.callId isEqualToString:self.currentCall.callId]) {
-        return;
+    if (self.currentCall) {
+        [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
     }
     
-    [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
+    //通话类型
+    NSString *callType;
+    if (aSession.type == EMCallTypeVoice) {
+        callType = EMCOMMUNICATE_TYPE_VOICE;
+    } else if (aSession.type == EMCallTypeVideo) {
+        callType = EMCOMMUNICATE_TYPE_VIDEO;
+    }
+    //主叫方发送通话信息
+    if ([self.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY]) {
+        if (self.callDurationTime) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callType,EMCOMMUNICATE_DURATION_TIME:self.callDurationTime}];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callType,EMCOMMUNICATE_DURATION_TIME:@""}];
+        }
+        
+    }
+    self.callDurationTime = nil;
+    /*
+    if (![aSession.callId isEqualToString:self.currentCall.callId]) {
+        return;
+    }*/
+    
     if (aReason != EMCallEndReasonHangup) {
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
@@ -288,6 +310,7 @@ static DemoCallManager *callManager = nil;
             [alertView show];
         }
     }
+   
 }
 
 - (void)callStateDidChange:(EMCallSession *)aSession
@@ -327,6 +350,7 @@ static DemoCallManager *callManager = nil;
 
 #pragma mark - NSNotification
 
+//主叫方
 - (void)handleMake1v1Call:(NSNotification*)notify
 {
     if (!notify.object) {
@@ -363,6 +387,7 @@ static DemoCallManager *callManager = nil;
     }
 }
 
+//主叫方
 - (void)_makeCallWithUsername:(NSString *)aUsername
                          type:(EMCallType)aType
             isCustomVideoData:(BOOL)aIsCustomVideo
@@ -422,6 +447,7 @@ static DemoCallManager *callManager = nil;
                                                ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
                                                    completionBlock(aCallSession, aError);
                                                }];
+    _callDirection = EMCOMMUNICATE_DICT_CALLINGPARTY;
 }
 
 #pragma mark - public
@@ -483,8 +509,9 @@ static DemoCallManager *callManager = nil;
         
         //        self.currentController.isDismissing = YES;
         [self.currentController clearDataAndView];
-        [self.currentController dismissViewControllerAnimated:NO completion:nil];
-        self.currentController = nil;
+        [self.currentController dismissViewControllerAnimated:NO completion:^{
+            self.currentController = nil;
+        }];
         
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
