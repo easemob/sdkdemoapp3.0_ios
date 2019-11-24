@@ -10,6 +10,7 @@
 
 typedef NS_ENUM(NSInteger, EMMessageType) {
     EMMessageTypeText = 1,
+    EMMessageTypePictMixText,
     EMMessageTypeImage,
     EMMessageTypeVideo,
     EMMessageTypeLocation,

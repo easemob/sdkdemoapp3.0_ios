@@ -356,12 +356,21 @@
         return cell;
     } else {
         EMMessageModel *model = (EMMessageModel *)obj;
-        NSString *identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+        NSString *identifier;
+        if (model.emModel.ext && [model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] != nil) {
+            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:EMMessageTypePictMixText];
+        } else {
+            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+        }
         EMMessageCell *cell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
         // Configure the cell...
         if (cell == nil) {
-            cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+            if (model.emModel.ext && [model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] != nil) {
+                cell = [[EMMessageCell alloc] initWithDirection:model.direction type:EMMessageTypePictMixText];
+            } else {
+                cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+            }
             cell.delegate = self;
         }
 

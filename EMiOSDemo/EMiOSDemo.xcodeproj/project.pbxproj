@@ -376,6 +376,7 @@
 		3C0C33952387D02E0071BDDD /* 目标点@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33922387D02C0071BDDD /* 目标点@3x.png */; };
 		3C0C33962387D02E0071BDDD /* 目标点.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33932387D02D0071BDDD /* 目标点.png */; };
 		3C0C33972387D02E0071BDDD /* 目标点@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C0C33942387D02E0071BDDD /* 目标点@2x.png */; };
+		3C0C339A2388040A0071BDDD /* EMMsgPicMixTextBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0C33992388040A0071BDDD /* EMMsgPicMixTextBubbleView.m */; };
 		3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CEF7E196EA37600DBA56B /* ImageIO.framework */; };
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */; };
@@ -1182,6 +1183,8 @@
 		3C0C33922387D02C0071BDDD /* 目标点@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "目标点@3x.png"; sourceTree = "<group>"; };
 		3C0C33932387D02D0071BDDD /* 目标点.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "目标点.png"; sourceTree = "<group>"; };
 		3C0C33942387D02E0071BDDD /* 目标点@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "目标点@2x.png"; sourceTree = "<group>"; };
+		3C0C33982388040A0071BDDD /* EMMsgPicMixTextBubbleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMsgPicMixTextBubbleView.h; sourceTree = "<group>"; };
+		3C0C33992388040A0071BDDD /* EMMsgPicMixTextBubbleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMsgPicMixTextBubbleView.m; sourceTree = "<group>"; };
 		3C1CEF7E196EA37600DBA56B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3C27F9101A1C8FCD008272EF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C3527401931D32C00385240 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1734,6 +1737,8 @@
 				3A45E31E2223A44100505786 /* EMMsgRecallBubbleView.m */,
 				3A45E31B2223A44100505786 /* EMMsgTextBubbleView.h */,
 				3A45E31F2223A44100505786 /* EMMsgTextBubbleView.m */,
+				3C0C33982388040A0071BDDD /* EMMsgPicMixTextBubbleView.h */,
+				3C0C33992388040A0071BDDD /* EMMsgPicMixTextBubbleView.m */,
 				3A45E3232223A44200505786 /* EMMsgVideoBubbleView.h */,
 				3A45E31C2223A44100505786 /* EMMsgVideoBubbleView.m */,
 			);
@@ -3625,6 +3630,7 @@
 				3CA8BC0E236C3A7E00EE519E /* DemoCallManager.m in Sources */,
 				3A45DF592223A1FD00505786 /* EMMulticastDelegate.m in Sources */,
 				3A45E3DE2223A4E900505786 /* EMGroupMutesViewController.m in Sources */,
+				3C0C339A2388040A0071BDDD /* EMMsgPicMixTextBubbleView.m in Sources */,
 				3A45DF3F2223A1FD00505786 /* amrFileCodec.mm in Sources */,
 				3A45E3DF2223A4E900505786 /* EMGroupMembersViewController.m in Sources */,
 				3A45E32E2223A44200505786 /* EMMsgTextBubbleView.m in Sources */,

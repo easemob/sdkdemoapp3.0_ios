@@ -11,6 +11,7 @@
 #import "EMMessageStatusView.h"
 
 #import "EMMsgTextBubbleView.h"
+#import "EMMsgPicMixTextBubbleView.h"
 #import "EMMsgImageBubbleView.h"
 #import "EMMsgAudioBubbleView.h"
 #import "EMMsgVideoBubbleView.h"
@@ -81,6 +82,8 @@
         identifier = [NSString stringWithFormat:@"%@File", identifier];
     } else if (aType == EMMessageTypeExtGif) {
         identifier = [NSString stringWithFormat:@"%@ExtGif", identifier];
+    } else if (aType == EMMessageTypePictMixText) {
+         identifier = [NSString stringWithFormat:@"%@PictMixText", identifier];
     }
     
     return identifier;
@@ -220,7 +223,9 @@
         case EMMessageTypeExtGif:
             bubbleView = [[EMMsgExtGifBubbleView alloc] initWithDirection:self.direction type:aType];
             break;
-            
+        case EMMessageTypePictMixText:
+            bubbleView = [[EMMsgPicMixTextBubbleView alloc]initWithDirection:self.direction type:aType];
+            break;
         default:
             break;
     }

@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UILabel *textLabel;
 
-@property (nonatomic, strong) UIButton *textImgBtn;
-
 @end
 
 NS_ASSUME_NONNULL_END
