@@ -10,7 +10,6 @@
 
 typedef NS_ENUM(NSInteger, EMMessageType) {
     EMMessageTypeText = 1,
-    EMMessageTypePictMixText,
     EMMessageTypeImage,
     EMMessageTypeVideo,
     EMMessageTypeLocation,
@@ -22,6 +21,7 @@ typedef NS_ENUM(NSInteger, EMMessageType) {
     EMMessageTypeExtCall,
     EMMessageTypeExtNewFriend,
     EMMessageTypeExtAddGroup,
+    EMMessageTypePictMixText,
 };
 
 NS_ASSUME_NONNULL_BEGIN

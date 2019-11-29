@@ -334,7 +334,7 @@
                         } else {
                             dic = [[NSMutableDictionary alloc]init];
                         }
-                        [dic setValue:kConversation_AtYou forKey:kConversation_IsRead];
+                        [dic setObject:kConversation_AtYou forKey:kConversation_IsRead];
                         [conversation setExt:dic];
                     };
                 }
@@ -515,7 +515,7 @@
     [self.tableView moveRowAtIndexPath:self.menuIndexPath toIndexPath:firstIndexPath];
     
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
-    [ext setValue:@"stick" forKey:CONVERSATION_STICK];
+    [ext setObject:@"stick" forKey:CONVERSATION_STICK];
     
     [conversationModel.emModel setExt:ext];
     

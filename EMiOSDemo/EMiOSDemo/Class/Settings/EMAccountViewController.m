@@ -31,15 +31,15 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.title = @"个人信息";
+    self.title = @"个人资料";
     
-    self.tableView.sectionHeaderHeight = 15;
+    //self.tableView.sectionHeaderHeight = 15;
 //    self.tableView.sectionFooterHeight = 15;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = kColor_LightGray;
     
     self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_avatar_me"]];
-    self.headerView.frame = CGRectMake(0, 0, 60, 60);
+    self.headerView.frame = CGRectMake(0, 0, 36, 36);
     self.headerView.userInteractionEnabled = YES;
     
     self.disturbSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 60)];
@@ -50,7 +50,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -61,17 +61,9 @@
             break;
         case 1:
         {
-            if (self.disturbSwitch.isOn) {
-                count = 2;
-            } else {
-                count = 1;
-            }
-        }
-            break;
-        case 2:
             count = 1;
             break;
-            
+        }
         default:
             break;
     }
@@ -109,6 +101,11 @@
         }
     } else if (section == 1) {
         if (row == 0) {
+            cell.textLabel.textColor = [UIColor redColor];
+            cell.textLabel.text = @"退出登录";
+        }
+        /*
+        if (row == 0) {
             cell.textLabel.text = @"免打扰";
             cell.accessoryView = self.disturbSwitch;
         } else if (row == 1) {
@@ -118,13 +115,7 @@
             EMPushOptions *options = [EMClient sharedClient].pushOptions;
             if (options.noDisturbingStartH > 0 && options.noDisturbingEndH > 0) {
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", @(options.noDisturbingStartH), @(options.noDisturbingEndH)];
-            }
-        }
-    } else if (section == 2) {
-        if (row == 0) {
-            cell.textLabel.textColor = [UIColor redColor];
-            cell.textLabel.text = @"退出登录";
-        }
+            }*/
     }
     
     return cell;
@@ -134,31 +125,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height = 55;
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        height = 80;
-    }
-    
-    return height;
+    return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 20;
-    }
-    
-    return 10;
-}
-
-- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return nil;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 20;
+    return 0;
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -183,10 +160,6 @@
             [self changeNikeNameAction];
         }
     } else if (section == 1) {
-        if (row == 1) {
-            [self changeDisturbDateAction];
-        }
-    } else if (section == 2) {
         if (row == 0) {
             [self logoutAction];
         }

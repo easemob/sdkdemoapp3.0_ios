@@ -68,7 +68,7 @@
         self.textLabel.textAlignment = NSTextAlignmentRight;
         
         self.imgView.image = [UIImage imageNamed:@"语音声波send"];
-        self.imgView.animationImages = @[[UIImage imageNamed:@"语音声波备份 2"], [UIImage imageNamed:@"语音声波备份"], [UIImage imageNamed:@"语音声波send"]];
+        self.imgView.animationImages = @[[UIImage imageNamed:@"语音声波-right-2"], [UIImage imageNamed:@"语音声波-right-1"], [UIImage imageNamed:@"语音声波send"]];
         self.textLabel.textColor = [UIColor whiteColor];
     } else {
         
@@ -82,8 +82,8 @@
         
         self.textLabel.textAlignment = NSTextAlignmentLeft;
         
-        self.imgView.image = [UIImage imageNamed:@"语音声波"];
-        self.imgView.animationImages = @[[UIImage imageNamed:@"语音声波备份 5"], [UIImage imageNamed:@"语音声波备份 4"], [UIImage imageNamed:@"语音声波"]];
+        self.imgView.image = [UIImage imageNamed:@"语音声波receive"];
+        self.imgView.animationImages = @[[UIImage imageNamed:@"语音声波-left-2"], [UIImage imageNamed:@"语音声波-left-1"], [UIImage imageNamed:@"语音声波receive"]];
         self.textLabel.textColor = [UIColor blackColor];
     }
 }

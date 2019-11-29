@@ -10,9 +10,9 @@
 
 @interface DemoCallManager : NSObject
 
-@property (nonatomic,strong) NSString *callDirection; //通话方向，主/被叫
+@property (nonatomic,strong) NSString *callDirection; //通话角色，主/被叫
 
-@property (nonatomic,strong) NSString *callDurationTime; //通话方向，主/被叫
+@property (nonatomic,strong) NSString *callDurationTime; //通话持续时间
 
 + (instancetype)sharedManager;
 

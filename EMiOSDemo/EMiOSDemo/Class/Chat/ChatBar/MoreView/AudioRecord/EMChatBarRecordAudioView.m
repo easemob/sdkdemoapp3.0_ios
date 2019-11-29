@@ -22,13 +22,13 @@
 @property (nonatomic, strong) UIButton *recordButton;
 @property (nonatomic, strong) UILabel *titleLabel;
 
-@property (nonatomic, strong) UIImageView *img三;
-@property (nonatomic, strong) UIImageView *img二;
-@property (nonatomic, strong) UIImageView *img一;
+@property (nonatomic, strong) UIImageView *img_left_3;
+@property (nonatomic, strong) UIImageView *img_left_2;
+@property (nonatomic, strong) UIImageView *img_left_1;
 
-@property (nonatomic, strong) UIImageView *img1;
-@property (nonatomic, strong) UIImageView *img2;
-@property (nonatomic, strong) UIImageView *img3;
+@property (nonatomic, strong) UIImageView *img_right_1;
+@property (nonatomic, strong) UIImageView *img_right_2;
+@property (nonatomic, strong) UIImageView *img_right_3;
 
 @property (nonatomic, strong) UIView *countView;
 @property (nonatomic, strong) UILabel *countLabel;
@@ -60,7 +60,7 @@
     
     self.recordButton = [[UIButton alloc] init];
     [self.recordButton setBackgroundColor:[UIColor whiteColor]];
-    [self.recordButton setImage:[UIImage imageNamed:@"形状(3)"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
     self.recordButton.layer.cornerRadius = 40;
     [self.recordButton addTarget:self action:@selector(recordButtonTouchBegin) forControlEvents:UIControlEventTouchDown];
     [self.recordButton addTarget:self action:@selector(recordButtonTouchEnd) forControlEvents:UIControlEventTouchUpInside];
@@ -116,39 +116,39 @@
     [self _setupImgViews];
     [self _setupImgs];
     
-    [self.countView addSubview:_img三];
-    [self.countView addSubview:_img二];
-    [self.countView addSubview:_img一];
+    [self.countView addSubview:_img_left_3];
+    [self.countView addSubview:_img_left_2];
+    [self.countView addSubview:_img_left_1];
     
-    [self.countView addSubview:_img1];
-    [self.countView addSubview:_img2];
-    [self.countView addSubview:_img3];
+    [self.countView addSubview:_img_right_1];
+    [self.countView addSubview:_img_right_2];
+    [self.countView addSubview:_img_right_3];
     
-    self.img一.clipsToBounds = YES;
-    [self.img一 mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.img_left_1.clipsToBounds = YES;
+    [self.img_left_1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.countLabel);
         make.right.equalTo(self.countLabel.mas_left).equalTo(@-15);
     }];
-    [self.img二 mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.img_left_2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.countLabel);
-        make.right.equalTo(self.img一.mas_left).equalTo(@-2);
+        make.right.equalTo(self.img_left_1.mas_left).equalTo(@-2);
     }];
-    [self.img三 mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.img_left_3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.countLabel);
-        make.right.equalTo(self.img二.mas_left).equalTo(@-2);
+        make.right.equalTo(self.img_left_2.mas_left).equalTo(@-2);
     }];
     
-    [self.img1 mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.img_right_1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.countLabel);
         make.right.equalTo(self.countLabel.mas_right).equalTo(@15);
     }];
-    [self.img2 mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.img_right_2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.countLabel);
-        make.left.equalTo(self.img1.mas_right).equalTo(@2);
+        make.left.equalTo(self.img_right_1.mas_right).equalTo(@2);
     }];
-    [self.img3 mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.img_right_3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.countLabel);
-        make.left.equalTo(self.img2.mas_right).equalTo(@2);
+        make.left.equalTo(self.img_right_2.mas_right).equalTo(@2);
     }];
     
 }
@@ -157,23 +157,23 @@
 
 - (void)_setupImgs
 {
-    self.img三.image = [UIImage imageNamed:@"audioSlide03-white"];
-    self.img二.image = [UIImage imageNamed:@"audioSlide02-white"];
-    self.img一.image = [UIImage imageNamed:@"audioSlide01-white"];
+    self.img_left_3.image = [UIImage imageNamed:@"audioSlide03-white"];
+    self.img_left_2.image = [UIImage imageNamed:@"audioSlide02-white"];
+    self.img_left_1.image = [UIImage imageNamed:@"audioSlide01-white"];
     
-    self.img1.image = [UIImage imageNamed:@"audioSlide01-white"];
-    self.img2.image = [UIImage imageNamed:@"audioSlide02-white"];
-    self.img3.image = [UIImage imageNamed:@"audioSlide03-white"];
+    self.img_right_1.image = [UIImage imageNamed:@"audioSlide01-white"];
+    self.img_right_2.image = [UIImage imageNamed:@"audioSlide02-white"];
+    self.img_right_3.image = [UIImage imageNamed:@"audioSlide03-white"];
 }
 
 - (void)_setupImgViews
 {
-    self.img三 = [[UIImageView alloc]init];
-    self.img二 = [[UIImageView alloc]init];
-    self.img一 = [[UIImageView alloc]init];
-    self.img1 = [[UIImageView alloc]init];
-    self.img2 = [[UIImageView alloc]init];
-    self.img3 = [[UIImageView alloc]init];
+    self.img_left_3 = [[UIImageView alloc]init];
+    self.img_left_2 = [[UIImageView alloc]init];
+    self.img_left_1 = [[UIImageView alloc]init];
+    self.img_right_1 = [[UIImageView alloc]init];
+    self.img_right_2 = [[UIImageView alloc]init];
+    self.img_right_3 = [[UIImageView alloc]init];
 }
 
 #pragma mark - Timer
@@ -203,16 +203,16 @@
     switch (selected) {
         case 1:
             [self _setupImgs];
-            self.img一.image = [UIImage imageNamed:@"audioSlide01-blue"];
-            self.img1.image = [UIImage imageNamed:@"audioSlide01-blue"];
+            self.img_left_1.image = [UIImage imageNamed:@"audioSlide01-blue"];
+            self.img_right_1.image = [UIImage imageNamed:@"audioSlide01-blue"];
             break;
         case 2:
-            self.img二.image = [UIImage imageNamed:@"audioSlide02-blue"];
-            self.img2.image = [UIImage imageNamed:@"audioSlide02-blue"];
+            self.img_left_2.image = [UIImage imageNamed:@"audioSlide02-blue"];
+            self.img_right_2.image = [UIImage imageNamed:@"audioSlide02-blue"];
             break;
         case 0:
-            self.img三.image = [UIImage imageNamed:@"audioSlide03-blue"];
-            self.img3.image = [UIImage imageNamed:@"audioSlide03-blue"];
+            self.img_left_3.image = [UIImage imageNamed:@"audioSlide03-blue"];
+            self.img_right_3.image = [UIImage imageNamed:@"audioSlide03-blue"];
             break;
         default:
             break;
@@ -225,8 +225,7 @@
     
     self.recordDuration = 0;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(_updateRecordDuration) userInfo:nil repeats:YES];
-    self.titleLabel.hidden = YES;
-    self.countView.hidden = NO;
+   
 }
 
 - (void)_stopTimer
@@ -247,6 +246,8 @@
 {
     self.timeLength = 0;
     [self _startTimer];
+    self.titleLabel.hidden = YES;
+    self.countView.hidden = NO;
     NSString *recordPath = [self.path stringByAppendingFormat:@"/%.0f", [[NSDate date] timeIntervalSince1970] * 1000];
     __weak typeof(self) weakself = self;
     [[EMAudioRecordHelper sharedHelper] startRecordWithPath:recordPath completion:^(NSError * _Nonnull error) {
@@ -255,6 +256,8 @@
             [EMAlertController showErrorAlert:error.domain];
         } else {
             [weakself _startTimer];
+            weakself.titleLabel.hidden = YES;
+            weakself.countView.hidden = NO;
             if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(chatBarRecordAudioViewStartRecord)]) {
                 [weakself.delegate chatBarRecordAudioViewStartRecord];
             }
@@ -298,7 +301,7 @@
     [self _stopRecord];
     
     self.titleLabel.text = @"按住说话";
-    [self.recordButton setImage:[UIImage imageNamed:@"形状(3)"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelBegin
@@ -306,7 +309,7 @@
     self.titleLabel.hidden = NO;
     self.countView.hidden = YES;
     self.titleLabel.text = @"松手取消";
-    [self.recordButton setImage:[UIImage imageNamed:@"形状(2)"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"redAudioBtn"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelCancel
@@ -314,13 +317,13 @@
     self.titleLabel.hidden = YES;
     self.countView.hidden = NO;
     self.titleLabel.text = @"松手发送";
-    [self.recordButton setImage:[UIImage imageNamed:@"形状"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"blueAudioBtn"] forState:UIControlStateNormal];
 }
 
 - (void)recordButtonTouchCancelEnd
 {
     self.titleLabel.text = @"按住说话";
-    [self.recordButton setImage:[UIImage imageNamed:@"形状(3)"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"grayAudioBtn"] forState:UIControlStateNormal];
     
     [self _cancelRecord];
 }
