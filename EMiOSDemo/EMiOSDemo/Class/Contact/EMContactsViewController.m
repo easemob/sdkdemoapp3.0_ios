@@ -394,6 +394,7 @@
 - (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
 {
     self.resultController.searchKeyword = nil;
+    [self.tableView reloadData];
 }
 
 - (void)searchBarCancelButtonAction:(UISearchBar *)searchBar

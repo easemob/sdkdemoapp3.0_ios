@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIImageView *imgView;
 
+@property (nonatomic, strong) UIView *placeholderView;
+
 @end
 
 NS_ASSUME_NONNULL_END

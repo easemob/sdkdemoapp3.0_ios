@@ -109,6 +109,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
+    //主叫方才能发送通话信息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+    
     self.isTyping = NO;
     self.enableTyping = NO;
     if ([EMDemoOptions sharedOptions].isChatTyping && self.conversationModel.emModel.type == EMConversationTypeChat) {
@@ -139,7 +142,7 @@
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:self.conversationModel.emModel.ext];
     //群聊@功能
     if ([self.conversationModel.emModel.ext objectForKey:kConversation_IsRead]) {
-        [ext setValue:nil forKey:kConversation_IsRead];
+        [ext setObject:nil forKey:kConversation_IsRead];
         [self.conversationModel.emModel setExt:ext];
     }
     
@@ -283,12 +286,16 @@
     EMChatBarEmoticonView *moreEmoticonView = [[EMChatBarEmoticonView alloc] init];
     moreEmoticonView.delegate = self;
     self.chatBar.moreEmoticonView = moreEmoticonView;
+    
     //更多
-    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
-        EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
-        moreFunction.delegate = self;
-        self.chatBar.moreFunctionView = moreFunction;
+    EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
+    if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
+        moreFunction.readReceiptBtn.hidden = YES;
+        moreFunction.readReceiptLable.hidden = YES;
     }
+    moreFunction.delegate = self;
+    self.chatBar.moreFunctionView = moreFunction;
+    
 }
 
 - (NSString *)_getAudioOrVideoPath
@@ -353,12 +360,22 @@
         return cell;
     } else {
         EMMessageModel *model = (EMMessageModel *)obj;
-        NSString *identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+        NSString *identifier;
+        //通话记录
+        if (model.emModel.ext && [model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] != nil) {
+            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:EMMessageTypePictMixText];
+        } else {
+            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+        }
         EMMessageCell *cell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
         // Configure the cell...
         if (cell == nil) {
-            cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+            if (model.emModel.ext && [model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] != nil) {
+                cell = [[EMMessageCell alloc] initWithDirection:model.direction type:EMMessageTypePictMixText];
+            } else {
+                cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+            }
             cell.delegate = self;
         }
 
@@ -557,6 +574,7 @@
         [self _sendLocationAction:aCoordinate address:aAddress];
     }];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = 0;
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
@@ -591,6 +609,20 @@
     }]];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
     [self presentViewController:self.alertController animated:YES completion:nil];
+}
+
+//通话记录消息
+- (void)sendCallEndMsg:(NSNotification*)noti
+{
+    EMTextMessageBody *body;
+    if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""]){
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
+    } else {
+        body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
+    }
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
+    [self _sendMessageWithBody:body ext:dict isUpload:NO];
 }
 
 //阅读回执跳转
@@ -1189,6 +1221,7 @@
 - (void)userDidJoinGroup:(EMGroup *)aGroup
                     user:(NSString *)aUsername
 {
+    [self tableViewDidTriggerHeaderRefresh];
     [self.tableView reloadData];
     [self _scrollToBottomRow];
 }
@@ -1767,6 +1800,7 @@
         }
         
         EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:msg];
+
         [formated addObject:model];
     }
     
@@ -1834,7 +1868,7 @@
         //草稿
         if (self.chatBar.textView.text.length > 0) {
             NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:self.conversationModel.emModel.ext];
-            [ext setValue:self.chatBar.textView.text forKey:kConversation_Draft];
+            [ext setObject:self.chatBar.textView.text forKey:kConversation_Draft];
             [self.conversationModel.emModel setExt:ext];
         }
     }

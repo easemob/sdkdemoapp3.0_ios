@@ -53,7 +53,7 @@
     _detailLabel.textColor = [UIColor grayColor];
     [self.contentView addSubview:_detailLabel];
     [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.avatarView.mas_right).offset(8);
+        make.left.equalTo(self.avatarView.mas_right).offset(15);
         make.right.equalTo(self.contentView).offset(-15);
         make.bottom.equalTo(self.contentView).offset(-8);
     }];
@@ -66,7 +66,7 @@
     [self.contentView addSubview:_nameLabel];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(8);
-        make.left.equalTo(self.avatarView.mas_right).offset(8);
+        make.left.equalTo(self.avatarView.mas_right).offset(15);
         make.right.equalTo(self.contentView).offset(-15);
         make.bottom.equalTo(self.detailLabel.mas_top);
     }];

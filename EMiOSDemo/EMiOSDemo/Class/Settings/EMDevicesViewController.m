@@ -94,14 +94,49 @@
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
     }
     
+    UIImageView *imgView = [[UIImageView alloc]init];
+    [cell.contentView addSubview:imgView];
+    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cell.contentView);
+        make.left.equalTo(cell.contentView).offset(20);
+    }];
+    [cell.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imgView.mas_right).offset(15);
+        make.top.equalTo(cell.contentView).offset(10);
+    }];
+    [cell.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imgView.mas_right).offset(15);
+        make.bottom.equalTo(cell.contentView).offset(-10);
+    }];
+    
+    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
+    
     EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
+    
+    NSRange range = [options.resource rangeOfString:@"_"];
+    
+    NSString *str = [options.resource substringToIndex:range.location];
+    
+    if ([str isEqualToString:@"ios"]) {
+        imgView.image = [UIImage imageNamed:@"ios"];
+    } else if ([str isEqualToString:@"android"]) {
+        imgView.image = [UIImage imageNamed:@"android"];
+    } else if ([str isEqualToString:@"webim"]) {
+        imgView.image = [UIImage imageNamed:@"web"];
+    } else if ([str isEqualToString:@"win"]) {
+        imgView.image = [UIImage imageNamed:@"win"];
+    } else if ([str isEqualToString:@"desktop"]) {
+        imgView.image = [UIImage imageNamed:@"iMac"];
+    }
+    
     cell.textLabel.text = options.deviceName;
     if ([options.deviceName length] == 0) {
         cell.textLabel.text = options.resource;
     }
     
     cell.detailTextLabel.text = options.deviceUUID;
-    
+    [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
     return cell;
 }
 

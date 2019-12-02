@@ -12,9 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LoadingCALayer : CALayer
 
-@property (nonatomic,assign)CGFloat marketValue;
-
-- (void)custom_setValue:(CGFloat)value;
+@property (nonatomic) CGFloat progress;
 
 @end
 

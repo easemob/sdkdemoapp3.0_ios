@@ -8,6 +8,7 @@
 
 #import "EMMessageStatusView.h"
 #import "LoadingCALayer.h"
+#import "OneLoadingAnimationView.h"
 
 @interface EMMessageStatusView()
 
@@ -15,15 +16,13 @@
 @property (nonatomic, strong) UIButton *failButton;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
-@property (nonatomic, strong) UIView *loadingView;//加载view
+@property (strong, nonatomic) IBOutlet OneLoadingAnimationView *loadingView;//加载view
 
 @property (nonatomic) EMMessageStatus status;
 
 @property (nonatomic) BOOL isReadAcked;
 
 @property (nonatomic, strong) NSTimer *timer;
-
-@property (nonatomic, strong) LoadingCALayer *customLayer;
 
 @end
 
@@ -67,17 +66,10 @@
 - (UIView *)loadingView
 {
     if (_loadingView == nil) {
-        _loadingView = [[UIView alloc]init];
+        _loadingView = [[OneLoadingAnimationView alloc]init];
+        //_loadingView.backgroundColor = [UIColor lightGrayColor];
     }
     return _loadingView;
-}
-
-- (LoadingCALayer *)customLayer
-{
-    if(_customLayer == nil) {
-        _customLayer = [LoadingCALayer layer];
-    }
-    return _customLayer;
 }
 
 - (UIActivityIndicatorView *)activityView
@@ -113,15 +105,14 @@
                 make.width.equalTo(@20);
             }];
             [self.activityView startAnimating];*/
+            
             [self addSubview:self.loadingView];
             [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self);
                 make.width.equalTo(@20);
             }];
-            self.customLayer.position = CGPointMake(_loadingView.frame.size.width * 0.5, _loadingView.frame.size.height * 0.5);
-            self.customLayer.bounds = CGRectMake(0, 0, _loadingView.frame.size.width, _loadingView.frame.size.height);
-            [_loadingView.layer addSublayer:self.customLayer];
-            [self setCirclePercent:0.1];
+            [self.loadingView startAnimation];
+        
         } else if (aStatus == EMMessageStatusFailed) {
             self.hidden = NO;
             [_label removeFromSuperview];
@@ -160,28 +151,6 @@
         self.label.text = aIsReadAcked ? @"已读" : nil;
     }
     self.isReadAcked = aIsReadAcked;
-}
-
-- (void)setCirclePercent:(CGFloat)percent {
-    if (self.timer) {
-        [self.timer invalidate];
-        self.timer = nil;
-    }
-    __block CGFloat ori = 0.0;
-    __block CGFloat countPercent = percent;
-    __weak typeof(self) weakself = self;
-    self.timer= [NSTimer timerWithTimeInterval:0.05 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        if (ori >= countPercent) {
-            [timer invalidate];
-            timer = nil;
-            return ;
-        }
-        ori += 0.05;
-        [weakself.customLayer custom_setValue:ori];
-    }];
-    NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
-    [currentLoop addTimer:self.timer forMode:NSRunLoopCommonModes];
-    [self.timer fire];
 }
 
 #pragma mark - Action

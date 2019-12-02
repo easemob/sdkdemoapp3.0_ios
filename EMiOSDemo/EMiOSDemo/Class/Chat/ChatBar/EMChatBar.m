@@ -55,6 +55,7 @@
     }];
     
     self.textView = [[EMTextView alloc] init];
+    
     self.textView.delegate = self;
     self.textView.placeholder = @"请输入消息内容";
     self.textView.font = [UIFont systemFontOfSize:16];
@@ -76,14 +77,6 @@
     }];
     
     self.sendBtn = [[UIButton alloc]init];
-    /*
-    if(self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]){
-        self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
-        self.sendBtn.tag = 1;
-    }else{
-        self.sendBtn.backgroundColor = [UIColor lightGrayColor];
-        self.sendBtn.tag = 0;
-    }*/
     self.sendBtn.backgroundColor = [UIColor lightGrayColor];
     self.sendBtn.tag = 0;
     [self.sendBtn setTitle:@"发送" forState:UIControlStateNormal];
@@ -109,6 +102,8 @@
         make.height.equalTo(@50);
         make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
     }];
+    
+    self.currentMoreView.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
 
 }
 
@@ -121,8 +116,8 @@
     self.buttonArray = [[NSMutableArray alloc] init];
     
     UIButton *audioButton = [[UIButton alloc] init];
-    [audioButton setImage:[UIImage imageNamed:@"语音"] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageNamed:@"语音_selected"] forState:UIControlStateSelected];
+    [audioButton setImage:[UIImage imageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
+    [audioButton setImage:[UIImage imageNamed:@"audio-selected"] forState:UIControlStateSelected];
     [audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:audioButton];
     [audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -134,8 +129,8 @@
     [self.buttonArray addObject:audioButton];
     
     UIButton *emojiButton = [[UIButton alloc] init];
-    [emojiButton setImage:[UIImage imageNamed:@"gif"] forState:UIControlStateNormal];
-    [emojiButton setImage:[UIImage imageNamed:@"gif(1)"] forState:UIControlStateSelected];
+    [emojiButton setImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
+    [emojiButton setImage:[UIImage imageNamed:@"face-selected"] forState:UIControlStateSelected];
     [emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:emojiButton];
     [emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -147,8 +142,8 @@
     [self.buttonArray addObject:emojiButton];
     
     UIButton *cameraButton = [[UIButton alloc] init];
-    [cameraButton setImage:[UIImage imageNamed:@"相机"] forState:UIControlStateNormal];
-    [cameraButton setImage:[UIImage imageNamed:@"相机(1)"] forState:UIControlStateHighlighted];
+    [cameraButton setImage:[UIImage imageNamed:@"camera-unSelected"] forState:UIControlStateNormal];
+    [cameraButton setImage:[UIImage imageNamed:@"camera-selected"] forState:UIControlStateHighlighted];
     [cameraButton addTarget:self action:@selector(cameraButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:cameraButton];
     [cameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -160,8 +155,8 @@
     [self.buttonArray addObject:cameraButton];
     
     UIButton *photoButton = [[UIButton alloc] init];
-    [photoButton setImage:[UIImage imageNamed:@"图片"] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageNamed:@"图片(1)"] forState:UIControlStateHighlighted];
+    [photoButton setImage:[UIImage imageNamed:@"pic-unSelected"] forState:UIControlStateNormal];
+    [photoButton setImage:[UIImage imageNamed:@"pic-selected"] forState:UIControlStateHighlighted];
     [photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:photoButton];
     [photoButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -172,36 +167,36 @@
     }];
     [self.buttonArray addObject:photoButton];
     
-    UIButton *adressButton = [[UIButton alloc] init];
-    [adressButton setImage:[UIImage imageNamed:@"chatbar_map"] forState:UIControlStateNormal];
-    [adressButton setImage:[UIImage imageNamed:@"chatbar_map_blue"] forState:UIControlStateHighlighted];
-    [adressButton addTarget:self action:@selector(addressButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:adressButton];
-    [adressButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIButton *fileButton = [[UIButton alloc] init];
+    [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateNormal];
+    [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateHighlighted];
+    [fileButton addTarget:self action:@selector(fileButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonsView addSubview:fileButton];
+    [fileButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.buttonsView);
         make.left.equalTo(photoButton.mas_right);
         make.bottom.equalTo(photoButton);
         make.width.mas_equalTo(width);
     }];
-    [self.buttonArray addObject:adressButton];
+    [self.buttonArray addObject:fileButton];
     
     UIButton *callButton = [[UIButton alloc] init];
-    [callButton setImage:[UIImage imageNamed:@"电话"] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageNamed:@"电话(1)"] forState:UIControlStateSelected];
+    [callButton setImage:[UIImage imageNamed:@"video-unSelected"] forState:UIControlStateNormal];
+    [callButton setImage:[UIImage imageNamed:@"video-selected"] forState:UIControlStateSelected];
     [callButton addTarget:self action:@selector(callButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:callButton];
     [callButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.buttonsView);
-        make.left.equalTo(adressButton.mas_right);
-        make.bottom.equalTo(adressButton);
+        make.left.equalTo(fileButton.mas_right);
+        make.bottom.equalTo(fileButton);
         make.width.mas_equalTo(width);
         //make.right.equalTo(self.buttonsView);
     }];
     [self.buttonArray addObject:callButton];
     
     UIButton *moreButton = [[UIButton alloc] init];
-    [moreButton setImage:[UIImage imageNamed:@"加"] forState:UIControlStateNormal];
-    [moreButton setImage:[UIImage imageNamed:@"加(1)"] forState:UIControlStateSelected];
+    [moreButton setImage:[UIImage imageNamed:@"more-unSelected"] forState:UIControlStateNormal];
+    [moreButton setImage:[UIImage imageNamed:@"more-selected"] forState:UIControlStateSelected];
     [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:moreButton];
     [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -473,13 +468,9 @@
     }
 }
 
-- (void)addressButtonAction:(UIButton *)aButton
+- (void)fileButtonAction:(UIButton *)aButton
 {
-    [self clearMoreViewAndSelectedButton];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidLocationAction)]) {
-        [self.delegate chatBarDidLocationAction];
-    }
 }
 
 @end

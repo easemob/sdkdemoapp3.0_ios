@@ -229,12 +229,13 @@
     else{
         self.timeLabel.text = [NSString stringWithFormat:@"00:%i", s];
     }
+    [DemoCallManager sharedManager].callDurationTime = self.timeLabel.text;
 }
 
 - (void)_startCallDurationTimer
 {
     [self _stopCallDurationTimer];
-    
+
     self.callDuration = 0;
     self.callDurationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(_updateCallDuration) userInfo:nil repeats:YES];
 }
@@ -384,6 +385,7 @@
         reason = EMCallEndReasonDecline;
     }
     [[DemoCallManager sharedManager] endCallWithId:callId reason:reason];
+    
 }
 
 - (void)answerAction

@@ -53,8 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)chatBarDidPhotoAction;
 
-- (void)chatBarDidLocationAction;
-
 - (void)chatBarDidCallAction;
 
 - (void)chatBarDidShowMoreViewAction;

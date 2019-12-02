@@ -37,6 +37,16 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define CHAT_PUSHVIEWCONTROLLER @"EMPushChatViewController"
 #define CHAT_CLEANMESSAGES @"EMChatCleanMessages"
 
+//通话
+#define EMCOMMMUNICATE @"EMCommunicate"
+#define EMCOMMUNICATE_TYPE @"EMCommunicateType"
+#define EMCOMMUNICATE_TYPE_VOICE @"EMCommunicateTypeVoice"
+#define EMCOMMUNICATE_TYPE_VIDEO @"EMCommunicateTypeVideo"
+#define EMCOMMUNICATE_DURATION_TIME @"EMCommunicateDurationTime"
+
+#define EMCOMMUNICATE_DICT_CALLEDPARTY @"EMCommunicateDictCalledParty"
+#define EMCOMMUNICATE_DICT_CALLINGPARTY @"EMCommunicateDictCallingParty"
+
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"
 #define MSG_EXT_GIF @"em_is_big_expression"
