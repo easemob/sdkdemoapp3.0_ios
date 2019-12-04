@@ -7,10 +7,11 @@
 //
 
 #import "EMRefreshTableViewController.h"
+#import "EMRefreshViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMGroupInfoViewController : EMRefreshTableViewController
+@interface EMGroupInfoViewController : EMRefreshViewController
 
 @property (nonatomic, copy) void (^leaveOrDestroyCompletion)(void);
 

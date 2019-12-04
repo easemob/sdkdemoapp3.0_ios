@@ -135,7 +135,7 @@
 
 - (void)setSelectedStatus
 {
-    if(![self.model.emModel.ext objectForKey:CONVERSATION_STICK]) {
+    if([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
         self.selected = NO;
     }
 }
@@ -196,7 +196,7 @@
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, latestMessageTitle];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
         [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
-    } else if (ext && [ext objectForKey:kConversation_Draft]){
+    } else if (ext && [ext objectForKey:kConversation_Draft] && ![[ext objectForKey:kConversation_Draft] isEqualToString:@""]){
         NSString *atStr = @"[草稿]";
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, [ext objectForKey:kConversation_Draft]];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];

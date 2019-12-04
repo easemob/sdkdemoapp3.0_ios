@@ -83,7 +83,7 @@
     } else if (aType == EMMessageTypeExtGif) {
         identifier = [NSString stringWithFormat:@"%@ExtGif", identifier];
     } else if (aType == EMMessageTypePictMixText) {
-         identifier = [NSString stringWithFormat:@"%@PictMixText", identifier];
+        identifier = [NSString stringWithFormat:@"%@PictMixText", identifier];
     }
     
     return identifier;

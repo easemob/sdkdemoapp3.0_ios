@@ -25,6 +25,8 @@
                 _type = EMMessageTypeExtNewFriend;
             } else if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDGROUP]) {
                 _type = EMMessageTypeExtAddGroup;
+            } else if ([aMsg.ext objectForKey:EMCOMMUNICATE_TYPE]){
+                _type = EMMessageTypePictMixText;
             } else {
                 NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
                 if ([conferenceId length] == 0) {
