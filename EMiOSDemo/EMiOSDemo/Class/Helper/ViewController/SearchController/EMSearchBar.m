@@ -41,7 +41,7 @@
     
     self.textField = [[UITextField alloc] init];
     self.textField.delegate = self;
-    self.textField.backgroundColor = kColor_LightGray;
+    self.textField.backgroundColor = kColor_textViewGray;
     self.textField.font = [UIFont systemFontOfSize:16];
     self.textField.placeholder = @"搜索";
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;

@@ -172,7 +172,7 @@
             [switchControl setOn:options.isPriorityGetMsgFromServer animated:NO];
         }
     }
-    
+    cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
     return cell;
 }
 

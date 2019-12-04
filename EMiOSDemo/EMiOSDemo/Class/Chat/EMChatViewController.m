@@ -142,15 +142,15 @@
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:self.conversationModel.emModel.ext];
     //群聊@功能
     if ([self.conversationModel.emModel.ext objectForKey:kConversation_IsRead]) {
-        [ext setObject:nil forKey:kConversation_IsRead];
+        [ext setObject:@"" forKey:kConversation_IsRead];
         [self.conversationModel.emModel setExt:ext];
     }
     
     //草稿
-    if ([self.conversationModel.emModel.ext objectForKey:kConversation_Draft]) {
+    if ([self.conversationModel.emModel.ext objectForKey:kConversation_Draft] && ![[self.conversationModel.emModel.ext objectForKey:kConversation_Draft] isEqualToString:@""]) {
         self.chatBar.textView.text = [self.conversationModel.emModel.ext objectForKey:kConversation_Draft];
         [self.chatBar textChangedExt];
-        [ext setValue:nil forKey:kConversation_Draft];
+        [ext setObject:@"" forKey:kConversation_Draft];
         [self.conversationModel.emModel setExt:ext];
     }
     
@@ -361,21 +361,15 @@
     } else {
         EMMessageModel *model = (EMMessageModel *)obj;
         NSString *identifier;
-        //通话记录
-        if (model.emModel.ext && [model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] != nil) {
-            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:EMMessageTypePictMixText];
-        } else {
-            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
-        }
+ 
+        identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+        
         EMMessageCell *cell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
         // Configure the cell...
         if (cell == nil) {
-            if (model.emModel.ext && [model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] != nil) {
-                cell = [[EMMessageCell alloc] initWithDirection:model.direction type:EMMessageTypePictMixText];
-            } else {
-                cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
-            }
+            cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+            
             cell.delegate = self;
         }
 

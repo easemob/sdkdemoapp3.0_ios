@@ -12,6 +12,7 @@
 
 #import "EMSearchBar.h"
 #import "EMAvatarNameCell.h"
+#import "EMConfirmViewController.h"
 
 @interface EMGroupOwnerViewController ()<EMSearchBarDelegate, EMAvatarNameCellDelegate>
 
@@ -47,7 +48,7 @@
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
     self.title = @"移交群主";
     self.showRefreshHeader = YES;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     
     self.tableView.rowHeight = 60;
 }
@@ -102,22 +103,31 @@
 - (void)cellAccessoryButtonAction:(EMAvatarNameCell *)aCell
 {
     NSString *name = aCell.nameLabel.text;
-
-    [self showHudInView:self.view hint:@"移交群主..."];
-    __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].groupManager updateGroupOwner:self.group.groupId newOwner:name completion:^(EMGroup *aGroup, EMError *aError) {
-        [weakself hideHud];
-        if (aError) {
-            [EMAlertController showErrorAlert:@"移交群主失败"];
-        } else {
-            [EMAlertController showSuccessAlert:@"移交群主成功"];
-            
-            if (weakself.successCompletion) {
-                weakself.group = aGroup;
-                weakself.successCompletion(weakself.group);
-                [weakself backAction];
-            }
+    EMConfirmViewController *confirmControl = [[EMConfirmViewController alloc]initWithMembername:name];
+    confirmControl.modalPresentationStyle = 0;
+    [self presentViewController:confirmControl animated:NO completion:nil];
+    
+    [confirmControl setDoneCompletion:^BOOL(BOOL aConfirm) {
+        
+        if (aConfirm) {
+            [self showHudInView:self.view hint:@"移交群主..."];
+               __weak typeof(self) weakself = self;
+               [[EMClient sharedClient].groupManager updateGroupOwner:self.group.groupId newOwner:name completion:^(EMGroup *aGroup, EMError *aError) {
+                   [weakself hideHud];
+                   if (aError) {
+                       [EMAlertController showErrorAlert:@"移交群主失败"];
+                   } else {
+                       [EMAlertController showSuccessAlert:@"移交群主成功"];
+                       
+                       if (weakself.successCompletion) {
+                           weakself.group = aGroup;
+                           weakself.successCompletion(weakself.group);
+                           [weakself backAction];
+                       }
+                   }
+               }];
         }
+        return YES;
     }];
 }
 

@@ -98,7 +98,7 @@
     [cell.contentView addSubview:imgView];
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.contentView);
-        make.left.equalTo(cell.contentView).offset(20);
+        make.left.equalTo(cell.contentView).offset(16);
     }];
     [cell.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgView.mas_right).offset(15);
@@ -107,6 +107,7 @@
     [cell.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgView.mas_right).offset(15);
         make.bottom.equalTo(cell.contentView).offset(-10);
+        make.right.equalTo(cell.contentView).offset(10);
     }];
     
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
@@ -136,7 +137,7 @@
     }
     
     cell.detailTextLabel.text = options.deviceUUID;
-    [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
+    cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0);
     return cell;
 }
 

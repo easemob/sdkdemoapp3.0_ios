@@ -279,6 +279,7 @@
         }
     }
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
     return cell;
 }
 

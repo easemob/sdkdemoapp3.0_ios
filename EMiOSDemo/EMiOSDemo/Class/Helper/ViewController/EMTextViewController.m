@@ -56,10 +56,10 @@
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(20);
+        make.top.equalTo(self.view);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
-        make.height.equalTo(@120);
+        make.height.equalTo(@(self.view.frame.size.height/2));
     }];
     
     self.textView = [[EMTextView alloc] init];
@@ -68,7 +68,9 @@
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.placeholder = self.placeholder;
     self.textView.returnKeyType = UIReturnKeyDone;
-    self.textView.text = self.originalString;
+    if (self.originalString && ![self.originalString isEqualToString:@""]) {
+        self.textView.text = self.originalString;
+    }
     self.textView.editable = self.isEditable;
     [self.view addSubview:self.textView];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -264,7 +264,7 @@
     [cell setSeparatorInset:UIEdgeInsetsMake(0, cell.avatarView.frame.size.height + 23, 0, 1)];
 
     //置顶是已选中状态，背景变色
-    if([model.emModel.ext objectForKey:CONVERSATION_STICK]) {
+    if([model.emModel.ext objectForKey:CONVERSATION_STICK] && ![[model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
         //cell.backgroundColor = [UIColor grayColor];
         dispatch_async(dispatch_get_main_queue(), ^{
             [cell setSelected:YES animated:NO];
@@ -526,7 +526,7 @@
 {
     EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
-    [ext setValue:nil forKey:CONVERSATION_STICK];
+    [ext setObject:@"" forKey:CONVERSATION_STICK];
     [conversationModel.emModel setExt:ext];
     [self.tableView reloadData];
 }
@@ -557,7 +557,7 @@
     //[self canBecomeFirstResponder];
     [self becomeFirstResponder];
     NSMutableArray *items = [[NSMutableArray alloc] init];
-    if([aCell.model.emModel.ext objectForKey:CONVERSATION_STICK]) {
+    if([aCell.model.emModel.ext objectForKey:CONVERSATION_STICK] && ![[aCell.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
         [items addObject:self.cancelStickMenuItem];
         [items addObject:self.deleteMenuItem];
     } else {
@@ -589,7 +589,7 @@
     
     for (int i = 0; i < [originArray count]; i++) {
         conversation = originArray[i];
-        if([conversation.ext objectForKey:CONVERSATION_STICK]) {
+        if([conversation.ext objectForKey:CONVERSATION_STICK] && ![[conversation.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
             [stickArray exchangeObjectAtIndex:i withObjectAtIndex:0];
         }
     }
@@ -614,7 +614,7 @@
     
     for (int i = 0; i < [modelArray count]; i++) {
         conversationModel = modelArray[i];
-        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK]) {
+        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![[conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
             [stickModelArray exchangeObjectAtIndex:i withObjectAtIndex:0];
         }
     }

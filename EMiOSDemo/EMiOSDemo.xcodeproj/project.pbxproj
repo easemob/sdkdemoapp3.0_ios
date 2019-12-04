@@ -451,6 +451,8 @@
 		3C37DF53238251ED00399AE8 /* icon-加群@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DF3E238251EB00399AE8 /* icon-加群@2x.png */; };
 		3C37DF55238251EE00399AE8 /* icon-添加好友.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DF40238251ED00399AE8 /* icon-添加好友.png */; };
 		3C37DF56238251EE00399AE8 /* icon-音视频会议@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C37DF41238251ED00399AE8 /* icon-音视频会议@2x.png */; };
+		3C3BAE8123975F6D00344F63 /* EMGroupManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BAE8023975F6D00344F63 /* EMGroupManageViewController.m */; };
+		3C3BAE842397C42800344F63 /* EMConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BAE832397C42800344F63 /* EMConfirmViewController.m */; };
 		3C5A157E23827287002CAE4E /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C37DEE82382477C00399AE8 /* Hyphenate.framework */; };
 		3C5A157F23827287002CAE4E /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3C37DEE82382477C00399AE8 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C5A159F2383A696002CAE4E /* 路径.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15872383A67E002CAE4E /* 路径.png */; };
@@ -497,7 +499,6 @@
 		3C7A14EF238FD0B600F4AC48 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A14E9238FD0B600F4AC48 /* ios@2x.png */; };
 		3C7A14F2238FD9AD00F4AC48 /* EMGeneralSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A14F1238FD9AD00F4AC48 /* EMGeneralSettingViewController.m */; };
 		3C7A14FB2390D49F00F4AC48 /* SPDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A14FA2390D49F00F4AC48 /* SPDateTimePickerView.m */; };
-		3C7A14FE2390D6D600F4AC48 /* EMTimePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A14FD2390D6D600F4AC48 /* EMTimePickerViewController.m */; };
 		3C7A15022390D8F600F4AC48 /* video-opposite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A14FF2390D8F200F4AC48 /* video-opposite@3x.png */; };
 		3C7A15032390D8F600F4AC48 /* video-opposite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A15002390D8F400F4AC48 /* video-opposite@2x.png */; };
 		3C7A15042390D8F600F4AC48 /* video-opposite.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A15012390D8F600F4AC48 /* video-opposite.png */; };
@@ -1324,6 +1325,10 @@
 		3C37DF3E238251EB00399AE8 /* icon-加群@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-加群@2x.png"; sourceTree = "<group>"; };
 		3C37DF40238251ED00399AE8 /* icon-添加好友.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-添加好友.png"; sourceTree = "<group>"; };
 		3C37DF41238251ED00399AE8 /* icon-音视频会议@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-音视频会议@2x.png"; sourceTree = "<group>"; };
+		3C3BAE7F23975F6D00344F63 /* EMGroupManageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupManageViewController.h; sourceTree = "<group>"; };
+		3C3BAE8023975F6D00344F63 /* EMGroupManageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupManageViewController.m; sourceTree = "<group>"; };
+		3C3BAE822397C42800344F63 /* EMConfirmViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMConfirmViewController.h; sourceTree = "<group>"; };
+		3C3BAE832397C42800344F63 /* EMConfirmViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMConfirmViewController.m; sourceTree = "<group>"; };
 		3C4CEC972373D87800A37140 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hyphenate.framework; path = ../../Hyphenate.framework; sourceTree = "<group>"; };
 		3C5A15872383A67E002CAE4E /* 路径.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "路径.png"; sourceTree = "<group>"; };
 		3C5A15902383A686002CAE4E /* 路径@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "路径@3x.png"; sourceTree = "<group>"; };
@@ -1374,8 +1379,6 @@
 		3C7A14F1238FD9AD00F4AC48 /* EMGeneralSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGeneralSettingViewController.m; sourceTree = "<group>"; };
 		3C7A14F92390D49F00F4AC48 /* SPDateTimePickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPDateTimePickerView.h; sourceTree = "<group>"; };
 		3C7A14FA2390D49F00F4AC48 /* SPDateTimePickerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPDateTimePickerView.m; sourceTree = "<group>"; };
-		3C7A14FC2390D6D600F4AC48 /* EMTimePickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMTimePickerViewController.h; sourceTree = "<group>"; };
-		3C7A14FD2390D6D600F4AC48 /* EMTimePickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMTimePickerViewController.m; sourceTree = "<group>"; };
 		3C7A14FF2390D8F200F4AC48 /* video-opposite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "video-opposite@3x.png"; path = "../../../../../../../../Downloads/形状_slices (3)/video-opposite@3x.png"; sourceTree = "<group>"; };
 		3C7A15002390D8F400F4AC48 /* video-opposite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite@2x.png"; sourceTree = "<group>"; };
 		3C7A15012390D8F600F4AC48 /* video-opposite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite.png"; sourceTree = "<group>"; };
@@ -2017,6 +2020,10 @@
 				3A45E3D92223A4E900505786 /* EMGroupSettingsViewController.m */,
 				3A45E3D02223A4E800505786 /* EMGroupSharedFilesViewController.h */,
 				3A45E3DA2223A4E900505786 /* EMGroupSharedFilesViewController.m */,
+				3C3BAE7F23975F6D00344F63 /* EMGroupManageViewController.h */,
+				3C3BAE8023975F6D00344F63 /* EMGroupManageViewController.m */,
+				3C3BAE822397C42800344F63 /* EMConfirmViewController.h */,
+				3C3BAE832397C42800344F63 /* EMConfirmViewController.m */,
 			);
 			path = GroupInfo;
 			sourceTree = "<group>";
@@ -2556,8 +2563,6 @@
 				3A45E41D2223A52100505786 /* EMSettingsViewController.m */,
 				3C7A14F92390D49F00F4AC48 /* SPDateTimePickerView.h */,
 				3C7A14FA2390D49F00F4AC48 /* SPDateTimePickerView.m */,
-				3C7A14FC2390D6D600F4AC48 /* EMTimePickerViewController.h */,
-				3C7A14FD2390D6D600F4AC48 /* EMTimePickerViewController.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3837,6 +3842,7 @@
 				3A45E05E2223A25C00505786 /* UIViewController+HUD.m in Sources */,
 				3A45E0992223A29B00505786 /* EMBadgeLabel.m in Sources */,
 				3A45E0512223A25100505786 /* EMChineseToPinyin.m in Sources */,
+				3C3BAE8123975F6D00344F63 /* EMGroupManageViewController.m in Sources */,
 				3A45E0222223A21B00505786 /* EMSDKOptionsViewController.m in Sources */,
 				3A45E3BE2223A4CC00505786 /* EMConversationsViewController.m in Sources */,
 				3A45E1082223A30C00505786 /* UIViewController+Search.m in Sources */,
@@ -3861,6 +3867,7 @@
 				3A45E37E2223A47900505786 /* EMChatroomsViewController.m in Sources */,
 				3A45E0D62223A2CE00505786 /* PSTCollectionViewFlowLayout.m in Sources */,
 				3A6C4214224A315C00AA5EDD /* EMEmojiHelper.m in Sources */,
+				3C3BAE842397C42800344F63 /* EMConfirmViewController.m in Sources */,
 				3A45E3312223A44200505786 /* EMMsgExtGifBubbleView.m in Sources */,
 				3CA8BCAD236C3A8000EE519E /* EMButton.m in Sources */,
 				3A45E1092223A30C00505786 /* EMSearchBar.m in Sources */,
@@ -3886,7 +3893,6 @@
 				3CA8BCAB236C3A8000EE519E /* CallSettingViewController.m in Sources */,
 				3A45E0172223A1FD00505786 /* EMHomeViewController.m in Sources */,
 				3A45DBDF22239DE300505786 /* AppDelegate.m in Sources */,
-				3C7A14FE2390D6D600F4AC48 /* EMTimePickerViewController.m in Sources */,
 				3CA8BC16236C3A7F00EE519E /* EM1v1CallViewController.m in Sources */,
 				3A45E0B82223A2BA00505786 /* MWTapDetectingImageView.m in Sources */,
 				3A45E4242223A52100505786 /* EMSettingsViewController.m in Sources */,
