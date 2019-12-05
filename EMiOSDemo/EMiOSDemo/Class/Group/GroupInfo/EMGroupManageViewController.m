@@ -15,17 +15,19 @@
 
 @property (nonatomic, strong) EMGroup *group;
 
+@property (nonatomic, strong) NSString *groupId;
+
 @property (nonatomic, strong) UIButton *groupOwnerTurnOverBtn;
 
 @end
 
 @implementation EMGroupManageViewController
 
-- (instancetype)initWithGroup:(EMGroup *)group
+- (instancetype)initWithGroup:(NSString *)aGroupId
 {
     self = [super init];
     if (self) {
-        _group = group;
+        _groupId = aGroupId;
     }
     
     return self;
@@ -36,6 +38,15 @@
     [self _setupSubviews];
     self.showRefreshHeader = YES;
     // Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    __weak typeof(self) weakself = self;
+    [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+        weakself.group = aGroup;
+        [weakself.tableView reloadData];
+    }];
 }
 
 - (void)_setupSubviews

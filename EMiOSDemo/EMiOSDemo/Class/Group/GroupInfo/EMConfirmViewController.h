@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) BOOL (^doneCompletion)(BOOL aConfirm);
 
-- (instancetype)initWithMembername:(NSString *)name;
+- (instancetype)initWithMembername:(NSString *)name titleText:(NSString *)titleText;
 
 @end
 

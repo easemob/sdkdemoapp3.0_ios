@@ -11,12 +11,11 @@
 #import "EMAvatarNameCell.h"
 
 #import "EMAccountViewController.h"
-#import "EMBlacklistViewController.h"
-#import "EMDevicesViewController.h"
 #import "EMMsgSettingViewController.h"
 #import "EMPrivacyViewController.h"
 #import "EMCallSettingsViewController.h"
 #import "EMGeneralSettingViewController.h"
+#import "EMSecurityViewController.h"
 
 @interface EMSettingsViewController ()
 
@@ -211,10 +210,10 @@
             count = 4;
             break;
         case 1:
-            count = 2;
+            count = 1;
             break;
         case 2:
-            count = 2;
+            count = 1;
             break;
         default:
             break;
@@ -263,19 +262,13 @@
     }
     if (section == 1) {
         if (row == 0) {
-            imgView.image = [UIImage imageNamed:@"黑名单"];
-            cell.textLabel.text = @"黑名单";
-        } else if (row == 1) {
-            imgView.image = [UIImage imageNamed:@"多端多设备管理"];
-            cell.textLabel.text = @"多端多设备管理";
+            imgView.image = [UIImage imageNamed:@"安全与隐私"];
+            cell.textLabel.text = @"安全与隐私";
         }
     } else if (section == 2) {
         if (row == 0) {
             imgView.image = [UIImage imageNamed:@"自定义服务器"];
             cell.textLabel.text = @"服务诊断";
-        } else if (row == 1) {
-            imgView.image = [UIImage imageNamed:@"清除缓存"];
-            cell.textLabel.text = @"清除本地缓存";
         }
     }
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -323,17 +316,12 @@
         }
     } else if (section == 1) {
         if (row == 0) {
-            EMBlacklistViewController *controller = [[EMBlacklistViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
-        } else if (row == 1) {
-            EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
+            EMSecurityViewController *controller = [[EMSecurityViewController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 2) {
         if (row == 0) {
             //服务诊断
-        } else if (row == 1) {
-            //清除本地缓存
         }
     } /*else if (section == 3) {
         if (row == 0) {

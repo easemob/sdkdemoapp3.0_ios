@@ -21,6 +21,7 @@
 #import "EMGroupSettingsViewController.h"
 #import "EMInviteGroupMemberViewController.h"
 #import "EMGroupManageViewController.h"
+#import "EMGroupAllMembersViewController.h"
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate>
 
@@ -202,7 +203,7 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         } else if (row == 1) {
             cell.textLabel.text = @"群聊成员";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(self.group.occupantsCount - self.group.adminList.count - 1)];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",self.group.occupantsCount];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, [UIScreen mainScreen].bounds.size.width);
         }
     } else if (section == 1) {
@@ -300,7 +301,7 @@
     if (section == 0) {
         if (row == 1) {
             //群成员
-            EMGroupMembersViewController *controller = [[EMGroupMembersViewController alloc] initWithGroup:self.group];
+            EMGroupAllMembersViewController *controller = [[EMGroupAllMembersViewController alloc]initWithGroup:self.group];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 2) {
             //邀请成员
@@ -321,7 +322,7 @@
             [self _updateGroupDetailAction];
         } else if (row == 4) {
             //群管理
-            EMGroupManageViewController *controller = [[EMGroupManageViewController alloc]initWithGroup:self.group];
+            EMGroupManageViewController *controller = [[EMGroupManageViewController alloc]initWithGroup:self.groupId];
             [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 3) {

@@ -1,8 +1,8 @@
 //
-//  EMGroupManageViewController.h
+//  EMSecurityViewController.h
 //  EMiOSDemo
 //
-//  Created by 娜塔莎 on 2019/12/4.
+//  Created by 娜塔莎 on 2019/12/5.
 //  Copyright © 2019 娜塔莎. All rights reserved.
 //
 
@@ -11,9 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMGroupManageViewController : EMRefreshViewController
-
-- (instancetype)initWithGroup:(NSString *)aGroupId;
+@interface EMSecurityViewController : EMRefreshViewController
 
 @end
 

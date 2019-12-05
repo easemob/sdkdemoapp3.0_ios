@@ -43,7 +43,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-    self.title = @"群组管理员";
+    self.title = @"群管理员";
     self.showRefreshHeader = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -189,6 +189,8 @@
 
 - (void)_muteAdmin:(NSString *)aUsername
 {
+    
+    
     [self showHudInView:self.view hint:@"禁言管理员..."];
     
     __weak typeof(self) weakself = self;

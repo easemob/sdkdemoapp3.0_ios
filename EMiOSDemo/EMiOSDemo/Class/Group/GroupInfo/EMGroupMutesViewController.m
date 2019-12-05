@@ -9,11 +9,13 @@
 #import "EMGroupMutesViewController.h"
 
 #import "EMAvatarNameCell.h"
+#import "EMConfirmViewController.h"
 
 @interface EMGroupMutesViewController ()
 
 @property (nonatomic, strong) EMGroup *group;
 @property (nonatomic) BOOL isUpdated;
+@property (nonatomic, strong) NSString *cursor;
 
 @end
 
@@ -43,7 +45,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-    self.title = @"群组禁言列表";
+    self.title = @"群禁言列表";
     self.showRefreshHeader = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -57,7 +59,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataArray count];
+    if (tableView == self.tableView) {
+        return [self.dataArray count];
+    } else {
+        return [self.searchResults count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -65,14 +71,24 @@
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EMAvatarNameCell"];
     }
     
+    NSString *name = nil;
+    if (tableView == self.tableView) {
+        name = [self.dataArray objectAtIndex:indexPath.row];
+    } else {
+        name = [self.searchResults objectAtIndex:indexPath.row];
+    }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
-    cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
+    cell.nameLabel.text = name;
     cell.indexPath = indexPath;
-    
+    /*
+    cell.detailTextLabel.textColor = [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0];
+    cell.detailTextLabel.backgroundColor = [UIColor lightGrayColor];
+    cell.detailTextLabel.text = @"time";
+    */
     return cell;
 }
 
@@ -88,21 +104,52 @@
 {
     //在iOS8.0上，必须加上这个方法才能出发左划操作
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
-        [self showHudInView:self.view hint:@"移出禁言列表..."];
-        __weak typeof(self) weakself = self;
-        [[EMClient sharedClient].groupManager unmuteMembers:@[userName] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
-            [weakself hideHud];
-            if (aError) {
-                [EMAlertController showErrorAlert:@"移出禁言列表失败"];
-            } else {
-                weakself.isUpdated = YES;
-                [EMAlertController showSuccessAlert:@"移出禁言列表成功"];
-                [weakself.dataArray removeObject:userName];
-                [weakself.tableView reloadData];
+        NSString *userName;
+        if (tableView == self.tableView) {
+            userName = [self.dataArray objectAtIndex:indexPath.row];
+        } else {
+            userName = [self.searchResults objectAtIndex:indexPath.row];
+        }
+        
+        //hint解除禁言
+        EMConfirmViewController *confirmControl = [[EMConfirmViewController alloc]initWithMembername:userName titleText:@"解除该成员禁言？"];
+        confirmControl.modalPresentationStyle = 0;
+        [self presentViewController:confirmControl animated:NO completion:nil];
+        [confirmControl setDoneCompletion:^BOOL(BOOL aConfirm) {
+            if (aConfirm) {
+               [self showHudInView:self.view hint:@"移出禁言列表..."];
+               __weak typeof(self) weakself = self;
+               [[EMClient sharedClient].groupManager unmuteMembers:@[userName] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+                   [weakself hideHud];
+                   if (aError) {
+                       [EMAlertController showErrorAlert:@"移出禁言列表失败"];
+                   } else {
+                       weakself.isUpdated = YES;
+                       [EMAlertController showSuccessAlert:@"移出禁言列表成功"];
+                       [weakself.dataArray removeObject:userName];
+                       [weakself.tableView reloadData];
+                       [weakself.searchResults removeObject:userName];
+                       [weakself.searchResultTableView reloadData];
+                   }
+               }];
             }
+            return YES;
         }];
     }
+}
+
+#pragma mark - EMSearchBarDelegate
+
+- (void)searchTextDidChangeWithString:(NSString *)aString
+{
+    __weak typeof(self) weakself = self;
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.searchResults removeAllObjects];
+            [weakself.searchResults addObjectsFromArray:results];
+            [weakself.searchResultTableView reloadData];
+        });
+    }];
 }
 
 #pragma mark - Data
