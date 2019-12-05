@@ -43,7 +43,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-    self.title = @"群组黑名单";
+    self.title = @"群黑名单";
     self.showRefreshHeader = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -57,7 +57,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataArray count];
+    if (tableView == self.tableView) {
+        return [self.dataArray count];
+    } else {
+        return [self.searchResults count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -68,9 +72,16 @@
         cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
     }
     
+    NSString *name = nil;
+    if (tableView == self.tableView) {
+        name = [self.dataArray objectAtIndex:indexPath.row];
+    } else {
+        name = [self.searchResults objectAtIndex:indexPath.row];
+    }
+    
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
-    cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
+    cell.nameLabel.text = name;
     cell.indexPath = indexPath;
     
     return cell;
@@ -88,7 +99,13 @@
 {
     //在iOS8.0上，必须加上这个方法才能出发左划操作
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSString *userName = [self.dataArray objectAtIndex:indexPath.row];
+        NSString *userName = nil;
+        if (tableView == self.tableView) {
+            userName = [self.dataArray objectAtIndex:indexPath.row];
+        } else {
+            userName = [self.searchResults objectAtIndex:indexPath.row];
+        }
+
         [self showHudInView:self.view hint:@"移出黑名单..."];
         __weak typeof(self) weakself = self;
         [[EMClient sharedClient].groupManager unblockMembers:@[userName] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
@@ -100,9 +117,25 @@
                 [EMAlertController showSuccessAlert:@"移出黑名单成功"];
                 [weakself.dataArray removeObject:userName];
                 [weakself.tableView reloadData];
+                [weakself.searchResults removeObject:userName];
+                [weakself.searchResultTableView reloadData];
             }
         }];
     }
+}
+
+#pragma mark - EMSearchBarDelegate
+
+- (void)searchTextDidChangeWithString:(NSString *)aString
+{
+    __weak typeof(self) weakself = self;
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:nil resultBlock:^(NSArray *results) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.searchResults removeAllObjects];
+            [weakself.searchResults addObjectsFromArray:results];
+            [weakself.searchResultTableView reloadData];
+        });
+    }];
 }
 
 #pragma mark - Data

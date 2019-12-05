@@ -7,10 +7,11 @@
 //
 
 #import "EMRefreshTableViewController.h"
+#import "EMSearchViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMGroupBlacklistViewController : EMRefreshTableViewController
+@interface EMGroupBlacklistViewController : EMSearchViewController
 
 - (instancetype)initWithGroup:(EMGroup *)aGroup;
 

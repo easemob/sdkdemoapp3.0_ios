@@ -11,15 +11,18 @@
 @interface EMConfirmViewController ()
 @property (nonatomic, strong) NSString *memberName;
 
+@property (nonatomic, strong) NSString *titleText;
+
 @end
 
 @implementation EMConfirmViewController
 
-- (instancetype)initWithMembername:(NSString *)name
+- (instancetype)initWithMembername:(NSString *)name titleText:(NSString *)titleText
 {
     self = [super init];
        if (self) {
            _memberName = name;
+           _titleText = titleText;
        }
        
     return self;
@@ -36,32 +39,33 @@
     
     UIView *confirmView = [[UIView alloc]init];
     confirmView.backgroundColor = [UIColor whiteColor];
+    confirmView.layer.cornerRadius = 8;
     [self.view addSubview:confirmView];
     [confirmView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(16);
         make.right.equalTo(self.view).offset(-16);
-        make.height.equalTo(@200);
+        make.height.equalTo(@240);
         make.centerY.centerX.equalTo(self.view);
     }];
     
     UILabel *content = [[UILabel alloc]init];
-    content.text = @"是否移交群主给该成员";
+    content.text = self.titleText;
     content.textColor = [UIColor colorWithRed:66/255.0 green:66/255.0 blue:66/255.0 alpha:1.0];
     content.textAlignment = NSTextAlignmentCenter;
     content.font = [UIFont systemFontOfSize:20.0];
     [confirmView addSubview:content];
     [content mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(confirmView).offset(30);
-        make.left.equalTo(confirmView).offset(62);
-        make.right.equalTo(confirmView).offset(-62);
+        make.top.equalTo(confirmView).offset(20);
+        make.left.equalTo(confirmView).offset(32);
+        make.right.equalTo(confirmView).offset(-32);
         make.height.equalTo(@28);
     }];
     
     UIView *memberView = [[UIView alloc]init];
-    memberView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
+    memberView.backgroundColor = [UIColor lightGrayColor];
     [confirmView addSubview:memberView];
     [memberView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(content).offset(24);
+        make.top.equalTo(content.mas_bottom).offset(20);
         make.left.equalTo(confirmView).offset(32);
         make.right.equalTo(confirmView).offset(-32);
         make.height.equalTo(@90);
@@ -88,22 +92,24 @@
     UIButton *cancelBtn = [[UIButton alloc]init];
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:18.0];
+    [cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cancelBtn setBackgroundColor:[UIColor whiteColor]];
     cancelBtn.layer.borderWidth = 1;
     cancelBtn.layer.borderColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
     [confirmView addSubview:cancelBtn];
     cancelBtn.tag = 0;
     [cancelBtn addTarget:self action:@selector(confirmAction:) forControlEvents:UIControlEventTouchUpInside];
+    CGFloat width = ([UIScreen mainScreen].bounds.size.width-32)/2;
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.equalTo(confirmView);
-        make.height.equalTo(@56);
-        make.width.equalTo(@(confirmView.frame.size.width/2));
+        make.height.equalTo(@50);
+        make.width.mas_equalTo(width);
     }];
     
     UIButton *confirmBtn = [[UIButton alloc]init];
-    [confirmBtn setTitle:@"确认移交" forState:UIControlStateNormal];
+    [confirmBtn setTitle:@"确认" forState:UIControlStateNormal];
     confirmBtn.titleLabel.font = [UIFont systemFontOfSize:18.0];
-    [confirmBtn.titleLabel setTextColor:[UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]];
+    [confirmBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0] forState:UIControlStateNormal];
     [confirmBtn setBackgroundColor:[UIColor whiteColor]];
     confirmBtn.layer.borderWidth = 1;
     confirmBtn.layer.borderColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
@@ -112,8 +118,8 @@
     [confirmBtn addTarget:self action:@selector(confirmAction:) forControlEvents:UIControlEventTouchUpInside];
     [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.bottom.equalTo(confirmView);
-        make.height.equalTo(@56);
-        make.width.equalTo(@(confirmView.frame.size.width/2));
+        make.height.equalTo(@50);
+        make.width.mas_equalTo(width);
     }];
     
     

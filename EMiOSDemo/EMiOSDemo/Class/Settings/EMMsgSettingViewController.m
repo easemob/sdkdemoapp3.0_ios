@@ -200,24 +200,6 @@
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     return nil;
-    /*
-    if (section == 0 || section == 4 || section == 5) {
-        return nil;
-    }
-    
-    UILabel *label = [[UILabel alloc] init];
-    label.font = [UIFont systemFontOfSize:13];
-    label.textColor = [UIColor lightGrayColor];
-    label.numberOfLines = 2;
-    if (section == 1) {
-        label.text = @"    退出群组或聊天室时，删除对应的消息及会话";
-    } else if (section == 2) {
-        label.text = @"    优先从服务器获取最新消息";
-    } else if (section == 3) {
-        label.text = @"    上传附件到环信服务器，关闭需自定义文件上传";
-    }
-    
-    return label;*/
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -339,35 +321,6 @@
     pickerView.title = @"设置时间段";
     [self.view addSubview:pickerView];
     [pickerView showDateTimePickerView];
-    
-    /*
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"选择免打扰时间" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    __weak typeof(self) weakself = self;
-    [alertController addAction:[UIAlertAction actionWithTitle:@"全天(0:00 - 24:00)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-        options.noDisturbingStartH = 0;
-        options.noDisturbingEndH = 24;
-        options.noDisturbStatus = EMPushNoDisturbStatusDay;
-        [[EMClient sharedClient] updatePushOptionsToServer];
-        [weakself hideHud];
-        [weakself.tableView reloadData];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"夜间(22:00 - 7:00)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-        options.noDisturbingStartH = 22;
-        options.noDisturbingEndH = 7;
-        options.noDisturbStatus = EMPushNoDisturbStatusCustom;
-        [[EMClient sharedClient] updatePushOptionsToServer];
-        [weakself hideHud];
-        [weakself.tableView reloadData];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }]];
-    
-    alertController.modalPresentationStyle = 0;
-    [self presentViewController:alertController animated:YES completion:nil];
-  */
 }
 
 #pragma mark - SPDateTimePickerViewDelegate
