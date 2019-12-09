@@ -66,6 +66,16 @@
 @property (nonatomic) BOOL isTyping;
 @property (nonatomic) BOOL enableTyping;
 
+//聊天页/查找记录页
+@property (nonatomic) BOOL isChatRecord;
+//聊天记录-全部
+@property (nonatomic, strong) UIButton *allRecordBtn;
+
+//聊天记录-图片/视频
+@property (nonatomic, strong) UIButton *picAndVideoRecordBtn;
+//聊天记录类型类型
+@property (nonatomic) NSInteger type;
+
 @end
 
 @implementation EMChatViewController
@@ -73,11 +83,13 @@
 - (instancetype)initWithConversationId:(NSString *)aId
                                   type:(EMConversationType)aType
                       createIfNotExist:(BOOL)aIsCreate
+                        isChatRecord:(BOOL)aIsChatRecord
 {
     self = [super init];
     if (self) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aId type:aType createIfNotExist:aIsCreate];
         _conversationModel = [[EMConversationModel alloc] initWithEMModel:conversation];
+        _isChatRecord = aIsChatRecord;
     }
     
     return self;
@@ -98,6 +110,7 @@
     // Do any additional setup after loading the view.
     self.msgQueue = dispatch_queue_create("emmessage.com", NULL);
     self.msgTimelTag = -1;
+    self.type = 1;
     
     [self _setupChatSubviews];
     
@@ -195,29 +208,96 @@
     self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     self.showRefreshHeader = YES;
     
-    self.chatBar = [[EMChatBar alloc] init];
-    self.chatBar.delegate = self;
-    [self.view addSubview:self.chatBar];
-    [self.chatBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-    }];
-    
-    [self.chatBar.sendBtn addTarget:self action:@selector(_sendText) forControlEvents:UIControlEventTouchUpInside];
-    //加号更多
-    [self _setupChatBarMoreViews];
-    
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 130;
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    if (!self.isChatRecord) {
+        self.searchBar.hidden = YES;
+        
+        self.chatBar = [[EMChatBar alloc] init];
+        self.chatBar.delegate = self;
+        [self.view addSubview:self.chatBar];
+        [self.chatBar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.view);
+        }];
+        
+        [self.chatBar.sendBtn addTarget:self action:@selector(_sendText) forControlEvents:UIControlEventTouchUpInside];
+        //加号更多
+        [self _setupChatBarMoreViews];
+        
+        [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view);
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+            make.bottom.equalTo(self.chatBar.mas_top);
+        }];
+    } else {
+        [self _setupSwitchviews];
+    }
+}
+
+#pragma mark - SubviewsSwitch
+//聊天记录类型
+- (void)_setupSwitchviews
+{
+    self.chatBar.hidden = YES;
+    self.searchBar.delegate = self;
+    
+    CGFloat width = (self.view.frame.size.width)/2;
+    
+    self.allRecordBtn = [[UIButton alloc]init];
+    [_allRecordBtn setBackgroundColor:[UIColor whiteColor]];
+    [_allRecordBtn setTitle:@"全部" forState:UIControlStateNormal];
+    [_allRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _allRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _allRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _allRecordBtn.tag = 1;
+    [_allRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.allRecordBtn];
+    [_allRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
         make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.chatBar.mas_top);
+        make.width.mas_equalTo(width);
+        make.height.equalTo(@40);
     }];
+    
+    self.picAndVideoRecordBtn = [[UIButton alloc]init];
+    [_picAndVideoRecordBtn setBackgroundColor:[UIColor whiteColor]];
+    [_picAndVideoRecordBtn setTitle:@"图片/视频" forState:UIControlStateNormal];
+    _picAndVideoRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _picAndVideoRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [_picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _picAndVideoRecordBtn.tag = 2;
+    [_picAndVideoRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.picAndVideoRecordBtn];
+    [_picAndVideoRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.width.mas_equalTo(width);
+        make.height.equalTo(@40);
+    }];
+    
+    [self.searchBar mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.allRecordBtn.mas_bottom);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.height.equalTo(@50);
+    }];
+    
+    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    
+    self.searchResultTableView.backgroundColor = kColor_LightGray;
+    self.searchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.searchResultTableView.rowHeight = UITableViewAutomaticDimension;
+    self.searchResultTableView.estimatedRowHeight = 130;
+    
 }
 
 - (void)_setupNavigationBarTitle
@@ -228,7 +308,11 @@
     self.titleLabel.font = [UIFont systemFontOfSize:18];
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.text = self.conversationModel.name;
+    if (self.isChatRecord) {
+        self.titleLabel.text = @"查找聊天记录";
+    } else {
+        self.titleLabel.text = self.conversationModel.name;
+    }
     [titleView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleView);
@@ -259,6 +343,9 @@
 
 - (void)_setupNavigationBarRightItem
 {
+    if (self.isChatRecord) {
+        return;
+    }
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
         UIImage *image = [[UIImage imageNamed:@"用户资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
@@ -295,7 +382,6 @@
     }
     moreFunction.delegate = self;
     self.chatBar.moreFunctionView = moreFunction;
-    
 }
 
 - (NSString *)_getAudioOrVideoPath
@@ -307,6 +393,71 @@
     }
     
     return path;
+}
+
+//切换聊天记录类型
+#pragma mark - cutRecordType
+- (void)cutRecordType:(UIButton *)btn
+{
+    if (self.type == btn.tag) {
+        return;
+    }
+    self.type = btn.tag;
+    if (btn.tag == 1) {
+        [self.allRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [self.picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+        self.searchBar.hidden = NO;
+        self.tableView.hidden = NO;
+        self.searchResultTableView.hidden = NO;
+    } else if (btn.tag == 2) {
+        [self.allRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [self.picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
+        self.searchBar.hidden = YES;
+        self.tableView.hidden = YES;
+        self.searchResultTableView.hidden = YES;
+        [self picAndVideoRecord];
+    }
+}
+
+//获取聊天记录的图片&视频
+- (void)picAndVideoRecord
+{
+    //图片
+    [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeImage timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        
+    }];
+    //视频
+    [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeVideo timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        
+    }];
+}
+
+#pragma mark - EMSearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(NSString *)aString
+{
+    [self.view endEditing:YES];
+    if (!self.isSearching) {
+        return;
+    }
+    [self.conversationModel.emModel loadMessagesWithKeyword:aString timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        if (!aError && [aMessages count] > 0) {
+            __weak typeof(self) weakself = self;
+            dispatch_async(self.msgQueue, ^{
+                NSMutableArray *msgArray = [[NSMutableArray alloc] init];
+                for (int i = 0; i < [aMessages count]; i++) {
+                    EMMessage *msg = aMessages[i];
+                    [msgArray addObject:msg];
+                }
+                NSArray *formated = [weakself _formatMessages:msgArray];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself.searchResults removeAllObjects];
+                    [weakself.searchResults addObjectsFromArray:formated];
+                    [weakself.searchResultTableView reloadData];
+                });
+            });
+        }
+    }];
 }
 
 #pragma mark - Getter
@@ -329,11 +480,21 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dataArray count];
+    if (tableView == self.tableView) {
+        return [self.dataArray count];
+    } else {
+        return [self.searchResults count];
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id obj = [self.dataArray objectAtIndex:indexPath.row];
+    id obj;
+    if (tableView == self.tableView) {
+           obj = [self.dataArray objectAtIndex:indexPath.row];
+       } else {
+           obj = [self.searchResults objectAtIndex:indexPath.row];
+       }
     
     NSString *cellString = nil;
     if ([obj isKindOfClass:[NSString class]]) {
@@ -1369,10 +1530,19 @@
 
 - (void)_scrollToBottomRow
 {
-    if ([self.dataArray count] > 0) {
-        NSInteger toRow = self.dataArray.count - 1;
-        NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:0];
-        [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    NSInteger toRow = -1;
+    if (self.isSearching) {
+        if ([self.searchResults count] > 0) {
+            toRow = self.searchResults.count - 1;
+            NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:0];
+            [self.searchResultTableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+           }
+    } else {
+        if ([self.dataArray count] > 0) {
+            toRow = self.dataArray.count - 1;
+            NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:0];
+            [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        }
     }
 }
 
