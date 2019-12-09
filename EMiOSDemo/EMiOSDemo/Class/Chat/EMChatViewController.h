@@ -7,17 +7,19 @@
 //
 
 #import "EMRefreshViewController.h"
+#import "EMSearchViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class EMConversationModel;
-@interface EMChatViewController : EMRefreshViewController
+@interface EMChatViewController : EMSearchViewController
 
 @property(nonatomic, strong) UIAlertController *alertController;
 
 - (instancetype)initWithConversationId:(NSString *)aId
                                   type:(EMConversationType)aType
-                      createIfNotExist:(BOOL)aIsCreate;
+                      createIfNotExist:(BOOL)aIsCreate
+                        isChatRecord:(BOOL)aIsChatRecord;
 
 - (instancetype)initWithCoversationModel:(EMConversationModel *)aModel;
 

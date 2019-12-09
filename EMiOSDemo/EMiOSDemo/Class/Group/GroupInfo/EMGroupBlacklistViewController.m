@@ -33,6 +33,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.isUpdated = NO;
+    self.searchBar.delegate = self;
     
     [self _setupSubviews];
     [self _fetchGroupBlacklistWithIsHeader:YES isShowHUD:YES];

@@ -22,6 +22,7 @@
 #import "EMInviteGroupMemberViewController.h"
 #import "EMGroupManageViewController.h"
 #import "EMGroupAllMembersViewController.h"
+#import "EMChatViewController.h"
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate>
 
@@ -328,7 +329,8 @@
     } else if (section == 3) {
         if (row == 0) {
             //查找聊天记录
-            
+            EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO isChatRecord:YES];
+            [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 4) {
         if (row == 0) {
