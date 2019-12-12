@@ -17,7 +17,6 @@
 
 @property (nonatomic) CGFloat previousTextViewContentHeight;
 
-@property (nonatomic, strong) NSMutableArray<UIButton *> *buttonArray;
 @property (nonatomic, strong) UIButton *selectedButton;
 
 @property (nonatomic, strong) UIView *currentMoreView;

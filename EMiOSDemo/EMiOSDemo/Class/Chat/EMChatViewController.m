@@ -264,9 +264,11 @@
     moreEmoticonView.delegate = self;
     self.chatBar.moreEmoticonView = moreEmoticonView;
     //更多
-    EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
-    moreFunction.delegate = self;
-    self.chatBar.moreFunctionView = moreFunction;
+    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
+        EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
+        moreFunction.delegate = self;
+        self.chatBar.moreFunctionView = moreFunction;
+    }
 }
 
 - (NSString *)_getAudioOrVideoPath
@@ -588,11 +590,7 @@
             if (!aError) {
                 self.group = aGroup;
                 //是群主才可以发送阅读回执信息
-                if (self.group.permissionType == EMGroupPermissionTypeOwner) {
-                    [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
-                } else {
-                    [self _sendTextAction:str ext:nil];
-                }
+                [self _sendTextAction:str ext:@{MSG_EXT_READ_RECEIPT:@"receipt"}];
             } else {
                 [EMAlertController showErrorAlert:@"获取群组失败"];
             }
@@ -1841,18 +1839,16 @@
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        [weakself.tableView reloadData];
+        NSArray *formated = [weakself _formatMessages:@[message]];
+         [weakself.dataArray addObjectsFromArray:formated];
+        
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [weakself.tableView reloadData];
+             [weakself _scrollToBottomRow];
+         });
+        //[weakself.tableView reloadData];
     }];
     
-    dispatch_async(self.msgQueue, ^{
-        NSArray *formated = [weakself _formatMessages:@[message]];
-        [weakself.dataArray addObjectsFromArray:formated];
-       
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.tableView reloadData];
-            [weakself _scrollToBottomRow];
-        });
-    });
 }
 
 @end

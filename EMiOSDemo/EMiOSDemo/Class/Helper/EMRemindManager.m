@@ -71,7 +71,7 @@ SystemSoundID soundID = 1007;
     // App 是否在后台
     if (isBackground) {
         [self _localNotification:aMessage
-                        needInfo:EMClient.sharedClient.pushOptions.displayStyle == EMPushDisplayStyleSimpleBanner];
+                        needInfo:EMClient.sharedClient.pushOptions.displayStyle != EMPushDisplayStyleSimpleBanner];
     }else {
         AudioServicesPlaySystemSound(soundID);
     }

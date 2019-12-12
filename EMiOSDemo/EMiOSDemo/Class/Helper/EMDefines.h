@@ -37,6 +37,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define MSG_EXT_GIF @"em_is_big_expression"
 
 #define MSG_EXT_READ_RECEIPT @"em_read_receipt"
+#define MSG_EXT_UN_READ_RECEIPT @"em_read_unreceipt"
 
 //消息撤回
 #define MSG_EXT_RECALL @"em_recall"
