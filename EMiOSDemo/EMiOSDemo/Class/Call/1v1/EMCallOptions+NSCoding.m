@@ -23,6 +23,8 @@
         self.isFixedVideoResolution = [aDecoder decodeBoolForKey:@"emEnableFixedVideoResolution"];
         self.maxVideoFrameRate = [aDecoder decodeIntForKey:@"emMaxVideoFrameRate"];
         self.minVideoKbps = [aDecoder decodeIntForKey:@"emMinVideoKbps"];
+        self.enableCustomAudioData = [aDecoder decodeBoolForKey:@"enableCustomAudioData"];
+        self.audioCustomSamples = [aDecoder decodeIntForKey:@"audioCustomSamples"];
     }
 
     return self;
@@ -37,6 +39,8 @@
     [aCoder encodeBool:self.isFixedVideoResolution forKey:@"emEnableFixedVideoResolution"];
     [aCoder encodeInt:(int)self.maxVideoFrameRate forKey:@"emMaxVideoFrameRate"];
     [aCoder encodeInt:(int)self.minVideoKbps forKey:@"emMinVideoKbps"];
+    [aCoder encodeBool:self.enableCustomAudioData forKey:@"enableCustomAudioData"];
+    [aCoder encodeInt:(int)self.audioCustomSamples forKey:@"audioCustomSamples"];
 }
 
 @end

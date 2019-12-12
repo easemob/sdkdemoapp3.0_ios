@@ -17,6 +17,7 @@
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 #import "EMChatViewController.h"
+#import "EMAudioRecord.h"
 
 static DemoCallManager *callManager = nil;
 
@@ -35,6 +36,8 @@ static DemoCallManager *callManager = nil;
 @property (nonatomic, strong) NSString *chatter;
 
 @property (nonatomic, strong) UIAlertController *alertView;
+
+@property (nonatomic, strong) EMAudioRecord* audioRecorder;
 
 @end
 
@@ -77,6 +80,7 @@ static DemoCallManager *callManager = nil;
     _callLock = [[NSObject alloc] init];
     _currentCall = nil;
     _currentController = nil;
+    _audioRecorder = [[EMAudioRecord alloc] init];
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
@@ -93,10 +97,14 @@ static DemoCallManager *callManager = nil;
         options.videoResolution = EMCallVideoResolution640_480;
     }
     
+    //xiaoming.li
+    options.audioCustomChannels = 1;
+    
     // dujiepeng
     options.maxVideoKbps = 200;
     options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
     
@@ -237,6 +245,12 @@ static DemoCallManager *callManager = nil;
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
         [self _stopCallTimeoutTimer];
         self.currentController.callStatus = EMCallSessionStatusAccepted;
+    }
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData){
+        [self audioRecorder].channels = options.audioCustomChannels;
+        [self audioRecorder].samples = options.audioCustomSamples;
+        [[self audioRecorder] startAudioDataFromMicro];
     }
 }
 
@@ -471,6 +485,9 @@ static DemoCallManager *callManager = nil;
     [self _stopCallTimeoutTimer];
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData) {
+        [[self audioRecorder] stopAudioData];
+    }
     options.enableCustomizeVideoData = NO;
     
     if (aIsNeedHangup) {

@@ -82,6 +82,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL willRecord;
 @property (nonatomic) BOOL willMergeStrem;
 
+@property (nonatomic) BOOL enableCustomAudioData;
+@property (nonatomic) int  customAudioDataSamples;
+
 
 
 + (instancetype)sharedOptions;
