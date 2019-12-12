@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol EMChatBarDelegate;
 @interface EMChatBar : UIView
 
+@property (nonatomic, strong) NSMutableArray<UIButton *> *buttonArray;
+
 @property (nonatomic, weak) id<EMChatBarDelegate> delegate;
 
 @property (nonatomic, strong) EMTextView *textView;

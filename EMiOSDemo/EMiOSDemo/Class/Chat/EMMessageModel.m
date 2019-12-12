@@ -35,6 +35,9 @@
             if (aMsg.isNeedGroupAck) {
                 _readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d）",aMsg.groupAckCount];
             }
+            if(aMsg.isNeedGroupAck  && aMsg.status == EMMessageStatusFailed) {
+                _readReceiptCount = @"只有群主支持本格式消息";
+            }
         } else {
             _type = (EMMessageType)aMsg.body.type;
         }
