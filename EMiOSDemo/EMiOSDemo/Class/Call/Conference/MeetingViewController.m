@@ -81,7 +81,6 @@
             });
         }
     };
-    
     if (self.isCreater) {
         [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:self.type password:self.password record:[EMDemoOptions sharedOptions].willRecord mergeStream:[EMDemoOptions sharedOptions].willMergeStrem completion:block];
     } else {
