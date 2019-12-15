@@ -67,6 +67,7 @@ static EMNotificationHelper *shared = nil;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
+
 @end
 
 @implementation EMNotificationHelper

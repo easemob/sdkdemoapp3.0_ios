@@ -18,8 +18,10 @@
 #import "EMInviteGroupMemberViewController.h"
 #import "EMCreateGroupViewController.h"
 #import "EMInviteFriendViewController.h"
+#import "EMNotificationViewController.h"
+#import "EMDateHelper.h"
 
-@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate,EMConversationCellDelegate,EMContactManagerDelegate>
+@interface EMConversationsViewController()<EMChatManagerDelegate, EMGroupManagerDelegate, EMSearchControllerDelegate, EMConversationsDelegate,EMConversationCellDelegate,EMContactManagerDelegate,EMNotificationsDelegate>
 
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
@@ -45,6 +47,8 @@
     
     [self _setupSubviews];
     
+    [[EMNotificationHelper shared] addDelegate:self];
+    [self didNotificationsUnreadCountUpdate:[EMNotificationHelper shared].unreadCount];
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[EMConversationHelper shared] addDelegate:self];
@@ -80,10 +84,18 @@
     self.isViewAppear = NO;
     self.isNeedReload = NO;
     self.isNeedReloadSorted = NO;
+    [EMNotificationHelper shared].isCheckUnreadCount = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)dealloc
 {
+    [EMNotificationHelper shared].isCheckUnreadCount = YES;
+    [[EMNotificationHelper shared] removeDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMConversationHelper shared] removeDelegate:self];
@@ -281,7 +293,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
+    if (!model.notiModel) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
+    } else {
+        EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -490,6 +507,18 @@
     }
 }
 
+#pragma mark - EMNotificationsDelegate
+- (void)didNotificationsUpdate
+{
+    [self _reSortedConversationModelsAndReloadView];
+}
+
+- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
+{
+    EMNotificationHelper.shared.unreadCount = aUnreadCount;
+    [self _reSortedConversationModelsAndReloadView];
+}
+
 #pragma mark - UIMenuController
 
 //删除会话
@@ -632,6 +661,7 @@
         } else {
             return(NSComparisonResult)NSOrderedDescending;
         }}];
+    
     sorted = [self _stickSortedConversationModels:sorted];//置顶重排序
     NSMutableArray *conversationModels = [NSMutableArray array];
     for (EMConversationModel *model in sorted) {
@@ -646,6 +676,7 @@
     
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:conversationModels];
+    [self _insertSystemNotify];
     [self.tableView reloadData];
     
     self.isNeedReload = NO;
@@ -675,7 +706,7 @@
         sorted = [self _stickSortedConversation:sorted];//置顶重排序
         NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
         [weakself.dataArray addObjectsFromArray:models];
-        
+        [weakself _insertSystemNotify];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (aIsShowHUD) {
                 [weakself hideHud];
@@ -686,6 +717,52 @@
             weakself.isNeedReload = NO;
         });
     });
+}
+//插入系统通知到会话列表
+- (void)_insertSystemNotify
+{
+    if ([EMNotificationHelper.shared.notificationList count] == 0) {
+        return;
+    }
+    //系统通知插入到 dataarray 中
+    EMNotificationModel *lastNotiModel = [EMNotificationHelper.shared.notificationList objectAtIndex:0];
+    EMConversationModel *model = [[EMConversationModel alloc]init];
+    model.notiModel = lastNotiModel;
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    //最后一个系统通知信息时间
+    
+    NSRange range = NSMakeRange(11, 2);
+    NSInteger replaceTime = [[model.notiModel.time substringWithRange:range] integerValue];
+    NSString *resultStr = [model.notiModel.time stringByReplacingCharactersInRange:range withString:[NSString stringWithFormat:@"%ld",(long)(replaceTime + 12)]];
+    
+    NSDate *notiTime = [dateFormatter dateFromString:resultStr];
+    NSTimeInterval notiTimeInterval = [notiTime timeIntervalSince1970];
+    long long lastNotiTime = [[NSNumber numberWithDouble:notiTimeInterval] longLongValue];
+    //系统通知插入排序到会话列表中
+    int low = 0, high = (int)([self.dataArray count] - 1);
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        EMConversationModel *conversationModel = [self.dataArray objectAtIndex:mid];
+        
+        //每个会话的最后一条信息时间
+        NSDate *timestampDate = [EMDateHelper dateWithTimeIntervalInMilliSecondSince1970:conversationModel.emModel.latestMessage.timestamp];
+        NSString *dateStr = [dateFormatter stringFromDate:timestampDate];//先格式化该会话最后一天信息的时间
+        timestampDate = [dateFormatter dateFromString:dateStr];
+        NSTimeInterval time = [timestampDate timeIntervalSince1970];
+        long long lastConversationTime = [[NSNumber numberWithDouble:time] longLongValue];
+        
+        NSLog(@"\n--------notitime:  %lld    timestamp:   %lld",lastNotiTime ,lastConversationTime);
+        NSLog(@"\n--------notitime:  %@    timestamp:   %lld",model.notiModel.time ,conversationModel.emModel.latestMessage.localTime);
+        
+        if (lastNotiTime > lastConversationTime) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    [self.dataArray insertObject:model atIndex:high + 1];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh

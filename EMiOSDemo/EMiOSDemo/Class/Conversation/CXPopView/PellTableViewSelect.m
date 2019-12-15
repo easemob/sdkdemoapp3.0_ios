@@ -1,12 +1,3 @@
-/**
- !! 随便弄了一下，只是为了 目前项目的使用.过几天会 完善
- !! 加入单例等
- 
- 有问题可以联系 邮箱 906037367@qq.com
- QQ               906037367
- 
-
- */
 
 #import "PellTableViewSelect.h"
 #define  LeftView 10.0f

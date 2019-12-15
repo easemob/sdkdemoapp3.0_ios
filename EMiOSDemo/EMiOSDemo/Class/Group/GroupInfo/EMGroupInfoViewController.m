@@ -113,7 +113,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
    
-    return 7;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -133,14 +133,10 @@
             count = 4;
         }
     } else if (section == 2) {
-        count = 2;
+        count = 1;
     } else if (section == 3) {
-        count = 1;
-    } else if (section == 4) {
-        count = 1;
-    } else if (section == 5) {
         count = 2;
-    } else if (section == 6) {
+    } else if (section == 4) {
         count = 1;
     }
 
@@ -157,7 +153,7 @@
     
     UISwitch *switchControl = nil;
     BOOL isSwitchCell = NO;
-    if (section == 2 || section == 5) {
+    if (section == 3) {
         isSwitchCell = YES;
         cellIdentifier = @"UITableViewCellSwitch";
     }
@@ -171,16 +167,17 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (isSwitchCell) {
+            switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
+            switchControl.tag = [self _tagWithIndexPath:indexPath];
+            [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:switchControl];
+        }
+    } else if (isSwitchCell) {
+        switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
     }
     
-    if (isSwitchCell) {
-        switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
-        switchControl.tag = [self _tagWithIndexPath:indexPath];
-        [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [cell.contentView addSubview:switchControl];
-    }
-    
-    if (section == 6 && row == 0) {
+    if (section == 4 && row == 0) {
         return self.leaveCell;
     } else if (section == 0 && row == 2) {
         return self.addMemberCell;
@@ -227,29 +224,11 @@
             cell.detailTextLabel.text = @"";
         }
     }  else if (section == 2) {
-        if (!(self.group.permissionType == EMGroupPermissionTypeOwner)) {
-            cell = [[UITableViewCell alloc]initWithFrame:CGRectZero];
-        } else {
-            if (row == 0) {
-                cell.textLabel.text = @"私有群";
-                [switchControl setOn:(self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePrivateMemberCanInvite) ? YES : NO animated:NO];
-            } else if (row == 1) {
-                cell.textLabel.text = self.group.isPublic ? @"加群审核" : @"群成员是否有邀请权限";
-                [switchControl setOn:(self.group.setting.style == EMGroupStylePublicJoinNeedApproval || self.group.setting.style == EMGroupStylePrivateMemberCanInvite) ? YES : NO animated:NO];
-            }
-        }
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    } else if (section == 3) {
         if (row == 0) {
             cell.textLabel.text = @"查找聊天记录";
             cell.detailTextLabel.text = @"";
         }
-    } else if (section == 4) {
-        if (row == 0) {
-            cell.textLabel.text = @"我的群昵称";
-            cell.detailTextLabel.text = [self acquireGroupNickNamkeOfMine];
-        }
-    } else if (section == 5) {
+    } else if (section == 3) {
         if (row == 0) {
             cell.textLabel.text = @"消息免打扰";
             [switchControl setOn:!self.group.isPushNotificationEnabled animated:NO];
@@ -269,8 +248,6 @@
 {
     if (indexPath.section == 0 && indexPath.row == 2) {
         return 50;
-    } else if (indexPath.section == 2 && !(self.group.permissionType == EMGroupPermissionTypeOwner)) {
-        return 0;
     }
     
     return 60;
@@ -279,7 +256,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     
-    if (section == 0 || (section == 2 && !(self.group.permissionType == EMGroupPermissionTypeOwner))) {
+    if (section == 0) {
         return 0.001;
     }
     
@@ -288,7 +265,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 6) {
+    if (section == 4) {
         return 40;
     }
     
@@ -326,7 +303,7 @@
             EMGroupManageViewController *controller = [[EMGroupManageViewController alloc]initWithGroup:self.groupId];
             [self.navigationController pushViewController:controller animated:YES];
         }
-    } else if (section == 3) {
+    } else if (section == 2) {
         if (row == 0) {
             //查找聊天记录
             EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO isChatRecord:YES];
@@ -334,11 +311,8 @@
         }
     } else if (section == 4) {
         if (row == 0) {
-            //我的群昵称
-            [self _updateGroupNickNameOfMine];
+            [self _leaveOrDestroyGroupAction];
         }
-    } else if (section == 6) {
-        [self _leaveOrDestroyGroupAction];
     }
 }
 
@@ -437,13 +411,7 @@
     NSIndexPath *indexPath = [self _indexPathWithTag:aSwitch.tag];
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 2) {
-        if (row == 0) {
-           //修改群类型
-        } else if (row == 1) {
-            
-        }
-    } else if (section == 5) {
+    if (section == 3) {
         if (row == 0) {
             //免打扰
             __weak typeof(self) weakself = self;
@@ -506,7 +474,7 @@
         }
     }];
 }
-
+/*
 //获取我的群昵称
 - (NSString *)acquireGroupNickNamkeOfMine
 {
@@ -551,7 +519,7 @@
         return NO;
     }];
 }
-
+*/
 - (void)_updateGroupNameAction
 {
     BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;

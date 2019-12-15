@@ -92,11 +92,6 @@
 
 #pragma mark - EMNotificationsDelegate
 
-- (void)didNotificationsUpdate
-{
-    [self.tableView reloadData];
-}
-
 #pragma mark - EMNotificationCellDelegate
 
 - (void)agreeNotification:(EMNotificationModel *)aModel

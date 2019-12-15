@@ -241,7 +241,7 @@
     self.loginLabel = [[UILabel alloc] init];
     _loginLabel.numberOfLines = 0;
     _loginLabel.font = [UIFont systemFontOfSize:16];
-    _loginLabel.text = @"登 陆";
+    _loginLabel.text = @"登 录";
     [_loginLabel setTextColor:[UIColor whiteColor]];
     _loginLabel.textAlignment = NSTextAlignmentCenter;
     _loginLabel.alpha = 0.3;

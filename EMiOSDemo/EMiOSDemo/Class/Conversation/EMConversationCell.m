@@ -227,24 +227,50 @@
 - (void)setModel:(EMConversationModel *)model
 {
     _model = model;
-    
-    EMConversation *conversation = model.emModel;
-    if (conversation.type == EMConversationTypeChat) {
-        self.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    if (model.notiModel) {
+        //系统通知
+        [self _setNotiModel:model.notiModel];
     } else {
-        self.avatarView.image = [UIImage imageNamed:@"group_avatar"];
+        EMConversation *conversation = model.emModel;
+        if (conversation.type == EMConversationTypeChat) {
+            self.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+        } else {
+            self.avatarView.image = [UIImage imageNamed:@"group_avatar"];
+        }
+        self.nameLabel.text = model.name;
+        self.detailLabel.attributedText = [self _getDetailWithModel:conversation];
+        self.timeLabel.text = [self _getTimeWithModel:conversation];
+        
+        if (conversation.unreadMessagesCount == 0) {
+            self.badgeLabel.value = @"";
+            self.badgeLabel.hidden = YES;
+        } else {
+            self.badgeLabel.value = [NSString stringWithFormat:@" %@ ", @(conversation.unreadMessagesCount)];
+            self.badgeLabel.hidden = NO;
+        }
     }
-    self.nameLabel.text = model.name;
-    self.detailLabel.attributedText = [self _getDetailWithModel:conversation];
-    self.timeLabel.text = [self _getTimeWithModel:conversation];
-    
-    if (conversation.unreadMessagesCount == 0) {
+}
+
+-(void)_setNotiModel:(EMNotificationModel *)notiModel
+{
+    self.avatarView.image = [UIImage imageNamed:@"systemNotify"];
+    self.nameLabel.text = @"系统通知";
+    if (notiModel.type == EMNotificationModelTypeContact) {
+        self.detailLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"好友申请来自：%@",notiModel.sender]];
+    } else if (notiModel.type == EMNotificationModelTypeGroupJoin) {
+        self.detailLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"加群申请来自：%@",notiModel.sender]];
+    } else if (notiModel.type == EMNotificationModelTypeGroupInvite) {
+        self.detailLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"加群邀请来自：%@",notiModel.sender]];
+    }
+    self.timeLabel.text = [notiModel.time substringToIndex:10];
+    if (EMNotificationHelper.shared.unreadCount == 0) {
         self.badgeLabel.value = @"";
         self.badgeLabel.hidden = YES;
     } else {
-        self.badgeLabel.value = [NSString stringWithFormat:@" %@ ", @(conversation.unreadMessagesCount)];
+        self.badgeLabel.value = [NSString stringWithFormat:@" %@ ", @(EMNotificationHelper.shared.unreadCount)];
         self.badgeLabel.hidden = NO;
     }
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

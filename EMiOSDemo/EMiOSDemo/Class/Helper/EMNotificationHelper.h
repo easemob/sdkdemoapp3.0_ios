@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 @property (nonatomic) BOOL isCheckUnreadCount;
 
-@property (nonatomic, readonly) NSInteger unreadCount;
+@property (nonatomic) NSInteger unreadCount;
 
 + (instancetype)shared;
 

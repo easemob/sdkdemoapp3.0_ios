@@ -27,7 +27,9 @@
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
+#import "EMMsgRecordCell.h"
+
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate,EMMsgRecordCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 
@@ -66,15 +68,19 @@
 @property (nonatomic) BOOL isTyping;
 @property (nonatomic) BOOL enableTyping;
 
-//聊天页/查找记录页
+//聊天页-查找记录页
 @property (nonatomic) BOOL isChatRecord;
-//聊天记录-全部
+//聊天记录-全部按钮
 @property (nonatomic, strong) UIButton *allRecordBtn;
 
-//聊天记录-图片/视频
+//聊天记录-图片/视频按钮
 @property (nonatomic, strong) UIButton *picAndVideoRecordBtn;
 //聊天记录类型类型
 @property (nonatomic) NSInteger type;
+//聊天记录-图片与视频tableview
+@property (nonatomic, strong) UITableView *picAndVideoRecordTableView;
+//聊天记录数组
+@property (nonatomic, strong) NSArray *recordArray;
 
 @end
 
@@ -404,32 +410,120 @@
     }
     self.type = btn.tag;
     if (btn.tag == 1) {
+        //全部记录
         [self.allRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
         [self.picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
         self.searchBar.hidden = NO;
         self.tableView.hidden = NO;
         self.searchResultTableView.hidden = NO;
+        self.picAndVideoRecordTableView.hidden = YES;
+        [self.tableView reloadData];
     } else if (btn.tag == 2) {
+        //图片与视频记录
         [self.allRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
         [self.picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
         self.searchBar.hidden = YES;
         self.tableView.hidden = YES;
         self.searchResultTableView.hidden = YES;
+        self.picAndVideoRecordTableView.hidden = NO;
         [self picAndVideoRecord];
     }
+}
+
+//图片与视频
+- (void)loadPicAndVideoRecordTableView
+{
+    self.picAndVideoRecordTableView = [[UITableView alloc] init];
+    self.picAndVideoRecordTableView.tableFooterView = [[UIView alloc] init];
+    self.picAndVideoRecordTableView.rowHeight = [UIScreen mainScreen].bounds.size.width / 4;
+    self.picAndVideoRecordTableView.delegate = self;
+    self.picAndVideoRecordTableView.dataSource = self;
+    [self.view addSubview:self.picAndVideoRecordTableView];
+    [self.picAndVideoRecordTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(40);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
 }
 
 //获取聊天记录的图片&视频
 - (void)picAndVideoRecord
 {
+    __weak typeof(self) weakself = self;
     //图片
     [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeImage timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        
+        NSArray *imgArray = [[NSArray alloc]init];
+        imgArray = [weakself _formatRecordMsg:aMessages];
+        //视频
+        [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeVideo timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+            NSArray *videoArray = [[NSArray alloc]init];
+            videoArray = [weakself _formatRecordMsg:aMessages];
+            [weakself _sortChatRecord:imgArray videoArray:videoArray];
+            [weakself loadPicAndVideoRecordTableView];
+            [weakself.picAndVideoRecordTableView reloadData];
+        }];
     }];
-    //视频
-    [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeVideo timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        
-    }];
+}
+//格式化聊天记录图片&视频
+- (NSArray *)_formatRecordMsg:(NSArray<EMMessage *> *)aMessages
+{
+    NSMutableArray *formated = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [aMessages count]; i++) {
+        EMMessage *msg = aMessages[i];
+        EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:msg];
+        [formated addObject:model];
+    }
+    return formated;
+}
+
+//排序聊天记录的图片与视频（按localtime本地时间）
+- (void)_sortChatRecord:(NSArray *)imgArray videoArray:(NSArray *)videoArray
+{
+    NSMutableArray *recordMutableArray = [[NSMutableArray alloc]initWithArray:imgArray];
+    long i = ([imgArray count] - 1);
+    long v = ([videoArray count] - 1);
+    
+    EMMessageModel *imgModel;
+    EMMessageModel *videoModel;
+    while (v >= 0) {
+        videoModel = (EMMessageModel *)[videoArray objectAtIndex:v];
+        while (i > 0) {
+            imgModel = (EMMessageModel *)[imgArray objectAtIndex:i];
+            if (videoModel.emModel.localTime >= imgModel.emModel.localTime) {
+                [recordMutableArray insertObject:videoModel atIndex:i+1];
+                break;
+            }
+            if (videoModel.emModel.localTime < imgModel.emModel.localTime && videoModel.emModel.localTime >= ((EMMessageModel *)[imgArray objectAtIndex:(i-1)]).emModel.localTime) {
+                [recordMutableArray insertObject:videoModel atIndex:i];
+                break;
+            }
+            i--;
+        }
+        if (i == 0) {
+            if (videoModel.emModel.localTime < ((EMMessageModel *)[imgArray objectAtIndex:0]).emModel.localTime) {
+                [recordMutableArray insertObject:videoModel atIndex:0];
+            }
+        }
+        v--;
+    }
+    NSMutableArray *tempArray1 = [[NSMutableArray alloc]init];
+    NSMutableArray *tempArray2 = [[NSMutableArray alloc]init];
+    i = 1;
+    for (EMMessageModel *model in recordMutableArray) {
+        [tempArray1 addObject:model];
+        if (i % 4 == 0) {
+            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+            for (EMMessageModel *model in tempArray1) {
+                [tempArray addObject:model];
+            }
+            [tempArray2 addObject:tempArray];
+            [tempArray1 removeAllObjects];
+        }
+        ++i;
+    }
+    [tempArray2 addObject:tempArray1];
+    self.recordArray = [[NSArray alloc]initWithArray:tempArray2];
 }
 
 #pragma mark - EMSearchBarDelegate
@@ -482,8 +576,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView == self.tableView) {
         return [self.dataArray count];
-    } else {
+    } else if (tableView == self.searchResultTableView) {
         return [self.searchResults count];
+    } else {
+        return [self.recordArray count];
     }
     return 0;
 }
@@ -491,10 +587,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     id obj;
     if (tableView == self.tableView) {
-           obj = [self.dataArray objectAtIndex:indexPath.row];
-       } else {
-           obj = [self.searchResults objectAtIndex:indexPath.row];
-       }
+        obj = [self.dataArray objectAtIndex:indexPath.row];
+    } else if (tableView == self.searchResultTableView) {
+        obj = [self.searchResults objectAtIndex:indexPath.row];
+    } else {
+        obj = [self.recordArray objectAtIndex:indexPath.row];
+    }
     
     NSString *cellString = nil;
     if ([obj isKindOfClass:[NSString class]]) {
@@ -520,21 +618,30 @@
         
         return cell;
     } else {
-        EMMessageModel *model = (EMMessageModel *)obj;
-        NSString *identifier;
- 
-        identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
-        
-        EMMessageCell *cell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        // Configure the cell...
-        if (cell == nil) {
-            cell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
-            
-            cell.delegate = self;
+        UITableViewCell *cell;
+        if (!(tableView == self.picAndVideoRecordTableView)) {
+            EMMessageModel *model = (EMMessageModel *)obj;
+            NSString *identifier;
+            identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+            EMMessageCell *msgCell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+            // Configure the cell...
+            if (msgCell == nil) {
+                msgCell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+                msgCell.delegate = self;
+            }
+            msgCell.model = model;
+            cell = msgCell;
+        } else {
+            NSArray *modelArray = (NSArray *)obj;
+            EMMsgRecordCell *msgCell = (EMMsgRecordCell *)[tableView dequeueReusableCellWithIdentifier:@"msgRecordCell"];
+            // Configure the cell...
+            if (msgCell == nil) {
+                msgCell = [[EMMsgRecordCell alloc] init];
+                msgCell.delegate = self;
+            }
+            msgCell.models = modelArray;
+            cell = msgCell;
         }
-
-        cell.model = model;
         return cell;
     }
 }
@@ -870,6 +977,21 @@
     //[self.navigationController pushViewController:readReceiptControl animated:NO];
     [self presentViewController:self.readReceiptControl animated:NO completion:nil];
     
+}
+
+#pragma mark - EMMsgRecordCellDelegate
+- (void)imageViewDidTouch:(EMMessageModel *)aModel
+{
+    EMMessageCell *cell = [[EMMessageCell alloc]init];
+    cell.model = aModel;
+    [self _imageMessageCellDidSelected:cell];
+}
+
+- (void)videoViewDidTouch:(EMMessageModel *)aModel
+{
+    EMMessageCell *cell = [[EMMessageCell alloc]init];
+    cell.model = aModel;
+    [self _videoMessageCellDidSelected:cell];
 }
 
 - (void)messageCellDidSelected:(EMMessageCell *)aCell
