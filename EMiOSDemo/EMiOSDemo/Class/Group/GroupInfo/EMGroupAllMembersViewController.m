@@ -78,7 +78,7 @@
     if (section == 0) {
         if (row == 0) {
             cell.textLabel.text = @"群管理员";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",self.group.adminList.count];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(unsigned long)self.group.adminList.count];
         } else if (row == 1) {
             cell.textLabel.text = @"群成员";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(self.group.occupantsCount - self.group.adminList.count - 1)];

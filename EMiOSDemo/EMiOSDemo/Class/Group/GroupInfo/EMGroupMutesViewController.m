@@ -10,6 +10,8 @@
 
 #import "EMAvatarNameCell.h"
 #import "EMConfirmViewController.h"
+#import "EMAvatarNameCell.h"
+#import "EMPersonalDataViewController.h"
 
 @interface EMGroupMutesViewController ()
 
@@ -85,15 +87,14 @@
     cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
     cell.nameLabel.text = name;
     cell.indexPath = indexPath;
-    /*
-    cell.detailTextLabel.textColor = [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0];
-    cell.detailTextLabel.backgroundColor = [UIColor lightGrayColor];
-    cell.detailTextLabel.text = @"time";
-    */
     return cell;
 }
 
 #pragma mark - Table view delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self personalData:[self.dataArray objectAtIndex:indexPath.row]];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -210,6 +211,18 @@
     }
     
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+//个人资料卡
+- (void)personalData:(NSString *)nickName
+{
+    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav pushViewController:controller animated:YES];
+    }
 }
 
 @end

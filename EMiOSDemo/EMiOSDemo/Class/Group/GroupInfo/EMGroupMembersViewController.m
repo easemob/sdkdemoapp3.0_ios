@@ -7,8 +7,9 @@
 //
 
 #import "EMGroupMembersViewController.h"
-
 #import "EMAvatarNameCell.h"
+#import "EMAvatarNameCell.h"
+#import "EMPersonalDataViewController.h"
 
 @interface EMGroupMembersViewController ()
 
@@ -84,6 +85,10 @@
 }
 
 #pragma mark - Table view delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self personalData:[self.dataArray objectAtIndex:indexPath.row]];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -249,6 +254,17 @@
     }
     
     [self.navigationController popViewControllerAnimated:YES];
+}
+//个人资料卡
+- (void)personalData:(NSString *)nickName
+{
+    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav pushViewController:controller animated:YES];
+    }
 }
 
 @end

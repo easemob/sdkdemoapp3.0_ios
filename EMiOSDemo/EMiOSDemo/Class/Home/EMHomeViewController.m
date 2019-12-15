@@ -201,9 +201,8 @@
 - (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
 {
     if (aUnreadCount > 0) {
-        self.contactsController.tabBarItem.badgeValue = @(aUnreadCount).stringValue;
-    } else {
-        self.contactsController.tabBarItem.badgeValue = nil;
+        NSInteger count = [self.conversationsController.tabBarItem.badgeValue integerValue];
+        self.conversationsController.tabBarItem.badgeValue = @(aUnreadCount + count).stringValue;
     }
 }
 

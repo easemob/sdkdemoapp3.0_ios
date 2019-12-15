@@ -17,7 +17,6 @@
     if (self) {
         [self _setupSubviews];
     }
-    
     return self;
 }
 

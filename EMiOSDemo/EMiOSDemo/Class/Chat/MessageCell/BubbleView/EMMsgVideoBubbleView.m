@@ -21,6 +21,15 @@
     return self;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self _setupSubviews];
+    }
+    return self;
+}
+
 #pragma mark - Subviews
 
 - (void)_setupSubviews

@@ -35,8 +35,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self _setupSubviews];
-    self.showRefreshHeader = YES;
     // Do any additional setup after loading the view.
 }
 
@@ -45,7 +43,8 @@
     __weak typeof(self) weakself = self;
     [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.groupId completion:^(EMGroup *aGroup, EMError *aError) {
         weakself.group = aGroup;
-        [weakself.tableView reloadData];
+        [weakself _setupSubviews];
+        weakself.showRefreshHeader = YES;
     }];
 }
 

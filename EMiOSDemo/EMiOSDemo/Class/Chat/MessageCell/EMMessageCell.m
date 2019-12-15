@@ -18,6 +18,8 @@
 #import "EMMsgLocationBubbleView.h"
 #import "EMMsgFileBubbleView.h"
 #import "EMMsgExtGifBubbleView.h"
+#import "EMPersonalDataViewController.h"
+#import "EMAccountViewController.h"
 
 @interface EMMessageCell()
 
@@ -101,6 +103,8 @@
     _avatarView.contentMode = UIViewContentModeScaleAspectFit;
     _avatarView.backgroundColor = [UIColor clearColor];
     _avatarView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(personalData:)];
+    [self.avatarView addGestureRecognizer:tap];
     [self.contentView addSubview:_avatarView];
     if (self.direction == EMMessageDirectionSend) {
         _avatarView.image = [UIImage imageNamed:@"user_avatar_me"];
@@ -286,6 +290,22 @@
         if (self.delegate && [self.delegate respondsToSelector:@selector(messageCellDidLongPress:)]) {
             [self.delegate messageCellDidLongPress:self];
         }
+    }
+}
+//个人资料
+- (void)personalData:(UITapGestureRecognizer *)aTap
+{
+    UIViewController *controller;
+    if ([self.model.emModel.from isEqualToString:EMClient.sharedClient.currentUsername]) {
+        controller = [[EMAccountViewController alloc]init];
+    } else {
+        controller = [[EMPersonalDataViewController alloc]initWithNickName:self.nameLabel.text];
+    }
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav pushViewController:controller animated:YES];
     }
 }
 

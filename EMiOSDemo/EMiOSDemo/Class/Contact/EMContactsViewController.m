@@ -16,8 +16,10 @@
 #import "EMInviteFriendViewController.h"
 #import "PellTableViewSelect.h"
 #import "EMJoinGroupViewController.h"
+#import "EMPersonalDataViewController.h"
+#import "EMAccountViewController.h"
 
-@interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate, EMNotificationsDelegate>
+@interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *allContacts;
 @property (nonatomic, strong) NSMutableArray *sectionTitles;
@@ -39,9 +41,6 @@
     self.sectionTitles = [[NSMutableArray alloc] init];
     
     [self _setupSubviews];
-    
-    [[EMNotificationHelper shared] addDelegate:self];
-    [self didNotificationsUnreadCountUpdate:[EMNotificationHelper shared].unreadCount];
     
     [self _fetchContactsFromServerWithIsShowHUD:YES];
     
@@ -119,7 +118,7 @@
     }];
     
     [self _setupSearchResultController];
-    
+    /*
     self.notifCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMNotificationsCell"];
     self.notifCell.avatarView.image = [UIImage imageNamed:@"notification"];
     self.notifCell.nameLabel.text = @"申请与通知";
@@ -138,6 +137,7 @@
         make.height.equalTo(@20);
         make.width.greaterThanOrEqualTo(@20);
     }];
+     */
 }
 
 - (void)_setupSearchResultController
@@ -167,6 +167,7 @@
             [weakself.resultController showHudInView:weakself.resultController.view hint:@"删除好友..."];
             [weakself _deleteContact:contact completion:^(EMError *aError) {
                 [weakself.resultController hideHud];
+                /*
                 if (!aError) {
                     [weakself.resultController.dataArray removeObjectAtIndex:row];
                     [weakself.resultController.tableView reloadData];
@@ -182,7 +183,7 @@
                             break;
                         }
                     }
-                }
+                }*/
             }];
         }
     }];
@@ -205,7 +206,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 5;
+        return 4;
     }
     
     return [(NSArray *)(self.dataArray[section - 1]) count];
@@ -215,10 +216,6 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 0 && row == 1) {//申请cell特殊化，需要显示角标
-        [self.notifCell setSeparatorInset:UIEdgeInsetsMake(0, self.notifCell.avatarView.frame.size.height + 23, 0, 1)];
-        return self.notifCell;
-    }
     
     NSString *cellIdentifier = @"EMAvatarNameCell";
     EMAvatarNameCell *cell = (EMAvatarNameCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -230,13 +227,13 @@
         if (row == 0) {
             cell.avatarView.image = [UIImage imageNamed:@"新的好友"];
             cell.nameLabel.text = @"新的好友";
-        } else if (row == 2) {
+        } else if (row == 1) {
             cell.avatarView.image = [UIImage imageNamed:@"群聊"];
             cell.nameLabel.text = @"群聊";
-        } else if (row == 3) {
+        } else if (row == 2) {
             cell.avatarView.image = [UIImage imageNamed:@"聊天室"];
             cell.nameLabel.text = @"聊天室";
-        } else if (row == 4) {
+        } else if (row == 3) {
             cell.avatarView.image = [UIImage imageNamed:@"call"];
             cell.nameLabel.text = @"多人视频";
         }
@@ -305,12 +302,10 @@
             EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
             [self.navigationController pushViewController:controller animated:YES];
         } else if (row == 1) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIF_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
-        } else if (row == 2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
-        } else if (row == 3) {
+        } else if (row == 2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
-        } else if (row == 4) {
+        } else if (row == 3) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -329,7 +324,8 @@
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
+        [self personalData:contact];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }
 }
 
@@ -423,7 +419,7 @@
         });
     }];
 }
-
+/*
 #pragma mark - EMNotificationsDelegate
 
 - (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
@@ -440,7 +436,7 @@
     } else {
         self.notifBadgeLabel.hidden = YES;
     }
-}
+}*/
 
 #pragma mark - Private
 
@@ -575,7 +571,6 @@
 {
     // 弹出QQ的自定义视图
     [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 120, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
-           NSLog(@"选择%ld",index);
         if(index == 0) {
             [self lookForSomeOne];
         } else if (index == 1) {
@@ -601,6 +596,18 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _fetchContactsFromServerWithIsShowHUD:NO];
+}
+
+//个人资料卡
+- (void)personalData:(NSString *)nickName
+{
+    UIViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav pushViewController:controller animated:YES];
+    }
 }
 
 @end

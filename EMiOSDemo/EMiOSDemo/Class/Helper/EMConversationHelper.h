@@ -19,6 +19,8 @@ static NSString *kConversation_Draft = @"kDraft";//草稿
 
 @property (nonatomic, strong) EMConversation *emModel;
 
+@property (nonatomic, strong) EMNotificationModel *notiModel;
+
 @property (nonatomic, strong) NSString *name;
 
 - (instancetype)initWithEMModel:(EMConversation *)aModel;
