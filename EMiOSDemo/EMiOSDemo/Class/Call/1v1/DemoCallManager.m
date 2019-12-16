@@ -17,7 +17,7 @@
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 #import "EMChatViewController.h"
-#import "EMAudioRecord.h"
+#import "AudioRecord.h"
 
 static DemoCallManager *callManager = nil;
 
@@ -37,7 +37,7 @@ static DemoCallManager *callManager = nil;
 
 @property (nonatomic, strong) UIAlertController *alertView;
 
-@property (nonatomic, strong) EMAudioRecord* audioRecorder;
+@property (nonatomic, strong) AudioRecord* audioRecorder;
 
 @end
 
@@ -80,7 +80,10 @@ static DemoCallManager *callManager = nil;
     _callLock = [[NSObject alloc] init];
     _currentCall = nil;
     _currentController = nil;
-    _audioRecorder = [[EMAudioRecord alloc] init];
+    _audioRecorder = [[AudioRecord alloc] init];
+    _audioRecorder.inputAudioData = ^(NSData*data) {
+        [[[EMClient sharedClient] callManager] inputCustomAudioData:data];
+    };
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
@@ -98,6 +101,8 @@ static DemoCallManager *callManager = nil;
     }
     
     //xiaoming.li
+    options.enableCustomAudioData = NO;
+    options.audioCustomSamples = 48000;
     options.audioCustomChannels = 1;
     
     // dujiepeng
@@ -250,7 +255,7 @@ static DemoCallManager *callManager = nil;
     if(options.enableCustomAudioData){
         [self audioRecorder].channels = options.audioCustomChannels;
         [self audioRecorder].samples = options.audioCustomSamples;
-        [[self audioRecorder] startAudioDataFromMicro];
+        [[self audioRecorder] startAudioDataRecord];
     }
 }
 
@@ -486,7 +491,7 @@ static DemoCallManager *callManager = nil;
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     if(options.enableCustomAudioData) {
-        [[self audioRecorder] stopAudioData];
+        [[self audioRecorder] stopAudioDataRecord];
     }
     options.enableCustomizeVideoData = NO;
     

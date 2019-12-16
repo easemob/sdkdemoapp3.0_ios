@@ -172,7 +172,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 1 || section == 3) {
+    if (section == 1 || section == 4) {
         return 10;
     }
     
@@ -181,7 +181,7 @@
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 1 || section == 3) {
+    if (section == 1 || section == 4) {
         return nil;
     }
     
@@ -193,6 +193,8 @@
     } else if (section == 2) {
         label.numberOfLines = 2;
         label.text = @"    固定分辨率会受到网络不稳定等因素影响";
+    }else if (section == 3) {
+        label.text = @"    通话过程中不能修改";
     }
     
     return label;

@@ -1,18 +1,18 @@
 //
-//  EMAudioRecord.m
+//  AudioRecord.m
 //  EMiOSDemo
 //
 //  Created by lixiaoming on 2019/12/9.
 //  Copyright © 2019 lixiaoming. All rights reserved.
 //
 
-#import "EMAudioRecord.h"
+#import "AudioRecord.h"
 
 static AudioUnit vpio_unit_ = nil;
 static const AudioUnitElement kInputBus = 1;
 static int16_t* recordeddata = nil;
 static int lastNumberFrames = 0;
-@implementation EMAudioRecord
+@implementation AudioRecord
 - (instancetype)init
 {
     self = [super init];
@@ -27,6 +27,7 @@ static int lastNumberFrames = 0;
     _channels = 1;
     _data = [NSMutableData data];
     _state = 0;
+    _inputAudioData = nil;
 }
 - (void) SetChannels:(int)channels {
     if(channels != 1) {
@@ -48,7 +49,7 @@ static OSStatus OnDeliverData(    void *                            inRefCon,
 {
     if(!vpio_unit_)
         return -1;
-    EMAudioRecord* self = (__bridge EMAudioRecord*)inRefCon;
+    AudioRecord* self = (__bridge AudioRecord*)inRefCon;
     self->_audio_buffer_list.mNumberBuffers = 1;
     AudioBuffer* audio_buffer = &self->_audio_buffer_list.mBuffers[0];
     audio_buffer->mNumberChannels = self.channels;
@@ -74,11 +75,13 @@ static OSStatus OnDeliverData(    void *                            inRefCon,
     if([self->_data length] != inNumberFrames*2*self.channels)
         [self->_data setLength:inNumberFrames*2*self.channels];
     [self->_data replaceBytesInRange:NSMakeRange(0, inNumberFrames*2*self.channels) withBytes:audio_buffer->mData length:inNumberFrames*2*self.channels];
-    [[[EMClient sharedClient] callManager] inputCustomAudioData:self->_data];
+    if(self->_inputAudioData)
+        self->_inputAudioData(self->_data);
+    //[[[EMClient sharedClient] callManager] inputCustomAudioData:self->_data];
     
     return 0;
 }
-- (bool)startAudioDataFromMicro
+- (bool)startAudioDataRecord
 {
     // Create an audio component description to identify the Voice Processing
     // I/O audio unit.
@@ -167,7 +170,9 @@ static OSStatus OnDeliverData(    void *                            inRefCon,
     return true;
 }
 
-- (void) stopAudioData {
+- (void) stopAudioDataRecord {
+    if(!vpio_unit_)
+        return;
     OSStatus result = AudioOutputUnitStop(vpio_unit_);
     if (result != noErr) {
       NSLog(@"Failed to stop audio unit. Error=%ld", (long)result);

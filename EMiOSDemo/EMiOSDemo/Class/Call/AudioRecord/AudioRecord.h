@@ -1,5 +1,5 @@
 //
-//  EMAudioRecord.h
+//  AudioRecord.h
 //  EMiOSDemo
 //
 //  Created by lixiaoming on 2019/12/9.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMAudioRecord : NSObject
+@interface AudioRecord : NSObject
 // 采样率
 @property (nonatomic) int samples;
 // 通道数
@@ -20,11 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 // 读取麦克风缓冲
 @property (nonatomic, assign) AudioBufferList audio_buffer_list;
 @property (nonatomic, strong) NSMutableData* data;
+// 定义回调
+typedef void(^InputAudioData)(NSData*);
+@property (nonatomic,copy) InputAudioData inputAudioData;
 
 // 开启录音
-- (bool)startAudioDataFromMicro;
+- (bool)startAudioDataRecord;
 //停止录音
-- (void) stopAudioData;
+- (void) stopAudioDataRecord;
 @end
 
 NS_ASSUME_NONNULL_END

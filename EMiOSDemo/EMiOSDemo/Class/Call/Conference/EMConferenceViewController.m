@@ -10,12 +10,11 @@
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
-#import "EMAudioRecord.h"
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
-@property (nonatomic, strong) EMAudioRecord* audioRecord;
+
 
 @property (nonatomic) BOOL isSetSpeaker;
 
@@ -38,7 +37,10 @@
         _chatType = aChatType;
         
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
-        _audioRecord = [[EMAudioRecord alloc] init];
+        _audioRecord = [[AudioRecord alloc] init];
+        _audioRecord.inputAudioData = ^(NSData*data){
+          [[[EMClient sharedClient] conferenceManager] inputCustomAudioData:data];
+        };
     }
 
     return self;
@@ -67,7 +69,10 @@
         }
         
         _inviteUsers = [[NSMutableArray alloc] init];
-        _audioRecord = [[EMAudioRecord alloc] init];
+        _audioRecord = [[AudioRecord alloc] init];
+        _audioRecord.inputAudioData = ^(NSData*data){
+          [[[EMClient sharedClient] conferenceManager] inputCustomAudioData:data];
+        };
     }
 
     return self;
@@ -525,7 +530,7 @@
         {
             [self audioRecord].samples = pubConfig.customAudioSamples;
             [self audioRecord].channels = pubConfig.customAudioChannels;
-            [[self audioRecord] startAudioDataFromMicro];
+            [[self audioRecord] startAudioDataRecord];
         }
     }];
 }
@@ -710,7 +715,7 @@
 {
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     if(options.enableCustomAudioData)
-       [[self audioRecord] stopAudioData];
+       [[self audioRecord] stopAudioDataRecord];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     [self.floatingView removeFromSuperview];
     

@@ -275,6 +275,9 @@
             
             [weakself removeStreamWithId:weakself.pubStreamId];
             weakself.pubStreamId = nil;
+            EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+            if(options.enableCustomAudioData)
+               [[self audioRecord] stopAudioDataRecord];
         }];
     } else {
         op = @"request_tobe_speaker";
