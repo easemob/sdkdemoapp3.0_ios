@@ -460,6 +460,7 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
+		C069A97323A246B8005AA90D /* AudioRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = C069A97123A246B7005AA90D /* AudioRecord.m */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
 		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
@@ -1097,6 +1098,8 @@
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		C069A97123A246B7005AA90D /* AudioRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecord.m; sourceTree = "<group>"; };
+		C069A97223A246B7005AA90D /* AudioRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecord.h; sourceTree = "<group>"; };
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D2B1B9EE1C3B80290087A74F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -1852,6 +1855,7 @@
 		3A45DDAA2223A1FD00505786 /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				C069A97023A246B7005AA90D /* AudioRecord */,
 				3A45DDAB2223A1FD00505786 /* 1v1 */,
 				3A45DDB92223A1FD00505786 /* Conference */,
 				3A45DDCC2223A1FD00505786 /* CallImgs */,
@@ -2267,6 +2271,15 @@
 				9091102B192EEA70008A48AA /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C069A97023A246B7005AA90D /* AudioRecord */ = {
+			isa = PBXGroup;
+			children = (
+				C069A97123A246B7005AA90D /* AudioRecord.m */,
+				C069A97223A246B7005AA90D /* AudioRecord.h */,
+			);
+			path = AudioRecord;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2729,6 +2742,7 @@
 				3A45E0552223A25100505786 /* EMRealtimeSearch.m in Sources */,
 				3A45DEE12223A1FD00505786 /* EMAudioPlayerHelper.mm in Sources */,
 				3A45E37F2223A47900505786 /* EMCreateChatroomViewController.m in Sources */,
+				C069A97323A246B8005AA90D /* AudioRecord.m in Sources */,
 				3A45DF492223A1FD00505786 /* DACircularProgressView.m in Sources */,
 				3A45E09A2223A29B00505786 /* EMAvatarNameCell.m in Sources */,
 				3A45E12F2223A34600505786 /* ConfInviteUserCell.m in Sources */,

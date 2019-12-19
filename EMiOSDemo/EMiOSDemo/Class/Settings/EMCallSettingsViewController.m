@@ -42,7 +42,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -57,7 +57,8 @@
         case 2:
             count = 2;
             break;
-            
+        case 3:
+            count = 2;
         default:
             break;
     }
@@ -76,7 +77,17 @@
     UISwitch *switchControl = nil;
     // Configure the cell...
     if (cell == nil) {
-        if (section != 2) {
+        if(section == 3) {
+            if(row == 0){
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+                switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
+                switchControl.tag = section*10 + row + 10000;
+                [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+                [cell.contentView addSubview:switchControl];
+            }else if(row == 1) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+            }
+        }else if (section != 2) {
             if (row == 0 || row == 2 || row == 3) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
                 switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
@@ -129,6 +140,15 @@
             cell.detailTextLabel.text = @(options.minVideoKbps).stringValue;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+    }else if (section == 3) {
+        if(row == 0) {
+            cell.textLabel.text = @"开启外部音频输入";
+            [switchControl setOn:options.enableCustomAudioData];
+        }else if(row == 1) {
+            cell.textLabel.text = @"外部音频输入采样率";
+            cell.detailTextLabel.text = @(options.audioCustomSamples).stringValue;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     }
     
     return cell;
@@ -152,7 +172,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 1 || section == 3) {
+    if (section == 1 || section == 4) {
         return 10;
     }
     
@@ -161,7 +181,7 @@
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 1 || section == 3) {
+    if (section == 1 || section == 4) {
         return nil;
     }
     
@@ -173,6 +193,8 @@
     } else if (section == 2) {
         label.numberOfLines = 2;
         label.text = @"    固定分辨率会受到网络不稳定等因素影响";
+    }else if (section == 3) {
+        label.text = @"    通话过程中不能修改";
     }
     
     return label;
@@ -191,6 +213,10 @@
             [self updateMaxVideoKbps];
         } else if (row == 1) {
             [self updateMinVideoKbps];
+        }
+    }else if (section == 3) {
+        if(row == 1) {
+            [self updateExternalAudioSamples];
         }
     }
 }
@@ -214,6 +240,9 @@
     else if (tag == 4 + 10000) {
         [EMDemoOptions sharedOptions].willMergeStrem = aSwitch.isOn;
         [[EMDemoOptions sharedOptions] archive];
+    }else if(tag == 3*10+10000) {
+        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+        options.enableCustomAudioData = aSwitch.isOn;
     }
 }
 
@@ -287,6 +316,36 @@
             value = 0;
         }
         options.minVideoKbps = value;
+        [[DemoCallManager sharedManager] saveCallOptions];
+        [self.tableView reloadData];
+    }];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)updateExternalAudioSamples
+{
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(!options.enableCustomAudioData)
+        return;
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"外部音频输入采样率" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"外部音频输入采样率";
+        textField.text = @(options.audioCustomSamples).stringValue;
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:cancelAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UITextField *textField = alertController.textFields.firstObject;
+        int value = [textField.text intValue];
+        if (value < 0) {
+            value = 0;
+        }
+        options.audioCustomSamples = value;
         [[DemoCallManager sharedManager] saveCallOptions];
         [self.tableView reloadData];
     }];

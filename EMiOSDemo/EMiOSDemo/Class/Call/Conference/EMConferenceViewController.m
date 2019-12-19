@@ -10,11 +10,11 @@
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
-
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
+
 
 @property (nonatomic) BOOL isSetSpeaker;
 
@@ -37,8 +37,12 @@
         _chatType = aChatType;
         
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
+        _audioRecord = [[AudioRecord alloc] init];
+        _audioRecord.inputAudioData = ^(NSData*data){
+          [[[EMClient sharedClient] conferenceManager] inputCustomAudioData:data];
+        };
     }
-    
+
     return self;
 }
 //加入会议者
@@ -65,8 +69,12 @@
         }
         
         _inviteUsers = [[NSMutableArray alloc] init];
+        _audioRecord = [[AudioRecord alloc] init];
+        _audioRecord.inputAudioData = ^(NSData*data){
+          [[[EMClient sharedClient] conferenceManager] inputCustomAudioData:data];
+        };
     }
-    
+
     return self;
 }
 
@@ -481,6 +489,13 @@
     //显示本地视频的页面
     pubConfig.localView = localView;
     
+    //使用自定义音频
+    pubConfig.enableCustomizeAudioData = options.enableCustomAudioData;
+    
+    pubConfig.customAudioSamples = options.audioCustomSamples;
+    
+    pubConfig.customAudioChannels = 1;
+    
     __weak typeof(self) weakself = self;
     //上传本地摄像头的数据流
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
@@ -510,6 +525,12 @@
         
         if (aCompletionBlock) {
             aCompletionBlock(aPubStreamId, nil);
+        }
+        if(pubConfig.enableCustomizeAudioData)
+        {
+            [self audioRecord].samples = pubConfig.customAudioSamples;
+            [self audioRecord].channels = pubConfig.customAudioChannels;
+            [[self audioRecord] startAudioDataRecord];
         }
     }];
 }
@@ -692,6 +713,9 @@
 //多人会议挂断触发事件
 - (void)hangupAction
 {
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData)
+       [[self audioRecord] stopAudioDataRecord];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     [self.floatingView removeFromSuperview];
     
