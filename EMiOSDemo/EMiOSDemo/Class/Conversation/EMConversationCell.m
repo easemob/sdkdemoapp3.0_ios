@@ -135,7 +135,7 @@
 
 - (void)setSelectedStatus
 {
-    if([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
+    if(([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [(NSNumber *)[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (self.model.notiModel && (!self.model.notiModel.stickTime || [self.model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]]))) {
         self.selected = NO;
     }
 }

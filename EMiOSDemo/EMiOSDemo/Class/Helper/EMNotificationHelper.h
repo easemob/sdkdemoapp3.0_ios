@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 @property (nonatomic) BOOL isRead;
 
+@property (nonatomic, strong) NSNumber *stickTime;
+
 @end
 
 @protocol EMNotificationsDelegate;

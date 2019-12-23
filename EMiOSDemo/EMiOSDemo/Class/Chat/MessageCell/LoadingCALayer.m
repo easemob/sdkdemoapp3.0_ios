@@ -39,8 +39,9 @@ static CGFloat const kLineWidth = 2;
     [path addArcWithCenter:center radius:radius startAngle: currentOrigin endAngle:currentDest clockwise:NO];
     CGContextAddPath(ctx, path.CGPath);
     CGContextSetLineWidth(ctx, kLineWidth);
-    CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
+    CGContextSetStrokeColorWithColor(ctx, [UIColor lightGrayColor].CGColor);
     CGContextStrokePath(ctx);
+    
 }
 
 

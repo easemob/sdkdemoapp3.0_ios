@@ -554,6 +554,9 @@
 		3C7A157423913A1B00F4AC48 /* video-unSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A157123913A1600F4AC48 /* video-unSelected@2x.png */; };
 		3C7A157523913A1B00F4AC48 /* video-unSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A157223913A1800F4AC48 /* video-unSelected@3x.png */; };
 		3C7A157623913A1B00F4AC48 /* video-unSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A157323913A1B00F4AC48 /* video-unSelected.png */; };
+		3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C930B3123AB2CB600C8268D /* PAirSandbox.m */; };
+		3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C97EF2923A87B5C004E97B7 /* CloudKit.framework */; };
+		3C97EF2D23A87FB9004E97B7 /* EMFileTransferDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C97EF2C23A87FB9004E97B7 /* EMFileTransferDocument.m */; };
 		3CA8BB16236BFEBD00EE519E /* EMMoreFunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0B236BFEBD00EE519E /* EMMoreFunctionView.m */; };
 		3CA8BB17236BFEBD00EE519E /* EMReadReceiptMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0C236BFEBD00EE519E /* EMReadReceiptMsgViewController.m */; };
 		3CA8BB18236BFEBD00EE519E /* EMReadReceiptTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8BB0D236BFEBD00EE519E /* EMReadReceiptTableViewCell.m */; };
@@ -1448,6 +1451,11 @@
 		3C7A157123913A1600F4AC48 /* video-unSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-unSelected@2x.png"; sourceTree = "<group>"; };
 		3C7A157223913A1800F4AC48 /* video-unSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-unSelected@3x.png"; sourceTree = "<group>"; };
 		3C7A157323913A1B00F4AC48 /* video-unSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-unSelected.png"; sourceTree = "<group>"; };
+		3C930B3123AB2CB600C8268D /* PAirSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAirSandbox.m; sourceTree = "<group>"; };
+		3C930B3223AB2CB600C8268D /* PAirSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAirSandbox.h; sourceTree = "<group>"; };
+		3C97EF2923A87B5C004E97B7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		3C97EF2B23A87FB9004E97B7 /* EMFileTransferDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMFileTransferDocument.h; sourceTree = "<group>"; };
+		3C97EF2C23A87FB9004E97B7 /* EMFileTransferDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMFileTransferDocument.m; sourceTree = "<group>"; };
 		3CA8BB05236BFEBD00EE519E /* EMReadReceiptMemberModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMReadReceiptMemberModel.h; sourceTree = "<group>"; };
 		3CA8BB0B236BFEBD00EE519E /* EMMoreFunctionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMMoreFunctionView.m; sourceTree = "<group>"; };
 		3CA8BB0C236BFEBD00EE519E /* EMReadReceiptMsgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMReadReceiptMsgViewController.m; sourceTree = "<group>"; };
@@ -1664,6 +1672,7 @@
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
 				3A45DF3D2223A1FD00505786 /* libopencore-amrnb.a in Frameworks */,
+				3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */,
 				3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */,
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
@@ -1744,6 +1753,10 @@
 				3A45E23A2223A3A000505786 /* EMLocationViewController.m */,
 				3A45E23E2223A3A000505786 /* EMMsgTranspondViewController.h */,
 				3A45E2402223A3A000505786 /* EMMsgTranspondViewController.m */,
+				3C97EF2B23A87FB9004E97B7 /* EMFileTransferDocument.h */,
+				3C97EF2C23A87FB9004E97B7 /* EMFileTransferDocument.m */,
+				3C930B3223AB2CB600C8268D /* PAirSandbox.h */,
+				3C930B3123AB2CB600C8268D /* PAirSandbox.m */,
 				3A45DBE82223A1FC00505786 /* ChatBar */,
 				3A45DC3F2223A1FC00505786 /* MessageCell */,
 				3A45DC7A2223A1FC00505786 /* ChatImgs */,
@@ -3096,6 +3109,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3C97EF2923A87B5C004E97B7 /* CloudKit.framework */,
 				3C4CEC972373D87800A37140 /* Hyphenate.framework */,
 				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
 				3ACFA04E221168C000B16331 /* CoreServices.framework */,
@@ -3806,6 +3820,7 @@
 				3A45E0532223A25100505786 /* EMGlobalVariables.m in Sources */,
 				3A45E05D2223A25C00505786 /* NSObject+Alert.m in Sources */,
 				3C7A14FB2390D49F00F4AC48 /* SPDateTimePickerView.m in Sources */,
+				3C97EF2D23A87FB9004E97B7 /* EMFileTransferDocument.m in Sources */,
 				3A45E3E32223A4E900505786 /* EMGroupSharedFilesViewController.m in Sources */,
 				3A45DE652223A1FD00505786 /* EMChatBarItem.m in Sources */,
 				3A45E0D92223A2CE00505786 /* PSTGridLayoutInfo.m in Sources */,
@@ -3916,6 +3931,7 @@
 				3A6C4214224A315C00AA5EDD /* EMEmojiHelper.m in Sources */,
 				3C3BAE842397C42800344F63 /* EMConfirmViewController.m in Sources */,
 				3A45E3312223A44200505786 /* EMMsgExtGifBubbleView.m in Sources */,
+				3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */,
 				3CA8BCAD236C3A8000EE519E /* EMButton.m in Sources */,
 				3A45E1092223A30C00505786 /* EMSearchBar.m in Sources */,
 				3A45E1072223A30C00505786 /* EMSearchResultController.m in Sources */,

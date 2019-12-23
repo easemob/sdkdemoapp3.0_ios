@@ -18,6 +18,7 @@ static NSString *kNotifications_Time = @"time";
 static NSString *kNotifications_Status = @"status";
 static NSString *kNotifications_Type = @"type";
 static NSString *kNotifications_IsRead = @"isRead";
+static NSString *kNotifications_StickTime = @"stickTime";
 
 @implementation EMNotificationModel
 
@@ -42,6 +43,7 @@ static NSString *kNotifications_IsRead = @"isRead";
         self.status = [aDecoder decodeIntegerForKey:kNotifications_Status];
         self.type = [aDecoder decodeIntegerForKey:kNotifications_Type];
         self.isRead = [aDecoder decodeBoolForKey:kNotifications_IsRead];
+        self.stickTime = [aDecoder decodeObjectForKey:kNotifications_StickTime];
     }
     return self;
 }
@@ -56,6 +58,7 @@ static NSString *kNotifications_IsRead = @"isRead";
     [aCoder encodeInteger:self.status forKey:kNotifications_Status];
     [aCoder encodeInteger:self.type forKey:kNotifications_Type];
     [aCoder encodeBool:self.isRead forKey:kNotifications_IsRead];
+    [aCoder encodeBool:self.stickTime forKey:kNotifications_StickTime];
 }
 
 @end
@@ -90,17 +93,17 @@ static EMNotificationHelper *shared = nil;
         _notificationList = [[NSMutableArray alloc] init];
         _isCheckUnreadCount = YES;
         
-        _dateFormatter = [[NSDateFormatter alloc] init];
-        [_dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm"];
-        
-        _delegates = (EMMulticastDelegate<EMNotificationsDelegate> *)[[EMMulticastDelegate alloc] init];
-        
-        [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
-        [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
-        [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
-        
         [self getNotificationsFromLocal];
     }
+    
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    _delegates = (EMMulticastDelegate<EMNotificationsDelegate> *)[[EMMulticastDelegate alloc] init];
+    
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     
     return self;
 }

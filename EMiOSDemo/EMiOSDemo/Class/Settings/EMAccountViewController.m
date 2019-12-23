@@ -92,7 +92,7 @@
             cell.textLabel.text = @"头像";
             cell.accessoryView = self.headerView;
         } else if (row == 1) {
-            cell.textLabel.text = @"用户ID";
+            cell.textLabel.text = @"环信ID";
             cell.detailTextLabel.text = [EMClient sharedClient].currentUsername;
         } else if (row == 2) {
             cell.textLabel.text = @"昵称";
@@ -104,18 +104,6 @@
             cell.textLabel.textColor = [UIColor redColor];
             cell.textLabel.text = @"退出登录";
         }
-        /*
-        if (row == 0) {
-            cell.textLabel.text = @"免打扰";
-            cell.accessoryView = self.disturbSwitch;
-        } else if (row == 1) {
-            cell.textLabel.text = @"免打扰时间";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            EMPushOptions *options = [EMClient sharedClient].pushOptions;
-            if (options.noDisturbingStartH > 0 && options.noDisturbingEndH > 0) {
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", @(options.noDisturbingStartH), @(options.noDisturbingEndH)];
-            }*/
     }
     
     return cell;
@@ -183,35 +171,6 @@
     }
 }
 
-- (void)changeDisturbDateAction
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"选择免打扰时间" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    __weak typeof(self) weakself = self;
-    [alertController addAction:[UIAlertAction actionWithTitle:@"全天(0:00 - 24:00)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakself showHint:@"更新免打扰设置..."];
-        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-        options.noDisturbingStartH = 0;
-        options.noDisturbingEndH = 24;
-        options.noDisturbStatus = EMPushNoDisturbStatusDay;
-        [[EMClient sharedClient] updatePushOptionsToServer];
-        [weakself hideHud];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"夜间(22:00 - 7:00)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakself showHint:@"更新免打扰设置..."];
-        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-        options.noDisturbingStartH = 22;
-        options.noDisturbingEndH = 7;
-        options.noDisturbStatus = EMPushNoDisturbStatusCustom;
-        [[EMClient sharedClient] updatePushOptionsToServer];
-        [weakself hideHud];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }]];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 - (void)_updateNikeName:(NSString *)aName
 {
     //设置推送设置
@@ -246,6 +205,7 @@
 {
     __weak typeof(self) weakself = self;
     [self showHudInView:self.view hint:@"退出..."];
+    NSLog(@"-------->%@", EMClient.sharedClient.currentUsername);
     [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
         [weakself hideHud];
         if (aError) {

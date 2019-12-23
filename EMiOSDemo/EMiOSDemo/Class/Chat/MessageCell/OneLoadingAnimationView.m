@@ -9,15 +9,24 @@
 #import "OneLoadingAnimationView.h"
 #import "LoadingCALayer.h"
 
-static CGFloat const kRadius = 9;
-static CGFloat const kLineWidth = 2;
-static CGFloat const kStep1Duration = 3.0;
+static CGFloat kRadius = 9;
+static CGFloat kLineWidth = 2;
+static CGFloat kStep1Duration = 2.5;
 
 @interface OneLoadingAnimationView ()
 @property (nonatomic) LoadingCALayer *arcToCircleLayer;
 @end
 
 @implementation OneLoadingAnimationView
+
+- (instancetype)initWithRadius:(CGFloat)radius
+{
+    self = [super init];
+    if (self) {
+        kRadius = radius;
+    }
+    return self;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -27,7 +36,7 @@ static CGFloat const kStep1Duration = 3.0;
 - (void)startAnimation {
     //self.arcToCircleLayer = [LoadingCALayer layer];
     [self reset];
-    [self doStep1];
+    [self doStep];
 }
 
 #pragma mark - animation
@@ -35,7 +44,7 @@ static CGFloat const kStep1Duration = 3.0;
     [self.arcToCircleLayer removeFromSuperlayer];
 }
 
-- (void)doStep1 {
+- (void)doStep {
     self.arcToCircleLayer = [LoadingCALayer layer];
     self.arcToCircleLayer.contentsScale = [UIScreen mainScreen].scale;
     [self.layer addSublayer:self.arcToCircleLayer];

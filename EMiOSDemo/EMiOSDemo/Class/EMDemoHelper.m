@@ -96,6 +96,9 @@ static EMDemoHelper *helper = nil;
 
 - (void)userAccountDidRemoveFromServer
 {
+    EMDemoOptions *options = [EMDemoOptions sharedOptions];
+    options.isAutoLogin = NO;
+    [options archive];
     [[EMClient sharedClient] logout:NO];
     [self showAlertWithMessage:@"你的账号已被从服务器端移除"];
     
@@ -104,6 +107,9 @@ static EMDemoHelper *helper = nil;
 
 - (void)userDidForbidByServer
 {
+    EMDemoOptions *options = [EMDemoOptions sharedOptions];
+    options.isAutoLogin = NO;
+    [options archive];
     [[EMClient sharedClient] logout:NO];
     [self showAlertWithMessage:@"账号被禁用"];
     

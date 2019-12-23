@@ -40,6 +40,7 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.willRecord = NO;
         self.willMergeStrem = NO;
+        self.enableConsoleLog = YES;
     }
     
     return self;
@@ -82,6 +83,7 @@ static EMDemoOptions *sharedOptions = nil;
 
         self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
         self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
+        self.enableConsoleLog = [aDecoder decodeBoolForKey:kOptions_EnableConsoleLog];
     }
     return self;
 }
@@ -118,6 +120,7 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
+    [aCoder encodeBool:self.enableConsoleLog forKey:kOptions_EnableConsoleLog];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -146,6 +149,7 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.isUseBackCamera = self.isUseBackCamera;
     retModel.willRecord = self.willRecord;
     retModel.willMergeStrem = self.willMergeStrem;
+    retModel.enableConsoleLog = self.enableConsoleLog;
     return retModel;
 }
 

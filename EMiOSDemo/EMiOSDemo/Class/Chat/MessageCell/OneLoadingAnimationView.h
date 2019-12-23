@@ -10,4 +10,6 @@
 
 @interface OneLoadingAnimationView : UIView
 - (void)startAnimation;
+
+- (instancetype)initWithRadius:(CGFloat)radius;
 @end

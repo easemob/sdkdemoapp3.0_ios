@@ -19,6 +19,8 @@
 #import "EMDemoOptions.h"
 
 #import "EMErrorAlertViewController.h"
+#import "LoadingCALayer.h"
+#import "OneLoadingAnimationView.h"
 
 @interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
@@ -49,6 +51,8 @@
 
 @property (nonatomic) BOOL isLogin;
 
+@property (strong, nonatomic) IBOutlet OneLoadingAnimationView *loadingView;//加载view
+
 @end
 
 @implementation EMLoginViewController
@@ -58,7 +62,6 @@
     // Do any additional setup after loading the view.
     self.isLogin = false;
     [self _setupSubviews];
-    
     [self.tableView reloadData];
 }
 
@@ -66,6 +69,9 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    self.loginLabel.text = @"登 录";
+    [self.loadingView removeFromSuperview];
+    self.pswdField.text = nil;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -249,10 +255,9 @@
     [_loginLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.loginButton);
         make.centerX.equalTo(self.loginButton);
-        make.width.equalTo(@45);
+        make.width.equalTo(@85);
         make.height.equalTo(@23);
     }];
-    
     
     self.viewArrow = [[UIView alloc] init];
     _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
@@ -493,13 +498,6 @@
     NSString *name = self.nameField.text;
     NSString *pswd = self.pswdField.text;
 
-    /*
-    if ([name length] == 0 || [pswd length] == 0) {
-        NSString *errorDes = isTokenLogin ? @"用户ID或者token不能为空" : @"用户ID或者密码不能为空";
-        [EMAlertController showErrorAlert:errorDes];
-        return;
-    }
-    */
     if (!gIsInitializedSDK) {
         gIsInitializedSDK = YES;
         EMOptions *options = [[EMDemoOptions sharedOptions] toOptions];
@@ -545,7 +543,7 @@
                 errorDes = @"登录设备数已达上限";
                 break;
             case EMErrorUserLoginOnAnotherDevice:
-                errorDes = @"已在其他设备登陆";
+                errorDes = @"已在其他设备登录";
                 break;
                 case EMErrorUserRemoved:
                 errorDes = @"当前帐号已被后台删除";
@@ -558,8 +556,14 @@
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
     };
-    
-    [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
+    self.loginLabel.text = @"正在登录...";
+    [self.viewArrow addSubview:self.loadingView];
+    [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(self.viewArrow).offset(11.5);
+        make.width.equalTo(@22);
+    }];
+    [self.loadingView startAnimation];
+    //[self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     if (isTokenLogin) {
         [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
     } else {
@@ -637,6 +641,14 @@
     }
     
     return _gl;
+}
+
+- (UIView *)loadingView
+{
+    if (_loadingView == nil) {
+        _loadingView = [[OneLoadingAnimationView alloc]initWithRadius:10.5];
+    }
+    return _loadingView;
 }
 
 @end
