@@ -204,7 +204,7 @@
 {
     _model = model;
     
-    self.timeLabel.text = model.time;
+    self.timeLabel.text = [model.time substringToIndex:16];
     self.nameLabel.text = model.sender;
     self.msgLabel.text = model.message;
     if (model.status == EMNotificationModelStatusDefault) {

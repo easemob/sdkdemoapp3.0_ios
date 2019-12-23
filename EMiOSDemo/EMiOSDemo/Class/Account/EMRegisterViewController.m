@@ -15,6 +15,8 @@
 #import "EMSDKOptionsViewController.h"
 
 #import "EMErrorAlertViewController.h"
+#import "LoadingCALayer.h"
+#import "OneLoadingAnimationView.h"
 
 @interface EMRegisterViewController ()<UITextFieldDelegate>
 
@@ -36,6 +38,8 @@
 
 @property (nonatomic) BOOL isRegiste;
 
+@property (strong, nonatomic) IBOutlet OneLoadingAnimationView *loadingView;//加载view
+
 @end
 
 @implementation EMRegisterViewController
@@ -45,6 +49,14 @@
     // Do any additional setup after loading the view.
     
     [self _setupViews];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+    self.registeLabel.text = @"注 册";
+    [self.loadingView removeFromSuperview];
 }
 
 #pragma mark - Subviews
@@ -210,7 +222,7 @@
     [_registeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.registeButton);
         make.centerX.equalTo(self.registeButton);
-        make.width.equalTo(@45);
+        make.width.equalTo(@70);
         make.height.equalTo(@23);
    }];
     
@@ -394,7 +406,13 @@
     }
     
     __weak typeof(self) weakself = self;
-    [self showHudInView:self.view hint:NSLocalizedString(@"register.ongoing", @"Is Login...")];
+    //[self showHudInView:self.view hint:NSLocalizedString(@"register.ongoing", @"Is Login...")];
+    self.registeLabel.text = @"注册中...";
+    [self.viewArrow addSubview:self.loadingView];
+    [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(self.viewArrow).offset(11.5);
+        make.width.equalTo(@22);
+    }];
     [[EMClient sharedClient] registerWithUsername:name password:pswd completion:^(NSString *aUsername, EMError *aError) {
         [weakself hideHud];
         
@@ -428,6 +446,14 @@
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
     }];
+}
+
+- (UIView *)loadingView
+{
+    if (_loadingView == nil) {
+        _loadingView = [[OneLoadingAnimationView alloc]initWithRadius:10.5];
+    }
+    return _loadingView;
 }
 
 @end

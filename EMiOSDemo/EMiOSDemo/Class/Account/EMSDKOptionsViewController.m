@@ -56,6 +56,26 @@
     self.tableView.hidden = YES;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:animated];
+     //监听键盘弹出事件
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+     //监听键盘隐藏事件
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+}
+
+//注销通知
+-(void)viewDidDisAppear:(BOOL)animated{
+
+     [super viewDidDisappear:animated];
+
+     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+
+     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
 #pragma mark - Subviews
 
 - (void)_setupSubviews
@@ -212,7 +232,7 @@
     }
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"confirmCell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -426,6 +446,9 @@
     }];
     if(indexPath.section == 3) {
         backView.backgroundColor = [UIColor clearColor];
+        [self gl];
+        _gl.frame = CGRectMake(0,0,backView.frame.size.width,backView.frame.size.height);
+        [backView.layer addSublayer:self.gl];
     }
     return cell;
 }
@@ -584,4 +607,32 @@
     return _gl;
 }
 
+#pragma mark - 键盘即将弹出事件处理
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    //获取键盘信息
+    NSDictionary *keyBoardInfo = [notification userInfo];
+    
+    //获取键盘的frame信息
+    NSValue *value = [keyBoardInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGFloat keyboardHeight = [value CGRectValue].size.height;
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    
+    UIView *firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    UIView *cellView = [[firstResponder superview] superview];
+    CGFloat keyboardPosition = [UIScreen mainScreen].bounds.size.height - keyboardHeight - 60;
+    if ((cellView.frame.origin.y + 60) > keyboardPosition)
+    {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, ((cellView.frame.origin.y + 60) - keyboardPosition), 0);
+        CGPoint scrollPoint = CGPointMake(0.0, keyboardPosition-firstResponder.frame.origin.y - 60);
+        [_tableView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+#pragma mark - 键盘即将隐藏事件
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
+}
 @end

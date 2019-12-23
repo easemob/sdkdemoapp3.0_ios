@@ -46,13 +46,19 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
-    return 1;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
-    return 2;
+    NSInteger count = 0;
+    if (section == 0) {
+        count = 1;
+    } else if (section == 1) {
+        count = 4;
+    } else if (section == 2) {
+        count = 2;
+    }
+    return count;
 }
 
 
@@ -60,8 +66,15 @@
     
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
+    
+    if (section == 0) {
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCellStyleValue1"];
+        cell.textLabel.text = @"当前版本";
+        cell.detailTextLabel.text = [EMClient sharedClient].version;
+        cell.accessoryType = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
     NSString *cellIdentifier = @"UITableViewCellSwitch";
-
     UISwitch *switchControl = nil;
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -77,16 +90,43 @@
     [cell.contentView addSubview:switchControl];
 
     EMDemoOptions *options = [EMDemoOptions sharedOptions];
-    if (row == 0) {
-        cell.textLabel.text = @"自动接受群组邀请";
-        [switchControl setOn:options.isAutoAcceptGroupInvitation animated:NO];
-    } else if (row == 1) {
-        cell.textLabel.text = @"退出群组时删除会话";
-        [switchControl setOn:options.isDeleteMessagesWhenExitGroup animated:NO];
+
+    if (section == 1) {
+        if (row == 0) {
+            cell.textLabel.text = @"自动登录";
+            [switchControl setOn:options.isAutoLogin animated:NO];
+        } else if (row == 1) {
+            cell.textLabel.text = @"消息附件上传到环信服务器";
+            [switchControl setOn:options.isAutoTransferMessageAttachments animated:NO];
+        } else if (row == 2) {
+            cell.textLabel.text = @"优先从服务器获取消息";
+            [switchControl setOn:options.isPriorityGetMsgFromServer animated:NO];
+        } else if (row == 3) {
+            cell.textLabel.text = @"自动下载图片缩略图";
+            [switchControl setOn:options.isAutoDownloadThumbnail animated:NO];
+        }
+    } else if (section == 2) {
+        if (row == 0) {
+            cell.textLabel.text = @"自动接受群组邀请";
+            [switchControl setOn:options.isAutoAcceptGroupInvitation animated:NO];
+        } else if (row == 1) {
+            cell.textLabel.text = @"退出群组时删除会话";
+            [switchControl setOn:options.isDeleteMessagesWhenExitGroup animated:NO];
+        }
     }
-    
     [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0.0001;
+    }
+    
+    return 10;
 }
 
 #pragma mark - Action
@@ -97,7 +137,24 @@
     NSIndexPath *indexPath = [self _indexPathWithTag:aSwitch.tag];
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 0) {
+    if (section == 1) {
+        if (row == 0) {
+            [EMClient sharedClient].options.isAutoLogin = aSwitch.isOn;
+            options.isAutoLogin = aSwitch.isOn;
+            [options archive];
+        } else if (row == 1) {
+            [EMClient sharedClient].options.isAutoTransferMessageAttachments = aSwitch.isOn;
+            options.isAutoTransferMessageAttachments = aSwitch.isOn;
+            [options archive];
+        } else if (row == 2) {
+            options.isPriorityGetMsgFromServer = aSwitch.isOn;
+            [options archive];
+        } else if (row == 3) {
+            [EMClient sharedClient].options.isAutoDownloadThumbnail = aSwitch.isOn;
+            options.isAutoDownloadThumbnail = aSwitch.isOn;
+            [options archive];
+        }
+    } else if (section == 2) {
         if (row == 0) {
             [EMClient sharedClient].options.isAutoAcceptGroupInvitation = aSwitch.isOn;
             options.isAutoAcceptGroupInvitation = aSwitch.isOn;

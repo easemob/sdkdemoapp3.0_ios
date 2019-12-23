@@ -134,7 +134,7 @@
     self.contactsController.tabBarItem = contItem;
     [self addChildViewController:self.contactsController];
     
-    UITabBarItem *discoverItem = [self _setupTabBarItemWithTitle:@"发现" imgName:@"icon-tab发现unselected" selectedImgName:@"icon-tab发现" tag:kTabbarItemTag_Settings];
+    //UITabBarItem *discoverItem = [self _setupTabBarItemWithTitle:@"发现" imgName:@"icon-tab发现unselected" selectedImgName:@"icon-tab发现" tag:kTabbarItemTag_Settings];
     
     self.settingsController = [[EMSettingsViewController alloc] init];
     UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"我" imgName:@"icon-tab我unselected" selectedImgName:@"icon-tab我" tag:kTabbarItemTag_Settings];
@@ -143,7 +143,7 @@
     
     self.viewControllers = @[self.conversationsController, self.contactsController, self.settingsController];
     
-    [self.tabBar setItems:@[consItem, contItem, discoverItem,settingsItem]];
+    [self.tabBar setItems:@[consItem, contItem, settingsItem]];
     
     self.tabBar.selectedItem = consItem;
     [self tabBar:self.tabBar didSelectItem:consItem];
@@ -200,10 +200,8 @@
 
 - (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
 {
-    if (aUnreadCount > 0) {
-        NSInteger count = [self.conversationsController.tabBarItem.badgeValue integerValue];
-        self.conversationsController.tabBarItem.badgeValue = @(aUnreadCount + count).stringValue;
-    }
+    EMNotificationHelper.shared.unreadCount = aUnreadCount;
+    [self _loadConversationTabBarItemBadge];
 }
 
 #pragma mark - Private
@@ -215,10 +213,9 @@
     for (EMConversation *conversation in conversations) {
         unreadCount += conversation.unreadMessagesCount;
     }
-    
-    NSString *unreadCountStr = unreadCount > 0 ? @(unreadCount).stringValue : nil;
+    NSString *unreadCountStr = (unreadCount + [EMNotificationHelper shared].unreadCount) > 0 ? @(unreadCount + [EMNotificationHelper shared].unreadCount).stringValue : nil;
     self.conversationsController.tabBarItem.badgeValue = unreadCountStr;
-    [EMRemindManager updateApplicationIconBadgeNumber:unreadCount];
+    [EMRemindManager updateApplicationIconBadgeNumber:unreadCount + [EMNotificationHelper shared].unreadCount];
 }
 
 - (void)_loadTabBarItemsBadge

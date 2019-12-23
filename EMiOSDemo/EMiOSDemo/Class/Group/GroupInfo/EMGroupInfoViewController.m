@@ -235,7 +235,7 @@
         } else if (row == 1) {
             cell.textLabel.text = @"会话置顶";
             EMConversation *conversastion = [[EMClient sharedClient].chatManager getConversation:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
-            [switchControl setOn:([conversastion.ext objectForKey:CONVERSATION_STICK] && ![[conversastion.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) animated:NO];
+            [switchControl setOn:([conversastion.ext objectForKey:CONVERSATION_STICK] && (NSNumber *)[conversastion.ext objectForKey:CONVERSATION_STICK] != 0) animated:NO];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -423,10 +423,16 @@
             //置顶
             EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
             NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversation.ext];
+            NSDate *date = [NSDate date];
+            NSDateFormatter *format=[[NSDateFormatter alloc]init];
+            [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSDate *time = [format dateFromString:[format stringFromDate:date]];
+            NSTimeInterval stickTimeInterval = [time timeIntervalSince1970];
+            NSNumber *stickTime = [NSNumber numberWithLong:stickTimeInterval];
             if (aSwitch.isOn) {
-                [ext setObject:@"stick" forKey:CONVERSATION_STICK];
+                [ext setObject:stickTime forKey:CONVERSATION_STICK];
             } else {
-                [ext setObject:@"" forKey:CONVERSATION_STICK];
+                [ext setObject:[NSNumber numberWithLong:0] forKey:CONVERSATION_STICK];
             }
             [conversation setExt:ext];
         }

@@ -276,7 +276,7 @@
     [cell setSeparatorInset:UIEdgeInsetsMake(0, cell.avatarView.frame.size.height + 23, 0, 1)];
 
     //置顶是已选中状态，背景变色
-    if([model.emModel.ext objectForKey:CONVERSATION_STICK] && ![[model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
+    if(([model.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (model.notiModel.stickTime && ![model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]])) {
         //cell.backgroundColor = [UIColor grayColor];
         dispatch_async(dispatch_get_main_queue(), ^{
             [cell setSelected:YES animated:NO];
@@ -473,11 +473,9 @@
     message.chatType = (EMChatType)conversation.type;
     message.isRead = YES;
     [conversation insertMessage:message error:nil];
-    if ([aUserName isEqualToString:EMClient.sharedClient.currentUsername] || conversationType == EMChatTypeChat) {
-        EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
-        [self.dataArray addObject:model];
-        [self.tableView reloadData];
-    }
+    
+    //刷新dataArray & tableview
+    [self _loadAllConversationsFromDBWithIsShowHud:(NO)];
 }
 
 #pragma mark - EMConversationCellDelegate
@@ -539,24 +537,40 @@
 {
     EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
     
+    NSDate *date = [NSDate date];
+    NSDateFormatter *format=[[NSDateFormatter alloc]init];
+    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *time = [format dateFromString:[format stringFromDate:date]];
+    NSTimeInterval stickTimeInterval = [time timeIntervalSince1970];
+    NSNumber *stickTime = [NSNumber numberWithLong:stickTimeInterval];
+    
+    if (conversationModel.emModel) {
+        NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
+        [ext setObject:stickTime forKey:CONVERSATION_STICK];
+        [conversationModel.emModel setExt:ext];
+    } else if(conversationModel.notiModel) {
+        conversationModel.notiModel.stickTime = stickTime;
+        [[EMNotificationHelper shared] archive];
+    }
+    
     [self.dataArray exchangeObjectAtIndex:self.menuIndexPath.row withObjectAtIndex:0];
     NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.menuIndexPath.section];
     [self.tableView moveRowAtIndexPath:self.menuIndexPath toIndexPath:firstIndexPath];
-    
-    NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
-    [ext setObject:@"stick" forKey:CONVERSATION_STICK];
-    
-    [conversationModel.emModel setExt:ext];
-    
 }
 
 //取消置顶
 - (void)_cancelStickConversation
 {
     EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-    NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
-    [ext setObject:@"" forKey:CONVERSATION_STICK];
-    [conversationModel.emModel setExt:ext];
+    if (conversationModel.emModel) {
+        NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:conversationModel.emModel.ext];
+        [ext setObject:[NSNumber numberWithLong:0] forKey:CONVERSATION_STICK];
+        [conversationModel.emModel setExt:ext];
+    } else if(conversationModel.notiModel) {
+        conversationModel.notiModel.stickTime = [NSNumber numberWithLong:0];
+        [[EMNotificationHelper shared] archive];
+    }
+    [self _reSortedConversationModelsAndReloadView];
     [self.tableView reloadData];
 }
 
@@ -586,11 +600,12 @@
     //[self canBecomeFirstResponder];
     [self becomeFirstResponder];
     NSMutableArray *items = [[NSMutableArray alloc] init];
-    if([aCell.model.emModel.ext objectForKey:CONVERSATION_STICK] && ![[aCell.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
+    if(([aCell.model.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[aCell.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (aCell.model.notiModel.stickTime && ![aCell.model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]])) {
         [items addObject:self.cancelStickMenuItem];
-        [items addObject:self.deleteMenuItem];
     } else {
         [items addObject:self.stickMenuItem];
+    }
+    if (!aCell.model.notiModel) {
         [items addObject:self.deleteMenuItem];
     }
     [self.menuController setMenuItems:items];
@@ -601,54 +616,49 @@
 
 #pragma mark - Data
 
-//会话置顶重排序
-- (NSArray *)_stickSortedConversation:(NSArray *)originArray
+//会话model置顶重排序
+- (NSMutableArray *)_stickSortedConversationModels:(NSArray *)modelArray
 {
+    NSMutableArray *tempModelArray = [[NSMutableArray alloc]init];
     NSMutableArray *stickArray = [[NSMutableArray alloc]init];
-    [stickArray addObjectsFromArray:originArray];
-    EMConversation *conversation = nil;
-    /*
-    int last = (int)([originArray count] - 1);
-    for (int i = last; i > -1 ; i--) {
-        conversation = originArray[i];
-        if([conversation.ext objectForKey:CONVERSATION_STICK]) {
-            [stickArray exchangeObjectAtIndex:i withObjectAtIndex:last];
-        }
-    }*/
-    
-    for (int i = 0; i < [originArray count]; i++) {
-        conversation = originArray[i];
-        if([conversation.ext objectForKey:CONVERSATION_STICK] && ![[conversation.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
-            [stickArray exchangeObjectAtIndex:i withObjectAtIndex:0];
-        }
-    }
-
-    return [stickArray copy];
-}
-
-//会话model置顶冲排序
-- (NSArray *)_stickSortedConversationModels:(NSArray *)modelArray
-{
-    NSMutableArray *stickModelArray = [[NSMutableArray alloc]init];
-    [stickModelArray addObjectsFromArray:modelArray];
+    [tempModelArray addObjectsFromArray:modelArray];
     EMConversationModel *conversationModel = nil;
-    /*
-    int last = (int)([modelArray count] - 1);
-    for (int i = last; i > -1 ; i--) {
-        conversationModel = modelArray[i];
-        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK]) {
-            [stickModelArray exchangeObjectAtIndex:i withObjectAtIndex:last];
-        }
-    }*/
     
     for (int i = 0; i < [modelArray count]; i++) {
         conversationModel = modelArray[i];
-        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![[conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToString:@""]) {
-            [stickModelArray exchangeObjectAtIndex:i withObjectAtIndex:0];
+        if([conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) {
+            [stickArray addObject:conversationModel];
+            [tempModelArray removeObject:conversationModel];
+        } else if (conversationModel.notiModel.stickTime && ![conversationModel.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]]) {
+            [stickArray addObject:conversationModel];
+            [tempModelArray removeObject:conversationModel];
         }
     }
-
-    return [stickModelArray copy];
+    NSLog(@"\nbefore:%@",stickArray);
+    //排序置顶会话列表
+    stickArray = [[stickArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
+        long time1 = [self stickTime:obj1];
+        long time2 = [self stickTime:obj2];
+        if(time1 > time2) {
+            return(NSComparisonResult)NSOrderedAscending;
+        } else {
+            return(NSComparisonResult)NSOrderedDescending;
+        }
+    }] mutableCopy];
+    NSLog(@"\nlast :%@",stickArray);
+    [stickArray addObjectsFromArray:tempModelArray];
+    return stickArray;
+}
+//返回置顶时间
+- (long)stickTime:(EMConversationModel *)model
+{
+    long time = 0;
+    if (model.emModel) {
+        time = [(NSNumber *)[model.emModel.ext objectForKey:CONVERSATION_STICK] longValue];
+    } else if (model.notiModel) {
+        time = [model.notiModel.stickTime longValue];
+    }
+    return time;
 }
 
 - (void)_reSortedConversationModelsAndReloadView
@@ -662,7 +672,6 @@
             return(NSComparisonResult)NSOrderedDescending;
         }}];
     
-    sorted = [self _stickSortedConversationModels:sorted];//置顶重排序
     NSMutableArray *conversationModels = [NSMutableArray array];
     for (EMConversationModel *model in sorted) {
         if (!model.emModel.latestMessage) {
@@ -676,7 +685,8 @@
     
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:conversationModels];
-    [self _insertSystemNotify];
+    [self _insertSystemNotify];//插入系统通知
+    self.dataArray = [self _stickSortedConversationModels:self.dataArray];//置顶重排序
     [self.tableView reloadData];
     
     self.isNeedReload = NO;
@@ -703,10 +713,10 @@
         }];
         
         [weakself.dataArray removeAllObjects];
-        sorted = [self _stickSortedConversation:sorted];//置顶重排序
         NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
         [weakself.dataArray addObjectsFromArray:models];
-        [weakself _insertSystemNotify];
+        [weakself _insertSystemNotify];//插入系统通知
+        weakself.dataArray = [weakself _stickSortedConversationModels:weakself.dataArray];//置顶重排序
         dispatch_async(dispatch_get_main_queue(), ^{
             if (aIsShowHUD) {
                 [weakself hideHud];
@@ -718,6 +728,7 @@
         });
     });
 }
+
 //插入系统通知到会话列表
 - (void)_insertSystemNotify
 {
@@ -730,14 +741,9 @@
     model.notiModel = lastNotiModel;
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     //最后一个系统通知信息时间
-    
-    NSRange range = NSMakeRange(11, 2);
-    NSInteger replaceTime = [[model.notiModel.time substringWithRange:range] integerValue];
-    NSString *resultStr = [model.notiModel.time stringByReplacingCharactersInRange:range withString:[NSString stringWithFormat:@"%ld",(long)(replaceTime + 12)]];
-    
-    NSDate *notiTime = [dateFormatter dateFromString:resultStr];
+    NSDate *notiTime = [dateFormatter dateFromString:model.notiModel.time];
     NSTimeInterval notiTimeInterval = [notiTime timeIntervalSince1970];
     long long lastNotiTime = [[NSNumber numberWithDouble:notiTimeInterval] longLongValue];
     //系统通知插入排序到会话列表中
@@ -756,13 +762,13 @@
         NSLog(@"\n--------notitime:  %lld    timestamp:   %lld",lastNotiTime ,lastConversationTime);
         NSLog(@"\n--------notitime:  %@    timestamp:   %lld",model.notiModel.time ,conversationModel.emModel.latestMessage.localTime);
         
-        if (lastNotiTime > lastConversationTime) {
+        if (lastNotiTime >= lastConversationTime) {
             high = mid - 1;
         } else {
             low = mid + 1;
         }
     }
-    [self.dataArray insertObject:model atIndex:high + 1];
+    [self.dataArray insertObject:model atIndex:(high + 1)];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh

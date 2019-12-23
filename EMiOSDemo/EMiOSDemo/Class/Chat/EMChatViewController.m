@@ -28,8 +28,10 @@
 #import "EMAtGroupMembersViewController.h"
 
 #import "EMMsgRecordCell.h"
+#import "EMFileTransferDocument.h"
+#import "PAirSandbox.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate,EMMsgRecordCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate,EMMsgRecordCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 
@@ -44,6 +46,7 @@
 
 @property (nonatomic, strong) EMChatBar *chatBar;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+@property (nonatomic, strong) UIDocumentPickerViewController *docFile;
 
 @property (nonatomic, strong) EMGroup *group;
 //阅读回执
@@ -829,6 +832,68 @@
     }];
 }
 
+- (void)chatBarDidFileAction
+{
+    /*
+    NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
+    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
+    picker.delegate = self;
+    picker.modalPresentationStyle = 0;
+    [self presentViewController:picker animated:YES completion:nil];*/
+    
+    #ifdef DEBUG
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[PAirSandbox sharedInstance] showSandboxBrowser];
+            [[PAirSandbox sharedInstance] setSendCompletion:^(NSURL *url) {
+                NSRange rage = [[url absoluteString] rangeOfString:@"/" options:NSBackwardsSearch];
+                NSString *displayName;
+                if (rage.location != NSNotFound) {
+                    displayName = [[url absoluteString] substringFromIndex:rage.location+1];
+                }
+                EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithLocalPath:[url relativePath] displayName:displayName];
+                //body.fileLength = [self acquireFilesize:[url absoluteString]];
+                [self _sendMessageWithBody:body ext:nil isUpload:NO];
+            }];
+        });
+    #endif
+}
+
+- (long long)acquireFilesize:(NSString *)filePath
+{
+    long long total = 0;
+    NSFileManager *manager = [NSFileManager defaultManager];
+    return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
+}
+/*
+#pragma mark - UIDocumentPickerDelegate
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
+{
+    [urls.firstObject startAccessingSecurityScopedResource];
+    [self selectedDocumentAtURLs:urls reName:nil];
+    [urls.firstObject stopAccessingSecurityScopedResource];
+}
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url
+{
+    [self selectedDocumentAtURLs:@[url] reName:nil];
+}
+//icloud
+- (void)selectedDocumentAtURLs:(NSArray <NSURL *>*)urls reName:(NSString *)rename
+{
+    [urls.firstObject startAccessingSecurityScopedResource];
+    for (NSURL *url in urls) {
+        [EMFileTransferDocument updateFileWithUrl:url reName:rename data:^(NSData * _Nonnull fileData, NSString * _Nonnull fileName) {
+            EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithData:fileData displayName:fileName];
+            [self _sendMessageWithBody:body ext:nil isUpload:NO];
+        }];
+        
+    }
+    [urls.firstObject stopAccessingSecurityScopedResource];
+}*/
+
 - (void)chatBarDidLocationAction
 {
     EMLocationViewController *controller = [[EMLocationViewController alloc] init];
@@ -1008,8 +1073,6 @@
         [self _fileMessageCellDidSelected:aCell];
     } else if (aCell.model.type == EMMessageTypeExtCall) {
         [self _callMessageCellDidSelected:aCell];
-    } else if (aCell.model.type == EMMessageTypeText) {
-        
     }
 }
 
@@ -1170,6 +1233,7 @@
         playerViewController.player = [AVPlayer playerWithURL:videoURL];
         playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
         playerViewController.showsPlaybackControls = YES;
+        playerViewController.modalPresentationStyle = 0;
         [self presentViewController:playerViewController animated:YES completion:^{
             [playerViewController.player play];
         }];
@@ -1202,7 +1266,54 @@
 
 - (void)_fileMessageCellDidSelected:(EMMessageCell *)aCell
 {
+    EMFileMessageBody *body = (EMFileMessageBody *)aCell.model.emModel.body;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
+    if (body.downloadStatus == EMDownloadStatusDownloading) {
+        [EMAlertController showInfoAlert:@"正在下载文件,稍后点击"];
+        return;
+    }
+    
+    void (^checkFileBlock)(NSString *aPath) = ^(NSString *aPathe) {
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
+        NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
+        [fileHandle closeFile];
+        UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:aPathe]];
+        docVc.delegate = self;
+        [docVc presentPreviewAnimated:YES];
+    };
+    
+    if (body.downloadStatus == EMDownloadStatusSuccessed && [fileManager fileExistsAtPath:body.localPath]) {
+        checkFileBlock(body.localPath);
+        return;
+    }
+    
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].chatManager downloadMessageAttachment:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
+        [weakself hideHud];
+        if (error) {
+            [EMAlertController showErrorAlert:@"下载文件失败"];
+        } else {
+            if (!message.isReadAcked) {
+                [[EMClient sharedClient].chatManager sendMessageReadAck:message.messageId toUser:message.conversationId completion:nil];
+            }
+            checkFileBlock([(EMFileMessageBody*)message.body localPath]);
+        }
+    }];
+}
+
+#pragma mark -- UIDocumentInteractionControllerDelegate
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+- (UIView*)documentInteractionControllerViewForPreview:(UIDocumentInteractionController*)controller
+{
+    return self.view;
+}
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController*)controller
+{
+    return self.view.frame;
 }
 
 - (void)_callMessageCellDidSelected:(EMMessageCell *)aCell
@@ -1879,6 +1990,7 @@
     } else if (aModel.type == EMMessageTypeLocation || aModel.type == EMMessageTypeImage || aModel.type == EMMessageTypeVideo) {
         [items addObject:self.transpondMenuItem];
     }
+
     [items addObject:self.deleteMenuItem];
     
     if (aModel.emModel.direction == EMMessageDirectionSend) {

@@ -38,6 +38,7 @@ static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 
 static NSString *kOptions_WillRecord = @"WillRecord";
 static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
+static NSString *kOptions_EnableConsoleLog = @"enableConsoleLog";
 
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
@@ -81,6 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL willRecord;
 @property (nonatomic) BOOL willMergeStrem;
+@property (nonatomic) BOOL enableConsoleLog;
 
 
 

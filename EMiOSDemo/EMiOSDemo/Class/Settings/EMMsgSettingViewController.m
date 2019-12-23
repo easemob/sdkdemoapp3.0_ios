@@ -63,7 +63,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -84,9 +84,6 @@
         case 2:
             count = 2;
             break;
-        case 3:
-            count = 3;
-            break;
         default:
             break;
     }
@@ -103,7 +100,7 @@
     
     UISwitch *switchControl = nil;
     BOOL isSwitchCell = NO;
-    if (section == 1 || section == 3) {
+    if (section == 1) {
         isSwitchCell = YES;
     }
     
@@ -159,17 +156,6 @@
             cell.textLabel.text = @"消息排序";
             cell.detailTextLabel.text = options.isSortMessageByServerTime ? @"按服务器时间" : @"按接收顺序";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-    } else if (section == 3) {
-        if (row == 0) {
-            cell.textLabel.text = @"自动下载图片缩略图";
-            [switchControl setOn:options.isAutoDownloadThumbnail animated:NO];
-        } else if (row == 1) {
-            cell.textLabel.text = @"消息附件上传到环信服务器";
-            [switchControl setOn:options.isAutoTransferMessageAttachments animated:NO];
-        } else if (row == 2) {
-            cell.textLabel.text = @"优先从服务器获取消息";
-            [switchControl setOn:options.isPriorityGetMsgFromServer animated:NO];
         }
     }
     cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
@@ -281,19 +267,6 @@
             options.isChatTyping = aSwitch.isOn;
             [[EMDemoOptions sharedOptions] archive];
         }
-    } else if (section == 3) {
-        if (row == 0) {
-            [EMClient sharedClient].options.isAutoDownloadThumbnail = aSwitch.isOn;
-            options.isAutoDownloadThumbnail = aSwitch.isOn;
-            [options archive];
-        } else if (row == 1) {
-            [EMClient sharedClient].options.isAutoTransferMessageAttachments = aSwitch.isOn;
-            options.isAutoTransferMessageAttachments = aSwitch.isOn;
-            [options archive];
-        } else if (row == 2) {
-            options.isPriorityGetMsgFromServer = aSwitch.isOn;
-            [options archive];
-        }
     }
 }
 
@@ -314,7 +287,6 @@
 
 - (void)changeDisturbDateAction
 {
-    
     SPDateTimePickerView *pickerView = [[SPDateTimePickerView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,  self.view.frame.size.height)];
     pickerView.pickerViewMode = 6;
     pickerView.delegate = self;
@@ -337,36 +309,10 @@
     [self.tableView reloadData];
 }
 
-- (void)_updatePushStyle:(EMPushDisplayStyle)aStyle
-{
-    [self showHint:@"更新通知消息显示类型..."];
-    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-    options.displayStyle = aStyle;
-    [[EMClient sharedClient] updatePushOptionsToServer];
-    [self.tableView reloadData];
-    [self hideHud];
-}
-
 - (void)msgNotiDetil
 {
     EMMsgNotificViewController *controller = [[EMMsgNotificViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)updatePushStyle
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"通知消息显示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"仅通知" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self _updatePushStyle:EMPushDisplayStyleSimpleBanner];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"显示消息详情" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self _updatePushStyle:EMPushDisplayStyleMessageSummary];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }]];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)updateMessageSort

@@ -55,8 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)chatBarDidCallAction;
 
-- (void)chatBarDidShowMoreViewAction;
+- (void)chatBarDidFileAction;
 
+- (void)chatBarDidShowMoreViewAction;
 
 //- (void)chatBarHeightDidChanged;
 

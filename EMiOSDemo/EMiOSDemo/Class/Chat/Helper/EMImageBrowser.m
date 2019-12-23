@@ -126,6 +126,7 @@ static EMImageBrowser *browser = nil;
     [self.photoBrowser reloadData];
     
     self.superController = aController;
+    self.photoNavigationController.modalPresentationStyle = 0;
     [aController presentViewController:self.photoNavigationController animated:YES completion:nil];
 }
 

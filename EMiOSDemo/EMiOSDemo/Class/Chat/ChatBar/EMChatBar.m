@@ -470,7 +470,11 @@
 
 - (void)fileButtonAction:(UIButton *)aButton
 {
+    [self clearMoreViewAndSelectedButton];
     
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidFileAction)]) {
+        [self.delegate chatBarDidFileAction];
+    }
 }
 
 @end

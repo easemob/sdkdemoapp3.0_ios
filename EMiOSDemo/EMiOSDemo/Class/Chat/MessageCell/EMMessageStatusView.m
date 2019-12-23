@@ -66,7 +66,7 @@
 - (UIView *)loadingView
 {
     if (_loadingView == nil) {
-        _loadingView = [[OneLoadingAnimationView alloc]init];
+        _loadingView = [[OneLoadingAnimationView alloc]initWithRadius:9.0];
         //_loadingView.backgroundColor = [UIColor lightGrayColor];
     }
     return _loadingView;
