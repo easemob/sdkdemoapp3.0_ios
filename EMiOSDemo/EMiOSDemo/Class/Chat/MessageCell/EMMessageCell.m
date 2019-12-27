@@ -299,7 +299,7 @@
     if ([self.model.emModel.from isEqualToString:EMClient.sharedClient.currentUsername]) {
         controller = [[EMAccountViewController alloc]init];
     } else {
-        controller = [[EMPersonalDataViewController alloc]initWithNickName:self.nameLabel.text];
+        controller = [[EMPersonalDataViewController alloc]initWithNickName:self.nameLabel.text isChatting:YES];
     }
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     UIViewController *rootViewController = window.rootViewController;

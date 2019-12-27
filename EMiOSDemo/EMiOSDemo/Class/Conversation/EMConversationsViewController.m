@@ -552,10 +552,8 @@
         conversationModel.notiModel.stickTime = stickTime;
         [[EMNotificationHelper shared] archive];
     }
-    
-    [self.dataArray exchangeObjectAtIndex:self.menuIndexPath.row withObjectAtIndex:0];
-    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.menuIndexPath.section];
-    [self.tableView moveRowAtIndexPath:self.menuIndexPath toIndexPath:firstIndexPath];
+    [self _reSortedConversationModelsAndReloadView];
+    [self.tableView reloadData];
 }
 
 //取消置顶
@@ -758,9 +756,6 @@
         timestampDate = [dateFormatter dateFromString:dateStr];
         NSTimeInterval time = [timestampDate timeIntervalSince1970];
         long long lastConversationTime = [[NSNumber numberWithDouble:time] longLongValue];
-        
-        NSLog(@"\n--------notitime:  %lld    timestamp:   %lld",lastNotiTime ,lastConversationTime);
-        NSLog(@"\n--------notitime:  %@    timestamp:   %lld",model.notiModel.time ,conversationModel.emModel.latestMessage.localTime);
         
         if (lastNotiTime >= lastConversationTime) {
             high = mid - 1;

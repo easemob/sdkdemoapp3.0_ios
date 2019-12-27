@@ -487,9 +487,11 @@
     }
     
     NSString *groupId = group.groupId;
-    for (EMGroup *obj in self.dataArray) {
-        if ([obj.groupId isEqualToString:groupId]) {
-            [self.tableView reloadData];
+    for (NSArray *groupArray in self.dataArray) {
+        for (EMGroup *group in groupArray) {
+            if ([group.groupId isEqualToString:groupId]) {
+                [self.tableView reloadData];
+            }
         }
     }
 }
@@ -510,7 +512,6 @@
     for (int i = 0; i < [data count]; i++) {
         for (EMGroup *group in data[i]) {
             if (group.isPublic == self.isPublic) {
-                NSLog(@"\n----pwner  %@     currentuser---%@",group.owner,EMClient.sharedClient.currentUsername);
                 if (self.type == 2 && [group.owner isEqualToString:EMClient.sharedClient.currentUsername]) {
                     [arrayTemp addObject:group];
                 } else if (self.type == 1 && ![group.owner isEqualToString:EMClient.sharedClient.currentUsername]) {

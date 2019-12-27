@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithNickName:(NSString *)aNickName;
 
+- (instancetype)initWithNickName:(NSString *)aNickName isChatting:(BOOL)isChatting;
+
 @end
 
 NS_ASSUME_NONNULL_END

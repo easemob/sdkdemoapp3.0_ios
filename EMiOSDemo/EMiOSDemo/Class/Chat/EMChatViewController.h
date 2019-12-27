@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCoversationModel:(EMConversationModel *)aModel;
 
+- (void)sendCallEndMsg:(NSNotification*)noti;
+
 @end
 
 NS_ASSUME_NONNULL_END
