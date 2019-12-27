@@ -121,6 +121,7 @@ static EMNotificationHelper *shared = nil;
 
 - (void)getNotificationsFromLocal
 {
+    //解档
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:self.fileName];
     NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
     [self.notificationList removeAllObjects];
@@ -155,7 +156,7 @@ static EMNotificationHelper *shared = nil;
 {
     [self.delegates removeDelegate:aDelegate];
 }
-
+//归档
 - (void)archive
 {
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:self.fileName];

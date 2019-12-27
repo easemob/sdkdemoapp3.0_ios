@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) NSString *hint;
 @property (nonatomic, strong) UIView *blackListView;
+@property (nonatomic, strong) EMChatViewController *chatController;
+@property (nonatomic) BOOL isChatting;
 @end
 
 
@@ -28,6 +30,18 @@
     if (self) {
         _nickName = aNickName;
         _contacts = [[EMClient sharedClient].contactManager getContacts];
+        _hint = @"添加联系人";
+    }
+    return self;
+}
+
+- (instancetype)initWithNickName:(NSString *)aNickName isChatting:(BOOL)isChatting;
+{
+    self = [super init];
+    if (self) {
+        _nickName = aNickName;
+        _contacts = [[EMClient sharedClient].contactManager getContacts];
+        _isChatting = isChatting;
         _hint = @"添加联系人";
     }
     return self;
@@ -182,20 +196,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
-    //NSInteger row = indexPath.row;
+    self.chatController = [[EMChatViewController alloc]initWithConversationId:self.nickName type:EMConversationTypeChat createIfNotExist:YES isChatRecord:NO];
     if (section == 1) {
         //添加联系人
         [self addContact];
     } else if (section == 2) {
         //聊天
-        EMChatViewController *chat = [[EMChatViewController alloc]initWithConversationId:self.nickName type:EMConversationTypeChat createIfNotExist:NO isChatRecord:NO];
-        [self.navigationController pushViewController:chat animated:NO];
+        if (self.isChatting) {
+            [self.navigationController popViewControllerAnimated:NO];
+        } else {
+            [self.navigationController pushViewController:self.chatController animated:NO];
+        }
     } else if (section == 3) {
         //语音通话
         [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:self.nickName, CALL_TYPE:@(EMCallTypeVoice)}];
+        if (!self.isChatting) {
+            [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+        }
     } else if (section == 4) {
         //视频通话
         [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:self.nickName, CALL_TYPE:@(EMCallTypeVideo)}];
+        if (!self.isChatting) {
+            [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+        }
     } else if (section == 5) {
         //清除聊天记录
         //[self deleteChatRecord];
@@ -251,6 +274,12 @@
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.nickName type:EMChatTypeChat createIfNotExist:NO];
     EMError *error = nil;
     [conversation deleteAllMessages:&error];
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self.chatController];
 }
 
 @end

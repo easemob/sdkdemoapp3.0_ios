@@ -131,8 +131,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCleanMessages:) name:CHAT_CLEANMESSAGES object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
-    //主叫方才能发送通话信息
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+    if (self.conversationModel.emModel.type == EMConversationTypeChat) {
+        //单聊主叫方才能发送通话记录信息
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+    }
     
     self.isTyping = NO;
     self.enableTyping = NO;
@@ -840,30 +842,20 @@
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
     [self presentViewController:picker animated:YES completion:nil];*/
-    
-    #ifdef DEBUG
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[PAirSandbox sharedInstance] showSandboxBrowser];
-            [[PAirSandbox sharedInstance] setSendCompletion:^(NSURL *url) {
-                NSRange rage = [[url absoluteString] rangeOfString:@"/" options:NSBackwardsSearch];
-                NSString *displayName;
-                if (rage.location != NSNotFound) {
-                    displayName = [[url absoluteString] substringFromIndex:rage.location+1];
-                }
-                EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithLocalPath:[url relativePath] displayName:displayName];
-                //body.fileLength = [self acquireFilesize:[url absoluteString]];
-                [self _sendMessageWithBody:body ext:nil isUpload:NO];
-            }];
-        });
-    #endif
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[PAirSandbox sharedInstance] showSandboxBrowser];
+        [[PAirSandbox sharedInstance] setSendCompletion:^(NSURL *url) {
+            NSRange rage = [[url absoluteString] rangeOfString:@"/" options:NSBackwardsSearch];
+            NSString *displayName;
+            if (rage.location != NSNotFound) {
+                displayName = [[url absoluteString] substringFromIndex:rage.location+1];
+            }
+            EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithLocalPath:[url relativePath] displayName:displayName];
+            [self _sendMessageWithBody:body ext:nil isUpload:NO];
+        }];
+    });
 }
 
-- (long long)acquireFilesize:(NSString *)filePath
-{
-    long long total = 0;
-    NSFileManager *manager = [NSFileManager defaultManager];
-    return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
-}
 /*
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
