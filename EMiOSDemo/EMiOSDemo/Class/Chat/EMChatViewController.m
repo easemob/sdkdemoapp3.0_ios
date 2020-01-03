@@ -753,6 +753,27 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+- (bool)setVoiceMessage:(EMMessage*)msg isPlayed:(bool)isPlayed
+{
+    if(msg.body.type == EMMessageBodyTypeVoice)
+    {
+        NSMutableDictionary* ext = [msg.ext mutableCopy];
+        if(!ext) {
+            ext = [NSMutableDictionary dictionary];
+        }
+        NSNumber* ret = [NSNumber numberWithBool:isPlayed];
+        [ext setObject:ret forKey:@"Voice_Played"];
+        msg.ext = ext;
+        [[[EMClient sharedClient] chatManager] updateMessage:msg completion:^(EMMessage*retmsg,EMError*err){
+            if(err != 0){
+                NSLog(@"update message error");
+            }
+        }];
+        return YES;
+    }
+    return NO;
+}
+
 - (void)_audioMessageCellDidSelected:(EMMessageCell *)aCell
 {
     if (aCell.model.isPlaying) {
@@ -777,11 +798,12 @@
                 oldModel.isPlaying = NO;
             }
         }
-        
+
         if (!aModel.emModel.isReadAcked) {
             [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel.messageId toUser:aModel.emModel.conversationId completion:nil];
         }
-        
+        [weakself setVoiceMessage:aModel.emModel isPlayed:YES];
+
         aModel.isPlaying = YES;
         if (!aModel.emModel.isRead) {
             aModel.emModel.isRead = YES;
