@@ -594,7 +594,7 @@
     //为了兼容旧版本
     if (self.type != EMConferenceTypeLive) {
         [ext setObject:self.conference.confId forKey:@"conferenceId"];
-        [ext setObject:@{@"inviter":currentUser, @"group_id":@""} forKey:@"msg_extension"];
+        [ext setObject:@{@"inviter":currentUser, @"group_id":self.chatId} forKey:@"msg_extension"];
     }
     //添加会话相关属性
     if ([self.chatId length] > 0) {

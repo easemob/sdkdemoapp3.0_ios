@@ -11,8 +11,8 @@
 #import "EMDemoOptions.h"
 #import "DemoCallManager.h"
 
+static bool g_Watermark = NO;
 @interface EMCallSettingsViewController ()
-
 @end
 
 @implementation EMCallSettingsViewController
@@ -42,7 +42,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -59,6 +59,10 @@
             break;
         case 3:
             count = 2;
+            break;
+        case 4:
+            count = 1;
+            break;
         default:
             break;
     }
@@ -77,6 +81,15 @@
     UISwitch *switchControl = nil;
     // Configure the cell...
     if (cell == nil) {
+        if(section == 4){
+            if(row == 0){
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+                switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
+                switchControl.tag = section*10 + row + 10000;
+                [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+                [cell.contentView addSubview:switchControl];
+            }
+        }else
         if(section == 3) {
             if(row == 0){
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
@@ -148,6 +161,11 @@
             cell.textLabel.text = @"外部音频输入采样率";
             cell.detailTextLabel.text = @(options.audioCustomSamples).stringValue;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }else if (section == 4) {
+        if(row == 0){
+            cell.textLabel.text = @"水印功能";
+            [switchControl setOn:g_Watermark];
         }
     }
     
@@ -243,6 +261,16 @@
     }else if(tag == 3*10+10000) {
         EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.enableCustomAudioData = aSwitch.isOn;
+    }else if(tag == 4*10 + 10000) {
+        g_Watermark = aSwitch.isOn;
+        if(g_Watermark)
+        {
+            NSString * imagePath = [[NSBundle mainBundle] pathForResource:@"icon-tab发现@3x" ofType:@"png"];
+            NSURL* url = [NSURL fileURLWithPath:imagePath];
+            [[EMClient sharedClient].conferenceManager addVideoWatermark:url origin:0 marginX:40 marginY:20];
+        }else{
+            [[EMClient sharedClient].conferenceManager clearVideoWatermark];
+        }
     }
 }
 
