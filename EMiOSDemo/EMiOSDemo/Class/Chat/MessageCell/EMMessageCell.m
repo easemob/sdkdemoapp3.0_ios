@@ -248,7 +248,12 @@
     } else {
         self.nameLabel.text = model.emModel.from;
         if (model.type == EMMessageBodyTypeVoice) {
-            self.statusView.hidden = model.emModel.isReadAcked;
+            BOOL hide = NO;
+            NSNumber* ret = [model.emModel.ext objectForKey:@"Voice_Played"];
+            if(ret) {
+                hide = [ret boolValue];
+            }
+            self.statusView.hidden = hide;
         }
     }
     if(model.emModel.isNeedGroupAck) {

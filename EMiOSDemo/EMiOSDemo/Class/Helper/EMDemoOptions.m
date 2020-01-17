@@ -195,6 +195,7 @@ static EMDemoOptions *sharedOptions = nil;
         retOpt.chatPort = self.chatPort;
         retOpt.chatServer = self.chatServer;
         retOpt.restServer = self.restServer;
+        //retOpt.rtcUrlDomain = @"wss://a1-hsb.easemob.com";
     }
     
     retOpt.isAutoLogin = self.isAutoLogin;

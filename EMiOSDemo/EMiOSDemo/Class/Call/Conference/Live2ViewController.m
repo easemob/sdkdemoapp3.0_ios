@@ -333,15 +333,18 @@
     NSString *text = textBody.text;
     
     NSString *op = [aMessage.ext objectForKey:MSG_EXT_CALLOP];
+    if ([op isEqualToString:@"request_tobe_audience"]) {
+        NSString *applyer = [aMessage.ext objectForKey:@"em_member_name"];
+        [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleAudience completion:^(EMError *aError) {
+        }];
+        return;
+    }
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:text message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"同意" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *applyer = [aMessage.ext objectForKey:@"em_member_name"];
         if ([op isEqualToString:@"request_tobe_speaker"]) {
             [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleSpeaker completion:^(EMError *aError) {
-            }];
-        } else if ([op isEqualToString:@"request_tobe_audience"]) {
-            [[EMClient sharedClient].conferenceManager changeMemberRoleWithConfId:self.conference.confId memberNames:@[applyer] role:EMConferenceRoleAudience completion:^(EMError *aError) {
             }];
         }
     }];
