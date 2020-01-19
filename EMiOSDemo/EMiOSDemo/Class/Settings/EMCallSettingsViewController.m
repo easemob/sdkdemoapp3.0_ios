@@ -266,8 +266,13 @@ static bool g_Watermark = NO;
         if(g_Watermark)
         {
             NSString * imagePath = [[NSBundle mainBundle] pathForResource:@"icon-tab发现@3x" ofType:@"png"];
-            NSURL* url = [NSURL fileURLWithPath:imagePath];
-            [[EMClient sharedClient].conferenceManager addVideoWatermark:url origin:0 marginX:40 marginY:20];
+            EMWaterMarkOption* option = [[EMWaterMarkOption alloc] init];
+            option.marginX = 40;
+            option.startPoint = LEFTTOP;
+            option.marginY = 20;
+            option.enable = YES;
+            option.url = [NSURL fileURLWithPath:imagePath];
+            [[EMClient sharedClient].conferenceManager addVideoWatermark:option];
         }else{
             [[EMClient sharedClient].conferenceManager clearVideoWatermark];
         }
