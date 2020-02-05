@@ -218,7 +218,7 @@
             timeInterval = timeInterval / 1000;
         }
         NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-        [formatter setDateFormat:@"YYYY-MM-dd"];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
         latestMessageTime = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
     }
     return latestMessageTime;
@@ -229,15 +229,15 @@
     _model = model;
     if (model.notiModel) {
         //系统通知
-        [self _setNotiModel:model.notiModel];
+        [self _setNotiModel:_model.notiModel];
     } else {
-        EMConversation *conversation = model.emModel;
+        EMConversation *conversation = self.model.emModel;
         if (conversation.type == EMConversationTypeChat) {
             self.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
         } else {
             self.avatarView.image = [UIImage imageNamed:@"group_avatar"];
         }
-        self.nameLabel.text = model.name;
+        self.nameLabel.text = self.model.name;
         self.detailLabel.attributedText = [self _getDetailWithModel:conversation];
         self.timeLabel.text = [self _getTimeWithModel:conversation];
         

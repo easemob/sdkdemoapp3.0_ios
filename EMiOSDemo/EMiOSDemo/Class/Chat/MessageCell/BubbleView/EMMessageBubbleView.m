@@ -29,16 +29,6 @@
     } else {
         self.image = [[UIImage imageNamed:@"msg_bg_recv"] stretchableImageWithLeftCapWidth:15 topCapHeight:15];
     }
-    //[self compressQualityImage];
 }
-
-- (void)compressQualityImage
-{
-    CGFloat compressQuality = 1;
-    NSData *data = UIImageJPEGRepresentation(self.image, compressQuality);
-    self.image = [UIImage imageWithData:data];
-}
-
-
 
 @end

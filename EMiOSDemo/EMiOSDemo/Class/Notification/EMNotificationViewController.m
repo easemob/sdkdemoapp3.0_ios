@@ -31,6 +31,11 @@
     [self _setupViews];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SYSTEM_NOTIF_DETAIL object:nil];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

@@ -26,10 +26,12 @@
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
+#import "EMChatInfoViewController.h"
 
 #import "EMMsgRecordCell.h"
 #import "EMFileTransferDocument.h"
 #import "PAirSandbox.h"
+#import "EMPickFileViewController.h"
 
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate,EMMsgRecordCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
 
@@ -142,15 +144,19 @@
         self.enableTyping = YES;
     }
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
+    [self.tableView addGestureRecognizer:tap];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
     } else {
         self.isFirstLoadMsg = YES;
         [self tableViewDidTriggerHeaderRefresh];
     }
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
-    [self.tableView addGestureRecognizer:tap];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -359,7 +365,7 @@
     }
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
         UIImage *image = [[UIImage imageNamed:@"用户资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(chatInfoAction)];
     } else {
         if (self.conversationModel.emModel.type == EMConversationTypeGroupChat && (NSClassFromString(@"EMGroupInfoViewController")) == nil) {
             return;
@@ -836,12 +842,14 @@
 
 - (void)chatBarDidFileAction
 {
-    /*
+    
     NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
     UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
-    [self presentViewController:picker animated:YES completion:nil];*/
+    [self presentViewController:picker animated:YES completion:nil];
+    
+    /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [[PAirSandbox sharedInstance] showSandboxBrowser];
         [[PAirSandbox sharedInstance] setSendCompletion:^(NSURL *url) {
@@ -853,10 +861,13 @@
             EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithLocalPath:[url relativePath] displayName:displayName];
             [self _sendMessageWithBody:body ext:nil isUpload:NO];
         }];
-    });
+    });*/
+    /*
+    EMPickFileViewController *pickFileController = [[EMPickFileViewController alloc]init];
+    [self.navigationController pushViewController:pickFileController animated:NO];*/
 }
 
-/*
+
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
 {
@@ -884,7 +895,7 @@
         
     }
     [urls.firstObject stopAccessingSecurityScopedResource];
-}*/
+}
 
 - (void)chatBarDidLocationAction
 {
@@ -2265,6 +2276,20 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+//聊天详情页
+- (void)chatInfoAction
+{
+    EMChatInfoViewController *chatInfoController = [[EMChatInfoViewController alloc]initWithCoversation:self.conversationModel];
+     __weak typeof(self) weakself = self;
+    [chatInfoController setClearRecordCompletion:^(EMConversationModel * _Nonnull aConversationModel) {
+        weakself.conversationModel = aConversationModel;
+        [weakself.dataArray removeAllObjects];
+        [weakself.tableView reloadData];
+    }];
+    [self.navigationController pushViewController:chatInfoController animated:YES];
+}
+
 //删除该会话所有消息，同时清除内存和数据库中的消息
 - (void)deleteAllMessageAction
 {
