@@ -538,7 +538,7 @@
 - (void)_subStream:(EMCallStream *)aStream
 {
     EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
-    remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+    remoteView.scaleMode = EMCallViewScaleModeAspectFit;
     EMStreamItem *videoItem = [self setupNewStreamItemWithName:aStream.userName displayView:remoteView stream:aStream];
     videoItem.videoView.enableVideo = aStream.enableVideo;
     

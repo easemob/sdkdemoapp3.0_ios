@@ -265,11 +265,11 @@ static bool g_Watermark = NO;
         g_Watermark = aSwitch.isOn;
         if(g_Watermark)
         {
-            NSString * imagePath = [[NSBundle mainBundle] pathForResource:@"icon-tab发现@3x" ofType:@"png"];
+            NSString * imagePath = [[NSBundle mainBundle] pathForResource:@"watermark" ofType:@"png"];
             EMWaterMarkOption* option = [[EMWaterMarkOption alloc] init];
-            option.marginX = 40;
+            option.marginX = 60;
             option.startPoint = LEFTTOP;
-            option.marginY = 20;
+            option.marginY = 60;
             option.enable = YES;
             option.url = [NSURL fileURLWithPath:imagePath];
             [[EMClient sharedClient].conferenceManager addVideoWatermark:option];
