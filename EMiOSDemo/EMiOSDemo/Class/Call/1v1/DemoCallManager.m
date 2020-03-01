@@ -106,7 +106,7 @@ static DemoCallManager *callManager = nil;
     options.audioCustomChannels = 1;
     
     // dujiepeng
-    options.maxVideoKbps = 200;
+    options.maxVideoKbps = 0;
     options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
