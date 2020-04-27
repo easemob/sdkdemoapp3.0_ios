@@ -274,7 +274,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = [self.cellArray[section] count];
+    NSInteger count = [((NSArray *)self.cellArray[section]) count];
     
     return count;
 }
@@ -346,7 +346,7 @@
             
             [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             }]];
-            
+            alertController.modalPresentationStyle = 0;
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }

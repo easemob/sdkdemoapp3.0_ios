@@ -1,5 +1,4 @@
 PODS:
-  - Bugly (2.5.0)
   - FLAnimatedImage (1.0.12)
   - Hyphenate (3.6.5)
   - Masonry (1.1.0)
@@ -33,7 +32,6 @@ SPEC REPOS:
     - SDWebImage
 
 SPEC CHECKSUMS:
-  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Hyphenate: de934686fa85bc436175a8c1b087bda40a5164d0
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201

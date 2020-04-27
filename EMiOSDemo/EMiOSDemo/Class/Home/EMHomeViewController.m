@@ -11,6 +11,7 @@
 #import "EMConversationsViewController.h"
 #import "EMContactsViewController.h"
 #import "EMSettingsViewController.h"
+#import "EMRemindManager.h"
 
 #define kTabbarItemTag_Conversation 0
 #define kTabbarItemTag_Contact 1
@@ -133,6 +134,8 @@
     self.contactsController.tabBarItem = contItem;
     [self addChildViewController:self.contactsController];
     
+    //UITabBarItem *readReceiptItem = [self _setupTabBarItemWithTitle:@"发现" imgName:@"icon-tab发现unselected" selectedImgName:@"icon-tab发现" tag:kTabbarItemTag_Settings];
+    
     self.settingsController = [[EMSettingsViewController alloc] init];
     UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"设置" imgName:@"tabbar_settings_gray" selectedImgName:@"tabbar_settings_blue" tag:kTabbarItemTag_Settings];
     self.settingsController.tabBarItem = settingsItem;
@@ -214,11 +217,9 @@
         unreadCount += conversation.unreadMessagesCount;
     }
     
-    if (unreadCount > 0) {
-        self.conversationsController.tabBarItem.badgeValue = @(unreadCount).stringValue;
-    } else {
-        self.conversationsController.tabBarItem.badgeValue = nil;
-    }
+    NSString *unreadCountStr = unreadCount > 0 ? @(unreadCount).stringValue : nil;
+    self.conversationsController.tabBarItem.badgeValue = unreadCountStr;
+    [EMRemindManager updateApplicationIconBadgeNumber:unreadCount];
 }
 
 - (void)_loadTabBarItemsBadge

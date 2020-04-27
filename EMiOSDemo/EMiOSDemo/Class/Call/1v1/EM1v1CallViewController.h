@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) UIImageView *waitImgView;
 
-@property (nonatomic, strong) EMStreamView *floatingView;
+@property (nonatomic, strong) EMStreamView *floatingView;//最小化视频窗口
 
 @property (nonatomic) EMCallSessionStatus callStatus;
 @property (nonatomic, strong) EMCallSession *callSession;

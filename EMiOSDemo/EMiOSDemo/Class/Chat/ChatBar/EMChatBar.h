@@ -11,11 +11,14 @@
 #import "EMTextView.h"
 #import "EMChatBarEmoticonView.h"
 #import "EMChatBarRecordAudioView.h"
+#import "EMMoreFunctionView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EMChatBarDelegate;
 @interface EMChatBar : UIView
+
+@property (nonatomic, strong) NSMutableArray<UIButton *> *buttonArray;
 
 @property (nonatomic, weak) id<EMChatBarDelegate> delegate;
 
@@ -25,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) EMChatBarRecordAudioView *recordAudioView;
 @property (nonatomic, strong) EMChatBarEmoticonView *moreEmoticonView;
+@property (nonatomic, strong) EMMoreFunctionView *moreFunctionView;
 
 - (void)clearInputViewText;
 
@@ -52,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)chatBarDidCallAction;
 
 - (void)chatBarDidShowMoreViewAction;
+
 
 //- (void)chatBarHeightDidChanged;
 

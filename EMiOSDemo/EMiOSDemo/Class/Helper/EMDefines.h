@@ -36,6 +36,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define MSG_EXT_GIF_ID @"em_expression_id"
 #define MSG_EXT_GIF @"em_is_big_expression"
 
+#define MSG_EXT_READ_RECEIPT @"em_read_receipt"
+#define MSG_EXT_UN_READ_RECEIPT @"em_read_unreceipt"
+
 //消息撤回
 #define MSG_EXT_RECALL @"em_recall"
 
@@ -78,6 +81,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
 #define GROUP_SUBJECT_UPDATED @"EMGroupSubjectUpdated"
 #define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
+#define GROUP_INFO_REFRESH @"EMGroupInfoRefresh"
 
 //聊天室
 #define CHATROOM_LIST_PUSHVIEWCONTROLLER @"EMPushChatroomsViewController"

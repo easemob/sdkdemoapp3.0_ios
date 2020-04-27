@@ -17,6 +17,7 @@
 #import "EMGroupInfoViewController.h"
 #import "EMChatroomsViewController.h"
 #import "EMChatroomInfoViewController.h"
+#import "EMRemindManager.h"
 
 static EMDemoHelper *helper = nil;
 @implementation EMDemoHelper
@@ -139,27 +140,8 @@ static EMDemoHelper *helper = nil;
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    for (EMMessage *message in aMessages) {
-        BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
-
-        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-        if (needShowNotification) {
-#if !TARGET_IPHONE_SIMULATOR
-            switch (state) {
-                case UIApplicationStateActive:
-//                    [gMainController playSoundAndVibration];
-                    break;
-                case UIApplicationStateInactive:
-//                    [gMainController playSoundAndVibration];
-                    break;
-                case UIApplicationStateBackground:
-//                    [gMainController showNotificationWithMessage:message];
-                    break;
-                default:
-                    break;
-            }
-#endif
-        }
+    for (EMMessage *msg in aMessages) {
+        [EMRemindManager remindMessage:msg];
     }
 }
 
@@ -265,7 +247,7 @@ static EMDemoHelper *helper = nil;
 //    model.type = EMNotificationModelTypeGroupInvite;
 //    model.message = aMessage;
 //    [[EMNotificationHelper shared] insertModel:model];
-//    
+//
 //    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"", @"groupId":aGroupId, @"username":aInviter, @"groupname":@"", @"applyMessage":aMessage, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleGroupInvitation]}];
 //    [[ApplyViewController shareController] addNewApply:dic];
 //    if (gMainController) {
@@ -306,6 +288,7 @@ static EMDemoHelper *helper = nil;
     
     NSString *msg = [NSString stringWithFormat:@"%@ %@", aAdmin, NSLocalizedString(@"group.becomeAdmin", @"Become Admin")];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.adminUpdate", @"Group Admin Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:nil];
     [alertView show];
 }
 
@@ -316,6 +299,7 @@ static EMDemoHelper *helper = nil;
     
     NSString *msg = [NSString stringWithFormat:@"%@ %@", aAdmin, NSLocalizedString(@"group.beRemovedAdmin", @"is removed from admin list")];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.adminUpdate", @"Group Admin Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:nil];
     [alertView show];
 }
 
@@ -328,6 +312,7 @@ static EMDemoHelper *helper = nil;
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.changeOwnerTo", @"Change owner %@ to %@"), aOldOwner, aNewOwner];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.ownerUpdate", @"Group Owner Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_REFRESH object:aGroup];
 }
 
 - (void)userDidJoinGroup:(EMGroup *)aGroup

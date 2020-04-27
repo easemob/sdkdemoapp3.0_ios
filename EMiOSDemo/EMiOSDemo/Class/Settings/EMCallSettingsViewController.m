@@ -102,7 +102,7 @@
     if (section == 0) {
         if (row == 0) {
             cell.textLabel.text = @"离线推送呼叫";
-            [switchControl setOn:options.isSendPushIfOffline animated:YES];
+            [switchControl setOn:[EMDemoOptions sharedOptions].isOfflineHangup animated:YES];
         }
     } else if (section == 1) {
         if (row == 0) {
@@ -201,9 +201,8 @@
 {
     NSInteger tag = aSwitch.tag;
     if (tag == 0 + 10000) {
-        EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
-        options.isSendPushIfOffline = aSwitch.on;
-        [[DemoCallManager sharedManager] saveCallOptions];
+        //EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+        [EMDemoOptions sharedOptions].isOfflineHangup = aSwitch.on;
     } else if (tag == 2 + 10000) {
         [EMDemoOptions sharedOptions].isShowCallInfo = aSwitch.isOn;
         [[EMDemoOptions sharedOptions] archive];

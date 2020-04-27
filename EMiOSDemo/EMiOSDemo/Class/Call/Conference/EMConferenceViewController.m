@@ -21,7 +21,7 @@
 @end
 
 @implementation EMConferenceViewController
-
+//会议发起人
 - (instancetype)initWithType:(EMConferenceType)aType
                     password:(NSString *)aPassword
                  inviteUsers:(NSArray *)aInviteUsers
@@ -41,7 +41,7 @@
     
     return self;
 }
-
+//加入会议者
 - (instancetype)initWithJoinConfId:(NSString *)aConfId
                           password:(NSString *)aPassword
                               type:(EMConferenceType)aType
@@ -245,7 +245,7 @@
         [self showHint:message];
     }
 }
-
+//有新的数据流上传
 - (void)streamDidUpdate:(EMCallConference *)aConference
               addStream:(EMCallStream *)aStream
 {
@@ -273,7 +273,7 @@
         [self hangupAction];
     }
 }
-
+//数据流有更新（是否静音，视频是否可用）(有人静音自己/关闭视频)
 - (void)streamDidUpdate:(EMCallConference *)aConference
                  stream:(EMCallStream *)aStream
 {
@@ -296,7 +296,7 @@
     
     videoItem.stream = aStream;
 }
-
+//数据流已经开始传输数据
 - (void)streamStartTransmitting:(EMCallConference *)aConference
                        streamId:(NSString *)aStreamId
 {
@@ -337,7 +337,7 @@
         [self showHint:str];
     }
 }
-
+//用户A用户B在同一个会议中，用户A开始说话时，用户B会收到该回调
 - (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
                  speakingStreamIds:(NSArray *)aStreamIds
 {
@@ -415,14 +415,15 @@
 - (CGRect)getNewVideoViewFrame
 {
     NSInteger count = [self.streamItemDict count];
-    
+    //行
     NSInteger row = count / kConferenceVideoMaxCol;
+    //列
     NSInteger col = count % kConferenceVideoMaxCol;
     CGRect frame = CGRectMake(col * (self.videoViewSize.width + self.videoViewBorder), row * (self.videoViewSize.height + self.videoViewBorder), self.videoViewSize.width, self.videoViewSize.height);
     
     return frame;
 }
-
+//设置视频界面
 - (EMStreamItem *)setupNewStreamItemWithName:(NSString *)aName
                                  displayView:(UIView *)aDisplayView
                                       stream:(EMCallStream *)aStream
@@ -455,7 +456,7 @@
 }
 
 #pragma mark - Stream
-
+//摄像头上传视频设置
 - (void)pubLocalStreamWithEnableVideo:(BOOL)aEnableVideo
                            completion:(void (^)(NSString *aPubStreamId, EMError *aError))aCompletionBlock
 {
@@ -475,10 +476,13 @@
     pubConfig.isBackCamera = self.switchCameraButton.isSelected;
 
     EMCallLocalView *localView = [[EMCallLocalView alloc] init];
+    //视频通话页面缩放方式
     localView.scaleMode = EMCallViewScaleModeAspectFill;
+    //显示本地视频的页面
     pubConfig.localView = localView;
     
     __weak typeof(self) weakself = self;
+    //上传本地摄像头的数据流
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误" message:@"上传本地视频流失败，请重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -498,7 +502,7 @@
         weakself.switchCameraButton.enabled = aEnableVideo;
         
         weakself.pubStreamId = aPubStreamId;
-        
+        //设置视频界面
         EMStreamItem *videoItem = [self setupNewStreamItemWithName:pubConfig.streamName displayView:localView stream:nil];
         videoItem.videoView.enableVideo = aEnableVideo;
         [weakself.streamItemDict setObject:videoItem forKey:aPubStreamId];
@@ -509,7 +513,7 @@
         }
     }];
 }
-
+//
 - (void)_subStream:(EMCallStream *)aStream
 {
     EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
@@ -518,6 +522,7 @@
     videoItem.videoView.enableVideo = aStream.enableVideo;
     
     __weak typeof(self) weakSelf = self;
+    //订阅其他人的数据流，，即订阅当前会议上麦主播的数据流
     [[EMClient sharedClient].conferenceManager subscribeConference:self.conference streamId:aStream.streamId remoteVideoView:remoteView completion:^(EMError *aError) {
         if (aError) {
             NSString *message = [NSString stringWithFormat:NSLocalizedString(@"alert.conference.subFail", @"Sub stream-%@ failed!"), aStream.userName];
@@ -557,7 +562,7 @@
 }
 
 #pragma mark - Member
-
+//发送邀请消息给群组/个人
 - (void)sendInviteMessageWithChatId:(NSString *)aChatId
                            chatType:(EMChatType)aChatType
 {
@@ -616,6 +621,7 @@
             [members addObject:item.stream.userName];
         }
     }
+    
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithType:self.inviteType isCreate:NO excludeUsers:members groupOrChatroomId:self.chatId];
     
     __weak typeof(self) weakself = self;
@@ -628,6 +634,7 @@
     }];
     
     [self.navigationController pushViewController:controller animated:YES];
+     
 }
 
 - (void)switchCameraButtonAction:(EMButton *)aButton
@@ -682,7 +689,7 @@
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }
-
+//多人会议挂断触发事件
 - (void)hangupAction
 {
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];

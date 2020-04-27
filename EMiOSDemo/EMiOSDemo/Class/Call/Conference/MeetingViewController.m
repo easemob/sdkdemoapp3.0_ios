@@ -56,17 +56,22 @@
             return ;
         }
         
+        [[EMClient sharedClient].conferenceManager enableStatistics:YES];
         weakself.conference = aCall;
         weakself.password = aPassword;
         
         [weakself pubLocalStreamWithEnableVideo:NO completion:nil];
         
+        //群组会议模式中不会给群组中发邀请消息，只会给被邀请人单发消息
+        
+        /*
         //如果是创建者并且是从会话中触发
         if (weakself.isCreater && [weakself.chatId length] > 0) {
             [weakself sendInviteMessageWithChatId:weakself.chatId chatType:weakself.chatType];
             [weakself showHint:@"已在群中发送邀请消息"];
         }
-        
+        */
+         
         //如果是创建者，进行邀请人操作
         if (weakself.isCreater) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
