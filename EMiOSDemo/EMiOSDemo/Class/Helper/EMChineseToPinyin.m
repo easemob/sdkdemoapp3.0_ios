@@ -3996,7 +3996,8 @@ NSString *FindLetter(int nCode)
 				strValue = @"EN";
 				break;
 			}
-			if(nCode >= /* DISABLES CODE */ (2288) && nCode <= 2231)
+
+            if(nCode >= 2288 && nCode <= 2301)
 			{
 				strValue = @"ER";
 				break;

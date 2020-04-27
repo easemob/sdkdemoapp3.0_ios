@@ -293,7 +293,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     id obj = [self.dataArray objectAtIndex:indexPath.row];
-    
+    NSLog(@"section:  %ld   row:  %ld",(long)indexPath.section,(long)indexPath.row);
     NSString *cellString = nil;
     if ([obj isKindOfClass:[NSString class]]) {
         cellString = (NSString *)obj;
@@ -578,6 +578,10 @@
 {
     EMVoiceMessageBody *body = [[EMVoiceMessageBody alloc] initWithLocalPath:aPath displayName:@"audio"];
     body.duration = (int)aTimeLength;
+    if(body.duration < 1){
+        [self showHint:@"按键时间太短."];
+        return;
+    }
     [self _sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
@@ -672,13 +676,13 @@
             [EMAlertController showErrorAlert:@"下载原图失败"];
         } else {
             if (message.direction == EMMessageDirectionReceive && !message.isReadAcked) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
+                [[EMClient sharedClient].chatManager sendMessageReadAck:message.messageId toUser:message.conversationId completion:nil];
             }
             
             NSString *localPath = [(EMImageMessageBody *)message.body localPath];
             UIImage *image = [UIImage imageWithContentsOfFile:localPath];
             if (image) {
-                [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:self];
+                [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakself];
             } else {
                 [EMAlertController showErrorAlert:@"获取原图失败"];
             }
@@ -720,11 +724,7 @@
         }
         
         if (!aModel.emModel.isReadAcked) {
-            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel
-                                                         completion:^(EMMessage *aMessage, EMError *aError)
-            {
-            
-            }];
+            [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel.messageId toUser:aModel.emModel.conversationId completion:nil];
         }
         
         aModel.isPlaying = YES;
@@ -777,13 +777,14 @@
         return;
     }
     
+    __weak typeof(self) weakself = self;
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSURL *videoURL = [NSURL fileURLWithPath:aPathe];
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
         playerViewController.player = [AVPlayer playerWithURL:videoURL];
         playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
         playerViewController.showsPlaybackControls = YES;
-        [self presentViewController:playerViewController animated:YES completion:^{
+        [weakself presentViewController:playerViewController animated:YES completion:^{
             [playerViewController.player play];
         }];
     };
@@ -804,7 +805,7 @@
                 [EMAlertController showErrorAlert:@"下载视频失败"];
             } else {
                 if (!message.isReadAcked) {
-                    [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
+                    [[EMClient sharedClient].chatManager sendMessageReadAck:message.messageId toUser:message.conversationId completion:nil];
                 }
                 playBlock([(EMVideoMessageBody*)message.body localPath]);
             }
@@ -861,8 +862,6 @@
 - (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
                           isMarkRead:(BOOL)aIsMarkRead
 {
-    // dujiepeng
-    return YES;
     if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
         return NO;
     }
@@ -888,7 +887,7 @@
             }
             
             if ([weakself _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
-                [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+                [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
             }
             [weakself.conversationModel.emModel markMessageAsReadWithId:msg.messageId error:nil];
             [msgArray addObject:msg];
@@ -1157,8 +1156,8 @@
     
     NSString *groupId = group.groupId;
     if ([groupId isEqualToString:self.conversationModel.emModel.conversationId]) {
-        self.conversationModel.name = group.subject;
-        self.titleLabel.text = group.subject;
+        self.conversationModel.name = group.groupName;
+        self.titleLabel.text = group.groupName;
     }
 }
 
@@ -1375,7 +1374,7 @@
     NSIndexPath *indexPath = self.menuIndexPath;
     __weak typeof(self) weakself = self;
     EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-    [[EMClient sharedClient].chatManager recallMessage:model.emModel completion:^(EMMessage *aMessage, EMError *aError) {
+    [[EMClient sharedClient].chatManager recallMessageWithMessageId:model.emModel.messageId completion:^(EMError *aError) {
         if (aError) {
             [EMAlertController showErrorAlert:aError.errorDescription];
         } else {
@@ -1594,7 +1593,7 @@
     for (int i = 0; i < [aMessages count]; i++) {
         EMMessage *msg = aMessages[i];
         if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
-            [[EMClient sharedClient].chatManager sendMessageReadAck:msg completion:nil];
+            [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
         } else if (msg.chatType == EMChatTypeGroupChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
         }
         

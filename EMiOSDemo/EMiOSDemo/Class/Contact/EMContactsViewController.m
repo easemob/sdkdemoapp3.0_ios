@@ -304,7 +304,7 @@
             [alertController addAction:defaultAction];
 
             UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
             }];
             [alertController addAction:mixAction];
 
@@ -459,7 +459,7 @@
         NSMutableArray *sectionArray = [NSMutableArray arrayWithCapacity:1];
         [sortedArray addObject:sectionArray];
     }
-    
+
     //按首字母分组
     for (NSString *contact in contactArray) {
         NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:contact];
