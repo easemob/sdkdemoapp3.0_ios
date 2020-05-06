@@ -113,6 +113,7 @@
         NSString *imgPath = body.thumbnailLocalPath;
         if ([imgPath length] == 0 && model.direction == EMMessageDirectionSend) {
             imgPath = body.localPath;
+            body.thumbnailLocalPath = imgPath;
         }
         [self setThumbnailImageWithLocalPath:imgPath remotePath:body.thumbnailRemotePath thumbImgSize:body.thumbnailSize imgSize:body.size];
     }
