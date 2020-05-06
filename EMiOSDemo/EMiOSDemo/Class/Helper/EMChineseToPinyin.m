@@ -1284,6 +1284,7 @@ NSString *FindLetter(int nCode)
 		case 6468:
 		case 6643:
 		case 6659:
+        case 7001:
 		case 7138:
 		case 7210:
 		case 7340:
