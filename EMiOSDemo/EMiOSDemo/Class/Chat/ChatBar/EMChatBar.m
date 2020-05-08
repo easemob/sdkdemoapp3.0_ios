@@ -109,8 +109,8 @@
 
 - (void)_setupButtonsView
 {
-    NSInteger count = 7;
-    //NSInteger count = 6;
+    //NSInteger count = 7;
+    NSInteger count = 6;
     CGFloat width = [UIScreen mainScreen].bounds.size.width / count;
     
     self.buttonArray = [[NSMutableArray alloc] init];
@@ -199,8 +199,9 @@
     /*
     [callButton setImage:[UIImage imageNamed:@"video-unSelected"] forState:UIControlStateNormal];
     [callButton setImage:[UIImage imageNamed:@"video-selected"] forState:UIControlStateSelected];*/
-    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"video-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"video-selected" ofType:@"png"]] forState:UIControlStateSelected];
+    /*
+    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"phone_unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"phone_selected" ofType:@"png"]] forState:UIControlStateSelected];
     [callButton addTarget:self action:@selector(callButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:callButton];
     [callButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -210,7 +211,7 @@
         make.width.mas_equalTo(width);
         //make.right.equalTo(self.buttonsView);
     }];
-    [self.buttonArray addObject:callButton];
+    [self.buttonArray addObject:callButton];*/
     
     UIButton *moreButton = [[UIButton alloc] init];
     /*
@@ -222,8 +223,8 @@
     [self.buttonsView addSubview:moreButton];
     [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.buttonsView);
-        make.left.equalTo(callButton.mas_right);
-        make.bottom.equalTo(callButton);
+        make.left.equalTo(fileButton.mas_right);
+        make.bottom.equalTo(fileButton);
         make.right.equalTo(self.buttonsView);
     }];
     [self.buttonArray addObject:moreButton];

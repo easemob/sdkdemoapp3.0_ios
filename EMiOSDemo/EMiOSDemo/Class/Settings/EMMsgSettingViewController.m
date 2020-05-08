@@ -109,13 +109,12 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    if (isSwitchCell) {
-        switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
-        switchControl.tag = [self _tagWithIndexPath:indexPath];
-        [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [cell.contentView addSubview:switchControl];
+        if (isSwitchCell) {
+            switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
+            switchControl.tag = [self _tagWithIndexPath:indexPath];
+            [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:switchControl];
+        }
     }
     
     EMDemoOptions *options = [EMDemoOptions sharedOptions];
@@ -150,7 +149,7 @@
     } else if (section == 2) {
         if (row == 0) {
             cell.textLabel.text = @"消息通知";
-            cell.detailTextLabel.text = [EMClient sharedClient].pushOptions.displayStyle == EMPushDisplayStyleSimpleBanner ? @"仅未读提示" : @"详情信息";
+            cell.detailTextLabel.text = [EMClient sharedClient].pushOptions.displayStyle == EMPushDisplayStyleSimpleBanner ? @"仅未读提示" : @"详细信息";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (row == 1) {
             cell.textLabel.text = @"消息排序";

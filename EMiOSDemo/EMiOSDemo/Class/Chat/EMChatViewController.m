@@ -393,10 +393,6 @@
     
     //更多
     EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
-    if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
-        moreFunction.readReceiptBtn.hidden = YES;
-        moreFunction.readReceiptLable.hidden = YES;
-    }
     moreFunction.delegate = self;
     self.chatBar.moreFunctionView = moreFunction;
 }
@@ -535,6 +531,20 @@
     }
     [tempArray2 addObject:tempArray1];
     self.recordArray = [[NSArray alloc]initWithArray:tempArray2];
+}
+
+//通话记录消息
+- (void)sendCallEndMsg:(NSNotification*)noti
+{
+    EMTextMessageBody *body;
+    if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""]){
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
+    } else {
+        body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
+    }
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
+    [self _sendMessageWithBody:body ext:dict isUpload:NO];
 }
 
 #pragma mark - EMSearchBarDelegate
@@ -897,7 +907,9 @@
     [urls.firstObject stopAccessingSecurityScopedResource];
 }
 
-- (void)chatBarDidLocationAction
+#pragma mark - EMMoreFunctionViewDelegate
+
+- (void)chatBarMoreFunctionLocation
 {
     EMLocationViewController *controller = [[EMLocationViewController alloc] init];
     [controller setSendCompletion:^(CLLocationCoordinate2D aCoordinate, NSString * _Nonnull aAddress) {
@@ -908,7 +920,7 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)chatBarDidCallAction
+- (void)chatBarMoreFunctionDidCallAction
 {
     self.alertController = [UIAlertController alertControllerWithTitle:@"实时通话类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
@@ -941,29 +953,20 @@
     [self presentViewController:self.alertController animated:YES completion:nil];
 }
 
-//通话记录消息
-- (void)sendCallEndMsg:(NSNotification*)noti
-{
-    EMTextMessageBody *body;
-    if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""]){
-        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
-    } else {
-        body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
-    }
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
-    [self _sendMessageWithBody:body ext:dict isUpload:NO];
-}
-
 //阅读回执跳转
 - (void)chatBarMoreFunctionReadReceipt
 {
+    if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
+        [self showHint:@"‘群组回执’只可在群聊天使用哦！"];
+        return;
+    }
     self.readReceiptControl = [[EMReadReceiptMsgViewController alloc]init];
     self.readReceiptControl.delegate = self;
     self.readReceiptControl.modalPresentationStyle = 0;
     //[self.navigationController pushViewController:readReceipt animated:NO];
     [self presentViewController:self.readReceiptControl animated:NO completion:nil];
 }
+
 //阅读回执发送信息
 - (void)sendReadReceiptMsg:(NSString *)msg
 {
@@ -1135,7 +1138,7 @@
             NSString *localPath = [(EMImageMessageBody *)message.body localPath];
             UIImage *image = [UIImage imageWithContentsOfFile:localPath];
             if (image) {
-                [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:self];
+                [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakself];
             } else {
                 [EMAlertController showErrorAlert:@"获取原图失败"];
             }
@@ -1230,6 +1233,7 @@
         return;
     }
     
+    __weak typeof(self) weakself = self;
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSURL *videoURL = [NSURL fileURLWithPath:aPathe];
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
@@ -1237,7 +1241,7 @@
         playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
         playerViewController.showsPlaybackControls = YES;
         playerViewController.modalPresentationStyle = 0;
-        [self presentViewController:playerViewController animated:YES completion:^{
+        [weakself presentViewController:playerViewController animated:YES completion:^{
             [playerViewController.player play];
         }];
     };
@@ -1958,7 +1962,7 @@
     NSIndexPath *indexPath = self.menuIndexPath;
     __weak typeof(self) weakself = self;
     EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-    [[EMClient sharedClient].chatManager recallMessage:model.emModel completion:^(EMMessage *aMessage, EMError *aError) {
+    [[EMClient sharedClient].chatManager recallMessageWithMessageId:model.emModel.messageId completion:^(EMError *aError) {
         if (aError) {
             [EMAlertController showErrorAlert:aError.errorDescription];
         } else {

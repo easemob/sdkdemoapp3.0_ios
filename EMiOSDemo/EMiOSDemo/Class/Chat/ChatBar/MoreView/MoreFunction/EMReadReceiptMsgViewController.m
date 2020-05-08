@@ -24,19 +24,27 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) EMTextView *textView;
 @property (nonatomic, strong) EMMessageCell *msgCell;
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) NSString *groupId;
+
+@property (nonatomic, strong) dispatch_queue_t msgQueue;
+
+//消息格式化
+@property (nonatomic) NSTimeInterval msgTimelTag;
+
 @end
 
 @implementation EMReadReceiptMsgViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.dataArray = [[NSMutableArray alloc]init];
+    /*
     for (int i=0; i<4; i++) {
         EMReadReceiptMemberModel *model = [[EMReadReceiptMemberModel alloc]initWithInfo:[UIImage imageNamed:@"user_avatar_me"] nick:[NSString stringWithFormat:@"member %d",i] time:@"12:12"];
         [self.dataArray  addObject:model];
-    }
-    
+    }*/
+    self.msgTimelTag = -1;
+    self.msgQueue = dispatch_queue_create("EMReadReceipt.com", NULL);
     [self _setupSubviews];
 }
 
@@ -47,15 +55,57 @@
     return self;
 }
 
-- (instancetype)initWithMessageCell:(EMMessageCell *)messageCell {
+- (instancetype)initWithMessageCell:(EMMessageCell *)messageCell groupId:(NSString *)groupId {
     self = [super init];
     if(self){
         self.msgCell = messageCell;
-//        [self _setupSubviews];
+        self.groupId = groupId;
+        [self getMessage];
     }
     return self;
 }
 
+- (void)getMessage
+{
+    __weak typeof(self) weakself = self;
+    void (^block)(NSArray *aMessages, EMError *aError ,int count) = ^(NSArray *aMessages, EMError *aError ,int count) {
+        
+        if (!aError && [aMessages count]) {
+            dispatch_async(self.msgQueue, ^{
+                NSArray *formated = [weakself _formatMessages:aMessages];
+                [weakself.dataArray insertObjects:formated atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [formated count])]];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakself.countLable.text = [NSString stringWithFormat:@"已阅读用户：%d",count];
+                    [weakself.memberTableView reloadData];
+                    
+                });
+            });
+        }
+    };
+    
+    [[EMClient sharedClient].chatManager asyncFetchGroupMessageAcksFromServer:_msgCell.model.emModel.messageId groupId:self.groupId startGroupAckId:nil pageSize:100 completion:^(EMCursorResult *aResult, EMError *error, int totalCount) {
+        block(aResult.list,error,totalCount);
+    }];
+}
+
+- (NSArray *)_formatMessages:(NSArray<EMMessage *> *)aMessages
+{
+    NSMutableArray *formated = [[NSMutableArray alloc] init];
+    NSString *timeStr;
+    for (int i = 0; i < [aMessages count]; i++) {
+        EMMessage *msg = aMessages[i];
+        CGFloat interval = (self.msgTimelTag - msg.timestamp) / 1000;
+        if (self.msgTimelTag < 0 || interval > 60 || interval < -60) {
+            timeStr = [EMDateHelper formattedTimeFromTimeInterval:msg.timestamp];
+            self.msgTimelTag = msg.timestamp;
+        }
+        EMReadReceiptMemberModel *model = [[EMReadReceiptMemberModel alloc]initWithInfo:[UIImage imageNamed:@"user_avatar_me"] nick:msg.from time:timeStr];
+        [formated addObject:model];
+    }
+    
+    return formated;
+}
 
 - (void)_setupSubviews
 {
@@ -163,16 +213,15 @@
         make.height.equalTo(@1);
         make.right.equalTo(msgView);
     }];
-    //计数
-    UILabel *countLable = [[UILabel alloc]init];
-    countLable.text = @"已阅读用户：";
-    //countLable.backgroundColor = [UIColor blueColor];
-    countLable.font = [UIFont systemFontOfSize:14];
-    countLable.textColor = [UIColor blackColor];
-    countLable.numberOfLines = 0;
-    countLable.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:countLable];
-    [countLable mas_makeConstraints:^(MASConstraintMaker *make) {
+    //计数器
+    self.countLable = [[UILabel alloc]init];
+    self.countLable.text = @"已阅读用户：";
+    self.countLable.font = [UIFont systemFontOfSize:14];
+    self.countLable.textColor = [UIColor blackColor];
+    self.countLable.numberOfLines = 0;
+    self.countLable.textAlignment = NSTextAlignmentLeft;
+    [self.view addSubview:self.countLable];
+    [self.countLable mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
         make.right.equalTo(msgView);
         make.left.equalTo(line);
@@ -184,7 +233,7 @@
     lineBelow.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:lineBelow];
     [lineBelow mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(countLable.mas_bottom).offset(10);
+        make.top.equalTo(self.countLable.mas_bottom).offset(10);
         make.left.equalTo(msgView.mas_left);
         make.height.equalTo(@1);
         make.right.equalTo(msgView);
@@ -269,7 +318,7 @@
     //回收键盘，两者方式
     //UITextView *textView = (UITextView*)[self.view viewWithTag:1001];
     //[textView resignFirstResponder];
-//    [self.view endEditing:YES];
+    [self.view endEditing:YES];
     NSLog(@"touch");
 }
 
@@ -304,6 +353,14 @@
     }
     return TRUE;
     
+}
+
+- (NSMutableArray *)dataArray
+{
+    if (_dataArray == nil) {
+        _dataArray = [[NSMutableArray alloc]init];
+    }
+    return _dataArray;
 }
 
 - (UITableView *)memberTableView
