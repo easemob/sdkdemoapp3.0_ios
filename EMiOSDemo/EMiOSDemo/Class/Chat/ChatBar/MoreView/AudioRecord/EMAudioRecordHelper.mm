@@ -140,9 +140,9 @@ static EMAudioRecordHelper *recordHelper = nil;
             break;
         }
         
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:&error];
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDuckOthers error:&error];
         if (!error){
-            [[AVAudioSession sharedInstance] setActive:YES error:&error];
+            [[AVAudioSession sharedInstance] setActive:YES withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&error];
         }
         
         if (error) {
