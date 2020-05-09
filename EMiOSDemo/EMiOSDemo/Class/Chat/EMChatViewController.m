@@ -2333,16 +2333,16 @@
     }
     
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    
     __weak typeof(self) weakself = self;
+    NSArray *formated = [weakself _formatMessages:@[message]];
+    [self.dataArray addObjectsFromArray:formated];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakself.tableView reloadData];
+        [weakself _scrollToBottomRow];
+    });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        NSArray *formated = [weakself _formatMessages:@[message]];
-         [weakself.dataArray addObjectsFromArray:formated];
-        
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [weakself.tableView reloadData];
-             [weakself _scrollToBottomRow];
-         });
-        //[weakself.tableView reloadData];
     }];
 }
 
