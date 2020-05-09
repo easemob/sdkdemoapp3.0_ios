@@ -472,6 +472,7 @@
 		3C3BAE842397C42800344F63 /* EMConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BAE832397C42800344F63 /* EMConfirmViewController.m */; };
 		3C3BAE872398E45600344F63 /* EMGroupAllMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BAE862398E45600344F63 /* EMGroupAllMembersViewController.m */; };
 		3C3BAE8A23990DF600344F63 /* EMSecurityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BAE8923990DF600344F63 /* EMSecurityViewController.m */; };
+
 		3C525DFF2464103500D16DD5 /* EMReadReceiptTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C525DF32464103500D16DD5 /* EMReadReceiptTableViewCell.m */; };
 		3C525E002464103500D16DD5 /* EMReadReceiptMemberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C525DF42464103500D16DD5 /* EMReadReceiptMemberModel.m */; };
 		3C525E0C246410ED00D16DD5 /* closed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525E01246410E700D16DD5 /* closed@2x.png */; };
@@ -680,6 +681,7 @@
 		3C7A14EF238FD0B600F4AC48 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A14E9238FD0B600F4AC48 /* ios@2x.png */; };
 		3C7A14F2238FD9AD00F4AC48 /* EMGeneralSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A14F1238FD9AD00F4AC48 /* EMGeneralSettingViewController.m */; };
 		3C7A14FB2390D49F00F4AC48 /* SPDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A14FA2390D49F00F4AC48 /* SPDateTimePickerView.m */; };
+
 		3C7A15032390D8F600F4AC48 /* video-opposite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A15002390D8F400F4AC48 /* video-opposite@2x.png */; };
 		3C7A15042390D8F600F4AC48 /* video-opposite.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A15012390D8F600F4AC48 /* video-opposite.png */; };
 		3C7A150E239118C000F4AC48 /* web.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A1505239118B100F4AC48 /* web.png */; };
@@ -718,6 +720,7 @@
 		3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C930B3123AB2CB600C8268D /* PAirSandbox.m */; };
 		3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C97EF2923A87B5C004E97B7 /* CloudKit.framework */; };
 		3C97EF2D23A87FB9004E97B7 /* EMFileTransferDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C97EF2C23A87FB9004E97B7 /* EMFileTransferDocument.m */; };
+
 		3CBCF5F923A24FC70053E227 /* systemNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBCF5F623A24FC10053E227 /* systemNotify@2x.png */; };
 		3CBCF5FA23A24FC70053E227 /* systemNotify.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBCF5F723A24FC40053E227 /* systemNotify.png */; };
 		3CBCF5FB23A24FC70053E227 /* systemNotify@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBCF5F823A24FC60053E227 /* systemNotify@3x.png */; };
@@ -1605,6 +1608,7 @@
 		3C7A14F1238FD9AD00F4AC48 /* EMGeneralSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGeneralSettingViewController.m; sourceTree = "<group>"; };
 		3C7A14F92390D49F00F4AC48 /* SPDateTimePickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPDateTimePickerView.h; sourceTree = "<group>"; };
 		3C7A14FA2390D49F00F4AC48 /* SPDateTimePickerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPDateTimePickerView.m; sourceTree = "<group>"; };
+
 		3C7A15002390D8F400F4AC48 /* video-opposite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite@2x.png"; sourceTree = "<group>"; };
 		3C7A15012390D8F600F4AC48 /* video-opposite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite.png"; sourceTree = "<group>"; };
 		3C7A1505239118B100F4AC48 /* web.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = web.png; sourceTree = "<group>"; };
@@ -1645,9 +1649,11 @@
 		3C97EF2923A87B5C004E97B7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		3C97EF2B23A87FB9004E97B7 /* EMFileTransferDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMFileTransferDocument.h; sourceTree = "<group>"; };
 		3C97EF2C23A87FB9004E97B7 /* EMFileTransferDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMFileTransferDocument.m; sourceTree = "<group>"; };
+
 		3CBCF5F623A24FC10053E227 /* systemNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemNotify@2x.png"; sourceTree = "<group>"; };
 		3CBCF5F723A24FC40053E227 /* systemNotify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = systemNotify.png; sourceTree = "<group>"; };
 		3CBCF5F823A24FC60053E227 /* systemNotify@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemNotify@3x.png"; sourceTree = "<group>"; };
+
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		3CF7531E23BF320A0027E34D /* EMPickFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMPickFileViewController.h; sourceTree = "<group>"; };
 		3CF7531F23BF320B0027E34D /* EMPickFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMPickFileViewController.m; sourceTree = "<group>"; };
@@ -1755,8 +1761,10 @@
 				3A45E2392223A3A000505786 /* EMMessageModel.m */,
 				3A45E2412223A3A000505786 /* EMChatViewController.h */,
 				3A45E23B2223A3A000505786 /* EMChatViewController.m */,
+
 				3C72A1BE23E91E2F00F747B7 /* EMChatInfoViewController.h */,
 				3C72A1BF23E91E2F00F747B7 /* EMChatInfoViewController.m */,
+
 				3C362E6A239FAB410048E877 /* EMPersonalDataViewController.h */,
 				3C362E6B239FAB410048E877 /* EMPersonalDataViewController.m */,
 				3A45E2422223A3A100505786 /* EMAtGroupMembersViewController.h */,
@@ -1765,8 +1773,10 @@
 				3A45E23A2223A3A000505786 /* EMLocationViewController.m */,
 				3A45E23E2223A3A000505786 /* EMMsgTranspondViewController.h */,
 				3A45E2402223A3A000505786 /* EMMsgTranspondViewController.m */,
+
 				3CF7531E23BF320A0027E34D /* EMPickFileViewController.h */,
 				3CF7531F23BF320B0027E34D /* EMPickFileViewController.m */,
+
 				3C97EF2B23A87FB9004E97B7 /* EMFileTransferDocument.h */,
 				3C97EF2C23A87FB9004E97B7 /* EMFileTransferDocument.m */,
 				3C930B3223AB2CB600C8268D /* PAirSandbox.h */,
@@ -3127,7 +3137,7 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3C3734C523C72482007D2AE1 /* Hyphenate.framework */,
+
 				3C97EF2923A87B5C004E97B7 /* CloudKit.framework */,
 				3C4CEC972373D87800A37140 /* Hyphenate.framework */,
 				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
@@ -3240,11 +3250,13 @@
 				3C5260B224651ABC00D16DD5 /* switchCamera_gray@3x.png in Resources */,
 				3C37DF262382512800399AE8 /* 聊天室.png in Resources */,
 				3C0C3351238684EE0071BDDD /* video-right@3x.png in Resources */,
+
 				3C5260AB24651ABC00D16DD5 /* mute_red@2x.png in Resources */,
 				3C5260A824651ABC00D16DD5 /* video_white@3x.png in Resources */,
 				3C362E67239E591A0048E877 /* BootPage@2x.png in Resources */,
 				3C52608424651ABC00D16DD5 /* talking_green@3x.png in Resources */,
 				3C52604C24651ABC00D16DD5 /* animate_00036.png in Resources */,
+
 				3A45E3772223A46500505786 /* chat_info@3x.png in Resources */,
 				3C0C334D238684580071BDDD /* 语音通话@3x.png in Resources */,
 				3C7A1544239135B600F4AC48 /* face@2x.png in Resources */,
@@ -3253,7 +3265,9 @@
 				3A45E2F62223A41600505786 /* chatbar_camera@3x.png in Resources */,
 				3C52608B24651ABC00D16DD5 /* role_gray@2x.png in Resources */,
 				3C37DF48238251ED00399AE8 /* icon-添加好友@2x.png in Resources */,
+
 				3C52604924651ABC00D16DD5 /* animate_00025.png in Resources */,
+
 				3C7A15632391388100F4AC48 /* face-selected@3x.png in Resources */,
 				3C3703C0238D06D500A8976B /* 通用.png in Resources */,
 				3A45E3052223A41600505786 /* chatbar_extend_blue@3x.png in Resources */,
@@ -3273,7 +3287,9 @@
 				3C37DF2C2382512800399AE8 /* 新的好友@2x.png in Resources */,
 				3C2B1EB4244D914A000E97B2 /* icon-tab我unselected@3x.png in Resources */,
 				3C0C334B238684580071BDDD /* 语音通话.png in Resources */,
+
 				3C525E15246410ED00D16DD5 /* pin-red.png in Resources */,
+
 				3C362E65239E57ED0048E877 /* BootPage.png in Resources */,
 				3A45E3572223A45500505786 /* msg_bg_send@2x.png in Resources */,
 				3C3703C3238D06D500A8976B /* 消息设置@3x.png in Resources */,
@@ -3437,8 +3453,10 @@
 				3A45E0892223A28F00505786 /* close_gray@2x.png in Resources */,
 				3C0C331C238403F90071BDDD /* backleft@3x.png in Resources */,
 				3C362E71239FB3DB0048E877 /* icon-setting@3x.png in Resources */,
+
 				3C5260AC24651ABC00D16DD5 /* speaker_gray@2x.png in Resources */,
 				3C52606324651ABC00D16DD5 /* animate_00041.png in Resources */,
+
 				3A45E08D2223A28F00505786 /* group_avatar@3x.png in Resources */,
 				3A45E3B32223A4C000505786 /* chatroom@2x.png in Resources */,
 				3A45E35E2223A45500505786 /* msg_send_audio@2x.png in Resources */,
@@ -3592,6 +3610,7 @@
 				3C52604F24651ABC00D16DD5 /* animate_00050.png in Resources */,
 				3C52605A24651ABC00D16DD5 /* animate_00052.png in Resources */,
 				3A45E2762223A3D600505786 /* icon_035_cover.png in Resources */,
+
 				3A45E35D2223A45500505786 /* msg_video_white@2x.png in Resources */,
 				3C52604E24651ABC00D16DD5 /* animate_00078.png in Resources */,
 				3A45E36E2223A45500505786 /* msg_recv_audio01@3x.png in Resources */,
@@ -3609,7 +3628,9 @@
 				3A45E3FF2223A50400505786 /* tabbar_chat_gray@3x.png in Resources */,
 				3C0C333E2384DE870071BDDD /* 语音声波-left-2.png in Resources */,
 				3A45E2802223A3D600505786 /* icon_022.gif in Resources */,
+
 				3C52608C24651ABC00D16DD5 /* kbps_gray@2x.png in Resources */,
+
 				3CBCF5FA23A24FC70053E227 /* systemNotify.png in Resources */,
 				3C0C338923879E350071BDDD /* video-me@2x.png in Resources */,
 				3A45E3042223A41600505786 /* chatbar_map@3x.png in Resources */,
@@ -3641,9 +3662,11 @@
 				3C2B1EB9244D9162000E97B2 /* icon-tab发现@2x.png in Resources */,
 				3C3703B5238D06D500A8976B /* 自定义服务器@3x.png in Resources */,
 				3CBCF5FB23A24FC70053E227 /* systemNotify@3x.png in Resources */,
+
 				3C52609D24651ABC00D16DD5 /* speaker_white@3x.png in Resources */,
 				3C52603E24651ABC00D16DD5 /* video_gray@2x.png in Resources */,
 				3C52607B24651ABC00D16DD5 /* animate_00048.png in Resources */,
+
 				3A45E3AF2223A4C000505786 /* videocs_theme@3x.png in Resources */,
 				3C37DF132382508500399AE8 /* 编组 4.png in Resources */,
 				3A45E27B2223A3D600505786 /* icon_029.gif in Resources */,
@@ -3699,7 +3722,9 @@
 				3A45E3032223A41600505786 /* chatbar_call@2x.png in Resources */,
 				3C37DEF823824A7700399AE8 /* icon-tab会话unselected@3x.png in Resources */,
 				3A45E0F52223A30000505786 /* alert_success@2x.png in Resources */,
+
 				3C52606724651ABC00D16DD5 /* animate_00068.png in Resources */,
+
 				3A45E2772223A3D600505786 /* icon_024_cover.png in Resources */,
 				3A45E3EB2223A4F300505786 /* group_create@2x.png in Resources */,
 				3C5260B424651ABC00D16DD5 /* switchCamera_white@2x.png in Resources */,
@@ -3973,6 +3998,7 @@
 				3C3BAE842397C42800344F63 /* EMConfirmViewController.m in Sources */,
 				3A45E3312223A44200505786 /* EMMsgExtGifBubbleView.m in Sources */,
 				3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */,
+
 				3A45E1092223A30C00505786 /* EMSearchBar.m in Sources */,
 				3C52603B24651ABC00D16DD5 /* EMButton.m in Sources */,
 				3C52603A24651ABC00D16DD5 /* CallSettingViewController.m in Sources */,

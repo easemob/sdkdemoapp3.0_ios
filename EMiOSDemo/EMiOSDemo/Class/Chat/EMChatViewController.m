@@ -31,7 +31,9 @@
 #import "EMMsgRecordCell.h"
 #import "EMFileTransferDocument.h"
 #import "PAirSandbox.h"
+
 #import "EMPickFileViewController.h"
+
 
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate,EMMsgRecordCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
 
@@ -301,6 +303,21 @@
     [self.searchBar mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.allRecordBtn.mas_bottom);
         make.left.equalTo(self.view);
+        make.width.mas_equalTo(width);
+        make.height.equalTo(@40);
+    }];
+    
+    self.picAndVideoRecordBtn = [[UIButton alloc]init];
+    [_picAndVideoRecordBtn setBackgroundColor:[UIColor whiteColor]];
+    [_picAndVideoRecordBtn setTitle:@"图片/视频" forState:UIControlStateNormal];
+    _picAndVideoRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _picAndVideoRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [_picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _picAndVideoRecordBtn.tag = 2;
+    [_picAndVideoRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.picAndVideoRecordBtn];
+    [_picAndVideoRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view);
         make.right.equalTo(self.view);
         make.height.equalTo(@50);
     }];
@@ -309,7 +326,6 @@
         make.top.equalTo(self.searchBar.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
-    
     self.searchResultTableView.backgroundColor = kColor_LightGray;
     self.searchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.searchResultTableView.rowHeight = UITableViewAutomaticDimension;
@@ -852,7 +868,7 @@
 
 - (void)chatBarDidFileAction
 {
-    
+
     NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
     UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
     picker.delegate = self;
@@ -876,7 +892,6 @@
     EMPickFileViewController *pickFileController = [[EMPickFileViewController alloc]init];
     [self.navigationController pushViewController:pickFileController animated:NO];*/
 }
-
 
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
@@ -1294,7 +1309,6 @@
         checkFileBlock(body.localPath);
         return;
     }
-    
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager downloadMessageAttachment:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakself hideHud];
