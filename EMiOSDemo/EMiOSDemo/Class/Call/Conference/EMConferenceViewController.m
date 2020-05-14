@@ -316,9 +316,6 @@
         
         if (!self.microphoneButton.isSelected && self.speakerButton.isSelected && !self.isSetSpeaker) {
             self.isSetSpeaker = YES;
-            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-            [audioSession setActive:YES error:nil];
         }
     }
 }
@@ -628,12 +625,6 @@
             videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
         }
     }
-    
-    if (!self.microphoneButton.isSelected && self.speakerButton.isSelected) {
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        [audioSession setActive:YES error:nil];
-    }
 }
 
 - (void)inviteButtonAction:(EMButton *)aButton
@@ -686,7 +677,6 @@
         BOOL isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
         if (isUseBackCamera != self.isUseBackCamera) {
             self.switchCameraButton.selected = self.isUseBackCamera;
-            [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
         }
     }
 }
