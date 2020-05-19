@@ -242,6 +242,7 @@
 {
     _model = model;
     self.bubbleView.model = model;
+    
     if (model.direction == EMMessageDirectionSend) {
         
         [self.statusView setSenderStatus:model.emModel.status isReadAcked:model.emModel.isReadAcked];
