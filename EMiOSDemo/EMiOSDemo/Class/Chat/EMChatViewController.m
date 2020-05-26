@@ -26,10 +26,14 @@
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
+#import "EMChatInfoViewController.h"
 
 #import "EMMsgRecordCell.h"
 #import "EMFileTransferDocument.h"
 #import "PAirSandbox.h"
+
+#import "EMPickFileViewController.h"
+
 
 @interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate,EMMsgRecordCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
 
@@ -142,15 +146,19 @@
         self.enableTyping = YES;
     }
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
+    [self.tableView addGestureRecognizer:tap];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [self _joinChatroom];
     } else {
         self.isFirstLoadMsg = YES;
         [self tableViewDidTriggerHeaderRefresh];
     }
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapTableViewAction:)];
-    [self.tableView addGestureRecognizer:tap];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -295,6 +303,21 @@
     [self.searchBar mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.allRecordBtn.mas_bottom);
         make.left.equalTo(self.view);
+        make.width.mas_equalTo(width);
+        make.height.equalTo(@40);
+    }];
+    
+    self.picAndVideoRecordBtn = [[UIButton alloc]init];
+    [_picAndVideoRecordBtn setBackgroundColor:[UIColor whiteColor]];
+    [_picAndVideoRecordBtn setTitle:@"图片/视频" forState:UIControlStateNormal];
+    _picAndVideoRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _picAndVideoRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [_picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _picAndVideoRecordBtn.tag = 2;
+    [_picAndVideoRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.picAndVideoRecordBtn];
+    [_picAndVideoRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view);
         make.right.equalTo(self.view);
         make.height.equalTo(@50);
     }];
@@ -303,7 +326,6 @@
         make.top.equalTo(self.searchBar.mas_bottom);
         make.left.right.bottom.equalTo(self.view);
     }];
-    
     self.searchResultTableView.backgroundColor = kColor_LightGray;
     self.searchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.searchResultTableView.rowHeight = UITableViewAutomaticDimension;
@@ -359,7 +381,7 @@
     }
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
         UIImage *image = [[UIImage imageNamed:@"用户资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessageAction)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(chatInfoAction)];
     } else {
         if (self.conversationModel.emModel.type == EMConversationTypeGroupChat && (NSClassFromString(@"EMGroupInfoViewController")) == nil) {
             return;
@@ -387,10 +409,6 @@
     
     //更多
     EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
-    if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
-        moreFunction.readReceiptBtn.hidden = YES;
-        moreFunction.readReceiptLable.hidden = YES;
-    }
     moreFunction.delegate = self;
     self.chatBar.moreFunctionView = moreFunction;
 }
@@ -529,6 +547,20 @@
     }
     [tempArray2 addObject:tempArray1];
     self.recordArray = [[NSArray alloc]initWithArray:tempArray2];
+}
+
+//通话记录消息
+- (void)sendCallEndMsg:(NSNotification*)noti
+{
+    EMTextMessageBody *body;
+    if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""]){
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
+    } else {
+        body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
+    }
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
+    [self _sendMessageWithBody:body ext:dict isUpload:NO];
 }
 
 #pragma mark - EMSearchBarDelegate
@@ -836,12 +868,14 @@
 
 - (void)chatBarDidFileAction
 {
-    /*
+
     NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
     UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
     picker.delegate = self;
     picker.modalPresentationStyle = 0;
-    [self presentViewController:picker animated:YES completion:nil];*/
+    [self presentViewController:picker animated:YES completion:nil];
+    
+    /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [[PAirSandbox sharedInstance] showSandboxBrowser];
         [[PAirSandbox sharedInstance] setSendCompletion:^(NSURL *url) {
@@ -853,10 +887,12 @@
             EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithLocalPath:[url relativePath] displayName:displayName];
             [self _sendMessageWithBody:body ext:nil isUpload:NO];
         }];
-    });
+    });*/
+    /*
+    EMPickFileViewController *pickFileController = [[EMPickFileViewController alloc]init];
+    [self.navigationController pushViewController:pickFileController animated:NO];*/
 }
 
-/*
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
 {
@@ -884,9 +920,11 @@
         
     }
     [urls.firstObject stopAccessingSecurityScopedResource];
-}*/
+}
 
-- (void)chatBarDidLocationAction
+#pragma mark - EMMoreFunctionViewDelegate
+
+- (void)chatBarMoreFunctionLocation
 {
     EMLocationViewController *controller = [[EMLocationViewController alloc] init];
     [controller setSendCompletion:^(CLLocationCoordinate2D aCoordinate, NSString * _Nonnull aAddress) {
@@ -897,7 +935,7 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)chatBarDidCallAction
+- (void)chatBarMoreFunctionDidCallAction
 {
     self.alertController = [UIAlertController alertControllerWithTitle:@"实时通话类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
@@ -930,29 +968,20 @@
     [self presentViewController:self.alertController animated:YES completion:nil];
 }
 
-//通话记录消息
-- (void)sendCallEndMsg:(NSNotification*)noti
-{
-    EMTextMessageBody *body;
-    if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""]){
-        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
-    } else {
-        body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
-    }
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
-    [self _sendMessageWithBody:body ext:dict isUpload:NO];
-}
-
 //阅读回执跳转
 - (void)chatBarMoreFunctionReadReceipt
 {
+    if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
+        [self showHint:@"‘群组回执’只可在群聊天使用哦！"];
+        return;
+    }
     self.readReceiptControl = [[EMReadReceiptMsgViewController alloc]init];
     self.readReceiptControl.delegate = self;
     self.readReceiptControl.modalPresentationStyle = 0;
     //[self.navigationController pushViewController:readReceipt animated:NO];
     [self presentViewController:self.readReceiptControl animated:NO completion:nil];
 }
+
 //阅读回执发送信息
 - (void)sendReadReceiptMsg:(NSString *)msg
 {
@@ -1124,7 +1153,7 @@
             NSString *localPath = [(EMImageMessageBody *)message.body localPath];
             UIImage *image = [UIImage imageWithContentsOfFile:localPath];
             if (image) {
-                [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:self];
+                [[EMImageBrowser sharedBrowser] showImages:@[image] fromController:weakself];
             } else {
                 [EMAlertController showErrorAlert:@"获取原图失败"];
             }
@@ -1219,6 +1248,7 @@
         return;
     }
     
+    __weak typeof(self) weakself = self;
     void (^playBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSURL *videoURL = [NSURL fileURLWithPath:aPathe];
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
@@ -1226,7 +1256,7 @@
         playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
         playerViewController.showsPlaybackControls = YES;
         playerViewController.modalPresentationStyle = 0;
-        [self presentViewController:playerViewController animated:YES completion:^{
+        [weakself presentViewController:playerViewController animated:YES completion:^{
             [playerViewController.player play];
         }];
     };
@@ -1279,7 +1309,6 @@
         checkFileBlock(body.localPath);
         return;
     }
-    
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].chatManager downloadMessageAttachment:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakself hideHud];
@@ -1947,7 +1976,7 @@
     NSIndexPath *indexPath = self.menuIndexPath;
     __weak typeof(self) weakself = self;
     EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-    [[EMClient sharedClient].chatManager recallMessage:model.emModel completion:^(EMMessage *aMessage, EMError *aError) {
+    [[EMClient sharedClient].chatManager recallMessageWithMessageId:model.emModel.messageId completion:^(EMError *aError) {
         if (aError) {
             [EMAlertController showErrorAlert:aError.errorDescription];
         } else {
@@ -2265,6 +2294,20 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+//聊天详情页
+- (void)chatInfoAction
+{
+    EMChatInfoViewController *chatInfoController = [[EMChatInfoViewController alloc]initWithCoversation:self.conversationModel];
+     __weak typeof(self) weakself = self;
+    [chatInfoController setClearRecordCompletion:^(EMConversationModel * _Nonnull aConversationModel) {
+        weakself.conversationModel = aConversationModel;
+        [weakself.dataArray removeAllObjects];
+        [weakself.tableView reloadData];
+    }];
+    [self.navigationController pushViewController:chatInfoController animated:YES];
+}
+
 //删除该会话所有消息，同时清除内存和数据库中的消息
 - (void)deleteAllMessageAction
 {
@@ -2304,16 +2347,16 @@
     }
     
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    
     __weak typeof(self) weakself = self;
+    NSArray *formated = [weakself _formatMessages:@[message]];
+    [self.dataArray addObjectsFromArray:formated];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakself.tableView reloadData];
+        [weakself _scrollToBottomRow];
+    });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        NSArray *formated = [weakself _formatMessages:@[message]];
-         [weakself.dataArray addObjectsFromArray:formated];
-        
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [weakself.tableView reloadData];
-             [weakself _scrollToBottomRow];
-         });
-        //[weakself.tableView reloadData];
     }];
 }
 

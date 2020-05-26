@@ -58,6 +58,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AgreeJoinGroupInvite:) name:NOTIF_ADD_SOCIAL_CONTACT object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationControllerBack) name:SYSTEM_NOTIF_DETAIL object:nil];
+    
+    [[EMClient sharedClient].chatManager asyncFetchHistoryMessagesFromServer:@"99263146164225" conversationType:EMConversationTypeGroupChat startMessageId:nil pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+        NSLog(@"result:   %@",aResult);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -304,7 +310,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -503,6 +509,12 @@
             [self.tableView reloadData];
         }
     }
+}
+
+//从系统通知页返回前的设置
+- (void)notificationControllerBack
+{
+    self.isNeedReload = YES;
 }
 
 #pragma mark - EMNotificationsDelegate

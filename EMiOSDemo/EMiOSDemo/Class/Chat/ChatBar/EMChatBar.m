@@ -109,15 +109,18 @@
 
 - (void)_setupButtonsView
 {
-    NSInteger count = 7;
-    //NSInteger count = 6;
+    //NSInteger count = 7;
+    NSInteger count = 6;
     CGFloat width = [UIScreen mainScreen].bounds.size.width / count;
     
     self.buttonArray = [[NSMutableArray alloc] init];
     
     UIButton *audioButton = [[UIButton alloc] init];
+    /*
     [audioButton setImage:[UIImage imageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageNamed:@"audio-selected"] forState:UIControlStateSelected];
+    [audioButton setImage:[UIImage imageNamed:@"audio-selected"] forState:UIControlStateSelected];*/
+    [audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-selected" ofType:@"png"]] forState:UIControlStateSelected];
     [audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:audioButton];
     [audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,8 +132,11 @@
     [self.buttonArray addObject:audioButton];
     
     UIButton *emojiButton = [[UIButton alloc] init];
+    /*
     [emojiButton setImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
-    [emojiButton setImage:[UIImage imageNamed:@"face-selected"] forState:UIControlStateSelected];
+    [emojiButton setImage:[UIImage imageNamed:@"face-selected"] forState:UIControlStateSelected];*/
+    [emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face" ofType:@"png"]] forState:UIControlStateNormal];
+    [emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face-selected" ofType:@"png"]] forState:UIControlStateSelected];
     [emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:emojiButton];
     [emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -142,8 +148,11 @@
     [self.buttonArray addObject:emojiButton];
     
     UIButton *cameraButton = [[UIButton alloc] init];
+    /*
     [cameraButton setImage:[UIImage imageNamed:@"camera-unSelected"] forState:UIControlStateNormal];
-    [cameraButton setImage:[UIImage imageNamed:@"camera-selected"] forState:UIControlStateHighlighted];
+    [cameraButton setImage:[UIImage imageNamed:@"camera-selected"] forState:UIControlStateHighlighted];*/
+    [cameraButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"camera-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [cameraButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"camera-selected" ofType:@"png"]] forState:UIControlStateSelected];
     [cameraButton addTarget:self action:@selector(cameraButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:cameraButton];
     [cameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,8 +164,11 @@
     [self.buttonArray addObject:cameraButton];
     
     UIButton *photoButton = [[UIButton alloc] init];
+    /*
     [photoButton setImage:[UIImage imageNamed:@"pic-unSelected"] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageNamed:@"pic-selected"] forState:UIControlStateHighlighted];
+    [photoButton setImage:[UIImage imageNamed:@"pic-selected"] forState:UIControlStateHighlighted];*/
+    [photoButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pic-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [photoButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pic-selected" ofType:@"png"]] forState:UIControlStateSelected];
     [photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:photoButton];
     [photoButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -168,8 +180,11 @@
     [self.buttonArray addObject:photoButton];
     
     UIButton *fileButton = [[UIButton alloc] init];
+    /*
     [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateNormal];
-    [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateHighlighted];
+    [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateHighlighted];*/
+    [fileButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"file-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [fileButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"file-unSelected" ofType:@"png"]] forState:UIControlStateSelected];
     [fileButton addTarget:self action:@selector(fileButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:fileButton];
     [fileButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -181,8 +196,12 @@
     [self.buttonArray addObject:fileButton];
     
     UIButton *callButton = [[UIButton alloc] init];
+    /*
     [callButton setImage:[UIImage imageNamed:@"video-unSelected"] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageNamed:@"video-selected"] forState:UIControlStateSelected];
+    [callButton setImage:[UIImage imageNamed:@"video-selected"] forState:UIControlStateSelected];*/
+    /*
+    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"phone_unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"phone_selected" ofType:@"png"]] forState:UIControlStateSelected];
     [callButton addTarget:self action:@selector(callButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:callButton];
     [callButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -192,17 +211,20 @@
         make.width.mas_equalTo(width);
         //make.right.equalTo(self.buttonsView);
     }];
-    [self.buttonArray addObject:callButton];
+    [self.buttonArray addObject:callButton];*/
     
     UIButton *moreButton = [[UIButton alloc] init];
+    /*
     [moreButton setImage:[UIImage imageNamed:@"more-unSelected"] forState:UIControlStateNormal];
-    [moreButton setImage:[UIImage imageNamed:@"more-selected"] forState:UIControlStateSelected];
+    [moreButton setImage:[UIImage imageNamed:@"more-selected"] forState:UIControlStateSelected];*/
+    [moreButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [moreButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-selected" ofType:@"png"]] forState:UIControlStateSelected];
     [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView addSubview:moreButton];
     [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.buttonsView);
-        make.left.equalTo(callButton.mas_right);
-        make.bottom.equalTo(callButton);
+        make.left.equalTo(fileButton.mas_right);
+        make.bottom.equalTo(fileButton);
         make.right.equalTo(self.buttonsView);
     }];
     [self.buttonArray addObject:moreButton];

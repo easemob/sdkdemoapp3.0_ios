@@ -56,6 +56,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 //消息撤回
 #define MSG_EXT_RECALL @"em_recall"
 
+//进入系统通知页
+#define SYSTEM_NOTIF_DETAIL @"system_notif_detail"
+
 //新通知
 #define MSG_EXT_NEWNOTI @"em_noti"
 

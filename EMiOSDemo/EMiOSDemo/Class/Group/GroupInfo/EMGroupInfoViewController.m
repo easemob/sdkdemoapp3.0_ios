@@ -119,7 +119,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger count = 0;
     if (section == 0) {
-        if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType  == EMGroupPermissionTypeAdmin)) {
+        if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin)) {
             count = 3;
         } else if (self.group.setting.style == EMGroupStylePrivateMemberCanInvite) {
             count = 3;
@@ -127,7 +127,7 @@
             count = 2;
         }
     } else if (section == 1) {
-        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType  == EMGroupPermissionTypeAdmin) {
+        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
             count = 5;
         } else {
             count = 4;
@@ -235,7 +235,7 @@
         } else if (row == 1) {
             cell.textLabel.text = @"会话置顶";
             EMConversation *conversastion = [[EMClient sharedClient].chatManager getConversation:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
-            [switchControl setOn:([conversastion.ext objectForKey:CONVERSATION_STICK] && (NSNumber *)[conversastion.ext objectForKey:CONVERSATION_STICK] != 0) animated:NO];
+            [switchControl setOn:([conversastion.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[conversastion.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
     }

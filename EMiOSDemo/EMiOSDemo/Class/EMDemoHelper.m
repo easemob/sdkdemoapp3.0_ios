@@ -412,7 +412,7 @@ static EMDemoHelper *helper = nil;
     }
     
     EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
-    [navController pushViewController:controller animated:YES];
+    [navController pushViewController:controller animated:NO];
 }
 
 - (void)handlePushChatController:(NSNotification *)aNotif
@@ -438,7 +438,7 @@ static EMDemoHelper *helper = nil;
         UIViewController *rootViewController = window.rootViewController;
         if ([rootViewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *nav = (UINavigationController *)rootViewController;
-            [nav pushViewController:controller animated:YES];
+            [nav pushViewController:controller animated:NO];
         }
     }
 }
@@ -453,7 +453,7 @@ static EMDemoHelper *helper = nil;
     }
     
     EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
-    [navController pushViewController:controller animated:YES];
+    [navController pushViewController:controller animated:NO];
 }
 
 - (void)handlePushGroupInfoController:(NSNotification *)aNotif
@@ -470,7 +470,7 @@ static EMDemoHelper *helper = nil;
     [controller setLeaveOrDestroyCompletion:^{
         [navController popViewControllerAnimated:YES];
     }];
-    [navController pushViewController:controller animated:YES];
+    [navController pushViewController:controller animated:NO];
 }
 
 - (void)handlePushChatroomsController:(NSNotification *)aNotif
@@ -483,7 +483,7 @@ static EMDemoHelper *helper = nil;
     }
     
     EMChatroomsViewController *controller = [[EMChatroomsViewController alloc] init];
-    [navController pushViewController:controller animated:YES];
+    [navController pushViewController:controller animated:NO];
 }
 
 - (void)handlePushChatroomInfoController:(NSNotification *)aNotif
@@ -500,7 +500,7 @@ static EMDemoHelper *helper = nil;
     [controller setLeaveCompletion:^{
         [navController popViewControllerAnimated:YES];
     }];
-    [navController pushViewController:controller animated:YES];
+    [navController pushViewController:controller animated:NO];
 }
 
 

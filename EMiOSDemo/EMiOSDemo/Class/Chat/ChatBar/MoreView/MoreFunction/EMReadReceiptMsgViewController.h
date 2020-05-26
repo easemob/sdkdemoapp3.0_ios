@@ -18,9 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UITableView *memberTableView;
 
-@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) UILabel *countLable;
 
-- (instancetype)initWithMessageCell:(EMMessageCell *)messageCell;
+- (instancetype)initWithMessageCell:(EMMessageCell *)messageCell groupId:(NSString *)groupId;
 @end
 
 @protocol EMReadReceiptMsgDelegate <NSObject>

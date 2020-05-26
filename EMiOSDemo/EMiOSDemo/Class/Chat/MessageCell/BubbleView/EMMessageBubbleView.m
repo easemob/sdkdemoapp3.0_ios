@@ -39,6 +39,4 @@
     self.image = [UIImage imageWithData:data];
 }
 
-
-
 @end
