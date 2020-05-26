@@ -149,20 +149,8 @@ static const void *ResultNavigationControllerKey = &ResultNavigationControllerKe
 {
     [self.resultController.searchBar becomeFirstResponder];
     self.resultController.searchBar.showsCancelButton = YES;
+    self.resultNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:self.resultNavigationController animated:YES completion:nil];
-//
-//    [self.resultController.view mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(keyWindow.mas_top);
-//        make.left.equalTo(keyWindow.mas_left);
-//        make.right.equalTo(keyWindow.mas_right);
-//        make.bottom.equalTo(keyWindow.mas_bottom);
-//    }];
-//
-//    [UIView animateWithDuration:0.3 animations:^{
-//    } completion:^(BOOL finished) {
-//        [self.resultController.searchBar becomeFirstResponder];
-//        self.resultController.searchBar.showsCancelButton = YES;
-//    }];
 }
 
 #pragma mark - public

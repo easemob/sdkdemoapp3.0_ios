@@ -303,11 +303,6 @@
             }];
             [alertController addAction:defaultAction];
 
-            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-            }];
-            [alertController addAction:mixAction];
-
             [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
 
             [self presentViewController:alertController animated:YES completion:nil];
@@ -472,7 +467,7 @@
         NSMutableArray *sectionArray = [NSMutableArray arrayWithCapacity:1];
         [sortedArray addObject:sectionArray];
     }
-    
+
     //按首字母分组
     for (NSString *contact in contactArray) {
         NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:contact];

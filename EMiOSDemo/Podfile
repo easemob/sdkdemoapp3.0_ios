@@ -11,5 +11,6 @@ target 'EMiOSDemo' do
     pod 'SDWebImage', '~> 4.0'
     pod 'SDWebImage/GIF'
     pod 'Hyphenate'
+    pod 'FLAnimatedImage', '~> 1.0'
 
 end
