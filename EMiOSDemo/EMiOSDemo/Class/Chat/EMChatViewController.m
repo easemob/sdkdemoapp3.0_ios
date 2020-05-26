@@ -1711,14 +1711,11 @@
         return;
     }
     
-    //TODO: 处理@
-    //messageExt
+   
+    EMCustomMessageBody *customBody = [[EMCustomMessageBody alloc] initWithEvent:@"test" ext:nil];
     
-    //TODO: 处理表情
-    //    NSString *sendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:aText];
-    
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
-    [self _sendMessageWithBody:body ext:aExt isUpload:NO];
+//    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
+    [self _sendMessageWithBody:customBody ext:aExt isUpload:NO];
     
     if (self.enableTyping) {
         [self _sendEndTyping];
@@ -1778,7 +1775,7 @@
         EMMessage *msg = aMessages[i];
 
         // cmd消息不展示
-        if(msg.body.type == EMMessageBodyTypeCmd) {
+        if(msg.body.type == EMMessageBodyTypeCmd || msg.body.type == EMMessageBodyTypeCustom) {
             continue;
         }
         if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
