@@ -33,7 +33,7 @@
 
 - (CGSize)_getImageSize:(CGSize)aSize
 {
-    CGSize retSize = CGSizeMake(kEMMsgImageDefaultSize, kEMMsgImageDefaultSize);
+    CGSize retSize = CGSizeZero;
     do {
         if (aSize.width == 0 || aSize.height == 0) {
             break;
@@ -51,9 +51,9 @@
         if (tmpHeight > kEMMsgImageMaxHeight) {
             tmpHeight = kEMMsgImageMaxHeight;
         }
-        
-        retSize.width = tmpWidth;
-        retSize.height = tmpHeight;
+        retSize = CGSizeMake(tmpWidth, tmpHeight);
+        //retSize.width = tmpWidth;
+        //retSize.height = tmpHeight;
         
     } while (0);
     
