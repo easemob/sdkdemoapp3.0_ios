@@ -1284,6 +1284,7 @@ NSString *FindLetter(int nCode)
 		case 6468:
 		case 6643:
 		case 6659:
+        case 7001:
 		case 7138:
 		case 7210:
 		case 7340:
@@ -3996,7 +3997,8 @@ NSString *FindLetter(int nCode)
 				strValue = @"EN";
 				break;
 			}
-			if(nCode >= /* DISABLES CODE */ (2288) && nCode <= 2231)
+
+            if(nCode >= 2288 && nCode <= 2301)
 			{
 				strValue = @"ER";
 				break;
