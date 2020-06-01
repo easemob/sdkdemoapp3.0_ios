@@ -472,14 +472,8 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
-		C06300FB23E9072A00B8F277 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06300FA23E9072A00B8F277 /* Hyphenate.framework */; };
-		C06300FC23E9072A00B8F277 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06300FA23E9072A00B8F277 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C063010323E9077500B8F277 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C063010123E9077100B8F277 /* WebRTC.framework */; };
-		C063010423E9077500B8F277 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C063010123E9077100B8F277 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C069A97323A246B8005AA90D /* AudioRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = C069A97123A246B7005AA90D /* AudioRecord.m */; };
 		C06DBC3F23BA152900F9FA3B /* icon-tab发现unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2723BA152900F9FA3B /* icon-tab发现unselected@2x.png */; };
-		C06DBC4023BA152900F9FA3B /* tabbar_contacts_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2823BA152900F9FA3B /* tabbar_contacts_blue@3x.png */; };
-		C06DBC4123BA152900F9FA3B /* tabbar_chat_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2923BA152900F9FA3B /* tabbar_chat_gray@3x.png */; };
 		C06DBC4223BA152900F9FA3B /* icon-tab发现unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2A23BA152900F9FA3B /* icon-tab发现unselected.png */; };
 		C06DBC4323BA152900F9FA3B /* tabbar_chat_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2B23BA152900F9FA3B /* tabbar_chat_gray@2x.png */; };
 		C06DBC4423BA152A00F9FA3B /* tabbar_contacts_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2C23BA152900F9FA3B /* tabbar_contacts_blue@2x.png */; };
@@ -495,12 +489,32 @@
 		C06DBC5023BA152A00F9FA3B /* icon-tab发现@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC3823BA152900F9FA3B /* icon-tab发现@2x.png */; };
 		C06DBC5323BA152A00F9FA3B /* tabbar_settings_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC3B23BA152900F9FA3B /* tabbar_settings_gray@2x.png */; };
 		C06DBC5423BA152A00F9FA3B /* tabbar_settings_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC3C23BA152900F9FA3B /* tabbar_settings_gray@3x.png */; };
+		C0707EA72484DE62000247DB /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C063010123E9077100B8F277 /* WebRTC.framework */; };
+		C0707EA82484DE62000247DB /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C063010123E9077100B8F277 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C0707EAA2484DE69000247DB /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06300FA23E9072A00B8F277 /* Hyphenate.framework */; };
+		C0707EAB2484DE69000247DB /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06300FA23E9072A00B8F277 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C0BEF25423ED6F1800FBD5CF /* watermark.png in Resources */ = {isa = PBXBuildFile; fileRef = C0BEF25323ED6F1800FBD5CF /* watermark.png */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
 		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C0707EA92484DE62000247DB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C0707EA82484DE62000247DB /* WebRTC.framework in Embed Frameworks */,
+				C0707EAB2484DE69000247DB /* Hyphenate.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
 		3A45D69D22239DE200505786 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3A45D69E22239DE200505786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3A45D69F22239DE200505786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1180,14 +1194,14 @@
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
-				C063010323E9077500B8F277 /* WebRTC.framework in Frameworks */,
+				C0707EA72484DE62000247DB /* WebRTC.framework in Frameworks */,
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
-				C06300FB23E9072A00B8F277 /* Hyphenate.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
+				C0707EAA2484DE69000247DB /* Hyphenate.framework in Frameworks */,
 				FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2398,7 +2412,7 @@
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
 				50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */,
-				BCAE605FBDE8C7546973DC90 /* [CP] Embed Pods Frameworks */,
+				C0707EA92484DE62000247DB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2820,24 +2834,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BCAE605FBDE8C7546973DC90 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
-				"${PODS_ROOT}/Hyphenate/Hyphenate.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2998,7 +2994,6 @@
 		3A45D69A22239DE200505786 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3A45D69B22239DE200505786 /* zh-Hans */,
 				3A45D69E22239DE200505786 /* en */,
 			);
 			name = Localizable.strings;
