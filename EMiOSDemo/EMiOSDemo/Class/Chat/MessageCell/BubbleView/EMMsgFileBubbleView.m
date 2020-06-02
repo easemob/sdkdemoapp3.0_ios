@@ -33,16 +33,17 @@
     [self addSubview:self.iconView];
     
     self.textLabel = [[UILabel alloc] init];
-    self.textLabel.font = [UIFont systemFontOfSize:18];
-    self.textLabel.numberOfLines = 0;
+    self.textLabel.font = [UIFont systemFontOfSize:12];
+    self.textLabel.textColor = [UIColor colorWithRed:76/255.0 green:76/255.0 blue:76/255.0 alpha:1.0];
+    self.textLabel.numberOfLines = 2;
     [self addSubview:self.textLabel];
     
     self.detailLabel = [[UILabel alloc] init];
-    self.detailLabel.font = [UIFont systemFontOfSize:15];
+    self.detailLabel.font = [UIFont systemFontOfSize:10];
     self.detailLabel.numberOfLines = 0;
     [self addSubview:self.detailLabel];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.textLabel.mas_bottom);
+        make.top.equalTo(self.textLabel.mas_bottom).offset(16);
         make.bottom.equalTo(self).offset(-10);
         make.left.equalTo(self.textLabel);
         make.right.equalTo(self.textLabel);
@@ -92,7 +93,15 @@
     EMMessageType type = model.type;
     if (type == EMMessageTypeFile) {
         EMFileMessageBody *body = (EMFileMessageBody *)model.emModel.body;
-        self.textLabel.text = body.displayName;
+        NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:body.displayName];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = 5.0; // 设置行间距
+        paragraphStyle.alignment = NSTextAlignmentLeft;
+        [attributedStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attributedStr.length)];
+        [attributedStr addAttribute:NSKernAttributeName value:@0.34 range:NSMakeRange(0, attributedStr.length)];
+
+        self.textLabel.attributedText = attributedStr;
+        self.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         self.detailLabel.text = [NSString stringWithFormat:@"%.2lf MB",(float)body.fileLength / (1024 * 1024)];
     }
 }

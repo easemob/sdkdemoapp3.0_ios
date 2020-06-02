@@ -55,6 +55,7 @@ UITableView * tableView;
     // TAB
     //tableView = [[UITableView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - frame.size.width/2 - 15.0 , win.frame.size.height - frame.origin.y - 20 , frame.size.width, 52 * selectData.count) style:0];
     tableView = [[UITableView alloc]init];
+    tableView.scrollEnabled = NO;
     tableView.dataSource = backgroundView;
 //    tableView.transform =  CGAffineTransformMakeScale(0.5, 0.5);
     tableView.delegate = backgroundView;
@@ -135,7 +136,7 @@ UITableView * tableView;
     }
     [PellTableViewSelect hiden];
 }
-
+/*
 #pragma mark 绘制三角形
 - (void)drawRect:(CGRect)rect
 
@@ -172,6 +173,6 @@ UITableView * tableView;
                       kCGPathFillStroke);//绘制路径path
     
 //    [self setNeedsDisplay];
-}
+}*/
 
 @end

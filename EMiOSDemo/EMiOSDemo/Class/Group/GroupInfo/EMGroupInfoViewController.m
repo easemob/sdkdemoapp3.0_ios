@@ -52,7 +52,7 @@
     // Uncomment the following line to preserve selection between presentations.
     [self _setupSubviews];
 //    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
@@ -192,7 +192,7 @@
             cell.imageView.image = [UIImage imageNamed:@"group_avatar"];
             cell.textLabel.font = [UIFont systemFontOfSize:18.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-            cell.textLabel.text = self.group.subject;
+            cell.textLabel.text = self.group.groupName;
             if (self.group.description && ![self.group.description isEqualToString:@""]) {
                 cell.detailTextLabel.text = self.group.description;
             } else {
@@ -207,7 +207,7 @@
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"群聊名称";
-            cell.detailTextLabel.text = self.group.subject;
+            cell.detailTextLabel.text = self.group.groupName;
             cell.accessoryType = self.group.permissionType == EMGroupPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 1) {
             cell.textLabel.text = @"共享文件";
@@ -346,11 +346,11 @@
 
 - (void)_resetGroup:(EMGroup *)aGroup
 {
-    if (![self.group.subject isEqualToString:aGroup.subject]) {
+    if (![self.group.groupName isEqualToString:aGroup.groupName]) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aGroup.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
         if (conversation) {
             NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-            [ext setObject:aGroup.subject forKey:@"subject"];
+            [ext setObject:aGroup.groupName forKey:@"subject"];
             [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
             conversation.ext = ext;
             
@@ -532,7 +532,7 @@
     if (!isEditable) {
         return;
     }
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.subject placeholder:@"输入群聊名称" isEditable:isEditable];
+    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.groupName placeholder:@"输入群聊名称" isEditable:isEditable];
     controller.title = @"编辑群聊名称";
     [self.navigationController pushViewController:controller animated:YES];
     

@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
     // Uncomment the following line to preserve selection between presentations.
     [self _setupSubviews];
 }

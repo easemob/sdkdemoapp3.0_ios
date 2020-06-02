@@ -248,7 +248,7 @@
     
     //按group-subject首字母分组
     for (EMGroup *group in groupList) {
-        NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:group.subject];
+        NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:group.groupName];
         NSInteger section;
         if (firstLetter.length > 0) {
             section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
@@ -264,10 +264,10 @@
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EMGroup *group1, EMGroup *group2) {
-            NSString *firstLetter1 = [EMChineseToPinyin pinyinFromChineseString:group1.subject];
+            NSString *firstLetter1 = [EMChineseToPinyin pinyinFromChineseString:group1.groupName];
             firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
             
-            NSString *firstLetter2 = [EMChineseToPinyin pinyinFromChineseString:group2.subject];
+            NSString *firstLetter2 = [EMChineseToPinyin pinyinFromChineseString:group2.groupName];
             firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
@@ -357,8 +357,8 @@
     }
     
     cell.avatarView.image = [UIImage imageNamed:@"group_avatar"];
-    if ([group.subject length]) {
-        cell.nameLabel.text = group.subject;
+    if ([group.groupName length]) {
+        cell.nameLabel.text = group.groupName;
     } else {
         cell.nameLabel.text = group.groupId;
     }

@@ -23,7 +23,7 @@
     [super viewDidLoad];
     [self _setupSubviews];
     
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
 }
 
 - (instancetype)initWithCoversation:(EMConversationModel *)aConversationModel
@@ -41,6 +41,7 @@
     [self addPopBackLeftItem];
     self.title = @"聊天详情";
 
+    self.tableView.scrollEnabled = NO;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -51,35 +52,17 @@
         make.bottom.equalTo(self.view);
     }];
     
-    self.clearChatRecordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultBlueFont"];
-    UIButton *clearBtn = [[UIButton alloc]init];
-    clearBtn.layer.cornerRadius = 10;
-    [clearBtn setBackgroundColor:[UIColor blueColor]];
-    [clearBtn setTitle:@"清除聊天记录" forState:UIControlStateNormal];
-    [clearBtn addTarget:self action:@selector(_clearChatRecordAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.clearChatRecordCell.contentView addSubview:clearBtn];
-    [clearBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.clearChatRecordCell.contentView).offset(2);
-        make.bottom.equalTo(self.clearChatRecordCell.contentView).offset(-2);
-        make.left.equalTo(self.clearChatRecordCell).offset(30);
-        make.right.equalTo(self.clearChatRecordCell).offset(-30);
-    }];
-    
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
    
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = 1;
-    if (section == 2) {
-        count = 2;
-    }
-    return count;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -116,10 +99,6 @@
         switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
     }
     
-    if (section == 3) {
-        return self.clearChatRecordCell;
-    }
-    
     cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -138,9 +117,6 @@
         }
     } else if (section == 2) {
         if (row == 0) {
-            cell.textLabel.text = @"消息免打扰";
-            [switchControl setOn:NO animated:NO];
-        } else if (row == 1) {
             cell.textLabel.text = @"会话置顶";
             [switchControl setOn:([self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
         }
@@ -206,8 +182,6 @@
     NSInteger row = indexPath.row;
     if (section == 2) {
         if (row == 0) {
-            //免打扰
-        } else if (row == 1) {
             //置顶
             NSMutableDictionary *ext = [[NSMutableDictionary alloc]initWithDictionary:self.conversationModel.emModel.ext];
             NSDate *date = [NSDate date];
@@ -224,15 +198,6 @@
             [self.conversationModel.emModel setExt:ext];
         }
     }
-}
-
-//清除聊天记录
-- (void)_clearChatRecordAction
-{
-    EMError *error = nil;
-    [self.conversationModel.emModel deleteAllMessages:&error];
-    [self showAlertWithMessage:@"已删除 !"];
-    self.clearRecordCompletion(self.conversationModel);
 }
 
 #pragma mark - Private

@@ -18,10 +18,6 @@
 
 @property (strong, nonatomic) IBOutlet OneLoadingAnimationView *loadingView;//加载view
 
-@property (nonatomic) EMMessageStatus status;
-
-@property (nonatomic) BOOL isReadAcked;
-
 @property (nonatomic, strong) NSTimer *timer;
 
 @end
@@ -91,66 +87,63 @@
 - (void)setSenderStatus:(EMMessageStatus)aStatus
             isReadAcked:(BOOL)aIsReadAcked
 {
-    if (_status != aStatus) {
-        _status = aStatus;
+    if (aStatus == EMMessageStatusDelivering) {
+        self.hidden = NO;
+        [_label removeFromSuperview];
+        [_failButton removeFromSuperview];
+        /*
+        [self addSubview:self.activityView];
+        [self.activityView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+            make.width.equalTo(@20);
+        }];
+        [self.activityView startAnimating];*/
         
-        if (aStatus == EMMessageStatusDelivering) {
-            self.hidden = NO;
-            [_label removeFromSuperview];
-            [_failButton removeFromSuperview];
-            /*
-            [self addSubview:self.activityView];
-            [self.activityView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self);
-                make.width.equalTo(@20);
-            }];
-            [self.activityView startAnimating];*/
-            
-            [self addSubview:self.loadingView];
-            [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self);
-                make.width.equalTo(@20);
-            }];
-            [self.loadingView startAnimation];
+        [self addSubview:self.loadingView];
+        [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+            make.width.equalTo(@20);
+        }];
+        [self.loadingView startAnimation];
+    
+    } else if (aStatus == EMMessageStatusFailed) {
+        self.hidden = NO;
+        [_label removeFromSuperview];
         
-        } else if (aStatus == EMMessageStatusFailed) {
-            self.hidden = NO;
-            [_label removeFromSuperview];
-            
-            [_activityView stopAnimating];
-            [_activityView removeFromSuperview];
-            
-            [self addSubview:self.failButton];
-            [self.failButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self);
-                make.width.equalTo(@20);
-            }];
-        } else if (aStatus == EMMessageStatusSucceed) {
-            self.hidden = NO;
-            [_failButton removeFromSuperview];
-            /*
-            [_activityView stopAnimating];
-            [_activityView removeFromSuperview];
-            */
-            [_loadingView removeFromSuperview];
-            self.label.text = aIsReadAcked ? @"已读" : nil;
-            [self addSubview:self.label];
-            [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self);
-            }];
-        } else {
-            self.hidden = YES;
-            [_label removeFromSuperview];
-            [_failButton removeFromSuperview];
-            
-            [_activityView stopAnimating];
-            [_activityView removeFromSuperview];
-            [_loadingView removeFromSuperview];
-        }
-    } else if (self.isReadAcked != aIsReadAcked && aStatus == EMMessageStatusSucceed) {
+        //[_activityView stopAnimating];
+        //[_activityView removeFromSuperview];
+        
+        [_loadingView stopTimer];
+        [_loadingView removeFromSuperview];
+        [self addSubview:self.failButton];
+        [self.failButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+            make.width.equalTo(@20);
+        }];
+    } else if (aStatus == EMMessageStatusSucceed) {
+        self.hidden = NO;
+        [_failButton removeFromSuperview];
+        /*
+        [_activityView stopAnimating];
+        [_activityView removeFromSuperview];
+        */
+        [_loadingView stopTimer];
+        [_loadingView removeFromSuperview];
         self.label.text = aIsReadAcked ? @"已读" : nil;
+        [self addSubview:self.label];
+        [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
+    } else {
+        self.hidden = YES;
+        [_label removeFromSuperview];
+        [_failButton removeFromSuperview];
+        
+        //[_activityView stopAnimating];
+        //[_activityView removeFromSuperview];
+        [_loadingView stopTimer];
+        [_loadingView removeFromSuperview];
     }
-    self.isReadAcked = aIsReadAcked;
 }
 
 #pragma mark - Action

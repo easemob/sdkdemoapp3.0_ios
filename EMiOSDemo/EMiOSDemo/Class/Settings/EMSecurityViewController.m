@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self _setupSubviews];
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
     // Do any additional setup after loading the view.
 }
 
@@ -29,6 +29,7 @@
     self.title = @"安全与隐私";
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
 
+    self.tableView.scrollEnabled = NO;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor whiteColor];

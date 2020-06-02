@@ -99,15 +99,17 @@
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.contentView);
         make.left.equalTo(cell.contentView).offset(16);
+        make.width.height.equalTo(@40);
     }];
     [cell.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgView.mas_right).offset(15);
         make.top.equalTo(cell.contentView).offset(10);
+        make.right.equalTo(cell.contentView).offset(15);
     }];
     [cell.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgView.mas_right).offset(15);
         make.bottom.equalTo(cell.contentView).offset(-10);
-        make.right.equalTo(cell.contentView).offset(10);
+        make.right.equalTo(cell.contentView).offset(15);
     }];
     
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
@@ -145,14 +147,6 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    //在iOS8.0上，必须加上这个方法才能出发左划操作
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self deleteCellAction:indexPath];
-    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

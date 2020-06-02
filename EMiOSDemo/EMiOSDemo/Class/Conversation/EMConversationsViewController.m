@@ -60,10 +60,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AgreeJoinGroupInvite:) name:NOTIF_ADD_SOCIAL_CONTACT object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationControllerBack) name:SYSTEM_NOTIF_DETAIL object:nil];
-    
-    [[EMClient sharedClient].chatManager asyncFetchHistoryMessagesFromServer:@"99263146164225" conversationType:EMConversationTypeGroupChat startMessageId:nil pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
-        NSLog(@"result:   %@",aResult);
-    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -158,37 +154,14 @@
 #pragma mark - moreAction
 - (void)moreAction
 {
-    
     // 弹出QQ的自定义视图
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-175, self.addImageBtn.frame.origin.y + 24, 165, 156) selectData:@[@"音视频会议",@"创建群组",@"添加好友"] images:@[@"icon-音视频会议",@"icon-创建群组",@"icon-添加好友"] locationY:-8 action:^(NSInteger index){
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-160, self.addImageBtn.frame.origin.y + 24, 145, 104) selectData:@[@"创建群组",@"添加好友"] images:@[@"icon-创建群组",@"icon-添加好友"] locationY:18 action:^(NSInteger index){
         if(index == 0) {
-            [self avConfrence];
-        } else if (index == 1) {
             [self createGroup];
-        } else {
+        } else if (index == 1) {
             [self addFriend];
         }
     } animated:YES];
-}
-
-//音视频会议
-- (void)avConfrence
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-    }];
-    [alertController addAction:defaultAction];
-
-    UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-    }];
-    [alertController addAction:mixAction];
-
-    [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 //创建群组
@@ -505,7 +478,7 @@
     NSString *groupId = group.groupId;
     for (EMConversationModel *model in self.dataArray) {
         if ([model.emModel.conversationId isEqualToString:groupId]) {
-            model.name = group.subject;
+            model.name = group.groupName;
             [self.tableView reloadData];
         }
     }
@@ -621,7 +594,6 @@
     [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:aCell.frame inView:self.tableView];
     [self.menuController setMenuVisible:YES animated:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:aCell selector:@selector(setSelectedStatus) name:UIMenuControllerDidHideMenuNotification object:nil];
 }
 
 #pragma mark - Data
@@ -670,7 +642,7 @@
     }
     return time;
 }
-
+//重排序会话model
 - (void)_reSortedConversationModelsAndReloadView
 {
     NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {

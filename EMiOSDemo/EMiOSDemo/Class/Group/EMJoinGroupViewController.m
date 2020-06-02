@@ -92,8 +92,8 @@
     }
     
     cell.avatarView.image = [UIImage imageNamed:@"group_avatar"];
-    if ([group.subject length]) {
-        cell.nameLabel.text = group.subject;
+    if ([group.groupName length]) {
+        cell.nameLabel.text = group.groupName;
     } else {
         cell.nameLabel.text = group.groupId;
     }

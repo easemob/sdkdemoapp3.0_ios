@@ -128,6 +128,7 @@
     if (aLongPress.state == UIGestureRecognizerStateBegan) {
         self.selected = YES;
         if (self.delegate && [self.delegate respondsToSelector:@selector(conversationCellDidLongPress:)]) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setSelectedStatus) name:UIMenuControllerDidHideMenuNotification object:nil];
             [self.delegate conversationCellDidLongPress:self];
         }
     }
@@ -135,9 +136,10 @@
 
 - (void)setSelectedStatus
 {
-    if(([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [(NSNumber *)[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (self.model.notiModel && (!self.model.notiModel.stickTime || [self.model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]]))) {
+    if(![self.model.emModel.ext objectForKey:CONVERSATION_STICK] || ([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [(NSNumber *)[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (self.model.notiModel && (!self.model.notiModel.stickTime || [self.model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]]))) {
         self.selected = NO;
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerDidHideMenuNotification object:nil];
 }
 
 #pragma mark - setter

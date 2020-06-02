@@ -29,7 +29,6 @@
 #import "EMChatInfoViewController.h"
 
 #import "EMMsgRecordCell.h"
-#import "EMFileTransferDocument.h"
 #import "PAirSandbox.h"
 
 #import "EMPickFileViewController.h"
@@ -896,30 +895,48 @@
 #pragma mark - UIDocumentPickerDelegate
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
 {
-    [urls.firstObject startAccessingSecurityScopedResource];
-    [self selectedDocumentAtURLs:urls reName:nil];
-    [urls.firstObject stopAccessingSecurityScopedResource];
+    BOOL fileAuthorized = [urls.firstObject startAccessingSecurityScopedResource];
+    if (fileAuthorized) {
+        //[self selectedDocumentAtURLs:urls reName:nil];
+        [urls.firstObject stopAccessingSecurityScopedResource];
+    } else {
+        [self showHint:@"授权失败!"];
+    }
 }
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url
 {
-    [self selectedDocumentAtURLs:@[url] reName:nil];
+    BOOL fileAuthorized = [url startAccessingSecurityScopedResource];
+    if (fileAuthorized) {
+        [self selectedDocumentAtURLs:url reName:nil];
+        [url stopAccessingSecurityScopedResource];
+    } else {
+        [self showHint:@"授权失败!"];
+    }
 }
+
 //icloud
-- (void)selectedDocumentAtURLs:(NSArray <NSURL *>*)urls reName:(NSString *)rename
+- (void)selectedDocumentAtURLs:(NSURL *)url reName:(NSString *)rename
 {
-    [urls.firstObject startAccessingSecurityScopedResource];
-    for (NSURL *url in urls) {
-        [EMFileTransferDocument updateFileWithUrl:url reName:rename data:^(NSData * _Nonnull fileData, NSString * _Nonnull fileName) {
+    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc]init];
+    NSError *error;
+    [fileCoordinator coordinateReadingItemAtURL:url options:0 error:&error byAccessor:^(NSURL * _Nonnull newURL) {
+        //读取文件
+        NSString *fileName = [newURL lastPathComponent];
+        NSError *error = nil;
+        NSData *fileData = [NSData dataWithContentsOfURL:newURL options:NSDataReadingMappedIfSafe error:&error];
+        if (error) {
+            [self showHint:@"文件读取失败!"];;
+        }else {
+            NSLog(@"fileName: %@\nfileUrl: %@", fileName, newURL);
             EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithData:fileData displayName:fileName];
             [self _sendMessageWithBody:body ext:nil isUpload:NO];
-        }];
-        
-    }
-    [urls.firstObject stopAccessingSecurityScopedResource];
+        };
+    }];
 }
 
 #pragma mark - EMMoreFunctionViewDelegate
@@ -1295,13 +1312,13 @@
         [EMAlertController showInfoAlert:@"正在下载文件,稍后点击"];
         return;
     }
-    
+    __weak typeof(self) weakself = self;
     void (^checkFileBlock)(NSString *aPath) = ^(NSString *aPathe) {
         NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
         NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
         [fileHandle closeFile];
         UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:aPathe]];
-        docVc.delegate = self;
+        docVc.delegate = weakself;
         [docVc presentPreviewAnimated:YES];
     };
     
@@ -1309,7 +1326,7 @@
         checkFileBlock(body.localPath);
         return;
     }
-    __weak typeof(self) weakself = self;
+    
     [[EMClient sharedClient].chatManager downloadMessageAttachment:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
         [weakself hideHud];
         if (error) {
@@ -1423,6 +1440,8 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.tableView reloadData];
+            [weakself.tableView setNeedsLayout];
+            [weakself.tableView layoutIfNeeded];
             [weakself _scrollToBottomRow];
         });
     });
@@ -1517,6 +1536,8 @@
             __weak typeof(self) weakself = self;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself.tableView reloadData];
+                [weakself.tableView setNeedsLayout];
+                [weakself.tableView layoutIfNeeded];
                 [weakself _scrollToBottomRow];
             });
             break;
@@ -1632,6 +1653,8 @@
 {
     [self tableViewDidTriggerHeaderRefresh];
     [self.tableView reloadData];
+    [self.tableView setNeedsLayout];
+    [self.tableView layoutIfNeeded];
     [self _scrollToBottomRow];
 }
 
@@ -1749,8 +1772,8 @@
     
     NSString *groupId = group.groupId;
     if ([groupId isEqualToString:self.conversationModel.emModel.conversationId]) {
-        self.conversationModel.name = group.subject;
-        self.titleLabel.text = group.subject;
+        self.conversationModel.name = group.groupName;
+        self.titleLabel.text = group.groupName;
     }
 }
 
@@ -2240,7 +2263,8 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakself.tableView reloadData];
-                    
+                    [weakself.tableView setNeedsLayout];
+                    [weakself.tableView layoutIfNeeded];
                     if (weakself.isFirstLoadMsg) {
                         weakself.isFirstLoadMsg = NO;
                         [weakself _scrollToBottomRow];
@@ -2351,12 +2375,20 @@
     __weak typeof(self) weakself = self;
     NSArray *formated = [weakself _formatMessages:@[message]];
     [self.dataArray addObjectsFromArray:formated];
+    if (!self.moreMsgId) {
+        //新会话的第一条消息
+        self.moreMsgId = message.messageId;
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakself.tableView reloadData];
+        [weakself.tableView setNeedsLayout];
+        [weakself.tableView layoutIfNeeded];
         [weakself _scrollToBottomRow];
     });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        NSLog(@"errorCode    %u   errorDesc    %@",error.code,error.errorDescription);
+        [weakself messageStatusDidChange:message error:error];
     }];
 }
 

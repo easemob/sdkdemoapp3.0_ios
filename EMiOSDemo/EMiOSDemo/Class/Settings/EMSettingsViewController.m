@@ -39,7 +39,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
     // Do any additional setup after loading the view.
 }
 
@@ -79,6 +79,7 @@
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.scrollEnabled = NO;
     self.tableView.tableFooterView = [[UIView alloc] init];
 
     [self.view addSubview:self.tableView];

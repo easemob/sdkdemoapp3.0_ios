@@ -11,5 +11,7 @@
 @interface OneLoadingAnimationView : UIView
 - (void)startAnimation;
 
+- (void)stopTimer;
+
 - (instancetype)initWithRadius:(CGFloat)radius;
 @end

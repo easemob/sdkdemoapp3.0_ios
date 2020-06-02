@@ -88,10 +88,10 @@ static EMConversationHelper *shared = nil;
                 for (EMGroup *group in groupArray) {
                     if ([group.groupId isEqualToString:conversation.conversationId]) {
                         NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                        [ext setObject:group.subject forKey:@"subject"];
+                        [ext setObject:group.groupName forKey:@"subject"];
                         [ext setObject:[NSNumber numberWithBool:group.isPublic] forKey:@"isPublic"];
                         conversation.ext = ext;
-                        name = group.subject;
+                        name = group.groupName;
                         break;
                     }
                 }
@@ -116,10 +116,10 @@ static EMConversationHelper *shared = nil;
 {
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aGroup.groupId type:EMConversationTypeGroupChat createIfNotExist:YES];
     EMConversationModel *model = [[EMConversationModel alloc] initWithEMModel:conversation];
-    model.name = aGroup.subject;
+    model.name = aGroup.groupName;
     
     NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-    [ext setObject:aGroup.subject forKey:@"subject"];
+    [ext setObject:aGroup.groupName forKey:@"subject"];
     [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
     conversation.ext = ext;
     

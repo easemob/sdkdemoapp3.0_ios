@@ -66,7 +66,6 @@
 
 - (void)dealloc
 {
-    [[EMNotificationHelper shared] removeDelegate:self];
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -118,26 +117,6 @@
     }];
     
     [self _setupSearchResultController];
-    /*
-    self.notifCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMNotificationsCell"];
-    self.notifCell.avatarView.image = [UIImage imageNamed:@"notification"];
-    self.notifCell.nameLabel.text = @"申请与通知";
-    
-    self.notifBadgeLabel = [[UILabel alloc] init];
-    self.notifBadgeLabel.backgroundColor = [UIColor redColor];
-    self.notifBadgeLabel.textColor = [UIColor whiteColor];
-    self.notifBadgeLabel.font = [UIFont systemFontOfSize:13];
-    self.notifBadgeLabel.hidden = YES;
-    self.notifBadgeLabel.clipsToBounds = YES;
-    self.notifBadgeLabel.layer.cornerRadius = 10;
-    [self.notifCell.contentView addSubview:self.notifBadgeLabel];
-    [self.notifBadgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.notifCell.contentView);
-        make.right.equalTo(self.notifCell.contentView).offset(-10);
-        make.height.equalTo(@20);
-        make.width.greaterThanOrEqualTo(@20);
-    }];
-     */
 }
 
 - (void)_setupSearchResultController
@@ -206,7 +185,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 4;
+        return 3;
     }
     
     return [(NSArray *)(self.dataArray[section - 1]) count];
@@ -233,9 +212,6 @@
         } else if (row == 2) {
             cell.avatarView.image = [UIImage imageNamed:@"聊天室"];
             cell.nameLabel.text = @"聊天室";
-        } else if (row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@"call"];
-            cell.nameLabel.text = @"多人视频";
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
@@ -305,22 +281,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
         } else if (row == 2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
-        } else if (row == 3) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-            }];
-            [alertController addAction:defaultAction];
-
-            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-            }];
-            [alertController addAction:mixAction];
-
-            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-
-            [self presentViewController:alertController animated:YES completion:nil];
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
@@ -419,24 +379,6 @@
         });
     }];
 }
-/*
-#pragma mark - EMNotificationsDelegate
-
-- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
-{
-    if (aUnreadCount > 0) {
-        if (aUnreadCount < 10) {
-            self.notifBadgeLabel.textAlignment = NSTextAlignmentCenter;
-            self.notifBadgeLabel.text = @(aUnreadCount).stringValue;
-        } else {
-            self.notifBadgeLabel.textAlignment = NSTextAlignmentLeft;
-            self.notifBadgeLabel.text = [NSString stringWithFormat:@" %@ ", @(aUnreadCount)];
-        }
-        self.notifBadgeLabel.hidden = NO;
-    } else {
-        self.notifBadgeLabel.hidden = YES;
-    }
-}*/
 
 #pragma mark - Private
 
@@ -570,7 +512,7 @@
 - (void)addAction
 {
     // 弹出QQ的自定义视图
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 120, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 110, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
         if(index == 0) {
             [self lookForSomeOne];
         } else if (index == 1) {

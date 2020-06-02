@@ -28,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.showRefreshHeader = NO;
     // Uncomment the following line to preserve selection between presentations.
     [self _setupSubviews];
 }
@@ -45,6 +46,7 @@
     self.title = @"消息设置";
     self.view.backgroundColor = [UIColor whiteColor];
     
+    self.tableView.scrollEnabled = NO;
     self.tableView.rowHeight = 66;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = kColor_LightGray;
