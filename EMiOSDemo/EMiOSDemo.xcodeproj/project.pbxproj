@@ -712,6 +712,7 @@
 		3C7A157423913A1B00F4AC48 /* video-unSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A157123913A1600F4AC48 /* video-unSelected@2x.png */; };
 		3C7A157523913A1B00F4AC48 /* video-unSelected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A157223913A1800F4AC48 /* video-unSelected@3x.png */; };
 		3C7A157623913A1B00F4AC48 /* video-unSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7A157323913A1B00F4AC48 /* video-unSelected.png */; };
+		3C87A0EF248E2B750051E06E /* EMConferenceInviteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C87A0EE248E2B750051E06E /* EMConferenceInviteViewController.m */; };
 		3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C930B3123AB2CB600C8268D /* PAirSandbox.m */; };
 		3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C97EF2923A87B5C004E97B7 /* CloudKit.framework */; };
 		3CB106C7247FBEAC00479BC1 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C4247FBEA800479BC1 /* ios@2x.png */; };
@@ -1635,6 +1636,8 @@
 		3C7A157123913A1600F4AC48 /* video-unSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-unSelected@2x.png"; sourceTree = "<group>"; };
 		3C7A157223913A1800F4AC48 /* video-unSelected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-unSelected@3x.png"; sourceTree = "<group>"; };
 		3C7A157323913A1B00F4AC48 /* video-unSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-unSelected.png"; sourceTree = "<group>"; };
+		3C87A0ED248E2B750051E06E /* EMConferenceInviteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMConferenceInviteViewController.h; sourceTree = "<group>"; };
+		3C87A0EE248E2B750051E06E /* EMConferenceInviteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMConferenceInviteViewController.m; sourceTree = "<group>"; };
 		3C930B3123AB2CB600C8268D /* PAirSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAirSandbox.m; sourceTree = "<group>"; };
 		3C930B3223AB2CB600C8268D /* PAirSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAirSandbox.h; sourceTree = "<group>"; };
 		3C97EF2923A87B5C004E97B7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -2910,15 +2913,15 @@
 		3C525F9C24651AB800D16DD5 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				3C525FA324651AB800D16DD5 /* CallResolutionViewController.h */,
 				3C525F9D24651AB800D16DD5 /* CallResolutionViewController.m */,
-				3C525F9E24651AB800D16DD5 /* EMCallViewController.m */,
+				3C525FA424651AB800D16DD5 /* CallSettingViewController.h */,
 				3C525F9F24651AB800D16DD5 /* CallSettingViewController.m */,
-				3C525FA024651AB800D16DD5 /* EMStreamView.h */,
+				3C525FA524651AB800D16DD5 /* EMButton.h */,
 				3C525FA124651AB800D16DD5 /* EMButton.m */,
 				3C525FA224651AB800D16DD5 /* EMCallViewController.h */,
-				3C525FA324651AB800D16DD5 /* CallResolutionViewController.h */,
-				3C525FA424651AB800D16DD5 /* CallSettingViewController.h */,
-				3C525FA524651AB800D16DD5 /* EMButton.h */,
+				3C525F9E24651AB800D16DD5 /* EMCallViewController.m */,
+				3C525FA024651AB800D16DD5 /* EMStreamView.h */,
 				3C525FA624651AB800D16DD5 /* EMStreamView.m */,
 			);
 			path = Helper;
@@ -2927,64 +2930,64 @@
 		3C525FA724651ABA00D16DD5 /* CallImgs */ = {
 			isa = PBXGroup;
 			children = (
-				3C525FA824651ABA00D16DD5 /* bg_micro@3x.png */,
-				3C525FA924651ABA00D16DD5 /* video_gray@2x.png */,
-				3C525FAA24651ABA00D16DD5 /* floating_voice@3x.png */,
-				3C525FAB24651ABA00D16DD5 /* floating_voice@2x.png */,
-				3C525FAC24651ABA00D16DD5 /* video_gray@3x.png */,
-				3C525FAD24651ABA00D16DD5 /* bg_micro@2x.png */,
-				3C525FAE24651ABA00D16DD5 /* WaitAnimate */,
-				3C525FEF24651ABA00D16DD5 /* grid_gray@2x.png */,
-				3C525FF024651ABA00D16DD5 /* talking_green@3x.png */,
-				3C525FF124651ABA00D16DD5 /* micphone_gray@2x.png */,
-				3C525FF224651ABA00D16DD5 /* recorder_white@2x.png */,
-				3C525FF324651ABA00D16DD5 /* kbps_gray@3x.png */,
-				3C525FF424651ABA00D16DD5 /* role_gray@3x.png */,
-				3C525FF524651ABA00D16DD5 /* answer@3x.png */,
 				3C525FF624651ABA00D16DD5 /* answer@2x.png */,
-				3C525FF724651ABA00D16DD5 /* role_gray@2x.png */,
-				3C525FF824651ABA00D16DD5 /* kbps_gray@2x.png */,
-				3C525FF924651ABA00D16DD5 /* recorder_white@3x.png */,
-				3C525FFA24651ABA00D16DD5 /* micphone_gray@3x.png */,
-				3C525FFB24651ABA00D16DD5 /* talking_green@2x.png */,
-				3C525FFC24651ABA00D16DD5 /* grid_gray@3x.png */,
-				3C525FFD24651ABA00D16DD5 /* minimize_gray@3x.png */,
-				3C525FFE24651ABA00D16DD5 /* recorder_gray@3x.png */,
-				3C525FFF24651ABA00D16DD5 /* role_white@2x.png */,
-				3C52600024651ABA00D16DD5 /* invite_gray@2x.png */,
-				3C52600124651ABA00D16DD5 /* grid_white@2x.png */,
-				3C52600224651ABA00D16DD5 /* bg_connecting@3x.png */,
-				3C52600324651ABA00D16DD5 /* kbps_white@3x.png */,
-				3C52600424651ABA00D16DD5 /* micphone_white@2x.png */,
-				3C52600524651ABA00D16DD5 /* speaker_white@2x.png */,
-				3C52600624651ABA00D16DD5 /* ring_gray@2x.png */,
-				3C52600724651ABA00D16DD5 /* ring_gray@3x.png */,
-				3C52600824651ABA00D16DD5 /* micphone_white@3x.png */,
-				3C52600924651ABA00D16DD5 /* speaker_white@3x.png */,
-				3C52600A24651ABA00D16DD5 /* kbps_white@2x.png */,
-				3C52600B24651ABA00D16DD5 /* video_gray@2x 2.png */,
+				3C525FF524651ABA00D16DD5 /* answer@3x.png */,
 				3C52600C24651ABA00D16DD5 /* bg_connecting@2x.png */,
-				3C52600D24651ABA00D16DD5 /* invite_gray@3x.png */,
+				3C52600224651ABA00D16DD5 /* bg_connecting@3x.png */,
+				3C525FAD24651ABA00D16DD5 /* bg_micro@2x.png */,
+				3C525FA824651ABA00D16DD5 /* bg_micro@3x.png */,
+				3C525FAB24651ABA00D16DD5 /* floating_voice@2x.png */,
+				3C525FAA24651ABA00D16DD5 /* floating_voice@3x.png */,
+				3C525FEF24651ABA00D16DD5 /* grid_gray@2x.png */,
+				3C525FFC24651ABA00D16DD5 /* grid_gray@3x.png */,
+				3C52600124651ABA00D16DD5 /* grid_white@2x.png */,
 				3C52600E24651ABA00D16DD5 /* grid_white@3x.png */,
-				3C52600F24651ABA00D16DD5 /* role_white@3x.png */,
-				3C52601024651ABA00D16DD5 /* recorder_gray@2x.png */,
-				3C52601124651ABA00D16DD5 /* minimize_gray@2x.png */,
-				3C52601224651ABA00D16DD5 /* minimize_white@2x.png */,
-				3C52601324651ABA00D16DD5 /* switchCamera_white@3x.png */,
-				3C52601424651ABA00D16DD5 /* video_white@3x.png */,
-				3C52601524651ABA00D16DD5 /* switchCamera_gray@2x.png */,
+				3C52601D24651ABA00D16DD5 /* hangup@2x.png */,
 				3C52601624651ABA00D16DD5 /* hangup@3x.png */,
-				3C52601724651ABA00D16DD5 /* mute_red@2x.png */,
-				3C52601824651ABA00D16DD5 /* speaker_gray@2x.png */,
+				3C52600024651ABA00D16DD5 /* invite_gray@2x.png */,
+				3C52600D24651ABA00D16DD5 /* invite_gray@3x.png */,
 				3C52601924651ABA00D16DD5 /* invite_white@2x.png */,
 				3C52601A24651ABA00D16DD5 /* invite_white@3x.png */,
-				3C52601B24651ABA00D16DD5 /* mute_red@3x.png */,
-				3C52601C24651ABA00D16DD5 /* speaker_gray@3x.png */,
-				3C52601D24651ABA00D16DD5 /* hangup@2x.png */,
-				3C52601E24651ABA00D16DD5 /* switchCamera_gray@3x.png */,
-				3C52601F24651ABA00D16DD5 /* video_white@2x.png */,
-				3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */,
+				3C525FF824651ABA00D16DD5 /* kbps_gray@2x.png */,
+				3C525FF324651ABA00D16DD5 /* kbps_gray@3x.png */,
+				3C52600A24651ABA00D16DD5 /* kbps_white@2x.png */,
+				3C52600324651ABA00D16DD5 /* kbps_white@3x.png */,
+				3C525FF124651ABA00D16DD5 /* micphone_gray@2x.png */,
+				3C525FFA24651ABA00D16DD5 /* micphone_gray@3x.png */,
+				3C52600424651ABA00D16DD5 /* micphone_white@2x.png */,
+				3C52600824651ABA00D16DD5 /* micphone_white@3x.png */,
+				3C52601124651ABA00D16DD5 /* minimize_gray@2x.png */,
+				3C525FFD24651ABA00D16DD5 /* minimize_gray@3x.png */,
+				3C52601224651ABA00D16DD5 /* minimize_white@2x.png */,
 				3C52602124651ABB00D16DD5 /* minimize_white@3x.png */,
+				3C52601724651ABA00D16DD5 /* mute_red@2x.png */,
+				3C52601B24651ABA00D16DD5 /* mute_red@3x.png */,
+				3C52601024651ABA00D16DD5 /* recorder_gray@2x.png */,
+				3C525FFE24651ABA00D16DD5 /* recorder_gray@3x.png */,
+				3C525FF224651ABA00D16DD5 /* recorder_white@2x.png */,
+				3C525FF924651ABA00D16DD5 /* recorder_white@3x.png */,
+				3C52600624651ABA00D16DD5 /* ring_gray@2x.png */,
+				3C52600724651ABA00D16DD5 /* ring_gray@3x.png */,
+				3C525FF724651ABA00D16DD5 /* role_gray@2x.png */,
+				3C525FF424651ABA00D16DD5 /* role_gray@3x.png */,
+				3C525FFF24651ABA00D16DD5 /* role_white@2x.png */,
+				3C52600F24651ABA00D16DD5 /* role_white@3x.png */,
+				3C52601824651ABA00D16DD5 /* speaker_gray@2x.png */,
+				3C52601C24651ABA00D16DD5 /* speaker_gray@3x.png */,
+				3C52600524651ABA00D16DD5 /* speaker_white@2x.png */,
+				3C52600924651ABA00D16DD5 /* speaker_white@3x.png */,
+				3C52601524651ABA00D16DD5 /* switchCamera_gray@2x.png */,
+				3C52601E24651ABA00D16DD5 /* switchCamera_gray@3x.png */,
+				3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */,
+				3C52601324651ABA00D16DD5 /* switchCamera_white@3x.png */,
+				3C525FFB24651ABA00D16DD5 /* talking_green@2x.png */,
+				3C525FF024651ABA00D16DD5 /* talking_green@3x.png */,
+				3C52600B24651ABA00D16DD5 /* video_gray@2x 2.png */,
+				3C525FA924651ABA00D16DD5 /* video_gray@2x.png */,
+				3C525FAC24651ABA00D16DD5 /* video_gray@3x.png */,
+				3C52601F24651ABA00D16DD5 /* video_white@2x.png */,
+				3C52601424651ABA00D16DD5 /* video_white@3x.png */,
+				3C525FAE24651ABA00D16DD5 /* WaitAnimate */,
 			);
 			path = CallImgs;
 			sourceTree = "<group>";
@@ -3063,15 +3066,17 @@
 		3C52602224651ABB00D16DD5 /* Conference */ = {
 			isa = PBXGroup;
 			children = (
-				3C52602324651ABB00D16DD5 /* MeetingViewController.m */,
+				3C52602D24651ABB00D16DD5 /* DemoConfManager.h */,
 				3C52602424651ABB00D16DD5 /* DemoConfManager.m */,
-				3C52602524651ABB00D16DD5 /* Live2ViewController.m */,
+				3C52603024651ABB00D16DD5 /* EMConferenceViewController.h */,
 				3C52602624651ABB00D16DD5 /* EMConferenceViewController.m */,
 				3C52602724651ABB00D16DD5 /* Invite */,
-				3C52602D24651ABB00D16DD5 /* DemoConfManager.h */,
-				3C52602E24651ABB00D16DD5 /* MeetingViewController.h */,
 				3C52602F24651ABB00D16DD5 /* Live2ViewController.h */,
-				3C52603024651ABB00D16DD5 /* EMConferenceViewController.h */,
+				3C52602524651ABB00D16DD5 /* Live2ViewController.m */,
+				3C52602E24651ABB00D16DD5 /* MeetingViewController.h */,
+				3C52602324651ABB00D16DD5 /* MeetingViewController.m */,
+				3C87A0ED248E2B750051E06E /* EMConferenceInviteViewController.h */,
+				3C87A0EE248E2B750051E06E /* EMConferenceInviteViewController.m */,
 			);
 			path = Conference;
 			sourceTree = "<group>";
@@ -3955,6 +3960,7 @@
 				3A45E3912223A48700505786 /* EMChatroomMutesViewController.m in Sources */,
 				3C37DEFC23824EBB00399AE8 /* PellTableViewSelect.m in Sources */,
 				3A45E3CC2223A4DC00505786 /* EMCreateGroupViewController.m in Sources */,
+				3C87A0EF248E2B750051E06E /* EMConferenceInviteViewController.m in Sources */,
 				3A45E38C2223A48700505786 /* EMChatroomMembersViewController.m in Sources */,
 				3A45E54D2223E4DD00505786 /* EMConversationHelper.m in Sources */,
 				3A45E2442223A3A100505786 /* EMLocationViewController.m in Sources */,

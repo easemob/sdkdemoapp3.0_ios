@@ -319,6 +319,7 @@
         if (!self.isNeedReload) {
             self.isNeedReload = YES;
             for (EMMessage *msg in aMessages) {
+                
                 if(msg.body.type == EMMessageBodyTypeText) {
                     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
                     //群聊@提醒功能

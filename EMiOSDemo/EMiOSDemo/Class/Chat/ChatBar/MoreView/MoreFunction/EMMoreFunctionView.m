@@ -25,8 +25,8 @@
 {
     self = [super init];
     if(self){
-        _toolbarImgArray = @[@"video_conf",@"location",@"pin_readReceipt"];
-        _toolbarDescArray = @[@"视频通话",@"位置",@"群组回执"];
+        _toolbarImgArray = @[@"video_conf",@"location",@"pin_readReceipt",@"file-unSelected",@"camera-unSelected",@"pic-unSelected"];
+        _toolbarDescArray = @[@"视频通话",@"位置",@"群组回执",@"文件",@"相机",@"图片"];
         self.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
         [self _setupUI];
         
@@ -84,6 +84,21 @@
         //群组回执
         if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)]) {
             [self.delegate chatBarMoreFunctionReadReceipt];
+        }
+    } else if (tag == 3) {
+        //文件
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionFileOption)]) {
+            [self.delegate chatBarMoreFunctionFileOption];
+        }
+    } else if (tag == 4) {
+        //相机
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionCameraAction)]) {
+            [self.delegate chatBarMoreFunctionCameraAction];
+        }
+    } else if (tag == 5) {
+        //图片
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionPictureOption)]) {
+            [self.delegate chatBarMoreFunctionPictureOption];
         }
     }
 }

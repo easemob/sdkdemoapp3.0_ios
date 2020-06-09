@@ -13,7 +13,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import "AppDelegate.h"
 
-#import <Bugly/Bugly.h>
+//#import <Bugly/Bugly.h>
 
 #import "EMDemoHelper.h"
 #import "DemoCallManager.h"

@@ -14,6 +14,8 @@ extern BOOL gIsInitializedSDK;
 
 extern BOOL gIsCalling;
 
+extern BOOL gIsConferenceCalling;
+
 @interface EMGlobalVariables : NSObject
 
 @end

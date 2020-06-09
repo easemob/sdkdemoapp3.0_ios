@@ -186,6 +186,13 @@
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
+    for (EMMessage *msg in aMessages) {
+        if ([(NSString *)[msg.ext objectForKey:MSG_EXT_CALLID] length] != 0 || [(NSString *)[msg.ext objectForKey:@"conferenceId"] length] != 0) {
+            //会议邀请消息
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_INVITECONFERENCEVIEW object:msg];
+            break;
+        }
+    }
     if (self.isViewAppear) {
         [self _loadConversationTabBarItemBadge];
     }

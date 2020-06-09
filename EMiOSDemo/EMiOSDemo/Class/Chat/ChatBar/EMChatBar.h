@@ -2,7 +2,7 @@
 //  EMChatBar.h
 //  ChatDemo-UI3.0
 //
-//  Created by XieYajie on 2019/1/25.
+//  Updated by zhangchong on 2020/06/05.
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
@@ -21,8 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<EMChatBarDelegate> delegate;
 
 @property (nonatomic, strong) EMTextView *textView;
-
-@property (nonatomic, strong) UIView *buttonsView;
 
 @property (nonatomic, strong) UIButton *sendBtn;
 
@@ -49,17 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)inputViewDidChange:(EMTextView *)aInputView;
 
-- (void)chatBarDidCameraAction;
-
-- (void)chatBarDidPhotoAction;
-
-- (void)chatBarDidCallAction;
-
-- (void)chatBarDidFileAction;
-
 - (void)chatBarDidShowMoreViewAction;
-
-//- (void)chatBarHeightDidChanged;
 
 @end
 

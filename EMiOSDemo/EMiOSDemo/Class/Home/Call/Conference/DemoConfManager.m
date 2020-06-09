@@ -16,6 +16,7 @@
 
 #import "MeetingViewController.h"
 #import "Live2ViewController.h"
+#import "EMConferenceInviteViewController.h"
 
 static DemoConfManager *confManager = nil;
 
@@ -64,6 +65,7 @@ static DemoConfManager *confManager = nil;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMakeConference:) name:CALL_MAKECONFERENCE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSelectConferenceCell:) name:CALL_SELECTCONFERENCECELL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConferenceInviteView:) name:CALL_INVITECONFERENCEVIEW object:nil];
 }
 
 #pragma mark - EMChatManagerDelegate
@@ -145,6 +147,7 @@ static DemoConfManager *confManager = nil;
             isDestroy:(BOOL)aIsDestroy
 {
     gIsCalling = NO;
+    gIsConferenceCalling = NO;
     self.confNavController = nil;
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -255,6 +258,28 @@ static DemoConfManager *confManager = nil;
     if (controller) {
         gIsCalling = YES;
         self.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIViewController *rootViewController = window.rootViewController;
+        self.confNavController.modalPresentationStyle = 0;
+        [rootViewController presentViewController:self.confNavController animated:NO completion:nil];
+    }
+}
+
+//会议邀请界面
+- (void)handleConferenceInviteView:(NSNotification *)aNotif
+{
+    id obj = aNotif.object;
+    if (!obj || ![obj isKindOfClass:[EMMessage class]]) {
+        return;
+    }
+    if (gIsCalling || gIsConferenceCalling) {
+        return;
+    }
+    EMMessage *msg = (EMMessage *)obj;
+    EMConferenceInviteViewController *confInviteViewController = [[EMConferenceInviteViewController alloc]initWithMessage:msg];
+    if (confInviteViewController) {
+        gIsConferenceCalling = YES;
+        self.confNavController = [[UINavigationController alloc] initWithRootViewController:confInviteViewController];
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = window.rootViewController;
         self.confNavController.modalPresentationStyle = 0;

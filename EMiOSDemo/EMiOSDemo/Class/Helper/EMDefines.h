@@ -98,6 +98,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define CALL_MODEL @"EMCallForModel"
 #define CALL_MAKECONFERENCE @"EMMakeConference"
 #define CALL_SELECTCONFERENCECELL @"EMSelectConferenceCell"
+#define CALL_INVITECONFERENCEVIEW @"EMInviteConverfenceView"
 
 //用户黑名单
 #define CONTACT_BLACKLIST_UPDATE @"EMContactBlacklistUpdate"

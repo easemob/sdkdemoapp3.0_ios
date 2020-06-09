@@ -823,7 +823,7 @@
     }
 }
 
-- (void)chatBarDidCameraAction
+- (void)chatBarMoreFunctionCameraAction
 {
     [self.view endEditing:YES];
     
@@ -836,7 +836,7 @@
 #endif
 }
 
-- (void)chatBarDidPhotoAction
+- (void)chatBarMoreFunctionPictureOption
 {
     [self.view endEditing:YES];
     
@@ -865,7 +865,7 @@
     }];
 }
 
-- (void)chatBarDidFileAction
+- (void)chatBarMoreFunctionFileOption
 {
 
     NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
@@ -1421,6 +1421,7 @@
             if (![msg.conversationId isEqualToString:conId]) {
                 continue;
             }
+            
             if (msg.isNeedGroupAck && !msg.isReadAcked) {
                 [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(EMError *error) {
                     if (error) {

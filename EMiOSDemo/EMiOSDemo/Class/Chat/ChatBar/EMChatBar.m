@@ -2,7 +2,7 @@
 //  EMChatBar.m
 //  ChatDemo-UI3.0
 //
-//  Created by XieYajie on 2019/1/25.
+//  Updated by zhangchong on 2020/06/05.
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
@@ -17,10 +17,17 @@
 
 @property (nonatomic) CGFloat previousTextViewContentHeight;
 
-@property (nonatomic, strong) NSMutableArray<UIButton *> *buttonArray;
 @property (nonatomic, strong) UIButton *selectedButton;
 
 @property (nonatomic, strong) UIView *currentMoreView;
+
+@property (nonatomic, strong) UIButton *ConversationToolBarBtn;//更多
+
+@property (nonatomic, strong) UIButton *emojiButton;//表情
+
+@property (nonatomic, strong) UIButton *audioButton;//语音
+
+@property (nonatomic, strong) UIView *bottomLine;//下划线
 
 @end
 
@@ -54,6 +61,17 @@
         make.height.equalTo(@1);
     }];
     
+    self.audioButton = [[UIButton alloc] init];
+    [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-selected" ofType:@"png"]] forState:UIControlStateSelected];
+    [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.audioButton];
+    [_audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(10);
+        make.left.equalTo(self).offset(2);
+        make.width.height.equalTo(@30);
+    }];
+    
     self.textView = [[EMTextView alloc] init];
     
     self.textView.delegate = self;
@@ -71,9 +89,31 @@
     [self addSubview:self.textView];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(5);
-        make.left.equalTo(self).offset(8);
+        make.left.equalTo(self.audioButton.mas_right).offset(2);
         make.right.equalTo(self).offset(-65);
         make.height.mas_equalTo(ktextViewMinHeight);
+    }];
+    
+    self.emojiButton = [[UIButton alloc] init];
+    [_emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face" ofType:@"png"]] forState:UIControlStateNormal];
+    [_emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face-selected" ofType:@"png"]] forState:UIControlStateSelected];
+    [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_emojiButton];
+    [_emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.textView);
+        make.left.equalTo(self.textView.mas_right).offset(2);
+        make.width.height.equalTo(@30);
+    }];
+    
+    self.ConversationToolBarBtn = [[UIButton alloc] init];
+    [_ConversationToolBarBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [_ConversationToolBarBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-selected" ofType:@"png"]] forState:UIControlStateSelected];
+    [_ConversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_ConversationToolBarBtn];
+    [_ConversationToolBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.textView);
+        make.left.equalTo(_emojiButton.mas_right).offset(2);
+        make.width.height.equalTo(@30);
     }];
     
     self.sendBtn = [[UIButton alloc]init];
@@ -86,148 +126,24 @@
     [self addSubview:self.sendBtn];
     [self.sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(5);
-        make.left.equalTo(self.textView.mas_right).offset(2);
-        make.right.equalTo(self).offset(-8);
+        make.left.equalTo(_emojiButton.mas_right).offset(2);
+        make.right.equalTo(self).offset(-5);
         make.height.mas_equalTo(ktextViewMinHeight);
     }];
+    self.sendBtn.hidden = YES;
     
-    self.buttonsView = [[UIView alloc] init];
-    self.buttonsView.backgroundColor = [UIColor clearColor];
-    [self _setupButtonsView];
-    [self addSubview:self.buttonsView];
-    [self.buttonsView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.bottomLine = [[UIView alloc] init];
+    _bottomLine.backgroundColor = kColor_Gray;
+    [self addSubview:self.bottomLine];
+    [_bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.textView.mas_bottom).offset(5);
         make.left.equalTo(self);
         make.right.equalTo(self);
-        make.height.equalTo(@50);
+        make.height.equalTo(@1);
         make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
     }];
-    
     self.currentMoreView.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
 
-}
-
-- (void)_setupButtonsView
-{
-    //NSInteger count = 7;
-    NSInteger count = 6;
-    CGFloat width = [UIScreen mainScreen].bounds.size.width / count;
-    
-    self.buttonArray = [[NSMutableArray alloc] init];
-    
-    UIButton *audioButton = [[UIButton alloc] init];
-    /*
-    [audioButton setImage:[UIImage imageNamed:@"audio-unSelected"] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageNamed:@"audio-selected"] forState:UIControlStateSelected];*/
-    [audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-selected" ofType:@"png"]] forState:UIControlStateSelected];
-    [audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:audioButton];
-    [audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(self.buttonsView);
-        make.bottom.equalTo(self.buttonsView);
-        make.width.mas_equalTo(width);
-    }];
-    [self.buttonArray addObject:audioButton];
-    
-    UIButton *emojiButton = [[UIButton alloc] init];
-    /*
-    [emojiButton setImage:[UIImage imageNamed:@"face"] forState:UIControlStateNormal];
-    [emojiButton setImage:[UIImage imageNamed:@"face-selected"] forState:UIControlStateSelected];*/
-    [emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face" ofType:@"png"]] forState:UIControlStateNormal];
-    [emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face-selected" ofType:@"png"]] forState:UIControlStateSelected];
-    [emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:emojiButton];
-    [emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(audioButton.mas_right);
-        make.bottom.equalTo(audioButton);
-        make.width.mas_equalTo(width);
-    }];
-    [self.buttonArray addObject:emojiButton];
-    
-    UIButton *cameraButton = [[UIButton alloc] init];
-    /*
-    [cameraButton setImage:[UIImage imageNamed:@"camera-unSelected"] forState:UIControlStateNormal];
-    [cameraButton setImage:[UIImage imageNamed:@"camera-selected"] forState:UIControlStateHighlighted];*/
-    [cameraButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"camera-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [cameraButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"camera-selected" ofType:@"png"]] forState:UIControlStateSelected];
-    [cameraButton addTarget:self action:@selector(cameraButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:cameraButton];
-    [cameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(emojiButton.mas_right);
-        make.bottom.equalTo(emojiButton);
-        make.width.mas_equalTo(width);
-    }];
-    [self.buttonArray addObject:cameraButton];
-    
-    UIButton *photoButton = [[UIButton alloc] init];
-    /*
-    [photoButton setImage:[UIImage imageNamed:@"pic-unSelected"] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageNamed:@"pic-selected"] forState:UIControlStateHighlighted];*/
-    [photoButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pic-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pic-selected" ofType:@"png"]] forState:UIControlStateSelected];
-    [photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:photoButton];
-    [photoButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(cameraButton.mas_right);
-        make.bottom.equalTo(cameraButton);
-        make.width.mas_equalTo(width);
-    }];
-    [self.buttonArray addObject:photoButton];
-    
-    UIButton *fileButton = [[UIButton alloc] init];
-    /*
-    [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateNormal];
-    [fileButton setImage:[UIImage imageNamed:@"file-unSelected"] forState:UIControlStateHighlighted];*/
-    [fileButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"file-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [fileButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"file-unSelected" ofType:@"png"]] forState:UIControlStateSelected];
-    [fileButton addTarget:self action:@selector(fileButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:fileButton];
-    [fileButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(photoButton.mas_right);
-        make.bottom.equalTo(photoButton);
-        make.width.mas_equalTo(width);
-    }];
-    [self.buttonArray addObject:fileButton];
-    
-    UIButton *callButton = [[UIButton alloc] init];
-    /*
-    [callButton setImage:[UIImage imageNamed:@"video-unSelected"] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageNamed:@"video-selected"] forState:UIControlStateSelected];*/
-    /*
-    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"phone_unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [callButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"phone_selected" ofType:@"png"]] forState:UIControlStateSelected];
-    [callButton addTarget:self action:@selector(callButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:callButton];
-    [callButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(fileButton.mas_right);
-        make.bottom.equalTo(fileButton);
-        make.width.mas_equalTo(width);
-        //make.right.equalTo(self.buttonsView);
-    }];
-    [self.buttonArray addObject:callButton];*/
-    
-    UIButton *moreButton = [[UIButton alloc] init];
-    /*
-    [moreButton setImage:[UIImage imageNamed:@"more-unSelected"] forState:UIControlStateNormal];
-    [moreButton setImage:[UIImage imageNamed:@"more-selected"] forState:UIControlStateSelected];*/
-    [moreButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [moreButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-selected" ofType:@"png"]] forState:UIControlStateSelected];
-    [moreButton addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView addSubview:moreButton];
-    [moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.buttonsView);
-        make.left.equalTo(fileButton.mas_right);
-        make.bottom.equalTo(fileButton);
-        make.right.equalTo(self.buttonsView);
-    }];
-    [self.buttonArray addObject:moreButton];
 }
 
 - (void)textChangedExt
@@ -247,18 +163,14 @@
 {
     if (self.currentMoreView) {
         [self.currentMoreView removeFromSuperview];
-        [self.buttonsView mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.bottomLine mas_updateConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
         }];
     }
     
-    for (UIButton *button in self.buttonArray) {
-        if (button.isSelected) {
-            button.selected = NO;
-            break;
-        }
-    }
-    
+    self.emojiButton.selected = NO;
+    self.ConversationToolBarBtn.selected = NO;
+    self.audioButton.selected = NO;
     return YES;
 }
 
@@ -276,11 +188,21 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     if (self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]) {
+        self.ConversationToolBarBtn.hidden = YES;
+        self.sendBtn.hidden = NO;
         self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
         self.sendBtn.tag = 1;
+        [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self).offset(-80);
+        }];
     } else {
         self.sendBtn.backgroundColor = [UIColor lightGrayColor];
         self.sendBtn.tag = 0;
+        self.sendBtn.hidden = YES;
+        self.ConversationToolBarBtn.hidden = NO;
+        [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self).offset(-65);
+        }];
     }
     [self _updatetextViewHeight];
     
@@ -323,19 +245,19 @@
 - (void)_remakeButtonsViewConstraints
 {
     if (self.currentMoreView) {
-        [self.buttonsView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        [self.bottomLine mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.textView.mas_bottom).offset(5);
             make.left.equalTo(self);
             make.right.equalTo(self);
-            make.height.equalTo(@55);
+            make.height.equalTo(@1);
             make.bottom.equalTo(self.currentMoreView.mas_top);
         }];
     } else {
-        [self.buttonsView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        [self.bottomLine mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.textView.mas_bottom).offset(5);
             make.left.equalTo(self);
             make.right.equalTo(self);
-            make.height.equalTo(@55);
+            make.height.equalTo(@1);
             make.bottom.equalTo(self).offset(-EMVIEWBOTTOMMARGIN);
         }];
     }
@@ -346,6 +268,11 @@
 - (void)clearInputViewText
 {
     self.textView.text = @"";
+    self.sendBtn.hidden = YES;
+    self.ConversationToolBarBtn.hidden = NO;
+    [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-65);
+    }];
     [self textChangedExt];
     [self _updatetextViewHeight];
 }
@@ -399,6 +326,7 @@
     }
 }
 
+//语音
 - (void)audioButtonAction:(UIButton *)aButton
 {
     [self _buttonAction:aButton];
@@ -420,6 +348,7 @@
     }
 }
 
+//表情
 - (void)emoticonButtonAction:(UIButton *)aButton
 {
     [self _buttonAction:aButton];
@@ -460,42 +389,6 @@
                 [self.delegate chatBarDidShowMoreViewAction];
             }
         }
-    }
-}
-
-- (void)callButtonAction:(UIButton *)aButton
-{
-    [self clearMoreViewAndSelectedButton];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidCallAction)]) {
-        [self.delegate chatBarDidCallAction];
-    }
-}
-
-- (void)cameraButtonAction:(UIButton *)aButton
-{
-    [self clearMoreViewAndSelectedButton];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidCameraAction)]) {
-        [self.delegate chatBarDidCameraAction];
-    }
-}
-
-- (void)photoButtonAction:(UIButton *)aButton
-{
-    [self clearMoreViewAndSelectedButton];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidPhotoAction)]) {
-        [self.delegate chatBarDidPhotoAction];
-    }
-}
-
-- (void)fileButtonAction:(UIButton *)aButton
-{
-    [self clearMoreViewAndSelectedButton];
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarDidFileAction)]) {
-        [self.delegate chatBarDidFileAction];
     }
 }
 

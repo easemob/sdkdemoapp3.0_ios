@@ -12,6 +12,8 @@ BOOL gIsInitializedSDK = NO;
 
 BOOL gIsCalling = NO;
 
+BOOL gIsConferenceCalling = NO;
+
 static EMGlobalVariables *shared = nil;
 @implementation EMGlobalVariables
 
