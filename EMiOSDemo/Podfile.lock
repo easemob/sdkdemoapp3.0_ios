@@ -1,19 +1,19 @@
 PODS:
   - FLAnimatedImage (1.0.12)
-  - Hyphenate (3.6.6)
+  - Hyphenate (3.6.8)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
-  - MJRefresh (3.2.0)
-  - SDWebImage (4.4.6):
-    - SDWebImage/Core (= 4.4.6)
-  - SDWebImage/Core (4.4.6)
-  - SDWebImage/GIF (4.4.6):
+  - MJRefresh (3.4.1)
+  - SDWebImage (4.4.8):
+    - SDWebImage/Core (= 4.4.8)
+  - SDWebImage/Core (4.4.8)
+  - SDWebImage/GIF (4.4.8):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
 
 DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
-  - Hyphenate
+  - Hyphenate (~> 3.6.8)
   - Masonry
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
@@ -31,12 +31,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  Hyphenate: c1ded5d73b7a68c725ed34c3112e28ee59b6664b
+  Hyphenate: 7f1e47f7c1132d5a6e323330f9a6eeec9338bc76
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
-  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
+  MJRefresh: 3153c59a363159092c08b2177ec3a7d09f90bfaf
+  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
 
-PODFILE CHECKSUM: b94911f62f3aeb06514ff2ed605f55f53dc72c27
+PODFILE CHECKSUM: b9dc5e52969678d867b1394541a1e601812894a3
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
