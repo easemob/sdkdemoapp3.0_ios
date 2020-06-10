@@ -405,7 +405,7 @@
     [self.view endEditing:YES];
     
     BOOL isTokenLogin = self.loginTypeButton.selected;
-    NSString *name = self.nameField.text;
+    NSString *name = [self.nameField.text lowercaseString];
     NSString *pswd = self.pswdField.text;
 
     if ([name length] == 0 || [pswd length] == 0) {

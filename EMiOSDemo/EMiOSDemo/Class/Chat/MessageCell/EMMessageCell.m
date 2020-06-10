@@ -178,10 +178,9 @@
 - (void)setCellIsReadReceipt{
     _readReceiptBtn = [[UIButton alloc]init];
     _readReceiptBtn.layer.cornerRadius = 5;
-    //[_readReceiptBtn setTitle:self.model.readReceiptCount forState:UIControlStateNormal];
     _readReceiptBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     _readReceiptBtn.backgroundColor = [UIColor lightGrayColor];
-    [_readReceiptBtn.titleLabel setTextColor:[UIColor whiteColor]];
+    [_readReceiptBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _readReceiptBtn.titleLabel.font = [UIFont systemFontOfSize: 10.0];
     [_readReceiptBtn addTarget:self action:@selector(readReceiptDetilAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_readReceiptBtn];
@@ -189,7 +188,6 @@
         [_readReceiptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.bubbleView.mas_bottom).offset(2);
             make.right.equalTo(self.bubbleView.mas_right);
-            make.width.equalTo(@130);
             make.height.equalTo(@15);
         }];
     }
@@ -249,7 +247,12 @@
     } else {
         self.nameLabel.text = model.emModel.from;
         if (model.type == EMMessageBodyTypeVoice) {
-            self.statusView.hidden = model.emModel.isReadAcked;
+            BOOL hide = NO;
+            NSNumber* ret = [model.emModel.ext objectForKey:@"Voice_Played"];
+            if(ret) {
+                hide = [ret boolValue];
+            }
+            self.statusView.hidden = hide;
         }
     }
     if(model.emModel.isNeedGroupAck) {

@@ -46,7 +46,10 @@
     [self _fetchChatroomWithId:self.chatroomId isShowHUD:YES];
     
     [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleChatroomInfoUpdated:) name:CHATROOM_INFO_UPDATED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleChatroomInfoUpdated:)
+                                                 name:CHATROOM_INFO_UPDATED
+                                               object:nil];
 }
 
 - (void)dealloc

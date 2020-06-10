@@ -17,6 +17,7 @@
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
 #import "EMChatViewController.h"
+#import "AudioRecord.h"
 
 static DemoCallManager *callManager = nil;
 
@@ -35,6 +36,8 @@ static DemoCallManager *callManager = nil;
 @property (nonatomic, strong) NSString *chatter;
 
 @property (nonatomic, strong) UIAlertController *alertView;
+
+@property (nonatomic, strong) AudioRecord* audioRecorder;
 
 @end
 
@@ -77,6 +80,10 @@ static DemoCallManager *callManager = nil;
     _callLock = [[NSObject alloc] init];
     _currentCall = nil;
     _currentController = nil;
+    _audioRecorder = [[AudioRecord alloc] init];
+    _audioRecorder.inputAudioData = ^(NSData*data) {
+        [[[EMClient sharedClient] callManager] inputCustomAudioData:data];
+    };
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
@@ -93,10 +100,16 @@ static DemoCallManager *callManager = nil;
         options.videoResolution = EMCallVideoResolution640_480;
     }
     
+    //xiaoming.li
+    options.enableCustomAudioData = NO;
+    options.audioCustomSamples = 48000;
+    options.audioCustomChannels = 1;
+    
     // dujiepeng
-    options.maxVideoKbps = 200;
+    options.maxVideoKbps = 0;
     options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
     
@@ -193,26 +206,7 @@ static DemoCallManager *callManager = nil;
                 
                 UIViewController *parent = [[UIViewController alloc]init];
                 parent = rootViewController;
-                /*
-                while ((parent = rootViewController.presentedViewController) != nil ) {
-                    rootViewController = parent;
-                }
-                
-                while ([rootViewController isKindOfClass:[UINavigationController class]]) {
-                    rootViewController = [(UINavigationController *)rootViewController topViewController];
-                }
-                
-                /*if(rootViewController.presentedViewController){
-                    nextResponder = rootViewController.presentedViewController;
-                }else{
-                    UIView *frontView = [[window subviews] objectAtIndex:0];
-                    nextResponder = [frontView nextResponder];
-                }
-                if([nextResponder isKindOfClass:[UINavigationController class]]){
-                    UIViewController *nav = (UIViewController *)nextResponder;
-                    nextResponder = nav.childViewControllers.lastObject;
-                }*/
-                
+             
                 self.currentController.modalPresentationStyle = 0;
 
                 [rootViewController presentViewController:self.currentController animated:NO completion:nil];
@@ -237,6 +231,12 @@ static DemoCallManager *callManager = nil;
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
         [self _stopCallTimeoutTimer];
         self.currentController.callStatus = EMCallSessionStatusAccepted;
+    }
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData){
+        [self audioRecorder].channels = options.audioCustomChannels;
+        [self audioRecorder].samples = options.audioCustomSamples;
+        [[self audioRecorder] startAudioDataRecord];
     }
 }
 
@@ -310,13 +310,13 @@ static DemoCallManager *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
-    /*
+
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
     message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];*/
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
     //开关打开发消息并一直呼，否则挂断发消息
     if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
@@ -341,26 +341,7 @@ static DemoCallManager *callManager = nil;
     
     EMCallType type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
     _chatter = [notify.object valueForKey:CALL_CHATTER] ;
-    if (type == EMCallTypeVideo) {
-        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
-//        }];
-//        [alertController addAction:defaultAction];
-//
-//        UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
-//        }];
-//        [alertController addAction:customAction];
-//
-//        [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-//
-//        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
-    } else {
-        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
-    }
+    [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
 }
 
 - (void)_makeCallWithUsername:(NSString *)aUsername
@@ -471,6 +452,9 @@ static DemoCallManager *callManager = nil;
     [self _stopCallTimeoutTimer];
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData) {
+        [[self audioRecorder] stopAudioDataRecord];
+    }
     options.enableCustomizeVideoData = NO;
     
     if (aIsNeedHangup) {

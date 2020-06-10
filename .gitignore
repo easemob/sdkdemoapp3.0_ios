@@ -9,3 +9,4 @@ Pods/
 **/WebRTC.framework
 **/xcshareddata/
 **/Hyphenate.framework
+**/Podfile.lock

@@ -160,7 +160,7 @@
     if (self.callSession.remoteVideoView == nil) {
         self.callSession.remoteVideoView = [[EMCallRemoteView alloc] init];
         self.callSession.remoteVideoView.backgroundColor = [UIColor clearColor];
-        self.callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill;
+        self.callSession.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFit;
         self.callSession.remoteVideoView.userInteractionEnabled = YES;
     }
     

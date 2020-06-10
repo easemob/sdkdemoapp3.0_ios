@@ -78,6 +78,16 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
+    for (UIView *subView in cell.contentView.subviews) {
+        if (subView == self.shieldSwitch) {
+            [self.shieldSwitch removeFromSuperview];
+        }
+        
+        if (subView == self.pushSwitch) {
+            [self.pushSwitch removeFromSuperview];
+        }
+    }
+    
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     if (section == 0) {

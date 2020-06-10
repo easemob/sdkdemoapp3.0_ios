@@ -310,8 +310,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     id obj = [self.dataArray objectAtIndex:indexPath.row];
-    NSLog(@"section:  %ld   row:  %ld",(long)indexPath.section,(long)indexPath.row);
-    
     NSString *cellString = nil;
     if ([obj isKindOfClass:[NSString class]]) {
         cellString = (NSString *)obj;
@@ -538,6 +536,7 @@
         [self _sendLocationAction:aCoordinate address:aAddress];
     }];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
@@ -556,15 +555,10 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
         }]];
     } else {
-        [self.alertController addAction:[UIAlertAction actionWithTitle:@"会议模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"普通模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.chatBar clearMoreViewAndSelectedButton];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
-        }]];
-        [self.alertController addAction:[UIAlertAction actionWithTitle:@"互动模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [weakself.chatBar clearMoreViewAndSelectedButton];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLive), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
         }]];
     }
     
@@ -756,6 +750,27 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+- (bool)setVoiceMessage:(EMMessage*)msg isPlayed:(bool)isPlayed
+{
+    if(msg.body.type == EMMessageBodyTypeVoice)
+    {
+        NSMutableDictionary* ext = [msg.ext mutableCopy];
+        if(!ext) {
+            ext = [NSMutableDictionary dictionary];
+        }
+        NSNumber* ret = [NSNumber numberWithBool:isPlayed];
+        [ext setObject:ret forKey:@"Voice_Played"];
+        msg.ext = ext;
+        [[[EMClient sharedClient] chatManager] updateMessage:msg completion:^(EMMessage*retmsg,EMError*err){
+            if(err != 0){
+                NSLog(@"update message error");
+            }
+        }];
+        return YES;
+    }
+    return NO;
+}
+
 - (void)_audioMessageCellDidSelected:(EMMessageCell *)aCell
 {
     if (aCell.model.isPlaying) {
@@ -780,11 +795,12 @@
                 oldModel.isPlaying = NO;
             }
         }
-        
+
         if (!aModel.emModel.isReadAcked) {
             [[EMClient sharedClient].chatManager sendMessageReadAck:aModel.emModel.messageId toUser:aModel.emModel.conversationId completion:nil];
         }
-        
+        [weakself setVoiceMessage:aModel.emModel isPlayed:YES];
+
         aModel.isPlaying = YES;
         if (!aModel.emModel.isRead) {
             aModel.emModel.isRead = YES;
@@ -1696,12 +1712,6 @@
         return;
     }
     
-    //TODO: 处理@
-    //messageExt
-    
-    //TODO: 处理表情
-    //    NSString *sendText = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:aText];
-    
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
     [self _sendMessageWithBody:body ext:aExt isUpload:NO];
     
@@ -1763,7 +1773,7 @@
         EMMessage *msg = aMessages[i];
 
         // cmd消息不展示
-        if(msg.body.type == EMMessageBodyTypeCmd) {
+        if(msg.body.type == EMMessageBodyTypeCmd || msg.body.type == EMMessageBodyTypeCustom) {
             continue;
         }
         if (msg.chatType == EMChatTypeChat && !msg.isReadAcked && (msg.body.type == EMMessageBodyTypeText || msg.body.type == EMMessageBodyTypeLocation)) {
@@ -1814,7 +1824,7 @@
     
     if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         EMConversation *conversation = self.conversationModel.emModel;
-        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:10 completion:^(EMCursorResult *aResult, EMError *aError) {
             block(aResult.list, aError);
          }];
     } else {
@@ -1903,7 +1913,6 @@
         [weakself _scrollToBottomRow];
     });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        NSLog(@"errorCode    %u   errorDesc    %@",error.code,error.errorDescription);
         [weakself messageStatusDidChange:message error:error];
     }];
     

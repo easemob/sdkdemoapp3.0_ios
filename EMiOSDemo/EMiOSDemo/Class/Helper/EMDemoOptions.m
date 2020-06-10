@@ -169,9 +169,9 @@ static EMDemoOptions *sharedOptions = nil;
 #endif
     self.usingHttpsOnly = NO;
     self.specifyServer = NO;
-    self.chatServer = @"msync-im1.sandbox.easemob.com";
+    self.chatServer = @"39.107.54.56";
     self.chatPort = 6717;
-    self.restServer = @"a1.sdb.easemob.com";
+    self.restServer = @"a1-hsb.easemob.com";
 }
 
 #pragma mark - Public
@@ -195,6 +195,7 @@ static EMDemoOptions *sharedOptions = nil;
         retOpt.chatPort = self.chatPort;
         retOpt.chatServer = self.chatServer;
         retOpt.restServer = self.restServer;
+        //retOpt.rtcUrlDomain = @"wss://a1-hsb.easemob.com";
     }
     
     retOpt.isAutoLogin = self.isAutoLogin;
