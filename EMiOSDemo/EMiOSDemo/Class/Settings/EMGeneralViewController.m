@@ -13,9 +13,10 @@
 #import "EMDemoOptions.h"
 #import "EMServiceCheckViewController.h"
 
-@interface EMGeneralViewController ()<MFMailComposeViewControllerDelegate>
+@interface EMGeneralViewController ()<MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong) NSString *logPath;
+@property (nonatomic, strong) UIDocumentInteractionController *documentController;
 
 @end
 
@@ -407,7 +408,6 @@
 }
 
 - (void)saveLogToDocument {
-    __weak typeof(self) weakSelf = self;
     [[EMClient sharedClient] getLogFilesPathWithCompletion:^(NSString *aPath, EMError *aError) {
         if (!aPath) {
             [EMAlertController showErrorAlert:@"日志获取失败"];
@@ -416,10 +416,26 @@
         
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *toPath = [NSString stringWithFormat:@"%@/Documents/", NSHomeDirectory()];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM-dd HH:mm:ss"];
+        NSDate *datenow = [NSDate date];
+        NSString *currentTimeString = [formatter stringFromDate:datenow];
+        toPath = [toPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ log.gz", currentTimeString]];
         [fm copyItemAtPath:aPath toPath:toPath error:nil];
         
         [EMAlertController showSuccessAlert:@"已将文件移动到沙箱"];
+        
+        
+        NSURL *url = [NSURL fileURLWithPath:toPath];
+        self.documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        self.documentController.delegate = self;
+        [self.documentController presentPreviewAnimated:YES];
+        
     }];
 }
 
+#pragma mark - UIDocumentInteractionControllerDelegate
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
+    return self;
+}
 @end

@@ -206,26 +206,7 @@ static DemoCallManager *callManager = nil;
                 
                 UIViewController *parent = [[UIViewController alloc]init];
                 parent = rootViewController;
-                /*
-                while ((parent = rootViewController.presentedViewController) != nil ) {
-                    rootViewController = parent;
-                }
-                
-                while ([rootViewController isKindOfClass:[UINavigationController class]]) {
-                    rootViewController = [(UINavigationController *)rootViewController topViewController];
-                }
-                
-                /*if(rootViewController.presentedViewController){
-                    nextResponder = rootViewController.presentedViewController;
-                }else{
-                    UIView *frontView = [[window subviews] objectAtIndex:0];
-                    nextResponder = [frontView nextResponder];
-                }
-                if([nextResponder isKindOfClass:[UINavigationController class]]){
-                    UIViewController *nav = (UIViewController *)nextResponder;
-                    nextResponder = nav.childViewControllers.lastObject;
-                }*/
-                
+             
                 self.currentController.modalPresentationStyle = 0;
 
                 [rootViewController presentViewController:self.currentController animated:NO completion:nil];
@@ -329,13 +310,13 @@ static DemoCallManager *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
-    /*
+
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
     EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
     message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];*/
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     
     //开关打开发消息并一直呼，否则挂断发消息
     if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
@@ -360,26 +341,7 @@ static DemoCallManager *callManager = nil;
     
     EMCallType type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
     _chatter = [notify.object valueForKey:CALL_CHATTER] ;
-    if (type == EMCallTypeVideo) {
-        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
-//        }];
-//        [alertController addAction:defaultAction];
-//
-//        UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
-//        }];
-//        [alertController addAction:customAction];
-//
-//        [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-//
-//        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
-    } else {
-        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
-    }
+    [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
 }
 
 - (void)_makeCallWithUsername:(NSString *)aUsername

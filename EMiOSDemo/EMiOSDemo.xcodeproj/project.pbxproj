@@ -452,8 +452,6 @@
 		3C4CEC742372A7AB00A37140 /* chat_audio_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4CEC1B2372A7AA00A37140 /* chat_audio_blue@2x.png */; };
 		3C4CEC752372A7AB00A37140 /* chat_audio_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4CEC1C2372A7AA00A37140 /* chat_audio_blue@3x.png */; };
 		3C4CEC882372BE8300A37140 /* pin-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4CEC872372BE8300A37140 /* pin-white.png */; };
-		3C5260DD24651BB700D16DD5 /* tabbar_contacts_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260BF24651BB700D16DD5 /* tabbar_contacts_blue@3x.png */; };
-		3C5260DE24651BB800D16DD5 /* tabbar_chat_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260C024651BB700D16DD5 /* tabbar_chat_gray@3x.png */; };
 		3C5260E224651BB800D16DD5 /* tabbar_chat_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260C424651BB700D16DD5 /* tabbar_chat_gray@2x.png */; };
 		3C5260E324651BB800D16DD5 /* tabbar_contacts_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260C524651BB700D16DD5 /* tabbar_contacts_blue@2x.png */; };
 		3C5260E624651BB800D16DD5 /* tabbar_settings_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260C824651BB700D16DD5 /* tabbar_settings_blue@2x.png */; };
@@ -489,30 +487,11 @@
 		C06DBC5023BA152A00F9FA3B /* icon-tab发现@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC3823BA152900F9FA3B /* icon-tab发现@2x.png */; };
 		C06DBC5323BA152A00F9FA3B /* tabbar_settings_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC3B23BA152900F9FA3B /* tabbar_settings_gray@2x.png */; };
 		C06DBC5423BA152A00F9FA3B /* tabbar_settings_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC3C23BA152900F9FA3B /* tabbar_settings_gray@3x.png */; };
-		C0707EA72484DE62000247DB /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C063010123E9077100B8F277 /* WebRTC.framework */; };
-		C0707EA82484DE62000247DB /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C063010123E9077100B8F277 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C0707EAA2484DE69000247DB /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06300FA23E9072A00B8F277 /* Hyphenate.framework */; };
-		C0707EAB2484DE69000247DB /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06300FA23E9072A00B8F277 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C0BEF25423ED6F1800FBD5CF /* watermark.png in Resources */ = {isa = PBXBuildFile; fileRef = C0BEF25323ED6F1800FBD5CF /* watermark.png */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
 		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C0707EA92484DE62000247DB /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C0707EA82484DE62000247DB /* WebRTC.framework in Embed Frameworks */,
-				C0707EAB2484DE69000247DB /* Hyphenate.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3A45D69D22239DE200505786 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -1144,8 +1123,6 @@
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		C06300FA23E9072A00B8F277 /* Hyphenate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C063010123E9077100B8F277 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
 		C069A97123A246B7005AA90D /* AudioRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecord.m; sourceTree = "<group>"; };
 		C069A97223A246B7005AA90D /* AudioRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecord.h; sourceTree = "<group>"; };
 		C06DBC2723BA152900F9FA3B /* icon-tab发现unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab发现unselected@2x.png"; sourceTree = "<group>"; };
@@ -1194,14 +1171,12 @@
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
-				C0707EA72484DE62000247DB /* WebRTC.framework in Frameworks */,
 				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
-				C0707EAA2484DE69000247DB /* Hyphenate.framework in Frameworks */,
 				FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2315,7 +2290,6 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
-				C063010123E9077100B8F277 /* WebRTC.framework */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -2334,7 +2308,6 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C06300FA23E9072A00B8F277 /* Hyphenate.framework */,
 				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
 				3ACFA04E221168C000B16331 /* CoreServices.framework */,
 				3AB62A121D926375000776F0 /* libbz2.tbd */,
@@ -2407,12 +2380,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "EMiOSDemo" */;
 			buildPhases = (
-				A953713D7161DE906A0EF1EF /* [CP] Check Pods Manifest.lock */,
+				F000030740294730DC04F490 /* [CP] Check Pods Manifest.lock */,
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
-				50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */,
-				C0707EA92484DE62000247DB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2430,7 +2401,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = "___FULLUSERNAME___";
+				ORGANIZATIONNAME = ___FULLUSERNAME___;
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -2551,7 +2522,6 @@
 				3C4CEC622372A7AB00A37140 /* icon_013_cover.png in Resources */,
 				3A45E3B02223A4C000505786 /* call@2x.png in Resources */,
 				3A45E30D2223A41600505786 /* chatbar_face@2x.png in Resources */,
-				3C5260DE24651BB800D16DD5 /* tabbar_chat_gray@3x.png in Resources */,
 				3A45E3692223A45500505786 /* msg_recv_audio01@2x.png in Resources */,
 				3A45E0342223A22600505786 /* unsecure@2x.png in Resources */,
 				3A45D9B322239DE200505786 /* Localizable.strings in Resources */,
@@ -2751,7 +2721,6 @@
 				3A45E2F82223A41600505786 /* chatbar_face_blue@3x.png in Resources */,
 				3A45E20F2223A37900505786 /* animate_00068.png in Resources */,
 				3A45E2182223A37900505786 /* animate_00049.png in Resources */,
-				3C5260DD24651BB700D16DD5 /* tabbar_contacts_blue@3x.png in Resources */,
 				3A45E1972223A36400505786 /* invite_white@2x.png in Resources */,
 				3A45E1FC2223A37900505786 /* animate_00067.png in Resources */,
 				3A45E19B2223A36400505786 /* minimize_white@2x.png in Resources */,
@@ -2798,34 +2767,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		50B2DFB077B1015626698D94 /* [CP] Copy Pods Resources */ = {
+		F000030740294730DC04F490 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh",
-				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A953713D7161DE906A0EF1EF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-EMiOSDemo-checkManifestLockResult.txt",
 			);
@@ -3140,7 +3095,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 				);
-				MARKETING_VERSION = 3.6.2;
+				MARKETING_VERSION = 3.6.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -3148,8 +3103,6 @@
 					"\"${PODS_ROOT}/Headers/Public\"",
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
-					"-isystem",
-					"\"${PODS_ROOT}/Headers/Public/EaseUI\"",
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/Hyphenate\"",
 					"-isystem",
@@ -3159,16 +3112,14 @@
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/MWPhotoBrowser\"",
 					"-isystem",
-					"\"${PODS_ROOT}/Headers/Public/RedPacketAlipay\"",
-					"-isystem",
-					"\"${PODS_ROOT}/Headers/Public/RedpacketLib\"",
-					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
 					"-fembed-bitcode",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
+					"-force_load",
+					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/EaseMob-hbiekeoklzzaxqbgliezcwjntbfz/Build/Products/Debug-iphoneos/Hyphenate.framework/Hyphenate\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3225,7 +3176,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 				);
-				MARKETING_VERSION = 3.6.2;
+				MARKETING_VERSION = 3.6.8;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -3233,8 +3184,6 @@
 					"\"${PODS_ROOT}/Headers/Public\"",
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
-					"-isystem",
-					"\"${PODS_ROOT}/Headers/Public/EaseUI\"",
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/Hyphenate\"",
 					"-isystem",
@@ -3244,16 +3193,14 @@
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/MWPhotoBrowser\"",
 					"-isystem",
-					"\"${PODS_ROOT}/Headers/Public/RedPacketAlipay\"",
-					"-isystem",
-					"\"${PODS_ROOT}/Headers/Public/RedpacketLib\"",
-					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
 					"-fembed-bitcode",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
+					"-force_load",
+					"\"$(SRCROOT)/../../../../../../Library/Developer/Xcode/DerivedData/EaseMob-hbiekeoklzzaxqbgliezcwjntbfz/Build/Products/Debug-iphoneos/Hyphenate.framework/Hyphenate\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
