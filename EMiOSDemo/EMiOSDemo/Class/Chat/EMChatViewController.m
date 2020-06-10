@@ -536,6 +536,7 @@
         [self _sendLocationAction:aCoordinate address:aAddress];
     }];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
@@ -1711,11 +1712,8 @@
         return;
     }
     
-   
-    EMCustomMessageBody *customBody = [[EMCustomMessageBody alloc] initWithEvent:@"test" ext:nil];
-    
-//    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
-    [self _sendMessageWithBody:customBody ext:aExt isUpload:NO];
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aText];
+    [self _sendMessageWithBody:body ext:aExt isUpload:NO];
     
     if (self.enableTyping) {
         [self _sendEndTyping];
@@ -1826,7 +1824,7 @@
     
     if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         EMConversation *conversation = self.conversationModel.emModel;
-        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+        [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:10 completion:^(EMCursorResult *aResult, EMError *aError) {
             block(aResult.list, aError);
          }];
     } else {
