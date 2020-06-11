@@ -40,6 +40,7 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.willRecord = NO;
         self.willMergeStrem = NO;
+        self.isSupportWechatMiniProgram = NO;
     }
     
     return self;
@@ -82,6 +83,7 @@ static EMDemoOptions *sharedOptions = nil;
 
         self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
         self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
+        self.isSupportWechatMiniProgram = [aDecoder decodeBoolForKey:kOptions_IsSupportWechatMiniProgram];
     }
     return self;
 }
@@ -118,6 +120,7 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
+    [aCoder encodeBool:self.isSupportWechatMiniProgram forKey:kOptions_IsSupportWechatMiniProgram];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -146,6 +149,7 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.isUseBackCamera = self.isUseBackCamera;
     retModel.willRecord = self.willRecord;
     retModel.willMergeStrem = self.willMergeStrem;
+    retModel.isSupportWechatMiniProgram = self.isSupportWechatMiniProgram;
     return retModel;
 }
 
@@ -169,7 +173,7 @@ static EMDemoOptions *sharedOptions = nil;
 #endif
     self.usingHttpsOnly = NO;
     self.specifyServer = NO;
-    self.chatServer = @"39.107.54.56";
+    self.chatServer = @"116.85.43.118";
     self.chatPort = 6717;
     self.restServer = @"a1-hsb.easemob.com";
 }

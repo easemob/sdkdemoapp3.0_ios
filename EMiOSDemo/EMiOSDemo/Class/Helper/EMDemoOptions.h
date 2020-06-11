@@ -38,6 +38,7 @@ static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 
 static NSString *kOptions_WillRecord = @"WillRecord";
 static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
+static NSString *kOptions_IsSupportWechatMiniProgram = @"IsSupportMiniProgram";
 
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
@@ -84,6 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) BOOL enableCustomAudioData;
 @property (nonatomic) int  customAudioDataSamples;
+
+@property (nonatomic) BOOL isSupportWechatMiniProgram;
 
 
 
