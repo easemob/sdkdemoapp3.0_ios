@@ -51,7 +51,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.showRefreshHeader = YES;
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 66;
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
@@ -97,6 +97,8 @@
         } else {
             cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
             cell.nameLabel.text = [self.dataArray[section - 1] objectAtIndex:row];
+            cell.nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+            cell.nameLabel.font = [UIFont systemFontOfSize:18.f];
         }
     } else {
         cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];

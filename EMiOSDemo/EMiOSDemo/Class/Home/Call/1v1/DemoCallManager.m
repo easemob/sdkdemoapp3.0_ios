@@ -178,6 +178,7 @@ static DemoCallManager *callManager = nil;
         } else {
             self.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:self.currentCall];
         }
+        self.currentController.callType = aSession.type;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentController) {
@@ -212,8 +213,6 @@ static DemoCallManager *callManager = nil;
                     UIViewController *nav = (UIViewController *)nextResponder;
                     nextResponder = nav.childViewControllers.lastObject;
                 }*/
-                
-                self.currentController.modalPresentationStyle = 0;
 
                 [rootViewController presentViewController:self.currentController animated:NO completion:nil];
                 self->_callDirection = EMCOMMUNICATE_DICT_CALLEDPARTY;
@@ -421,6 +420,7 @@ static DemoCallManager *callManager = nil;
                     }
                     
                     if (strongSelf.currentController) {
+                        strongSelf.currentController.callType = -1;
                         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
                         UIViewController *rootViewController = window.rootViewController;
                         strongSelf.currentController.modalPresentationStyle = 0;

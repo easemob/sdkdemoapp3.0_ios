@@ -148,6 +148,23 @@
         make.bottom.equalTo(self.view);
     }];
     
+    UIImageView *blankPerchView = [[UIImageView alloc]init];
+    [self.tableView insertSubview:blankPerchView atIndex:0];
+    [blankPerchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.view);
+        make.width.height.equalTo(@82);
+    }];
+    blankPerchView.image = [UIImage imageNamed:@"blankConversation"];
+    UILabel *blankPadding = [[UILabel alloc]init];
+    blankPadding.text = @"寻找自我 保持本色";
+    blankPadding.textColor = [UIColor colorWithRed:204/255.0 green:204/255.0 blue:204/255.0 alpha:1.0];
+    blankPadding.font = [UIFont systemFontOfSize:12.0];
+    [blankPerchView addSubview:blankPadding];
+    [blankPadding mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(blankPerchView.mas_bottom).offset(14);
+        make.centerX.equalTo(blankPerchView);
+    }];
+    
     [self _setupSearchResultController];
 }
 

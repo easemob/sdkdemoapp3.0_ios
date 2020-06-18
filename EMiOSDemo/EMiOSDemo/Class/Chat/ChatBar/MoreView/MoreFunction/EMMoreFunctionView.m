@@ -25,8 +25,8 @@
 {
     self = [super init];
     if(self){
-        _toolbarImgArray = @[@"video_conf",@"location",@"pin_readReceipt",@"file-unSelected",@"camera-unSelected",@"pic-unSelected"];
-        _toolbarDescArray = @[@"视频通话",@"位置",@"群组回执",@"文件",@"相机",@"图片"];
+        _toolbarImgArray = @[@"video_conf",@"location",@"pin_readReceipt",@"icloudFile",@"camera",@"photo-album"];
+        _toolbarDescArray = @[@"视频通话",@"位置",@"群组回执",@"文件",@"相机",@"相册"];
         self.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
         [self _setupUI];
         

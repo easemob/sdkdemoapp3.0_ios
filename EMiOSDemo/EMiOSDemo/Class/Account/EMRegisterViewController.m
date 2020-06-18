@@ -27,14 +27,18 @@
 
 @property (nonatomic, strong) UITextField *pswdField;
 @property (nonatomic, strong) UIButton *pswdRightView;
+@property (nonatomic, strong) UIButton *confirmPswdRightView;
 
 @property (nonatomic, strong) UITextField *confirmPswdField;
 
 @property (nonatomic, strong) UIButton *registeButton;
-@property (nonatomic, strong) UIView *viewArrow;
+@property (nonatomic, strong) UIImageView *arrowView;
+@property (nonatomic, strong) UIButton *userIdRightView;
 @property (nonatomic, strong) CAGradientLayer *gl;
 @property (nonatomic, strong) CAGradientLayer *backGl;
 @property (nonatomic, strong) UILabel *registeLabel;
+
+@property (nonatomic, strong) UIButton *userAgreementBtn;//用户协议
 
 @property (nonatomic) BOOL isRegiste;
 
@@ -94,39 +98,7 @@
         make.height.equalTo(@30);
         make.width.equalTo(@80);
     }];
-    /*
-    self.appkeyField = [[UITextField alloc] init];
-    self.appkeyField.delegate = self;
-    self.appkeyField.enabled = NO;
-    self.appkeyField.borderStyle = UITextBorderStyleNone;
-    self.appkeyField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.appkeyField.placeholder = @"应用appkey";
-    self.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
-    self.appkeyField.keyboardType = UIKeyboardTypeNamePhonePad;
-    self.appkeyField.returnKeyType = UIReturnKeyDone;
-    self.appkeyField.font = [UIFont systemFontOfSize:15];
-    self.appkeyField.rightViewMode = UITextFieldViewModeWhileEditing;
-    [self.view addSubview:self.appkeyField];
-    [self.appkeyField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(30);
-        make.right.equalTo(self.view).offset(-80);
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
-        make.height.equalTo(@40);
-    }];
     
-    self.appkeyRightView = [[UIButton alloc] init];
-    self.appkeyRightView.titleLabel.font = [UIFont systemFontOfSize:15];
-    [self.appkeyRightView setTitle:@"更换" forState:UIControlStateNormal];
-    [self.appkeyRightView setTitleColor:kColor_Blue forState:UIControlStateNormal];
-    [self.appkeyRightView addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.appkeyRightView];
-    [self.appkeyRightView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.appkeyField);
-        make.bottom.equalTo(self.appkeyField);
-        make.left.equalTo(self.appkeyField.mas_right);
-        make.right.equalTo(self.view).offset(-30);
-    }];
-    */
     self.nameField = [[UITextField alloc] init];
     self.nameField.backgroundColor = [UIColor whiteColor];
     self.nameField.delegate = self;
@@ -141,6 +113,11 @@
     self.nameField.layer.cornerRadius = 25;
     self.nameField.layer.borderWidth = 1;
     self.nameField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.userIdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
+    [self.userIdRightView setImage:[UIImage imageNamed:@"clearContent"] forState:UIControlStateNormal];
+    [self.userIdRightView addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
+    self.nameField.rightView = self.userIdRightView;
+    self.userIdRightView.hidden = YES;
     [self.view addSubview:self.nameField];
     [self.nameField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
@@ -150,24 +127,24 @@
     }];
     
     self.pswdField = [[UITextField alloc] init];
-        self.pswdField.backgroundColor = [UIColor whiteColor];
-        self.pswdField.delegate = self;
-        self.pswdField.borderStyle = UITextBorderStyleNone;
-        self.pswdField.placeholder = @"密码";
-        self.pswdField.font = [UIFont systemFontOfSize:17];
-        self.pswdField.returnKeyType = UIReturnKeyDone;
-        self.pswdField.secureTextEntry = YES;
-        self.pswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-        [self.pswdRightView setImage:[UIImage imageNamed:@"secure"] forState:UIControlStateNormal];
-        [self.pswdRightView setImage:[UIImage imageNamed:@"显示密码"] forState:UIControlStateSelected];
-        [self.pswdRightView addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
-        self.pswdField.rightView = self.pswdRightView;
-        self.pswdField.rightViewMode = UITextFieldViewModeAlways;
-        self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-        self.pswdField.leftViewMode = UITextFieldViewModeAlways;
-        self.pswdField.layer.cornerRadius = 25;
-        self.pswdField.layer.borderWidth = 1;
-        self.pswdField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.pswdField.backgroundColor = [UIColor whiteColor];
+    self.pswdField.delegate = self;
+    self.pswdField.borderStyle = UITextBorderStyleNone;
+    self.pswdField.placeholder = @"密码";
+    self.pswdField.font = [UIFont systemFontOfSize:17];
+    self.pswdField.returnKeyType = UIReturnKeyDone;
+    self.pswdField.secureTextEntry = YES;
+    self.pswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
+    [self.pswdRightView setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
+    [self.pswdRightView setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
+    [self.pswdRightView addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.pswdField.rightView = self.pswdRightView;
+    self.pswdField.rightViewMode = UITextFieldViewModeAlways;
+    self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.pswdField.leftViewMode = UITextFieldViewModeAlways;
+    self.pswdField.layer.cornerRadius = 25;
+    self.pswdField.layer.borderWidth = 1;
+    self.pswdField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [self.view addSubview:self.pswdField];
     [self.pswdField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.nameField);
@@ -177,18 +154,24 @@
     }];
     
     self.confirmPswdField = [[UITextField alloc] init];
-        self.confirmPswdField.backgroundColor = [UIColor whiteColor];
-        self.confirmPswdField.delegate = self;
-        self.confirmPswdField.borderStyle = UITextBorderStyleNone;
-        self.confirmPswdField.placeholder = @"确认密码";
-        self.confirmPswdField.font = [UIFont systemFontOfSize:17];
-        self.confirmPswdField.returnKeyType = UIReturnKeyDone;
-        self.confirmPswdField.secureTextEntry = YES;
-        self.confirmPswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-        self.confirmPswdField.leftViewMode = UITextFieldViewModeAlways;
-        self.confirmPswdField.layer.cornerRadius = 25;
-        self.confirmPswdField.layer.borderWidth = 1;
-        self.confirmPswdField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.confirmPswdField.backgroundColor = [UIColor whiteColor];
+    self.confirmPswdField.delegate = self;
+    self.confirmPswdField.borderStyle = UITextBorderStyleNone;
+    self.confirmPswdField.placeholder = @"确认密码";
+    self.confirmPswdField.font = [UIFont systemFontOfSize:17];
+    self.confirmPswdField.returnKeyType = UIReturnKeyDone;
+    self.confirmPswdField.secureTextEntry = YES;
+    self.confirmPswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
+    [self.confirmPswdRightView setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
+    [self.confirmPswdRightView setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
+    [self.confirmPswdRightView addTarget:self action:@selector(confirmPswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.confirmPswdField.rightView = self.confirmPswdRightView;
+    self.confirmPswdField.rightViewMode = UITextFieldViewModeAlways;
+    self.confirmPswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.confirmPswdField.leftViewMode = UITextFieldViewModeAlways;
+    self.confirmPswdField.layer.cornerRadius = 25;
+    self.confirmPswdField.layer.borderWidth = 1;
+    self.confirmPswdField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [self.view addSubview:self.confirmPswdField];
     [self.confirmPswdField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.pswdField);
@@ -196,6 +179,28 @@
         make.top.equalTo(self.pswdField.mas_bottom).offset(20);
         make.height.equalTo(self.pswdField);
     }];
+    
+    self.userAgreementBtn = [[UIButton alloc]init];
+    [self.userAgreementBtn setImage:[UIImage imageNamed:@"agreeProtocol"] forState:UIControlStateSelected];
+    self.userAgreementBtn.layer.cornerRadius = 12;
+    [self.userAgreementBtn addTarget:self action:@selector(agreeProtocolAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.userAgreementBtn];
+    [self.userAgreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@24);
+        make.top.equalTo(self.confirmPswdField.mas_bottom).offset(6);
+        make.left.equalTo(self.confirmPswdField.mas_left).offset(15);
+    }];
+    
+    UILabel *clouseProtocol = [[UILabel alloc]init];
+    [self.view addSubview:clouseProtocol];
+    [clouseProtocol mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
+        make.centerY.equalTo(self.userAgreementBtn);
+    }];
+    clouseProtocol.text = @"同意 服务条款 与 隐私协议";
+    clouseProtocol.textColor = [UIColor whiteColor];
+    clouseProtocol.font = [UIFont systemFontOfSize:12.f];
+    clouseProtocol.textAlignment = NSTextAlignmentCenter;
     
     self.registeButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _registeButton.layer.cornerRadius = 25;
@@ -207,7 +212,7 @@
     [_registeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.top.equalTo(self.confirmPswdField.mas_bottom).offset(60);
+        make.top.equalTo(self.userAgreementBtn.mas_bottom).offset(60);
         make.height.equalTo(@55);
     }];
     
@@ -226,12 +231,11 @@
         make.height.equalTo(@23);
    }];
     
-    self.viewArrow = [[UIView alloc] init];
-    _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
-    _viewArrow.alpha = 0.3;
-    _viewArrow.layer.cornerRadius = 21;
-    [self.view addSubview:_viewArrow];
-    [_viewArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.arrowView = [[UIImageView alloc]init];
+    self.arrowView.layer.cornerRadius = 21;
+    self.arrowView.image = [UIImage imageNamed:@"unableClick"];
+    [self.view addSubview:_arrowView];
+    [_arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@43);
         make.right.equalTo(self.registeButton.mas_right).offset(-6);
         make.top.equalTo(self.registeButton.mas_top).offset(6);
@@ -289,8 +293,9 @@
         _registeLabel.alpha = 1;
         [_registeLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
         
-        _viewArrow.alpha = 1;
-        _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;
+        _arrowView.image = [UIImage imageNamed:@"enableClick"];
+        /*_viewArrow.alpha = 1;
+        _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;*/
         
         self.isRegiste = true;
     } else {
@@ -300,8 +305,9 @@
         _registeLabel.alpha = 0.3;
         [_registeLabel setTextColor:[UIColor whiteColor]];
         
-        _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
-        _viewArrow.alpha = 0.3;
+        _arrowView.image = [UIImage imageNamed:@"unableClick"];
+        /*_viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
+        _viewArrow.alpha = 0.3;*/
         self.isRegiste = false;
     }
 }
@@ -312,11 +318,26 @@
         [textField resignFirstResponder];
         return NO;
     }
+    if (textField == self.nameField) {
+        self.userIdRightView.hidden = NO;
+    }
     
     return YES;
 }
 
 #pragma mark - Action
+//清除用户名
+- (void)clearUserIdAction
+{
+    self.nameField.text = @"";
+    self.userIdRightView.hidden = YES;
+}
+
+//同意条款与协议
+- (void)agreeProtocolAction
+{
+    self.userAgreementBtn.selected = !self.userAgreementBtn.selected;
+}
 
 - (void)qrCodeAction
 {
@@ -367,11 +388,17 @@
     }];
     [self.navigationController pushViewController:controller animated:YES];
 }
-
+//隐藏/显示 密码
 - (void)pswdSecureAction:(UIButton *)aButton
 {
     aButton.selected = !aButton.selected;
     self.pswdField.secureTextEntry = !self.pswdField.secureTextEntry;
+}
+//隐藏/显示 确认密码
+- (void)confirmPswdSecureAction:(UIButton *)aButton
+{
+    aButton.selected = !aButton.selected;
+    self.confirmPswdField.secureTextEntry = !self.confirmPswdField.secureTextEntry;
 }
 
 - (void)registeAction
@@ -381,6 +408,11 @@
     }
     
     [self.view endEditing:YES];
+    
+    if (!self.userAgreementBtn.selected) {
+        [EMAlertController showErrorAlert:@"请选择同意服务条款与隐私协议！"];
+        return;
+    }
 
     NSString *name = self.nameField.text;
     NSString *pswd = self.pswdField.text;
@@ -406,11 +438,11 @@
     }
     
     __weak typeof(self) weakself = self;
-    //[self showHudInView:self.view hint:NSLocalizedString(@"register.ongoing", @"Is Login...")];
     self.registeLabel.text = @"注册中...";
-    [self.viewArrow addSubview:self.loadingView];
+    self.arrowView.image = [UIImage imageNamed:@""];
+    [self.arrowView addSubview:self.loadingView];
     [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(self.viewArrow).offset(11.5);
+        make.top.left.equalTo(self.arrowView).offset(11.5);
         make.width.equalTo(@22);
     }];
     [[EMClient sharedClient] registerWithUsername:name password:pswd completion:^(NSString *aUsername, EMError *aError) {

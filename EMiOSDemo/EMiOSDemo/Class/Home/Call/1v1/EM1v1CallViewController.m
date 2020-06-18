@@ -128,22 +128,23 @@
         CGFloat size = 60;
         CGFloat padding = ([UIScreen mainScreen].bounds.size.width - size * 2) / 3;
         
-        [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.view).offset(-40);
-            make.right.equalTo(self.view).offset(-padding);
-            make.width.height.mas_equalTo(size);
-        }];
-        
         self.answerButton = [[UIButton alloc] init];
         self.answerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.answerButton setImage:[UIImage imageNamed:@"answer"] forState:UIControlStateNormal];
         [self.answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.answerButton];
         [self.answerButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.hangupButton);
+            make.bottom.equalTo(self.view).offset(-40);
+            make.right.equalTo(self.view).offset(-padding);
+            make.width.height.mas_equalTo(size);
+        }];
+        
+        [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.answerButton);
             make.left.equalTo(self.view).offset(padding);
             make.width.height.mas_equalTo(size);
         }];
+        
     }
 }
 
@@ -277,7 +278,13 @@
             break;
         case EMCallSessionStatusConnected:
         {
-            self.statusLabel.text = @"等待接听...";
+            if (self.callType == EMCallTypeVoice) {
+                self.statusLabel.text = @"邀请你进行语音通话...";
+            } else if (self.callType == EMCallTypeVideo) {
+                self.statusLabel.text = @"邀请你进行视频通话...";
+            } else {
+                self.statusLabel.text = @"正在等待对方接受邀请...";
+            }
             self.answerButton.enabled = YES;
         }
             break;

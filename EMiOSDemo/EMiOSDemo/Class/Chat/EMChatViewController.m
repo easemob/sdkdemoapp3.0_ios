@@ -102,6 +102,7 @@
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aId type:aType createIfNotExist:aIsCreate];
         _conversationModel = [[EMConversationModel alloc] initWithEMModel:conversation];
         _isChatRecord = aIsChatRecord;
+        _msgQueue = dispatch_queue_create("emmessage.com", NULL);
     }
     
     return self;
@@ -112,6 +113,7 @@
     self = [super init];
     if (self) {
         _conversationModel = aConversationModel;
+        _msgQueue = dispatch_queue_create("emmessage.com", NULL);
     }
     
     return self;
@@ -120,7 +122,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.msgQueue = dispatch_queue_create("emmessage.com", NULL);
     self.msgTimelTag = -1;
     self.type = 1;
     
@@ -379,7 +380,7 @@
         return;
     }
     if (self.conversationModel.emModel.type == EMConversationTypeChat) {
-        UIImage *image = [[UIImage imageNamed:@"用户资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *image = [[UIImage imageNamed:@"userData"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(chatInfoAction)];
     } else {
         if (self.conversationModel.emModel.type == EMConversationTypeGroupChat && (NSClassFromString(@"EMGroupInfoViewController")) == nil) {
@@ -2068,6 +2069,9 @@
                 aCompletionBlock(message);
             }
             [EMAlertController showSuccessAlert:@"转发消息成功"];
+            if ([aTo isEqualToString:weakself.conversationModel.emModel.conversationId]) {
+                [weakself messagesDidReceive:@[message]];
+            }
         }
     }];
 }
@@ -2325,10 +2329,11 @@
 {
     EMChatInfoViewController *chatInfoController = [[EMChatInfoViewController alloc]initWithCoversation:self.conversationModel];
      __weak typeof(self) weakself = self;
-    [chatInfoController setClearRecordCompletion:^(EMConversationModel * _Nonnull aConversationModel) {
-        weakself.conversationModel = aConversationModel;
-        [weakself.dataArray removeAllObjects];
-        [weakself.tableView reloadData];
+    [chatInfoController setClearRecordCompletion:^(BOOL isClear) {
+        if (isClear) {
+            [weakself.dataArray removeAllObjects];
+            [weakself.tableView reloadData];
+        }
     }];
     [self.navigationController pushViewController:chatInfoController animated:YES];
 }

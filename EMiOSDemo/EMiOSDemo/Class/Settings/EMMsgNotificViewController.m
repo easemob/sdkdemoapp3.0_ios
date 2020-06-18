@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
     // Uncomment the following line to preserve selection between presentations.
     [self _setupSubviews];
 }
@@ -34,12 +34,13 @@
 {
     [self addPopBackLeftItem];
     self.title = @"消息通知";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     
     self.tableView.rowHeight = 66;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
+    self.tableView.scrollEnabled = NO;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
         make.left.equalTo(self.view);
@@ -53,7 +54,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -67,37 +68,20 @@
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     NSString *cellIdentifier = @"UITableViewCellAccessoryDetailDisclosureButton";
-    if (section == 1) {
-        cellIdentifier = @"UITableViewCellSwitch";
-    }
-    
+
     YYBasicTickView *basicTick = nil;
-    UISwitch *switchControl = nil;
-    
-    BOOL isSwitchCell = NO;
-    if (section == 1) {
-        isSwitchCell = YES;
-    }
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     // Configure the cell...
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    if (isSwitchCell) {
-        switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
-        switchControl.tag = [self _tagWithIndexPath:indexPath];
-        [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [cell.contentView addSubview:switchControl];
-    } else {
-        basicTick = [[YYBasicTickView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 45, 20, 25, 25) backGroundColor:YY_COLOR tickColor:[UIColor whiteColor]];
-        [cell.contentView addSubview:basicTick];
-        basicTick.index = [self _tagWithIndexPath:indexPath];
-        basicTick.basicTickDelegate = self;
-    }
-    
+
+    basicTick = [[YYBasicTickView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 45, 20, 25, 25) backGroundColor:YY_COLOR tickColor:[UIColor whiteColor]];
+    [cell.contentView addSubview:basicTick];
+    basicTick.index = [self _tagWithIndexPath:indexPath];
+    basicTick.basicTickDelegate = self;
+
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
 
     if (section == 0) {
@@ -117,15 +101,9 @@
             }
         }
         [basicTick setNeedsDisplay];
-    } else if (section == 1) {
-        if (row == 0) {
-            cell.textLabel.text = @"语音通话邀请提示";
-            [switchControl setOn:YES animated:NO];
-        } else if (row == 1) {
-            cell.textLabel.text = @"视频通话邀请提示";
-            [switchControl setOn:YES animated:NO];
-        }
     }
+    cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
     return cell;
 }
@@ -192,23 +170,6 @@
     NSInteger row = aTag % 10;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
     return indexPath;
-}
-
-#pragma mark - Action
-
-- (void)cellSwitchValueChanged:(UISwitch *)aSwitch
-{
-    EMDemoOptions *options = [EMDemoOptions sharedOptions];
-    NSIndexPath *indexPath = [self _indexPathWithTag:aSwitch.tag];
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    if (section == 0) {
-        if (row == 0) {
-            //[self disturbValueChanged:aSwitch.isOn];
-        } else if (row == 1) {
-            
-        }
-    }
 }
 
 @end

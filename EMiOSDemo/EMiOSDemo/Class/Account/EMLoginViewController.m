@@ -22,32 +22,21 @@
 #import "LoadingCALayer.h"
 #import "OneLoadingAnimationView.h"
 
-@interface EMLoginViewController ()<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface EMLoginViewController ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
-
-@property (nonatomic, strong) UITableViewCell *titleCell;
 @property (nonatomic, strong) UIImageView *titleImageView;
-/*
-@property (nonatomic, strong) UITableViewCell *appkeyCell;
-@property (nonatomic, strong) UITextField *appkeyField;
-@property (nonatomic, strong) UIButton *appkeyButton;
-*/
-@property (nonatomic, strong) UITableViewCell *nameCell;
 @property (nonatomic, strong) UITextField *nameField;
-
-@property (nonatomic, strong) UITableViewCell *pswdCell;
 @property (nonatomic, strong) UITextField *pswdField;
 @property (nonatomic, strong) UIButton *pswdRightView;
-
-@property (nonatomic, strong) UITableViewCell *buttonCell;
+@property (nonatomic, strong) UIButton *userIdRightView;
 @property (nonatomic, strong) UIButton *loginTypeButton;
-
 @property (nonatomic, strong) UIButton *loginButton;
-@property (nonatomic, strong) UIView *viewArrow;
+@property (nonatomic, strong) UIImageView *arrowView;
 @property (nonatomic, strong) CAGradientLayer *gl;
 @property (nonatomic, strong) CAGradientLayer *backGl;
 @property (nonatomic, strong) UILabel *loginLabel;
+
+@property (nonatomic, strong) UIButton *userAgreementBtn;//用户协议
 
 @property (nonatomic) BOOL isLogin;
 
@@ -62,7 +51,6 @@
     // Do any additional setup after loading the view.
     self.isLogin = false;
     [self _setupSubviews];
-    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,7 +59,6 @@
     self.navigationController.navigationBarHidden = YES;
     self.loginLabel.text = @"登 录";
     [self.loadingView removeFromSuperview];
-    self.pswdField.text = nil;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -87,40 +74,10 @@
 
 - (void)_setupSubviews
 {
-    //self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"BootPage"] forBarMetrics:UIBarMetricsDefault];
-    //[self.navigationController.navigationBar.layer setMasksToBounds:YES];
-    
-    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"device_disable"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(devicesAction)];
-    //self.navigationItem.leftBarButtonItem.enabled = NO;
-    
-    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"qr"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(qrCodeAction)];
-    
-    //self.view.backgroundColor = [UIColor whiteColor];
-    [self _setupTableView];
-}
-
-- (void)_setupTableView
-{
     UIImageView *imageView=[[UIImageView alloc]initWithFrame:self.view.bounds];
     imageView.image=[UIImage imageNamed:@"BootPage"];
     [self.view insertSubview:imageView atIndex:0];
-    /*
-    self.tableView = [[UITableView alloc] init];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.tableFooterView = [[UIView alloc] init];
-    [self.view addSubview:self.tableView];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-    }];
-    [self.tableView setBackgroundView:imageView];*/
-    
-    //self.titleCell = [self _setupCell];
+
     self.titleImageView = [[UIImageView alloc]init];
     self.titleImageView.image = [UIImage imageNamed:@"编组 4"];
     [self.view addSubview:self.titleImageView];
@@ -130,41 +87,7 @@
         make.height.equalTo(@79.94);
         make.top.equalTo(self.view.mas_top).offset(96);
     }];
-    /*
-    self.appkeyCell = [self _setupCell];
-    self.appkeyField = [[UITextField alloc] init];
-    self.appkeyField.delegate = self;
-    self.appkeyField.enabled = NO;
-    self.appkeyField.borderStyle = UITextBorderStyleNone;
-    self.appkeyField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.appkeyField.placeholder = @"应用appkey";
-    self.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
-    self.appkeyField.keyboardType = UIKeyboardTypeNamePhonePad;
-    self.appkeyField.returnKeyType = UIReturnKeyDone;
-    self.appkeyField.font = [UIFont systemFontOfSize:15];
-    self.appkeyField.rightViewMode = UITextFieldViewModeWhileEditing;
-    [self.appkeyCell.contentView addSubview:self.appkeyField];
-    [self.appkeyField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.appkeyCell.contentView).offset(15);
-        make.right.equalTo(self.appkeyCell.contentView).offset(50);
-        make.top.equalTo(self.appkeyCell.contentView);
-        make.bottom.equalTo(self.appkeyCell.contentView);
-    }];
     
-    self.appkeyButton = [[UIButton alloc] init];
-    self.appkeyButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    [self.appkeyButton setTitle:@"更换" forState:UIControlStateNormal];
-    [self.appkeyButton setTitleColor:kColor_Blue forState:UIControlStateNormal];
-    [self.appkeyButton addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.appkeyCell.contentView addSubview:self.appkeyButton];
-    [self.appkeyButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.appkeyCell.contentView).offset(-15);
-        make.top.equalTo(self.appkeyCell.contentView);
-        make.bottom.equalTo(self.appkeyCell.contentView);
-        make.width.equalTo(@50);
-    }];
-    */
-    //self.nameCell = [self _setupCell];
     self.nameField = [[UITextField alloc] init];
     self.nameField.backgroundColor = [UIColor whiteColor];
     self.nameField.delegate = self;
@@ -179,6 +102,11 @@
     self.nameField.layer.cornerRadius = 25;
     self.nameField.layer.borderWidth = 1;
     self.nameField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.userIdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
+    [self.userIdRightView setImage:[UIImage imageNamed:@"clearContent"] forState:UIControlStateNormal];
+    [self.userIdRightView addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
+    self.nameField.rightView = self.userIdRightView;
+    self.userIdRightView.hidden = YES;
     [self.view addSubview:self.nameField];
     [self.nameField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
@@ -186,8 +114,7 @@
         make.top.equalTo(self.titleImageView.mas_bottom).offset(20);
         make.height.equalTo(@55);
     }];
-    
-    //self.pswdCell = [self _setupCell];
+
     self.pswdField = [[UITextField alloc] init];
     self.pswdField.backgroundColor = [UIColor whiteColor];
     self.pswdField.delegate = self;
@@ -198,8 +125,8 @@
 //    self.pswdField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.pswdField.secureTextEntry = YES;
     self.pswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-    [self.pswdRightView setImage:[UIImage imageNamed:@"secure"] forState:UIControlStateNormal];
-    [self.pswdRightView setImage:[UIImage imageNamed:@"显示密码"] forState:UIControlStateSelected];
+    [self.pswdRightView setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
+    [self.pswdRightView setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
     [self.pswdRightView addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.pswdField.rightView = self.pswdRightView;
     self.pswdField.rightViewMode = UITextFieldViewModeAlways;
@@ -216,20 +143,34 @@
         make.height.equalTo(@55);
     }];
     
-    [self _setupButtonCell];
-}
-
-- (UITableViewCell *)_setupCell
-{
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
-}
-
-- (void)_setupButtonCell
-{
-    //self.buttonCell = [self _setupCell];
+    self.userAgreementBtn = [[UIButton alloc]init];
+    [self.userAgreementBtn setImage:[UIImage imageNamed:@"agreeProtocol"] forState:UIControlStateSelected];
+    [self.userAgreementBtn setImage:[UIImage imageNamed:@"unAgreeProtocol"] forState:UIControlStateNormal];
+    self.userAgreementBtn.layer.cornerRadius = 12;
+    [self.userAgreementBtn addTarget:self action:@selector(agreeProtocolAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.userAgreementBtn];
+    [self.userAgreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@24);
+        make.top.equalTo(self.pswdField.mas_bottom).offset(6);
+        make.left.equalTo(self.pswdField.mas_left).offset(15);
+    }];
     
+    UILabel *clouseProtocol = [[UILabel alloc]init];
+    [self.view addSubview:clouseProtocol];
+    [clouseProtocol mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
+        make.centerY.equalTo(self.userAgreementBtn);
+    }];
+    clouseProtocol.text = @"同意 服务条款 与 隐私协议";
+    clouseProtocol.textColor = [UIColor whiteColor];
+    clouseProtocol.font = [UIFont systemFontOfSize:12.f];
+    clouseProtocol.textAlignment = NSTextAlignmentCenter;
+    
+    [self _setupLoginButton];
+}
+
+- (void)_setupLoginButton
+{
     self.loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _loginButton.backgroundColor = [UIColor blackColor];
     _loginButton.layer.cornerRadius = 25;
@@ -240,7 +181,7 @@
     [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.top.equalTo(self.pswdField.mas_bottom).offset(40);
+        make.top.equalTo(self.userAgreementBtn.mas_bottom).offset(40);
         make.height.equalTo(@55);
     }];
     
@@ -259,12 +200,11 @@
         make.height.equalTo(@23);
     }];
     
-    self.viewArrow = [[UIView alloc] init];
-    _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
-    _viewArrow.alpha = 0.3;
-    _viewArrow.layer.cornerRadius = 21;
-    [self.view addSubview:_viewArrow];
-    [_viewArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.arrowView = [[UIImageView alloc]init];
+    self.arrowView.layer.cornerRadius = 21;
+    self.arrowView.image = [UIImage imageNamed:@"unableClick"];
+    [self.view addSubview:_arrowView];
+    [_arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@43);
         make.right.equalTo(self.loginButton.mas_right).offset(-6);
         make.top.equalTo(self.loginButton.mas_top).offset(6);
@@ -311,68 +251,6 @@
     }];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return 5;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = nil;
-    switch (indexPath.row) {
-        case 0:
-            cell = self.titleCell;
-            break;
-        //case 1:
-            //cell = self.appkeyCell;
-            //break;
-        case 1:
-            cell = self.nameCell;
-            break;
-        case 2:
-            cell = self.pswdCell;
-            break;
-        case 3:
-            cell = self.buttonCell;
-            break;
-            
-        default:
-            cell = [self _setupCell];
-            break;
-    }
-    
-    return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat height = 65;
-    
-    switch (indexPath.row) {
-        case 0:
-            height = 80;
-            break;
-        case 3:
-            height = 105;
-            break;
-        default:
-            break;
-    }
-    
-    return height;
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -382,6 +260,9 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    if (textField == self.nameField && [self.nameField.text length] == 0) {
+        self.userIdRightView.hidden = YES;
+    }
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     // gradient
     if(self.nameField.text.length > 0 && self.pswdField.text.length > 0){
@@ -391,8 +272,10 @@
         _loginLabel.alpha = 1;
         [_loginLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
         
+        _arrowView.image = [UIImage imageNamed:@"enableClick"];
+        /*
         _viewArrow.alpha = 1;
-        _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;
+        _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;*/
         
         self.isLogin = true;
     } else {
@@ -402,8 +285,10 @@
         _loginLabel.alpha = 0.3;
         [_loginLabel setTextColor:[UIColor whiteColor]];
         
+        _arrowView.image = [UIImage imageNamed:@"unableClick"];
+        /*
         _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
-        _viewArrow.alpha = 0.3;
+        _viewArrow.alpha = 0.3;*/
         self.isLogin = false;
     }
     
@@ -415,11 +300,27 @@
         [textField resignFirstResponder];
         return NO;
     }
+    if (textField == self.nameField) {
+        self.userIdRightView.hidden = NO;
+    }
     
     return YES;
 }
 
 #pragma mark - Action
+
+//清除用户名
+- (void)clearUserIdAction
+{
+    self.nameField.text = @"";
+    self.userIdRightView.hidden = YES;
+}
+
+//同意条款与协议
+- (void)agreeProtocolAction
+{
+    self.userAgreementBtn.selected = !self.userAgreementBtn.selected;
+}
 
 - (void)devicesAction
 {
@@ -472,7 +373,6 @@
 
 - (void)changeAppkeyAction
 {
-    __weak typeof(self) weakself = self;
     EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!gIsInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
         //weakself.appkeyField.text = aOptions.appkey;
     }];
@@ -493,6 +393,11 @@
         return;
     }
     [self.view endEditing:YES];
+    
+    if (!self.userAgreementBtn.selected) {
+        [EMAlertController showErrorAlert:@"请选择同意服务条款与隐私协议！"];
+        return;
+    }
     
     BOOL isTokenLogin = self.loginTypeButton.selected;
     NSString *name = self.nameField.text;
@@ -556,14 +461,15 @@
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
     };
+    
     self.loginLabel.text = @"正在登录...";
-    [self.viewArrow addSubview:self.loadingView];
+    self.arrowView.image = [UIImage imageNamed:@""];
+    [self.arrowView addSubview:self.loadingView];
     [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(self.viewArrow).offset(11.5);
+        make.top.left.equalTo(self.arrowView).offset(11.5);
         make.width.equalTo(@22);
     }];
     [self.loadingView startAnimation];
-    //[self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     if (isTokenLogin) {
         [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
     } else {

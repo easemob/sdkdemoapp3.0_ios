@@ -1,7 +1,6 @@
 PODS:
-  - Bugly (2.5.0)
   - FLAnimatedImage (1.0.12)
-  - Hyphenate (3.6.6)
+  - Hyphenate (3.6.8)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MJRefresh (3.2.0)
@@ -13,9 +12,8 @@ PODS:
     - SDWebImage/Core
 
 DEPENDENCIES:
-  - Bugly
   - FLAnimatedImage (~> 1.0)
-  - Hyphenate (~> 3.6.6)
+  - Hyphenate (~> 3.6.8)
   - Masonry
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
@@ -24,7 +22,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Bugly
     - FLAnimatedImage
     - Hyphenate
     - Masonry
@@ -33,14 +30,13 @@ SPEC REPOS:
     - SDWebImage
 
 SPEC CHECKSUMS:
-  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  Hyphenate: c1ded5d73b7a68c725ed34c3112e28ee59b6664b
+  Hyphenate: 7f1e47f7c1132d5a6e323330f9a6eeec9338bc76
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
 
-PODFILE CHECKSUM: 7d22cab335baefa3d09e8f83fd7fc64df268d36d
+PODFILE CHECKSUM: 59f1a3646d30dd0396f2003a44f863560d617225
 
 COCOAPODS: 1.8.0.beta.1

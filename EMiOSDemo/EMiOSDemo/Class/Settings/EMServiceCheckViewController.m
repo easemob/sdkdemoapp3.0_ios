@@ -53,7 +53,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"开始" style:UIBarButtonItemStylePlain target:self action:@selector(serviceCheckBeginAction)];
     
     self.title = @"诊断";
-    self.view.backgroundColor = kColor_LightGray;
+    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     
     self.dnsLabel = [self _setupLabelWithStr:@"获取服务器DNS校验"];
     [self.view addSubview:self.dnsLabel];

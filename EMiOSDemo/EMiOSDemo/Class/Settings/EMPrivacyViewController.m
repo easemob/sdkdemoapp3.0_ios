@@ -33,7 +33,7 @@
 {
     [self addPopBackLeftItem];
     self.title = @"隐私";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     
     self.tableView.rowHeight = 55;
     self.tableView.tableFooterView = [[UIView alloc] init];

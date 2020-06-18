@@ -65,13 +65,12 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@""] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(kickAllDevicesAction)];
     
     self.title = @"登录设备列表";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     
     self.showRefreshHeader = YES;
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 66;
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
@@ -114,6 +113,8 @@
     
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
+    cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    cell.detailTextLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     
     EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
     
@@ -141,64 +142,6 @@
     cell.detailTextLabel.text = options.deviceUUID;
     cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0);
     return cell;
-}
-
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    /*if ([EMClient sharedClient].isLoggedIn) {
-        EMDeviceConfig *options = [self.dataSource objectAtIndex:indexPath.row];
-        NSString *chatter = [NSString stringWithFormat:@"%@/%@", [EMClient sharedClient].currentUsername, options.resource];
-        ChatViewController *controller = [[ChatViewController alloc] initWithConversationChatter:chatter conversationType:EMConversationTypeChat];
-        controller.title = chatter;
-        //controller.from = [NSString stringWithFormat:@"%@/%@", [EMClient sharedClient].currentUsername, [EMClient sharedClient].resource];
-        [self.navigationController pushViewController:controller animated:YES];
-    }*/
-}
-
-#pragma mark - Action
-
-- (void)deleteCellAction:(NSIndexPath *)aIndexPath
-{
-    EMDeviceConfig *device = [self.dataSource objectAtIndex:aIndexPath.row];
-    
-    __weak typeof(self) weakself = self;
-    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
-    [[EMClient sharedClient] kickDevice:device username:self.username password:self.password completion:^(EMError *aError) {
-        [weakself hideHud];
-        if (!aError) {
-            NSString *deviceName = [UIDevice currentDevice].name;
-            if ([deviceName isEqualToString:device.deviceName]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-            } else {
-                [weakself.dataSource removeObjectAtIndex:aIndexPath.row];
-                [weakself.tableView deleteRowsAtIndexPaths:@[aIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            }
-        } else {
-            [EMAlertController showErrorAlert:aError.errorDescription];
-        }
-    }];
-}
-
-- (void)kickAllDevicesAction
-{
-    [self showHudInView:self.view hint:NSLocalizedString(@"wait", @"Waiting...")];
-    __weak typeof(self) weakself = self;
-    [[EMClient sharedClient] kickAllDevicesWithUsername:self.username password:self.password completion:^(EMError *aError) {
-        [weakself hideHud];
-        if (aError) {
-            [EMAlertController showErrorAlert:aError.errorDescription];
-        } else {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-        }
-    }];
 }
 
 #pragma mark - Data

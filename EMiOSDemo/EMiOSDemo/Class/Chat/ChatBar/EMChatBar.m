@@ -63,7 +63,7 @@
     
     self.audioButton = [[UIButton alloc] init];
     [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-selected" ofType:@"png"]] forState:UIControlStateSelected];
+    [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unselected" ofType:@"png"]] forState:UIControlStateSelected];
     [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.audioButton];
     [_audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -75,9 +75,12 @@
     self.textView = [[EMTextView alloc] init];
     
     self.textView.delegate = self;
-    self.textView.placeholder = @"请输入消息内容";
+    self.textView.placeholder = @"输入了什么东西";
+    //self.textView.placeholderColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    //self.textView.textColor = [UIColor blackColor];
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
+    self.textView.textContainerInset = UIEdgeInsetsMake(12, 10, 12, 0);
     if (@available(iOS 11.1, *)) {
         self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
     } else {
@@ -96,7 +99,7 @@
     
     self.emojiButton = [[UIButton alloc] init];
     [_emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face" ofType:@"png"]] forState:UIControlStateNormal];
-    [_emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face-selected" ofType:@"png"]] forState:UIControlStateSelected];
+    [_emojiButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"face" ofType:@"png"]] forState:UIControlStateSelected];
     [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_emojiButton];
     [_emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -106,7 +109,7 @@
     }];
     
     self.ConversationToolBarBtn = [[UIButton alloc] init];
-    [_ConversationToolBarBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
+    [_ConversationToolBarBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-unselected" ofType:@"png"]] forState:UIControlStateNormal];
     [_ConversationToolBarBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"more-selected" ofType:@"png"]] forState:UIControlStateSelected];
     [_ConversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_ConversationToolBarBtn];
@@ -117,7 +120,6 @@
     }];
     
     self.sendBtn = [[UIButton alloc]init];
-    self.sendBtn.backgroundColor = [UIColor lightGrayColor];
     self.sendBtn.tag = 0;
     [self.sendBtn setTitle:@"发送" forState:UIControlStateNormal];
     self.sendBtn.titleLabel.font = [UIFont systemFontOfSize:16];
@@ -149,11 +151,21 @@
 - (void)textChangedExt
 {
     if (self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]) {
+        self.ConversationToolBarBtn.hidden = YES;
+        self.sendBtn.hidden = NO;
         self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
         self.sendBtn.tag = 1;
+        [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self).offset(-90);
+        }];
     } else {
         self.sendBtn.backgroundColor = [UIColor lightGrayColor];
         self.sendBtn.tag = 0;
+        self.sendBtn.hidden = YES;
+        self.ConversationToolBarBtn.hidden = NO;
+        [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self).offset(-65);
+        }];
     }
 }
 
@@ -187,23 +199,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (self.textView.text.length > 0 && ![self.textView.text isEqualToString:@""]) {
-        self.ConversationToolBarBtn.hidden = YES;
-        self.sendBtn.hidden = NO;
-        self.sendBtn.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
-        self.sendBtn.tag = 1;
-        [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self).offset(-80);
-        }];
-    } else {
-        self.sendBtn.backgroundColor = [UIColor lightGrayColor];
-        self.sendBtn.tag = 0;
-        self.sendBtn.hidden = YES;
-        self.ConversationToolBarBtn.hidden = NO;
-        [self.textView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self).offset(-65);
-        }];
-    }
+    [self textChangedExt];
     [self _updatetextViewHeight];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputViewDidChange:)]) {

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCoversation:(EMConversationModel *)aConversationModel;
 
-@property (nonatomic, copy) void (^clearRecordCompletion)(EMConversationModel *aConversationModel);
+@property (nonatomic, copy) void (^clearRecordCompletion)(BOOL isClear);
 
 @end
 

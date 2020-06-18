@@ -1,9 +1,9 @@
 //
 //  EMSettingsViewController.h
-//  ChatDemo-UI3.0
+//  EMiOSDemo
 //
-//  Created by XieYajie on 2018/12/24.
-//  Copyright © 2018 XieYajie. All rights reserved.
+//  Created by 娜塔莎 on 2020/6/10.
+//  Copyright © 2020 娜塔莎. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

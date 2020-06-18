@@ -66,16 +66,14 @@
 
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     self.tableView.scrollEnabled = NO;
-    self.tableView.rowHeight = 60;
-    self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         if ([self.contacts containsObject:self.nickName]) {
-            make.height.equalTo(@340);
+            make.height.equalTo(@324);
         } else {
-            make.height.equalTo(@130);
+            make.height.equalTo(@152);
         }
     }];
     
@@ -117,7 +115,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if ([self.contacts containsObject:self.nickName]) {
-        return 6;
+        return 5;
     }
     return 2;
 }
@@ -158,8 +156,6 @@
         cell.textLabel.text = @"语音通话";
     } else if (section == 4 && row == 0) {
         cell.textLabel.text = @"视频通话";
-    } else if (section == 5 && row == 0) {
-        cell.textLabel.text = @"删除聊天记录";
     }
     
     cell.textLabel.font = [UIFont systemFontOfSize:18.0];
@@ -177,13 +173,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return 60;
-    }
     if (indexPath.section == 1 && [self.contacts containsObject:self.nickName]) {
         return 0;
     }
-    return 50;
+    return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -220,9 +213,6 @@
         if (!self.isChatting) {
             [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
         }
-    } else if (section == 5) {
-        //清除聊天记录
-        //[self deleteChatRecord];
     }
 }
 
@@ -268,15 +258,6 @@
         }
     }];
 }
-
-//清除聊天记录
-- (void)deleteChatRecord
-{
-    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.nickName type:EMChatTypeChat createIfNotExist:NO];
-    EMError *error = nil;
-    [conversation deleteAllMessages:&error];
-}
-
 
 - (void)dealloc
 {

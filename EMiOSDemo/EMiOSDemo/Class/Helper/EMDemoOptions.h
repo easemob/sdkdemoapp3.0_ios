@@ -40,6 +40,8 @@ static NSString *kOptions_WillRecord = @"WillRecord";
 static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
 static NSString *kOptions_EnableConsoleLog = @"enableConsoleLog";
 
+static NSString *kOptions_LocationAppkeyArray = @"LocationAppkeyArray";
+
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -84,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL willMergeStrem;
 @property (nonatomic) BOOL enableConsoleLog;
 
-
+@property (nonatomic, strong) NSMutableArray *locationAppkeyArray;
 
 + (instancetype)sharedOptions;
 

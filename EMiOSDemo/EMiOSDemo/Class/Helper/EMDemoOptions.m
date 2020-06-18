@@ -41,6 +41,8 @@ static EMDemoOptions *sharedOptions = nil;
         self.willRecord = NO;
         self.willMergeStrem = NO;
         self.enableConsoleLog = YES;
+        
+        self.locationAppkeyArray = [[NSMutableArray alloc]init];
     }
     
     return self;
@@ -49,11 +51,17 @@ static EMDemoOptions *sharedOptions = nil;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
-        NSString *appkey = [aDecoder decodeObjectForKey:kOptions_Appkey];
-        if ([appkey length] == 0) {
-            appkey = DEF_APPKEY;
+        NSMutableArray *tempArray = [aDecoder decodeObjectForKey:kOptions_LocationAppkeyArray];
+        if (tempArray == nil || [tempArray count] == 0) {
+            self.locationAppkeyArray = [[NSMutableArray alloc]init];
+            [self.locationAppkeyArray insertObject:DEF_APPKEY atIndex:0];
+        } else {
+            self.locationAppkeyArray = tempArray;
         }
-        self.appkey = appkey;
+        self.appkey = [aDecoder decodeObjectForKey:kOptions_Appkey];
+        if ([self.appkey length] == 0) {
+            self.appkey = [self.locationAppkeyArray objectAtIndex:0];
+        }
         self.apnsCertName = [aDecoder decodeObjectForKey:kOptions_ApnsCertname];
         self.usingHttpsOnly = [aDecoder decodeBoolForKey:kOptions_HttpsOnly];
         
@@ -121,6 +129,8 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
     [aCoder encodeBool:self.enableConsoleLog forKey:kOptions_EnableConsoleLog];
+    
+    [aCoder encodeObject:self.locationAppkeyArray forKey:kOptions_LocationAppkeyArray];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -150,6 +160,7 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.willRecord = self.willRecord;
     retModel.willMergeStrem = self.willMergeStrem;
     retModel.enableConsoleLog = self.enableConsoleLog;
+    retModel.locationAppkeyArray = self.locationAppkeyArray;
     return retModel;
 }
 

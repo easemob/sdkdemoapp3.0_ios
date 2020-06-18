@@ -25,6 +25,8 @@
 @property (nonatomic) EMCallSessionStatus callStatus;
 @property (nonatomic, strong) EMCallSession *callSession;
 
+@property (nonatomic) EMCallType callType;
+
 - (instancetype)initWithCallSession:(EMCallSession *)aCallSession;
 
 - (void)updateStreamingStatus:(EMCallStreamingStatus)aStatus;

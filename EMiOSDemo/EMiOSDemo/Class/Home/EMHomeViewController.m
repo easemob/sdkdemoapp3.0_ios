@@ -10,7 +10,7 @@
 
 #import "EMConversationsViewController.h"
 #import "EMContactsViewController.h"
-#import "EMSettingsViewController.h"
+#import "EMMineViewController.h"
 #import "EMRemindManager.h"
 
 #define kTabbarItemTag_Conversation 0
@@ -26,7 +26,7 @@
 
 @property (nonatomic, strong) EMConversationsViewController *conversationsController;
 @property (nonatomic, strong) EMContactsViewController *contactsController;
-@property (nonatomic, strong) EMSettingsViewController *settingsController;
+@property (nonatomic, strong) EMMineViewController *mineController;
 @property (nonatomic, strong) UIView *addView;
 
 @end
@@ -125,25 +125,25 @@
 - (void)_setupChildController
 {
     self.conversationsController = [[EMConversationsViewController alloc] init];
-    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"会话" imgName:@"tabbar_chat_gray" selectedImgName:@"tabbar_chat_blue" tag:kTabbarItemTag_Conversation];
+    UITabBarItem *consItem = [self _setupTabBarItemWithTitle:@"会话" imgName:@"icon-tab会话unselected" selectedImgName:@"icon-tab会话" tag:kTabbarItemTag_Conversation];
     self.conversationsController.tabBarItem = consItem;
     [self addChildViewController:self.conversationsController];
     
     self.contactsController = [[EMContactsViewController alloc] init];
-    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"通讯录" imgName:@"tabbar_contacts_gray" selectedImgName:@"tabbar_contacts_blue" tag:kTabbarItemTag_Contact];
+    UITabBarItem *contItem = [self _setupTabBarItemWithTitle:@"通讯录" imgName:@"icon-tab通讯录unselected" selectedImgName:@"icon-tab通讯录" tag:kTabbarItemTag_Contact];
     self.contactsController.tabBarItem = contItem;
     [self addChildViewController:self.contactsController];
     
     //UITabBarItem *discoverItem = [self _setupTabBarItemWithTitle:@"发现" imgName:@"icon-tab发现unselected" selectedImgName:@"icon-tab发现" tag:kTabbarItemTag_Settings];
     
-    self.settingsController = [[EMSettingsViewController alloc] init];
-    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:@"我" imgName:@"icon-tab我unselected" selectedImgName:@"icon-tab我" tag:kTabbarItemTag_Settings];
-    self.settingsController.tabBarItem = settingsItem;
-    [self addChildViewController:self.settingsController];
+    self.mineController = [[EMMineViewController alloc] init];
+    UITabBarItem *mineItem = [self _setupTabBarItemWithTitle:@"我" imgName:@"icon-tab我unselected" selectedImgName:@"icon-tab我" tag:kTabbarItemTag_Settings];
+    self.mineController.tabBarItem = mineItem;
+    [self addChildViewController:self.mineController];
     
-    self.viewControllers = @[self.conversationsController, self.contactsController, self.settingsController];
+    self.viewControllers = @[self.conversationsController, self.contactsController, self.mineController];
     
-    [self.tabBar setItems:@[consItem, contItem, settingsItem]];
+    [self.tabBar setItems:@[consItem, contItem, mineItem]];
     
     self.tabBar.selectedItem = consItem;
     [self tabBar:self.tabBar didSelectItem:consItem];
@@ -160,7 +160,7 @@
     } else if (tag == kTabbarItemTag_Contact) {
         tmpView = self.contactsController.view;
     } else if (tag == kTabbarItemTag_Settings) {
-        tmpView = self.settingsController.view;
+        tmpView = self.mineController.view;
     }
     
     if (self.addView == tmpView) {

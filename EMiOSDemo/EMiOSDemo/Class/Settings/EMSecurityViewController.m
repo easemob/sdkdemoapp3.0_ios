@@ -7,7 +7,6 @@
 //
 
 #import "EMSecurityViewController.h"
-#import "EMBlacklistViewController.h"
 #import "EMDevicesViewController.h"
 
 @interface EMSecurityViewController ()
@@ -26,18 +25,20 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.title = @"安全与隐私";
+    self.title = @"账号与安全";
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
 
     self.tableView.scrollEnabled = NO;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.scrollEnabled = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
-        make.height.equalTo(@130);
+        make.height.equalTo(@70);
     }];
 
 }
@@ -49,12 +50,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
     // Configure the cell...
@@ -75,17 +75,13 @@
     }];
     
     if (section == 0) {
-        if (row == 0) {
-            imgView.image = [UIImage imageNamed:@"黑名单"];
-            cell.textLabel.text = @"黑名单";
-        } else if (row == 1) {
-            imgView.image = [UIImage imageNamed:@"多端多设备管理"];
-            cell.textLabel.text = @"多端多设备管理";
-        }
+        imgView.image = [UIImage imageNamed:@"多端多设备管理"];
+        cell.textLabel.text = @"多端多设备管理";
+        cell.textLabel.font = [UIFont systemFontOfSize:14.f];
     }
     
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-    cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
+    cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -95,26 +91,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0.001;
+    return 10;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
     if (section == 0) {
-        if (row == 0) {
-            EMBlacklistViewController *controller = [[EMBlacklistViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
-        } else if (row == 1) {
-            EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
-            [self.navigationController pushViewController:controller animated:YES];
-        }
+        EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 

@@ -197,12 +197,12 @@
         NSString *atStr = @"[有人@我]";
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, latestMessageTitle];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
+        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, atStr.length)];
     } else if (ext && [ext objectForKey:kConversation_Draft] && ![[ext objectForKey:kConversation_Draft] isEqualToString:@""]){
         NSString *atStr = @"[草稿]";
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, [ext objectForKey:kConversation_Draft]];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
+        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, atStr.length)];
     } else {
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
     }

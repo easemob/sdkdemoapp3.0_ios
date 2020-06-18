@@ -58,7 +58,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
    
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -67,7 +67,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
     NSString *cellIdentifier = @"UITableViewCellValue1";
     if (section == 0) {
         cellIdentifier = @"UITableViewCellStyleSubtitle";
@@ -104,23 +103,18 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     if (section == 0) {
-        if (row == 0) {
-            cell.imageView.image = [UIImage imageNamed:@"group_avatar"];
-            cell.textLabel.font = [UIFont systemFontOfSize:18.0];
-            cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-            cell.textLabel.text = self.conversationModel.emModel.conversationId;
-        }
+        cell.imageView.image = [UIImage imageNamed:@"group_avatar"];
+        cell.textLabel.font = [UIFont systemFontOfSize:18.0];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+        cell.textLabel.text = self.conversationModel.emModel.conversationId;
     } else if (section == 1) {
-        if (row == 0) {
-            cell.textLabel.text = @"查找聊天记录";
-            cell.detailTextLabel.text = @"";
-        }
+        cell.textLabel.text = @"查找聊天记录";
     } else if (section == 2) {
-        if (row == 0) {
-            cell.textLabel.text = @"会话置顶";
-            [switchControl setOn:([self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
-        }
+        cell.textLabel.text = @"会话置顶";
+        [switchControl setOn:([self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
         cell.accessoryType = UITableViewCellAccessoryNone;
+    } else if (section == 3) {
+        cell.textLabel.text = @"清空聊天记录";
     }
     return cell;
 }
@@ -158,20 +152,45 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
     if (section == 0) {
-        if (row == 0) {
-            //好友资料
-            EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:self.conversationModel.emModel.conversationId];
-            [self.navigationController pushViewController:controller animated:YES];
-        }
+        //好友资料
+        EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:self.conversationModel.emModel.conversationId];
+        [self.navigationController pushViewController:controller animated:YES];
     } else if (section == 1) {
-        if (row == 0) {
-            //查找聊天记录
-            EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
-            [self.navigationController pushViewController:controller animated:YES];
-        }
+        //查找聊天记录
+        EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else if (section == 3) {
+        //清空聊天记录
+        [self deleteChatRecord];
     }
+}
+
+//清除聊天记录
+- (void)deleteChatRecord
+{
+    __weak typeof(self) weakself = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"确定删除和(%@)的聊天记录吗？",self.conversationModel.emModel.conversationId] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO];
+        EMError *error = nil;
+        [conversation deleteAllMessages:&error];
+        if (weakself.clearRecordCompletion) {
+            if (!error) {
+                [EMAlertController showSuccessAlert:@"聊天记录已清空！"];
+                weakself.clearRecordCompletion(YES);
+            } else {
+                [EMAlertController showErrorAlert:@"清空聊天记录失败！"];
+                weakself.clearRecordCompletion(NO);
+            }
+        }
+    }];
+    [alertController addAction:okAction];
+    
+    [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 //cell开关
