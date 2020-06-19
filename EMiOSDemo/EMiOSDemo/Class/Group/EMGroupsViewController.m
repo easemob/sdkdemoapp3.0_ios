@@ -474,6 +474,7 @@
 {
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:aGroupList];
+    [self _sortAllGroups:self.dataArray];
     [self.tableView reloadData];
 }
 
@@ -481,7 +482,7 @@
 
 - (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
 {
-    EMGroup *group = aNotif.object;
+    EMGroup *group = (EMGroup *)aNotif.object;
     if (!group) {
         return;
     }

@@ -245,7 +245,7 @@
         }];
         
         [self.chatBar.sendBtn addTarget:self action:@selector(_sendText) forControlEvents:UIControlEventTouchUpInside];
-        //加号更多
+        //会话工具栏
         [self _setupChatBarMoreViews];
         
         [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
