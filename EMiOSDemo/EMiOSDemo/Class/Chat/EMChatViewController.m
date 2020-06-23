@@ -1625,6 +1625,10 @@
                 aCompletionBlock(message);
             }
             [EMAlertController showSuccessAlert:@"转发消息成功"];
+            
+            if ([aTo isEqualToString:weakself.conversationModel.emModel.conversationId]) {
+                [weakself messagesDidReceive:@[message]];
+            }
         }
     }];
 }
