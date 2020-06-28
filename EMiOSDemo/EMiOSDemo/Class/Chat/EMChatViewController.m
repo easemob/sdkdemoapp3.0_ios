@@ -408,7 +408,7 @@
     self.chatBar.moreEmoticonView = moreEmoticonView;
     
     //更多
-    EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]init];
+    EMMoreFunctionView *moreFunction = [[EMMoreFunctionView alloc]initWithConversation:self.conversationModel.emModel];
     moreFunction.delegate = self;
     self.chatBar.moreFunctionView = moreFunction;
 }
@@ -898,7 +898,7 @@
 {
     BOOL fileAuthorized = [urls.firstObject startAccessingSecurityScopedResource];
     if (fileAuthorized) {
-        //[self selectedDocumentAtURLs:urls reName:nil];
+        [self selectedDocumentAtURLs:urls reName:nil];
         [urls.firstObject stopAccessingSecurityScopedResource];
     } else {
         [self showHint:@"授权失败!"];
@@ -913,7 +913,7 @@
 {
     BOOL fileAuthorized = [url startAccessingSecurityScopedResource];
     if (fileAuthorized) {
-        [self selectedDocumentAtURLs:url reName:nil];
+        [self selectedDocumentAtURLs:@[url] reName:nil];
         [url stopAccessingSecurityScopedResource];
     } else {
         [self showHint:@"授权失败!"];
@@ -921,23 +921,25 @@
 }
 
 //icloud
-- (void)selectedDocumentAtURLs:(NSURL *)url reName:(NSString *)rename
+- (void)selectedDocumentAtURLs:(NSArray <NSURL *>*)urls reName:(NSString *)rename
 {
     NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc]init];
-    NSError *error;
-    [fileCoordinator coordinateReadingItemAtURL:url options:0 error:&error byAccessor:^(NSURL * _Nonnull newURL) {
-        //读取文件
-        NSString *fileName = [newURL lastPathComponent];
-        NSError *error = nil;
-        NSData *fileData = [NSData dataWithContentsOfURL:newURL options:NSDataReadingMappedIfSafe error:&error];
-        if (error) {
-            [self showHint:@"文件读取失败!"];;
-        }else {
-            NSLog(@"fileName: %@\nfileUrl: %@", fileName, newURL);
-            EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithData:fileData displayName:fileName];
-            [self _sendMessageWithBody:body ext:nil isUpload:NO];
-        };
-    }];
+    for (NSURL *url in urls) {
+        NSError *error;
+        [fileCoordinator coordinateReadingItemAtURL:url options:0 error:&error byAccessor:^(NSURL * _Nonnull newURL) {
+            //读取文件
+            NSString *fileName = [newURL lastPathComponent];
+            NSError *error = nil;
+            NSData *fileData = [NSData dataWithContentsOfURL:newURL options:NSDataReadingMappedIfSafe error:&error];
+            if (error) {
+                [self showHint:@"文件读取失败!"];;
+            }else {
+                NSLog(@"fileName: %@\nfileUrl: %@", fileName, newURL);
+                EMFileMessageBody *body = [[EMFileMessageBody alloc]initWithData:fileData displayName:fileName];
+                [self _sendMessageWithBody:body ext:nil isUpload:NO];
+            };
+        }];
+    }
 }
 
 #pragma mark - EMMoreFunctionViewDelegate
@@ -1486,6 +1488,7 @@
         [self.tableView reloadData];
     }
 }
+
 //为了从home会话列表切进来触发 群组阅读回执 和 消息已读回执
 - (void)sendDidReadReceipt
 {
@@ -1521,7 +1524,6 @@
 //收到群消息已读回执
 - (void)groupMessageDidRead:(EMMessage *)aMessage groupAcks:(NSArray *)aGroupAcks
 {
-
     EMMessageModel *msgModel;
     EMGroupMessageAck *msgAck = aGroupAcks[0];
     for (int i=0; i<[self.dataArray count]; i++) {
@@ -2079,32 +2081,24 @@
 - (void)_forwardImageMsg:(EMMessage *)aMsg
                   toUser:(NSString *)aUsername
 {
-    NSString *thumbnailLocalPath = [(EMImageMessageBody *)aMsg.body thumbnailLocalPath];
+    EMImageMessageBody *newBody = nil;
+    EMImageMessageBody *imgBody = (EMImageMessageBody *)aMsg.body;
+    // 如果图片是己方发送，直接获取图片文件路径；若是对方发送，则需先查看原图（自动下载原图），再转发。
+    if ([aMsg.from isEqualToString:EMClient.sharedClient.currentUsername]) {
+        newBody = [[EMImageMessageBody alloc]initWithLocalPath:imgBody.localPath displayName:imgBody.displayName];
+    } else {
+        if (imgBody.downloadStatus != EMDownloadStatusSuccessed) {
+            [EMAlertController showErrorAlert:@"请先查看原图"];
+            return;
+        }
+        
+        newBody = [[EMImageMessageBody alloc]initWithLocalPath:imgBody.localPath displayName:imgBody.displayName];
+    }
     
     __weak typeof(self) weakself = self;
-    void (^block)(EMMessage *aMessage) = ^(EMMessage *aMessage) {
-        EMImageMessageBody *oldBody = (EMImageMessageBody *)aMessage.body;
-        EMImageMessageBody *newBody = [[EMImageMessageBody alloc] initWithData:nil thumbnailData:[NSData dataWithContentsOfFile:oldBody.thumbnailLocalPath]];
-        newBody.thumbnailRemotePath = oldBody.thumbnailRemotePath;
-        newBody.remotePath = oldBody.remotePath;
+    [weakself _forwardMsgWithBody:newBody to:aUsername ext:aMsg.ext completion:^(EMMessage *message) {
         
-        [weakself _forwardMsgWithBody:newBody to:aUsername ext:aMsg.ext completion:^(EMMessage *message) {
-            [(EMImageMessageBody *)message.body setLocalPath:oldBody.localPath];
-            [[EMClient sharedClient].chatManager updateMessage:message completion:nil];
-        }];
-    };
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:thumbnailLocalPath]) {
-        [[EMClient sharedClient].chatManager downloadMessageThumbnail:aMsg progress:nil completion:^(EMMessage *message, EMError *error) {
-            if (error) {
-                [EMAlertController showErrorAlert:@"转发消息失败"];
-            } else {
-                block(aMsg);
-            }
-        }];
-    } else {
-        block(aMsg);
-    }
+    }];
 }
 
 - (void)_forwardVideoMsg:(EMMessage *)aMsg
@@ -2394,6 +2388,9 @@
     });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
         NSLog(@"errorCode    %u   errorDesc    %@",error.code,error.errorDescription);
+        if (error) {
+            [EMAlertController showErrorAlert:error.errorDescription];
+        }
         [weakself messageStatusDidChange:message error:error];
     }];
 }

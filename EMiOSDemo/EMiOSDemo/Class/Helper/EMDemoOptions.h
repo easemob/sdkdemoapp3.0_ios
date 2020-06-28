@@ -42,8 +42,6 @@ static NSString *kOptions_EnableConsoleLog = @"enableConsoleLog";
 
 static NSString *kOptions_LocationAppkeyArray = @"LocationAppkeyArray";
 
-#define DEF_APPKEY @"easemob-demo#chatdemoui"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class EMOptions;

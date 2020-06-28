@@ -32,11 +32,11 @@
 {
     [self addPopBackLeftItem];
     self.title = @"个人资料";
-    
-    //self.tableView.sectionHeaderHeight = 15;
-//    self.tableView.sectionFooterHeight = 15;
+
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = kColor_LightGray;
+    self.tableView.estimatedSectionHeaderHeight = 0;
+    self.tableView.estimatedSectionFooterHeight = 0;
     
     self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_avatar_me"]];
     self.headerView.frame = CGRectMake(0, 0, 36, 36);

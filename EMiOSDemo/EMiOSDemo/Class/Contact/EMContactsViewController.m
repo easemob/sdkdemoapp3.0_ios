@@ -90,7 +90,7 @@
     }];
     
     self.addImageBtn = [[UIButton alloc]init];
-    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-加群"] forState:UIControlStateNormal];
+    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
     [self.addImageBtn addTarget:self action:@selector(addAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.addImageBtn];
     [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -107,7 +107,7 @@
         make.height.equalTo(@35);
     }];
     
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 74;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);
@@ -204,13 +204,13 @@
 
     if (section == 0) {
         if (row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@"新的好友"];
+            cell.avatarView.image = [UIImage imageNamed:@"newFriend"];
             cell.nameLabel.text = @"新的好友";
         } else if (row == 1) {
-            cell.avatarView.image = [UIImage imageNamed:@"群聊"];
+            cell.avatarView.image = [UIImage imageNamed:@"groupchat"];
             cell.nameLabel.text = @"群聊";
         } else if (row == 2) {
-            cell.avatarView.image = [UIImage imageNamed:@"聊天室"];
+            cell.avatarView.image = [UIImage imageNamed:@"chatroom"];
             cell.nameLabel.text = @"聊天室";
         }
     } else {

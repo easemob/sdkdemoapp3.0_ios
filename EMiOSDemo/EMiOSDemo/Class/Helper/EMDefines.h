@@ -21,6 +21,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
 #define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
 
+//appkey
+#define DEF_APPKEY @"easemob-demo#chatdemoui"
+
 //会话
 #define CONVERSATION_STICK @"stick"
 #define CONVERSATION_ID @"convwesationId"

@@ -75,7 +75,7 @@
     self.bugFeedbackBtn.layer.borderColor = [UIColor blackColor].CGColor;
     [self.bugFeedbackBtn addTarget:self action:@selector(checkboxAction:) forControlEvents:UIControlEventTouchUpInside];
     self.bugFeedbackBtn.tag = 0;
-    [self.bugFeedbackBtn setImage:[UIImage imageNamed:@"ios"] forState:UIControlStateSelected];
+    [self.bugFeedbackBtn setImage:[UIImage imageNamed:@"currentAppkey"] forState:UIControlStateSelected];
     [self.view addSubview:self.bugFeedbackBtn];
     [self.bugFeedbackBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@25);
@@ -124,13 +124,10 @@
     }];
     
     self.opinionDescTextView = [[UITextView alloc]init];
-    self.opinionDescTextView.layer.borderWidth = 1;
-    self.opinionDescTextView.layer.borderColor = [UIColor blackColor].CGColor;
     [self.view addSubview:self.opinionDescTextView];
     [self.opinionDescTextView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(opinionDesc.mas_bottom).offset(10);
-        make.left.equalTo(self.view).offset(16);
-        make.right.equalTo(self.view).offset(-16);
+        make.left.right.equalTo(self.view);
         make.height.equalTo(@120);
     }];
     

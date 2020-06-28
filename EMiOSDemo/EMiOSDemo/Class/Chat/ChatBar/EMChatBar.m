@@ -80,7 +80,7 @@
     //self.textView.textColor = [UIColor blackColor];
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
-    self.textView.textContainerInset = UIEdgeInsetsMake(12, 10, 12, 0);
+    self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 12, 0);
     if (@available(iOS 11.1, *)) {
         self.textView.verticalScrollIndicatorInsets = UIEdgeInsetsMake(12, 20, 2, 0);
     } else {

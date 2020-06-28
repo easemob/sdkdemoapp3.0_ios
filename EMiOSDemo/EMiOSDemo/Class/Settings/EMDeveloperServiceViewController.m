@@ -94,7 +94,7 @@
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"自定义APPKey";
-            cell.detailTextLabel.text = @"默认";
+            cell.detailTextLabel.text = [EMDemoOptions.sharedOptions.appkey isEqualToString:DEF_APPKEY] ? @"默认" : EMDemoOptions.sharedOptions.appkey;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (row == 1) {
             cell.textLabel.text = @"允许使用token登录";

@@ -33,7 +33,6 @@
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     
     self.tableView.rowHeight = 66;
-    self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     self.tableView.scrollEnabled = NO;

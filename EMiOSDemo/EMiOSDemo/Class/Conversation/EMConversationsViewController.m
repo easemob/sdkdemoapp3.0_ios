@@ -140,20 +140,7 @@
         make.height.equalTo(@36);
     }];
     
-    self.tableView.rowHeight = 60;
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.searchButton.mas_bottom).offset(15);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-    }];
-    
     UIImageView *blankPerchView = [[UIImageView alloc]init];
-    [self.tableView insertSubview:blankPerchView atIndex:0];
-    [blankPerchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(self.view);
-        make.width.height.equalTo(@82);
-    }];
     blankPerchView.image = [UIImage imageNamed:@"blankConversation"];
     UILabel *blankPadding = [[UILabel alloc]init];
     blankPadding.text = @"寻找自我 保持本色";
@@ -163,6 +150,21 @@
     [blankPadding mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(blankPerchView.mas_bottom).offset(14);
         make.centerX.equalTo(blankPerchView);
+    }];
+    [self.view addSubview:blankPerchView];
+    [blankPerchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.view);
+        make.width.height.equalTo(@82);
+    }];
+    
+    self.tableView.rowHeight = 74;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchButton.mas_bottom).offset(15);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
     }];
     
     [self _setupSearchResultController];

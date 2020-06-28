@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<EMMoreFunctionViewDelegate> delegate;
 
+- (instancetype)initWithConversation:(EMConversation *)conversation;
+
 @end
 
 @protocol EMMoreFunctionViewDelegate <NSObject>

@@ -40,16 +40,16 @@
     _avatarView = [[UIImageView alloc] init];
     [self.contentView addSubview:_avatarView];
     [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(8);
-        make.left.equalTo(self.contentView).offset(15);
-        make.bottom.equalTo(self.contentView).offset(-8);
+        make.top.equalTo(self.contentView).offset(14);
+        make.left.equalTo(self.contentView).offset(16);
+        make.bottom.equalTo(self.contentView).offset(-14);
         make.width.equalTo(self.avatarView.mas_height).multipliedBy(1);
     }];
     
     _detailLabel = [[UILabel alloc] init];
     _detailLabel.backgroundColor = [UIColor clearColor];
-    _detailLabel.font = [UIFont systemFontOfSize:15];
-    _detailLabel.textColor = [UIColor grayColor];
+    _detailLabel.font = [UIFont systemFontOfSize:16];
+    _detailLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     [self.contentView addSubview:_detailLabel];
     [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.avatarView.mas_right).offset(15);
@@ -60,8 +60,8 @@
     _nameLabel = [[UILabel alloc] init];
     _nameLabel.numberOfLines = 2;
     _nameLabel.backgroundColor = [UIColor clearColor];
-    _nameLabel.textColor = [UIColor blackColor];
-    _nameLabel.font = [UIFont systemFontOfSize:18];
+    _nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    _nameLabel.font = [UIFont systemFontOfSize:16];
     [self.contentView addSubview:_nameLabel];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(8);

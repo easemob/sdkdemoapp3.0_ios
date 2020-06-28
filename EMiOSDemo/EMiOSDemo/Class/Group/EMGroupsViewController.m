@@ -38,6 +38,8 @@
 @property (nonatomic, strong) NSMutableArray *tempSearchResults;
 @property (nonatomic, strong) NSMutableArray *tempSectionTitles;
 
+@property (nonatomic, strong) NSMutableArray *currentSearchGroupArray;
+
 @end
 
 @implementation EMGroupsViewController
@@ -96,6 +98,8 @@
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
     self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
+    self.tableView.rowHeight = 74;
+    self.searchResultTableView.rowHeight = 74;
 }
 
 #pragma mark - SubviewsSwitch
@@ -162,8 +166,10 @@
 #pragma mark - cutGroupType
 - (void)cutGroupType:(UIButton *)btn
 {
+    if (self.isSearching) {
+        return;
+    }
     self.type = btn.tag;
-    
     if (btn.tag == 1) {
         [self.participantBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
         self.participantView.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
@@ -177,31 +183,23 @@
         [self.managementBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
         self.managementView.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
     }
-    
-    if (self.isSearching) {
-        [self.searchResultTableView reloadData];
-    } else {
-        [self.tableView reloadData];
-    }
-        
+    [self.tableView reloadData];
 }
 
 //切换公开/私有群
 - (void)_cutSpecialGroupType
 {
+    if (self.isSearching) {
+        [EMAlertController showErrorAlert:@"切换群类型请重新搜索！"];
+        return;
+    }
     self.isPublic = !self.isPublic;
     if (self.isPublic) {
         self.navigationItem.rightBarButtonItem.title = @"公开群";
     } else {
         self.navigationItem.rightBarButtonItem.title = @"私有群";
     }
-    
-    if (self.isSearching) {
-        [self.searchResultTableView reloadData];
-    } else {
-        [self.tableView reloadData];
-    }
-    
+    [self.tableView reloadData];
 }
 
 #pragma mark - EMSearchBarDelegate
@@ -232,7 +230,6 @@
     for (EMGroup *group in aGroupList) {
         [groupList addObject:group];
     }
-    [self.dataArray removeAllObjects];
     [self.sectionTitles removeAllObjects];
     
     //建立索引的核心, 返回27，是a－z和＃
@@ -286,8 +283,10 @@
     }
     
     if(!self.isSearching){
+        [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:sortedArray];
     }else{
+        [self.searchResults removeAllObjects];
         [self.searchResults addObjectsFromArray:sortedArray];
     }
     
@@ -317,13 +316,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
     if (tableView == self.tableView) {
         return [(NSArray *)(self.tempArray[section]) count];
     } else {
         return [(NSArray *)(self.tempSearchResults[section]) count];
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -335,23 +332,11 @@
     if (cell == nil) {
         cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    /*
-    if (tableView == self.tableView && indexPath.section == 0) {
-        cell.detailLabel.text = nil;
-        if (indexPath.row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@"group_create"];
-            cell.nameLabel.text = @"创建群组";
-        } else if (indexPath.row == 1) {
-            cell.avatarView.image = [UIImage imageNamed:@"group_join"];
-            cell.nameLabel.text = @"加入群组";
-        }
-        
-        return cell;
-    }*/
     
     EMGroup *group = nil;
     if (tableView == self.tableView) {
         group = self.tempArray[(indexPath.section)][indexPath.row];
+        [self.currentSearchGroupArray addObject:group];
     } else {
         group = self.tempSearchResults[(indexPath.section)][indexPath.row];
     }
@@ -371,10 +356,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-   /* if (tableView == self.tableView) {
-        return 20;
-    }*/
-    
     return 20;
 }
 
@@ -398,15 +379,6 @@
 {
     [self.view endEditing:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    /*
-    if (tableView == self.tableView && indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            [self _createGroupAction];
-        } else if (indexPath.row == 1) {
-            [self _joinGroupAction];
-        }
-        return;
-    }*/
     
     EMGroup *group = nil;
     if (tableView == self.tableView) {
@@ -418,6 +390,12 @@
 }
 
 #pragma mark - EMSearchBarDelegate
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+{
+    [super searchBarCancelButtonAction:searchBar];
+    [self getJoinedGroupsAndReloadView];
+}
 
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
@@ -431,7 +409,7 @@
     }
     
     __weak typeof(self) weakself = self;
-    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.currentSearchGroupArray searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
@@ -503,8 +481,14 @@
 - (NSMutableArray *)_getSpecificGroupCount:(NSMutableArray *)data
 {
     [self.tempSectionTitles removeAllObjects];
+    if ([data count] <= 0) {
+        return nil;
+    }
     for (NSArray<NSString *> *str in self.sectionTitles) {
         [self.tempSectionTitles addObject:str];
+    }
+    if (!self.isSearching) {
+        [self.currentSearchGroupArray removeAllObjects];
     }
     [self.tempArray removeAllObjects];
     [self.tempSearchResults removeAllObjects];
@@ -589,7 +573,7 @@
     NSArray *groups = [[EMClient sharedClient].groupManager getJoinedGroups];
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:groups];
-    
+    [self _sortAllGroups:self.dataArray];
     [self.tableView reloadData];
 }
 
@@ -639,6 +623,14 @@
         _tempSectionTitles = [[NSMutableArray alloc]init];
     }
     return _tempSectionTitles;
+}
+
+- (NSMutableArray *)currentSearchGroupArray
+{
+    if(_currentSearchGroupArray == nil){
+        _currentSearchGroupArray = [[NSMutableArray alloc]init];
+    }
+    return _currentSearchGroupArray;
 }
 
 @end

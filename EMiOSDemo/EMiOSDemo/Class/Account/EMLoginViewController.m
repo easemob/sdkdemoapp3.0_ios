@@ -74,8 +74,9 @@
 
 - (void)_setupSubviews
 {
-    UIImageView *imageView=[[UIImageView alloc]initWithFrame:self.view.bounds];
-    imageView.image=[UIImage imageNamed:@"BootPage"];
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:self.view.bounds];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.image = [UIImage imageNamed:@"BootPage"];
     [self.view insertSubview:imageView atIndex:0];
 
     self.titleImageView = [[UIImageView alloc]init];

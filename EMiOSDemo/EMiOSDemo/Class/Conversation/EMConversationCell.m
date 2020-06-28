@@ -26,7 +26,6 @@
        self.selectionStyle = UITableViewCellSelectionStyleDefault;
        self.selectedBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)];
        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:233/255.0 green:233/255.0 blue:233/255.0 alpha:1.0];
-       self.contentView.backgroundColor = [UIColor whiteColor];
        self.backgroundColor = [UIColor whiteColor];
        [self _setupSubview];
    }
@@ -43,15 +42,15 @@
     _avatarView = [[UIImageView alloc] init];
     [self.contentView addSubview:_avatarView];
     [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(5);
-        make.left.equalTo(self.contentView).offset(15);
-        make.bottom.equalTo(self.contentView).offset(-5);
+        make.top.equalTo(self.contentView).offset(14);
+        make.left.equalTo(self.contentView).offset(16);
+        make.bottom.equalTo(self.contentView).offset(-14);
         make.width.equalTo(self.avatarView.mas_height).multipliedBy(1);
     }];
     
     _timeLabel = [[UILabel alloc] init];
-    _timeLabel.font = [UIFont systemFontOfSize:13];
-    _timeLabel.textColor = [UIColor grayColor];
+    _timeLabel.font = [UIFont systemFontOfSize:12];
+    _timeLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     _timeLabel.backgroundColor = [UIColor clearColor];
     [_timeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.contentView addSubview:_timeLabel];
@@ -62,8 +61,8 @@
     
     _nameLabel = [[UILabel alloc] init];
     _nameLabel.backgroundColor = [UIColor clearColor];
-    _nameLabel.textColor = [UIColor blackColor];
-    _nameLabel.font = [UIFont systemFontOfSize:18];
+    _nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    _nameLabel.font = [UIFont systemFontOfSize:16];
     [self.contentView addSubview:_nameLabel];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView.mas_centerY);
@@ -85,8 +84,8 @@
     _detailLabel = [[UILabel alloc] init];
     _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _detailLabel.backgroundColor = [UIColor clearColor];
-    _detailLabel.font = [UIFont systemFontOfSize:15];
-    _detailLabel.textColor = [UIColor grayColor];
+    _detailLabel.font = [UIFont systemFontOfSize:16];
+    _detailLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     [self.contentView addSubview:_detailLabel];
     [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_centerY).offset(3);
