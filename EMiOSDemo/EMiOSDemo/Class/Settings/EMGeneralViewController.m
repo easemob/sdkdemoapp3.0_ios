@@ -170,7 +170,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont systemFontOfSize:14.0];
         label.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
-        label.text = @"    群组设置";
+        label.text = @"     群组设置";
         label.textAlignment = NSTextAlignmentLeft;
         return label;
     }

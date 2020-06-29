@@ -132,7 +132,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont systemFontOfSize:13];
         label.textColor = [UIColor lightGrayColor];
-        label.text = @"    iOS APNS推送时使用的显示昵称";
+        label.text = @"     iOS APNS推送时使用的显示昵称";
         return label;
     }
     

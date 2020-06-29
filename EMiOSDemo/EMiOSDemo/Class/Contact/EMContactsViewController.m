@@ -96,7 +96,7 @@
     [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@24);
         make.centerY.equalTo(titleLabel);
-        make.right.equalTo(self.view).offset(-15);
+        make.right.equalTo(self.view).offset(-24);
     }];
     
     [self enableSearchController];
@@ -169,7 +169,15 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
+        
+        weakself.resultController.searchBar.text = @"";
+        [weakself.resultController.searchBar resignFirstResponder];
+        weakself.resultController.searchBar.showsCancelButton = NO;
+        [weakself searchBarCancelButtonAction:nil];
+        [weakself.resultNavigationController dismissViewControllerAnimated:NO completion:nil];
+        
+        [weakself personalData:contact];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }];
 }
 

@@ -21,6 +21,9 @@
 @property (nonatomic, strong) MKPointAnnotation *annotation;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
+@property (nonatomic, strong) UIButton *sendLocationBtn;
+@property (nonatomic, strong) UIButton *cancelBtn;
+
 @end
 
 @implementation EMLocationViewController
@@ -63,6 +66,7 @@
 
 - (void)_setupSubviews
 {
+    /*
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar_white"] forBarMetrics:UIBarMetricsDefault];
@@ -72,14 +76,33 @@
     if (self.canSend) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(sendAction)];
     }
-    self.title = @"地理位置";
+    self.title = @"地理位置";*/
+    self.navigationController.navigationBar.hidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.delegate = self;
     self.mapView.mapType = MKMapTypeStandard;
     self.mapView.zoomEnabled = YES;
     [self.view addSubview:self.mapView];
+    
+    [self.view addSubview:self.sendLocationBtn];
+    [self.sendLocationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@55);
+        make.height.equalTo(@25);
+        make.top.equalTo(self.view).offset(55);
+        make.right.equalTo(self.view).offset(-24);
+    }];
+    if (!self.canSend) {
+        self.sendLocationBtn.enabled = NO;
+    }
+    
+    [self.view addSubview:self.cancelBtn];
+    [self.cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@55);
+        make.height.equalTo(@25);
+        make.top.equalTo(self.view).offset(55);
+        make.left.equalTo(self.view).offset(24);
+    }];
     
     self.annotation = [[MKPointAnnotation alloc] init];
 }
@@ -168,6 +191,35 @@
             self.sendCompletion(self.locationCoordinate, self.address);
         }
     }];
+}
+
+#pragma mark - Getter
+
+- (UIButton *)sendLocationBtn
+{
+    if (_sendLocationBtn == nil) {
+        _sendLocationBtn = [[UIButton alloc]init];
+        [_sendLocationBtn setTitle:@"发送" forState:UIControlStateNormal];
+        _sendLocationBtn.layer.cornerRadius = 4;
+        _sendLocationBtn.backgroundColor = [UIColor colorWithRed:72/255.0 green:200/255.0 blue:144/255.0 alpha:1.0];
+        [_sendLocationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_sendLocationBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0]];
+        [_sendLocationBtn addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sendLocationBtn;
+}
+
+- (UIButton *)cancelBtn
+{
+    if (_cancelBtn == nil) {
+        _cancelBtn = [[UIButton alloc]init];
+        [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+        _cancelBtn.backgroundColor = [UIColor clearColor];
+        [_cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:14.0]];
+        [_cancelBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cancelBtn;
 }
 
 @end

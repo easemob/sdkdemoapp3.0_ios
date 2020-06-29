@@ -26,6 +26,7 @@
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
 @property (nonatomic) BOOL isNeedReloadSorted;
+@property (nonatomic) BOOL isAddBlankView;
 
 @property (nonatomic, strong) UIMenuItem *deleteMenuItem;
 @property (nonatomic, strong) UIMenuItem *stickMenuItem;
@@ -34,6 +35,8 @@
 @property (strong, nonatomic) NSIndexPath *menuIndexPath;
 
 @property (nonatomic, strong) UIButton *addImageBtn;
+
+@property (nonatomic, strong) UIImageView *blankPerchView;
 
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
@@ -44,7 +47,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.isAddBlankView = NO;
     [self _setupSubviews];
     
     [[EMNotificationHelper shared] addDelegate:self];
@@ -71,7 +74,6 @@
     if (self.isNeedReloadSorted) {
         self.isNeedReloadSorted = NO;
         [self _loadAllConversationsFromDBWithIsShowHud:NO];
-        
     } else if (self.isNeedReload) {
         self.isNeedReload = NO;
         [self.tableView reloadData];
@@ -129,7 +131,7 @@
     [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@24);
         make.centerY.equalTo(titleLabel);
-        make.right.equalTo(self.view).offset(-15);
+        make.right.equalTo(self.view).offset(-24);
     }];
     
     [self enableSearchController];
@@ -140,21 +142,16 @@
         make.height.equalTo(@36);
     }];
     
-    UIImageView *blankPerchView = [[UIImageView alloc]init];
-    blankPerchView.image = [UIImage imageNamed:@"blankConversation"];
+    self.blankPerchView = [[UIImageView alloc]init];
+    self.blankPerchView.image = [UIImage imageNamed:@"blankConversation"];
     UILabel *blankPadding = [[UILabel alloc]init];
     blankPadding.text = @"寻找自我 保持本色";
     blankPadding.textColor = [UIColor colorWithRed:204/255.0 green:204/255.0 blue:204/255.0 alpha:1.0];
     blankPadding.font = [UIFont systemFontOfSize:12.0];
-    [blankPerchView addSubview:blankPadding];
+    [self.blankPerchView addSubview:blankPadding];
     [blankPadding mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(blankPerchView.mas_bottom).offset(14);
-        make.centerX.equalTo(blankPerchView);
-    }];
-    [self.view addSubview:blankPerchView];
-    [blankPerchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(self.view);
-        make.width.height.equalTo(@82);
+        make.top.equalTo(self.blankPerchView.mas_bottom).offset(14);
+        make.centerX.equalTo(self.blankPerchView);
     }];
     
     self.tableView.rowHeight = 74;
@@ -168,6 +165,25 @@
     }];
     
     [self _setupSearchResultController];
+}
+
+//空白占位视图
+- (void)addBlankPerchView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.dataArray count] <= 0 && !self.isAddBlankView) {
+            //空会话列表占位视图
+            [self.view addSubview:self.blankPerchView];
+            self.isAddBlankView = YES;
+            [self.blankPerchView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.centerY.equalTo(self.view);
+                make.width.height.equalTo(@82);
+            }];
+        } else if ([self.dataArray count] > 0) {
+            [self.blankPerchView removeFromSuperview];
+            self.isAddBlankView = NO;
+        }
+    });
 }
 
 #pragma mark - moreAction
@@ -241,7 +257,17 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         EMConversationModel *model = [weakself.resultController.dataArray objectAtIndex:row];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
+        weakself.resultController.searchBar.text = @"";
+        [weakself.resultController.searchBar resignFirstResponder];
+        weakself.resultController.searchBar.showsCancelButton = NO;
+        [weakself searchBarCancelButtonAction:nil];
+        [weakself.resultNavigationController dismissViewControllerAnimated:NO completion:nil];
+        if (!model.notiModel) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
+        } else {
+            EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
+            [weakself.navigationController pushViewController:controller animated:YES];
+        }
     }];
 }
 
@@ -396,7 +422,7 @@
     
     __weak typeof(self) weakself = self;
     [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(name) resultBlock:^(NSArray *results) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.resultController.dataArray removeAllObjects];
             [weakself.resultController.dataArray addObjectsFromArray:results];
             [weakself.resultController.tableView reloadData];
@@ -535,6 +561,7 @@
                                                  completion:nil];
     [self.dataArray removeObjectAtIndex:row];
     [self.tableView reloadData];
+    [self addBlankPerchView];
 }
 
 //置顶
@@ -724,6 +751,7 @@
                 [weakself hideHud];
             }
             
+            [weakself addBlankPerchView];
             [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
             [weakself.tableView reloadData];
             weakself.isNeedReload = NO;
