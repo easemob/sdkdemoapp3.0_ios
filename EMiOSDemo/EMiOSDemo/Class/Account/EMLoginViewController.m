@@ -22,13 +22,15 @@
 #import "LoadingCALayer.h"
 #import "OneLoadingAnimationView.h"
 
-@interface EMLoginViewController ()<UITextFieldDelegate>
+#import "EMRightViewToolView.h"
+
+@interface EMLoginViewController ()<UITextFieldDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) UIImageView *titleImageView;
 @property (nonatomic, strong) UITextField *nameField;
 @property (nonatomic, strong) UITextField *pswdField;
-@property (nonatomic, strong) UIButton *pswdRightView;
-@property (nonatomic, strong) UIButton *userIdRightView;
+@property (nonatomic, strong) EMRightViewToolView *pswdRightView;
+@property (nonatomic, strong) EMRightViewToolView *userIdRightView;
 @property (nonatomic, strong) UIButton *loginTypeButton;
 @property (nonatomic, strong) UIButton *loginButton;
 @property (nonatomic, strong) UIImageView *arrowView;
@@ -37,6 +39,8 @@
 @property (nonatomic, strong) UILabel *loginLabel;
 
 @property (nonatomic, strong) UIButton *userAgreementBtn;//用户协议
+
+@property (nonatomic, strong) UITextView *linkTV;
 
 @property (nonatomic) BOOL isLogin;
 
@@ -80,7 +84,7 @@
     [self.view insertSubview:imageView atIndex:0];
 
     self.titleImageView = [[UIImageView alloc]init];
-    self.titleImageView.image = [UIImage imageNamed:@"编组 4"];
+    self.titleImageView.image = [UIImage imageNamed:@"titleImage"];
     [self.view addSubview:self.titleImageView];
     [self.titleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
@@ -98,14 +102,13 @@
     self.nameField.font = [UIFont systemFontOfSize:17];
     self.nameField.rightViewMode = UITextFieldViewModeWhileEditing;
     self.nameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.nameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.nameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.nameField.leftViewMode = UITextFieldViewModeAlways;
     self.nameField.layer.cornerRadius = 25;
     self.nameField.layer.borderWidth = 1;
     self.nameField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.userIdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-    [self.userIdRightView setImage:[UIImage imageNamed:@"clearContent"] forState:UIControlStateNormal];
-    [self.userIdRightView addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
+    self.userIdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMUsernameRightView];
+    [self.userIdRightView.rightViewBtn addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
     self.nameField.rightView = self.userIdRightView;
     self.userIdRightView.hidden = YES;
     [self.view addSubview:self.nameField];
@@ -115,7 +118,6 @@
         make.top.equalTo(self.titleImageView.mas_bottom).offset(20);
         make.height.equalTo(@55);
     }];
-
     self.pswdField = [[UITextField alloc] init];
     self.pswdField.backgroundColor = [UIColor whiteColor];
     self.pswdField.delegate = self;
@@ -123,15 +125,12 @@
     self.pswdField.placeholder = @"密码";
     self.pswdField.font = [UIFont systemFontOfSize:17];
     self.pswdField.returnKeyType = UIReturnKeyDone;
-//    self.pswdField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.pswdField.secureTextEntry = YES;
-    self.pswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-    [self.pswdRightView setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
-    [self.pswdRightView setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
-    [self.pswdRightView addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.pswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
+    [self.pswdRightView.rightViewBtn addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.pswdField.rightView = self.pswdRightView;
     self.pswdField.rightViewMode = UITextFieldViewModeAlways;
-    self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.pswdField.leftViewMode = UITextFieldViewModeAlways;
     self.pswdField.layer.cornerRadius = 25;
     self.pswdField.layer.borderWidth = 1;
@@ -155,21 +154,33 @@
         make.top.equalTo(self.pswdField.mas_bottom).offset(6);
         make.left.equalTo(self.pswdField.mas_left).offset(15);
     }];
-    
-    UILabel *clouseProtocol = [[UILabel alloc]init];
-    [self.view addSubview:clouseProtocol];
-    [clouseProtocol mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
-        make.centerY.equalTo(self.userAgreementBtn);
-    }];
-    clouseProtocol.text = @"同意 服务条款 与 隐私协议";
-    clouseProtocol.textColor = [UIColor whiteColor];
-    clouseProtocol.font = [UIFont systemFontOfSize:12.f];
-    clouseProtocol.textAlignment = NSTextAlignmentCenter;
-    
+    [self _setupUserProtocol];
     [self _setupLoginButton];
 }
 
+//用户协议
+- (void)_setupUserProtocol
+{
+    NSString *linkStr = @"我已阅读《服务条款》与《隐私协议》";
+    UIFont *linkFont = [UIFont systemFontOfSize:12.0];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:linkStr];
+    [attributedString addAttribute:NSLinkAttributeName value:@"serviceClouse://" range:[[attributedString string] rangeOfString:@"《服务条款》"]];
+    [attributedString addAttribute:NSLinkAttributeName value:@"privacyProtocol://" range:[[attributedString string] rangeOfString:@"《隐私协议》"]];
+    NSDictionary *attriDict = @{NSFontAttributeName:linkFont};
+    [attributedString addAttributes:attriDict range:NSMakeRange(0, attributedString.length)];
+    
+    self.linkTV.attributedText = attributedString;
+    self.linkTV.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor systemBlueColor], NSUnderlineColorAttributeName: [UIColor whiteColor], NSUnderlineStyleAttributeName: @(NSUnderlinePatternSolid)};
+    double linkHeight = [self getAttributionHeightWithString:linkStr lineSpace:1.5 kern:1 font:linkFont width:[UIScreen mainScreen].bounds.size.width - self.userAgreementBtn.frame.origin.x - 24].height;
+    [self.view addSubview:self.linkTV];
+    [self.linkTV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
+        make.centerY.equalTo(self.userAgreementBtn);
+        make.height.equalTo(@(linkHeight));
+    }];
+}
+
+//登录按钮
 - (void)_setupLoginButton
 {
     self.loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -305,6 +316,40 @@
         self.userIdRightView.hidden = NO;
     }
     
+    return YES;
+}
+
+#pragma mark - UITextViewDelegate
+
+/* 获取富文本的高度
+ *
+ * @param string    文字
+ * @param lineSpace 行间距
+ * @param kern      字间距
+ * @param font      字体大小
+ * @param width     文本宽度
+ *
+ * @return size
+ */
+- (CGSize)getAttributionHeightWithString:(NSString *)string lineSpace:(CGFloat)lineSpace kern:(CGFloat)kern font:(UIFont *)font width:(CGFloat)width {
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.lineSpacing = lineSpace;
+    NSDictionary *attriDict = @{
+                                NSParagraphStyleAttributeName:paragraphStyle,
+                                NSKernAttributeName:@(kern),
+                                NSFontAttributeName:font};
+    CGSize size = [string boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attriDict context:nil].size;
+    return size;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+    if ([[URL scheme] isEqualToString:@"serviceClouse"]) {
+        //服务条款
+        return NO;
+    }else if ([[URL scheme] isEqualToString:@"privacyProtocol"]) {
+        //隐私协议
+        return NO;
+    }
     return YES;
 }
 
@@ -515,7 +560,7 @@
     } else {
         //self.titleLabel.text = @"登录";
         self.pswdField.placeholder = @"密码";
-        self.pswdField.secureTextEntry = !self.pswdRightView.selected;
+        self.pswdField.secureTextEntry = !self.pswdRightView.rightViewBtn.selected;
         self.pswdField.rightView = self.pswdRightView;
         self.pswdField.rightViewMode = UITextFieldViewModeAlways;
         self.pswdField.clearButtonMode = UITextFieldViewModeNever;
@@ -556,6 +601,22 @@
         _loadingView = [[OneLoadingAnimationView alloc]initWithRadius:10.5];
     }
     return _loadingView;
+}
+
+- (UITextView *)linkTV
+{
+    if (_linkTV == nil) {
+        _linkTV = [[UITextView alloc]init];
+        _linkTV.userInteractionEnabled = YES;
+        _linkTV.font = [UIFont systemFontOfSize:12.0];
+        _linkTV.editable = NO;//必须禁止输入，否则点击将弹出输入键盘
+        _linkTV.scrollEnabled = NO;
+        _linkTV.delegate = self;
+        _linkTV.textContainerInset = UIEdgeInsetsMake(0,0, 0, 0);//文本距离边界值
+        _linkTV.textAlignment = NSTextAlignmentLeft;
+        _linkTV.backgroundColor = [UIColor clearColor];
+    }
+    return _linkTV;
 }
 
 @end

@@ -215,7 +215,7 @@
         _cancelBtn = [[UIButton alloc]init];
         [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
         _cancelBtn.backgroundColor = [UIColor clearColor];
-        [_cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:14.0]];
         [_cancelBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
     }

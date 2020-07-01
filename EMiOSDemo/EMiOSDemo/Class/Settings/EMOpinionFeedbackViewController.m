@@ -75,7 +75,7 @@
     self.bugFeedbackBtn.layer.borderColor = [UIColor blackColor].CGColor;
     [self.bugFeedbackBtn addTarget:self action:@selector(checkboxAction:) forControlEvents:UIControlEventTouchUpInside];
     self.bugFeedbackBtn.tag = 0;
-    [self.bugFeedbackBtn setImage:[UIImage imageNamed:@"currentAppkey"] forState:UIControlStateSelected];
+    [self.bugFeedbackBtn setBackgroundImage:[UIImage imageNamed:@"currentAppkey"] forState:UIControlStateSelected];
     [self.view addSubview:self.bugFeedbackBtn];
     [self.bugFeedbackBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@25);
@@ -97,7 +97,7 @@
     self.experienceKartunBtn.layer.borderColor = [UIColor blackColor].CGColor;
     [self.experienceKartunBtn addTarget:self action:@selector(checkboxAction:) forControlEvents:UIControlEventTouchUpInside];
     self.experienceKartunBtn.tag = 1;
-    [self.experienceKartunBtn setImage:[UIImage imageNamed:@"ios"] forState:UIControlStateSelected];
+    [self.experienceKartunBtn setBackgroundImage:[UIImage imageNamed:@"currentAppkey"] forState:UIControlStateSelected];
     [self.view addSubview:self.experienceKartunBtn];
     [self.experienceKartunBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@25);

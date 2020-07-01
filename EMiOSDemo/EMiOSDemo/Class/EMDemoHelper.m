@@ -64,7 +64,6 @@ static EMDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushNotificationController:) name:NOTIF_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatController:) name:CHAT_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupsController:) name:GROUP_LIST_PUSHVIEWCONTROLLER object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupInfoController:) name:GROUP_INFO_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomsController:) name:CHATROOM_LIST_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomInfoController:) name:CHATROOM_INFO_PUSHVIEWCONTROLLER object:nil];
 }
@@ -453,23 +452,6 @@ static EMDemoHelper *helper = nil;
     }
     
     EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
-    [navController pushViewController:controller animated:NO];
-}
-
-- (void)handlePushGroupInfoController:(NSNotification *)aNotif
-{
-    NSDictionary *dic = aNotif.object;
-    if ([dic count] == 0) {
-        return;
-    }
-    
-    NSString *groupId = [dic objectForKey:NOTIF_ID];
-    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
-
-    EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:groupId];
-    [controller setLeaveOrDestroyCompletion:^{
-        [navController popViewControllerAnimated:YES];
-    }];
     [navController pushViewController:controller animated:NO];
 }
 

@@ -126,7 +126,7 @@
             cell.detailTextLabel.text = self.chatroom.description;
             cell.accessoryType = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 3) {
-            cell.textLabel.text = @"Owner";
+            cell.textLabel.text = @"创建者";
             cell.detailTextLabel.text = self.chatroom.owner;
             cell.accessoryType = self.chatroom.permissionType == EMChatroomPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         }

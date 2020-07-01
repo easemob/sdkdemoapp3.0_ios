@@ -13,7 +13,7 @@
 #import "EMSecurityPrivacyViewController.h"
 
 @interface EMSettingsViewController ()
-
+@property(nonatomic, strong) UIAlertController *alertController;
 @end
 
 @implementation EMSettingsViewController
@@ -48,10 +48,13 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 2) {
+        return 1;
+    }
     return 2;
 }
 
@@ -67,6 +70,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCellStyleValue1"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
+    cell.textLabel.font = [UIFont systemFontOfSize:16.f];
+    cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
 
     if (section == 0) {
         if (row == 0) {
@@ -80,11 +87,13 @@
         } else if (row == 1) {
             cell.textLabel.text = @"隐私";
         }
+    } else if (section == 2) {
+        cell.textLabel.text = @"退出";
+        [cell.textLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.centerX.equalTo(cell.contentView);
+        }];
+        cell.accessoryType = UITableViewCellSelectionStyleNone;
     }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
-    cell.textLabel.font = [UIFont systemFontOfSize:14.f];
-    cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     return cell;
 }
 
@@ -110,6 +119,8 @@
             EMSecurityPrivacyViewController *securityPrivacyController = [[EMSecurityPrivacyViewController alloc]init];
             [self.navigationController pushViewController:securityPrivacyController animated:YES];
         }
+    } else {
+        [self logoutAction];
     }
 }
 
@@ -120,5 +131,38 @@
     }
     return 16;
 }
+
+#pragma mark - Action
+
+ - (void)logoutAction
+ {
+     self.alertController = [[UIAlertController alloc]init];
+     __weak typeof(self) weakself = self;
+     [self.alertController addAction:[UIAlertAction actionWithTitle:@"退出登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         [weakself showHudInView:self.view hint:@"退出..."];
+         [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
+             [weakself hideHud];
+             if (aError) {
+                 [EMAlertController showErrorAlert:aError.errorDescription];
+             } else {
+                 EMDemoOptions *options = [EMDemoOptions sharedOptions];
+                 options.isAutoLogin = NO;
+                 options.loggedInUsername = @"";
+                 [options archive];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+             }
+         }];
+     }]];
+     [self.alertController addAction:[UIAlertAction actionWithTitle:@"关闭IM" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         exit(0);
+     }]];
+     [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+     }]];
+     for (UIAlertAction *alertAction in self.alertController.actions) {
+         [alertAction setValue:[UIColor systemGrayColor] forKey:@"_titleTextColor"];
+     }
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
+     [self presentViewController:self.alertController animated:YES completion:nil];
+ }
 
 @end

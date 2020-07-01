@@ -124,20 +124,19 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0 && indexPath.row == 2) {
-        return 50;
+        return 60;
     }
     
-    return 60;
+    return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
     if (section == 0) {
         return 0.001;
     }
     
-    return 20.0;
+    return 24.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -170,8 +169,8 @@
 - (void)deleteChatRecord
 {
     __weak typeof(self) weakself = self;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"确定删除和(%@)的聊天记录吗？",self.conversationModel.emModel.conversationId] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"确定删除和%@的聊天记录吗？",self.conversationModel.emModel.conversationId] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:@"清空" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO];
         EMError *error = nil;
         [conversation deleteAllMessages:&error];
@@ -185,10 +184,13 @@
             }
         }
     }];
-    [alertController addAction:okAction];
+    [clearAction setValue:[UIColor colorWithRed:245/255.0 green:52/255.0 blue:41/255.0 alpha:1.0] forKey:@"_titleTextColor"];
+    [alertController addAction:clearAction];
     
-    [alertController addAction: [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }]];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [cancelAction  setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
     alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
 }

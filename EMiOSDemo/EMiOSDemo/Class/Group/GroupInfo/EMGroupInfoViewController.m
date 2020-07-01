@@ -105,15 +105,19 @@
     self.addMemberCell.separatorInset = UIEdgeInsetsMake(0, [UIScreen mainScreen].bounds.size.width, 0, 0);
     
     self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultRedFont"];
-    self.leaveCell.textLabel.textColor = [UIColor redColor];
-    self.leaveCell.textLabel.text = @"退出群组";
+    self.leaveCell.textLabel.textColor = [UIColor colorWithRed:245/255.0 green:52/255.0 blue:41/255.0 alpha:1.0];
+    self.leaveCell.textLabel.font = [UIFont systemFontOfSize:18.0];
+    [self.leaveCell.textLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.leaveCell.contentView);
+    }];
+    self.leaveCell.textLabel.text = @"删除并退出";
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
    
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -135,6 +139,8 @@
     } else if (section == 3) {
         count = 2;
     } else if (section == 4) {
+        count = 1;
+    } else if (section == 5) {
         count = 1;
     }
 
@@ -175,7 +181,7 @@
         switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
     }
     
-    if (section == 4 && row == 0) {
+    if (section == 5 && row == 0) {
         return self.leaveCell;
     } else if (section == 0 && row == 2) {
         return self.addMemberCell;
@@ -236,6 +242,9 @@
             [switchControl setOn:([conversastion.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[conversastion.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
+    } else if (section == 4) {
+        cell.textLabel.text = @"清空聊天记录";
+        cell.detailTextLabel.text = @"";
     }
     return cell;
 }
@@ -248,22 +257,21 @@
         return 50;
     }
     
-    return 60;
+    return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
     if (section == 0) {
         return 0.001;
     }
     
-    return 20.0;
+    return 24.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 4) {
+    if (section == 5) {
         return 40;
     }
     
@@ -308,6 +316,9 @@
             [self.navigationController pushViewController:controller animated:YES];
         }
     } else if (section == 4) {
+        //删除聊天记录
+        [self deleteGroupRecord];
+    } else if (section == 5) {
         if (row == 0) {
             [self _leaveOrDestroyGroupAction];
         }
@@ -358,9 +369,9 @@
     
     self.group = aGroup;
     if (aGroup.permissionType == EMGroupPermissionTypeOwner) {
-        self.leaveCell.textLabel.text = @"解散群组";
+        self.leaveCell.textLabel.text = @"解散并退出";
     } else {
-        self.leaveCell.textLabel.text = @"退出群组";
+        self.leaveCell.textLabel.text = @"删除并退出";
     }
     [self.tableView reloadData];
 }
@@ -435,6 +446,36 @@
             [conversation setExt:ext];
         }
     }
+}
+
+//清空聊天记录
+- (void)deleteGroupRecord
+{
+    __weak typeof(self) weakself = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定删除群的聊天记录吗？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:@"清空" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+        EMError *error = nil;
+        [conversation deleteAllMessages:&error];
+        if (weakself.clearRecordCompletion) {
+            if (!error) {
+                [EMAlertController showSuccessAlert:@"聊天记录已清空！"];
+                weakself.clearRecordCompletion(YES);
+            } else {
+                [EMAlertController showErrorAlert:@"清空聊天记录失败！"];
+                weakself.clearRecordCompletion(NO);
+            }
+        }
+    }];
+    [clearAction setValue:[UIColor colorWithRed:245/255.0 green:52/255.0 blue:41/255.0 alpha:1.0] forKey:@"_titleTextColor"];
+    [alertController addAction:clearAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [cancelAction  setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)groupAnnouncementAction

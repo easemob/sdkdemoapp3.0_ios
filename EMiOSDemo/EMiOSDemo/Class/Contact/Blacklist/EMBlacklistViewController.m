@@ -91,6 +91,7 @@
     NSInteger row = indexPath.row;
     cell.indexPath = indexPath;
     if (tableView == self.tableView) {
+        /*
         if (section == 0) {
             cell.avatarView.image = [UIImage imageNamed:@"contact"];
             cell.nameLabel.text = @"添加至黑名单";
@@ -99,7 +100,11 @@
             cell.nameLabel.text = [self.dataArray[section - 1] objectAtIndex:row];
             cell.nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
             cell.nameLabel.font = [UIFont systemFontOfSize:18.f];
-        }
+        }*/
+        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
+        cell.nameLabel.text = [self.dataArray[section - 1] objectAtIndex:row];
+        cell.nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+        cell.nameLabel.font = [UIFont systemFontOfSize:18.f];
     } else {
         cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
         cell.nameLabel.text = [self.searchResults objectAtIndex:row];
@@ -198,14 +203,14 @@
     }
     return existTitles;
 }
-
+/*
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.tableView && indexPath.section == 0 && indexPath.row == 0) {
         EMAddBlacklistViewController *controller = [[EMAddBlacklistViewController alloc] init];
         [self.navigationController pushViewController:controller animated:YES];
     }
-}
+}*/
 
 #pragma mark - EMSearchBarDelegate
 

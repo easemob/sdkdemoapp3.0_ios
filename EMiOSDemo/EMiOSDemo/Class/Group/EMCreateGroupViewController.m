@@ -374,11 +374,11 @@
         if (aError) {
             [EMAlertController showErrorAlert:@"创建群组失败"];
         } else {
+            [EMAlertController showSuccessAlert:@"创建群组成功"];
+            [weakself.navigationController popViewControllerAnimated:YES];
             if (weakself.successCompletion) {
                 weakself.successCompletion(aGroup);
             }
-            [EMAlertController showSuccessAlert:@"创建群组成功"];
-            [weakself.navigationController popViewControllerAnimated:YES];
         }
     }];
 }

@@ -138,7 +138,7 @@ static DemoConfManager *confManager = nil;
         controller.inviteType = aInviteType;
         
         weakSelf.confNavController = [[UINavigationController alloc] initWithRootViewController:controller];
-        weakSelf.confNavController.modalPresentationStyle = 0;
+        weakSelf.confNavController.modalPresentationStyle = UIModalPresentationFullScreen;
         [aController presentViewController:weakSelf.confNavController animated:NO completion:nil];
     }
 }

@@ -26,6 +26,7 @@
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
+#import "EMGroupInfoViewController.h"
 #import "EMChatInfoViewController.h"
 
 #import "EMMsgRecordCell.h"
@@ -390,7 +391,7 @@
             return;
         }
         
-        UIImage *image = [[UIImage imageNamed:@"群资料"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *image = [[UIImage imageNamed:@"groupInfo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(groupOrChatroomInfoAction)];
     }
 }
@@ -847,7 +848,7 @@
                 case PHAuthorizationStatusAuthorized: //已获取权限
                 {
                     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+                    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
                     [self presentViewController:self.imagePicker animated:YES completion:nil];
                 }
                     break;
@@ -969,36 +970,22 @@
             [weakself.chatBar clearMoreViewAndSelectedButton];
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:weakself.conversationModel.emModel.conversationId, CALL_TYPE:@(EMCallTypeVideo)}];
         }]];
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
+        [self presentViewController:self.alertController animated:YES completion:nil];
     } else {
-        [self.alertController addAction:[UIAlertAction actionWithTitle:@"会议模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [weakself.chatBar clearMoreViewAndSelectedButton];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
-        }]];
-        [self.alertController addAction:[UIAlertAction actionWithTitle:@"互动模式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [weakself.chatBar clearMoreViewAndSelectedButton];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLive), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
-        }]];
+        [weakself.chatBar clearMoreViewAndSelectedButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
     }
-    
-    [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }]];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
-    [self presentViewController:self.alertController animated:YES completion:nil];
 }
 
 //阅读回执跳转
 - (void)chatBarMoreFunctionReadReceipt
 {
-    if (self.conversationModel.emModel.type != EMConversationTypeGroupChat) {
-        [self showHint:@"‘群组回执’只可在群聊天使用哦！"];
-        return;
-    }
     self.readReceiptControl = [[EMReadReceiptMsgViewController alloc]init];
     self.readReceiptControl.delegate = self;
     self.readReceiptControl.modalPresentationStyle = 0;
-    //[self.navigationController pushViewController:readReceipt animated:NO];
     [self presentViewController:self.readReceiptControl animated:NO completion:nil];
 }
 
@@ -2321,10 +2308,10 @@
 //聊天详情页
 - (void)chatInfoAction
 {
+    __weak typeof(self) weakself = self;
     EMChatInfoViewController *chatInfoController = [[EMChatInfoViewController alloc]initWithCoversation:self.conversationModel];
-     __weak typeof(self) weakself = self;
-    [chatInfoController setClearRecordCompletion:^(BOOL isClear) {
-        if (isClear) {
+    [chatInfoController setClearRecordCompletion:^(BOOL isClearRecord) {
+        if (isClearRecord) {
             [weakself.dataArray removeAllObjects];
             [weakself.tableView reloadData];
         }
@@ -2332,25 +2319,27 @@
     [self.navigationController pushViewController:chatInfoController animated:YES];
 }
 
-//删除该会话所有消息，同时清除内存和数据库中的消息
-- (void)deleteAllMessageAction
-{
-    EMError *error = nil;
-    [self.conversationModel.emModel deleteAllMessages:&error];
-    if (!error) {
-        [self.dataArray removeAllObjects];
-        [self.tableView reloadData];
-    }
-}
-
+//群组/聊天室 详情页
 - (void)groupOrChatroomInfoAction
 {
+     __weak typeof(self) weakself = self;
     if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_PUSHVIEWCONTROLLER object:@{NOTIF_ID:self.conversationModel.emModel.conversationId, NOTIF_NAVICONTROLLER:self.navigationController}];
+        EMGroupInfoViewController *groupInfocontroller = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversationModel.emModel.conversationId];
+        [groupInfocontroller setLeaveOrDestroyCompletion:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        [groupInfocontroller setClearRecordCompletion:^(BOOL isClearRecord) {
+            if (isClearRecord) {
+                [weakself.dataArray removeAllObjects];
+                [weakself.tableView reloadData];
+            }
+        }];
+        [self.navigationController pushViewController:groupInfocontroller animated:NO];
     } else if (self.conversationModel.emModel.type == EMConversationTypeChatRoom) {
         [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_INFO_PUSHVIEWCONTROLLER object:@{NOTIF_ID:self.conversationModel.emModel.conversationId, NOTIF_NAVICONTROLLER:self.navigationController}];
     }
 }
+
 //发送消息体
 - (void)_sendMessageWithBody:(EMMessageBody *)aBody
                          ext:(NSDictionary *)aExt

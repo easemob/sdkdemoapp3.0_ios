@@ -1,8 +1,8 @@
 //
 //  EMAccountViewController.m
-//  ChatDemo-UI3.0
+//  EMiOSDemo
 //
-//  Created by XieYajie on 2018/12/24.
+//  Update by zhangchong on 2020/6/30.
 //  Copyright © 2018 XieYajie. All rights reserved.
 //
 
@@ -13,7 +13,6 @@
 @interface EMAccountViewController ()
 
 @property (nonatomic, strong) UIImageView *headerView;
-@property (nonatomic, strong) UISwitch *disturbSwitch;
 
 @end
 
@@ -41,10 +40,6 @@
     self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_avatar_me"]];
     self.headerView.frame = CGRectMake(0, 0, 36, 36);
     self.headerView.userInteractionEnabled = YES;
-    
-    self.disturbSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 40, 60)];
-    [self.disturbSwitch addTarget:self action:@selector(disturbValueChanged) forControlEvents:UIControlEventValueChanged];
-    [self.disturbSwitch setOn:([EMClient sharedClient].pushOptions.noDisturbStatus == EMPushNoDisturbStatusClose ? NO : YES) animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -57,7 +52,7 @@
     NSInteger count = 0;
     switch (section) {
         case 0:
-            count = 3;
+            count = 2;
             break;
         case 1:
         {
@@ -94,16 +89,11 @@
         } else if (row == 1) {
             cell.textLabel.text = @"环信ID";
             cell.detailTextLabel.text = [EMClient sharedClient].currentUsername;
-        } else if (row == 2) {
-            cell.textLabel.text = @"昵称";
-            cell.detailTextLabel.text = [EMClient sharedClient].pushOptions.displayName;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     } else if (section == 1) {
-        if (row == 0) {
-            cell.textLabel.textColor = [UIColor redColor];
-            cell.textLabel.text = @"退出登录";
-        }
+        cell.textLabel.text = @"昵称";
+        cell.detailTextLabel.text = [EMClient sharedClient].pushOptions.displayName;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     return cell;
@@ -118,7 +108,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0;
+    return 44;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -126,50 +116,26 @@
     return 0;
 }
 
-- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (section == 1) {
         UILabel *label = [[UILabel alloc] init];
         label.font = [UIFont systemFontOfSize:13];
         label.textColor = [UIColor lightGrayColor];
         label.text = @"     iOS APNS推送时使用的显示昵称";
         return label;
     }
-    
     return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    if (section == 0) {
-        if (row == 2) {
-            [self changeNikeNameAction];
-        }
-    } else if (section == 1) {
-        if (row == 0) {
-            [self logoutAction];
-        }
+    if (indexPath.section == 1) {
+        [self changeNikeNameAction];
     }
 }
 
 #pragma mark - Action
-
-- (void)disturbValueChanged
-{
-    [self.tableView reloadData];
-    
-    if (!self.disturbSwitch.isOn) {
-        [self showHint:@"更新免打扰设置..."];
-        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-        options.noDisturbingStartH = 0;
-        options.noDisturbingEndH = 0;
-        options.noDisturbStatus = EMPushNoDisturbStatusClose;
-        [[EMClient sharedClient] updatePushOptionsToServer];
-        [self hideHud];
-    }
-}
 
 - (void)_updateNikeName:(NSString *)aName
 {
@@ -199,27 +165,6 @@
     [alertController addAction:okAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)logoutAction
-{
-    __weak typeof(self) weakself = self;
-    [self showHudInView:self.view hint:@"退出..."];
-    NSLog(@"-------->%@", EMClient.sharedClient.currentUsername);
-    [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
-        [weakself hideHud];
-        if (aError) {
-            [EMAlertController showErrorAlert:aError.errorDescription];
-        } else {
-            EMDemoOptions *options = [EMDemoOptions sharedOptions];
-            options.isAutoLogin = NO;
-            options.loggedInUsername = @"";
-            [options archive];
-            
-//            [[ApplyViewController shareController] clear];
-            [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
-        }
-    }];
 }
 
 @end

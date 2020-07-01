@@ -63,7 +63,7 @@
     
     self.audioButton = [[UIButton alloc] init];
     [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unSelected" ofType:@"png"]] forState:UIControlStateNormal];
-    [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"audio-unselected" ofType:@"png"]] forState:UIControlStateSelected];
+    [_audioButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"character" ofType:@"png"]] forState:UIControlStateSelected];
     [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.audioButton];
     [_audioButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -76,8 +76,6 @@
     
     self.textView.delegate = self;
     self.textView.placeholder = @"输入了什么东西";
-    //self.textView.placeholderColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
-    //self.textView.textColor = [UIColor blackColor];
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
     self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 12, 0);

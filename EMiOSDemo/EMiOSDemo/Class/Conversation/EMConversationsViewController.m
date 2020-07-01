@@ -125,11 +125,11 @@
     }];
     
     self.addImageBtn = [[UIButton alloc]init];
-    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
+    [self.addImageBtn setImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
     [self.addImageBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.addImageBtn];
     [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@24);
+        make.width.height.equalTo(@35);
         make.centerY.equalTo(titleLabel);
         make.right.equalTo(self.view).offset(-24);
     }];
@@ -208,6 +208,9 @@
     [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
         EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
         createController.inviteController = weakself.inviteController;
+        [createController setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:aGroup];
+        }];
         [weakself.navigationController pushViewController:createController animated:YES];
     }];
     

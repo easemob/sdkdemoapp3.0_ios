@@ -43,7 +43,7 @@
         make.height.equalTo(@140);
     }];
     
-    UIImageView *imgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon失败"]];
+    UIImageView *imgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_failure"]];
     [backView addSubview:imgView];
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backView.mas_top).offset(20);

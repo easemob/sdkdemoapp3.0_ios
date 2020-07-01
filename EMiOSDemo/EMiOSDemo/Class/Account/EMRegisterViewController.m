@@ -18,22 +18,24 @@
 #import "LoadingCALayer.h"
 #import "OneLoadingAnimationView.h"
 
+#import "EMRightViewToolView.h"
+
 @interface EMRegisterViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *appkeyField;
-@property (nonatomic, strong) UIButton *appkeyRightView;
+@property (nonatomic, strong) EMRightViewToolView *appkeyRightView;
 
 @property (nonatomic, strong) UITextField *nameField;
 
 @property (nonatomic, strong) UITextField *pswdField;
-@property (nonatomic, strong) UIButton *pswdRightView;
-@property (nonatomic, strong) UIButton *confirmPswdRightView;
+@property (nonatomic, strong) EMRightViewToolView *pswdRightView;
+@property (nonatomic, strong) EMRightViewToolView *confirmPswdRightView;
 
 @property (nonatomic, strong) UITextField *confirmPswdField;
 
 @property (nonatomic, strong) UIButton *registeButton;
 @property (nonatomic, strong) UIImageView *arrowView;
-@property (nonatomic, strong) UIButton *userIdRightView;
+@property (nonatomic, strong) EMRightViewToolView *userIdRightView;
 @property (nonatomic, strong) CAGradientLayer *gl;
 @property (nonatomic, strong) CAGradientLayer *backGl;
 @property (nonatomic, strong) UILabel *registeLabel;
@@ -77,7 +79,7 @@
     [self.view insertSubview:imageView atIndex:0];
     
     UIButton *backButton = [[UIButton alloc]init];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"24 ／ arrows ／ arrow-left"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"back_left"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backBackion) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
     [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -108,14 +110,13 @@
     self.nameField.font = [UIFont systemFontOfSize:17];
     self.nameField.rightViewMode = UITextFieldViewModeWhileEditing;
     self.nameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.nameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.nameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.nameField.leftViewMode = UITextFieldViewModeAlways;
     self.nameField.layer.cornerRadius = 25;
     self.nameField.layer.borderWidth = 1;
     self.nameField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.userIdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-    [self.userIdRightView setImage:[UIImage imageNamed:@"clearContent"] forState:UIControlStateNormal];
-    [self.userIdRightView addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
+    self.userIdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMUsernameRightView];
+    [self.userIdRightView.rightViewBtn addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
     self.nameField.rightView = self.userIdRightView;
     self.userIdRightView.hidden = YES;
     [self.view addSubview:self.nameField];
@@ -134,13 +135,11 @@
     self.pswdField.font = [UIFont systemFontOfSize:17];
     self.pswdField.returnKeyType = UIReturnKeyDone;
     self.pswdField.secureTextEntry = YES;
-    self.pswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-    [self.pswdRightView setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
-    [self.pswdRightView setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
-    [self.pswdRightView addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.pswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
+    [self.pswdRightView.rightViewBtn addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.pswdField.rightView = self.pswdRightView;
     self.pswdField.rightViewMode = UITextFieldViewModeAlways;
-    self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.pswdField.leftViewMode = UITextFieldViewModeAlways;
     self.pswdField.layer.cornerRadius = 25;
     self.pswdField.layer.borderWidth = 1;
@@ -161,13 +160,11 @@
     self.confirmPswdField.font = [UIFont systemFontOfSize:17];
     self.confirmPswdField.returnKeyType = UIReturnKeyDone;
     self.confirmPswdField.secureTextEntry = YES;
-    self.confirmPswdRightView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 35)];
-    [self.confirmPswdRightView setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
-    [self.confirmPswdRightView setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
-    [self.confirmPswdRightView addTarget:self action:@selector(confirmPswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.confirmPswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
+    [self.confirmPswdRightView.rightViewBtn addTarget:self action:@selector(confirmPswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.confirmPswdField.rightView = self.confirmPswdRightView;
     self.confirmPswdField.rightViewMode = UITextFieldViewModeAlways;
-    self.confirmPswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.confirmPswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.confirmPswdField.leftViewMode = UITextFieldViewModeAlways;
     self.confirmPswdField.layer.cornerRadius = 25;
     self.confirmPswdField.layer.borderWidth = 1;

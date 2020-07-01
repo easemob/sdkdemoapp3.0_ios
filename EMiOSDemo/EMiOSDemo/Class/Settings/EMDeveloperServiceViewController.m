@@ -88,7 +88,7 @@
 
     EMDemoOptions *options = [EMDemoOptions sharedOptions];
     if (section == 0) {
-        cell.textLabel.text = @"当前版本";
+        cell.textLabel.text = @"当前SDK版本";
         cell.detailTextLabel.text = [EMClient sharedClient].version;
         cell.accessoryType = UITableViewCellSelectionStyleNone;
     } else if (section == 1) {

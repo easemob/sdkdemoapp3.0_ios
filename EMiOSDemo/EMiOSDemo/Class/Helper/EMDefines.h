@@ -111,7 +111,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define GROUP_LIST_PUSHVIEWCONTROLLER @"EMPushGroupsViewController"
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
 #define GROUP_SUBJECT_UPDATED @"EMGroupSubjectUpdated"
-#define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
 #define GROUP_INFO_REFRESH @"EMGroupInfoRefresh"
 
 //聊天室

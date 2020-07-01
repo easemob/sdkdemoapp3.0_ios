@@ -71,7 +71,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SessionToolbarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     NSInteger row = indexPath.row;;
-    [cell personalizeToolbar:(NSString *)[_toolbarImgArray objectAtIndex:row] funcDesc:(NSString *)[_toolbarDescArray objectAtIndex:row] tag:row];
+    [cell personalizeToolbar:(NSString *)[_toolbarImgArray objectAtIndex:row] funcDesc:[_toolbarDescArray objectAtIndex:row] tag:row];
     cell.delegate = self;
     return cell;
 }
