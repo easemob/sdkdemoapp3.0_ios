@@ -16,6 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 // app角标更新
 + (void)updateApplicationIconBadgeNumber:(NSInteger)aBadgeNumber;
+
+// 播放等待铃声 (默认从听筒播放)
++ (void)playWattingSound;
+
+// 播放铃声 (默认从扬声器播放)
++ (void)playRing;
+
+// 停止铃声
++ (void)stopSound;
 @end
 
 NS_ASSUME_NONNULL_END

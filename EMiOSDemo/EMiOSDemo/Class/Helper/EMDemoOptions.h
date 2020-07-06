@@ -39,6 +39,9 @@ static NSString *kOptions_UseBackCamera = @"UseBackCamera";
 static NSString *kOptions_WillRecord = @"WillRecord";
 static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
 
+static NSString *kOptions_EnableCustomAudioData = @"EnableCustomAudioData";
+static NSString *kOptions_CustomAudioDataSamples = @"CustomAudioDataSamples";
+
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 
 NS_ASSUME_NONNULL_BEGIN

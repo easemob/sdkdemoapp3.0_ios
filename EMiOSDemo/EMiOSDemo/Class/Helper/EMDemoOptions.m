@@ -33,13 +33,17 @@ static EMDemoOptions *sharedOptions = nil;
         self.isChatTyping = NO;
         self.isAutoDeliveryAck = NO;
         
-        self.isOfflineHangup = NO;
+        self.isOfflineHangup = YES;
         
         self.isShowCallInfo = NO;
         self.isUseBackCamera = NO;
         
         self.willRecord = NO;
         self.willMergeStrem = NO;
+        
+        self.enableCustomAudioData = NO;
+        self.customAudioDataSamples = 48000;
+
     }
     
     return self;
@@ -82,6 +86,9 @@ static EMDemoOptions *sharedOptions = nil;
 
         self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
         self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
+        
+        self.enableCustomAudioData = [aDecoder decodeBoolForKey:kOptions_EnableCustomAudioData];
+        self.customAudioDataSamples = [aDecoder decodeIntForKey:kOptions_CustomAudioDataSamples];
     }
     return self;
 }
@@ -118,6 +125,9 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
+    
+    [aCoder encodeBool:self.enableCustomAudioData forKey:kOptions_EnableCustomAudioData];
+    [aCoder encodeInt:self.customAudioDataSamples forKey:kOptions_CustomAudioDataSamples];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -146,6 +156,8 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.isUseBackCamera = self.isUseBackCamera;
     retModel.willRecord = self.willRecord;
     retModel.willMergeStrem = self.willMergeStrem;
+    retModel.enableCustomAudioData = self.enableCustomAudioData;
+    retModel.customAudioDataSamples = self.customAudioDataSamples;
     return retModel;
 }
 

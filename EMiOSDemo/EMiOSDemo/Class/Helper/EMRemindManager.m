@@ -15,7 +15,9 @@
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 SystemSoundID soundID = 1007;
 
-@interface EMRemindManager ()
+@interface EMRemindManager () {
+    AVAudioPlayer *_player;
+}
 @property (strong, nonatomic) NSDate *lastPlaySoundDate; // 最后一次提醒的时间
 @end
 
@@ -27,6 +29,22 @@ SystemSoundID soundID = 1007;
 + (void)updateApplicationIconBadgeNumber:(NSInteger)aBadgeNumber {
     [[EMRemindManager shared] updateApplicationIconBadgeNumber:aBadgeNumber];
 }
+
+// 播放等待铃声
++ (void)playWattingSound {
+    [[EMRemindManager shared] _playWattingSound];
+}
+
+// 播放铃声
++ (void)playRing {
+    [[EMRemindManager shared] _playRing];
+}
+
+// 停止铃声
++ (void)stopSound {
+    [[EMRemindManager shared] _stopSound];
+}
+
 
 #pragma - mark private
 + (EMRemindManager *)shared {
@@ -174,5 +192,53 @@ SystemSoundID soundID = 1007;
     } while (0);
     return ret;
 }
+
+// 播放等待铃声
+- (void)_playWattingSound {
+    
+    [self _stopSound];
+    
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+             withOptions:AVAudioSessionCategoryOptionAllowBluetooth
+                   error:nil];
+    
+    [session setActive:YES error:nil];
+    
+    NSURL* url = [[NSBundle mainBundle] URLForResource:@"music" withExtension:@".mp3"];
+    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [_player setNumberOfLoops:-1];
+    [_player prepareToPlay];
+    [_player play];
+}
+
+// 播放铃声
+- (void)_playRing {
+    
+    [self _stopSound];
+    
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+             withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker
+                   error:nil];
+    
+    [session setActive:YES error:nil];
+    
+    NSURL* url = [[NSBundle mainBundle] URLForResource:@"music" withExtension:@".mp3"];
+    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [_player setNumberOfLoops:-1];
+    [_player prepareToPlay];
+    [_player play];
+}
+
+// 停止铃声
+- (void)_stopSound {
+    if (_player || _player.isPlaying) {
+        [_player stop];
+    }
+    
+    _player = nil;
+}
+
 
 @end
