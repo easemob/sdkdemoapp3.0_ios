@@ -1,3 +1,42 @@
-PODFILE CHECKSUM: 4db53c023d9d40965ea1e91d2e1adf02a649163f
+PODS:
+  - FLAnimatedImage (1.0.12)
+  - Hyphenate (3.6.8)
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.1.0)
+  - MJRefresh (3.4.3)
+  - SDWebImage (4.4.8):
+    - SDWebImage/Core (= 4.4.8)
+  - SDWebImage/Core (4.4.8)
+  - SDWebImage/GIF (4.4.8):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
 
-COCOAPODS: 1.9.3
+DEPENDENCIES:
+  - FLAnimatedImage (~> 1.0)
+  - Hyphenate (~> 3.6.8)
+  - Masonry
+  - MBProgressHUD (~> 1.1.0)
+  - MJRefresh
+  - SDWebImage (~> 4.0)
+  - SDWebImage/GIF
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FLAnimatedImage
+    - Hyphenate
+    - Masonry
+    - MBProgressHUD
+    - MJRefresh
+    - SDWebImage
+
+SPEC CHECKSUMS:
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  Hyphenate: 7f1e47f7c1132d5a6e323330f9a6eeec9338bc76
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
+  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
+
+PODFILE CHECKSUM: b9dc5e52969678d867b1394541a1e601812894a3
+
+COCOAPODS: 1.8.0.beta.1

@@ -82,7 +82,7 @@
         }
     };
     if (self.isCreater) {
-        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMConferenceTypeCommunication password:self.password record:[EMDemoOptions sharedOptions].willRecord mergeStream:[EMDemoOptions sharedOptions].willMergeStrem isSupportWechatMiniProgram:YES completion:block];
+        [[EMClient sharedClient].conferenceManager createAndJoinConferenceWithType:EMConferenceTypeCommunication password:self.password record:[EMDemoOptions sharedOptions].willRecord mergeStream:[EMDemoOptions sharedOptions].willMergeStrem isSupportWechatMiniProgram:[EMDemoOptions sharedOptions].isSupportWechatMiniProgram completion:block];
     } else {
         [[EMClient sharedClient].conferenceManager joinConferenceWithConfId:self.joinConfId password:self.password completion:^(EMCallConference *aCall, EMError *aError) {
             block(aCall, weakself.password, aError);

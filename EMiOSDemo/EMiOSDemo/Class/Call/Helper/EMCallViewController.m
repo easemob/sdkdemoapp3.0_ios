@@ -135,11 +135,8 @@
     self.speakerButton.selected = !self.speakerButton.isSelected;
     
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    if (self.speakerButton.isSelected) {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    } else {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    }
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:self.speakerButton.isSelected ? AVAudioSessionCategoryOptionDefaultToSpeaker : AVAudioSessionCategoryOptionAllowBluetooth
+                        error:nil];
     [audioSession setActive:YES error:nil];
 }
 
