@@ -748,6 +748,8 @@
 		3C87A1092490D1640051E06E /* EMSecurityPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C87A1082490D1640051E06E /* EMSecurityPrivacyViewController.m */; };
 		3C87A10C2490ECF00051E06E /* EMOpinionFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C87A10B2490ECF00051E06E /* EMOpinionFeedbackViewController.m */; };
 		3C8EBEEE24AC913600B6560A /* EMRightViewToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEED24AC913600B6560A /* EMRightViewToolView.m */; };
+		3C8EBEF124AD967C00B6560A /* EMUserAgreementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEF024AD967C00B6560A /* EMUserAgreementView.m */; };
+		3C8EBEF524ADDF7E00B6560A /* EMAuthorizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEF424ADDF7E00B6560A /* EMAuthorizationView.m */; };
 		3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C930B3123AB2CB600C8268D /* PAirSandbox.m */; };
 		3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C97EF2923A87B5C004E97B7 /* CloudKit.framework */; };
 		3CB106C7247FBEAC00479BC1 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C4247FBEA800479BC1 /* ios@2x.png */; };
@@ -1725,6 +1727,10 @@
 		3C87A10B2490ECF00051E06E /* EMOpinionFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMOpinionFeedbackViewController.m; sourceTree = "<group>"; };
 		3C8EBEEC24AC913600B6560A /* EMRightViewToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMRightViewToolView.h; sourceTree = "<group>"; };
 		3C8EBEED24AC913600B6560A /* EMRightViewToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRightViewToolView.m; sourceTree = "<group>"; };
+		3C8EBEEF24AD967C00B6560A /* EMUserAgreementView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMUserAgreementView.h; sourceTree = "<group>"; };
+		3C8EBEF024AD967C00B6560A /* EMUserAgreementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMUserAgreementView.m; sourceTree = "<group>"; };
+		3C8EBEF324ADDF7E00B6560A /* EMAuthorizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMAuthorizationView.h; sourceTree = "<group>"; };
+		3C8EBEF424ADDF7E00B6560A /* EMAuthorizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMAuthorizationView.m; sourceTree = "<group>"; };
 		3C930B3123AB2CB600C8268D /* PAirSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAirSandbox.m; sourceTree = "<group>"; };
 		3C930B3223AB2CB600C8268D /* PAirSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAirSandbox.h; sourceTree = "<group>"; };
 		3C97EF2923A87B5C004E97B7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -2277,8 +2283,6 @@
 		3A45DCD72223A1FC00505786 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				3C8EBEEC24AC913600B6560A /* EMRightViewToolView.h */,
-				3C8EBEED24AC913600B6560A /* EMRightViewToolView.m */,
 				3C37DEEB2382486100399AE8 /* EMErrorAlertViewController.h */,
 				3C37DEEA2382486100399AE8 /* EMErrorAlertViewController.m */,
 				3A45E01D2223A21B00505786 /* EMLoginViewController.h */,
@@ -2288,6 +2292,7 @@
 				3A45E01E2223A21B00505786 /* EMSDKOptions.plist */,
 				3A45E0202223A21B00505786 /* EMSDKOptionsViewController.h */,
 				3A45E01A2223A21B00505786 /* EMSDKOptionsViewController.m */,
+				3C8EBEF224AD969000B6560A /* Components */,
 				3A45DCD82223A1FC00505786 /* AccountImgs */,
 				3A45DCE92223A1FC00505786 /* QRCode */,
 			);
@@ -3241,6 +3246,19 @@
 			path = Invite;
 			sourceTree = "<group>";
 		};
+		3C8EBEF224AD969000B6560A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				3C8EBEEF24AD967C00B6560A /* EMUserAgreementView.h */,
+				3C8EBEF024AD967C00B6560A /* EMUserAgreementView.m */,
+				3C8EBEEC24AC913600B6560A /* EMRightViewToolView.h */,
+				3C8EBEED24AC913600B6560A /* EMRightViewToolView.m */,
+				3C8EBEF324ADDF7E00B6560A /* EMAuthorizationView.h */,
+				3C8EBEF424ADDF7E00B6560A /* EMAuthorizationView.m */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		3CA8BB38236C3A7A00EE519E /* Call */ = {
 			isa = PBXGroup;
 			children = (
@@ -4156,9 +4174,11 @@
 				3A45E38C2223A48700505786 /* EMChatroomMembersViewController.m in Sources */,
 				3A45E54D2223E4DD00505786 /* EMConversationHelper.m in Sources */,
 				3A45E2442223A3A100505786 /* EMLocationViewController.m in Sources */,
+				3C8EBEF524ADDF7E00B6560A /* EMAuthorizationView.m in Sources */,
 				3A45E0212223A21B00505786 /* EMRegisterViewController.m in Sources */,
 				3A45E37E2223A47900505786 /* EMChatroomsViewController.m in Sources */,
 				3A45E0D62223A2CE00505786 /* PSTCollectionViewFlowLayout.m in Sources */,
+				3C8EBEF124AD967C00B6560A /* EMUserAgreementView.m in Sources */,
 				3A6C4214224A315C00AA5EDD /* EMEmojiHelper.m in Sources */,
 				3C3BAE842397C42800344F63 /* EMConfirmViewController.m in Sources */,
 				3A45E3312223A44200505786 /* EMMsgExtGifBubbleView.m in Sources */,

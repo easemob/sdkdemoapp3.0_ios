@@ -18,7 +18,8 @@
 
 - (instancetype)initRightViewWithViewType:(EMRightViewType)rightViewType
 {
-    if ((self = [super init]) != nil) {
+    self = [super init];
+    if (self) {
         self.frame = CGRectMake(0, 0, 46, RightViewRange);
         self.rightViewBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, RightViewRange, RightViewRange)];
         if (rightViewType == EMPswdRightView) {

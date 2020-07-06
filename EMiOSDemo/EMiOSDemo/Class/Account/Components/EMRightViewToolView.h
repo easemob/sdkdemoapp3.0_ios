@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, EMRightViewType) {
     EMUsernameRightView,
 };
 
+//登录注册输入框textfiled的rightView组件
 @interface EMRightViewToolView : UIView
 
 @property (nonatomic, strong) UIButton *rightViewBtn;

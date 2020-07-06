@@ -19,12 +19,12 @@
 #import "EMDemoOptions.h"
 
 #import "EMErrorAlertViewController.h"
-#import "LoadingCALayer.h"
-#import "OneLoadingAnimationView.h"
 
 #import "EMRightViewToolView.h"
+#import "EMUserAgreementView.h"
+#import "EMAuthorizationView.h"
 
-@interface EMLoginViewController ()<UITextFieldDelegate, UITextViewDelegate>
+@interface EMLoginViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UIImageView *titleImageView;
 @property (nonatomic, strong) UITextField *nameField;
@@ -32,19 +32,12 @@
 @property (nonatomic, strong) EMRightViewToolView *pswdRightView;
 @property (nonatomic, strong) EMRightViewToolView *userIdRightView;
 @property (nonatomic, strong) UIButton *loginTypeButton;
-@property (nonatomic, strong) UIButton *loginButton;
-@property (nonatomic, strong) UIImageView *arrowView;
-@property (nonatomic, strong) CAGradientLayer *gl;
-@property (nonatomic, strong) CAGradientLayer *backGl;
-@property (nonatomic, strong) UILabel *loginLabel;
 
-@property (nonatomic, strong) UIButton *userAgreementBtn;//用户协议
+@property (nonatomic, strong) EMUserAgreementView *userAgreementView;//用户协议
 
-@property (nonatomic, strong) UITextView *linkTV;
+@property (nonatomic, strong) EMAuthorizationView *authorizationView;//授权操作视图
 
 @property (nonatomic) BOOL isLogin;
-
-@property (strong, nonatomic) IBOutlet OneLoadingAnimationView *loadingView;//加载view
 
 @end
 
@@ -61,8 +54,7 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-    self.loginLabel.text = @"登 录";
-    [self.loadingView removeFromSuperview];
+    [self.authorizationView originalView];//恢复原始视图
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -143,84 +135,30 @@
         make.height.equalTo(@55);
     }];
     
-    self.userAgreementBtn = [[UIButton alloc]init];
-    [self.userAgreementBtn setImage:[UIImage imageNamed:@"agreeProtocol"] forState:UIControlStateSelected];
-    [self.userAgreementBtn setImage:[UIImage imageNamed:@"unAgreeProtocol"] forState:UIControlStateNormal];
-    self.userAgreementBtn.layer.cornerRadius = 12;
-    [self.userAgreementBtn addTarget:self action:@selector(agreeProtocolAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.userAgreementBtn];
-    [self.userAgreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@24);
+    self.userAgreementView = [[EMUserAgreementView alloc]initUserAgreement];
+    [self.view addSubview:self.userAgreementView];
+    [self.userAgreementView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.pswdField.mas_bottom).offset(6);
         make.left.equalTo(self.pswdField.mas_left).offset(15);
+        make.right.equalTo(self.view);
+        make.height.equalTo(@(self.userAgreementView.protocolTextHeight));
     }];
-    [self _setupUserProtocol];
+    
     [self _setupLoginButton];
 }
 
-//用户协议
-- (void)_setupUserProtocol
-{
-    NSString *linkStr = @"我已阅读《服务条款》与《隐私协议》";
-    UIFont *linkFont = [UIFont systemFontOfSize:12.0];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:linkStr];
-    [attributedString addAttribute:NSLinkAttributeName value:@"serviceClouse://" range:[[attributedString string] rangeOfString:@"《服务条款》"]];
-    [attributedString addAttribute:NSLinkAttributeName value:@"privacyProtocol://" range:[[attributedString string] rangeOfString:@"《隐私协议》"]];
-    NSDictionary *attriDict = @{NSFontAttributeName:linkFont};
-    [attributedString addAttributes:attriDict range:NSMakeRange(0, attributedString.length)];
-    
-    self.linkTV.attributedText = attributedString;
-    self.linkTV.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor systemBlueColor], NSUnderlineColorAttributeName: [UIColor whiteColor], NSUnderlineStyleAttributeName: @(NSUnderlinePatternSolid)};
-    double linkHeight = [self getAttributionHeightWithString:linkStr lineSpace:1.5 kern:1 font:linkFont width:[UIScreen mainScreen].bounds.size.width - self.userAgreementBtn.frame.origin.x - 24].height;
-    [self.view addSubview:self.linkTV];
-    [self.linkTV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
-        make.centerY.equalTo(self.userAgreementBtn);
-        make.height.equalTo(@(linkHeight));
-    }];
-}
-
-//登录按钮
+//授权登录按钮
 - (void)_setupLoginButton
 {
-    self.loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _loginButton.backgroundColor = [UIColor blackColor];
-    _loginButton.layer.cornerRadius = 25;
-    _loginButton.alpha = 0.3;
-
-    [_loginButton addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_loginButton];
-    [_loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.authorizationView = [[EMAuthorizationView alloc]initWithAuthType:EMAuthLogin];
+    self.authorizationView.userInteractionEnabled = YES;
+    [self.authorizationView.authorizationBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.authorizationView];
+    [self.authorizationView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.top.equalTo(self.userAgreementBtn.mas_bottom).offset(40);
+        make.top.equalTo(self.userAgreementView.mas_bottom).offset(40);
         make.height.equalTo(@55);
-    }];
-    
-    self.loginLabel = [[UILabel alloc] init];
-    _loginLabel.numberOfLines = 0;
-    _loginLabel.font = [UIFont systemFontOfSize:16];
-    _loginLabel.text = @"登 录";
-    [_loginLabel setTextColor:[UIColor whiteColor]];
-    _loginLabel.textAlignment = NSTextAlignmentCenter;
-    _loginLabel.alpha = 0.3;
-    [self.view addSubview:_loginLabel];
-    [_loginLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.loginButton);
-        make.centerX.equalTo(self.loginButton);
-        make.width.equalTo(@85);
-        make.height.equalTo(@23);
-    }];
-    
-    self.arrowView = [[UIImageView alloc]init];
-    self.arrowView.layer.cornerRadius = 21;
-    self.arrowView.image = [UIImage imageNamed:@"unableClick"];
-    [self.view addSubview:_arrowView];
-    [_arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@43);
-        make.right.equalTo(self.loginButton.mas_right).offset(-6);
-        make.top.equalTo(self.loginButton.mas_top).offset(6);
-        make.height.equalTo(@43);
     }];
     
     UIButton *registerButton = [[UIButton alloc] init];
@@ -232,7 +170,7 @@
     [registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@70);
         make.height.equalTo(@17);
-        make.left.equalTo(self.loginButton);
+        make.left.equalTo(self.authorizationView);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
     }];
     
@@ -241,13 +179,14 @@
     [serverConfigurationBtn setTitle:@"服务器配置" forState:UIControlStateNormal];
     [serverConfigurationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [serverConfigurationBtn addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
+    /*
     [self.view addSubview:serverConfigurationBtn];
     [serverConfigurationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@80);
         make.height.equalTo(@17);
         make.centerX.equalTo(self.loginButton);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
-    }];
+    }];*/
     
     self.loginTypeButton = [[UIButton alloc] init];
     self.loginTypeButton.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -258,7 +197,7 @@
     [self.loginTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@80);
         make.height.equalTo(@17);
-        make.right.equalTo(self.loginButton);
+        make.right.equalTo(self.authorizationView);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
     }];
 }
@@ -276,31 +215,11 @@
         self.userIdRightView.hidden = YES;
     }
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    // gradient
     if(self.nameField.text.length > 0 && self.pswdField.text.length > 0){
-        [self.backGl removeFromSuperlayer];
-        [_loginButton.layer addSublayer:self.gl];
-        _loginButton.alpha = 1;
-        _loginLabel.alpha = 1;
-        [_loginLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
-        
-        _arrowView.image = [UIImage imageNamed:@"enableClick"];
-        /*
-        _viewArrow.alpha = 1;
-        _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;*/
-        
+        [self.authorizationView setupAuthBtnBgcolor:YES];
         self.isLogin = true;
     } else {
-        [self.gl removeFromSuperlayer];
-        [_loginButton.layer addSublayer:self.backGl];
-        _loginButton.alpha = 0.3;
-        _loginLabel.alpha = 0.3;
-        [_loginLabel setTextColor:[UIColor whiteColor]];
-        
-        _arrowView.image = [UIImage imageNamed:@"unableClick"];
-        /*
-        _viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
-        _viewArrow.alpha = 0.3;*/
+        [self.authorizationView setupAuthBtnBgcolor:NO];
         self.isLogin = false;
     }
     
@@ -314,42 +233,11 @@
     }
     if (textField == self.nameField) {
         self.userIdRightView.hidden = NO;
+        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""]) {
+            self.userIdRightView.hidden = YES;
+        }
     }
     
-    return YES;
-}
-
-#pragma mark - UITextViewDelegate
-
-/* 获取富文本的高度
- *
- * @param string    文字
- * @param lineSpace 行间距
- * @param kern      字间距
- * @param font      字体大小
- * @param width     文本宽度
- *
- * @return size
- */
-- (CGSize)getAttributionHeightWithString:(NSString *)string lineSpace:(CGFloat)lineSpace kern:(CGFloat)kern font:(UIFont *)font width:(CGFloat)width {
-    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.lineSpacing = lineSpace;
-    NSDictionary *attriDict = @{
-                                NSParagraphStyleAttributeName:paragraphStyle,
-                                NSKernAttributeName:@(kern),
-                                NSFontAttributeName:font};
-    CGSize size = [string boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attriDict context:nil].size;
-    return size;
-}
-
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-    if ([[URL scheme] isEqualToString:@"serviceClouse"]) {
-        //服务条款
-        return NO;
-    }else if ([[URL scheme] isEqualToString:@"privacyProtocol"]) {
-        //隐私协议
-        return NO;
-    }
     return YES;
 }
 
@@ -360,12 +248,6 @@
 {
     self.nameField.text = @"";
     self.userIdRightView.hidden = YES;
-}
-
-//同意条款与协议
-- (void)agreeProtocolAction
-{
-    self.userAgreementBtn.selected = !self.userAgreementBtn.selected;
 }
 
 - (void)devicesAction
@@ -440,7 +322,7 @@
     }
     [self.view endEditing:YES];
     
-    if (!self.userAgreementBtn.selected) {
+    if (!self.userAgreementView.userAgreementBtn.selected) {
         [EMAlertController showErrorAlert:@"请选择同意服务条款与隐私协议！"];
         return;
     }
@@ -508,14 +390,7 @@
         [self presentViewController:errorAlerController animated:NO completion:nil];
     };
     
-    self.loginLabel.text = @"正在登录...";
-    self.arrowView.image = [UIImage imageNamed:@""];
-    [self.arrowView addSubview:self.loadingView];
-    [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(self.arrowView).offset(11.5);
-        make.width.equalTo(@22);
-    }];
-    [self.loadingView startAnimation];
+    [weakself.authorizationView beingLoadedView];//正在加载视图
     if (isTokenLogin) {
         [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
     } else {
@@ -566,57 +441,6 @@
         self.pswdField.clearButtonMode = UITextFieldViewModeNever;
         [self.loginTypeButton setTitle:@"token登录" forState:UIControlStateNormal];
     }
-}
-
-- (CAGradientLayer *)backGl{
-    if(_backGl == nil) {
-        _backGl = [CAGradientLayer layer];
-        _backGl.frame = CGRectMake(0,0,_loginButton.frame.size.width,55);
-        _backGl.startPoint = CGPointMake(0.15, 0.5);
-        _backGl.endPoint = CGPointMake(1, 0.5);
-        _backGl.colors = @[(__bridge id)[UIColor blackColor].CGColor, (__bridge id)[UIColor blackColor].CGColor];
-        _backGl.locations = @[@(0), @(1.0f)];
-        _backGl.cornerRadius = 25;
-    }
-    return _backGl;
-}
-
-- (CAGradientLayer *)gl{
-    if(_gl == nil){
-        _gl = [CAGradientLayer layer];
-        _gl.frame = CGRectMake(0,0,_loginButton.frame.size.width,55);
-        _gl.startPoint = CGPointMake(0.15, 0.5);
-        _gl.endPoint = CGPointMake(1, 0.5);
-        _gl.colors = @[(__bridge id)[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:90/255.0 green:93/255.0 blue:208/255.0 alpha:1.0].CGColor];
-        _gl.locations = @[@(0), @(1.0f)];
-        _gl.cornerRadius = 25;
-    }
-    
-    return _gl;
-}
-
-- (UIView *)loadingView
-{
-    if (_loadingView == nil) {
-        _loadingView = [[OneLoadingAnimationView alloc]initWithRadius:10.5];
-    }
-    return _loadingView;
-}
-
-- (UITextView *)linkTV
-{
-    if (_linkTV == nil) {
-        _linkTV = [[UITextView alloc]init];
-        _linkTV.userInteractionEnabled = YES;
-        _linkTV.font = [UIFont systemFontOfSize:12.0];
-        _linkTV.editable = NO;//必须禁止输入，否则点击将弹出输入键盘
-        _linkTV.scrollEnabled = NO;
-        _linkTV.delegate = self;
-        _linkTV.textContainerInset = UIEdgeInsetsMake(0,0, 0, 0);//文本距离边界值
-        _linkTV.textAlignment = NSTextAlignmentLeft;
-        _linkTV.backgroundColor = [UIColor clearColor];
-    }
-    return _linkTV;
 }
 
 @end

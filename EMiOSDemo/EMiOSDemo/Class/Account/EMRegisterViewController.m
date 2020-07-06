@@ -19,6 +19,8 @@
 #import "OneLoadingAnimationView.h"
 
 #import "EMRightViewToolView.h"
+#import "EMUserAgreementView.h"
+#import "EMAuthorizationView.h"
 
 @interface EMRegisterViewController ()<UITextFieldDelegate>
 
@@ -40,11 +42,13 @@
 @property (nonatomic, strong) CAGradientLayer *backGl;
 @property (nonatomic, strong) UILabel *registeLabel;
 
-@property (nonatomic, strong) UIButton *userAgreementBtn;//用户协议
+@property (nonatomic, strong) EMUserAgreementView *userAgreementView;//用户协议
+
+@property (nonatomic, strong) EMAuthorizationView *authorizationView;//授权操作视图
 
 @property (nonatomic) BOOL isRegiste;
 
-@property (strong, nonatomic) IBOutlet OneLoadingAnimationView *loadingView;//加载view
+
 
 @end
 
@@ -61,8 +65,7 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-    self.registeLabel.text = @"注 册";
-    [self.loadingView removeFromSuperview];
+    [self.authorizationView originalView];//恢复原始视图
 }
 
 #pragma mark - Subviews
@@ -177,99 +180,30 @@
         make.height.equalTo(self.pswdField);
     }];
     
-    self.userAgreementBtn = [[UIButton alloc]init];
-    [self.userAgreementBtn setImage:[UIImage imageNamed:@"agreeProtocol"] forState:UIControlStateSelected];
-    self.userAgreementBtn.layer.cornerRadius = 12;
-    [self.userAgreementBtn addTarget:self action:@selector(agreeProtocolAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.userAgreementBtn];
-    [self.userAgreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@24);
+    self.userAgreementView = [[EMUserAgreementView alloc]initUserAgreement];
+    [self.view addSubview:_userAgreementView];
+    [_userAgreementView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmPswdField.mas_bottom).offset(6);
         make.left.equalTo(self.confirmPswdField.mas_left).offset(15);
+        make.right.equalTo(self.view);
+        make.height.equalTo(@(ComponentHeight));
     }];
     
-    UILabel *clouseProtocol = [[UILabel alloc]init];
-    [self.view addSubview:clouseProtocol];
-    [clouseProtocol mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
-        make.centerY.equalTo(self.userAgreementBtn);
-    }];
-    clouseProtocol.text = @"同意 服务条款 与 隐私协议";
-    clouseProtocol.textColor = [UIColor whiteColor];
-    clouseProtocol.font = [UIFont systemFontOfSize:12.f];
-    clouseProtocol.textAlignment = NSTextAlignmentCenter;
-    
-    self.registeButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _registeButton.layer.cornerRadius = 25;
-    _registeButton.alpha = 0.3;
-    _registeButton.backgroundColor = [UIColor blackColor];
-    [_registeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_registeButton addTarget:self action:@selector(registeAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_registeButton];
-    [_registeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.authorizationView = [[EMAuthorizationView alloc]initWithAuthType:EMAuthRegiste];
+    [self.authorizationView.authorizationBtn addTarget:self action:@selector(registeAction) forControlEvents:UIControlEventTouchUpInside];
+    self.authorizationView.userInteractionEnabled = YES;
+    [self.view addSubview:self.authorizationView];
+    [self.authorizationView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.top.equalTo(self.userAgreementBtn.mas_bottom).offset(60);
+        make.top.equalTo(self.userAgreementView.mas_bottom).offset(40);
         make.height.equalTo(@55);
-    }];
-    
-    self.registeLabel = [[UILabel alloc] init];
-    _registeLabel.numberOfLines = 0;
-    _registeLabel.font = [UIFont systemFontOfSize:16];
-    _registeLabel.text = @"注 册";
-    [_registeLabel setTextColor:[UIColor whiteColor]];
-    _registeLabel.textAlignment = NSTextAlignmentCenter;
-    _registeLabel.alpha = 0.3;
-    [self.view addSubview:_registeLabel];
-    [_registeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.registeButton);
-        make.centerX.equalTo(self.registeButton);
-        make.width.equalTo(@70);
-        make.height.equalTo(@23);
-   }];
-    
-    self.arrowView = [[UIImageView alloc]init];
-    self.arrowView.layer.cornerRadius = 21;
-    self.arrowView.image = [UIImage imageNamed:@"unableClick"];
-    [self.view addSubview:_arrowView];
-    [_arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@43);
-        make.right.equalTo(self.registeButton.mas_right).offset(-6);
-        make.top.equalTo(self.registeButton.mas_top).offset(6);
-        make.height.equalTo(@43);
     }];
 }
 
 - (void)backBackion
 {
     [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (CAGradientLayer *)backGl{
-    if(_backGl == nil) {
-        _backGl = [CAGradientLayer layer];
-        _backGl.frame = CGRectMake(0,0,_registeButton.frame.size.width,55);
-        _backGl.startPoint = CGPointMake(0.15, 0.5);
-        _backGl.endPoint = CGPointMake(1, 0.5);
-        _backGl.colors = @[(__bridge id)[UIColor blackColor].CGColor, (__bridge id)[UIColor blackColor].CGColor];
-        _backGl.locations = @[@(0), @(1.0f)];
-        _backGl.cornerRadius = 25;
-    }
-    return _backGl;
-}
-
-- (CAGradientLayer *)gl{
-    if(_gl == nil){
-        _gl = [CAGradientLayer layer];
-        _gl.frame = CGRectMake(0,0,_registeButton.frame.size.width,55);
-        _gl.startPoint = CGPointMake(0.15, 0.5);
-        _gl.endPoint = CGPointMake(1, 0.5);
-        _gl.colors = @[(__bridge id)[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:90/255.0 green:93/255.0 blue:208/255.0 alpha:1.0].CGColor];
-        _gl.locations = @[@(0), @(1.0f)];
-        _gl.cornerRadius = 25;
-    }
-    
-    return _gl;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -284,27 +218,10 @@
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     if(self.nameField.text.length > 0 && self.pswdField.text.length > 0 && self.confirmPswdField.text.length > 0){
-        [self.backGl removeFromSuperlayer];
-        [_registeButton.layer addSublayer:self.gl];
-        _registeButton.alpha = 1;
-        _registeLabel.alpha = 1;
-        [_registeLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
-        
-        _arrowView.image = [UIImage imageNamed:@"enableClick"];
-        /*_viewArrow.alpha = 1;
-        _viewArrow.layer.backgroundColor = ([UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor);;*/
-        
+        [self.authorizationView setupAuthBtnBgcolor:YES];  
         self.isRegiste = true;
     } else {
-        [self.gl removeFromSuperlayer];
-        [_registeButton.layer addSublayer:self.backGl];
-        _registeButton.alpha = 0.3;
-        _registeLabel.alpha = 0.3;
-        [_registeLabel setTextColor:[UIColor whiteColor]];
-        
-        _arrowView.image = [UIImage imageNamed:@"unableClick"];
-        /*_viewArrow.layer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0].CGColor;
-        _viewArrow.alpha = 0.3;*/
+        [self.authorizationView setupAuthBtnBgcolor:NO];
         self.isRegiste = false;
     }
 }
@@ -317,6 +234,9 @@
     }
     if (textField == self.nameField) {
         self.userIdRightView.hidden = NO;
+        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""]) {
+            self.userIdRightView.hidden = YES;
+        }
     }
     
     return YES;
@@ -328,12 +248,6 @@
 {
     self.nameField.text = @"";
     self.userIdRightView.hidden = YES;
-}
-
-//同意条款与协议
-- (void)agreeProtocolAction
-{
-    self.userAgreementBtn.selected = !self.userAgreementBtn.selected;
 }
 
 - (void)qrCodeAction
@@ -377,14 +291,6 @@
     }
 }
 
-- (void)changeAppkeyAction
-{
-    __weak typeof(self) weakself = self;
-    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:!gIsInitializedSDK finishCompletion:^(EMDemoOptions * _Nonnull aOptions) {
-        weakself.appkeyField.text = aOptions.appkey;
-    }];
-    [self.navigationController pushViewController:controller animated:YES];
-}
 //隐藏/显示 密码
 - (void)pswdSecureAction:(UIButton *)aButton
 {
@@ -406,7 +312,7 @@
     
     [self.view endEditing:YES];
     
-    if (!self.userAgreementBtn.selected) {
+    if (!self.userAgreementView.userAgreementBtn.selected) {
         [EMAlertController showErrorAlert:@"请选择同意服务条款与隐私协议！"];
         return;
     }
@@ -435,13 +341,7 @@
     }
     
     __weak typeof(self) weakself = self;
-    self.registeLabel.text = @"注册中...";
-    self.arrowView.image = [UIImage imageNamed:@""];
-    [self.arrowView addSubview:self.loadingView];
-    [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(self.arrowView).offset(11.5);
-        make.width.equalTo(@22);
-    }];
+    [self.authorizationView beingLoadedView];//正在加载视图
     [[EMClient sharedClient] registerWithUsername:name password:pswd completion:^(NSString *aUsername, EMError *aError) {
         [weakself hideHud];
         
@@ -476,13 +376,4 @@
         [self presentViewController:errorAlerController animated:NO completion:nil];
     }];
 }
-
-- (UIView *)loadingView
-{
-    if (_loadingView == nil) {
-        _loadingView = [[OneLoadingAnimationView alloc]initWithRadius:10.5];
-    }
-    return _loadingView;
-}
-
 @end
