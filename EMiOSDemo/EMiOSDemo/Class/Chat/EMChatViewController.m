@@ -1626,7 +1626,7 @@
             }
             [EMAlertController showSuccessAlert:@"转发消息成功"];
             
-            if ([aTo isEqualToString:weakself.titleLabel.text]) {
+            if ([aTo isEqualToString:weakself.conversationModel.emModel.conversationId]) {
                 [weakself messagesDidReceive:@[message]];
             }
         }
@@ -1643,7 +1643,7 @@
         newBody = [[EMImageMessageBody alloc]initWithLocalPath:imgBody.localPath displayName:imgBody.displayName];
     } else {
         if (imgBody.downloadStatus != EMDownloadStatusSuccessed) {
-            [EMAlertController showErrorAlert:@"请先查看原图"];
+            [EMAlertController showErrorAlert:@"请先下载原图"];
             return;
         }
         
