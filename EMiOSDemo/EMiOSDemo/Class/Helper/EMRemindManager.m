@@ -10,14 +10,17 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 #import <UserNotifications/UserNotifications.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 // 提示音时间间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 SystemSoundID soundID = 1007;
 
 @interface EMRemindManager () {
-    AVAudioPlayer *_player;
+    
 }
+
+@property (nonatomic, strong) AVAudioPlayer *player;
 @property (strong, nonatomic) NSDate *lastPlaySoundDate; // 最后一次提醒的时间
 @end
 
@@ -229,6 +232,17 @@ SystemSoundID soundID = 1007;
     [_player setNumberOfLoops:-1];
     [_player prepareToPlay];
     [_player play];
+    
+    
+    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, _systemAudioCallback, NULL);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+
+void _systemAudioCallback()
+{
+    if ([EMRemindManager shared].player) {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    }
 }
 
 // 停止铃声
