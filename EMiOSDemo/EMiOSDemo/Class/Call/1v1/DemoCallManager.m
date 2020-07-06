@@ -110,11 +110,6 @@ static DemoCallManager *callManager = nil;
         options.videoResolution = EMCallVideoResolution640_480;
     }
     
-    //xiaoming.li
-    options.enableCustomAudioData = NO;
-    options.audioCustomSamples = 48000;
-    options.audioCustomChannels = 1;
-
     [[EMClient sharedClient].callManager setCallOptions:options];
 }
 

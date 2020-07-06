@@ -52,7 +52,7 @@ static bool g_Watermark = NO;
             count = 1;
             break;
         case 1:
-            count = 4;
+            count = 5;
             break;
         case 2:
             count = 2;
@@ -101,7 +101,7 @@ static bool g_Watermark = NO;
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
             }
         }else if (section != 2) {
-            if (row == 0 || row == 2 || row == 3) {
+            if (row == 0 || row == 2 || row == 3 || row == 4) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
                 switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
                 switchControl.tag = section + row + 10000;
@@ -142,6 +142,9 @@ static bool g_Watermark = NO;
         } else if (row == 3) {
             cell.textLabel.text = @"开启录制混流";
             [switchControl setOn:[EMDemoOptions sharedOptions].willMergeStrem animated:NO];
+        } else if (row == 4) {
+            cell.textLabel.text = @"支持微信小程序";
+            [switchControl setOn:[EMDemoOptions sharedOptions].isSupportWechatMiniProgram animated:NO];
         }
     } else if (section == 2) {
         if (row == 0) {
@@ -258,7 +261,12 @@ static bool g_Watermark = NO;
     else if (tag == 4 + 10000) {
         [EMDemoOptions sharedOptions].willMergeStrem = aSwitch.isOn;
         [[EMDemoOptions sharedOptions] archive];
-    }else if(tag == 3*10+10000) {
+    }
+    else if (tag == 5 + 10000) {
+        [EMDemoOptions sharedOptions].isSupportWechatMiniProgram = aSwitch.isOn;
+        [[EMDemoOptions sharedOptions] archive];
+    }
+    else if(tag == 3*10+10000) {
         EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.enableCustomAudioData = aSwitch.isOn;
     }else if(tag == 4*10 + 10000) {

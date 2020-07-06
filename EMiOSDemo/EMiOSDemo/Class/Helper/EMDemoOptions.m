@@ -40,9 +40,9 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.willRecord = NO;
         self.willMergeStrem = NO;
-        
         self.enableCustomAudioData = NO;
         self.customAudioDataSamples = 48000;
+        self.isSupportWechatMiniProgram = NO;
 
     }
     
@@ -86,9 +86,9 @@ static EMDemoOptions *sharedOptions = nil;
 
         self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
         self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
-        
         self.enableCustomAudioData = [aDecoder decodeBoolForKey:kOptions_EnableCustomAudioData];
         self.customAudioDataSamples = [aDecoder decodeIntForKey:kOptions_CustomAudioDataSamples];
+        self.isSupportWechatMiniProgram = [aDecoder decodeBoolForKey:kOptions_IsSupportWechatMiniProgram];
     }
     return self;
 }
@@ -125,9 +125,12 @@ static EMDemoOptions *sharedOptions = nil;
     
     [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
-    
+
     [aCoder encodeBool:self.enableCustomAudioData forKey:kOptions_EnableCustomAudioData];
     [aCoder encodeInt:self.customAudioDataSamples forKey:kOptions_CustomAudioDataSamples];
+    
+    [aCoder encodeBool:self.isSupportWechatMiniProgram forKey:kOptions_IsSupportWechatMiniProgram];
+
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -158,6 +161,8 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.willMergeStrem = self.willMergeStrem;
     retModel.enableCustomAudioData = self.enableCustomAudioData;
     retModel.customAudioDataSamples = self.customAudioDataSamples;
+    retModel.isSupportWechatMiniProgram = self.isSupportWechatMiniProgram;
+
     return retModel;
 }
 
@@ -181,7 +186,7 @@ static EMDemoOptions *sharedOptions = nil;
 #endif
     self.usingHttpsOnly = NO;
     self.specifyServer = NO;
-    self.chatServer = @"39.107.54.56";
+    self.chatServer = @"116.85.43.118";
     self.chatPort = 6717;
     self.restServer = @"a1-hsb.easemob.com";
 }
