@@ -21,10 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)playWattingSound;
 
 // 播放铃声 (默认从扬声器播放)
-+ (void)playRing;
++ (void)playRing:(BOOL)playVibration;
 
 // 停止铃声
 + (void)stopSound;
+
+
++ (void)playVibration;
 @end
 
 NS_ASSUME_NONNULL_END

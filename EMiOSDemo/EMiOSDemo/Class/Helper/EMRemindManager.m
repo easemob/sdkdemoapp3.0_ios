@@ -39,8 +39,8 @@ SystemSoundID soundID = 1007;
 }
 
 // 播放铃声
-+ (void)playRing {
-    [[EMRemindManager shared] _playRing];
++ (void)playRing:(BOOL)playVibration{
+    [[EMRemindManager shared] _playRing:playVibration];
 }
 
 // 停止铃声
@@ -48,6 +48,9 @@ SystemSoundID soundID = 1007;
     [[EMRemindManager shared] _stopSound];
 }
 
++ (void)playVibration {
+    [[EMRemindManager shared] _playVibration:NULL];
+}
 
 #pragma - mark private
 + (EMRemindManager *)shared {
@@ -216,7 +219,7 @@ SystemSoundID soundID = 1007;
 }
 
 // 播放铃声
-- (void)_playRing {
+- (void)_playRing:(BOOL)playVibration {
     
     [self _stopSound];
     
@@ -233,16 +236,23 @@ SystemSoundID soundID = 1007;
     [_player prepareToPlay];
     [_player play];
     
-    
-    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, _systemAudioCallback, NULL);
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    if (playVibration) {
+        [self _playVibration:_systemAudioCallback];
+    }
 }
+
+
 
 void _systemAudioCallback()
 {
     if ([EMRemindManager shared].player) {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     }
+}
+
+- (void)_playVibration:(AudioServicesSystemSoundCompletionProc)inCompletionRoutine {
+    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, inCompletionRoutine, NULL);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
 // 停止铃声

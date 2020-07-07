@@ -153,7 +153,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)callDidReceive:(EMCallSession *)aSession
 {
-    [EMRemindManager playRing];
+    [EMRemindManager playRing:YES];
     
     if (!aSession || [aSession.callId length] == 0) {
         return ;
@@ -214,6 +214,13 @@ static DemoCallManager *callManager = nil;
 {
     
     [EMRemindManager stopSound];
+    [EMRemindManager playVibration];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
+                  withOptions:AVAudioSessionCategoryOptionAllowBluetooth
+                        error:nil];
+    
+    [audioSession setActive:YES error:nil];
     
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
         [self _stopCallTimeoutTimer];
