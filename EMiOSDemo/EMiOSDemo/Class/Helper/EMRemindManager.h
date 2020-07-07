@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 停止铃声
 + (void)stopSound;
 
-
+// 振动
 + (void)playVibration;
 @end
 

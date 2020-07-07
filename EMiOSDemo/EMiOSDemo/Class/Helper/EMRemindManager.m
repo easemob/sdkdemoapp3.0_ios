@@ -48,6 +48,7 @@ SystemSoundID soundID = 1007;
     [[EMRemindManager shared] _stopSound];
 }
 
+// 振动
 + (void)playVibration {
     [[EMRemindManager shared] _playVibration:NULL];
 }
@@ -240,8 +241,6 @@ SystemSoundID soundID = 1007;
         [self _playVibration:_systemAudioCallback];
     }
 }
-
-
 
 void _systemAudioCallback()
 {
