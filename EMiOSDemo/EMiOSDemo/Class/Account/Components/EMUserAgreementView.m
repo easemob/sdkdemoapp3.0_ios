@@ -86,16 +86,13 @@
 #pragma mark - UITextViewDelegate
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-    if ([[URL scheme] isEqualToString:@"serviceClouse"]) {
+    if ([[URL scheme] isEqualToString:@"serviceClouse"]) 
         //服务条款
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"]];
-        return NO;
-    }else if ([[URL scheme] isEqualToString:@"privacyProtocol"]) {
+    if ([[URL scheme] isEqualToString:@"privacyProtocol"])
         //隐私协议
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"]];
-        return NO;
-    }
-    return YES;
+    return NO;
 }
 
 #pragma mark - Action

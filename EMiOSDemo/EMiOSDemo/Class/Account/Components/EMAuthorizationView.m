@@ -50,11 +50,7 @@
     self.authorizationLabel = [[UILabel alloc] init];
     _authorizationLabel.numberOfLines = 0;
     _authorizationLabel.font = [UIFont systemFontOfSize:16];
-    if (self.authorizationType == EMAuthLogin) {
-        _authorizationLabel.text = @"登 录";
-    } else if (self.authorizationType == EMAuthRegiste) {
-        _authorizationLabel.text = @"注 册";
-    }
+    _authorizationLabel.text = self.authorizationType == EMAuthLogin ? @"登 录" : @"注 册";
     [_authorizationLabel setTextColor:[UIColor whiteColor]];
     _authorizationLabel.textAlignment = NSTextAlignmentCenter;
     _authorizationLabel.alpha = 0.3;
@@ -82,23 +78,14 @@
 //原始视图
 - (void)originalView
 {
-    if (self.authorizationType == EMAuthLogin) {
-        self.authorizationLabel.text = @"登 录";
-    } else if (self.authorizationType == EMAuthRegiste) {
-        self.authorizationLabel.text = @"注 册";
-    }
+    if (_authorizationType < 1 || _authorizationType > 2) return;
+    self.authorizationLabel.text = self.authorizationType == EMAuthLogin ? @"登 录" : @"注 册";
     [self.loadingView removeFromSuperview];
 }
 
 //加载视图
 - (void)beingLoadedView
 {
-    if (self.authorizationType == EMAuthLogin) {
-        self.authorizationLabel.text = @"正在登录...";
-    } else if (self.authorizationType == EMAuthRegiste) {
-        self.authorizationLabel.text = @"注册中...";
-    }
-    
     self.arrowView.image = [UIImage imageNamed:@""];
     [self.arrowView addSubview:self.loadingView];
     [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -106,6 +93,8 @@
         make.width.equalTo(@22);
     }];
     [self.loadingView startAnimation];
+    if (_authorizationType < 1 || _authorizationType > 2) return;
+    self.authorizationLabel.text = self.authorizationType == EMAuthLogin ? @"正在登录..." : @"注册中...";
 }
 
 #pragma mark - Action
@@ -119,17 +108,16 @@
         _authorizationBtn.alpha = 1;
         _authorizationLabel.alpha = 1;
         [_authorizationLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
-        
         _arrowView.image = [UIImage imageNamed:@"enableClick"];
-    } else {
-        [self.gl removeFromSuperlayer];
-        [_authorizationBtn.layer addSublayer:self.backGl];
-        _authorizationBtn.alpha = 0.3;
-        _authorizationLabel.alpha = 0.3;
-        [_authorizationLabel setTextColor:[UIColor whiteColor]];
         
-        _arrowView.image = [UIImage imageNamed:@"unableClick"];
+        return;
     }
+    [self.gl removeFromSuperlayer];
+    [_authorizationBtn.layer addSublayer:self.backGl];
+    _authorizationBtn.alpha = 0.3;
+    _authorizationLabel.alpha = 0.3;
+    [_authorizationLabel setTextColor:[UIColor whiteColor]];
+    _arrowView.image = [UIImage imageNamed:@"unableClick"];
 }
 
 #pragma mark - Getter

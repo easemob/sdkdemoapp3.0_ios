@@ -685,11 +685,10 @@
 - (long)stickTime:(EMConversationModel *)model
 {
     long time = 0;
-    if (model.emModel) {
+    if (model.emModel)
         time = [(NSNumber *)[model.emModel.ext objectForKey:CONVERSATION_STICK] longValue];
-    } else if (model.notiModel) {
+    if (model.notiModel)
         time = [model.notiModel.stickTime longValue];
-    }
     return time;
 }
 //重排序会话model

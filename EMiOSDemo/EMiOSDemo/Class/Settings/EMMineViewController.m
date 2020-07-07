@@ -11,8 +11,6 @@
 #import "EMAvatarNameCell.h"
 
 #import "EMAccountViewController.h"
-#import "EMPrivacyViewController.h"
-#import "EMCallSettingsViewController.h"
 #import "EMSecurityViewController.h"
 #import "EMSettingsViewController.h"
 #import "EMAboutHuanXinViewController.h"

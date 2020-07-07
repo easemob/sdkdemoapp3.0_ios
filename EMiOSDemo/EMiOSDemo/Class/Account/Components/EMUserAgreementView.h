@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define ComponentHeight 24.0
 
-//用户协议组件
+/**
+ 用户协议组件
+*/
 @interface EMUserAgreementView : UIView
 
 - (instancetype)initUserAgreement;

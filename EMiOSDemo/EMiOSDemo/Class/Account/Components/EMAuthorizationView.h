@@ -15,6 +15,9 @@ typedef NS_ENUM(NSUInteger, EMAuthorizationType) {
     EMAuthRegiste,
 };
 
+/**
+ 用户授权登录注册组件
+ */
 @interface EMAuthorizationView : UIView
 
 - (instancetype)initWithAuthType:(EMAuthorizationType)authorizationType;

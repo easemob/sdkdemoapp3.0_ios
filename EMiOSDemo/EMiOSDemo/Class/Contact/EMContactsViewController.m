@@ -551,13 +551,12 @@
 //个人资料卡
 - (void)personalData:(NSString *)nickName
 {
-    UIViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    UIViewController *rootViewController = window.rootViewController;
-    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController *)rootViewController;
-        [nav pushViewController:controller animated:YES];
-    }
+    __weak typeof(self) weakself = self;
+    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    [controller setShieldingContactSuccess:^{
+        [weakself _loadAllContactsFromDB];
+    }];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

@@ -16,39 +16,40 @@
     if (self) {
         _emModel = aMsg;
         _direction = aMsg.direction;
+        _type = (EMMessageType)aMsg.body.type;
         if (aMsg.body.type == EMMessageBodyTypeText) {
+            if (aMsg.isNeedGroupAck)
+                _readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d）",aMsg.groupAckCount];
             if ([aMsg.ext objectForKey:MSG_EXT_GIF]) {
                 _type = EMMessageTypeExtGif;
-            } else if ([aMsg.ext objectForKey:MSG_EXT_RECALL]) {
+                return self;
+            }
+            if ([aMsg.ext objectForKey:MSG_EXT_RECALL]) {
                 _type = EMMessageTypeExtRecall;
-            } else if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDFRIEND]) {
+                return self;
+            }
+            if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDFRIEND]) {
                 _type = EMMessageTypeExtNewFriend;
-            } else if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDGROUP]) {
+                return self;
+            }
+            if ([[aMsg.ext objectForKey:MSG_EXT_NEWNOTI] isEqualToString:NOTI_EXT_ADDGROUP]) {
                 _type = EMMessageTypeExtAddGroup;
-            } else if ([aMsg.ext objectForKey:EMCOMMUNICATE_TYPE]){
+                return self;
+            }
+            if ([aMsg.ext objectForKey:EMCOMMUNICATE_TYPE]){
                 _type = EMMessageTypePictMixText;
-            } else {
-                NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
-                if ([conferenceId length] == 0) {
-                    conferenceId = [aMsg.ext objectForKey:MSG_EXT_CALLID];
-                }
-                if ([conferenceId length] > 0) {
-                    _type = EMMessageTypeExtCall;
-                } else {
-                    _type = EMMessageTypeText;
-                }
+                return self;
             }
-            if (aMsg.isNeedGroupAck) {
-                _readReceiptCount = [NSString stringWithFormat:@"阅读回执，已读用户（%d）",aMsg.groupAckCount];
+            NSString *conferenceId = [aMsg.ext objectForKey:@"conferenceId"];
+            if ([conferenceId length] == 0)
+                conferenceId = [aMsg.ext objectForKey:MSG_EXT_CALLID];
+            if ([conferenceId length] > 0) {
+                _type = EMMessageTypeExtCall;
+                return self;
             }
-            if(aMsg.isNeedGroupAck  && aMsg.status == EMMessageStatusFailed) {
-                _readReceiptCount = @"只有群主支持本格式消息";
-            }
-        } else {
-            _type = (EMMessageType)aMsg.body.type;
+            _type = EMMessageTypeText;
         }
     }
-    
     return self;
 }
 

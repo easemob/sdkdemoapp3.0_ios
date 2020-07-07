@@ -24,31 +24,19 @@
 
 @interface EMRegisterViewController ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField *appkeyField;
-@property (nonatomic, strong) EMRightViewToolView *appkeyRightView;
-
 @property (nonatomic, strong) UITextField *nameField;
+@property (nonatomic, strong) EMRightViewToolView *userIdRightView;
 
 @property (nonatomic, strong) UITextField *pswdField;
 @property (nonatomic, strong) EMRightViewToolView *pswdRightView;
-@property (nonatomic, strong) EMRightViewToolView *confirmPswdRightView;
 
 @property (nonatomic, strong) UITextField *confirmPswdField;
-
-@property (nonatomic, strong) UIButton *registeButton;
-@property (nonatomic, strong) UIImageView *arrowView;
-@property (nonatomic, strong) EMRightViewToolView *userIdRightView;
-@property (nonatomic, strong) CAGradientLayer *gl;
-@property (nonatomic, strong) CAGradientLayer *backGl;
-@property (nonatomic, strong) UILabel *registeLabel;
+@property (nonatomic, strong) EMRightViewToolView *confirmPswdRightView;
 
 @property (nonatomic, strong) EMUserAgreementView *userAgreementView;//用户协议
-
 @property (nonatomic, strong) EMAuthorizationView *authorizationView;//授权操作视图
 
 @property (nonatomic) BOOL isRegiste;
-
-
 
 @end
 
@@ -277,8 +265,7 @@
             }
             
             [EMDemoOptions updateAndSaveServerOptions:aJsonDic];
-            
-            weakself.appkeyField.text = [EMDemoOptions sharedOptions].appkey;
+
             weakself.nameField.text = username;
             weakself.pswdField.text = pssword;
             

@@ -31,12 +31,10 @@
 @property (nonatomic, strong) UITextField *pswdField;
 @property (nonatomic, strong) EMRightViewToolView *pswdRightView;
 @property (nonatomic, strong) EMRightViewToolView *userIdRightView;
-@property (nonatomic, strong) UIButton *loginTypeButton;
-
 @property (nonatomic, strong) EMUserAgreementView *userAgreementView;//用户协议
-
 @property (nonatomic, strong) EMAuthorizationView *authorizationView;//授权操作视图
 
+@property (nonatomic, strong) UIButton *loginTypeButton;
 @property (nonatomic) BOOL isLogin;
 
 @end
@@ -211,18 +209,17 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == self.nameField && [self.nameField.text length] == 0) {
-        self.userIdRightView.hidden = YES;
-    }
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    if (textField == self.nameField && [self.nameField.text length] == 0)
+        self.userIdRightView.hidden = YES;
     if(self.nameField.text.length > 0 && self.pswdField.text.length > 0){
         [self.authorizationView setupAuthBtnBgcolor:YES];
         self.isLogin = true;
-    } else {
-        [self.authorizationView setupAuthBtnBgcolor:NO];
-        self.isLogin = false;
+        return;
     }
-    
+    [self.authorizationView setupAuthBtnBgcolor:NO];
+    self.isLogin = false;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -248,14 +245,6 @@
 {
     self.nameField.text = @"";
     self.userIdRightView.hidden = YES;
-}
-
-- (void)devicesAction
-{
-    [self.view endEditing:YES];
-    
-    EMDevicesViewController *devicesController = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
-    [self.navigationController pushViewController:devicesController animated:YES];
 }
 
 - (void)qrCodeAction
@@ -317,7 +306,7 @@
 
 - (void)loginAction
 {
-    if(!(self.isLogin)) {
+    if(!self.isLogin) {
         return;
     }
     [self.view endEditing:YES];
@@ -393,9 +382,9 @@
     [weakself.authorizationView beingLoadedView];//正在加载视图
     if (isTokenLogin) {
         [[EMClient sharedClient] loginWithUsername:[name lowercaseString] token:pswd completion:finishBlock];
-    } else {
-        [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
+        return;
     }
+    [[EMClient sharedClient] loginWithUsername:[name lowercaseString] password:pswd completion:finishBlock];
 }
 
 - (void)registerAction
@@ -425,22 +414,20 @@
     
     self.loginTypeButton.selected = !self.loginTypeButton.selected;
     if (self.loginTypeButton.selected) {
-        //self.titleLabel.text = @"使用token登录";
         self.pswdField.placeholder = @"token";
         self.pswdField.secureTextEntry = NO;
         self.pswdField.rightView = nil;
         self.pswdField.rightViewMode = UITextFieldViewModeNever;
         self.pswdField.clearButtonMode = UITextFieldViewModeWhileEditing;
         [self.loginTypeButton setTitle:@"密码登录" forState:UIControlStateNormal];
-    } else {
-        //self.titleLabel.text = @"登录";
-        self.pswdField.placeholder = @"密码";
-        self.pswdField.secureTextEntry = !self.pswdRightView.rightViewBtn.selected;
-        self.pswdField.rightView = self.pswdRightView;
-        self.pswdField.rightViewMode = UITextFieldViewModeAlways;
-        self.pswdField.clearButtonMode = UITextFieldViewModeNever;
-        [self.loginTypeButton setTitle:@"token登录" forState:UIControlStateNormal];
+        return;
     }
+    self.pswdField.placeholder = @"密码";
+    self.pswdField.secureTextEntry = !self.pswdRightView.rightViewBtn.selected;
+    self.pswdField.rightView = self.pswdRightView;
+    self.pswdField.rightViewMode = UITextFieldViewModeAlways;
+    self.pswdField.clearButtonMode = UITextFieldViewModeNever;
+    [self.loginTypeButton setTitle:@"token登录" forState:UIControlStateNormal];
 }
 
 @end

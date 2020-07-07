@@ -26,10 +26,10 @@
             //密码
             [self.rightViewBtn setImage:[UIImage imageNamed:@"hiddenPwd"] forState:UIControlStateNormal];
             [self.rightViewBtn setImage:[UIImage imageNamed:@"showPwd"] forState:UIControlStateSelected];
-        } else if (rightViewType == EMUsernameRightView) {
+        }
+        if (rightViewType == EMUsernameRightView)
             //清除用户名
             [self.rightViewBtn setImage:[UIImage imageNamed:@"clearContent"] forState:UIControlStateNormal];
-        }
         [self addSubview:self.rightViewBtn];
     }
     return self;
