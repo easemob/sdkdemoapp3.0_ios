@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.indexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
     [self _setupSubviews];
     [self loadContactsFromDB];
 }
@@ -100,7 +100,7 @@
     EMAvatarNameCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     UIButton *checkButton = (UIButton *)cell.accessoryView;
     if (indexPath.row == self.indexPath.row) {
-        self.indexPath = nil;
+        self.indexPath = [NSIndexPath indexPathForRow:-1 inSection:0];
         checkButton.selected = NO;
         return;
     }
