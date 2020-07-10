@@ -18,6 +18,9 @@
 #import "EMChatroomsViewController.h"
 #import "EMChatroomInfoViewController.h"
 #import "EMRemindManager.h"
+#import "EMSingleChatViewController.h"
+#import "EMGroupChatViewController.h"
+#import "EMChatroomViewController.h"
 
 static EMDemoHelper *helper = nil;
 @implementation EMDemoHelper
@@ -432,7 +435,7 @@ static EMDemoHelper *helper = nil;
     }
     
     if (model) {
-        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversationModel:model];
+        EMChatViewController *controller = [self getChatControllerWithConversationModel:model];
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = window.rootViewController;
         if ([rootViewController isKindOfClass:[UINavigationController class]]) {
@@ -485,5 +488,17 @@ static EMDemoHelper *helper = nil;
     [navController pushViewController:controller animated:NO];
 }
 
+#pragma mark - EMChatviewControllerFactory
+
+- (EMChatViewController *)getChatControllerWithConversationModel:(EMConversationModel *)model
+{
+    if (model.emModel.type == EMConversationTypeChat)
+        return [[EMSingleChatViewController alloc]initWithCoversationModel:model];
+    if (model.emModel.type == EMConversationTypeGroupChat)
+        return [[EMGroupChatViewController alloc]initWithCoversationModel:model];
+    if (model.emModel.type == EMConversationTypeChatRoom)
+        return [[EMChatroomViewController alloc]initWithCoversationModel:model];
+    return nil;
+}
 
 @end

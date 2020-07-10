@@ -680,11 +680,16 @@
 		3C87A1062490BF560051E06E /* EMMsgRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C87A1052490BF560051E06E /* EMMsgRemindViewController.m */; };
 		3C87A1092490D1640051E06E /* EMSecurityPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C87A1082490D1640051E06E /* EMSecurityPrivacyViewController.m */; };
 		3C87A10C2490ECF00051E06E /* EMOpinionFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C87A10B2490ECF00051E06E /* EMOpinionFeedbackViewController.m */; };
+		3C8BD60E24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8BD60D24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.m */; };
 		3C8EBEEE24AC913600B6560A /* EMRightViewToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEED24AC913600B6560A /* EMRightViewToolView.m */; };
 		3C8EBEF124AD967C00B6560A /* EMUserAgreementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEF024AD967C00B6560A /* EMUserAgreementView.m */; };
 		3C8EBEF524ADDF7E00B6560A /* EMAuthorizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEF424ADDF7E00B6560A /* EMAuthorizationView.m */; };
 		3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C930B3123AB2CB600C8268D /* PAirSandbox.m */; };
 		3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C97EF2923A87B5C004E97B7 /* CloudKit.framework */; };
+		3C9B6BB624B4845B00D1C617 /* EMMsgTouchIncident.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9B6BB524B4845B00D1C617 /* EMMsgTouchIncident.m */; };
+		3CAF2A9724B70460007AF038 /* EMSingleChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9624B70460007AF038 /* EMSingleChatViewController.m */; };
+		3CAF2A9B24B70477007AF038 /* EMGroupChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9A24B70477007AF038 /* EMGroupChatViewController.m */; };
+		3CAF2A9E24B704B4007AF038 /* EMChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */; };
 		3CB106C7247FBEAC00479BC1 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C4247FBEA800479BC1 /* ios@2x.png */; };
 		3CB106C8247FBEAC00479BC1 /* ios.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C5247FBEAA00479BC1 /* ios.png */; };
 		3CB106C9247FBEAC00479BC1 /* ios@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C6247FBEAB00479BC1 /* ios@3x.png */; };
@@ -1590,6 +1595,8 @@
 		3C87A1082490D1640051E06E /* EMSecurityPrivacyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMSecurityPrivacyViewController.m; sourceTree = "<group>"; };
 		3C87A10A2490ECF00051E06E /* EMOpinionFeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMOpinionFeedbackViewController.h; sourceTree = "<group>"; };
 		3C87A10B2490ECF00051E06E /* EMOpinionFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMOpinionFeedbackViewController.m; sourceTree = "<group>"; };
+		3C8BD60C24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMChatViewController+EMMsgLongPressIncident.h"; sourceTree = "<group>"; };
+		3C8BD60D24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EMChatViewController+EMMsgLongPressIncident.m"; sourceTree = "<group>"; };
 		3C8EBEEC24AC913600B6560A /* EMRightViewToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMRightViewToolView.h; sourceTree = "<group>"; };
 		3C8EBEED24AC913600B6560A /* EMRightViewToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRightViewToolView.m; sourceTree = "<group>"; };
 		3C8EBEEF24AD967C00B6560A /* EMUserAgreementView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMUserAgreementView.h; sourceTree = "<group>"; };
@@ -1599,6 +1606,14 @@
 		3C930B3123AB2CB600C8268D /* PAirSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAirSandbox.m; sourceTree = "<group>"; };
 		3C930B3223AB2CB600C8268D /* PAirSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAirSandbox.h; sourceTree = "<group>"; };
 		3C97EF2923A87B5C004E97B7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		3C9B6BB424B4845B00D1C617 /* EMMsgTouchIncident.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMsgTouchIncident.h; sourceTree = "<group>"; };
+		3C9B6BB524B4845B00D1C617 /* EMMsgTouchIncident.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMsgTouchIncident.m; sourceTree = "<group>"; };
+		3CAF2A9524B70460007AF038 /* EMSingleChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMSingleChatViewController.h; sourceTree = "<group>"; };
+		3CAF2A9624B70460007AF038 /* EMSingleChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMSingleChatViewController.m; sourceTree = "<group>"; };
+		3CAF2A9924B70477007AF038 /* EMGroupChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMGroupChatViewController.h; sourceTree = "<group>"; };
+		3CAF2A9A24B70477007AF038 /* EMGroupChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupChatViewController.m; sourceTree = "<group>"; };
+		3CAF2A9C24B704B4007AF038 /* EMChatroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatroomViewController.h; sourceTree = "<group>"; };
+		3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatroomViewController.m; sourceTree = "<group>"; };
 		3CB106C4247FBEA800479BC1 /* ios@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios@2x.png"; sourceTree = "<group>"; };
 		3CB106C5247FBEAA00479BC1 /* ios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios.png; sourceTree = "<group>"; };
 		3CB106C6247FBEAB00479BC1 /* ios@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios@3x.png"; sourceTree = "<group>"; };
@@ -1717,10 +1732,12 @@
 		3A45DBE32223A1FC00505786 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				3CAF2A9424B70430007AF038 /* ChatComponents */,
 				3A45E23D2223A3A000505786 /* EMMessageModel.h */,
 				3A45E2392223A3A000505786 /* EMMessageModel.m */,
 				3A45E2412223A3A000505786 /* EMChatViewController.h */,
 				3A45E23B2223A3A000505786 /* EMChatViewController.m */,
+				3C9B6BB324B483EC00D1C617 /* ChatMessageIncident */,
 				3C9B6B9E24B46B0300D1C617 /* ChatExtComponents */,
 				3A45DBE82223A1FC00505786 /* ChatBar */,
 				3A45DC3F2223A1FC00505786 /* MessageCell */,
@@ -2989,6 +3006,24 @@
 			path = Invite;
 			sourceTree = "<group>";
 		};
+		3C8BD60124B5BAC3000D33A6 /* ChatMsgTouchIncident */ = {
+			isa = PBXGroup;
+			children = (
+				3C9B6BB424B4845B00D1C617 /* EMMsgTouchIncident.h */,
+				3C9B6BB524B4845B00D1C617 /* EMMsgTouchIncident.m */,
+			);
+			path = ChatMsgTouchIncident;
+			sourceTree = "<group>";
+		};
+		3C8BD60F24B6D545000D33A6 /* ChatMsgLongPressIncident */ = {
+			isa = PBXGroup;
+			children = (
+				3C8BD60C24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.h */,
+				3C8BD60D24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.m */,
+			);
+			path = ChatMsgLongPressIncident;
+			sourceTree = "<group>";
+		};
 		3C8EBEF224AD969000B6560A /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -3216,6 +3251,15 @@
 			path = Diagnosis;
 			sourceTree = "<group>";
 		};
+		3C9B6BB324B483EC00D1C617 /* ChatMessageIncident */ = {
+			isa = PBXGroup;
+			children = (
+				3C8BD60F24B6D545000D33A6 /* ChatMsgLongPressIncident */,
+				3C8BD60124B5BAC3000D33A6 /* ChatMsgTouchIncident */,
+			);
+			path = ChatMessageIncident;
+			sourceTree = "<group>";
+		};
 		3CA8BB38236C3A7A00EE519E /* Call */ = {
 			isa = PBXGroup;
 			children = (
@@ -3226,6 +3270,43 @@
 			);
 			name = Call;
 			path = Home/Call;
+			sourceTree = "<group>";
+		};
+		3CAF2A9424B70430007AF038 /* ChatComponents */ = {
+			isa = PBXGroup;
+			children = (
+				3CAF2AA124B704D4007AF038 /* ChatroomController */,
+				3CAF2AA024B704CB007AF038 /* GroupChatController */,
+				3CAF2A9F24B704BB007AF038 /* SingleChatController */,
+			);
+			path = ChatComponents;
+			sourceTree = "<group>";
+		};
+		3CAF2A9F24B704BB007AF038 /* SingleChatController */ = {
+			isa = PBXGroup;
+			children = (
+				3CAF2A9524B70460007AF038 /* EMSingleChatViewController.h */,
+				3CAF2A9624B70460007AF038 /* EMSingleChatViewController.m */,
+			);
+			path = SingleChatController;
+			sourceTree = "<group>";
+		};
+		3CAF2AA024B704CB007AF038 /* GroupChatController */ = {
+			isa = PBXGroup;
+			children = (
+				3CAF2A9924B70477007AF038 /* EMGroupChatViewController.h */,
+				3CAF2A9A24B70477007AF038 /* EMGroupChatViewController.m */,
+			);
+			path = GroupChatController;
+			sourceTree = "<group>";
+		};
+		3CAF2AA124B704D4007AF038 /* ChatroomController */ = {
+			isa = PBXGroup;
+			children = (
+				3CAF2A9C24B704B4007AF038 /* EMChatroomViewController.h */,
+				3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */,
+			);
+			path = ChatroomController;
 			sourceTree = "<group>";
 		};
 		9091101B192EEA70008A48AA = {
@@ -3946,6 +4027,7 @@
 				3A45E0FB2223A30000505786 /* EMAlertController.m in Sources */,
 				3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */,
 				3A45E38F2223A48700505786 /* EMChatroomAdminsViewController.m in Sources */,
+				3CAF2A9B24B70477007AF038 /* EMGroupChatViewController.m in Sources */,
 				3A45DF3E2223A1FD00505786 /* wav.mm in Sources */,
 				3A45E0532223A25100505786 /* EMGlobalVariables.m in Sources */,
 				3A45E05D2223A25C00505786 /* NSObject+Alert.m in Sources */,
@@ -3968,6 +4050,7 @@
 				3A45E38D2223A48700505786 /* EMChatroomInfoViewController.m in Sources */,
 				3A45E0B72223A2BA00505786 /* MWPhotoBrowser.m in Sources */,
 				3A45E0552223A25100505786 /* EMRealtimeSearch.m in Sources */,
+				3CAF2A9E24B704B4007AF038 /* EMChatroomViewController.m in Sources */,
 				3A45DEE12223A1FD00505786 /* EMAudioPlayerHelper.mm in Sources */,
 				3A45E37F2223A47900505786 /* EMCreateChatroomViewController.m in Sources */,
 				3A45DF492223A1FD00505786 /* DACircularProgressView.m in Sources */,
@@ -4006,6 +4089,7 @@
 				3A45E32F2223A44200505786 /* EMMsgImageBubbleView.m in Sources */,
 				3A45E0E02223A2CE00505786 /* PSTGridLayoutSection.m in Sources */,
 				3A45E0DA2223A2CE00505786 /* PSTCollectionViewUpdateItem.m in Sources */,
+				3CAF2A9724B70460007AF038 /* EMSingleChatViewController.m in Sources */,
 				3A45DF0D2223A1FD00505786 /* EMBlacklistViewController.m in Sources */,
 				3A45DF0E2223A1FD00505786 /* EMAddBlacklistViewController.m in Sources */,
 				3A45E3902223A48700505786 /* EMChatroomBlacklistViewController.m in Sources */,
@@ -4052,9 +4136,11 @@
 				3C37036B238BAEAD00A8976B /* OneLoadingAnimationView.m in Sources */,
 				3A45DB4B22239DE200505786 /* EMDemoHelper.m in Sources */,
 				3C87A100248F8F5E0051E06E /* EMDeveloperServiceViewController.m in Sources */,
+				3C8BD60E24B6BE0A000D33A6 /* EMChatViewController+EMMsgLongPressIncident.m in Sources */,
 				3A45EAFA2224186400505786 /* EMDemoOptions.m in Sources */,
 				3A45E0442223A23000505786 /* EMQRCodeViewController.m in Sources */,
 				3C7A14DA238F6F3900F4AC48 /* EMMsgNotificViewController.m in Sources */,
+				3C9B6BB624B4845B00D1C617 /* EMMsgTouchIncident.m in Sources */,
 				3C5260B824651ABC00D16DD5 /* Live2ViewController.m in Sources */,
 				3A45DA2622239DE200505786 /* main.m in Sources */,
 				3A45E3172223A43300505786 /* EMMessageCell.m in Sources */,
@@ -4262,6 +4348,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
 				);
+				MARKETING_VERSION = 3.6.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4347,6 +4434,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
 				);
+				MARKETING_VERSION = 3.6.8;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",

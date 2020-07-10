@@ -6,8 +6,6 @@
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
 #import "EMLocationViewController.h"
 
 @interface EMLocationViewController ()<MKMapViewDelegate, CLLocationManagerDelegate>

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EMReadReceiptMsgViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol EMMoreFunctionViewDelegate;
@@ -20,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol EMMoreFunctionViewDelegate <NSObject>
+
+@optional
 
 - (void)chatBarMoreFunctionReadReceipt;//阅读回执
 

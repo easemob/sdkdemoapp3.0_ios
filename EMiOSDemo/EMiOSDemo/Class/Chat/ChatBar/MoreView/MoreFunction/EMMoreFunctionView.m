@@ -82,34 +82,39 @@
 {
     if (tag == 0) {
         //图片
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionPictureOption)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionPictureOption)])
             [self.delegate chatBarMoreFunctionPictureOption];
-        }
-    } else if (tag == 1) {
+        return;
+    }
+    if (tag == 1) {
         //相机
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionCameraAction)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionCameraAction)])
             [self.delegate chatBarMoreFunctionCameraAction];
-        }
-    } else if (tag == 2) {
+        return;
+    }
+    if (tag == 2) {
         //视频通话
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionDidCallAction)])
             [self.delegate chatBarMoreFunctionDidCallAction];
-        }
-    } else if (tag == 3) {
+        return;
+    }
+    if (tag == 3) {
         //位置
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionLocation)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionLocation)])
             [self.delegate chatBarMoreFunctionLocation];
-        }
-    } else if (tag == 4) {
+        return;
+    }
+    if (tag == 4) {
         //文件
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionFileOption)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionFileOption)])
             [self.delegate chatBarMoreFunctionFileOption];
-        }
-    } else if (tag == 5) {
+        return;
+    }
+    if (tag == 5) {
         //群组回执
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)])
             [self.delegate chatBarMoreFunctionReadReceipt];
-        }
+        return;
     }
 }
 

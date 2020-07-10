@@ -9,6 +9,7 @@
 #import "EMPersonalDataViewController.h"
 #import "EMAvatarNameCell.h"
 #import "EMChatViewController.h"
+#import "EMSingleChatViewController.h"
 
 @interface EMPersonalDataViewController ()
 
@@ -180,7 +181,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
-    self.chatController = [[EMChatViewController alloc]initWithConversationId:self.nickName type:EMConversationTypeChat createIfNotExist:YES isChatRecord:NO];
+    self.chatController = [[EMSingleChatViewController alloc]initWithConversationId:self.nickName type:EMConversationTypeChat createIfNotExist:YES isChatRecord:NO];
+    //EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.nickName type:EMConversationTypeChat createIfNotExist:YES];
+    //self.chatController = [[EMSingleChatViewController alloc]initWithCoversationModel:[[EMConversationModel alloc] initWithEMModel:conversation]];
     if (section == 1)
         //添加联系人
         [self addContact];

@@ -107,6 +107,8 @@
     EMMessageModel *model;
     for (int i = 0; i < [models count]; ++i) {
         model = models[i];
+        [self setImageView:(self.imgViewLeft) model:model tag:i];
+        /*
         switch (i) {
             case 0:
                 [self setImageView:(self.imgViewLeft) model:model tag:0];
@@ -122,7 +124,7 @@
                 break;
             default:
                 break;
-        }
+        }*/
     }
 }
 
@@ -193,6 +195,8 @@
 
 - (EMMessageModel *)getMsgModel:(NSInteger)tag
 {
+    return self.models[tag];
+    /*
     EMMessageModel *model;
     switch (tag) {
        case 0:
@@ -210,6 +214,6 @@
        default:
            break;
    }
-   return model;
+   return model;*/
 }
 @end
