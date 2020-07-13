@@ -72,13 +72,11 @@ static bool g_Watermark = NO;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    NSString *cellIdentifier = @"UITableViewCellValue1";
-    if (section != 3 && row == 0) {
-        cellIdentifier = @"UITableViewCellSwitch";
-    }
     
+    NSString *cellIdentifier = [NSString stringWithFormat:@"%ld + %ld", (long)indexPath.section, (long)indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     UISwitch *switchControl = nil;
+    
     // Configure the cell...
     if (cell == nil) {
         if(section == 4){
@@ -89,8 +87,7 @@ static bool g_Watermark = NO;
                 [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
                 [cell.contentView addSubview:switchControl];
             }
-        }else
-        if(section == 3) {
+        }else if(section == 3) {
             if(row == 0){
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
                 switchControl = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 10, 50, 40)];
@@ -248,8 +245,8 @@ static bool g_Watermark = NO;
 {
     NSInteger tag = aSwitch.tag;
     if (tag == 0 + 10000) {
-        //EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         [EMDemoOptions sharedOptions].isOfflineHangup = aSwitch.on;
+        [[EMDemoOptions sharedOptions] archive];
     } else if (tag == 2 + 10000) {
         [EMDemoOptions sharedOptions].isShowCallInfo = aSwitch.isOn;
         [[EMDemoOptions sharedOptions] archive];

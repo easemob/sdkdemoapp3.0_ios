@@ -463,6 +463,7 @@
 		3C5260F624651BB800D16DD5 /* tabbar_settings_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D824651BB700D16DD5 /* tabbar_settings_gray@2x.png */; };
 		3C5260F724651BB800D16DD5 /* tabbar_settings_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D924651BB700D16DD5 /* tabbar_settings_gray@3x.png */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
+		906569BF24B317270058F759 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 906569BE24B317270058F759 /* music.mp3 */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
@@ -1115,6 +1116,7 @@
 		3C5260D824651BB700D16DD5 /* tabbar_settings_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settings_gray@2x.png"; sourceTree = "<group>"; };
 		3C5260D924651BB700D16DD5 /* tabbar_settings_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settings_gray@3x.png"; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		906569BE24B317270058F759 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = music.mp3; path = ../../../TestCallSound/music.mp3; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1196,6 +1198,7 @@
 		3A45D69922239DE200505786 /* EMiOSDemo */ = {
 			isa = PBXGroup;
 			children = (
+				906569BE24B317270058F759 /* music.mp3 */,
 				3A45D72222239DE200505786 /* Class */,
 				3A45D72022239DE200505786 /* main.m */,
 				3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */,
@@ -2403,7 +2406,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = ___FULLUSERNAME___;
+				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -2484,6 +2487,7 @@
 				3C4CEC3E2372A7AA00A37140 /* icon_010.gif in Resources */,
 				3A45E18B2223A36400505786 /* switchCamera_gray@2x.png in Resources */,
 				3A45E3672223A45500505786 /* msg_fail@3x.png in Resources */,
+				906569BF24B317270058F759 /* music.mp3 in Resources */,
 				3A45E3B22223A4C000505786 /* group@2x.png in Resources */,
 				3A45E2FB2223A41600505786 /* chatbar_map_blue@3x.png in Resources */,
 				3C4CEC232372A7AA00A37140 /* close@2x.png in Resources */,
@@ -2776,13 +2780,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
-				"${PODS_ROOT}/../emclient-ios/newSDK/Hyphenate.framework",
-				"${PODS_ROOT}/../RTC/webrtc-src/out/ios/WebRTC.framework",
+                "${PODS_ROOT}/../emclient-ios/newSDK/Hyphenate.framework",
+                "${PODS_ROOT}/../RTC/webrtc-src/out/ios/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+                "${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
