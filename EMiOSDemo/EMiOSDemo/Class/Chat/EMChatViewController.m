@@ -27,7 +27,7 @@
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
 
-@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate>
+@interface EMChatViewController ()<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMGroupManagerDelegate, EMChatroomManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate,EMReadReceiptMsgDelegate,UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 
@@ -889,7 +889,39 @@
 
 - (void)_fileMessageCellDidSelected:(EMMessageCell *)aCell
 {
+    EMFileMessageBody *body = (EMFileMessageBody *)aCell.model.emModel.body;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
+    if (body.downloadStatus == EMDownloadStatusDownloading) {
+        [EMAlertController showInfoAlert:@"正在下载文件,稍后点击"];
+        return;
+    }
+    __weak typeof(self) weakself = self;
+    void (^checkFileBlock)(NSString *aPath) = ^(NSString *aPathe) {
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:aPathe];
+        NSLog(@"\nfile  --    :%@",[fileHandle readDataToEndOfFile]);
+        [fileHandle closeFile];
+        UIDocumentInteractionController *docVc = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:aPathe]];
+        docVc.delegate = weakself;
+        [docVc presentPreviewAnimated:YES];
+    };
+    
+    if (body.downloadStatus == EMDownloadStatusSuccessed && [fileManager fileExistsAtPath:body.localPath]) {
+        checkFileBlock(body.localPath);
+        return;
+    }
+    
+    [[EMClient sharedClient].chatManager downloadMessageAttachment:aCell.model.emModel progress:nil completion:^(EMMessage *message, EMError *error) {
+        [weakself hideHud];
+        if (error) {
+            [EMAlertController showErrorAlert:@"下载文件失败"];
+        } else {
+            if (!message.isReadAcked) {
+                [[EMClient sharedClient].chatManager sendMessageReadAck:message.messageId toUser:message.conversationId completion:nil];
+            }
+            checkFileBlock([(EMFileMessageBody*)message.body localPath]);
+        }
+    }];
 }
 
 - (void)_callMessageCellDidSelected:(EMMessageCell *)aCell
@@ -915,6 +947,20 @@
     }];
     
     [self.tableView reloadData];
+}
+
+#pragma mark -- UIDocumentInteractionControllerDelegate
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+- (UIView*)documentInteractionControllerViewForPreview:(UIDocumentInteractionController*)controller
+{
+    return self.view;
+}
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController*)controller
+{
+    return self.view.frame;
 }
 
 #pragma mark - EMMultiDevicesDelegate
