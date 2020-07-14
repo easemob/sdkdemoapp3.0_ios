@@ -690,6 +690,7 @@
 		3CAF2A9724B70460007AF038 /* EMSingleChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9624B70460007AF038 /* EMSingleChatViewController.m */; };
 		3CAF2A9B24B70477007AF038 /* EMGroupChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9A24B70477007AF038 /* EMGroupChatViewController.m */; };
 		3CAF2A9E24B704B4007AF038 /* EMChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */; };
+		3CAF2AA924BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2AA824BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m */; };
 		3CB106C7247FBEAC00479BC1 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C4247FBEA800479BC1 /* ios@2x.png */; };
 		3CB106C8247FBEAC00479BC1 /* ios.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C5247FBEAA00479BC1 /* ios.png */; };
 		3CB106C9247FBEAC00479BC1 /* ios@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C6247FBEAB00479BC1 /* ios@3x.png */; };
@@ -1614,6 +1615,8 @@
 		3CAF2A9A24B70477007AF038 /* EMGroupChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupChatViewController.m; sourceTree = "<group>"; };
 		3CAF2A9C24B704B4007AF038 /* EMChatroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatroomViewController.h; sourceTree = "<group>"; };
 		3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatroomViewController.m; sourceTree = "<group>"; };
+		3CAF2AA724BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMChatViewController+ChatToolBarIncident.h"; sourceTree = "<group>"; };
+		3CAF2AA824BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EMChatViewController+ChatToolBarIncident.m"; sourceTree = "<group>"; };
 		3CB106C4247FBEA800479BC1 /* ios@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios@2x.png"; sourceTree = "<group>"; };
 		3CB106C5247FBEAA00479BC1 /* ios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios.png; sourceTree = "<group>"; };
 		3CB106C6247FBEAB00479BC1 /* ios@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios@3x.png"; sourceTree = "<group>"; };
@@ -1737,7 +1740,6 @@
 				3A45E2392223A3A000505786 /* EMMessageModel.m */,
 				3A45E2412223A3A000505786 /* EMChatViewController.h */,
 				3A45E23B2223A3A000505786 /* EMChatViewController.m */,
-				3C9B6BB324B483EC00D1C617 /* ChatMessageIncident */,
 				3C9B6B9E24B46B0300D1C617 /* ChatExtComponents */,
 				3A45DBE82223A1FC00505786 /* ChatBar */,
 				3A45DC3F2223A1FC00505786 /* MessageCell */,
@@ -3040,8 +3042,8 @@
 		3C9B6B9E24B46B0300D1C617 /* ChatExtComponents */ = {
 			isa = PBXGroup;
 			children = (
-				3C9B6BA124B46B2B00D1C617 /* ChatBarComponents */,
-				3C9B6BA024B46B2100D1C617 /* ChatMsgComponents */,
+				3C9B6BA124B46B2B00D1C617 /* ChatToolBarComponents */,
+				3C9B6BA024B46B2100D1C617 /* ChatMessageComponents */,
 				3C9B6B9F24B46B1600D1C617 /* ChatInfoComponents */,
 			);
 			path = ChatExtComponents;
@@ -3058,9 +3060,10 @@
 			path = ChatInfoComponents;
 			sourceTree = "<group>";
 		};
-		3C9B6BA024B46B2100D1C617 /* ChatMsgComponents */ = {
+		3C9B6BA024B46B2100D1C617 /* ChatMessageComponents */ = {
 			isa = PBXGroup;
 			children = (
+				3C9B6BB324B483EC00D1C617 /* ChatMessageIncident */,
 				3A45E2422223A3A100505786 /* EMAtGroupMembersViewController.h */,
 				3A45E23C2223A3A000505786 /* EMAtGroupMembersViewController.m */,
 				3A45E23E2223A3A000505786 /* EMMsgTranspondViewController.h */,
@@ -3070,12 +3073,13 @@
 				3A45DC862223A1FC00505786 /* EMAudioPlayerHelper.h */,
 				3A45DC872223A1FC00505786 /* EMAudioPlayerHelper.mm */,
 			);
-			path = ChatMsgComponents;
+			path = ChatMessageComponents;
 			sourceTree = "<group>";
 		};
-		3C9B6BA124B46B2B00D1C617 /* ChatBarComponents */ = {
+		3C9B6BA124B46B2B00D1C617 /* ChatToolBarComponents */ = {
 			isa = PBXGroup;
 			children = (
+				3CAF2AA324BC1DBE007AF038 /* ChatToolBarComponentsIncident */,
 				3A45E23F2223A3A000505786 /* EMLocationViewController.h */,
 				3A45E23A2223A3A000505786 /* EMLocationViewController.m */,
 				3CF7531E23BF320A0027E34D /* EMPickFileViewController.h */,
@@ -3083,7 +3087,7 @@
 				3C930B3223AB2CB600C8268D /* PAirSandbox.h */,
 				3C930B3123AB2CB600C8268D /* PAirSandbox.m */,
 			);
-			path = ChatBarComponents;
+			path = ChatToolBarComponents;
 			sourceTree = "<group>";
 		};
 		3C9B6BA224B46CD400D1C617 /* PersonalSettings */ = {
@@ -3307,6 +3311,15 @@
 				3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */,
 			);
 			path = ChatroomController;
+			sourceTree = "<group>";
+		};
+		3CAF2AA324BC1DBE007AF038 /* ChatToolBarComponentsIncident */ = {
+			isa = PBXGroup;
+			children = (
+				3CAF2AA724BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.h */,
+				3CAF2AA824BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m */,
+			);
+			path = ChatToolBarComponentsIncident;
 			sourceTree = "<group>";
 		};
 		9091101B192EEA70008A48AA = {
@@ -4026,6 +4039,7 @@
 				3A45E0E12223A2CE00505786 /* PSTCollectionView.m in Sources */,
 				3A45E0FB2223A30000505786 /* EMAlertController.m in Sources */,
 				3C37DEEC2382486200399AE8 /* EMErrorAlertViewController.m in Sources */,
+				3CAF2AA924BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m in Sources */,
 				3A45E38F2223A48700505786 /* EMChatroomAdminsViewController.m in Sources */,
 				3CAF2A9B24B70477007AF038 /* EMGroupChatViewController.m in Sources */,
 				3A45DF3E2223A1FD00505786 /* wav.mm in Sources */,

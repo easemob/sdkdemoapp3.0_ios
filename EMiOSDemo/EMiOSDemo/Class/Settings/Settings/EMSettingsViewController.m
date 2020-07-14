@@ -159,7 +159,7 @@
      [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
      }]];
      for (UIAlertAction *alertAction in self.alertController.actions) {
-         [alertAction setValue:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forKey:@"_titleTextColor"];
+         [alertAction setValue:[UIColor colorWithRed:49/255.0 green:49/255.0 blue:49/255.0 alpha:1.0] forKey:@"_titleTextColor"];
      }
      [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
      [self presentViewController:self.alertController animated:YES completion:nil];

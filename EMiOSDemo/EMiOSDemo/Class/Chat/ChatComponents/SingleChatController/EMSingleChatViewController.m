@@ -178,7 +178,7 @@
 
 #pragma mark - Action
 
-- (void)returnReceipt:(EMMessage *)msg
+- (void)returnReadReceipt:(EMMessage *)msg
 {
     if ([self _isNeedSendReadAckForMessage:msg isMarkRead:NO] && (self.conversationModel.emModel.type == EMConversationTypeChat)) {
         [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];

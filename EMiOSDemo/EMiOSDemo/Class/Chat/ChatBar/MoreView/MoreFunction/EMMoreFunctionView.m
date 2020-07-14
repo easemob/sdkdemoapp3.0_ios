@@ -80,42 +80,15 @@
 
 - (void)toolbarCellDidSelected:(NSInteger)tag
 {
-    if (tag == 0) {
-        //图片
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionPictureOption)])
-            [self.delegate chatBarMoreFunctionPictureOption];
-        return;
-    }
-    if (tag == 1) {
-        //相机
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionCameraAction)])
-            [self.delegate chatBarMoreFunctionCameraAction];
-        return;
-    }
-    if (tag == 2) {
-        //视频通话
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionDidCallAction)])
-            [self.delegate chatBarMoreFunctionDidCallAction];
-        return;
-    }
-    if (tag == 3) {
-        //位置
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionLocation)])
-            [self.delegate chatBarMoreFunctionLocation];
-        return;
-    }
-    if (tag == 4) {
-        //文件
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionFileOption)])
-            [self.delegate chatBarMoreFunctionFileOption];
-        return;
-    }
     if (tag == 5) {
         //群组回执
         if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)])
             [self.delegate chatBarMoreFunctionReadReceipt];
         return;
     }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionAction:)])
+        [self.delegate chatBarMoreFunctionAction:tag];
 }
 
 @end

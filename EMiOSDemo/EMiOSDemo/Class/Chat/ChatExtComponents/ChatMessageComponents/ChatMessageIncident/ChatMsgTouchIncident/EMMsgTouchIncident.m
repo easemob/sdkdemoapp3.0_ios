@@ -29,8 +29,7 @@
     [self.chatController presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)messageCellEventOperation:(EMMessageCell *)aCell
-{}
+- (void)messageCellEventOperation:(EMMessageCell *)aCell{}
 
 @end
 

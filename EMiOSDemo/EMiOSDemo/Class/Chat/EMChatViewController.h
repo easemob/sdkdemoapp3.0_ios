@@ -1,6 +1,6 @@
 //
 //  EMChatViewController.h
-//  ChatDemo-UI3.0
+//  EMiOSDemo
 //
 //  Created by XieYajie on 2019/1/18.
 //  Copyright © 2019 XieYajie. All rights reserved.
@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EMChatViewController : EMSearchViewController <UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
+
+@property (nonatomic, strong) EMChatBar *chatBar;
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *titleDetailLabel;
@@ -34,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCoversationModel:(EMConversationModel *)aModel;
 
+- (NSString *)getAudioOrVideoPath;
+
 - (void)sendTextAction:(NSString *)aText
                     ext:(NSDictionary * __nullable)aExt;
 
@@ -45,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)refreshTableView;
 
 //消息已读回执
-- (void)returnReceipt:(EMMessage *)msg;
+- (void)returnReadReceipt:(EMMessage *)msg;
 
 @end
 

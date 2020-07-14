@@ -177,14 +177,14 @@
     [serverConfigurationBtn setTitle:@"服务器配置" forState:UIControlStateNormal];
     [serverConfigurationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [serverConfigurationBtn addTarget:self action:@selector(changeAppkeyAction) forControlEvents:UIControlEventTouchUpInside];
-    /*
+    
     [self.view addSubview:serverConfigurationBtn];
     [serverConfigurationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@80);
         make.height.equalTo(@17);
-        make.centerX.equalTo(self.loginButton);
+        make.centerX.equalTo(self.authorizationView);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
-    }];*/
+    }];
     
     self.loginTypeButton = [[UIButton alloc] init];
     self.loginTypeButton.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -198,6 +198,11 @@
         make.right.equalTo(self.authorizationView);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
     }];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 #pragma mark - UITextFieldDelegate

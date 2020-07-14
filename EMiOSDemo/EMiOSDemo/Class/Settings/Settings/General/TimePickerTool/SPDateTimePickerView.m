@@ -126,36 +126,28 @@
         self.alpha = 0;
         // 存放每种情况需要分割的列
         self.columnArray = @[@(1),@(2),@(3),@(4),@(5),@(6),@(2),@(3),@(2)];
-        
-        
-        // 1.添加子控件
-        [self addSubview:self.contentView];
-        [self.contentView addSubview:self.pickerView];
-        [self.contentView addSubview:self.upView];
-        [self.upView addSubview:self.cancelButton];
-        [self.upView addSubview:self.chooseButton];
-        [self.upView addSubview:self.titleLabel];
-        [self.upView addSubview:self.splitView];
-        [self.contentView addSubview:self.durationLabel];
-        [self.durationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(@40);
-            make.height.equalTo(@20);
-            make.centerX.centerY.equalTo(self.pickerView);
-        }];
-        
-        // 2.获取当前时间
-        NSCalendar *calendar0 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-        NSDateComponents *comps = [[NSDateComponents alloc] init];
-        NSInteger unitFlags =  NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute;
-        comps = [calendar0 components:unitFlags fromDate:[NSDate date]];
-        NSInteger year = [comps year];
-        
-        startYear = year-15;
-        yearRange = 50;
-        [self setCurrentDate:[NSDate date]];
     }
     return self;
 }
+
+- (void)_setupSubviews
+{
+    // 1.添加子控件
+    [self addSubview:self.contentView];
+    [self.contentView addSubview:self.pickerView];
+    [self.contentView addSubview:self.upView];
+    [self.upView addSubview:self.cancelButton];
+    [self.upView addSubview:self.chooseButton];
+    [self.upView addSubview:self.titleLabel];
+    [self.upView addSubview:self.splitView];
+    [self.contentView addSubview:self.durationLabel];
+    [self.durationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@40);
+        make.height.equalTo(@20);
+        make.centerX.centerY.equalTo(self.pickerView);
+    }];
+}
+
 #pragma mark - setter
 - (void)setTitle:(NSString *)title {
     _title = title;
@@ -418,7 +410,8 @@
     selectedHour     = hour;
     selectedMinute   = minute;
     selectedSecond   = second;
-    
+    startYear = year-15;
+    yearRange = 50;
     
     dayRange = [self isAllDay:year andMonth:month];
     
@@ -1085,6 +1078,7 @@
 }
 #pragma mark - show and hidden
 - (void)showDateTimePickerView{
+    [self _setupSubviews];
     [self setCurrentDate:[NSDate date]];
     self.frame = CGRectMake(0, 0, ScreenWith, ScreenHeight);
     [UIView animateWithDuration:0.25f animations:^{

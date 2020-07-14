@@ -22,17 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (void)chatBarMoreFunctionReadReceipt;//阅读回执
+- (void)chatBarMoreFunctionReadReceipt;//群组阅读回执
 
-- (void)chatBarMoreFunctionLocation;//位置
-
-- (void)chatBarMoreFunctionDidCallAction;//视频&语音通话
-
-- (void)chatBarMoreFunctionFileOption;//文件选择
-
-- (void)chatBarMoreFunctionCameraAction;//相机
-
-- (void)chatBarMoreFunctionPictureOption;//图片选择
+- (void)chatBarMoreFunctionAction:(NSInteger)componentType;
 
 @end
 

@@ -77,7 +77,7 @@
             make.top.equalTo(_logoView.mas_top).offset(20);
         }];
         UILabel *productName = [[UILabel alloc]init];
-        productName.text = @"环信IM 2.2.2";
+        productName.text = [NSString stringWithFormat:@"环信IM %@",[EMClient sharedClient].version];
         productName.textAlignment = NSTextAlignmentCenter;
         productName.textColor = [UIColor colorWithRed:86/255.0 green:86/255.0 blue:86/255.0 alpha:1.0];
         productName.font = [UIFont systemFontOfSize:14.f];

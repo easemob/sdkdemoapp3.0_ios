@@ -91,7 +91,7 @@
         make.right.equalTo(self.view).offset(-24);
     }];
     if (!self.canSend) {
-        self.sendLocationBtn.enabled = NO;
+        self.sendLocationBtn.hidden = YES;
     }
     
     [self.view addSubview:self.cancelBtn];

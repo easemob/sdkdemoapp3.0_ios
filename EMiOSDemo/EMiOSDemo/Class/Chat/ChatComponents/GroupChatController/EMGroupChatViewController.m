@@ -64,7 +64,7 @@
 
 #pragma mark - ACtion
 
-- (void)returnReceipt:(EMMessage *)msg
+- (void)returnReadReceipt:(EMMessage *)msg
 {
     if (msg.isNeedGroupAck && !msg.isReadAcked) {
         [[EMClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(EMError *error) {

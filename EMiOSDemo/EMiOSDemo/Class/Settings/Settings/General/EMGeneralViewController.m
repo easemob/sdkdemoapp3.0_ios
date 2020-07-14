@@ -261,7 +261,7 @@
 - (void)changeDisturbDateAction
 {
     SPDateTimePickerView *pickerView = [[SPDateTimePickerView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width,  self.view.frame.size.height)];
-    pickerView.pickerViewMode = 6;
+    pickerView.pickerViewMode = SPDatePickerModeTime;
     pickerView.delegate = self;
     pickerView.title = @"设置时间段";
     [self.view addSubview:pickerView];
