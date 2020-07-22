@@ -8,7 +8,7 @@
 
 #import "EMChatInfoViewController.h"
 #import "EMPersonalDataViewController.h"
-#import "EMChatViewController.h"
+#import "EMChatRecordViewController.h"
 
 @interface EMChatInfoViewController ()
 
@@ -26,7 +26,7 @@
     self.showRefreshHeader = NO;
 }
 
-- (instancetype)initWithCoversation:(EMConversationModel *)aConversationModel
+- (instancetype)initWithCoversationModel:(EMConversationModel *)aConversationModel
 {
     self = [super init];
     if (self) {
@@ -68,9 +68,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     NSString *cellIdentifier = @"UITableViewCellValue1";
-    if (section == 0) {
+    if (section == 0)
         cellIdentifier = @"UITableViewCellStyleSubtitle";
-    }
     
     UISwitch *switchControl = nil;
     BOOL isSwitchCell = NO;
@@ -94,9 +93,10 @@
             [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:switchControl];
         }
-    } else if (isSwitchCell) {
-        switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
     }
+    
+    if (isSwitchCell)
+        switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
     
     cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
     cell.detailTextLabel.textColor = [UIColor grayColor];
@@ -107,15 +107,17 @@
         cell.textLabel.font = [UIFont systemFontOfSize:18.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
         cell.textLabel.text = self.conversationModel.emModel.conversationId;
-    } else if (section == 1) {
+    }
+    if (section == 1)
         cell.textLabel.text = @"查找聊天记录";
-    } else if (section == 2) {
+    if (section == 2) {
         cell.textLabel.text = @"会话置顶";
         [switchControl setOn:([self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[self.conversationModel.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
         cell.accessoryType = UITableViewCellAccessoryNone;
-    } else if (section == 3) {
-        cell.textLabel.text = @"清空聊天记录";
     }
+    if (section == 3)
+        cell.textLabel.text = @"清空聊天记录";
+    
     return cell;
 }
 
@@ -123,27 +125,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 2) {
+    if (indexPath.section == 0 && indexPath.row == 2)
         return 60;
-    }
     
     return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (section == 0)
         return 0.001;
-    }
     
     return 24.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 4) {
+    if (section == 4)
         return 40;
-    }
     
     return 1;
 }
@@ -155,13 +154,19 @@
         //好友资料
         EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:self.conversationModel.emModel.conversationId];
         [self.navigationController pushViewController:controller animated:YES];
-    } else if (section == 1) {
+        return;
+    }
+    if (section == 1) {
         //查找聊天记录
-        EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
-        [self.navigationController pushViewController:controller animated:YES];
-    } else if (section == 3) {
+        EMChatRecordViewController *chatRrcordController = [[EMChatRecordViewController alloc]initWithCoversationModel:self.conversationModel];
+        //EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
+        [self.navigationController pushViewController:chatRrcordController animated:YES];
+        return;
+    }
+    if (section == 3) {
         //清空聊天记录
         [self deleteChatRecord];
+        return;
     }
 }
 
@@ -235,17 +240,6 @@
     NSInteger row = aTag % 10;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
     return indexPath;
-}
-
-//string To dictonary
-- (NSMutableDictionary *)changeStringToDictionary:(NSString *)string{
-
-    if (string) {
-        NSMutableDictionary *returnDic = [[NSMutableDictionary  alloc]  init];
-        returnDic = [NSJSONSerialization JSONObjectWithData:[string dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-        return returnDic;
-    }
-    return nil;
 }
 
 @end

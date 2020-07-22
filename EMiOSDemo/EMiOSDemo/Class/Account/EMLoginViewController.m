@@ -399,13 +399,9 @@
     EMRegisterViewController *controller = [[EMRegisterViewController alloc] init];
     
     __weak typeof(self) weakself = self;
-    [controller setSuccessCompletion:^(NSString * _Nonnull aName, NSString * _Nonnull aPswd) {
-        if ([weakself.nameField.text length] == 0 && [weakself.pswdField.text length] == 0) {
-            weakself.nameField.text = aName;
-            if (!weakself.loginTypeButton.selected) {
-                weakself.pswdField.text = aPswd;
-            }
-        }
+    [controller setSuccessCompletion:^(NSString * _Nonnull aName) {
+        weakself.nameField.text = aName;
+        weakself.pswdField.text = @"";
     }];
     
     controller.modalPresentationStyle = 0;

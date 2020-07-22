@@ -329,8 +329,6 @@
 		3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527441931D37900385240 /* SystemConfiguration.framework */; };
 		3C362E5F239E03AB0048E877 /* EMMsgRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C362E5E239E03AB0048E877 /* EMMsgRecordCell.m */; };
 		3C362E65239E57ED0048E877 /* BootPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C362E62239E57ED0048E877 /* BootPage.png */; };
-		3C362E67239E591A0048E877 /* BootPage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C362E66239E59190048E877 /* BootPage@2x.png */; };
-		3C362E69239E59520048E877 /* BootPage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C362E68239E59510048E877 /* BootPage@3x.png */; };
 		3C362E6C239FAB410048E877 /* EMPersonalDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C362E6B239FAB410048E877 /* EMPersonalDataViewController.m */; };
 		3C362E70239FB3DB0048E877 /* icon-setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C362E6D239FB3D40048E877 /* icon-setting.png */; };
 		3C362E71239FB3DB0048E877 /* icon-setting@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C362E6E239FB3D80048E877 /* icon-setting@3x.png */; };
@@ -691,6 +689,7 @@
 		3CAF2A9B24B70477007AF038 /* EMGroupChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9A24B70477007AF038 /* EMGroupChatViewController.m */; };
 		3CAF2A9E24B704B4007AF038 /* EMChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */; };
 		3CAF2AA924BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2AA824BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m */; };
+		3CAF2AAC24BEE2CC007AF038 /* EMChatRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAF2AAB24BEE2CA007AF038 /* EMChatRecordViewController.m */; };
 		3CB106C7247FBEAC00479BC1 /* ios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C4247FBEA800479BC1 /* ios@2x.png */; };
 		3CB106C8247FBEAC00479BC1 /* ios.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C5247FBEAA00479BC1 /* ios.png */; };
 		3CB106C9247FBEAC00479BC1 /* ios@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB106C6247FBEAB00479BC1 /* ios@3x.png */; };
@@ -708,6 +707,8 @@
 		3CE7294024A1E2B700AEA67D /* chatroom.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE7293D24A1E2B600AEA67D /* chatroom.png */; };
 		3CE7294124A1E2B700AEA67D /* chatroom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE7293E24A1E2B600AEA67D /* chatroom@2x.png */; };
 		3CF7532023BF320B0027E34D /* EMPickFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF7531F23BF320B0027E34D /* EMPickFileViewController.m */; };
+		3CFD5DE524C152800086D545 /* BootPage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CFD5DE324C1527D0086D545 /* BootPage@3x.png */; };
+		3CFD5DE624C152800086D545 /* BootPage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CFD5DE424C1527F0086D545 /* BootPage@2x.png */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		90AE9446230D2CDC00A905E5 /* EMRemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AE9445230D2CDC00A905E5 /* EMRemindManager.m */; };
@@ -1199,8 +1200,6 @@
 		3C362E5D239E03AB0048E877 /* EMMsgRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMsgRecordCell.h; sourceTree = "<group>"; };
 		3C362E5E239E03AB0048E877 /* EMMsgRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMsgRecordCell.m; sourceTree = "<group>"; };
 		3C362E62239E57ED0048E877 /* BootPage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BootPage.png; sourceTree = "<group>"; };
-		3C362E66239E59190048E877 /* BootPage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BootPage@2x.png"; sourceTree = "<group>"; };
-		3C362E68239E59510048E877 /* BootPage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BootPage@3x.png"; sourceTree = "<group>"; };
 		3C362E6A239FAB410048E877 /* EMPersonalDataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMPersonalDataViewController.h; sourceTree = "<group>"; };
 		3C362E6B239FAB410048E877 /* EMPersonalDataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMPersonalDataViewController.m; sourceTree = "<group>"; };
 		3C362E6D239FB3D40048E877 /* icon-setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-setting.png"; sourceTree = "<group>"; };
@@ -1617,6 +1616,8 @@
 		3CAF2A9D24B704B4007AF038 /* EMChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatroomViewController.m; sourceTree = "<group>"; };
 		3CAF2AA724BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMChatViewController+ChatToolBarIncident.h"; sourceTree = "<group>"; };
 		3CAF2AA824BC6A82007AF038 /* EMChatViewController+ChatToolBarIncident.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EMChatViewController+ChatToolBarIncident.m"; sourceTree = "<group>"; };
+		3CAF2AAA24BEE2C9007AF038 /* EMChatRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatRecordViewController.h; sourceTree = "<group>"; };
+		3CAF2AAB24BEE2CA007AF038 /* EMChatRecordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatRecordViewController.m; sourceTree = "<group>"; };
 		3CB106C4247FBEA800479BC1 /* ios@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios@2x.png"; sourceTree = "<group>"; };
 		3CB106C5247FBEAA00479BC1 /* ios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios.png; sourceTree = "<group>"; };
 		3CB106C6247FBEAB00479BC1 /* ios@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios@3x.png"; sourceTree = "<group>"; };
@@ -1635,6 +1636,8 @@
 		3CE7293E24A1E2B600AEA67D /* chatroom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroom@2x.png"; sourceTree = "<group>"; };
 		3CF7531E23BF320A0027E34D /* EMPickFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMPickFileViewController.h; sourceTree = "<group>"; };
 		3CF7531F23BF320B0027E34D /* EMPickFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMPickFileViewController.m; sourceTree = "<group>"; };
+		3CFD5DE324C1527D0086D545 /* BootPage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BootPage@3x.png"; sourceTree = "<group>"; };
+		3CFD5DE424C1527F0086D545 /* BootPage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BootPage@2x.png"; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2179,8 +2182,8 @@
 				3C4AECF42499CF83001F7C50 /* hiddenPwd.png */,
 				3C4AECF22499CF7E001F7C50 /* hiddenPwd@2x.png */,
 				3C4AECF32499CF80001F7C50 /* hiddenPwd@3x.png */,
-				3C362E68239E59510048E877 /* BootPage@3x.png */,
-				3C362E66239E59190048E877 /* BootPage@2x.png */,
+				3CFD5DE424C1527F0086D545 /* BootPage@2x.png */,
+				3CFD5DE324C1527D0086D545 /* BootPage@3x.png */,
 				3C362E62239E57ED0048E877 /* BootPage.png */,
 				3C37DF022382507B00399AE8 /* back_left.png */,
 				3C37DF002382507900399AE8 /* back_left@2x.png */,
@@ -3056,6 +3059,8 @@
 				3C72A1BF23E91E2F00F747B7 /* EMChatInfoViewController.m */,
 				3C362E6A239FAB410048E877 /* EMPersonalDataViewController.h */,
 				3C362E6B239FAB410048E877 /* EMPersonalDataViewController.m */,
+				3CAF2AAA24BEE2C9007AF038 /* EMChatRecordViewController.h */,
+				3CAF2AAB24BEE2CA007AF038 /* EMChatRecordViewController.m */,
 			);
 			path = ChatInfoComponents;
 			sourceTree = "<group>";
@@ -3458,7 +3463,6 @@
 				3C0C3351238684EE0071BDDD /* video-right@3x.png in Resources */,
 				3C5260AB24651ABC00D16DD5 /* mute_red@2x.png in Resources */,
 				3C5260A824651ABC00D16DD5 /* video_white@3x.png in Resources */,
-				3C362E67239E591A0048E877 /* BootPage@2x.png in Resources */,
 				3C52608424651ABC00D16DD5 /* talking_green@3x.png in Resources */,
 				3C52604C24651ABC00D16DD5 /* animate_00036.png in Resources */,
 				3A45E3772223A46500505786 /* chat_info@3x.png in Resources */,
@@ -3550,6 +3554,7 @@
 				3C4AED012499D04B001F7C50 /* clearContent@2x.png in Resources */,
 				3A45E53F2223D69800505786 /* checked@3x.png in Resources */,
 				3C52604324651ABC00D16DD5 /* animate_00033.png in Resources */,
+				3CFD5DE524C152800086D545 /* BootPage@3x.png in Resources */,
 				3C0C335F2386A8130071BDDD /* blueAudioBtn.png in Resources */,
 				3C3703BA238D06D500A8976B /* 黑名单@3x.png in Resources */,
 				3A45E3542223A45500505786 /* msg_recv_audio02@2x.png in Resources */,
@@ -3599,7 +3604,6 @@
 				3C4AED27249A1415001F7C50 /* unAgreeProtocol.png in Resources */,
 				3C0C338A23879E350071BDDD /* video-me.png in Resources */,
 				3C4AED73249A327E001F7C50 /* camera.png in Resources */,
-				3C362E69239E59520048E877 /* BootPage@3x.png in Resources */,
 				3C0C33362384DE870071BDDD /* 语音声波-left-1@2x.png in Resources */,
 				3C4AED142499FE7B001F7C50 /* enableClick@2x.png in Resources */,
 				3C52606B24651ABC00D16DD5 /* animate_00071.png in Resources */,
@@ -3829,6 +3833,7 @@
 				3A45E27D2223A3D600505786 /* icon_010_cover.png in Resources */,
 				3C4AEDB5249B5A87001F7C50 /* settings.png in Resources */,
 				3C4AED5D249A2FB8001F7C50 /* icon-tab会话unselected@3x.png in Resources */,
+				3CFD5DE624C152800086D545 /* BootPage@2x.png in Resources */,
 				3C3703B5238D06D500A8976B /* developerService@3x.png in Resources */,
 				3CBCF5FB23A24FC70053E227 /* systemNotify@3x.png in Resources */,
 				3C52609D24651ABC00D16DD5 /* speaker_white@3x.png in Resources */,
@@ -4138,6 +4143,7 @@
 				3A45E05E2223A25C00505786 /* UIViewController+HUD.m in Sources */,
 				3A45E0992223A29B00505786 /* EMBadgeLabel.m in Sources */,
 				3A45E0512223A25100505786 /* EMChineseToPinyin.m in Sources */,
+				3CAF2AAC24BEE2CC007AF038 /* EMChatRecordViewController.m in Sources */,
 				3C3BAE8123975F6D00344F63 /* EMGroupManageViewController.m in Sources */,
 				3A45E0222223A21B00505786 /* EMSDKOptionsViewController.m in Sources */,
 				3A45E3BE2223A4CC00505786 /* EMConversationsViewController.m in Sources */,
@@ -4330,6 +4336,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
@@ -4362,7 +4369,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
 				);
-				MARKETING_VERSION = 3.6.8;
+				MARKETING_VERSION = 3.6.9;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4417,6 +4424,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
@@ -4448,7 +4456,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
 				);
-				MARKETING_VERSION = 3.6.8;
+				MARKETING_VERSION = 3.6.9;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",

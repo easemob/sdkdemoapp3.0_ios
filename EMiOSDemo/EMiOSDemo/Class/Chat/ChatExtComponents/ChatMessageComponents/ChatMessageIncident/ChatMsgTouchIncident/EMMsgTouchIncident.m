@@ -38,7 +38,7 @@
 */
 @implementation EMMessageEventStrategyFactory
 
-+ (EMMessageEventStrategy *)getStratrgyImplWithMsgCell:(EMMessageCell *)aCell
++ (EMMessageEventStrategy * _Nonnull)getStratrgyImplWithMsgCell:(EMMessageCell *)aCell
 {
     if (aCell.model.type == EMMessageTypeImage)
         return [[ImageMsgEvent alloc] init];
@@ -53,7 +53,7 @@
     if (aCell.model.type == EMMessageTypeExtCall)
         return [[ConferenceMsgEvent alloc]init];
     
-    return nil;
+    return [[EMMessageEventStrategy alloc]init];
 }
 
 @end

@@ -19,19 +19,18 @@
 #import "EMConversationHelper.h"
 #import "EMMessageModel.h"
 
-#import "EMChatBar.h"
 #import "EMMessageCell.h"
 #import "EMMessageTimeCell.h"
 #import "EMMsgRecordCell.h"
-
-#import "PAirSandbox.h"
-#import "EMPickFileViewController.h"
 
 #import "EMMsgTouchIncident.h"
 #import "EMChatViewController+EMMsgLongPressIncident.h"
 #import "EMChatViewController+ChatToolBarIncident.h"
 
 @interface EMChatViewController ()<UIScrollViewDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate>
+{
+    int _unReadCount;
+}
 
 @property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
 
@@ -80,8 +79,9 @@
 
 - (void)setDefaultProperty:(EMConversationModel *)aConversationModel
 {
-    _conversationModel = aConversationModel;
-    _msgQueue = dispatch_queue_create("emmessage.com", NULL);
+    self.conversationModel = aConversationModel;
+    _unReadCount = self.conversationModel.emModel.unreadMessagesCount;
+    self.msgQueue = dispatch_queue_create("emmessage.com", NULL);
 }
 
 - (void)viewDidLoad {
@@ -157,7 +157,6 @@
     if (self.isChatRecord)
         [self _setupSwitchviews];
     
-    self.searchBar.hidden = YES;
     self.chatBar = [[EMChatBar alloc] init];
     self.chatBar.delegate = self;
     [self.view addSubview:self.chatBar];
@@ -166,6 +165,7 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
+    self.searchBar.hidden = YES;
     
     [self.chatBar.sendBtn addTarget:self action:@selector(_sendText) forControlEvents:UIControlEventTouchUpInside];
     //会话工具栏
@@ -261,7 +261,7 @@
     self.titleLabel.font = [UIFont systemFontOfSize:18];
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.text = self.isChatRecord ? @"查找聊天记录" : self.conversationModel.name;
+    self.titleLabel.text = self.conversationModel.name;
     [titleView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleView);
@@ -463,8 +463,6 @@
     }];
 }
 
-
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -472,8 +470,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.tableView) return [self.dataArray count];
-    if (tableView == self.searchResultTableView) return [self.searchResults count];
+    if (tableView == self.tableView)
+        return [self.dataArray count];
+    if (tableView == self.searchResultTableView)
+        return [self.searchResults count];
+    
     return [self.recordArray count];
 }
 
@@ -956,25 +957,20 @@
         
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     };
-    
+    if (_unReadCount > 0)
+        [self sendDidReadReceipt];
+    /*
+    if(self.conversationModel.emModel.unreadMessagesCount > 0){
+        [self sendDidReadReceipt];
+    }*/
     if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         EMConversation *conversation = self.conversationModel.emModel;
         [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
             block(aResult.list, aError);
          }];
     } else {
-        /*
-        *  从数据库获取指定数量的消息，取到的消息按时间排序，并且不包含参考的消息，如果参考消息的ID为空，则从最新消息取
-        *
-        *  @param aMessageId       参考消息的ID
-        *  @param count            获取的条数
-        *  @param aDirection       消息搜索方向
-        *  @param aCompletionBlock 完成的回调
-         */
         [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
-        if(self.conversationModel.emModel.unreadMessagesCount > 0){
-            [self sendDidReadReceipt];
-        }
+        
     }
 }
 

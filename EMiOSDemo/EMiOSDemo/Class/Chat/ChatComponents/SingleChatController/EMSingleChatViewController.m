@@ -35,11 +35,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (self.conversationModel.emModel.type == EMConversationTypeChat) {
-        //单聊主叫方才能发送通话记录信息
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
-    }
+
+    //单聊主叫方才能发送通话记录信息
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
     self.isTyping = NO;
     self.enableTyping = NO;
     if ([EMDemoOptions sharedOptions].isChatTyping && self.conversationModel.emModel.type == EMConversationTypeChat) {
@@ -180,7 +178,7 @@
 
 - (void)returnReadReceipt:(EMMessage *)msg
 {
-    if ([self _isNeedSendReadAckForMessage:msg isMarkRead:NO] && (self.conversationModel.emModel.type == EMConversationTypeChat)) {
+    if ([self _isNeedSendReadAckForMessage:msg isMarkRead:NO]) {
         [[EMClient sharedClient].chatManager sendMessageReadAck:msg.messageId toUser:msg.conversationId completion:nil];
     }
 }
@@ -217,7 +215,7 @@
 - (void)chatInfoAction
 {
     __weak typeof(self) weakself = self;
-    EMChatInfoViewController *chatInfoController = [[EMChatInfoViewController alloc]initWithCoversation:self.conversationModel];
+    EMChatInfoViewController *chatInfoController = [[EMChatInfoViewController alloc]initWithCoversationModel:self.conversationModel];
     [chatInfoController setClearRecordCompletion:^(BOOL isClearRecord) {
         if (isClearRecord) {
             [weakself.dataArray removeAllObjects];

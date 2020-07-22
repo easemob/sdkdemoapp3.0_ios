@@ -22,7 +22,7 @@
 #import "EMInviteGroupMemberViewController.h"
 #import "EMGroupManageViewController.h"
 #import "EMGroupAllMembersViewController.h"
-#import "EMChatViewController.h"
+#import "EMChatRecordViewController.h"
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate>
 
@@ -121,30 +121,27 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = 0;
     if (section == 0) {
         if (((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin)) || self.group.setting.style == EMGroupStylePrivateMemberCanInvite || self.group.setting.style == EMGroupStylePublicOpenJoin) {
-            count = 3;
-        } else {
-            count = 2;
+            return 3;
         }
-    } else if (section == 1) {
-        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
-            count = 5;
-        } else {
-            count = 4;
-        }
-    } else if (section == 2) {
-        count = 1;
-    } else if (section == 3) {
-        count = 2;
-    } else if (section == 4) {
-        count = 1;
-    } else if (section == 5) {
-        count = 1;
+        return 2;
     }
-
-    return count;
+    if (section == 1) {
+        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin)
+            return 5;
+        return 4;
+    }
+    if (section == 2)
+        return 1;
+    if (section == 3)
+        return 2;
+    if (section == 4)
+        return 1;
+    if (section == 5)
+        return 1;
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -177,15 +174,14 @@
             [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:switchControl];
         }
-    } else if (isSwitchCell) {
+    }
+    if (isSwitchCell)
         switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
-    }
     
-    if (section == 5 && row == 0) {
+    if (section == 5 && row == 0)
         return self.leaveCell;
-    } else if (section == 0 && row == 2) {
+    if (section == 0 && row == 2)
         return self.addMemberCell;
-    }
     
     cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
     cell.detailTextLabel.textColor = [UIColor grayColor];
@@ -253,27 +249,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 2) {
+    if (indexPath.section == 0 && indexPath.row == 2)
         return 50;
-    }
     
     return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (section == 0)
         return 0.001;
-    }
     
     return 24.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 5) {
+    if (section == 5)
         return 40;
-    }
     
     return 1;
 }
@@ -312,8 +305,11 @@
     } else if (section == 2) {
         if (row == 0) {
             //查找聊天记录
-            EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO isChatRecord:YES];
-            [self.navigationController pushViewController:controller animated:YES];
+            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+            EMConversationModel *model = [[EMConversationModel alloc]initWithEMModel:conversation];
+            EMChatRecordViewController *chatRrcordController = [[EMChatRecordViewController alloc]initWithCoversationModel:model];
+            //EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
+            [self.navigationController pushViewController:chatRrcordController animated:YES];
         }
     } else if (section == 4) {
         //删除聊天记录

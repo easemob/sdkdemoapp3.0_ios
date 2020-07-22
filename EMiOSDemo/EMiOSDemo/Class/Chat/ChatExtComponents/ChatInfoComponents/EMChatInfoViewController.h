@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMChatInfoViewController : EMRefreshViewController
 
-- (instancetype)initWithCoversation:(EMConversationModel *)aConversationModel;
+- (instancetype)initWithCoversationModel:(EMConversationModel *)aConversationModel;
 
 @property (nonatomic, copy) void (^clearRecordCompletion)(BOOL isClearRecord);
 

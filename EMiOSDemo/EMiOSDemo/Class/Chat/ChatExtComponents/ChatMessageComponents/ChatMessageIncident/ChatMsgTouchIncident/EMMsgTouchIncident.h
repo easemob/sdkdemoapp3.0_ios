@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface EMMessageEventStrategyFactory : NSObject
 
-+ (EMMessageEventStrategy *)getStratrgyImplWithMsgCell:(EMMessageCell *)aCell;
++ (EMMessageEventStrategy * _Nonnull)getStratrgyImplWithMsgCell:(EMMessageCell *)aCell;
 
 @end
 

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMRegisterViewController : UIViewController
 
-@property (nonatomic, copy) void (^successCompletion)(NSString *aName, NSString *aPswd);
+@property (nonatomic, copy) void (^successCompletion)(NSString *aName);
 
 @end
 

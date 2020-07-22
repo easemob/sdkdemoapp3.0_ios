@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) EMChatBar *chatBar;
 
 @property (nonatomic, strong) UILabel *titleLabel;
+
 @property (nonatomic, strong) UILabel *titleDetailLabel;
 
 @property (nonatomic, strong) EMConversationModel *conversationModel;

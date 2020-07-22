@@ -334,7 +334,7 @@
         
         if (!aError) {
             if (weakself.successCompletion) {
-                weakself.successCompletion(name, pswd);
+                weakself.successCompletion(name);
             }
             
             [weakself dismissViewControllerAnimated:NO completion:nil];

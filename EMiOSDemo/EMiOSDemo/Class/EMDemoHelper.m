@@ -490,7 +490,7 @@ static EMDemoHelper *helper = nil;
 
 #pragma mark - EMChatviewControllerFactory
 
-- (EMChatViewController *)getChatControllerWithConversationModel:(EMConversationModel *)model
+- (EMChatViewController * _Nonnull)getChatControllerWithConversationModel:(EMConversationModel *)model
 {
     if (model.emModel.type == EMConversationTypeChat)
         return [[EMSingleChatViewController alloc]initWithCoversationModel:model];
@@ -498,7 +498,8 @@ static EMDemoHelper *helper = nil;
         return [[EMGroupChatViewController alloc]initWithCoversationModel:model];
     if (model.emModel.type == EMConversationTypeChatRoom)
         return [[EMChatroomViewController alloc]initWithCoversationModel:model];
-    return nil;
+    
+    return [[EMChatViewController alloc]initWithCoversationModel:model];
 }
 
 @end

@@ -94,6 +94,7 @@
     
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
     NSArray *blacks = [[EMClient sharedClient].contactManager getBlackList];
+    name = [name lowercaseString];
     if ([contacts containsObject:name] || [blacks containsObject:name]) {
         cell.accessoryButton.enabled = NO;
         [cell.accessoryButton setTitle:@"已添加" forState:UIControlStateDisabled];
