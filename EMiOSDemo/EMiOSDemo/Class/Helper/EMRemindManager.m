@@ -224,12 +224,14 @@ SystemSoundID soundID = 1007;
     
     [self _stopSound];
     
+    
     AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+    [session setCategory:AVAudioSessionCategoryPlayback
              withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker
                    error:nil];
     
     [session setActive:YES error:nil];
+    
     
     NSURL* url = [[NSBundle mainBundle] URLForResource:@"music" withExtension:@".mp3"];
     _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
