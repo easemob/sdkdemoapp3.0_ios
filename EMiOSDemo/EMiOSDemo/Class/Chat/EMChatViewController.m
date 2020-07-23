@@ -28,9 +28,6 @@
 #import "EMChatViewController+ChatToolBarIncident.h"
 
 @interface EMChatViewController ()<UIScrollViewDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate>
-{
-    int _unReadCount;
-}
 
 @property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
 
@@ -80,7 +77,6 @@
 - (void)setDefaultProperty:(EMConversationModel *)aConversationModel
 {
     self.conversationModel = aConversationModel;
-    _unReadCount = self.conversationModel.emModel.unreadMessagesCount;
     self.msgQueue = dispatch_queue_create("emmessage.com", NULL);
 }
 
@@ -105,12 +101,12 @@
 {
     [super viewDidAppear:animated];
     [self tableViewDidTriggerHeaderRefresh];
+    [EMConversationHelper markAllAsRead:self.conversationModel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [EMConversationHelper markAllAsRead:self.conversationModel];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -957,12 +953,11 @@
         
         [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
     };
-    if (_unReadCount > 0)
-        [self sendDidReadReceipt];
-    /*
+
     if(self.conversationModel.emModel.unreadMessagesCount > 0){
         [self sendDidReadReceipt];
-    }*/
+    }
+    
     if ([EMDemoOptions sharedOptions].isPriorityGetMsgFromServer) {
         EMConversation *conversation = self.conversationModel.emModel;
         [EMClient.sharedClient.chatManager asyncFetchHistoryMessagesFromServer:conversation.conversationId conversationType:conversation.type startMessageId:self.moreMsgId pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
