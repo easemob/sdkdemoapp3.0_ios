@@ -73,6 +73,7 @@
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMNotificationHelper shared] removeDelegate:self];
+    [EMNotificationHelper destoryShared];
 }
 
 #pragma mark - Subviews

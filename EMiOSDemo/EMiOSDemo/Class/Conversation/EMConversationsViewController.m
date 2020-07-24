@@ -100,6 +100,7 @@
 {
     [EMNotificationHelper shared].isCheckUnreadCount = YES;
     [[EMNotificationHelper shared] removeDelegate:self];
+    [EMNotificationHelper destoryShared];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMConversationHelper shared] removeDelegate:self];
@@ -297,6 +298,8 @@
     }
     
     NSInteger row = indexPath.row;
+    if (row >= [self.dataArray count])
+        return [[EMConversationCell alloc]init];
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
     cell.model = model;
     cell.delegate = self;
@@ -588,7 +591,6 @@
         [[EMNotificationHelper shared] archive];
     }
     [self _reSortedConversationModelsAndReloadView];
-    [self.tableView reloadData];
 }
 
 //取消置顶
@@ -701,7 +703,8 @@
             return(NSComparisonResult)NSOrderedAscending;
         } else {
             return(NSComparisonResult)NSOrderedDescending;
-        }}];
+        }
+    }];
     
     NSMutableArray *conversationModels = [NSMutableArray array];
     for (EMConversationModel *model in sorted) {

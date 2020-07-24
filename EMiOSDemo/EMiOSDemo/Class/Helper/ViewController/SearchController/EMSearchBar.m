@@ -61,6 +61,7 @@
     leftView.image = [UIImage imageNamed:@"search_gray"];
     self.textField.leftView = leftView;
     
+    
     self.cancelButton = [[UIButton alloc] init];
     self.cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [self.cancelButton setTitle:@"取消" forState:UIControlStateNormal];

@@ -23,6 +23,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 //appkey
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
+//#define DEF_APPKEY @"easemob-demo#testy"
 
 //会话
 #define CONVERSATION_STICK @"stick"

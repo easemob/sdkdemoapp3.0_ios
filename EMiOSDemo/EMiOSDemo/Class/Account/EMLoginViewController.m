@@ -345,7 +345,7 @@
             options.loggedInUsername = aName;
             options.loggedInPassword = pswd;
             [options archive];
-            
+            [weakself.authorizationView originalView];
             //发送自动登录状态通知
             [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:[NSNumber numberWithBool:YES]];
             
@@ -382,6 +382,7 @@
         EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:errorDes];
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
+        [weakself.authorizationView setupAuthBtnBgcolor:YES];
     };
     
     [weakself.authorizationView beingLoadedView];//正在加载视图

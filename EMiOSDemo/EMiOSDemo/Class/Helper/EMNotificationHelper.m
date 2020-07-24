@@ -63,6 +63,7 @@ static NSString *kNotifications_StickTime = @"stickTime";
 
 @end
 
+static dispatch_once_t onceToken;
 static EMNotificationHelper *shared = nil;
 @interface EMNotificationHelper()
 
@@ -70,19 +71,25 @@ static EMNotificationHelper *shared = nil;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
-
 @end
 
 @implementation EMNotificationHelper
 
 + (instancetype)shared
 {
-    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shared = [[EMNotificationHelper alloc] init];
+        if (shared == nil) {
+            shared = [[EMNotificationHelper alloc] init];
+        }
     });
     
     return shared;
+}
+
++ (void)destoryShared
+{
+    onceToken = 0;
+    shared = nil;
 }
 
 - (instancetype)init

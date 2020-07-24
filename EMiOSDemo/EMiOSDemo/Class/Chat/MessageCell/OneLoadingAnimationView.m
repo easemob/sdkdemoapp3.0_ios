@@ -53,7 +53,7 @@ static CGFloat kStep1Duration = 3.0;
     [self.layer addSublayer:self.arcToCircleLayer];
 
     self.arcToCircleLayer.bounds = CGRectMake(0, 0, kRadius * 2 + kLineWidth, kRadius * 2 + kLineWidth);
-    self.arcToCircleLayer.position = CGPointMake(self.frame.origin.x + 10, self.frame.origin.y + 10);
+    self.arcToCircleLayer.position = CGPointMake(10, 10);
 
     // animation
     self.arcToCircleLayer.progress = 1; // end status

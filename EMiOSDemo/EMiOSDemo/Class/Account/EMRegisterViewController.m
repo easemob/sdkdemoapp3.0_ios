@@ -194,6 +194,11 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -336,7 +341,7 @@
             if (weakself.successCompletion) {
                 weakself.successCompletion(name);
             }
-            
+            [weakself.authorizationView originalView];
             [weakself dismissViewControllerAnimated:NO completion:nil];
             return ;
         }
@@ -361,6 +366,7 @@
         EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:errorDes];
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
+        [weakself.authorizationView setupAuthBtnBgcolor:YES];
     }];
 }
 @end

@@ -8,7 +8,6 @@
 
 #import "EMPersonalDataViewController.h"
 #import "EMAvatarNameCell.h"
-#import "EMChatViewController.h"
 #import "EMSingleChatViewController.h"
 
 @interface EMPersonalDataViewController ()
@@ -18,7 +17,7 @@
 
 @property (nonatomic, strong) NSString *hint;
 @property (nonatomic, strong) UIView *blackListView;
-@property (nonatomic, strong) EMChatViewController *chatController;
+@property (nonatomic, strong) EMSingleChatViewController *chatController;
 @property (nonatomic) BOOL isChatting;
 @end
 

@@ -185,8 +185,10 @@ static EMDemoOptions *sharedOptions = nil;
     self.usingHttpsOnly = NO;
     self.specifyServer = NO;
     self.chatServer = @"msync-im1.sandbox.easemob.com";
+    //self.chatServer = @"116.85.43.118";
     self.chatPort = 6717;
     self.restServer = @"a1.sdb.easemob.com";
+    //self.restServer = @"a1-hsb.easemob.com";
 }
 
 #pragma mark - Public

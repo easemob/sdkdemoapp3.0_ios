@@ -55,6 +55,7 @@
 {
     [EMNotificationHelper shared].isCheckUnreadCount = YES;
     [[EMNotificationHelper shared] removeDelegate:self];
+    [EMNotificationHelper destoryShared];
 }
 
 #pragma mark - Subviews

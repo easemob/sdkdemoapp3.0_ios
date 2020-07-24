@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
                       createIfNotExist:(BOOL)aIsCreate
                           isChatRecord:(BOOL)aIsChatRecord;
 
+- (void)sendCallEndMsg:(NSNotification*)noti;
+
 @end
 
 NS_ASSUME_NONNULL_END

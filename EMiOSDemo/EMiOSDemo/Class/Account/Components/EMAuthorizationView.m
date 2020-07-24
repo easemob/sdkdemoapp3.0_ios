@@ -80,6 +80,7 @@
 {
     if (_authorizationType < 1 || _authorizationType > 2) return;
     self.authorizationLabel.text = self.authorizationType == EMAuthLogin ? @"登 录" : @"注 册";
+    [self.loadingView stopTimer];
     [self.loadingView removeFromSuperview];
 }
 
@@ -109,7 +110,6 @@
         _authorizationLabel.alpha = 1;
         [_authorizationLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
         _arrowView.image = [UIImage imageNamed:@"enableClick"];
-        
         return;
     }
     [self.gl removeFromSuperlayer];

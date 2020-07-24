@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
+@property(nonatomic, strong) UIAlertController *alertController;
+
 //我参与的群类型
 @property (nonatomic) NSInteger type;
 //我参与的公开/私有群
@@ -34,6 +36,9 @@
 @property (nonatomic, strong) UIButton *managementBtn;
 @property (nonatomic, strong) UIView *managementView;
 
+//切换群类型
+@property (nonatomic, strong) UIButton *cutGroupAuthorityBtn;
+
 @property (nonatomic, strong) NSMutableArray *tempArray;
 @property (nonatomic, strong) NSMutableArray *tempSearchResults;
 @property (nonatomic, strong) NSMutableArray *tempSectionTitles;
@@ -49,6 +54,7 @@
     // Do any additional setup after loading the view.
     [self _setupSubviews];
     [self _setupSwitchviews];
+    self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     
     self.type = 1;//我参与的群
     self.isPublic = YES;//公开/私有群
@@ -81,6 +87,7 @@
 {
     [self addPopBackLeftItem];
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];
+    /*
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"公开群" style:UIBarButtonItemStylePlain target:self action:@selector(_cutSpecialGroupType)];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
@@ -92,10 +99,10 @@
     self.navigationItem.rightBarButtonItems = @[rightBarItem,backBtnI];
     
      [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:15], NSFontAttributeName, nil] forState:UIControlStateNormal];
-    
+    */
     //self.navigationItem.rightBarButtonItem.enabled = NO;
     self.title = @"群组列表";
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
+    //[self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
     self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
     self.tableView.rowHeight = 74;
@@ -106,20 +113,37 @@
 //我的群类型
 - (void)_setupSwitchviews
 {
-    CGFloat width = (self.view.frame.size.width)/2;
+    CGFloat width = (self.view.frame.size.width) / 3;
+
+    self.cutGroupAuthorityBtn = [[UIButton alloc]init];
+    [_cutGroupAuthorityBtn setTitle:@"公开群" forState:UIControlStateNormal];
+    [_cutGroupAuthorityBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _cutGroupAuthorityBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _cutGroupAuthorityBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _cutGroupAuthorityBtn.backgroundColor = [UIColor whiteColor];
+    _cutGroupAuthorityBtn.tag = 1;
+    [_cutGroupAuthorityBtn addTarget:self action:@selector(_cutGroupAuthorityType) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_cutGroupAuthorityBtn];
+    [_cutGroupAuthorityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(50);
+        make.left.equalTo(self.view);
+        make.width.mas_equalTo(width-1);
+        make.height.equalTo(@40);
+    }];
     
     self.participantBtn = [[UIButton alloc]init];
     [_participantBtn setTitle:@"我参与的" forState:UIControlStateNormal];
     [_participantBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
     _participantBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     _participantBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _participantBtn.backgroundColor = [UIColor whiteColor];
     _participantBtn.tag = 1;
     [_participantBtn addTarget:self action:@selector(cutGroupType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_participantBtn];
     [_participantBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(50);
-        make.left.equalTo(self.view);
-        make.width.mas_equalTo(width);
+        make.left.equalTo(self.cutGroupAuthorityBtn.mas_right).offset(1);
+        make.width.mas_equalTo(width-1);
         make.height.equalTo(@40);
     }];
     self.participantView = [[UIView alloc]init];
@@ -137,13 +161,15 @@
     _managementBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     _managementBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [_managementBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _managementBtn.backgroundColor = [UIColor whiteColor];
     _managementBtn.tag = 2;
     [_managementBtn addTarget:self action:@selector(cutGroupType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.managementBtn];
     [_managementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(50);
         make.right.equalTo(self.view);
-        make.width.mas_equalTo(width);
+        make.left.equalTo(self.participantBtn.mas_right).offset(1);
+        make.width.mas_equalTo(width-1);
         make.height.equalTo(@40);
     }];
     self.managementView = [[UIView alloc]init];
@@ -187,17 +213,48 @@
 }
 
 //切换公开/私有群
-- (void)_cutSpecialGroupType
+#pragma mark - Action
+
+- (void)_cutGroupAuthorityType
 {
     if (self.isSearching) {
         [EMAlertController showErrorAlert:@"切换群类型请重新搜索！"];
         return;
     }
+    self.alertController = [[UIAlertController alloc]init];
+    __weak typeof(self) weakself = self;
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"公开群" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (weakself.isPublic) {
+            [EMAlertController showSuccessAlert:@"当前已是公开群！"];
+            return;
+        }
+        [weakself _cutGroupAuthorityOperate];
+    }]];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"私有群" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (!weakself.isPublic) {
+            [EMAlertController showSuccessAlert:@"当前已是私有群！"];
+            return;
+        }
+        [weakself _cutGroupAuthorityOperate];
+    }]];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    for (UIAlertAction *alertAction in self.alertController.actions) {
+        [alertAction setValue:[UIColor colorWithRed:49/255.0 green:49/255.0 blue:49/255.0 alpha:1.0] forKey:@"_titleTextColor"];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
+    [self presentViewController:self.alertController animated:YES completion:nil];
+}
+
+- (void)_cutGroupAuthorityOperate
+{
     self.isPublic = !self.isPublic;
     if (self.isPublic) {
-        self.navigationItem.rightBarButtonItem.title = @"公开群";
+        [_cutGroupAuthorityBtn setTitle:@"公开群" forState:UIControlStateNormal];
+        //self.navigationItem.rightBarButtonItem.title = @"公开群";
     } else {
-        self.navigationItem.rightBarButtonItem.title = @"私有群";
+        [_cutGroupAuthorityBtn setTitle:@"私有群" forState:UIControlStateNormal];
+        //self.navigationItem.rightBarButtonItem.title = @"私有群";
     }
     [self.tableView reloadData];
 }
