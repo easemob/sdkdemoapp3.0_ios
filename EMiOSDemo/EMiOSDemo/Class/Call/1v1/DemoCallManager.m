@@ -18,6 +18,7 @@
 #import "Call1v1VideoViewController.h"
 #import "EMChatViewController.h"
 #import "AudioRecord.h"
+#import "EMRemindManager.h"
 
 static DemoCallManager *callManager = nil;
 
@@ -89,7 +90,16 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager setBuilderDelegate:self];
  
+    [self updateEMCallOptionsFromSettings];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeAlertView:) name:@"didAlert" object:nil];
+    
+}
+
+
+- (void)updateEMCallOptionsFromSettings {
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"calloptions.data"];
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
@@ -100,34 +110,7 @@ static DemoCallManager *callManager = nil;
         options.videoResolution = EMCallVideoResolution640_480;
     }
     
-    //xiaoming.li
-    options.enableCustomAudioData = NO;
-    options.audioCustomSamples = 48000;
-    options.audioCustomChannels = 1;
-    
-    // dujiepeng
-    options.maxVideoKbps = 0;
-    options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeAlertView:) name:@"didAlert" object:nil];
-    
-//    __weak typeof(self) weakSelf = self;
-//    self.callCenter = [[CTCallCenter alloc] init];
-//    self.callCenter.callEventHandler = ^(CTCall* call) {
-////        if(call.callState == CTCallStateConnected) {
-////            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
-////        }
-//
-//        if(call.callState == CTCallStateConnected) {
-//            [weakSelf.currentController muteCall];
-//        } else if(call.callState == CTCallStateDisconnected) {
-//            [weakSelf.currentController resumeCall];
-//        }
-//    };
 }
 
 #pragma mark - Call Timeout Before Answered
@@ -170,6 +153,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)callDidReceive:(EMCallSession *)aSession
 {
+    [EMRemindManager playRing:YES];
     
     if (!aSession || [aSession.callId length] == 0) {
         return ;
@@ -228,6 +212,16 @@ static DemoCallManager *callManager = nil;
 
 - (void)callDidAccept:(EMCallSession *)aSession
 {
+    
+    [EMRemindManager stopSound];
+    [EMRemindManager playVibration];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
+                  withOptions:AVAudioSessionCategoryOptionAllowBluetooth
+                        error:nil];
+    
+    [audioSession setActive:YES error:nil];
+    
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
         [self _stopCallTimeoutTimer];
         self.currentController.callStatus = EMCallSessionStatusAccepted;
@@ -244,6 +238,9 @@ static DemoCallManager *callManager = nil;
             reason:(EMCallEndReason)aReason
              error:(EMError *)aError
 {
+    
+    [EMRemindManager stopSound];
+    
     if (![aSession.callId isEqualToString:self.currentCall.callId]) {
         return;
     }
@@ -310,7 +307,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
-
+    
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
@@ -351,6 +348,8 @@ static DemoCallManager *callManager = nil;
     if ([aUsername length] == 0) {
         return;
     }
+    
+    [EMRemindManager playWattingSound];
     
     __weak typeof(self) weakSelf = self;
     void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError) {
@@ -416,6 +415,9 @@ static DemoCallManager *callManager = nil;
 
 - (void)answerCall:(NSString *)aCallId
 {
+    
+    [EMRemindManager stopSound];
+    
     if (!self.currentCall || ![self.currentCall.callId isEqualToString:aCallId]) {
         return ;
     }
@@ -479,6 +481,8 @@ static DemoCallManager *callManager = nil;
 - (void)endCallWithId:(NSString *)aCallId
                reason:(EMCallEndReason)aReason
 {
+    [EMRemindManager stopSound];
+    
     [self _endCallWithId:aCallId isNeedHangup:YES reason:aReason];
 }
 

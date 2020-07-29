@@ -470,6 +470,7 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
+		C05E031224D15ED60092D792 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C05E031124D15ED60092D792 /* music.mp3 */; };
 		C069A97323A246B8005AA90D /* AudioRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = C069A97123A246B7005AA90D /* AudioRecord.m */; };
 		C06DBC3F23BA152900F9FA3B /* icon-tab发现unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2723BA152900F9FA3B /* icon-tab发现unselected@2x.png */; };
 		C06DBC4223BA152900F9FA3B /* icon-tab发现unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2A23BA152900F9FA3B /* icon-tab发现unselected.png */; };
@@ -1115,6 +1116,7 @@
 		3C5260D824651BB700D16DD5 /* tabbar_settings_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settings_gray@2x.png"; sourceTree = "<group>"; };
 		3C5260D924651BB700D16DD5 /* tabbar_settings_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settings_gray@3x.png"; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		906569BE24B317270058F759 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = music.mp3; path = ../../../TestCallSound/music.mp3; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90911027192EEA70008A48AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		90911029192EEA70008A48AA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1123,6 +1125,7 @@
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		C05E031124D15ED60092D792 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = music.mp3; path = EMiOSDemo/music.mp3; sourceTree = "<group>"; };
 		C069A97123A246B7005AA90D /* AudioRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecord.m; sourceTree = "<group>"; };
 		C069A97223A246B7005AA90D /* AudioRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecord.h; sourceTree = "<group>"; };
 		C06DBC2723BA152900F9FA3B /* icon-tab发现unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab发现unselected@2x.png"; sourceTree = "<group>"; };
@@ -1147,9 +1150,9 @@
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D2B1B9EE1C3B80290087A74F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
+		E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
 		EBF955E21ADD17700087E035 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1196,6 +1199,7 @@
 		3A45D69922239DE200505786 /* EMiOSDemo */ = {
 			isa = PBXGroup;
 			children = (
+				906569BE24B317270058F759 /* music.mp3 */,
 				3A45D72222239DE200505786 /* Class */,
 				3A45D72022239DE200505786 /* main.m */,
 				3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */,
@@ -2290,6 +2294,7 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
+				C05E031124D15ED60092D792 /* music.mp3 */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -2403,7 +2408,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = ___FULLUSERNAME___;
+				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -2444,6 +2449,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C05E031224D15ED60092D792 /* music.mp3 in Resources */,
 				3A45E3772223A46500505786 /* chat_info@3x.png in Resources */,
 				C06DBC4323BA152900F9FA3B /* tabbar_chat_gray@2x.png in Resources */,
 				3A45E2F72223A41600505786 /* chatbar_face@3x.png in Resources */,
@@ -2776,11 +2782,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
-				"${PODS_ROOT}/Hyphenate/Hyphenate.framework",
+				"${PODS_ROOT}/../emclient-ios/newSDK/Hyphenate.framework",
+				"${PODS_ROOT}/../RTC/webrtc-src/out/ios/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
