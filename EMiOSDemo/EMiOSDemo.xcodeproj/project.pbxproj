@@ -463,7 +463,6 @@
 		3C5260F624651BB800D16DD5 /* tabbar_settings_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D824651BB700D16DD5 /* tabbar_settings_gray@2x.png */; };
 		3C5260F724651BB800D16DD5 /* tabbar_settings_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D924651BB700D16DD5 /* tabbar_settings_gray@3x.png */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
-		906569BF24B317270058F759 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 906569BE24B317270058F759 /* music.mp3 */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
@@ -471,6 +470,7 @@
 		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
+		C05E031224D15ED60092D792 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C05E031124D15ED60092D792 /* music.mp3 */; };
 		C069A97323A246B8005AA90D /* AudioRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = C069A97123A246B7005AA90D /* AudioRecord.m */; };
 		C06DBC3F23BA152900F9FA3B /* icon-tab发现unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2723BA152900F9FA3B /* icon-tab发现unselected@2x.png */; };
 		C06DBC4223BA152900F9FA3B /* icon-tab发现unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = C06DBC2A23BA152900F9FA3B /* icon-tab发现unselected.png */; };
@@ -1125,6 +1125,7 @@
 		90F1BECE1930492B00121AEC /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		90F1BED41930495800121AEC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		921C6A9D1D2A841600D8257F /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		C05E031124D15ED60092D792 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = music.mp3; path = EMiOSDemo/music.mp3; sourceTree = "<group>"; };
 		C069A97123A246B7005AA90D /* AudioRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecord.m; sourceTree = "<group>"; };
 		C069A97223A246B7005AA90D /* AudioRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecord.h; sourceTree = "<group>"; };
 		C06DBC2723BA152900F9FA3B /* icon-tab发现unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab发现unselected@2x.png"; sourceTree = "<group>"; };
@@ -2293,6 +2294,7 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
+				C05E031124D15ED60092D792 /* music.mp3 */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
@@ -2447,6 +2449,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C05E031224D15ED60092D792 /* music.mp3 in Resources */,
 				3A45E3772223A46500505786 /* chat_info@3x.png in Resources */,
 				C06DBC4323BA152900F9FA3B /* tabbar_chat_gray@2x.png in Resources */,
 				3A45E2F72223A41600505786 /* chatbar_face@3x.png in Resources */,
@@ -2487,7 +2490,6 @@
 				3C4CEC3E2372A7AA00A37140 /* icon_010.gif in Resources */,
 				3A45E18B2223A36400505786 /* switchCamera_gray@2x.png in Resources */,
 				3A45E3672223A45500505786 /* msg_fail@3x.png in Resources */,
-				906569BF24B317270058F759 /* music.mp3 in Resources */,
 				3A45E3B22223A4C000505786 /* group@2x.png in Resources */,
 				3A45E2FB2223A41600505786 /* chatbar_map_blue@3x.png in Resources */,
 				3C4CEC232372A7AA00A37140 /* close@2x.png in Resources */,
@@ -2780,13 +2782,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
-                "${PODS_ROOT}/../emclient-ios/newSDK/Hyphenate.framework",
-                "${PODS_ROOT}/../RTC/webrtc-src/out/ios/WebRTC.framework",
+				"${PODS_ROOT}/../emclient-ios/newSDK/Hyphenate.framework",
+				"${PODS_ROOT}/../RTC/webrtc-src/out/ios/WebRTC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-                "${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
