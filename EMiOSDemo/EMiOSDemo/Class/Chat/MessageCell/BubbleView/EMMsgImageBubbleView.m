@@ -23,6 +23,7 @@
     if (self) {
 //        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //        self.layer.borderWidth = 1;
+        self.layer.cornerRadius = 2;
         self.contentMode = UIViewContentModeScaleAspectFill;
     }
     
@@ -38,7 +39,7 @@
         if (aSize.width == 0 || aSize.height == 0) {
             break;
         }
-        
+        CGFloat maxWidth = [UIScreen mainScreen].bounds.size.width / 2 - 60.0;
         NSInteger tmpWidth = aSize.width;
         if (aSize.width < kEMMsgImageMinWidth) {
             tmpWidth = kEMMsgImageMinWidth;
@@ -52,8 +53,6 @@
             tmpHeight = kEMMsgImageMaxHeight;
         }
         retSize = CGSizeMake(tmpWidth, tmpHeight);
-        //retSize.width = tmpWidth;
-        //retSize.height = tmpHeight;
         
     } while (0);
     
@@ -87,20 +86,23 @@
     if (img) {
         self.image = img;
         size = img.size;
+        block(size);
     } else {
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {
             [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                //            if (error) {
-                //                self.image = [UIImage imageNamed:@"msg_img_broken"];
-                //            }
+                    if (!error) {
+                        weakself.image = image;
+                        block(image.size);
+                    } else {
+                        weakself.image = [UIImage imageNamed:@"msg_img_broken"];
+                        block(weakself.image.size);
+                    }
             }];
         } else {
             self.image = [UIImage imageNamed:@"msg_img_broken"];
         }
     }
-    
-    block(size);
 }
 
 #pragma mark - Setter
