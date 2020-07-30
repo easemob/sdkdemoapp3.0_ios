@@ -103,7 +103,7 @@
     NSInteger section = indexPath.section;
     if (section == 0) {
         EMBlacklistViewController *controller = [[EMBlacklistViewController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
     }
 }
 @end

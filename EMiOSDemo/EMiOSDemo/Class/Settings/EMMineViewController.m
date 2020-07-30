@@ -204,7 +204,7 @@
 - (void)suspendBtnClick
 {
     EMAccountViewController *controller = [[EMAccountViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }*/
 
 #pragma mark - Table view data source
@@ -309,21 +309,21 @@
     if (section == 0) {
         if (row == 0) {
             EMAccountViewController *controller = [[EMAccountViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         }
     } else if (section == 1) {
         if (row == 0) {
             EMSettingsViewController *settingsController = [[EMSettingsViewController alloc]init];
-            [self.navigationController pushViewController:settingsController animated:YES];
+            [self.navigationController pushViewController:settingsController animated:NO];
         } else if (row == 1) {
             EMOpinionFeedbackViewController *opinionController = [[EMOpinionFeedbackViewController alloc]init];
-            [self.navigationController pushViewController:opinionController animated:YES];
+            [self.navigationController pushViewController:opinionController animated:NO];
         } else if (row == 2) {
             EMAboutHuanXinViewController *aboutHuanXin = [[EMAboutHuanXinViewController alloc]init];
-            [self.navigationController pushViewController:aboutHuanXin animated:YES];
+            [self.navigationController pushViewController:aboutHuanXin animated:NO];
         } else if (row == 3) {
             EMDeveloperServiceViewController *developerServiceController = [[EMDeveloperServiceViewController alloc]init];
-            [self.navigationController pushViewController:developerServiceController animated:YES];
+            [self.navigationController pushViewController:developerServiceController animated:NO];
         }
     }
 }

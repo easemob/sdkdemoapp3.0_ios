@@ -645,7 +645,7 @@
     [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
         EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
         createController.inviteController = weakself.inviteController;
-        [weakself.navigationController pushViewController:createController animated:YES];
+        [weakself.navigationController pushViewController:createController animated:NO];
     }];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.inviteController];
@@ -655,7 +655,7 @@
 - (void)_joinGroupAction
 {
     EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (NSMutableArray *)tempArray

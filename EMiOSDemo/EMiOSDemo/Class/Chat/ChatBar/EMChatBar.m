@@ -84,7 +84,7 @@
     } else {
         // Fallback on earlier versions
     }
-    self.textView.returnKeyType = UIReturnKeySend;
+    self.textView.returnKeyType = UIReturnKeyDone;
     self.textView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     self.textView.layer.cornerRadius = 20;
     [self addSubview:self.textView];
@@ -101,7 +101,7 @@
     [_emojiButton addTarget:self action:@selector(emoticonButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_emojiButton];
     [_emojiButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.textView);
+        make.top.equalTo(self).offset(10);
         make.left.equalTo(self.textView.mas_right).offset(2);
         make.width.height.equalTo(@30);
     }];
@@ -112,7 +112,7 @@
     [_ConversationToolBarBtn addTarget:self action:@selector(moreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_ConversationToolBarBtn];
     [_ConversationToolBarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.textView);
+        make.top.equalTo(self).offset(10);
         make.left.equalTo(_emojiButton.mas_right).offset(2);
         make.width.height.equalTo(@30);
     }];
@@ -187,7 +187,10 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSLog(@"\n%@   %@",text,self.textView.text);
-    
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputView:shouldChangeTextInRange:replacementText:)]) {
         return [self.delegate inputView:self.textView shouldChangeTextInRange:range replacementText:text];
     } 

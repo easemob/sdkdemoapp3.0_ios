@@ -156,13 +156,12 @@
 {
     NSInteger tag = item.tag;
     UIView *tmpView = nil;
-    if (tag == kTabbarItemTag_Conversation) {
+    if (tag == kTabbarItemTag_Conversation)
         tmpView = self.conversationsController.view;
-    } else if (tag == kTabbarItemTag_Contact) {
+    if (tag == kTabbarItemTag_Contact)
         tmpView = self.contactsController.view;
-    } else if (tag == kTabbarItemTag_Settings) {
+    if (tag == kTabbarItemTag_Settings)
         tmpView = self.mineController.view;
-    }
     
     if (self.addView == tmpView) {
         return;

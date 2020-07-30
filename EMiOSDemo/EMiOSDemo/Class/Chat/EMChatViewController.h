@@ -52,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 //消息已读回执
 - (void)returnReadReceipt:(EMMessage *)msg;
 
+- (NSArray *)formatMessages:(NSArray<EMMessage *> *)aMessages;
+
 @end
 
 NS_ASSUME_NONNULL_END

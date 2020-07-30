@@ -205,7 +205,7 @@
     EMTextMessageBody *body;
     body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
     if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""])
-        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"聊天时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
     [self sendMessageWithBody:body ext:dict isUpload:NO];
@@ -222,7 +222,7 @@
             [weakself.tableView reloadData];
         }
     }];
-    [self.navigationController pushViewController:chatInfoController animated:YES];
+    [self.navigationController pushViewController:chatInfoController animated:NO];
 }
 
 - (void)_sendTextAction:(NSString *)aText ext:(NSDictionary *)aExt

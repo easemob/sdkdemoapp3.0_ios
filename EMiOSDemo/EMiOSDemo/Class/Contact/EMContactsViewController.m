@@ -284,7 +284,7 @@
     if (section == 0) {
         if (row == 0) {
             EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 1) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
         } else if (row == 2) {
@@ -533,14 +533,14 @@
 - (void)lookForSomeOne
 {
     EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 //找群
 - (void)findGroup
 {
     EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
@@ -556,7 +556,7 @@
     [controller setShieldingContactSuccess:^{
         [weakself _loadAllContactsFromDB];
     }];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 @end

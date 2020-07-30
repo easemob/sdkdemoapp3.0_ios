@@ -128,7 +128,7 @@
     NSInteger row = indexPath.row;
     if (row == 1) {
         EMMsgNotificViewController *controller = [[EMMsgNotificViewController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
     }
 }
 

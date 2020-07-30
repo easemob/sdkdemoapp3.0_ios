@@ -153,14 +153,14 @@
     if (section == 0) {
         //好友资料
         EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:self.conversationModel.emModel.conversationId];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
         return;
     }
     if (section == 1) {
         //查找聊天记录
         EMChatRecordViewController *chatRrcordController = [[EMChatRecordViewController alloc]initWithCoversationModel:self.conversationModel];
         //EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
-        [self.navigationController pushViewController:chatRrcordController animated:YES];
+        [self.navigationController pushViewController:chatRrcordController animated:NO];
         return;
     }
     if (section == 3) {

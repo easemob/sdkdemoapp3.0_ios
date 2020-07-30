@@ -228,7 +228,10 @@
         self.timeLabel.text = [NSString stringWithFormat:@"%i:%i", m, s];
     }
     else{
-        self.timeLabel.text = [NSString stringWithFormat:@"00:%i", s];
+        if (s < 10)
+            self.timeLabel.text = [NSString stringWithFormat:@"00:0%i", s];
+        else
+            self.timeLabel.text = [NSString stringWithFormat:@"00:%i", s];
     }
     [DemoCallManager sharedManager].callDurationTime = self.timeLabel.text;
 }

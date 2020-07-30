@@ -154,7 +154,7 @@
         [self.view endEditing:YES];
         //选择 @ 某群成员
         EMAtGroupMembersViewController *controller = [[EMAtGroupMembersViewController alloc] initWithGroup:group];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
         [controller setSelectedCompletion:^(NSString * _Nonnull aName) {
             NSString *newStr = [NSString stringWithFormat:@"%@%@ ", text, aName];
             aInputView.text = newStr;

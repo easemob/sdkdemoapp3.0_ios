@@ -192,7 +192,10 @@
         self.countLabel.text = [NSString stringWithFormat:@"%i:%i", m, s];
     }
     else{
-        self.countLabel.text = [NSString stringWithFormat:@"00:%i", s];
+        if (s < 10)
+            self.countLabel.text = [NSString stringWithFormat:@"00:0%i", s];
+        else
+            self.countLabel.text = [NSString stringWithFormat:@"00:%i", s];
     }
     [self _setupImgAnimation:self.recordDuration];
 }

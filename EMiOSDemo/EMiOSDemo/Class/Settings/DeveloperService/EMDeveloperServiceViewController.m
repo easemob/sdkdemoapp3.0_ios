@@ -137,7 +137,7 @@
     if (section == 1 && row == 0) {
         //自定义appkey
         EMCustomAppkeyViewController *customAppkeyController = [[EMCustomAppkeyViewController alloc]init];
-        [self.navigationController pushViewController:customAppkeyController animated:YES];
+        [self.navigationController pushViewController:customAppkeyController animated:NO];
     } else if (section == 2 && row == 1) {
         [self updateMessageSort];
     } else if (section == 3) {

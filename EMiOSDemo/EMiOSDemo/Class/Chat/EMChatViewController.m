@@ -448,7 +448,7 @@
                     EMMessage *msg = aMessages[i];
                     [msgArray addObject:msg];
                 }
-                NSArray *formated = [weakself _formatMessages:msgArray];
+                NSArray *formated = [weakself formatMessages:msgArray];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakself.searchResults removeAllObjects];
                     [weakself.searchResults addObjectsFromArray:formated];
@@ -678,7 +678,7 @@
             [msgArray addObject:msg];
         }
         
-        NSArray *formated = [weakself _formatMessages:msgArray];
+        NSArray *formated = [weakself formatMessages:msgArray];
         [weakself.dataArray addObjectsFromArray:formated];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -906,7 +906,7 @@
 
 #pragma mark - Data
 
-- (NSArray *)_formatMessages:(NSArray<EMMessage *> *)aMessages
+- (NSArray *)formatMessages:(NSArray<EMMessage *> *)aMessages
 {
     NSMutableArray *formated = [[NSMutableArray alloc] init];
 
@@ -942,7 +942,7 @@
             weakself.moreMsgId = msg.messageId;
             
             dispatch_async(self.msgQueue, ^{
-                NSArray *formated = [weakself _formatMessages:aMessages];
+                NSArray *formated = [weakself formatMessages:aMessages];
                 [weakself.dataArray insertObjects:formated atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [formated count])]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1012,7 +1012,7 @@
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     
     __weak typeof(self) weakself = self;
-    NSArray *formated = [weakself _formatMessages:@[message]];
+    NSArray *formated = [weakself formatMessages:@[message]];
     [self.dataArray addObjectsFromArray:formated];
     if (!self.moreMsgId)
         //新会话的第一条消息

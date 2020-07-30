@@ -144,10 +144,10 @@
     if (section == 0) {
         if (row == 0) {
             EMGroupBlacklistViewController *controller = [[EMGroupBlacklistViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 1) {
             EMGroupMutesViewController *controller = [[EMGroupMutesViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         }
     }
 }
@@ -162,7 +162,7 @@
         weakself.groupOwnerTurnOverBtn.hidden = YES;
         [weakself.navigationController popViewControllerAnimated:YES];
     }];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 @end

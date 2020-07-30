@@ -212,7 +212,7 @@
         [createController setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
             [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:aGroup];
         }];
-        [weakself.navigationController pushViewController:createController animated:YES];
+        [weakself.navigationController pushViewController:createController animated:NO];
     }];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.inviteController];
@@ -224,7 +224,7 @@
 - (void)addFriend
 {
     EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)_setupSearchResultController
@@ -270,7 +270,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
         } else {
             EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
-            [weakself.navigationController pushViewController:controller animated:YES];
+            [weakself.navigationController pushViewController:controller animated:NO];
         }
     }];
 }
@@ -327,7 +327,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
     } else {
         EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
     }
 }
 

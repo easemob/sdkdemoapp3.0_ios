@@ -279,7 +279,7 @@
         if (row == 1) {
             //群成员
             EMGroupAllMembersViewController *controller = [[EMGroupAllMembersViewController alloc]initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 2) {
             //邀请成员
             [self addMemberAction];
@@ -291,7 +291,7 @@
         } else if (row == 1) {
             //群共享文件
             EMGroupSharedFilesViewController *controller = [[EMGroupSharedFilesViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 2) {
             [self groupAnnouncementAction];
         } else if (row == 3) {
@@ -300,7 +300,7 @@
         } else if (row == 4) {
             //群管理
             EMGroupManageViewController *controller = [[EMGroupManageViewController alloc]initWithGroup:self.groupId];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         }
     } else if (section == 2) {
         if (row == 0) {
@@ -309,7 +309,7 @@
             EMConversationModel *model = [[EMConversationModel alloc]initWithEMModel:conversation];
             EMChatRecordViewController *chatRrcordController = [[EMChatRecordViewController alloc]initWithCoversationModel:model];
             //EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
-            [self.navigationController pushViewController:chatRrcordController animated:YES];
+            [self.navigationController pushViewController:chatRrcordController animated:NO];
         }
     } else if (section == 4) {
         //删除聊天记录
@@ -509,7 +509,7 @@
                 return NO;
             }];
             
-            [weakself.navigationController pushViewController:controller animated:YES];
+            [weakself.navigationController pushViewController:controller animated:NO];
         } else {
             [EMAlertController showErrorAlert:@"获取群组公告失败"];
         }
@@ -531,7 +531,7 @@
 {
     EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:[self acquireGroupNickNamkeOfMine] placeholder:@"输入你的群昵称" isEditable:YES];
     controller.title = @"编辑群昵称";
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
@@ -569,7 +569,7 @@
     }
     EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.groupName placeholder:@"输入群聊名称" isEditable:isEditable];
     controller.title = @"编辑群聊名称";
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
@@ -603,7 +603,7 @@
     } else {
         controller.title = @"群介绍";
     }
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
@@ -634,7 +634,7 @@
     [controller setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
         [weakself _resetGroup:aGroup];
     }];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)_leaveOrDestroyGroupAction

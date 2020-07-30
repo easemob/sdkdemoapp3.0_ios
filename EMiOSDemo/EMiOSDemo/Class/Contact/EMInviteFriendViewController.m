@@ -26,7 +26,6 @@
     
     // Uncomment the following line to preserve selection between presentations.
     self.invitedUsers = [[NSMutableArray alloc] init];
-    
     [self _setupViews];
 }
 

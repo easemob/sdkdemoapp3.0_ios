@@ -125,10 +125,10 @@
             cell.textLabel.text = @"免打扰时间";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             EMPushOptions *options = [EMClient sharedClient].pushOptions;
-            if (options.noDisturbingStartH >= 0 && options.noDisturbingEndH >= 0) {
+            if (options.noDisturbingStartH > 0 && options.noDisturbingEndH > 0) {
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%@:00 - %@:00", @(options.noDisturbingStartH), @(options.noDisturbingEndH)];
             } else {
-                cell.detailTextLabel.text = @"空";
+                cell.detailTextLabel.text = @"全天";
             }
         }
     } else if (section == 1) {
@@ -245,17 +245,27 @@
 
 - (void)disturbValueChanged
 {
-    [self.tableView reloadData];
-    
+    __weak typeof(self) weakself = self;
+    [self showHint:@"更新免打扰设置..."];
+    EMPushOptions *options = [[EMClient sharedClient] pushOptions];
+    options.noDisturbStatus = EMPushNoDisturbStatusDay;
+    options.noDisturbingStartH = 0;
+    options.noDisturbingEndH = 24;
     if (!self.disturbSwitch.isOn) {
-        [self showHint:@"更新免打扰设置..."];
-        EMPushOptions *options = [[EMClient sharedClient] pushOptions];
-        options.noDisturbingStartH = 0;
         options.noDisturbingEndH = 0;
         options.noDisturbStatus = EMPushNoDisturbStatusClose;
-        [[EMClient sharedClient] updatePushOptionsToServer];
-        [self hideHud];
     }
+    [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+        [weakself hideHud];
+        if (!aError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.tableView reloadData];
+            });
+        } else {
+            [weakself.disturbSwitch setOn:!weakself.disturbSwitch.isOn animated:YES];
+            [EMAlertController showErrorAlert:aError.errorDescription];
+        }
+    }];
 }
 
 - (void)changeDisturbDateAction
@@ -270,6 +280,7 @@
 
 #pragma mark - SPDateTimePickerViewDelegate
 - (void)didClickFinishDateTimePickerView:(NSString *)date {
+    __weak typeof(self) weakself = self;
     NSLog(@"%@",date);
     NSRange range = [date rangeOfString:@"-"];
     NSString *start = [date substringToIndex:range.location];
@@ -278,8 +289,16 @@
     options.noDisturbingStartH = [start intValue];
     options.noDisturbingEndH = [end intValue];
     options.noDisturbStatus = EMPushNoDisturbStatusCustom;
-    [[EMClient sharedClient] updatePushOptionsToServer];
-    [self.tableView reloadData];
+    [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+        if (!aError) {
+            [weakself hideHud];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.tableView reloadData];
+            });
+        } else {
+            [EMAlertController showErrorAlert:aError.errorDescription];
+        }
+    }];
 }
 
 @end

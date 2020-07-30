@@ -86,20 +86,23 @@
     if (img) {
         self.image = img;
         size = img.size;
+        block(size);
     } else {
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {
             [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                //            if (error) {
-                //                self.image = [UIImage imageNamed:@"msg_img_broken"];
-                //            }
+                    if (!error) {
+                        weakself.image = image;
+                        block(image.size);
+                    } else {
+                        weakself.image = [UIImage imageNamed:@"msg_img_broken"];
+                        block(weakself.image.size);
+                    }
             }];
         } else {
             self.image = [UIImage imageNamed:@"msg_img_broken"];
         }
     }
-    
-    block(size);
 }
 
 #pragma mark - Setter

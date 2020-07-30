@@ -104,7 +104,7 @@
     NSInteger section = indexPath.section;
     if (section == 0) {
         EMDevicesViewController *controller = [[EMDevicesViewController alloc] initWithStyle:UITableViewStylePlain];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
     }
 }
 

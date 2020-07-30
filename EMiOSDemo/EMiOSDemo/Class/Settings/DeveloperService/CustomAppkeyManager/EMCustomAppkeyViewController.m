@@ -164,7 +164,7 @@
 - (void)addCustomAPPKey
 {
     EMPersonalAPPKeyViewController *personalAppkeyController = [[EMPersonalAPPKeyViewController alloc]init];
-    [self.navigationController pushViewController:personalAppkeyController animated:YES];
+    [self.navigationController pushViewController:personalAppkeyController animated:NO];
 }
 
 @end

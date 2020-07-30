@@ -118,7 +118,7 @@ static const void *transpondMenuItemKey = &transpondMenuItemKey;
     
     EMMessageModel *model = [self.dataArray objectAtIndex:self.menuIndexPath.row];
     EMMsgTranspondViewController *controller = [[EMMsgTranspondViewController alloc] initWithModel:model];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     [controller setDoneCompletion:^(EMMessageModel * _Nonnull aModel, NSString * _Nonnull aUsername) {
@@ -182,7 +182,13 @@ static const void *transpondMenuItemKey = &transpondMenuItemKey;
             }
             [EMAlertController showSuccessAlert:@"转发消息成功"];
             if ([aTo isEqualToString:weakself.conversationModel.emModel.conversationId]) {
-                //[weakself messagesDidReceive:@[message]];
+                [weakself returnReadReceipt:message];
+                [weakself.conversationModel.emModel markMessageAsReadWithId:message.messageId error:nil];
+                NSArray *formated = [weakself formatMessages:@[message]];
+                [weakself.dataArray addObjectsFromArray:formated];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakself refreshTableView];
+                });
             }
         }
     }];

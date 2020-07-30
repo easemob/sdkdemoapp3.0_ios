@@ -132,9 +132,12 @@ static DemoCallManager *callManager = nil;
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:_chatter from:fromStr to:_chatter body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:_chatter from:fromStr to:_chatter body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}, @"em_force_notification":@YES}];
     message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.chatter type:EMConversationTypeChat createIfNotExist:NO];
+        [conversation deleteMessageWithId:message.messageId error:nil];
+    }];
     [alertView show];
 }
 
@@ -332,18 +335,22 @@ static DemoCallManager *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
+    /*
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}, @"em_force_notification":@YES}];
     message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];*/
     
+    [self _stopCallTimeoutTimer];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
+    /*
     //开关打开发消息并一直呼，否则挂断发消息
     if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
         [self _stopCallTimeoutTimer];
         self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
-    }
+    }*/
 }
 
 #pragma mark - NSNotification
