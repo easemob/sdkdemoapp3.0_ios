@@ -298,8 +298,8 @@
     }
     
     NSInteger row = indexPath.row;
-    if (row >= [self.dataArray count])
-        return [[EMConversationCell alloc]init];
+    //if (row >= [self.dataArray count])
+        //return [[EMConversationCell alloc]init];
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
     cell.model = model;
     cell.delegate = self;
@@ -387,7 +387,8 @@
                     };
                 }
             }
-            [self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:0.8];
+            [self _reSortedConversationModelsAndReloadView];
+            //[self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:0.8];
         }
     } else {
         self.isNeedReload = YES;
@@ -606,7 +607,6 @@
         [[EMNotificationHelper shared] archive];
     }
     [self _reSortedConversationModelsAndReloadView];
-    [self.tableView reloadData];
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -717,12 +717,12 @@
         [conversationModels addObject:model];
     }
     
+    NSMutableArray *modelArray = [self _insertSystemNotify:conversationModels];//插入系统通知
+    NSMutableArray *finalDataArray = [self _stickSortedConversationModels:[modelArray copy]];//置顶重排序
     [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:conversationModels];
-    [self _insertSystemNotify];//插入系统通知
-    self.dataArray = [self _stickSortedConversationModels:self.dataArray];//置顶重排序
+    self.dataArray = finalDataArray;
+
     [self.tableView reloadData];
-    
     self.isNeedReload = NO;
 }
 
@@ -745,12 +745,15 @@
             }
             
         }];
+
+        NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
+        
+        NSMutableArray *modelArray = [weakself _insertSystemNotify:[models mutableCopy]];//插入系统通知
+        NSMutableArray *finalDataArray = [weakself _stickSortedConversationModels:[modelArray copy]];//置顶重排序
         
         [weakself.dataArray removeAllObjects];
-        NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
-        [weakself.dataArray addObjectsFromArray:models];
-        [weakself _insertSystemNotify];//插入系统通知
-        weakself.dataArray = [weakself _stickSortedConversationModels:weakself.dataArray];//置顶重排序
+        weakself.dataArray = finalDataArray;
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (aIsShowHUD) {
                 [weakself hideHud];
@@ -765,10 +768,10 @@
 }
 
 //插入系统通知到会话列表
-- (void)_insertSystemNotify
+- (NSMutableArray *)_insertSystemNotify:(NSMutableArray *)modelArray
 {
     if ([EMNotificationHelper.shared.notificationList count] == 0) {
-        return;
+        return modelArray;
     }
     //系统通知插入到 dataarray 中
     EMNotificationModel *lastNotiModel = [EMNotificationHelper.shared.notificationList objectAtIndex:0];
@@ -782,10 +785,10 @@
     NSTimeInterval notiTimeInterval = [notiTime timeIntervalSince1970];
     long long lastNotiTime = [[NSNumber numberWithDouble:notiTimeInterval] longLongValue];
     //系统通知插入排序到会话列表中
-    int low = 0, high = (int)([self.dataArray count] - 1);
+    int low = 0, high = (int)([modelArray count] - 1);
     while (low <= high) {
         int mid = (low + high) / 2;
-        EMConversationModel *conversationModel = [self.dataArray objectAtIndex:mid];
+        EMConversationModel *conversationModel = [modelArray objectAtIndex:mid];
         
         //每个会话的最后一条信息时间
         NSDate *timestampDate = [EMDateHelper dateWithTimeIntervalInMilliSecondSince1970:conversationModel.emModel.latestMessage.timestamp];
@@ -800,7 +803,8 @@
             low = mid + 1;
         }
     }
-    [self.dataArray insertObject:model atIndex:(high + 1)];
+    [modelArray insertObject:model atIndex:(high + 1)];
+    return modelArray;
 }
 
 - (void)tableViewDidTriggerHeaderRefresh

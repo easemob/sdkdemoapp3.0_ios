@@ -58,7 +58,7 @@ static NSString *kNotifications_StickTime = @"stickTime";
     [aCoder encodeInteger:self.status forKey:kNotifications_Status];
     [aCoder encodeInteger:self.type forKey:kNotifications_Type];
     [aCoder encodeBool:self.isRead forKey:kNotifications_IsRead];
-    [aCoder encodeBool:self.stickTime forKey:kNotifications_StickTime];
+    [aCoder encodeObject:self.stickTime forKey:kNotifications_StickTime];
 }
 
 @end
@@ -70,6 +70,10 @@ static EMNotificationHelper *shared = nil;
 @property (nonatomic, strong) EMMulticastDelegate<EMNotificationsDelegate> *delegates;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
+@property (nonatomic, weak) id<EMNotificationsDelegate> delegate;
+
+@property (nonatomic, weak) id<EMNotificationsDelegate> notificateDelegate;
 
 @end
 
@@ -136,7 +140,7 @@ static EMNotificationHelper *shared = nil;
     
     _unreadCount = [self getUnreadCount];
     if (self.isCheckUnreadCount) {
-        [self.delegates didNotificationsUnreadCountUpdate:_unreadCount];
+        [self notificationsUnreadCountUpdate:_unreadCount];
     }
 }
 
@@ -170,6 +174,34 @@ static EMNotificationHelper *shared = nil;
     [NSKeyedArchiver archiveRootObject:self.notificationList toFile:file];
 }
 
+#pragma mark - Private
+
+- (NSArray *)getDelegateNodes
+{
+    EMMulticastDelegateEnumerator *multicastDelegates = [self.delegates delegateEnumerator];
+    return [multicastDelegates getDelegates];
+}
+
+- (void)notificationsUnreadCountUpdate:(NSInteger)count
+{
+    for (EMMulticastDelegateNode *node in [self getDelegateNodes]) {
+        self.notificateDelegate = (id<EMNotificationsDelegate>)node.delegate;
+        if ([self.notificateDelegate respondsToSelector:@selector(didNotificationsUnreadCountUpdate:)])
+            [self.notificateDelegate didNotificationsUnreadCountUpdate:count];
+    }
+}
+
+- (void)notificationsUpdate
+{
+    for (EMMulticastDelegateNode *node in [self getDelegateNodes]) {
+        self.notificateDelegate = (id<EMNotificationsDelegate>)node.delegate;
+        if ([self.notificateDelegate respondsToSelector:@selector(didNotificationsUpdate)])
+            [self.notificateDelegate didNotificationsUpdate];
+    }
+}
+
+#pragma mark - Operate
+
 - (void)markAllAsRead
 {
     BOOL isArchive = NO;
@@ -188,7 +220,7 @@ static EMNotificationHelper *shared = nil;
         _unreadCount = 0;
         
         if (self.isCheckUnreadCount) {
-            [self.delegates didNotificationsUnreadCountUpdate:0];
+            [self notificationsUnreadCountUpdate:0];
         }
     }
 }
@@ -211,18 +243,17 @@ static EMNotificationHelper *shared = nil;
             aModel.message = [NSString stringWithFormat:@"邀请您加入群组\"%@\"", aModel.groupId];
         }
     }
-    
+
     if (!self.isCheckUnreadCount) {
         aModel.isRead = YES;
     } else {
         ++_unreadCount;
-        [self.delegates didNotificationsUnreadCountUpdate:self.unreadCount];
+        [self notificationsUnreadCountUpdate:_unreadCount];
     }
-    
     [self.notificationList insertObject:aModel atIndex:0];
     [self archive];
     
-    [self.delegates didNotificationsUpdate];
+    [self notificationsUpdate];
 }
 
 #pragma mark - EMMultiDevicesDelegate
@@ -239,12 +270,12 @@ static EMNotificationHelper *shared = nil;
                     --_unreadCount;
                     
                     if (self.isCheckUnreadCount) {
-                        [self.delegates didNotificationsUnreadCountUpdate:_unreadCount];
+                        [self notificationsUnreadCountUpdate:_unreadCount];
                     }
                 }
                 model.status = aEvent == EMMultiDevicesEventContactAccept ? EMNotificationModelStatusAgreed : EMNotificationModelStatusDeclined;
                 [self archive];
-                [self.delegates didNotificationsUpdate];
+                [self notificationsUpdate];
                 
                 break;
             }
@@ -274,13 +305,13 @@ static EMNotificationHelper *shared = nil;
                     --_unreadCount;
                     
                     if (self.isCheckUnreadCount) {
-                        [self.delegates didNotificationsUnreadCountUpdate:_unreadCount];
+                        [self notificationsUnreadCountUpdate:_unreadCount];
                     }
                 }
                 
                 model.status = status;
                 [self archive];
-                [self.delegates didNotificationsUpdate];
+                [self notificationsUpdate];
                 
                 break;
             }

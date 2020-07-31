@@ -117,8 +117,28 @@
 - (void)loadContactsFromDB
 {
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];
+    if ([contacts count] < 1) {
+        [self _fetchContactsFromServer];
+        return;
+    }
     [self.dataArray addObjectsFromArray:contacts];
     [self.tableView reloadData];
+}
+
+- (void)_fetchContactsFromServer
+{
+    [self showHudInView:self.view hint:@"获取好友..."];
+    __weak typeof(self) weakself = self;
+    [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aContactsList, EMError *aContactsError) {
+        [weakself hideHud];
+        if (!aContactsError) {
+            [weakself.dataArray removeAllObjects];
+            [weakself.dataArray addObjectsFromArray:aContactsList];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself.tableView reloadData];
+            });
+        }
+    }];
 }
 
 #pragma mark - Action

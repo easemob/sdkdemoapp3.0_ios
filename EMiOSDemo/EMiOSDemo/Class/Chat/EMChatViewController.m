@@ -1022,6 +1022,7 @@
         [weakself refreshTableView];
     });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        NSLog(@"messageid:  %@",message.messageId);
         NSLog(@"errorCode    %u   errorDesc    %@",error.code,error.errorDescription);
         if (error)
             [EMAlertController showErrorAlert:error.errorDescription];

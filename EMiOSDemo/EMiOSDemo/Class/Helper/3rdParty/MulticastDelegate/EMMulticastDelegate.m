@@ -24,35 +24,7 @@
  * In other words, it is NOT thread-safe, and should only be used from within the external dedicated dispatch_queue.
 **/
 
-@interface EMMulticastDelegateNode : NSObject {
-@private
-	
-  #if __has_feature(objc_arc_weak)
-	__weak id delegate;
-  #if !TARGET_OS_IPHONE
-	__unsafe_unretained id unsafeDelegate; // Some classes don't support weak references yet (e.g. NSWindowController)
-  #endif
-  #else
-	__unsafe_unretained id delegate;
-  #endif
-	
-	dispatch_queue_t delegateQueue;
-}
 
-- (id)initWithDelegate:(id)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
-
-#if __has_feature(objc_arc_weak)
-@property (/* atomic */ readwrite, weak) id delegate;
-#if !TARGET_OS_IPHONE
-@property (/* atomic */ readwrite, unsafe_unretained) id unsafeDelegate;
-#endif
-#else
-@property (/* atomic */ readwrite, unsafe_unretained) id delegate;
-#endif
-
-@property (nonatomic, readonly) dispatch_queue_t delegateQueue;
-
-@end
 
 
 @interface EMMulticastDelegate ()
@@ -507,6 +479,8 @@ static BOOL SupportsWeakReferences(id delegate)
 	return self;
 }
 
+
+
 - (void)dealloc
 {
 	#if !OS_OBJECT_USE_OBJC
@@ -533,6 +507,16 @@ static BOOL SupportsWeakReferences(id delegate)
 		currentNodeIndex = 0;
 	}
 	return self;
+}
+
+- (NSArray *)getDelegates
+{
+    return delegateNodes;
+}
+
+- (__weak id)getNodeDelegateWithNode:(EMMulticastDelegateNode *)node
+{
+    return node.delegate;
 }
 
 - (NSUInteger)count
@@ -651,7 +635,7 @@ static BOOL SupportsWeakReferences(id delegate)
 		{
 			if (delPtr) *delPtr = nodeDelegate;
 			if (dqPtr)  *dqPtr  = node.delegateQueue;
-			
+            
 			return YES;
 		}
 	}

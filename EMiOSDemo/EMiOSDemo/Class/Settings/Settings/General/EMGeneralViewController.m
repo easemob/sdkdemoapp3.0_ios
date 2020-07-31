@@ -52,6 +52,7 @@
     
     self.disturbSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
     [self.disturbSwitch addTarget:self action:@selector(disturbValueChanged) forControlEvents:UIControlEventValueChanged];
+    NSLog(@"pushoption   :%@        disturb   %u",[EMClient sharedClient].pushOptions,[EMClient sharedClient].pushOptions.noDisturbStatus);
     [self.disturbSwitch setOn:([EMClient sharedClient].pushOptions.noDisturbStatus == EMPushNoDisturbStatusClose ? NO : YES) animated:YES];
 }
 
@@ -124,9 +125,8 @@
         } else if (row == 1) {
             cell.textLabel.text = @"免打扰时间";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            EMPushOptions *options = [EMClient sharedClient].pushOptions;
-            if (options.noDisturbingStartH > 0 && options.noDisturbingEndH > 0) {
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@:00 - %@:00", @(options.noDisturbingStartH), @(options.noDisturbingEndH)];
+            if ([EMClient sharedClient].pushOptions.noDisturbingStartH > 0 && [EMClient sharedClient].pushOptions.noDisturbingEndH > 0) {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@:00 - %@:00", @([EMClient sharedClient].pushOptions.noDisturbingStartH), @([EMClient sharedClient].pushOptions.noDisturbingEndH)];
             } else {
                 cell.detailTextLabel.text = @"全天";
             }
@@ -258,13 +258,13 @@
     [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
         [weakself hideHud];
         if (!aError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakself.tableView reloadData];
-            });
-        } else {
             [weakself.disturbSwitch setOn:!weakself.disturbSwitch.isOn animated:YES];
             [EMAlertController showErrorAlert:aError.errorDescription];
+            return;
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.tableView reloadData];
+        });
     }];
 }
 
