@@ -198,7 +198,6 @@
     return YES;
 }
 
-
 //通话记录消息
 - (void)sendCallEndMsg:(NSNotification*)noti
 {
@@ -206,9 +205,9 @@
     body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
     if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""])
         body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    [dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
-    [self sendMessageWithBody:body ext:dict isUpload:NO];
+    //NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    //[dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
+    [self sendMessageWithBody:body ext:@{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息!"}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]} isUpload:NO];
 }
 
 //单聊天详情页

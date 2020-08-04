@@ -129,6 +129,7 @@ static DemoCallManager *callManager = nil;
     }else {
         alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     }
+    /*
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
@@ -137,7 +138,7 @@ static DemoCallManager *callManager = nil;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.chatter type:EMConversationTypeChat createIfNotExist:NO];
         [conversation deleteMessageWithId:message.messageId error:nil];
-    }];
+    }];*/
     [alertView show];
 }
 
@@ -265,7 +266,6 @@ static DemoCallManager *callManager = nil;
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callType,EMCOMMUNICATE_DURATION_TIME:@""}];
         }
-        
     }
     self.callDurationTime = nil;
     /*

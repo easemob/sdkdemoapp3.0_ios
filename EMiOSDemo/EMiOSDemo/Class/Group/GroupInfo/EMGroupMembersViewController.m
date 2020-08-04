@@ -49,7 +49,6 @@
     self.title = @"群组普通成员";
     self.showRefreshHeader = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    
     self.tableView.rowHeight = 60;
 }
 
@@ -179,16 +178,16 @@
 
 - (void)_deleteAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"删除管理员..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"删除群成员 %@",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager removeMembers:@[aUsername] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
         [weakself hideHud];
         if (aError) {
-            [EMAlertController showErrorAlert:@"删除管理员失败"];
+            [EMAlertController showErrorAlert:@"删除群成员失败"];
         } else {
             weakself.isUpdated = YES;
-            [EMAlertController showSuccessAlert:@"删除管理员成功"];
+            [EMAlertController showSuccessAlert:@"删除群成员成功"];
             [weakself.dataArray removeObject:aUsername];
             [weakself.tableView reloadData];
         }
@@ -197,7 +196,7 @@
 
 - (void)_blockAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"移至黑名单..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"%@ 移至黑名单",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager blockMembers:@[aUsername] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
@@ -215,7 +214,7 @@
 
 - (void)_muteAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"禁言管理员..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"禁言群成员 %@",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager muteMembers:@[aUsername] muteMilliseconds:-1 fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
@@ -231,7 +230,7 @@
 
 - (void)_memberToAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"升级为管理员..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"%@ 升级为管理员",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager addAdmin:aUsername toGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {

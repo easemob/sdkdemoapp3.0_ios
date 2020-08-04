@@ -111,6 +111,7 @@
         make.centerX.centerY.equalTo(self.leaveCell.contentView);
     }];
     self.leaveCell.textLabel.text = @"删除并退出";
+    self.leaveCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, [UIScreen mainScreen].bounds.size.width);
 }
 
 #pragma mark - Table view data source
@@ -201,7 +202,7 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         } else if (row == 1) {
             cell.textLabel.text = @"群聊成员";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",self.group.occupantsCount];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%ld人",(long)self.group.occupantsCount];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, [UIScreen mainScreen].bounds.size.width);
         }
     } else if (section == 1) {
@@ -265,10 +266,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 5)
-        return 40;
-    
-    return 1;
+    return 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -286,7 +284,7 @@
         }
     } else if (section == 1) {
         if (row == 0) {
-            //修改群名称
+             //修改群名称
             [self _updateGroupNameAction];
         } else if (row == 1) {
             //群共享文件

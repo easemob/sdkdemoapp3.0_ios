@@ -32,6 +32,8 @@
     [super viewDidLoad];
     [self _setupSubviews];
     self.showRefreshHeader = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupMembersUpdated:) name:GROUP_INFO_UPDATED object:nil];
     // Do any additional setup after loading the view.
 }
 
@@ -79,7 +81,7 @@
     if (section == 0) {
         if (row == 0) {
             cell.textLabel.text = @"群管理员";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(unsigned long)self.group.adminList.count];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(unsigned long)self.group.adminList.count + 1];
         } else if (row == 1) {
             cell.textLabel.text = @"群成员";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(self.group.occupantsCount - self.group.adminList.count - 1)];
@@ -120,6 +122,15 @@
             [self.navigationController pushViewController:controller animated:NO];
         }
     }
+}
+
+#pragma mark - MemebersUpdateNoti
+
+- (void)handleGroupMembersUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    self.group = group;
+    [self.tableView reloadData];
 }
 
 @end

@@ -65,12 +65,14 @@
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EMAvatarNameCell"];
     }
     
     cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
     cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     cell.indexPath = indexPath;
+    if (indexPath.row == 0)
+        cell.detailTextLabel.text = @"群主";
     
     if (self.group.permissionType == EMGroupPermissionTypeOwner) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -90,6 +92,8 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
+    if (indexPath.row == 0)
+        return NO;
     return self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
 }
 
@@ -126,7 +130,7 @@
 - (void)_fetchGroupAdminsWithIsShowHUD:(BOOL)aIsShowHUD
 {
     if (aIsShowHUD) {
-        [self showHudInView:self.view hint:@"获取群组管理员..."];
+        [self showHudInView:self.view hint:@"获取群管理员..."];
     }
     
     __weak typeof(self) weakself = self;
@@ -141,6 +145,7 @@
             weakself.group = aGroup;
             
             [weakself.dataArray removeAllObjects];
+            [weakself.dataArray addObject:aGroup.owner];
             [weakself.dataArray addObjectsFromArray:aGroup.adminList];
             [weakself.tableView reloadData];
         }
@@ -157,7 +162,7 @@
 
 - (void)_deleteAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"删除管理员..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"删除管理员 %@",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager removeMembers:@[aUsername] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
@@ -175,7 +180,7 @@
 
 - (void)_blockAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"移至黑名单..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"%@ 移至黑名单",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager blockMembers:@[aUsername] fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
@@ -193,9 +198,7 @@
 
 - (void)_muteAdmin:(NSString *)aUsername
 {
-    
-    
-    [self showHudInView:self.view hint:@"禁言管理员..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"禁言管理员 %@",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager muteMembers:@[aUsername] muteMilliseconds:-1 fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {
@@ -211,7 +214,7 @@
 
 - (void)_adminToMember:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"降为普通成员..."];
+    [self showHudInView:self.view hint:[NSString stringWithFormat:@"%@ 降为普通成员",aUsername]];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].groupManager removeAdmin:aUsername fromGroup:self.group.groupId completion:^(EMGroup *aGroup, EMError *aError) {

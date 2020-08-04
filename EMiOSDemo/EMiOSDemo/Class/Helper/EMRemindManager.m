@@ -72,7 +72,7 @@ SystemSoundID soundID = 1007;
     if (isBackground) {
         [self _localNotification:aMessage
                         needInfo:EMClient.sharedClient.pushOptions.displayStyle != EMPushDisplayStyleSimpleBanner];
-    }else {
+    } else {
         AudioServicesPlaySystemSound(soundID);
     }
 }
