@@ -10,7 +10,7 @@
 
 #import "EMButton.h"
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 
 @interface Call1v1AudioViewController ()
 

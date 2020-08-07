@@ -1,12 +1,12 @@
 //
-//  DemoCallManager.m
-//  ChatDemo-UI3.0
+//  SingleCallController.m
+//  EMiOS_IM
 //
 //  Created by XieYajie on 22/11/2016.
 //  Copyright © 2016 XieYajie. All rights reserved.
 //
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
@@ -16,11 +16,12 @@
 #import "EMGlobalVariables.h"
 #import "Call1v1AudioViewController.h"
 #import "Call1v1VideoViewController.h"
-#import "EMChatViewController.h"
+#import "AudioRecord.h"
+#import "EMRemindManager.h"
 
-static DemoCallManager *callManager = nil;
+static SingleCallController *callManager = nil;
 
-@interface DemoCallManager()<EMChatManagerDelegate, EMCallManagerDelegate, EMCallBuilderDelegate>
+@interface SingleCallController()<EMChatManagerDelegate, EMCallManagerDelegate, EMCallBuilderDelegate>
 
 @property (strong, nonatomic) NSObject *callLock;
 @property (strong, nonatomic) EMCallSession *currentCall;
@@ -36,10 +37,12 @@ static DemoCallManager *callManager = nil;
 
 @property (nonatomic, strong) UIAlertController *alertView;
 
+@property (nonatomic, strong) AudioRecord* audioRecorder;
+
 @end
 
 
-@implementation DemoCallManager
+@implementation SingleCallController
 
 - (instancetype)init
 {
@@ -55,7 +58,7 @@ static DemoCallManager *callManager = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        callManager = [[DemoCallManager alloc] init];
+        callManager = [[SingleCallController alloc] init];
     });
     
     return callManager;
@@ -70,6 +73,13 @@ static DemoCallManager *callManager = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:CALL_MAKE1V1 object:nil];
 }
 
+#pragma mark - public
+
+- (void)communicateWithContact:(NSString *)conversationId callType:(EMCallType)callType
+{
+    [self _makeCallWithUsername:conversationId type:callType isCustomVideoData:NO];
+}
+
 #pragma mark - private
 
 - (void)_initManager
@@ -77,6 +87,10 @@ static DemoCallManager *callManager = nil;
     _callLock = [[NSObject alloc] init];
     _currentCall = nil;
     _currentController = nil;
+    _audioRecorder = [[AudioRecord alloc] init];
+    _audioRecorder.inputAudioData = ^(NSData*data) {
+        [[[EMClient sharedClient] callManager] inputCustomAudioData:data];
+    };
     
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
     [[EMClient sharedClient].callManager addDelegate:self delegateQueue:nil];
@@ -98,7 +112,7 @@ static DemoCallManager *callManager = nil;
     options.maxAudioKbps = 100;
     [[EMClient sharedClient].callManager setCallOptions:options];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMake1v1Call:) name:CALL_MAKE1V1 object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMakeSingleCall:) name:CALL_MAKE1V1 object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeAlertView:) name:@"didAlert" object:nil];
     
@@ -161,7 +175,7 @@ static DemoCallManager *callManager = nil;
 //用户A拨打用户B，用户B会收到这个回调。  被叫方
 - (void)callDidReceive:(EMCallSession *)aSession
 {
-    
+    [EMRemindManager playRing:YES];
     if (!aSession || [aSession.callId length] == 0) {
         return ;
     }
@@ -238,9 +252,24 @@ static DemoCallManager *callManager = nil;
 
 - (void)callDidAccept:(EMCallSession *)aSession
 {
+    [EMRemindManager stopSound];
+    [EMRemindManager playVibration];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
+                  withOptions:AVAudioSessionCategoryOptionAllowBluetooth
+                        error:nil];
+    
+    [audioSession setActive:YES error:nil];
+    
     if ([aSession.callId isEqualToString:self.currentCall.callId]) {
         [self _stopCallTimeoutTimer];
         self.currentController.callStatus = EMCallSessionStatusAccepted;
+    }
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData){
+        [self audioRecorder].channels = options.audioCustomChannels;
+        [self audioRecorder].samples = options.audioCustomSamples;
+        [[self audioRecorder] startAudioDataRecord];
     }
 }
 
@@ -248,6 +277,7 @@ static DemoCallManager *callManager = nil;
             reason:(EMCallEndReason)aReason
              error:(EMError *)aError
 {
+    [EMRemindManager stopSound];
     if (self.currentCall) {
         [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
     }
@@ -356,7 +386,7 @@ static DemoCallManager *callManager = nil;
 #pragma mark - NSNotification
 
 //主叫方
-- (void)handleMake1v1Call:(NSNotification*)notify
+- (void)handleMakeSingleCall:(NSNotification*)notify
 {
     if (!notify.object) {
         return;
@@ -401,9 +431,11 @@ static DemoCallManager *callManager = nil;
         return;
     }
     
+    [EMRemindManager playWattingSound];
+    
     __weak typeof(self) weakSelf = self;
     void (^completionBlock)(EMCallSession *, EMError *) = ^(EMCallSession *aCallSession, EMError *aError) {
-        DemoCallManager *strongSelf = weakSelf;
+        SingleCallController *strongSelf = weakSelf;
         if (strongSelf) {
             if (aError || aCallSession == nil) {
                 gIsCalling = NO;
@@ -418,7 +450,13 @@ static DemoCallManager *callManager = nil;
                 strongSelf.currentCall = aCallSession;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_PUSH_VIEWCONTROLLER object:nil];
+                    NSString *callType;
+                    if (aType == EMCallTypeVoice) {
+                        callType = EMCOMMUNICATE_TYPE_VOICE;
+                    } else if (aType == EMCallTypeVideo) {
+                        callType = EMCOMMUNICATE_TYPE_VIDEO;
+                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CALL_PUSH_VIEWCONTROLLER object:@{EMCOMMUNICATE_TYPE:callType}];
                     
                     if (aType == EMCallTypeVideo) {
                         strongSelf.currentController = [[Call1v1VideoViewController alloc] initWithCallSession:strongSelf.currentCall];
@@ -467,6 +505,7 @@ static DemoCallManager *callManager = nil;
 
 - (void)answerCall:(NSString *)aCallId
 {
+    [EMRemindManager stopSound];
     if (!self.currentCall || ![self.currentCall.callId isEqualToString:aCallId]) {
         return ;
     }
@@ -503,6 +542,9 @@ static DemoCallManager *callManager = nil;
     [self _stopCallTimeoutTimer];
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData) {
+        [[self audioRecorder] stopAudioDataRecord];
+    }
     options.enableCustomizeVideoData = NO;
     
     if (aIsNeedHangup) {
@@ -528,8 +570,8 @@ static DemoCallManager *callManager = nil;
 - (void)endCallWithId:(NSString *)aCallId
                reason:(EMCallEndReason)aReason
 {
+    [EMRemindManager stopSound];
     [self _endCallWithId:aCallId isNeedHangup:YES reason:aReason];
 }
-
 
 @end

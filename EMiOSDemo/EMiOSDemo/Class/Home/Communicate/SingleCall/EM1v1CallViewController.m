@@ -233,7 +233,7 @@
         else
             self.timeLabel.text = [NSString stringWithFormat:@"00:%i", s];
     }
-    [DemoCallManager sharedManager].callDurationTime = self.timeLabel.text;
+    [SingleCallController sharedManager].callDurationTime = self.timeLabel.text;
 }
 
 - (void)_startCallDurationTimer
@@ -394,13 +394,13 @@
     if (self.callDuration < 1 && !self.callSession.isCaller) {
         reason = EMCallEndReasonDecline;
     }
-    [[DemoCallManager sharedManager] endCallWithId:callId reason:reason];
+    [[SingleCallController sharedManager] endCallWithId:callId reason:reason];
     
 }
 
 - (void)answerAction
 {
-    [[DemoCallManager sharedManager] answerCall:self.callSession.callId];
+    [[SingleCallController sharedManager] answerCall:self.callSession.callId];
     self.callStatus = EMCallSessionStatusAccepted;
 }
 

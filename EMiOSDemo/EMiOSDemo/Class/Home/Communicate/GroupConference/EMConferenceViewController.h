@@ -8,9 +8,10 @@
 
 #import "EMCallViewController.h"
 
-#import "DemoConfManager.h"
+#import "GroupConferenceController.h"
 #import "EMStreamView.h"
 #import "ConfInviteUsersViewController.h"
+#import "AudioRecord.h"
 
 #define kConferenceVideoMaxCol 2
 
@@ -49,6 +50,8 @@
 @property (nonatomic, readonly) EMChatType chatType;
 
 @property (nonatomic) CGRect floatViewFromFrame;
+
+@property (nonatomic, strong) AudioRecord* audioRecord;
 
 - (instancetype)initWithType:(EMConferenceType)aType
                     password:(NSString *)aPassword

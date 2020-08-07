@@ -38,6 +38,8 @@
 
 @property (nonatomic, strong) UIImageView *blankPerchView;
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
 @end
@@ -190,7 +192,6 @@
 #pragma mark - moreAction
 - (void)moreAction
 {
-    // 弹出QQ的自定义视图
     [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-160, self.addImageBtn.frame.origin.y + 24, 145, 104) selectData:@[@"创建群组",@"添加好友"] images:@[@"icon-创建群组",@"icon-添加好友"] locationY:18 action:^(NSInteger index){
         if(index == 0) {
             [self createGroup];
@@ -414,7 +415,8 @@
 {
     [[EMRealtimeSearch shared] realtimeSearchStop];
     
-    [self.resultController.dataArray removeAllObjects];
+    if ([self.resultController.dataArray count] > 0)
+        [self.resultController.dataArray removeAllObjects];
     [self.resultController.tableView reloadData];
 }
 
@@ -430,7 +432,8 @@
     __weak typeof(self) weakself = self;
     [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(name) resultBlock:^(NSArray *results) {
          dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.resultController.dataArray removeAllObjects];
+            if ([weakself.resultController.dataArray count] > 0)
+                [weakself.resultController.dataArray removeAllObjects];
             [weakself.resultController.dataArray addObjectsFromArray:results];
             [weakself.resultController.tableView reloadData];
         });
@@ -575,11 +578,8 @@
 - (void)_stickConversation
 {
     EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-    
     NSDate *date = [NSDate date];
-    NSDateFormatter *format=[[NSDateFormatter alloc]init];
-    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *time = [format dateFromString:[format stringFromDate:date]];
+    NSDate *time = [self.dateFormatter dateFromString:[self.dateFormatter stringFromDate:date]];
     NSTimeInterval stickTimeInterval = [time timeIntervalSince1970];
     NSNumber *stickTime = [NSNumber numberWithLong:stickTimeInterval];
     
@@ -719,7 +719,8 @@
     
     NSMutableArray *modelArray = [self _insertSystemNotify:conversationModels];//插入系统通知
     NSMutableArray *finalDataArray = [self _stickSortedConversationModels:[modelArray copy]];//置顶重排序
-    [self.dataArray removeAllObjects];
+    if ([self.dataArray count] > 0)
+        [self.dataArray removeAllObjects];
     self.dataArray = finalDataArray;
 
     [self.tableView reloadData];
@@ -751,7 +752,8 @@
         NSMutableArray *modelArray = [weakself _insertSystemNotify:[models mutableCopy]];//插入系统通知
         NSMutableArray *finalDataArray = [weakself _stickSortedConversationModels:[modelArray copy]];//置顶重排序
         
-        [weakself.dataArray removeAllObjects];
+        if ([weakself.dataArray count] > 0)
+            [weakself.dataArray removeAllObjects];
         weakself.dataArray = finalDataArray;
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -778,10 +780,8 @@
     EMConversationModel *model = [[EMConversationModel alloc]init];
     model.notiModel = lastNotiModel;
 
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     //最后一个系统通知信息时间
-    NSDate *notiTime = [dateFormatter dateFromString:model.notiModel.time];
+    NSDate *notiTime = [self.dateFormatter dateFromString:model.notiModel.time];
     NSTimeInterval notiTimeInterval = [notiTime timeIntervalSince1970];
     long long lastNotiTime = [[NSNumber numberWithDouble:notiTimeInterval] longLongValue];
     //系统通知插入排序到会话列表中
@@ -792,8 +792,8 @@
         
         //每个会话的最后一条信息时间
         NSDate *timestampDate = [EMDateHelper dateWithTimeIntervalInMilliSecondSince1970:conversationModel.emModel.latestMessage.timestamp];
-        NSString *dateStr = [dateFormatter stringFromDate:timestampDate];//先格式化该会话最后一天信息的时间
-        timestampDate = [dateFormatter dateFromString:dateStr];
+        NSString *dateStr = [self.dateFormatter stringFromDate:timestampDate];//先格式化该会话最后一天信息的时间
+        timestampDate = [self.dateFormatter dateFromString:dateStr];
         NSTimeInterval time = [timestampDate timeIntervalSince1970];
         long long lastConversationTime = [[NSNumber numberWithDouble:time] longLongValue];
         
@@ -810,6 +810,15 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _loadAllConversationsFromDBWithIsShowHud:NO];
+}
+
+- (NSDateFormatter *)dateFormatter
+{
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc]init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    }
+    return _dateFormatter;
 }
 
 - (UIMenuItem *)deleteMenuItem

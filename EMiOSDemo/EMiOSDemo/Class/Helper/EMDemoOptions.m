@@ -42,6 +42,10 @@ static EMDemoOptions *sharedOptions = nil;
         self.willMergeStrem = NO;
         self.enableConsoleLog = YES;
         
+        self.enableCustomAudioData = NO;
+        self.customAudioDataSamples = 48000;
+        self.isSupportWechatMiniProgram = NO;
+        
         self.locationAppkeyArray = [[NSMutableArray alloc]init];
     }
     
@@ -92,6 +96,10 @@ static EMDemoOptions *sharedOptions = nil;
         self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
         self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
         self.enableConsoleLog = [aDecoder decodeBoolForKey:kOptions_EnableConsoleLog];
+        
+        self.enableCustomAudioData = [aDecoder decodeBoolForKey:kOptions_EnableCustomAudioData];
+        self.customAudioDataSamples = [aDecoder decodeIntForKey:kOptions_CustomAudioDataSamples];
+        self.isSupportWechatMiniProgram = [aDecoder decodeBoolForKey:kOptions_IsSupportWechatMiniProgram];
     }
     return self;
 }
@@ -130,6 +138,11 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
     [aCoder encodeBool:self.enableConsoleLog forKey:kOptions_EnableConsoleLog];
     
+    [aCoder encodeBool:self.enableCustomAudioData forKey:kOptions_EnableCustomAudioData];
+    [aCoder encodeInt:self.customAudioDataSamples forKey:kOptions_CustomAudioDataSamples];
+    
+    [aCoder encodeBool:self.isSupportWechatMiniProgram forKey:kOptions_IsSupportWechatMiniProgram];
+    
     [aCoder encodeObject:self.locationAppkeyArray forKey:kOptions_LocationAppkeyArray];
 }
 
@@ -160,6 +173,9 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.willRecord = self.willRecord;
     retModel.willMergeStrem = self.willMergeStrem;
     retModel.enableConsoleLog = self.enableConsoleLog;
+    retModel.enableCustomAudioData = self.enableCustomAudioData;
+    retModel.customAudioDataSamples = self.customAudioDataSamples;
+    retModel.isSupportWechatMiniProgram = self.isSupportWechatMiniProgram;
     retModel.locationAppkeyArray = self.locationAppkeyArray;
     return retModel;
 }
@@ -206,7 +222,6 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.apnsCertName = self.apnsCertName;
     retOpt.usingHttpsOnly = self.usingHttpsOnly;
 
-    retOpt.enableConsoleLog = NO;
     if (self.specifyServer) {
         retOpt.enableDnsConfig = NO;
         retOpt.chatPort = self.chatPort;

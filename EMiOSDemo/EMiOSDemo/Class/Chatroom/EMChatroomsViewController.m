@@ -26,6 +26,12 @@
     [self _fetchChatroomsWithPage:self.page isHeader:YES isShowHUD:YES];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 #pragma mark - Subviews
 
 - (void)_setupSubviews

@@ -32,8 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithConversationId:(NSString *)aId
                                   type:(EMConversationType)aType
-                      createIfNotExist:(BOOL)aIsCreate
-                        isChatRecord:(BOOL)aIsChatRecord;
+                      createIfNotExist:(BOOL)aIsCreate;
 
 - (instancetype)initWithCoversationModel:(EMConversationModel *)aModel;
 

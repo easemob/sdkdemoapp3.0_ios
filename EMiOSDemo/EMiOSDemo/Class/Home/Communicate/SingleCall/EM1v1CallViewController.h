@@ -8,7 +8,7 @@
 
 #import "EMCallViewController.h"
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 #import "EMStreamView.h"
 
 @interface EM1v1CallViewController : EMCallViewController<EMStreamViewDelegate>

@@ -25,7 +25,7 @@
                                     createIfNotExist:(BOOL)aIsCreate
                                         isChatRecord:(BOOL)aIsChatRecord
 {
-    return [super initWithConversationId:aId type:aType createIfNotExist:aIsCreate isChatRecord:aIsChatRecord];
+    return [super initWithConversationId:aId type:aType createIfNotExist:aIsCreate];
 }
 
 - (instancetype)initWithCoversationModel:(EMConversationModel *)aConversationModel
@@ -207,7 +207,7 @@
         body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
     //NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     //[dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
-    [self sendMessageWithBody:body ext:@{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息!"}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]} isUpload:NO];
+    [self sendMessageWithBody:body ext:@{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息"}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]} isUpload:NO];
 }
 
 //单聊天详情页

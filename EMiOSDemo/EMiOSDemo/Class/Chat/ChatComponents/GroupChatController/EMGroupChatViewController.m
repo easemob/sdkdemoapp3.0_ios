@@ -35,6 +35,7 @@
     
     [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoClearRecord) name:GROUP_INFO_CLEARRECORD object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,20 +77,13 @@
 }
 
 - (void)groupInfoAction {
-    __weak typeof(self) weakself = self;
-    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat) {
-        EMGroupInfoViewController *groupInfocontroller = [[EMGroupInfoViewController alloc] initWithGroupId:self.conversationModel.emModel.conversationId];
-        [groupInfocontroller setLeaveOrDestroyCompletion:^{
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
-        [groupInfocontroller setClearRecordCompletion:^(BOOL isClearRecord) {
-            if (isClearRecord) {
-                [weakself.dataArray removeAllObjects];
-                [weakself.tableView reloadData];
-            }
-        }];
-        [self.navigationController pushViewController:groupInfocontroller animated:NO];
-    }
+    if (self.conversationModel.emModel.type == EMConversationTypeGroupChat)
+        [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_PUSHVIEWCONTROLLER object:@{NOTIF_ID:self.conversationModel.emModel.conversationId, NOTIF_NAVICONTROLLER:self.navigationController}];
+}
+
+- (void)handleGroupInfoClearRecord {
+    [self.dataArray removeAllObjects];
+    [self.tableView reloadData];
 }
 
 #pragma mark - EMMoreFunctionViewDelegate

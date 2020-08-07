@@ -52,13 +52,11 @@
 - (instancetype)initWithConversationId:(NSString *)aId
                                   type:(EMConversationType)aType
                       createIfNotExist:(BOOL)aIsCreate
-                        isChatRecord:(BOOL)aIsChatRecord
 {
     self = [super init];
     if (self) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aId type:aType createIfNotExist:aIsCreate];
         [self setDefaultProperty:[[EMConversationModel alloc] initWithEMModel:conversation]];
-        _isChatRecord = aIsChatRecord;
     }
     
     return self;
@@ -107,6 +105,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    self.navigationController.navigationBarHidden = NO;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -834,6 +837,12 @@
 
 - (void)handleWillPushCallController:(NSNotification *)aNotif
 {
+    NSString *communicatePushType = [NSString stringWithFormat:@"%@ 邀请你通话",[EMClient sharedClient].currentUsername];
+    if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
+        communicatePushType = [NSString stringWithFormat:@"%@ 邀请你视频通话",[EMClient sharedClient].currentUsername];
+    if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
+        communicatePushType = [NSString stringWithFormat:@"%@ 邀请你语音通话",[EMClient sharedClient].currentUsername];
+    //[self sendMessageWithBody:[[EMTextMessageBody alloc]initWithText:@""] ext:@{@"em_apns_ext":@{@"em_push_title":communicatePushType}, @"em_force_notification":@YES} isUpload:NO];
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];

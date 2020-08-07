@@ -26,6 +26,7 @@ extern BOOL gIsConferenceCalling;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.navigationController.navigationBar.hidden = YES;
     [self _setupSubviews];
 }
 
@@ -46,7 +47,7 @@ extern BOOL gIsConferenceCalling;
     self.statusLabel.text = [NSString stringWithFormat:@"%@ 邀请你加入会议",_msg.from];
     
     [self.statusLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(80);
+        make.top.equalTo(self.view).offset(30);
     }];
     
     [self.waitImgView mas_remakeConstraints:^(MASConstraintMaker *make) {

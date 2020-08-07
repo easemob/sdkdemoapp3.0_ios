@@ -19,7 +19,6 @@
 #import "EMMsgFileBubbleView.h"
 #import "EMMsgExtGifBubbleView.h"
 #import "EMPersonalDataViewController.h"
-#import "EMAccountViewController.h"
 
 @interface EMMessageCell()
 
@@ -296,9 +295,7 @@
 - (void)personalData:(UITapGestureRecognizer *)aTap
 {
     UIViewController *controller;
-    if ([self.model.emModel.from isEqualToString:EMClient.sharedClient.currentUsername]) {
-        controller = [[EMAccountViewController alloc]init];
-    } else {
+    if (![self.model.emModel.from isEqualToString:EMClient.sharedClient.currentUsername]) {
         controller = [[EMPersonalDataViewController alloc]initWithNickName:self.nameLabel.text isChatting:YES];
     }
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];

@@ -8,7 +8,7 @@
 
 #import "CallSettingViewController.h"
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 #import "CallResolutionViewController.h"
 
 #define FIXED_BITRATE_ALERTVIEW_TAG 100
@@ -257,18 +257,18 @@
             if ((value >= 150 && value <= 1000) || value == 0) {
                 EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
                 options.maxVideoKbps = value;
-                [[DemoCallManager sharedManager] saveCallOptions];
+                [[SingleCallController sharedManager] saveCallOptions];
             } else {
                 [self showHint:NSLocalizedString(@"setting.call.maxVKbpsTips", @"Video kbps should be 150-1000")];
             }
         } else if (alertView.tag == AUTO_MAXRATE_ALERTVIEW_TAG) {
             EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
             options.maxVideoFrameRate = value;
-            [[DemoCallManager sharedManager] saveCallOptions];
+            [[SingleCallController sharedManager] saveCallOptions];
         } else if (alertView.tag == AUTO_MINKBPS_ALERTVIEW_TAG) {
             EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
             options.minVideoKbps = value;
-            [[DemoCallManager sharedManager] saveCallOptions];
+            [[SingleCallController sharedManager] saveCallOptions];
         }
     }
 }
@@ -281,7 +281,7 @@
     
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.isFixedVideoResolution = control.on;
-    [[DemoCallManager sharedManager] saveCallOptions];
+    [[SingleCallController sharedManager] saveCallOptions];
 }
 
 - (void)showCallInfoChanged:(UISwitch *)control
@@ -295,7 +295,7 @@
 {
     EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
     options.isSendPushIfOffline = control.on;
-    [[DemoCallManager sharedManager] saveCallOptions];
+    [[SingleCallController sharedManager] saveCallOptions];
 }
 
 - (void)cameraSwitchValueChanged:(UISwitch *)control

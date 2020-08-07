@@ -1,16 +1,16 @@
 //
-//  DemoConfManager.m
+//  GroupConferenceController.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 23/11/2016.
 //  Copyright © 2016 XieYajie. All rights reserved.
 //
 
-#import "DemoConfManager.h"
+#import "GroupConferenceController.h"
 
 #import <Hyphenate/Hyphenate.h>
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 
 #import "EMGlobalVariables.h"
 
@@ -18,16 +18,16 @@
 #import "Live2ViewController.h"
 #import "EMConferenceInviteViewController.h"
 
-static DemoConfManager *confManager = nil;
+static GroupConferenceController *confManager = nil;
 
-@interface DemoConfManager()<EMConferenceManagerDelegate, EMChatManagerDelegate>
+@interface GroupConferenceController()<EMConferenceManagerDelegate, EMChatManagerDelegate>
 
 @property (strong, nonatomic) UINavigationController *confNavController;
 
 @end
 
 
-@implementation DemoConfManager
+@implementation GroupConferenceController
 
 - (instancetype)init
 {
@@ -43,7 +43,7 @@ static DemoConfManager *confManager = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        confManager = [[DemoConfManager alloc] init];
+        confManager = [[GroupConferenceController alloc] init];
     });
     
     return confManager;

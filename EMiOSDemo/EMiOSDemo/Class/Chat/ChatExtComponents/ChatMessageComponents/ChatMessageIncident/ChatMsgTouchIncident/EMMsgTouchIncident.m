@@ -13,7 +13,6 @@
 #import "EMLocationViewController.h"
 #import "EMMsgTranspondViewController.h"
 #import "EMAtGroupMembersViewController.h"
-#import "EMGroupInfoViewController.h"
 #import "EMImageBrowser.h"
 #import "EMDateHelper.h"
 #import "EMAudioPlayerHelper.h"

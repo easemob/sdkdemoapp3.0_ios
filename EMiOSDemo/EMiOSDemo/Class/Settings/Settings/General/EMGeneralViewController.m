@@ -52,7 +52,7 @@
     
     self.disturbSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 65, 20, 50, 40)];
     [self.disturbSwitch addTarget:self action:@selector(disturbValueChanged) forControlEvents:UIControlEventValueChanged];
-    NSLog(@"pushoption   :%@        disturb   %u",[EMClient sharedClient].pushOptions,[EMClient sharedClient].pushOptions.noDisturbStatus);
+    //NSLog(@"pushoption   :%@        disturb   %u",[EMClient sharedClient].pushOptions,[EMClient sharedClient].pushOptions.noDisturbStatus);
     [self.disturbSwitch setOn:([EMClient sharedClient].pushOptions.noDisturbStatus == EMPushNoDisturbStatusClose ? NO : YES) animated:YES];
 }
 
@@ -257,7 +257,7 @@
     }
     [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
         [weakself hideHud];
-        if (!aError) {
+        if (aError) {
             [weakself.disturbSwitch setOn:!weakself.disturbSwitch.isOn animated:YES];
             [EMAlertController showErrorAlert:aError.errorDescription];
             return;

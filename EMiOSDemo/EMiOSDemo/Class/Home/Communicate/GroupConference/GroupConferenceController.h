@@ -1,6 +1,6 @@
 //
-//  DemoConfManager.h
-//  ChatDemo-UI3.0
+//  GroupConferenceController.h
+//  EMiOS_IM
 //
 //  Created by XieYajie on 23/11/2016.
 //  Copyright © 2016 XieYajie. All rights reserved.
@@ -11,7 +11,7 @@
 #import "ConfInviteUsersViewController.h"
 
 @class EMConferenceViewController;
-@interface DemoConfManager : NSObject
+@interface GroupConferenceController : NSObject
 
 + (instancetype)sharedManager;
 

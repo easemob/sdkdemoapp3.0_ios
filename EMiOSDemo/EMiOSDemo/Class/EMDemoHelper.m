@@ -69,6 +69,7 @@ static EMDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupsController:) name:GROUP_LIST_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomsController:) name:CHATROOM_LIST_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomInfoController:) name:CHATROOM_INFO_PUSHVIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupInfoController:) name:GROUP_INFO_PUSHVIEWCONTROLLER object:nil];
 }
 
 #pragma mark - EMClientDelegate
@@ -486,6 +487,28 @@ static EMDemoHelper *helper = nil;
         [navController popViewControllerAnimated:YES];
     }];
     [navController pushViewController:controller animated:NO];
+}
+
+- (void)handlePushGroupInfoController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    if ([dic count] == 0) {
+        return;
+    }
+    
+    NSString *groupId = [dic objectForKey:NOTIF_ID];
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    
+    EMGroupInfoViewController *groupInfocontroller = [[EMGroupInfoViewController alloc] initWithGroupId:groupId];
+    [groupInfocontroller setLeaveOrDestroyCompletion:^{
+        [navController popViewControllerAnimated:YES];
+    }];
+    [groupInfocontroller setClearRecordCompletion:^(BOOL isClearRecord) {
+        if (isClearRecord) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_CLEARRECORD object:nil];
+        }
+    }];
+    [navController pushViewController:groupInfocontroller animated:NO];
 }
 
 #pragma mark - EMChatviewControllerFactory

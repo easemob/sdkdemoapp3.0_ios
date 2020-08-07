@@ -32,7 +32,7 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.dateFormatter = [[NSDateFormatter alloc] init];
-        [_dateFormatter setDateFormat:@"yy-MM-dd"];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
         self.group = aGroup;
     }
     
@@ -93,7 +93,7 @@
     }
     
     EMGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
-    cell.avatarView.image = [UIImage imageNamed:@"file"];
+    cell.avatarView.image = [UIImage imageNamed:@"groupSharedFile"];
     if (file.fileName.length > 0) {
         cell.nameLabel.text = file.fileName;
     } else {
@@ -417,7 +417,6 @@
 
 - (void)moreAction
 {
-    // 弹出QQ的自定义视图
     [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-150, 44, 145, 156) selectData:@[@"上传图片",@"上传视频",@"上传文件"] images:@[@"icon-创建群组",@"icon-添加好友",@"icon-添加好友"] locationY:0 action:^(NSInteger index){
         if(index == 0) {
             [self uploadMediaAction:0];

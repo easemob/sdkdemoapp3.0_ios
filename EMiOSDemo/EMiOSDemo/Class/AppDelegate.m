@@ -13,11 +13,9 @@
 #import <UserNotifications/UserNotifications.h>
 #import "AppDelegate.h"
 
-//#import <Bugly/Bugly.h>
-
 #import "EMDemoHelper.h"
-#import "DemoCallManager.h"
-#import "DemoConfManager.h"
+#import "SingleCallController.h"
+#import "GroupConferenceController.h"
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
@@ -135,13 +133,6 @@
 
 - (void)_initDemo
 {
-#ifdef DEBUG
-#else
-    //环信Demo中使用Bugly收集crash信息，没有使用cocoapods,库存放在ChatDemo-UI3.0/ChatDemo-UI3.0/3rdparty/Bugly.framework，可自行删除
-    //如果你自己的项目也要使用bugly，请按照bugly官方教程自行配置
-    //[Bugly startWithAppId:nil];
-#endif
-    
     //注册登录状态监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:ACCOUNT_LOGIN_CHANGED object:nil];
     
@@ -198,10 +189,11 @@
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
         
+        [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {}];
         [EMDemoHelper shareHelper];
         [EMNotificationHelper shared];
-        [DemoCallManager sharedManager];
-        [DemoConfManager sharedManager];
+        [SingleCallController sharedManager];
+        [GroupConferenceController sharedManager];
     } else {//登录失败加载登录页面控制器
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[UINavigationController alloc] initWithRootViewController:controller];

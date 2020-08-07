@@ -86,7 +86,7 @@
         [self.textImgBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@10);
         }];
-        [self.textImgBtn setImage:[UIImage imageNamed:@"语音通话"] forState:UIControlStateNormal];
+        [self.textImgBtn setImage:[UIImage imageNamed:@"voice"] forState:UIControlStateNormal];
     } else if ([[model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO]) {
         callType = EMCOMMUNICATE_TYPE_VIDEO;
         [self.textImgBtn mas_updateConstraints:^(MASConstraintMaker *make) {

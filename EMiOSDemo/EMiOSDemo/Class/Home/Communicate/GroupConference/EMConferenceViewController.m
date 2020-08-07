@@ -10,11 +10,11 @@
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
-
 @interface EMConferenceViewController ()
 
 @property (nonatomic, strong) UIButton *gridButton;
 @property (nonatomic, strong) EMStreamView *currentBigView;
+
 
 @property (nonatomic) BOOL isSetSpeaker;
 
@@ -37,8 +37,12 @@
         _chatType = aChatType;
         
         _inviteUsers = [[NSMutableArray alloc] initWithArray:aInviteUsers];
+        _audioRecord = [[AudioRecord alloc] init];
+        _audioRecord.inputAudioData = ^(NSData*data){
+          [[[EMClient sharedClient] conferenceManager] inputCustomAudioData:data];
+        };
     }
-    
+
     return self;
 }
 //加入会议者
@@ -65,8 +69,12 @@
         }
         
         _inviteUsers = [[NSMutableArray alloc] init];
+        _audioRecord = [[AudioRecord alloc] init];
+        _audioRecord.inputAudioData = ^(NSData*data){
+          [[[EMClient sharedClient] conferenceManager] inputCustomAudioData:data];
+        };
     }
-    
+
     return self;
 }
 
@@ -308,9 +316,6 @@
         
         if (!self.microphoneButton.isSelected && self.speakerButton.isSelected && !self.isSetSpeaker) {
             self.isSetSpeaker = YES;
-            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-            [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-            [audioSession setActive:YES error:nil];
         }
     }
 }
@@ -481,6 +486,13 @@
     //显示本地视频的页面
     pubConfig.localView = localView;
     
+    //使用自定义音频
+    pubConfig.enableCustomizeAudioData = options.enableCustomAudioData;
+    
+    pubConfig.customAudioSamples = options.audioCustomSamples;
+    
+    pubConfig.customAudioChannels = 1;
+    
     __weak typeof(self) weakself = self;
     //上传本地摄像头的数据流
     [[EMClient sharedClient].conferenceManager publishConference:self.conference streamParam:pubConfig completion:^(NSString *aPubStreamId, EMError *aError) {
@@ -511,13 +523,19 @@
         if (aCompletionBlock) {
             aCompletionBlock(aPubStreamId, nil);
         }
+        if(pubConfig.enableCustomizeAudioData)
+        {
+            [self audioRecord].samples = pubConfig.customAudioSamples;
+            [self audioRecord].channels = pubConfig.customAudioChannels;
+            [[self audioRecord] startAudioDataRecord];
+        }
     }];
 }
 //
 - (void)_subStream:(EMCallStream *)aStream
 {
     EMCallRemoteView *remoteView = [[EMCallRemoteView alloc] init];
-    remoteView.scaleMode = EMCallViewScaleModeAspectFill;
+    remoteView.scaleMode = EMCallViewScaleModeAspectFit;
     EMStreamItem *videoItem = [self setupNewStreamItemWithName:aStream.userName displayView:remoteView stream:aStream];
     videoItem.videoView.enableVideo = aStream.enableVideo;
     
@@ -573,7 +591,11 @@
     //为了兼容旧版本
     if (self.type != EMConferenceTypeLive) {
         [ext setObject:self.conference.confId forKey:@"conferenceId"];
-        [ext setObject:@{@"inviter":currentUser, @"group_id":@""} forKey:@"msg_extension"];
+        NSString* group_id = @"";
+        if([self.chatId length] > 0){
+            group_id = self.chatId;
+        }
+        [ext setObject:@{@"inviter":currentUser, @"group_id":group_id} forKey:@"msg_extension"];
     }
     //添加会话相关属性
     if ([self.chatId length] > 0) {
@@ -603,12 +625,6 @@
             videoItem.videoView.enableVoice = !self.microphoneButton.isSelected;
         }
     }
-    
-    if (!self.microphoneButton.isSelected && self.speakerButton.isSelected) {
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        [audioSession setActive:YES error:nil];
-    }
 }
 
 - (void)inviteButtonAction:(EMButton *)aButton
@@ -633,7 +649,7 @@
         });
     }];
     
-    [self.navigationController pushViewController:controller animated:NO];
+    [self.navigationController pushViewController:controller animated:YES];
      
 }
 
@@ -661,7 +677,6 @@
         BOOL isUseBackCamera = [EMDemoOptions sharedOptions].isUseBackCamera;
         if (isUseBackCamera != self.isUseBackCamera) {
             self.switchCameraButton.selected = self.isUseBackCamera;
-            [[EMClient sharedClient].conferenceManager updateConferenceWithSwitchCamera:self.conference];
         }
     }
 }
@@ -692,6 +707,9 @@
 //多人会议挂断触发事件
 - (void)hangupAction
 {
+    EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
+    if(options.enableCustomAudioData)
+       [[self audioRecord] stopAudioDataRecord];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     [self.floatingView removeFromSuperview];
     
@@ -699,7 +717,7 @@
     if (self.type == EMConferenceTypeLive && self.isCreater) {
         isDestroy = YES;
     }
-    [[DemoConfManager sharedManager] endConference:self.conference isDestroy:isDestroy];
+    [[GroupConferenceController sharedManager] endConference:self.conference isDestroy:isDestroy];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }

@@ -15,9 +15,8 @@
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
 #import "PellTableViewSelect.h"
-#import "EMJoinGroupViewController.h"
+//#import "EMJoinGroupViewController.h"
 #import "EMPersonalDataViewController.h"
-#import "EMAccountViewController.h"
 
 @interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate>
 
@@ -515,11 +514,10 @@
         }];
     }];
 }
-
+/*
 #pragma mark - moreAction
 - (void)addAction
 {
-    // 弹出QQ的自定义视图
     [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 110, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
         if(index == 0) {
             [self lookForSomeOne];
@@ -542,7 +540,7 @@
     EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
     [self.navigationController pushViewController:controller animated:NO];
 }
-
+*/
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _fetchContactsFromServerWithIsShowHUD:NO];

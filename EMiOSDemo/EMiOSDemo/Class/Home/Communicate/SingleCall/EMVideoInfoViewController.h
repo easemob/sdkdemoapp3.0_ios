@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 
 @interface EMVideoInfoViewController : UIViewController
 

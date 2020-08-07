@@ -8,7 +8,7 @@
 
 #import "CallResolutionViewController.h"
 
-#import "DemoCallManager.h"
+#import "SingleCallController.h"
 
 @interface CallResolutionViewController ()
 
@@ -94,7 +94,7 @@
         EMCallVideoResolution resolution = (EMCallVideoResolution)indexPath.row;
         EMCallOptions *options = [[EMClient sharedClient].callManager getCallOptions];
         options.videoResolution = resolution;
-        [[DemoCallManager sharedManager] saveCallOptions];
+        [[SingleCallController sharedManager] saveCallOptions];
     }
     
     self.selectedIndexPath = indexPath;
