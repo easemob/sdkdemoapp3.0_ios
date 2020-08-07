@@ -83,6 +83,9 @@ static EMDemoHelper *helper = nil;
         [self showAlertWithMessage:@"自动登录失败，请重新登录"];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:ACCOUNT_LOGIN_CHANGED object:@NO];
+    }else
+    {
+        [[[EMClient sharedClient] conferenceManager] setAppkey:[EMClient sharedClient].options.appkey username:[EMClient sharedClient].currentUsername token:[EMClient sharedClient].accessUserToken];
     }
 }
 
