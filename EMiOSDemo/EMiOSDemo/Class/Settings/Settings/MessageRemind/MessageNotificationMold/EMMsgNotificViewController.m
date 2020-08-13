@@ -151,11 +151,15 @@
 
 - (void)_updatePushStyle:(EMPushDisplayStyle)aStyle
 {
+    __weak typeof(self) weakself = self;
     [self showHint:@"更新通知消息显示类型..."];
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     options.displayStyle = aStyle;
-    [[EMClient sharedClient] updatePushOptionsToServer];
-    [self hideHud];
+    [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
+        [weakself hideHud];
+        if (aError)
+            [weakself showHint:[NSString stringWithFormat:@"更新通知消息显示类型失败：%@",aError.description]];
+    }];
 }
 
 - (NSInteger)_tagWithIndexPath:(NSIndexPath *)aIndexPath

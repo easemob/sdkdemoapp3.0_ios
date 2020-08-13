@@ -9,7 +9,7 @@
 #import "ConfInviteUsersViewController.h"
 
 #import "EMRealtimeSearch.h"
-#import "GroupConferenceController.h"
+#import "ConferenceController.h"
 #import "ConfInviteUserCell.h"
 
 @interface ConfInviteUsersViewController ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>

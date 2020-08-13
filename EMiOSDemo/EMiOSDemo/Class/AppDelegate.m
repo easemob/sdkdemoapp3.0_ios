@@ -15,7 +15,7 @@
 
 #import "EMDemoHelper.h"
 #import "SingleCallController.h"
-#import "GroupConferenceController.h"
+#import "ConferenceController.h"
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
@@ -193,7 +193,7 @@
         [EMDemoHelper shareHelper];
         [EMNotificationHelper shared];
         [SingleCallController sharedManager];
-        [GroupConferenceController sharedManager];
+        [ConferenceController sharedManager];
     } else {//登录失败加载登录页面控制器
         EMLoginViewController *controller = [[EMLoginViewController alloc] init];
         navigationController = [[UINavigationController alloc] initWithRootViewController:controller];

@@ -16,6 +16,8 @@
 + (EMChatViewController *)getChatControllerInstance:(NSString *)conversationId conversationType:(EMConversationType)conType
 {
     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:conversationId type:conType createIfNotExist:YES];
+    if (!conversation)
+        [EMAlertController showErrorAlert:@"当前会话不存在!"];
     EMConversationModel *conModel = [[EMConversationModel alloc]initWithEMModel:conversation];
     
     if (conType == EMConversationTypeChat)

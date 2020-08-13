@@ -14,7 +14,6 @@
 		3A45DA2722239DE200505786 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A45D72122239DE200505786 /* Images.xcassets */; };
 		3A45DB4B22239DE200505786 /* EMDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45D8FF22239DE200505786 /* EMDemoHelper.m */; };
 		3A45DBDF22239DE300505786 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45D9B022239DE200505786 /* AppDelegate.m */; };
-		3A45DBE022239DE300505786 /* EMiOSDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */; };
 		3A45DE652223A1FD00505786 /* EMChatBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DBEB2223A1FC00505786 /* EMChatBarItem.m */; };
 		3A45DE882223A1FD00505786 /* EaseEmotionEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DC132223A1FC00505786 /* EaseEmotionEscape.m */; };
 		3A45DEAC2223A1FD00505786 /* EMChatBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DC3E2223A1FC00505786 /* EMChatBar.m */; };
@@ -617,7 +616,7 @@
 		3C5260B424651ABC00D16DD5 /* switchCamera_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */; };
 		3C5260B524651ABC00D16DD5 /* minimize_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52602124651ABB00D16DD5 /* minimize_white@3x.png */; };
 		3C5260B624651ABC00D16DD5 /* MeetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C52602324651ABB00D16DD5 /* MeetingViewController.m */; };
-		3C5260B724651ABC00D16DD5 /* GroupConferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C52602424651ABB00D16DD5 /* GroupConferenceController.m */; };
+		3C5260B724651ABC00D16DD5 /* ConferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C52602424651ABB00D16DD5 /* ConferenceController.m */; };
 		3C5260B824651ABC00D16DD5 /* Live2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C52602524651ABB00D16DD5 /* Live2ViewController.m */; };
 		3C5260B924651ABC00D16DD5 /* EMConferenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C52602624651ABB00D16DD5 /* EMConferenceViewController.m */; };
 		3C5260BA24651ABC00D16DD5 /* ConfInviteUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C52602824651ABB00D16DD5 /* ConfInviteUsersViewController.m */; };
@@ -633,6 +632,7 @@
 		3C5A15CD2383A6EA002CAE4E /* icon加载@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C12383A6E8002CAE4E /* icon加载@2x.png */; };
 		3C5A15CE2383A6EA002CAE4E /* 语音声波receive@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C22383A6E9002CAE4E /* 语音声波receive@3x.png */; };
 		3C5A162B2383EA06002CAE4E /* LoadingCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5A162A2383EA06002CAE4E /* LoadingCALayer.m */; };
+		3C710D5F24E2A718003D2467 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ACFA04E221168C000B16331 /* CoreServices.framework */; };
 		3C72A1BD23E9107800F747B7 /* video-opposite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C72A1BC23E9107800F747B7 /* video-opposite@3x.png */; };
 		3C72A1C023E91E2F00F747B7 /* EMChatInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C72A1BF23E91E2F00F747B7 /* EMChatInfoViewController.m */; };
 		3C7A14DA238F6F3900F4AC48 /* EMMsgNotificViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A14D9238F6F3900F4AC48 /* EMMsgNotificViewController.m */; };
@@ -717,7 +717,6 @@
 		90AE9446230D2CDC00A905E5 /* EMRemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AE9445230D2CDC00A905E5 /* EMRemindManager.m */; };
 		90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECC1930492300121AEC /* CFNetwork.framework */; };
 		90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BECE1930492B00121AEC /* AddressBook.framework */; };
-		90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F1BED41930495800121AEC /* MobileCoreServices.framework */; };
 		921C6A9E1D2A841600D8257F /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921C6A9D1D2A841600D8257F /* CoreMotion.framework */; };
 		C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C36CA691A1EDB6200CDDD48 /* CoreData.framework */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
@@ -1517,7 +1516,7 @@
 		3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switchCamera_white@2x.png"; sourceTree = "<group>"; };
 		3C52602124651ABB00D16DD5 /* minimize_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minimize_white@3x.png"; sourceTree = "<group>"; };
 		3C52602324651ABB00D16DD5 /* MeetingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetingViewController.m; sourceTree = "<group>"; };
-		3C52602424651ABB00D16DD5 /* GroupConferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupConferenceController.m; sourceTree = "<group>"; };
+		3C52602424651ABB00D16DD5 /* ConferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConferenceController.m; sourceTree = "<group>"; };
 		3C52602524651ABB00D16DD5 /* Live2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Live2ViewController.m; sourceTree = "<group>"; };
 		3C52602624651ABB00D16DD5 /* EMConferenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMConferenceViewController.m; sourceTree = "<group>"; };
 		3C52602824651ABB00D16DD5 /* ConfInviteUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfInviteUsersViewController.m; sourceTree = "<group>"; };
@@ -1525,7 +1524,7 @@
 		3C52602A24651ABB00D16DD5 /* ConfInviteUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfInviteUserCell.m; sourceTree = "<group>"; };
 		3C52602B24651ABB00D16DD5 /* ConfInviteUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfInviteUsersViewController.h; sourceTree = "<group>"; };
 		3C52602C24651ABB00D16DD5 /* ConfInviteUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfInviteUserCell.h; sourceTree = "<group>"; };
-		3C52602D24651ABB00D16DD5 /* GroupConferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupConferenceController.h; sourceTree = "<group>"; };
+		3C52602D24651ABB00D16DD5 /* ConferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConferenceController.h; sourceTree = "<group>"; };
 		3C52602E24651ABB00D16DD5 /* MeetingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetingViewController.h; sourceTree = "<group>"; };
 		3C52602F24651ABB00D16DD5 /* Live2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Live2ViewController.h; sourceTree = "<group>"; };
 		3C52603024651ABB00D16DD5 /* EMConferenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMConferenceViewController.h; sourceTree = "<group>"; };
@@ -1580,7 +1579,7 @@
 		3C843EE1249363F0005D9891 /* EMPersonalAPPKeyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMPersonalAPPKeyViewController.m; sourceTree = "<group>"; };
 		3C87876724DBF5F900A8D995 /* EMChatControllerFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatControllerFactory.h; sourceTree = "<group>"; };
 		3C87876824DBF5F900A8D995 /* EMChatControllerFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatControllerFactory.m; sourceTree = "<group>"; };
-		3C87876E24DC12E200A8D995 /* video-opposite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "video-opposite.png"; path = "../../../../../../../demo产品资源/UI图资源/video-opposite.png"; sourceTree = "<group>"; };
+		3C87876E24DC12E200A8D995 /* video-opposite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite.png"; sourceTree = "<group>"; };
 		3C878A1524DD0FF900A8D995 /* groupSharedFile@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupSharedFile@3x.png"; sourceTree = "<group>"; };
 		3C87A0ED248E2B750051E06E /* EMConferenceInviteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMConferenceInviteViewController.h; sourceTree = "<group>"; };
 		3C87A0EE248E2B750051E06E /* EMConferenceInviteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMConferenceInviteViewController.m; sourceTree = "<group>"; };
@@ -1669,6 +1668,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C710D5F24E2A718003D2467 /* CoreServices.framework in Frameworks */,
 				3AFDAE65201AE58F0088D44E /* Security.framework in Frameworks */,
 				3A03FE9F1E360BEE00DC1ABC /* MessageUI.framework in Frameworks */,
 				3A595FAC1D6DBBD100504DB3 /* CoreTelephony.framework in Frameworks */,
@@ -1684,7 +1684,6 @@
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
 				3C06AAFF194050A00076FF0B /* CoreLocation.framework in Frameworks */,
 				3C3527451931D37900385240 /* SystemConfiguration.framework in Frameworks */,
-				90F1BED51930495800121AEC /* MobileCoreServices.framework in Frameworks */,
 				90F1BECF1930492B00121AEC /* AddressBook.framework in Frameworks */,
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
@@ -2992,11 +2991,11 @@
 			path = WaitAnimate;
 			sourceTree = "<group>";
 		};
-		3C52602224651ABB00D16DD5 /* GroupConference */ = {
+		3C52602224651ABB00D16DD5 /* Conference */ = {
 			isa = PBXGroup;
 			children = (
-				3C52602D24651ABB00D16DD5 /* GroupConferenceController.h */,
-				3C52602424651ABB00D16DD5 /* GroupConferenceController.m */,
+				3C52602D24651ABB00D16DD5 /* ConferenceController.h */,
+				3C52602424651ABB00D16DD5 /* ConferenceController.m */,
 				3C52603024651ABB00D16DD5 /* EMConferenceViewController.h */,
 				3C52602624651ABB00D16DD5 /* EMConferenceViewController.m */,
 				3C52602724651ABB00D16DD5 /* Invite */,
@@ -3007,7 +3006,7 @@
 				3C87A0ED248E2B750051E06E /* EMConferenceInviteViewController.h */,
 				3C87A0EE248E2B750051E06E /* EMConferenceInviteViewController.m */,
 			);
-			path = GroupConference;
+			path = Conference;
 			sourceTree = "<group>";
 		};
 		3C52602724651ABB00D16DD5 /* Invite */ = {
@@ -3295,7 +3294,7 @@
 				3CA5F46224D91C4F004BF0CF /* AudioRecord */,
 				3C525F8E24651AB800D16DD5 /* SingleCall */,
 				3C525FA724651ABA00D16DD5 /* CallImgs */,
-				3C52602224651ABB00D16DD5 /* GroupConference */,
+				3C52602224651ABB00D16DD5 /* Conference */,
 				3C525F9C24651AB800D16DD5 /* Helper */,
 			);
 			name = Communicate;
@@ -3413,8 +3412,8 @@
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
 				3C2B1EBF244D9235000E97B2 /* Embed Frameworks */,
-				E16F9C6424E73429A591E0F4 /* [CP] Embed Pods Frameworks */,
-				E0FE73531DF49DF40E0AFAB1 /* [CP] Copy Pods Resources */,
+				47811CDAC419289BAD9EBC26 /* [CP] Embed Pods Frameworks */,
+				063E2ACC260BCBAD331F3F35 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3432,7 +3431,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = "___FULLUSERNAME___";
+				ORGANIZATIONNAME = ___FULLUSERNAME___;
 				TargetAttributes = {
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -3691,7 +3690,6 @@
 				3C0C333A2384DE870071BDDD /* 语音声波-right-1@2x.png in Resources */,
 				3A45E3582223A45500505786 /* msg_location_white@2x.png in Resources */,
 				3C52608324651ABC00D16DD5 /* grid_gray@2x.png in Resources */,
-				3A45DBE022239DE300505786 /* EMiOSDemo-Info.plist in Resources */,
 				3C4AED072499F8B7001F7C50 /* agreeProtocol.png in Resources */,
 				3C0C3378238784990071BDDD /* audioSlide02-white@2x.png in Resources */,
 				3C4AED2D249A2040001F7C50 /* icon.png in Resources */,
@@ -3992,25 +3990,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A953713D7161DE906A0EF1EF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-EMiOSDemo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E0FE73531DF49DF40E0AFAB1 /* [CP] Copy Pods Resources */ = {
+		063E2ACC260BCBAD331F3F35 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4028,7 +4008,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E16F9C6424E73429A591E0F4 /* [CP] Embed Pods Frameworks */ = {
+		47811CDAC419289BAD9EBC26 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4044,6 +4024,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A953713D7161DE906A0EF1EF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EMiOSDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4148,7 +4146,7 @@
 				3A45E0B52223A2BA00505786 /* MWPhoto.m in Sources */,
 				3A45E4212223A52100505786 /* EMCallSettingsViewController.m in Sources */,
 				3A45DEAC2223A1FD00505786 /* EMChatBar.m in Sources */,
-				3C5260B724651ABC00D16DD5 /* GroupConferenceController.m in Sources */,
+				3C5260B724651ABC00D16DD5 /* ConferenceController.m in Sources */,
 				3A45E3332223A44200505786 /* EMMessageBubbleView.m in Sources */,
 				3A45E0432223A23000505786 /* WSLNativeScanTool.m in Sources */,
 				3C72A1C023E91E2F00F747B7 /* EMChatInfoViewController.m in Sources */,
@@ -4388,9 +4386,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
 				);
 				MARKETING_VERSION = 3.6.9;
@@ -4475,10 +4471,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Helper/3rdParty/VoiceConvert",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
 				);
 				MARKETING_VERSION = 3.6.9;
 				ONLY_ACTIVE_ARCH = NO;

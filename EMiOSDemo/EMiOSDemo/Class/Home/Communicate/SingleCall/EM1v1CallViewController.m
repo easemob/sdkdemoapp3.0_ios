@@ -395,7 +395,6 @@
         reason = EMCallEndReasonDecline;
     }
     [[SingleCallController sharedManager] endCallWithId:callId reason:reason];
-    
 }
 
 - (void)answerAction

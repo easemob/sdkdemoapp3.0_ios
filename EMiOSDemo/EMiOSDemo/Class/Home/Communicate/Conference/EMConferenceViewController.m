@@ -717,7 +717,7 @@
     if (self.type == EMConferenceTypeLive && self.isCreater) {
         isDestroy = YES;
     }
-    [[GroupConferenceController sharedManager] endConference:self.conference isDestroy:isDestroy];
+    [[ConferenceController sharedManager] endConference:self.conference isDestroy:isDestroy];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }

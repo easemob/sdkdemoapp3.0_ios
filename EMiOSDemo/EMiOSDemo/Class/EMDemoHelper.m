@@ -150,6 +150,8 @@ static EMDemoHelper *helper = nil;
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     for (EMMessage *msg in aMessages) {
+        if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) //通话邀请
+            continue;
         [EMRemindManager remindMessage:msg];
     }
 }

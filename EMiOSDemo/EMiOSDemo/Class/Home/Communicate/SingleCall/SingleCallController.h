@@ -16,6 +16,7 @@
 
 + (instancetype)sharedManager;
 
+//单聊通话：语音/视频
 - (void)communicateWithContact:(NSString *)conversationId callType:(EMCallType)callType;
 
 - (void)answerCall:(NSString *)aCallId;

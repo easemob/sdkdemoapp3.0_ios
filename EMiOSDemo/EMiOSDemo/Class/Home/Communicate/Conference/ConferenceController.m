@@ -1,12 +1,12 @@
 //
-//  GroupConferenceController.m
+//  ConferenceController.m
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 23/11/2016.
 //  Copyright © 2016 XieYajie. All rights reserved.
 //
 
-#import "GroupConferenceController.h"
+#import "ConferenceController.h"
 
 #import <Hyphenate/Hyphenate.h>
 
@@ -18,16 +18,16 @@
 #import "Live2ViewController.h"
 #import "EMConferenceInviteViewController.h"
 
-static GroupConferenceController *confManager = nil;
+static ConferenceController *confManager = nil;
 
-@interface GroupConferenceController()<EMConferenceManagerDelegate, EMChatManagerDelegate>
+@interface ConferenceController()<EMConferenceManagerDelegate, EMChatManagerDelegate>
 
 @property (strong, nonatomic) UINavigationController *confNavController;
 
 @end
 
 
-@implementation GroupConferenceController
+@implementation ConferenceController
 
 - (instancetype)init
 {
@@ -43,7 +43,7 @@ static GroupConferenceController *confManager = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        confManager = [[GroupConferenceController alloc] init];
+        confManager = [[ConferenceController alloc] init];
     });
     
     return confManager;
@@ -54,6 +54,16 @@ static GroupConferenceController *confManager = nil;
     [[EMClient sharedClient].conferenceManager removeDelegate:self];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - public
+
+- (void)communicateConference:(EMConversation *)conversation popFromController:(UIViewController *)controller
+{
+    ConfInviteType inviteType = ConfInviteTypeGroup;
+    if (conversation.type == EMChatTypeChatRoom)
+        inviteType = ConfInviteTypeChatroom;
+    [self inviteMemberWithConfType:EMConferenceTypeCommunication inviteType:inviteType conversationId:conversation.conversationId chatType:(EMChatType)conversation.type popFromController:controller];
 }
 
 #pragma mark - private
@@ -174,17 +184,14 @@ static GroupConferenceController *confManager = nil;
     id model = [dic objectForKey:CALL_MODEL];
     
     NSString *conversationId = nil;
-    ConfInviteType inviteType = ConfInviteTypeUser;
+    ConfInviteType inviteType = ConfInviteTypeGroup;
     EMChatType chatType = EMChatTypeChat;
     if ([model isKindOfClass:[EMConversationModel class]]) {
         EMConversationModel *cmodel = (EMConversationModel *)model;
         conversationId = cmodel.emModel.conversationId;
         chatType =(EMChatType)cmodel.emModel.type;
-        if (cmodel.emModel.type == EMChatTypeGroupChat) {
-            inviteType = ConfInviteTypeGroup;
-        } else if (cmodel.emModel.type == EMChatTypeChatRoom) {
+        if (cmodel.emModel.type == EMChatTypeChatRoom)
             inviteType = ConfInviteTypeChatroom;
-        }
     }
     
     UIViewController *controller = [dic objectForKey:NOTIF_NAVICONTROLLER];

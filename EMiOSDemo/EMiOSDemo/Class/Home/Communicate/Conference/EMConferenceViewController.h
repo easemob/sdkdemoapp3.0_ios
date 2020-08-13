@@ -8,7 +8,7 @@
 
 #import "EMCallViewController.h"
 
-#import "GroupConferenceController.h"
+#import "ConferenceController.h"
 #import "EMStreamView.h"
 #import "ConfInviteUsersViewController.h"
 #import "AudioRecord.h"

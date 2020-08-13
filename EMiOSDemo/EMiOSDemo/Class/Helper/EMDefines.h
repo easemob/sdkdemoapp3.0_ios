@@ -48,6 +48,13 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMCOMMUNICATE_TYPE_VIDEO @"EMCommunicateTypeVideo"
 #define EMCOMMUNICATE_DURATION_TIME @"EMCommunicateDurationTime"
 
+//通话状态
+#define EMCOMMUNICATE_MISSED_CALL @"EMCommunicateMissedCall" //（通话取消）
+#define EMCOMMUNICATE_CALLER_MISSEDCALL @"EMCommunicateCallerMissedCall" //（主叫方取消通话）
+#define EMCOMMUNICATE_CALLED_MISSEDCALL @"EMCommunicateCalledMissedCall" //（被叫方拒绝接通）
+//发起邀请
+#define EMCOMMUNICATE_CALLINVITE @"EMCommunicateCallInvite" //（发起通话邀请）
+
 #define EMCOMMUNICATE_DICT_CALLEDPARTY @"EMCommunicateDictCalledParty"
 #define EMCOMMUNICATE_DICT_CALLINGPARTY @"EMCommunicateDictCallingParty"
 

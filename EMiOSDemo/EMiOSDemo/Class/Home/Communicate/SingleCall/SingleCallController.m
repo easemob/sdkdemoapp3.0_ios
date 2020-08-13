@@ -67,6 +67,7 @@ static SingleCallController *callManager = nil;
 - (void)dealloc
 {
     self.callCenter = nil;
+    [self _stopCallTimeoutTimer];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
     
@@ -136,11 +137,12 @@ static SingleCallController *callManager = nil;
 - (void)_timeoutBeforeCallAnswered:(NSTimer *)timer
 {
     NSString *reason = (NSString *)[timer userInfo]; //必须放在本timer关闭之前使用，不然会出现野指针错误
+    [self sendCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callType:self.currentCall.type]; //主叫方取消通话
     [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
     UIAlertView *alertView = nil;
-    if(reason) {
+    if (reason) {
         alertView = [[UIAlertView alloc] initWithTitle:nil message:reason delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
-    }else {
+    } else {
         alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     }
     /*
@@ -158,7 +160,7 @@ static SingleCallController *callManager = nil;
 
 - (void)_startCallTimeoutTimer
 {
-    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:nil repeats:NO];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:nil repeats:NO];
 }
 
 - (void)_stopCallTimeoutTimer
@@ -188,7 +190,7 @@ static SingleCallController *callManager = nil;
     
     gIsCalling = YES;
     @synchronized (_callLock) {
-        [self _startCallTimeoutTimer];
+        //[self _startCallTimeoutTimer];
         
         self.currentCall = aSession;
         if (aSession.type == EMCallTypeVoice) {
@@ -282,27 +284,6 @@ static SingleCallController *callManager = nil;
         [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
     }
     
-    //通话类型
-    NSString *callType;
-    if (aSession.type == EMCallTypeVoice) {
-        callType = EMCOMMUNICATE_TYPE_VOICE;
-    } else if (aSession.type == EMCallTypeVideo) {
-        callType = EMCOMMUNICATE_TYPE_VIDEO;
-    }
-    //主叫方发送通话信息
-    if ([self.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY]) {
-        if (self.callDurationTime) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callType,EMCOMMUNICATE_DURATION_TIME:self.callDurationTime}];
-        } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callType,EMCOMMUNICATE_DURATION_TIME:@""}];
-        }
-    }
-    self.callDurationTime = nil;
-    /*
-    if (![aSession.callId isEqualToString:self.currentCall.callId]) {
-        return;
-    }*/
-    
     if (aReason != EMCallEndReasonHangup) {
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
@@ -341,8 +322,10 @@ static SingleCallController *callManager = nil;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
         }
+        [self sendCallRecord:EMCOMMUNICATE_CALLED_MISSEDCALL callType:aSession.type];//被叫方取消通话
+    } else {
+        [self sendCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callType:aSession.type];//主叫方取消通话
     }
-   
 }
 
 - (void)callStateDidChange:(EMCallSession *)aSession
@@ -375,12 +358,6 @@ static SingleCallController *callManager = nil;
     
     [self _stopCallTimeoutTimer];
     self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
-    /*
-    //开关打开发消息并一直呼，否则挂断发消息
-    if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
-        [self _stopCallTimeoutTimer];
-        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
-    }*/
 }
 
 #pragma mark - NSNotification
@@ -495,6 +472,27 @@ static SingleCallController *callManager = nil;
 }
 
 #pragma mark - public
+
+//通话记录
+- (void)sendCallRecord:(NSString *)missedCallDirection callType:(EMCallType)callType
+{
+    //通话类型
+    NSString *callTypeStr;
+    if (callType == EMCallTypeVoice) {
+        callTypeStr = EMCOMMUNICATE_TYPE_VOICE;
+    } else if (callType == EMCallTypeVideo) {
+        callTypeStr = EMCOMMUNICATE_TYPE_VIDEO;
+    }
+    //主叫方发送通话信息
+    if ([self.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY]) {
+        if (self.callDurationTime) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callTypeStr,EMCOMMUNICATE_DURATION_TIME:self.callDurationTime,EMCOMMUNICATE_MISSED_CALL:@""}];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callTypeStr,EMCOMMUNICATE_DURATION_TIME:@"",EMCOMMUNICATE_MISSED_CALL:missedCallDirection}];
+        }
+    }
+    self.callDurationTime = nil;
+}
 
 - (void)saveCallOptions
 {

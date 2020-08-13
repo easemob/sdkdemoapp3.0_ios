@@ -371,10 +371,14 @@
         if (!self.isNeedReload) {
             self.isNeedReload = YES;
             for (EMMessage *msg in aMessages) {
-                
                 if(msg.body.type == EMMessageBodyTypeText) {
                     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
-                    //群聊@提醒功能
+                    //通话邀请
+                    if ([((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) {
+                        [conversation deleteMessageWithId:msg.messageId error:nil];
+                        continue;
+                    }
+                    //群聊@“我”提醒
                     NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
                     if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
                         NSMutableDictionary *dic;

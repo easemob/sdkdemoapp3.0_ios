@@ -187,6 +187,15 @@
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     for (EMMessage *msg in aMessages) {
+        if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) {
+            //通话邀请
+            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
+            if ([((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) {
+                [conversation deleteMessageWithId:msg.messageId error:nil];
+                continue;
+            }
+        }
+            
         if ([(NSString *)[msg.ext objectForKey:MSG_EXT_CALLID] length] != 0 || [(NSString *)[msg.ext objectForKey:@"conferenceId"] length] != 0) {
             //会议邀请消息
             [[NSNotificationCenter defaultCenter] postNotificationName:CALL_INVITECONFERENCEVIEW object:msg];

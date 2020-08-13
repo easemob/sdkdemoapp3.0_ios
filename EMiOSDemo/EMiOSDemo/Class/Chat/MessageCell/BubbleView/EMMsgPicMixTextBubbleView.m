@@ -54,9 +54,19 @@
 - (void)setModel:(EMMessageModel *)model
 {
     EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
-    self.textLabel.text = [EMEmojiHelper convertEmoji:body.text];
+    if ([body.text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
+        if ([model.emModel.from isEqualToString:[EMClient sharedClient].currentUsername])
+            self.textLabel.text = @"已取消";
+        else self.textLabel.text = @"对方已取消";
+    } else if ([body.text isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
+        if ([model.emModel.from isEqualToString:[EMClient sharedClient].currentUsername])
+            self.textLabel.text = @"对方拒绝通话";
+        else self.textLabel.text = @"未接听，点击回拨";
+    } else
+        self.textLabel.text = body.text;
+    
     conversationId = model.emModel.conversationId;
-
+    
     if (self.direction == EMMessageDirectionSend) {
         
         [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -98,18 +108,18 @@
             [self.textImgBtn setImage:[UIImage imageNamed:@"video-opposite"] forState:UIControlStateNormal];
         }
     }
-    [self.textImgBtn addTarget:self action:@selector(communicate) forControlEvents:UIControlEventTouchUpInside];
-
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(communicate)];
+    [self addGestureRecognizer:tap];
+    //[self.textImgBtn addTarget:self action:@selector(communicate) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)communicate
 {
-    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VOICE]) {
+    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
         [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
-    } else if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VIDEO]) {
+    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
         [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:conversationId,   CALL_TYPE:@(EMCallTypeVideo)}];
-    }
-   
 }
 
 @end

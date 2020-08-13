@@ -202,15 +202,13 @@
 - (void)sendCallEndMsg:(NSNotification*)noti
 {
     EMTextMessageBody *body;
-    body = [[EMTextMessageBody alloc] initWithText:@"已取消"];
     if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""])
         body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
-    //NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    //[dict setObject:[noti.object objectForKey:EMCOMMUNICATE_TYPE] forKey:EMCOMMUNICATE_TYPE];
+    else body = [[EMTextMessageBody alloc] initWithText:[noti.object objectForKey:EMCOMMUNICATE_MISSED_CALL]];
     [self sendMessageWithBody:body ext:@{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息"}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]} isUpload:NO];
 }
 
-//单聊天详情页
+//单聊详情页
 - (void)chatInfoAction
 {
     __weak typeof(self) weakself = self;

@@ -259,6 +259,7 @@ static const void *imagePickerKey = &imagePickerKey;
         return;
     }
     [weakself.chatBar clearMoreViewAndSelectedButton];
+    //群聊/聊天室 多人会议
     [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), CALL_MODEL:weakself.conversationModel, NOTIF_NAVICONTROLLER:self.navigationController}];
 }
 

@@ -673,7 +673,11 @@
         NSMutableArray *msgArray = [[NSMutableArray alloc] init];
         for (int i = 0; i < [aMessages count]; i++) {
             EMMessage *msg = aMessages[i];
-            if (![msg.conversationId isEqualToString:conId]) {
+            if (![msg.conversationId isEqualToString:conId])
+                continue;
+            if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) {
+                //通话邀请
+                [weakself.conversationModel.emModel deleteMessageWithId:msg.messageId error:nil];
                 continue;
             }
             [weakself returnReadReceipt:msg];
@@ -837,12 +841,20 @@
 
 - (void)handleWillPushCallController:(NSNotification *)aNotif
 {
+    __weak typeof(self) weakself = self;
     NSString *communicatePushType = [NSString stringWithFormat:@"%@ 邀请你通话",[EMClient sharedClient].currentUsername];
     if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
         communicatePushType = [NSString stringWithFormat:@"%@ 邀请你视频通话",[EMClient sharedClient].currentUsername];
     if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
         communicatePushType = [NSString stringWithFormat:@"%@ 邀请你语音通话",[EMClient sharedClient].currentUsername];
-    //[self sendMessageWithBody:[[EMTextMessageBody alloc]initWithText:@""] ext:@{@"em_apns_ext":@{@"em_push_title":communicatePushType}, @"em_force_notification":@YES} isUpload:NO];
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = self.conversationModel.emModel.conversationId;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:[[EMTextMessageBody alloc]initWithText:EMCOMMUNICATE_CALLINVITE] ext:@{@"em_apns_ext":@{@"em_push_title":communicatePushType}, @"em_force_notification":@YES}];
+    message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        if (!error)
+            [weakself.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
+    }];
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];
@@ -1031,8 +1043,6 @@
         [weakself refreshTableView];
     });
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        NSLog(@"messageid:  %@",message.messageId);
-        NSLog(@"errorCode    %u   errorDesc    %@",error.code,error.errorDescription);
         if (error)
             [EMAlertController showErrorAlert:error.errorDescription];
         [weakself messageStatusDidChange:message error:error];
