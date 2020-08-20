@@ -121,10 +121,10 @@
     if (cell == nil) {
         cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
-        UIButton *checkButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 45, 30)];
+        UIButton *checkButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
         checkButton.tag = 100;
-        [checkButton setImage:[UIImage imageNamed:@"uncheck"] forState:UIControlStateNormal];
-        [checkButton setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateSelected];
+        [checkButton setImage:[UIImage imageNamed:@"unCheck"] forState:UIControlStateNormal];
+        [checkButton setImage:[UIImage imageNamed:@"check"] forState:UIControlStateSelected];
         checkButton.userInteractionEnabled = NO;
         cell.accessoryView = checkButton;
     }

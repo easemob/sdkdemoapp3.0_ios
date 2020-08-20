@@ -13,12 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMReadReceiptTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UIImageView *avatarView;
-
-@property (nonatomic, strong) UILabel *nameLabel;
-
-@property (nonatomic, strong) UILabel *timeLable;
-
 @property (nonatomic, strong) EMReadReceiptMemberModel *model;
 
 @end

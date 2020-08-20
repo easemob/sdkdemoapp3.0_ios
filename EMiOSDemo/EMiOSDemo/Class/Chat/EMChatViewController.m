@@ -436,32 +436,6 @@
     self.recordArray = [[NSArray alloc]initWithArray:tempArray2];
 }
 
-#pragma mark - EMSearchBarDelegate
-
-- (void)searchBarSearchButtonClicked:(NSString *)aString
-{
-    [self.view endEditing:YES];
-    if (!self.isSearching) return;
-    [self.conversationModel.emModel loadMessagesWithKeyword:aString timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        if (!aError && [aMessages count] > 0) {
-            __weak typeof(self) weakself = self;
-            dispatch_async(self.msgQueue, ^{
-                NSMutableArray *msgArray = [[NSMutableArray alloc] init];
-                for (int i = 0; i < [aMessages count]; i++) {
-                    EMMessage *msg = aMessages[i];
-                    [msgArray addObject:msg];
-                }
-                NSArray *formated = [weakself formatMessages:msgArray];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakself.searchResults removeAllObjects];
-                    [weakself.searchResults addObjectsFromArray:formated];
-                    [weakself.searchResultTableView reloadData];
-                });
-            });
-        }
-    }];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -986,7 +960,6 @@
          }];
     } else {
         [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:50 searchDirection:EMMessageSearchDirectionUp completion:block];
-        
     }
 }
 

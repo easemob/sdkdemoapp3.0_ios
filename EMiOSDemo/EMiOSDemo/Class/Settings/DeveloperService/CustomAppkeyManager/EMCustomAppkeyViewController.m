@@ -89,7 +89,7 @@
     if ([tempAppkey isEqualToString:EMDemoOptions.sharedOptions.appkey]) {
         cell.imageView.image = [UIImage imageNamed:@"currentAppkey"];
     } else {
-        cell.imageView.image = [UIImage imageNamed:@""];
+        cell.imageView.image = [UIImage imageNamed:@"optionalAppkey"];
     }
     cell.textLabel.text = tempAppkey;
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];

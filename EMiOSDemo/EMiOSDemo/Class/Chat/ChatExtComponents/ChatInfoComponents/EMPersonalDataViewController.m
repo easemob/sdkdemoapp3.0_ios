@@ -30,7 +30,7 @@
     if (self) {
         _nickName = aNickName;
         _contacts = [[EMClient sharedClient].contactManager getContacts];
-        _hint = @"添加联系人";
+        _hint = @"添加到通讯录";
     }
     return self;
 }
@@ -42,7 +42,7 @@
         _nickName = aNickName;
         _contacts = [[EMClient sharedClient].contactManager getContacts];
         _isChatting = isChatting;
-        _hint = @"添加联系人";
+        _hint = @"添加到通讯录";
     }
     return self;
 }
@@ -144,7 +144,7 @@
     if (section == 1)
         cell.textLabel.text = [self.contacts containsObject:self.nickName] ? @"" : self.hint;
     if (section == 2)
-        cell.textLabel.text = @"发起聊天";
+        cell.textLabel.text = @"发消息";
     if (section == 3)
         cell.textLabel.text = @"语音通话";
     if (section == 4 )

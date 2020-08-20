@@ -7,25 +7,17 @@
 //
 
 #import "EMOpinionFeedbackViewController.h"
+#import "EMTextView.h"
+#import "EMFeedBackType.h"
 
-@interface EMOpinionFeedbackViewController ()
-{
-    CGFloat offset;
-}
+@interface EMOpinionFeedbackViewController ()<UITextFieldDelegate, UITextViewDelegate>
 
-@property (nonatomic, strong) UIButton *bugFeedbackBtn;
-@property (nonatomic, strong) UIButton *experienceKartunBtn;
-
-@property (nonatomic, strong) UITextView *opinionDescTextView;
-
+@property (nonatomic, strong) EMTextView *opinionDescTextView;
+@property (nonatomic, strong) UILabel *feedBackTypeLabel;
 @property (nonatomic, strong) UITextField *mailTextFiled;
 @property (nonatomic, strong) UITextField *imTextFiled;
 
 @property (nonatomic, strong) UIButton *commitBtn;
-
-@property (nonatomic, strong) UILabel *bugTypeLabel;
-
-@property (nonatomic, strong) UIButton *currentBtnType;
 
 @end
 
@@ -33,7 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    offset = 0.0;
+    self.showRefreshHeader = NO;
+    self.view.layer.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0].CGColor;
     [self _setupSubviews];
 }
 
@@ -59,172 +52,204 @@
 {
     [self addPopBackLeftItem];
     self.title = @"意见反馈";
-    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(commitAction)];
     
-    self.bugTypeLabel = [[UILabel alloc]init];
-    _bugTypeLabel.font = [UIFont systemFontOfSize:16.0];
-    _bugTypeLabel.text = @"选择问题类型：";
-    [self.view addSubview:_bugTypeLabel];
-    [_bugTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(20);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    self.bugFeedbackBtn = [[UIButton alloc] init];
-    self.bugFeedbackBtn.layer.borderWidth = 1;
-    self.bugFeedbackBtn.layer.borderColor = [UIColor blackColor].CGColor;
-    [self.bugFeedbackBtn addTarget:self action:@selector(checkboxAction:) forControlEvents:UIControlEventTouchUpInside];
-    self.bugFeedbackBtn.tag = 0;
-    [self.bugFeedbackBtn setBackgroundImage:[UIImage imageNamed:@"currentAppkey"] forState:UIControlStateSelected];
-    [self.view addSubview:self.bugFeedbackBtn];
-    [self.bugFeedbackBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@25);
-        make.top.equalTo(self.bugTypeLabel.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    UILabel *bugFeedback = [[UILabel alloc]init];
-    bugFeedback.font = [UIFont systemFontOfSize:14.0];
-    bugFeedback.text = @"BUG反馈";
-    [self.view addSubview:bugFeedback];
-    [bugFeedback mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.bugFeedbackBtn);
-        make.left.equalTo(self.bugFeedbackBtn.mas_right).offset(16);
-    }];
-    
-    self.experienceKartunBtn = [[UIButton alloc] init];
-    self.experienceKartunBtn.layer.borderWidth = 1;
-    self.experienceKartunBtn.layer.borderColor = [UIColor blackColor].CGColor;
-    [self.experienceKartunBtn addTarget:self action:@selector(checkboxAction:) forControlEvents:UIControlEventTouchUpInside];
-    self.experienceKartunBtn.tag = 1;
-    [self.experienceKartunBtn setBackgroundImage:[UIImage imageNamed:@"currentAppkey"] forState:UIControlStateSelected];
-    [self.view addSubview:self.experienceKartunBtn];
-    [self.experienceKartunBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@25);
-        make.top.equalTo(self.bugFeedbackBtn.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    UILabel *experienceKartun = [[UILabel alloc]init];
-    experienceKartun.font = [UIFont systemFontOfSize:14.0];
-    experienceKartun.text = @"使用卡顿";
-    [self.view addSubview:experienceKartun];
-    [experienceKartun mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.experienceKartunBtn);
-        make.left.equalTo(self.experienceKartunBtn.mas_right).offset(16);
-    }];
-    
-    UILabel *opinionDesc = [[UILabel alloc]init];
-    opinionDesc.font = [UIFont systemFontOfSize:16.0];
-    opinionDesc.text = @"问题描述：";
-    [self.view addSubview:opinionDesc];
-    [opinionDesc mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.experienceKartunBtn.mas_bottom).offset(30);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    self.opinionDescTextView = [[UITextView alloc]init];
-    [self.view addSubview:self.opinionDescTextView];
-    [self.opinionDescTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(opinionDesc.mas_bottom).offset(10);
-        make.left.right.equalTo(self.view);
-        make.height.equalTo(@120);
-    }];
-    
-    UILabel *contactWay = [[UILabel alloc]init];
-    contactWay.font = [UIFont systemFontOfSize:16.0];
-    contactWay.text = @"您的联系方式：";
-    [self.view addSubview:contactWay];
-    [contactWay mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.opinionDescTextView.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    UILabel *email = [[UILabel alloc]init];
-    email.font = [UIFont systemFontOfSize:16.0];
-    email.text = @"邮箱：";
-    [self.view addSubview:email];
-    [email mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(contactWay.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    UILabel *im = [[UILabel alloc]init];
-    im.font = [UIFont systemFontOfSize:16.0];
-    im.text = @"Q Q：";
-    [self.view addSubview:im];
-    [im mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(email.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(16);
-    }];
-    
-    self.mailTextFiled = [[UITextField alloc]init];
-    self.mailTextFiled.font = [UIFont systemFontOfSize:10.0];
-    self.mailTextFiled.layer.borderWidth = 1;
-    self.mailTextFiled.layer.borderColor = [UIColor blackColor].CGColor;
-    [self.view addSubview:self.mailTextFiled];
-    [self.mailTextFiled mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(email);
-        make.right.equalTo(self.view).offset(-16);
-        make.width.equalTo(@(self.view.frame.size.width - 100));
-        make.height.equalTo(@30);
-    }];
-    
-    self.imTextFiled = [[UITextField alloc]init];
-    self.imTextFiled.font = [UIFont systemFontOfSize:10.0];
-    self.imTextFiled.layer.borderWidth = 1;
-    self.imTextFiled.layer.borderColor = [UIColor blackColor].CGColor;
-    [self.view addSubview:self.imTextFiled];
-    [self.imTextFiled mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(im);
-        make.right.equalTo(self.view).offset(-16);
-        make.width.equalTo(@(self.view.frame.size.width - 100));
-        make.height.equalTo(@30);
-    }];
-    
-    self.commitBtn = [[UIButton alloc]init];
-    [self.commitBtn setTitle:@"提交" forState:UIControlStateNormal];
-    [self.commitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.commitBtn.backgroundColor = [UIColor systemBlueColor];
-    self.commitBtn.layer.cornerRadius = 10.0;
-    [self.commitBtn.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
-    [self.commitBtn addTarget:self action:@selector(commitAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.commitBtn];
-    [self.commitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-16);
-        make.width.equalTo(@100);
-        make.height.equalTo(@40);
+    self.tableView.backgroundColor = kColor_LightGray;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.scrollEnabled = NO;
+    self.tableView.tableFooterView = [[UIView alloc] init];
+
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.equalTo(self.view);
     }];
 }
 
-# pragma mark - Action
-//复选框checkbox
-- (void)checkboxAction:(UIButton *)btn
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) return 1;
+    return 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.section == 0) {
+        cell.textLabel.text = @"选择问题类型";
+        [cell.contentView addSubview:self.feedBackTypeLabel];
+        [self.feedBackTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView);
+            make.right.equalTo(cell.contentView).offset(-16);
+            make.left.equalTo(cell.textLabel.mas_right).offset(16);
+        }];
+    }
+    if (indexPath.section == 1 && row == 0) {
+        cell.textLabel.text = @"您的邮箱";
+        [cell.contentView addSubview:self.mailTextFiled];
+        [self.mailTextFiled mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView);
+            make.right.equalTo(cell.contentView).offset(-16);
+            make.left.equalTo(cell.textLabel.mas_right).offset(16);
+        }];
+    }
+    if (indexPath.section == 1 && row == 1) {
+        cell.textLabel.text = @"您的QQ";
+        [cell.contentView addSubview:self.imTextFiled];
+        [self.imTextFiled mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView);
+            make.right.equalTo(cell.contentView).offset(-16);
+            make.left.equalTo(cell.textLabel.mas_right).offset(16);
+        }];
+    }
+    cell.accessoryType = indexPath.section == 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellSelectionStyleNone;
+    cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
+    return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (!self.currentBtnType) {
-        btn.selected = YES;
-        self.currentBtnType = btn;
-    } else {
-        if (self.currentBtnType == btn) {
-            btn.selected = NO;
-            self.currentBtnType = nil;
-        } else {
-            self.currentBtnType.selected = NO;
-            btn.selected = YES;
-            self.currentBtnType = btn;
-        }
+    if (section == 0) {
+        UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 182)];
+        footerView.backgroundColor = [UIColor clearColor];
+        UIView *perchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 16)];
+        perchView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
+        [footerView addSubview:perchView];
+        UIView *descView = [[UIView alloc]initWithFrame:CGRectMake(0, 16, [UIScreen mainScreen].bounds.size.width, 166)];
+        descView.backgroundColor = [UIColor whiteColor];
+        [footerView addSubview:descView];
+        self.opinionDescTextView = [[EMTextView alloc] init];
+        self.opinionDescTextView.delegate = self;
+        self.opinionDescTextView.placeholder = @"问题描述";
+        self.opinionDescTextView.font = [UIFont systemFontOfSize:14];
+        self.opinionDescTextView.textAlignment = NSTextAlignmentLeft;
+        self.opinionDescTextView.returnKeyType = UIReturnKeyDone;
+        [descView addSubview:self.opinionDescTextView];
+        [self.opinionDescTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(descView.mas_top).offset(8);
+            make.bottom.equalTo(descView.mas_bottom).offset(-8);
+            make.left.equalTo(descView.mas_left).offset(20);
+            make.right.equalTo(descView.mas_right).offset(-20);
+        }];
+        return footerView;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 66;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) return 16;
+    return 0.001;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 0) return 182;
+    return 0.001;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger section = indexPath.section;
+    if (section == 0) {
+        EMFeedBackType *feedBackTypeView = [[EMFeedBackType alloc]init];
+        [self.view addSubview:feedBackTypeView];
+        [feedBackTypeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.right.bottom.equalTo(self.view);
+        }];
+        [feedBackTypeView setDoneCompletion:^(NSString * _Nonnull aConfirm) {
+            self.feedBackTypeLabel.text = aConfirm;
+        }];
     }
 }
+
+#pragma mark -UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([string isEqualToString:@"\n"]) {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+# pragma mark - Action
 
 //提交
 - (void)commitAction
 {
-    if (!self.currentBtnType) {
-        [self showHint:@"请选择反馈问题类型！"];
-    } else {
-        
+    
+}
+
+#pragma mark - Getter & Setter
+
+- (UILabel *)feedBackTypeLabel
+{
+    if (_feedBackTypeLabel == nil) {
+        _feedBackTypeLabel = [[UILabel alloc]init];
+        _feedBackTypeLabel.text = @"BUG反馈";
+        _feedBackTypeLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+        _feedBackTypeLabel.font = [UIFont systemFontOfSize:14.0];
+        _feedBackTypeLabel.textAlignment = NSTextAlignmentRight;
+        _feedBackTypeLabel.userInteractionEnabled = NO;
     }
+    return _feedBackTypeLabel;
+}
+
+- (UITextField *)mailTextFiled
+{
+    if (_mailTextFiled == nil) {
+        _mailTextFiled = [[UITextField alloc]init];
+        _mailTextFiled.font = [UIFont systemFontOfSize:14.0];
+        _mailTextFiled.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+        _mailTextFiled.textAlignment = NSTextAlignmentRight;
+        _mailTextFiled.returnKeyType = UIReturnKeyDone;
+        _mailTextFiled.delegate = self;
+        _mailTextFiled.placeholder = @"请输入邮箱地址";
+    }
+    return _mailTextFiled;
+}
+
+- (UITextField *)imTextFiled
+{
+    if (_imTextFiled == nil) {
+        _imTextFiled = [[UITextField alloc]init];
+        _imTextFiled.font = [UIFont systemFontOfSize:14.0];
+        _imTextFiled.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+        _imTextFiled.textAlignment = NSTextAlignmentRight;
+        _imTextFiled.returnKeyType = UIReturnKeyDone;
+        _imTextFiled.delegate = self;
+        _imTextFiled.placeholder = @"请输入QQ号";
+    }
+    return _imTextFiled;
 }
 
 #pragma mark - KeyBoard
@@ -236,31 +261,22 @@
     // 获取键盘高度
     CGRect keyBoardBounds  = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyBoardHeight = keyBoardBounds.size.height;
-    
-    // 定义好动作
-    void (^animation)(void) = ^void(void) {
-        [self.bugTypeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            self->offset = (self.imTextFiled.frame.origin.y + 20) - (self.view.frame.size.height - keyBoardHeight);
-            make.top.equalTo(self.view).offset(-self->offset);
-        }];
-    };
-    
-    if ((self.imTextFiled.frame.origin.y + 20) > (self.view.frame.size.height - keyBoardHeight)) {
-        animation();
+
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UIView *firstResponder = [keyWindow performSelector:@selector(firstResponder)];
+    UIView *cellView = [[firstResponder superview] superview];
+    CGFloat keyboardPosition = [UIScreen mainScreen].bounds.size.height - keyBoardHeight - 60;
+    if ((cellView.frame.origin.y + 60) > keyboardPosition)
+    {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, ((cellView.frame.origin.y + 60) - keyboardPosition), 0);
+        CGPoint scrollPoint = CGPointMake(0.0, keyboardPosition-firstResponder.frame.origin.y - 60);
+        [self.tableView setContentOffset:scrollPoint animated:YES];
     }
 }
 
 - (void)keyBoardWillHide:(NSNotification *)note
 {
-    // 定义好动作
-    void (^animation)(void) = ^void(void) {
-        [self.bugTypeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(20);
-        }];
-    };
-    if (self->offset > 0.0) {
-        animation();
-    }
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 @end

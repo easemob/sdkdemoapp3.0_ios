@@ -39,6 +39,8 @@
 
 + (EMMessageEventStrategy * _Nonnull)getStratrgyImplWithMsgCell:(EMMessageCell *)aCell
 {
+    if (aCell.model.type == EMMessageTypePictMixText)
+        return [[CommunicateMsgEvent alloc]init];
     if (aCell.model.type == EMMessageTypeImage)
         return [[ImageMsgEvent alloc] init];
     if (aCell.model.type == EMMessageTypeLocation)
@@ -57,6 +59,32 @@
 
 @end
 
+/**
+   单聊通话事件
+*/
+@implementation CommunicateMsgEvent
+
+- (void)messageCellEventOperation:(EMMessageCell *)aCell
+{
+    NSLog(@"readack : %d",aCell.model.emModel.isReadAcked);
+    if (!aCell.model.emModel.isReadAcked) {
+        [[EMClient sharedClient].chatManager sendMessageReadAck:aCell.model.emModel.messageId toUser:aCell.model.emModel.conversationId completion:nil];
+    }
+    NSLog(@"msgid : %@",aCell.model.emModel.messageId);
+    NSLog(@"msgext : %@",aCell.model.emModel.ext);
+    NSString *callType = nil;
+    NSDictionary *dic = aCell.model.emModel.ext;
+    if ([[dic objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
+        callType = EMCOMMUNICATE_TYPE_VOICE;
+    if ([[dic objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
+        callType = EMCOMMUNICATE_TYPE_VIDEO;
+    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
+        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:aCell.model.emModel.conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
+    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
+        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:aCell.model.emModel.conversationId,   CALL_TYPE:@(EMCallTypeVideo)}];
+}
+
+@end
 
 /**
     图片事件

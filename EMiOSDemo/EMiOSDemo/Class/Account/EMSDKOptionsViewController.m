@@ -633,6 +633,5 @@
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-
 }
 @end

@@ -69,6 +69,27 @@
         make.right.equalTo(self.contentView).offset(-15);
         make.bottom.equalTo(self.detailLabel.mas_top);
     }];
+    
+    _timestampLabel = [[UILabel alloc] init];
+    _timestampLabel.numberOfLines = 1;
+    _timestampLabel.backgroundColor = [UIColor clearColor];
+    _timestampLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
+    _timestampLabel.font = [UIFont systemFontOfSize:12];
+    [_timestampLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.contentView addSubview:_timestampLabel];
+    [_timestampLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.avatarView);
+        make.right.equalTo(self.contentView).offset(-15);
+    }];
+}
+
+- (void)setModel:(EMAvatarNameModel *)model
+{
+    _model = model;
+    _avatarView.image = model.avatarImg;
+    _nameLabel.text = model.from;
+    _detailLabel.text = model.detail;
+    _timestampLabel.text = model.timestamp;
 }
 
 #pragma mark - Public

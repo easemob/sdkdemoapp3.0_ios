@@ -295,7 +295,8 @@
         {
             [self _startCallDurationTimer];
             
-            self.statusLabel.text = @"通话中...";
+            //self.statusLabel.text = @"通话中...";
+            self.statusLabel.hidden = YES;
             self.timeLabel.hidden = NO;
             [self.waitImgView stopAnimating];
             if (!self.callSession.isCaller) {

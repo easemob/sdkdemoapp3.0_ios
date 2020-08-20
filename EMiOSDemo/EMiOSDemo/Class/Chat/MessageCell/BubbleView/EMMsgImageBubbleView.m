@@ -40,7 +40,7 @@
             break;
         }
         CGFloat maxWidth = [UIScreen mainScreen].bounds.size.width / 2 - 60.0;
-        NSInteger tmpWidth = aSize.width;
+        CGFloat tmpWidth = aSize.width;
         if (aSize.width < kEMMsgImageMinWidth) {
             tmpWidth = kEMMsgImageMinWidth;
         }
@@ -48,7 +48,7 @@
             tmpWidth = kEMMsgImageMaxWidth;
         }
         
-        NSInteger tmpHeight = tmpWidth / aSize.width * aSize.height;
+        CGFloat tmpHeight = tmpWidth / aSize.width * aSize.height;
         if (tmpHeight > kEMMsgImageMaxHeight) {
             tmpHeight = kEMMsgImageMaxHeight;
         }
@@ -72,7 +72,7 @@
     __weak typeof(self) weakself = self;
     void (^block)(CGSize aSize) = ^(CGSize aSize) {
         CGSize layoutSize = [weakself _getImageSize:aSize];
-        [weakself mas_updateConstraints:^(MASConstraintMaker *make) {
+        [weakself mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(layoutSize.width);
             make.height.mas_equalTo(layoutSize.height);
         }];
@@ -92,11 +92,8 @@
         if (isAutoDownloadThumbnail) {
             [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
                     if (!error) {
-                        weakself.image = image;
+                        //weakself.image = image;
                         block(image.size);
-                    } else {
-                        weakself.image = [UIImage imageNamed:@"msg_img_broken"];
-                        block(weakself.image.size);
                     }
             }];
         } else {

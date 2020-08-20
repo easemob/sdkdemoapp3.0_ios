@@ -290,7 +290,7 @@
     options.noDisturbingEndH = [end intValue];
     options.noDisturbStatus = EMPushNoDisturbStatusCustom;
     [[EMClient sharedClient] updatePushNotificationOptionsToServerWithCompletion:^(EMError *aError) {
-        if (aError) {
+        if (!aError) {
             [weakself hideHud];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakself.tableView reloadData];

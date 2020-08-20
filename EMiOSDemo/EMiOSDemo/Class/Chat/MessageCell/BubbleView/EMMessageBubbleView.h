@@ -23,6 +23,4 @@
 
 - (void)setupBubbleBackgroundImage;
 
-
-
 @end

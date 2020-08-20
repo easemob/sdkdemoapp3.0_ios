@@ -71,7 +71,7 @@
     self.cardView = [[UIView alloc] init];
     self.cardView.backgroundColor = [UIColor whiteColor];
     self.cardView.clipsToBounds = YES;
-    self.cardView.layer.cornerRadius = 5;
+    self.cardView.layer.cornerRadius = 8;
     [self.contentView addSubview:self.cardView];
     [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.timeLabel.mas_bottom);

@@ -9,7 +9,6 @@
 #import "EMMsgPicMixTextBubbleView.h"
 
 @implementation EMMsgPicMixTextBubbleView
-
 {
     NSString *callType;
     NSString *conversationId;
@@ -44,7 +43,7 @@
     [self addSubview:self.textImgBtn];
     [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@25);
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self.mas_centerY);
     }];
     
 }
@@ -70,24 +69,24 @@
     if (self.direction == EMMessageDirectionSend) {
         
         [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self).offset(-15);
+            make.right.equalTo(self.mas_right).offset(-15);
         }];
         
         self.textLabel.textColor = [UIColor whiteColor];
         [self.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.textImgBtn.mas_left).offset(-5);
-            make.left.equalTo(self).offset(10);
+            make.left.equalTo(self.mas_left).offset(10);
         }];
         
     } else {
         [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self).offset(15);
+            make.left.equalTo(self.mas_left).offset(15);
         }];
         
         self.textLabel.textColor = [UIColor blackColor];
         [self.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.textImgBtn.mas_right).offset(5);
-            make.right.equalTo(self).offset(-10);
+            make.right.equalTo(self.mas_right).offset(-10);
         }];
         
     }
@@ -108,18 +107,6 @@
             [self.textImgBtn setImage:[UIImage imageNamed:@"video-opposite"] forState:UIControlStateNormal];
         }
     }
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(communicate)];
-    [self addGestureRecognizer:tap];
-    //[self.textImgBtn addTarget:self action:@selector(communicate) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)communicate
-{
-    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
-    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:conversationId,   CALL_TYPE:@(EMCallTypeVideo)}];
 }
 
 @end

@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface CommunicateMsgEvent : EMMessageEventStrategy
+@end
 
 @interface ImageMsgEvent : EMMessageEventStrategy
 @end

@@ -125,10 +125,10 @@
     self.sendBtn.layer.cornerRadius = 3;
     [self addSubview:self.sendBtn];
     [self.sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(5);
-        make.left.equalTo(_emojiButton.mas_right).offset(2);
-        make.right.equalTo(self).offset(-5);
-        make.height.mas_equalTo(ktextViewMinHeight);
+        make.top.equalTo(self).offset(10);
+        make.left.equalTo(_emojiButton.mas_right).offset(6);
+        make.right.equalTo(self).offset(-10);
+        make.height.mas_equalTo(@30);
     }];
     self.sendBtn.hidden = YES;
     

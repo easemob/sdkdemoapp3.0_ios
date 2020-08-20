@@ -186,15 +186,16 @@
 - (BOOL)_isNeedSendReadAckForMessage:(EMMessage *)aMessage
                           isMarkRead:(BOOL)aIsMarkRead
 {
-    if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat) {
+    if (!self.isViewDidAppear || aMessage.direction == EMMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != EMChatTypeChat)
         return NO;
-    }
     
     EMMessageBody *body = aMessage.body;
-    if (!aIsMarkRead && (body.type == EMMessageBodyTypeVideo || body.type == EMMessageBodyTypeVoice || body.type == EMMessageBodyTypeImage)) {
+    if (!aIsMarkRead && (body.type == EMMessageBodyTypeVideo || body.type == EMMessageBodyTypeVoice || body.type == EMMessageBodyTypeImage))
         return NO;
-    }
-    
+
+    if (body.type == EMMessageTypeText && [((EMTextMessageBody *)body).text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL] && aMessage.direction == EMMessageDirectionReceive)
+        return NO;
+        
     return YES;
 }
 
@@ -205,7 +206,11 @@
     if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""])
         body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
     else body = [[EMTextMessageBody alloc] initWithText:[noti.object objectForKey:EMCOMMUNICATE_MISSED_CALL]];
-    [self sendMessageWithBody:body ext:@{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息"}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]} isUpload:NO];
+    NSDictionary *iOSExt = @{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息", @"em_push_sound":@"ring.caf", @"em_push_mutable_content":@YES}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]};
+    NSDictionary *androidExt = @{@"em_push_ext":@{@"type":@"call"}, @"em_android_push_ext":@{@"em_push_sound":@"/raw/ring"}};
+    NSMutableDictionary *pushExt = [[NSMutableDictionary alloc]initWithDictionary:iOSExt];
+    [pushExt addEntriesFromDictionary:androidExt];
+    [self sendMessageWithBody:body ext:[NSDictionary dictionaryWithDictionary:pushExt] isUpload:NO];
 }
 
 //单聊详情页

@@ -35,11 +35,7 @@
 {
     [self addPopBackLeftItem];
     self.title = @"添加自定义APPKey";
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(addAppkeyAction)];
-    [rightBarItem setTintColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0]];
-    self.navigationItem.rightBarButtonItem = rightBarItem;
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:15], NSFontAttributeName, nil] forState:UIControlStateNormal];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blueColor]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(addAppkeyAction)];
     
     UILabel *appkeyLabel = [[UILabel alloc]init];
     appkeyLabel.text = @"Appkey";

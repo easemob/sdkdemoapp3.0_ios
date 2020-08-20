@@ -170,14 +170,13 @@
         _statusView.clipsToBounds = YES;
         _statusView.layer.cornerRadius = 4;
         [_statusView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.bubbleView).offset(5);
+            make.centerY.equalTo(self.bubbleView);
             make.left.equalTo(self.bubbleView.mas_right).offset(5);
             make.width.height.equalTo(@8);
         }];
     }
     
     [self setCellIsReadReceipt];
-    
 }
 
 - (void)setCellIsReadReceipt{
@@ -250,18 +249,22 @@
     _model = model;
     self.bubbleView.model = model;
     if (model.direction == EMMessageDirectionSend) {
-        
         [self.statusView setSenderStatus:model.emModel.status isReadAcked:model.emModel.isReadAcked];
     } else {
         self.nameLabel.text = model.emModel.from;
         if (model.type == EMMessageBodyTypeVoice) {
             self.statusView.hidden = model.emModel.isReadAcked;
         }
+        if (model.type == EMMessageTypePictMixText) {
+            if ([((EMTextMessageBody *)model.emModel.body).text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL])
+                self.statusView.hidden = model.emModel.isReadAcked;
+            else self.statusView.hidden = YES;
+        }
     }
-    if(model.emModel.isNeedGroupAck) {
+    if (model.emModel.isNeedGroupAck) {
         self.readReceiptBtn.hidden = NO;
         [self.readReceiptBtn setTitle:_model.readReceiptCount forState:UIControlStateNormal];
-    }else{
+    } else{
         self.readReceiptBtn.hidden = YES;
     }
 }

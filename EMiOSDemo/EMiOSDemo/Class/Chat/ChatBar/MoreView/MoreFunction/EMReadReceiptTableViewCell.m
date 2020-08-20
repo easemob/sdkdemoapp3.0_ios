@@ -8,6 +8,16 @@
 
 #import "EMReadReceiptTableViewCell.h"
 
+@interface EMReadReceiptTableViewCell()
+
+@property (nonatomic, strong) UIImageView *avatarView;
+
+@property (nonatomic, strong) UILabel *nameLabel;
+
+@property (nonatomic, strong) UILabel *timeLable;
+
+@end
+
 @implementation EMReadReceiptTableViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -19,15 +29,6 @@
     
     return self;
 }
-
-//- (instancetype)initWithIdentity
-//{
-//    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"member"];
-//    if(self){
-//        [self _setupSubviews];
-//    }
-//    return self;
-//}
 
 - (void)awakeFromNib {
     [super awakeFromNib];
