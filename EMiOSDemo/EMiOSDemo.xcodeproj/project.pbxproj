@@ -371,7 +371,6 @@
 		3A45E3E22223A4E900505786 /* EMGroupSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E3D92223A4E900505786 /* EMGroupSettingsViewController.m */; };
 		3A45E3E32223A4E900505786 /* EMGroupSharedFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E3DA2223A4E900505786 /* EMGroupSharedFilesViewController.m */; };
 		3A45E3E42223A4E900505786 /* EMGroupAdminsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E3DC2223A4E900505786 /* EMGroupAdminsViewController.m */; };
-		3A45E3EA2223A4F300505786 /* file@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E3E52223A4F300505786 /* file@3x.png */; };
 		3A45E3EB2223A4F300505786 /* group_create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E3E62223A4F300505786 /* group_create@2x.png */; };
 		3A45E3EC2223A4F300505786 /* group_join@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E3E72223A4F300505786 /* group_join@2x.png */; };
 		3A45E3ED2223A4F300505786 /* group_join@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A45E3E82223A4F300505786 /* group_join@3x.png */; };
@@ -462,6 +461,8 @@
 		3C5260F124651BB800D16DD5 /* tabbar_contacts_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D324651BB700D16DD5 /* tabbar_contacts_gray@2x.png */; };
 		3C5260F624651BB800D16DD5 /* tabbar_settings_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D824651BB700D16DD5 /* tabbar_settings_gray@2x.png */; };
 		3C5260F724651BB800D16DD5 /* tabbar_settings_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5260D924651BB700D16DD5 /* tabbar_settings_gray@3x.png */; };
+		3C8DFABD24EE980B0047C277 /* ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8DFABC24EE980A0047C277 /* ring.caf */; };
+		3C8DFABF24EF68A20047C277 /* file@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C8DFABE24EF68A20047C277 /* file@3x.png */; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
 		90911028192EEA70008A48AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90911027192EEA70008A48AA /* Foundation.framework */; };
 		9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9091102B192EEA70008A48AA /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -992,7 +993,6 @@
 		3A45E3DA2223A4E900505786 /* EMGroupSharedFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupSharedFilesViewController.m; sourceTree = "<group>"; };
 		3A45E3DB2223A4E900505786 /* EMGroupAdminsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMGroupAdminsViewController.h; sourceTree = "<group>"; };
 		3A45E3DC2223A4E900505786 /* EMGroupAdminsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMGroupAdminsViewController.m; sourceTree = "<group>"; };
-		3A45E3E52223A4F300505786 /* file@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "file@3x.png"; sourceTree = "<group>"; };
 		3A45E3E62223A4F300505786 /* group_create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_create@2x.png"; sourceTree = "<group>"; };
 		3A45E3E72223A4F300505786 /* group_join@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_join@2x.png"; sourceTree = "<group>"; };
 		3A45E3E82223A4F300505786 /* group_join@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_join@3x.png"; sourceTree = "<group>"; };
@@ -1115,6 +1115,8 @@
 		3C5260D324651BB700D16DD5 /* tabbar_contacts_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_contacts_gray@2x.png"; sourceTree = "<group>"; };
 		3C5260D824651BB700D16DD5 /* tabbar_settings_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settings_gray@2x.png"; sourceTree = "<group>"; };
 		3C5260D924651BB700D16DD5 /* tabbar_settings_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_settings_gray@3x.png"; sourceTree = "<group>"; };
+		3C8DFABC24EE980A0047C277 /* ring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ring.caf; sourceTree = "<group>"; };
+		3C8DFABE24EF68A20047C277 /* file@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "file@3x.png"; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		906569BE24B317270058F759 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = music.mp3; path = ../../../TestCallSound/music.mp3; sourceTree = "<group>"; };
 		90911024192EEA70008A48AA /* EMiOSDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EMiOSDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1150,9 +1152,9 @@
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D2B1B9EE1C3B80290087A74F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
+		E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
 		EBF955E21ADD17700087E035 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1386,7 +1388,7 @@
 		3A45DC8C2223A1FC00505786 /* GroupImgs */ = {
 			isa = PBXGroup;
 			children = (
-				3A45E3E52223A4F300505786 /* file@3x.png */,
+				3C8DFABE24EF68A20047C277 /* file@3x.png */,
 				3A45E3E62223A4F300505786 /* group_create@2x.png */,
 				3A45E3E92223A4F300505786 /* group_create@3x.png */,
 				3A45E3E72223A4F300505786 /* group_join@2x.png */,
@@ -2294,6 +2296,7 @@
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
+				3C8DFABC24EE980A0047C277 /* ring.caf */,
 				C05E031124D15ED60092D792 /* music.mp3 */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
 				90911026192EEA70008A48AA /* Frameworks */,
@@ -2449,6 +2452,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C8DFABD24EE980B0047C277 /* ring.caf in Resources */,
 				C05E031224D15ED60092D792 /* music.mp3 in Resources */,
 				3A45E3772223A46500505786 /* chat_info@3x.png in Resources */,
 				C06DBC4323BA152900F9FA3B /* tabbar_chat_gray@2x.png in Resources */,
@@ -2462,7 +2466,6 @@
 				3C5260EF24651BB800D16DD5 /* tabbar_chat_blue@3x.png in Resources */,
 				3C4CEC6E2372A7AB00A37140 /* chat_audio_red@3x.png in Resources */,
 				3A45E3052223A41600505786 /* chatbar_extend_blue@3x.png in Resources */,
-				3A45E3EA2223A4F300505786 /* file@3x.png in Resources */,
 				3C4CEC382372A7AA00A37140 /* icon_030_cover.png in Resources */,
 				3A45E0242223A21B00505786 /* EMSDKOptions.plist in Resources */,
 				3A45E3062223A41600505786 /* chatbar_camera_blue@3x.png in Resources */,
@@ -2687,6 +2690,7 @@
 				3A45E2062223A37900505786 /* animate_00041.png in Resources */,
 				3C4CEC202372A7AA00A37140 /* pin-red.png in Resources */,
 				3A45E1922223A36400505786 /* role_gray@2x.png in Resources */,
+				3C8DFABF24EF68A20047C277 /* file@3x.png in Resources */,
 				3C4CEC402372A7AA00A37140 /* icon_012.gif in Resources */,
 				3A45E1962223A36400505786 /* bg_connecting@2x.png in Resources */,
 				3A45E2282223A37900505786 /* animate_00053.png in Resources */,
@@ -2782,13 +2786,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
-				"${PODS_ROOT}/../emclient-ios/newSDK/Hyphenate.framework",
-				"${PODS_ROOT}/../RTC/webrtc-src/out/ios/WebRTC.framework",
+				"${PODS_ROOT}/Hyphenate/Hyphenate.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3141,7 +3143,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 				);
-				MARKETING_VERSION = 3.6.8;
+				MARKETING_VERSION = 3.7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -3217,7 +3219,7 @@
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 				);
-				MARKETING_VERSION = 3.6.8;
+				MARKETING_VERSION = 3.7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
