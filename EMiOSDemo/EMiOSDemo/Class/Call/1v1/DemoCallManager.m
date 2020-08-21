@@ -118,6 +118,7 @@ static DemoCallManager *callManager = nil;
 - (void)_timeoutBeforeCallAnswered:(NSTimer *)timer
 {
     NSString *reason = (NSString *)[timer userInfo]; //必须放在本timer关闭之前使用，不然会出现野指针错误
+    [self sendCallRecord]; //主叫方取消通话
     [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
     UIAlertView *alertView = nil;
     if(reason) {
@@ -125,12 +126,6 @@ static DemoCallManager *callManager = nil;
     }else {
         alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     }
-    NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-    NSString *fromStr = [EMClient sharedClient].currentUsername;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:_chatter from:fromStr to:_chatter body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
     [alertView show];
 }
 
@@ -303,11 +298,29 @@ static DemoCallManager *callManager = nil;
     }
 }
 
+#pragma mark - public
+
+//通话记录
+- (void)sendCallRecord
+{
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:@"EMCOMMUNICATE_MISSED_CALL"];
+    NSDictionary *iOSExt = @{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息", @"em_push_sound":@"ring.caf", @"em_push_mutable_content":@YES}, @"em_force_notification":@YES};
+    NSDictionary *androidExt = @{@"em_push_ext":@{@"type":@"call"}, @"em_android_push_ext":@{@"em_push_sound":@"/raw/ring"}};
+    NSMutableDictionary *pushExt = [[NSMutableDictionary alloc]initWithDictionary:iOSExt];
+    [pushExt addEntriesFromDictionary:androidExt];
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:_chatter from:from to:_chatter body:body ext:[NSDictionary dictionaryWithDictionary:pushExt]];
+    message.chatType = EMChatTypeChat;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+}
+
 #pragma mark - EMCallBuilderDelegate
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
-    
+    [self _stopCallTimeoutTimer];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
+    /*
     NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
     NSString *fromStr = [EMClient sharedClient].currentUsername;
@@ -319,7 +332,7 @@ static DemoCallManager *callManager = nil;
     if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
         [self _stopCallTimeoutTimer];
         self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
-    }
+    }*/
 }
 
 #pragma mark - NSNotification
