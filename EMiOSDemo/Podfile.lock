@@ -1,6 +1,6 @@
 PODS:
   - FLAnimatedImage (1.0.12)
-  - Hyphenate (3.6.9)
+  - Hyphenate (3.7.0)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MJRefresh (3.4.3)
@@ -13,7 +13,7 @@ PODS:
 
 DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
-  - Hyphenate (~> 3.6.9)
+  - Hyphenate (~> 3.7.0)
   - Masonry
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
@@ -31,12 +31,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  Hyphenate: 80b08bf184eb1ac753912b98956f4efa71035758
+  Hyphenate: e8caf7a841493f0d3d8376cc009aecd7ece07edb
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 53e3e3219f204425ee6d3e62e8733d3295944cd6
   SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
 
-PODFILE CHECKSUM: de67058f475347ca87ae481bd07fd717a04fab7e
+PODFILE CHECKSUM: 4e0f0f9d3b93b33269317fef358801018d6bbc5f
 
 COCOAPODS: 1.9.3

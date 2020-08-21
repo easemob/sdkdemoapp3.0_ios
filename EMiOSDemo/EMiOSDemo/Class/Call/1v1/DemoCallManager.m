@@ -118,7 +118,6 @@ static DemoCallManager *callManager = nil;
 - (void)_timeoutBeforeCallAnswered:(NSTimer *)timer
 {
     NSString *reason = (NSString *)[timer userInfo]; //必须放在本timer关闭之前使用，不然会出现野指针错误
-    [self sendCallRecord]; //主叫方取消通话
     [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
     UIAlertView *alertView = nil;
     if(reason) {
@@ -318,21 +317,12 @@ static DemoCallManager *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
-    [self _stopCallTimeoutTimer];
-    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
-    /*
-    NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-    NSString *fromStr = [EMClient sharedClient].currentUsername;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}}];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
-    
+    [self sendCallRecord]; //主叫方发送通话推送
     //开关打开发消息并一直呼，否则挂断发消息
     if(!([EMDemoOptions sharedOptions].isOfflineHangup)) {
         [self _stopCallTimeoutTimer];
         self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
-    }*/
+    }
 }
 
 #pragma mark - NSNotification
