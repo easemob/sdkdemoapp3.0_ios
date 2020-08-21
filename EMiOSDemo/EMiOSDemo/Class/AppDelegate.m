@@ -190,6 +190,7 @@
             navigationController = [[UINavigationController alloc] initWithRootViewController:homeController];
         }
         
+        [[EMClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(EMPushOptions *aOptions, EMError *aError) {}];
         [EMDemoHelper shareHelper];
         [EMNotificationHelper shared];
         [DemoCallManager sharedManager];
