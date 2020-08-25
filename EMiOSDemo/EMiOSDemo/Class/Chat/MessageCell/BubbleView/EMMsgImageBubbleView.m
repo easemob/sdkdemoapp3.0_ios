@@ -79,26 +79,18 @@
     };
     
     CGSize size = aThumbSize;
-    if (aThumbSize.width == 0 || aThumbSize.height == 0) {
+    if (aThumbSize.width == 0 || aThumbSize.height == 0)
         size = aSize;
-    }
     
     if (img) {
         self.image = img;
         size = img.size;
         block(size);
     } else {
+        block(size);
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {
-            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                    if (!error) {
-                        weakself.image = image;
-                        block(image.size);
-                    } else {
-                        weakself.image = [UIImage imageNamed:@"msg_img_broken"];
-                        block(weakself.image.size);
-                    }
-            }];
+            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {}];
         } else {
             self.image = [UIImage imageNamed:@"msg_img_broken"];
         }
