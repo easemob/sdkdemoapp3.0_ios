@@ -304,7 +304,7 @@ static DemoCallManager *callManager = nil;
 {
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:@"EMCOMMUNICATE_MISSED_CALL"];
     NSDictionary *iOSExt = @{@"em_apns_ext":@{@"em_push_title":@"您有新的通话消息", @"em_push_sound":@"ring.caf", @"em_push_mutable_content":@YES}, @"em_force_notification":@YES};
-    NSDictionary *androidExt = @{@"em_push_ext":@{@"type":@"call"}, @"em_android_push_ext":@{@"em_push_sound":@"/raw/ring"}};
+    NSDictionary *androidExt = @{@"em_push_ext":@{@"type":@"call"}, @"em_android_push_ext":@{@"em_push_sound":@"/raw/ring", @"em_push_channel_id":@"hyphenate_offline_push_notification"}};
     NSMutableDictionary *pushExt = [[NSMutableDictionary alloc]initWithDictionary:iOSExt];
     [pushExt addEntriesFromDictionary:androidExt];
     NSString *from = [[EMClient sharedClient] currentUsername];
