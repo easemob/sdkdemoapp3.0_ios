@@ -49,6 +49,7 @@
     _detailLabel = [[UILabel alloc] init];
     _detailLabel.backgroundColor = [UIColor clearColor];
     _detailLabel.font = [UIFont systemFontOfSize:16];
+    _detailLabel.numberOfLines = 1;
     _detailLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     [self.contentView addSubview:_detailLabel];
     [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -88,7 +89,8 @@
     _model = model;
     _avatarView.image = model.avatarImg;
     _nameLabel.text = model.from;
-    _detailLabel.text = model.detail;
+    _detailLabel.attributedText = model.detail;
+    _detailLabel.lineBreakMode = 
     _timestampLabel.text = model.timestamp;
 }
 

@@ -18,6 +18,7 @@
 @property (nonatomic, strong) dispatch_queue_t msgQueue;
 //消息格式化
 @property (nonatomic) NSTimeInterval msgTimelTag;
+@property (nonatomic, strong) NSString *keyWord;
 
 @end
 
@@ -99,6 +100,7 @@
 
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
+    _keyWord = aString;
     [self.view endEditing:YES];
     if (!self.isSearching) return;
     NSDate *currentDate = [NSDate date];
@@ -138,7 +140,7 @@
             timeStr = [EMDateHelper formattedTimeFromTimeInterval:msg.timestamp];
             self.msgTimelTag = msg.timestamp;
         }
-        EMAvatarNameModel *model = [[EMAvatarNameModel alloc]initWithInfo:[UIImage imageNamed:@"user_avatar_me"] msg:msg time:timeStr];
+        EMAvatarNameModel *model = [[EMAvatarNameModel alloc]initWithInfo:_keyWord img:[UIImage imageNamed:@"user_avatar_me"] msg:msg time:timeStr];
         [formated addObject:model];
     }
     

@@ -211,6 +211,7 @@ static const void *transpondMenuItemKey = &transpondMenuItemKey;
         newBody = [[EMImageMessageBody alloc]initWithLocalPath:imgBody.localPath displayName:imgBody.displayName];
     }
     
+    newBody.size = imgBody.size;
     __weak typeof(self) weakself = self;
     [weakself _forwardMsgWithBody:newBody to:aUsername ext:aMsg.ext completion:^(EMMessage *message) {
         

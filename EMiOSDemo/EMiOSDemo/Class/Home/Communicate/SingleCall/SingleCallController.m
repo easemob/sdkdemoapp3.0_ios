@@ -357,7 +357,7 @@ static SingleCallController *callManager = nil;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];*/
     
     [self _stopCallTimeoutTimer];
-    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
 }
 
 #pragma mark - NSNotification

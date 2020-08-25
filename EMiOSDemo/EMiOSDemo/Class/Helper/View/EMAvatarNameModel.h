@@ -18,11 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *from;
 
-@property (nonatomic, strong) NSString *detail;
+@property (nonatomic, strong) NSAttributedString *detail;
 
 @property (nonatomic, strong) NSString *timestamp;
 
-- (instancetype)initWithInfo:(UIImage *)img msg:(EMMessage *)msg time:(NSString *)timestamp;
+- (instancetype)initWithInfo:(NSString *)keyWord img:(UIImage *)img msg:(EMMessage *)msg time:(NSString *)timestamp;
 
 @end
 

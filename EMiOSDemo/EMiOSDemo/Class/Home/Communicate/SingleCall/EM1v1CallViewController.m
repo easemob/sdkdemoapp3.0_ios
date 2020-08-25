@@ -222,16 +222,13 @@
     int s = self.callDuration - hour * 3600 - m * 60;
     
     if (hour > 0) {
-        self.timeLabel.text = [NSString stringWithFormat:@"%i:%i:%i", hour, m, s];
+        self.timeLabel.text = [NSString stringWithFormat:@"%@:%@:%@", 0 <= hour && hour < 10 ? [NSString stringWithFormat:@"0%d",hour] : [NSString stringWithFormat:@"%d",m], 0 < m && m < 10 ? [NSString stringWithFormat:@"0%d",m] : [NSString stringWithFormat:@"%d",hour], 0 < s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
     }
     else if(m > 0){
-        self.timeLabel.text = [NSString stringWithFormat:@"%i:%i", m, s];
+        self.timeLabel.text = [NSString stringWithFormat:@"%@:%@", 0 <= m && m < 10 ? [NSString stringWithFormat:@"0%d",m] : [NSString stringWithFormat:@"%d",hour], 0 <= s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
     }
     else{
-        if (s < 10)
-            self.timeLabel.text = [NSString stringWithFormat:@"00:0%i", s];
-        else
-            self.timeLabel.text = [NSString stringWithFormat:@"00:%i", s];
+        self.timeLabel.text = [NSString stringWithFormat:@"00:%@", 0 <= s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
     }
     [SingleCallController sharedManager].callDurationTime = self.timeLabel.text;
 }

@@ -40,7 +40,7 @@
             break;
         }
         CGFloat maxWidth = [UIScreen mainScreen].bounds.size.width / 2 - 60.0;
-        CGFloat tmpWidth = aSize.width;
+        NSInteger tmpWidth = aSize.width;
         if (aSize.width < kEMMsgImageMinWidth) {
             tmpWidth = kEMMsgImageMinWidth;
         }
@@ -48,7 +48,7 @@
             tmpWidth = kEMMsgImageMaxWidth;
         }
         
-        CGFloat tmpHeight = tmpWidth / aSize.width * aSize.height;
+        NSInteger tmpHeight = tmpWidth / aSize.width * aSize.height;
         if (tmpHeight > kEMMsgImageMaxHeight) {
             tmpHeight = kEMMsgImageMaxHeight;
         }
@@ -72,30 +72,25 @@
     __weak typeof(self) weakself = self;
     void (^block)(CGSize aSize) = ^(CGSize aSize) {
         CGSize layoutSize = [weakself _getImageSize:aSize];
-        [weakself mas_makeConstraints:^(MASConstraintMaker *make) {
+        [weakself mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(layoutSize.width);
             make.height.mas_equalTo(layoutSize.height);
         }];
     };
     
     CGSize size = aThumbSize;
-    if (aThumbSize.width == 0 || aThumbSize.height == 0) {
+    if (aThumbSize.width == 0 || aThumbSize.height == 0) 
         size = aSize;
-    }
     
     if (img) {
         self.image = img;
         size = img.size;
         block(size);
     } else {
+        block(size);
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {
-            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                    if (!error) {
-                        //weakself.image = image;
-                        block(image.size);
-                    }
-            }];
+            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {}];
         } else {
             self.image = [UIImage imageNamed:@"msg_img_broken"];
         }
