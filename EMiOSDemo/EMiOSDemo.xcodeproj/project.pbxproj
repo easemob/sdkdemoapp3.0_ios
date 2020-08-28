@@ -567,14 +567,12 @@
 		3C52608224651ABC00D16DD5 /* animate_00029.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FEE24651ABA00D16DD5 /* animate_00029.png */; };
 		3C52608324651ABC00D16DD5 /* grid_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FEF24651ABA00D16DD5 /* grid_gray@2x.png */; };
 		3C52608424651ABC00D16DD5 /* talking_green@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF024651ABA00D16DD5 /* talking_green@3x.png */; };
-		3C52608524651ABC00D16DD5 /* micphone_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF124651ABA00D16DD5 /* micphone_gray@2x.png */; };
 		3C52608624651ABC00D16DD5 /* recorder_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF224651ABA00D16DD5 /* recorder_white@2x.png */; };
 		3C52608724651ABC00D16DD5 /* kbps_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF324651ABA00D16DD5 /* kbps_gray@3x.png */; };
 		3C52608824651ABC00D16DD5 /* role_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF424651ABA00D16DD5 /* role_gray@3x.png */; };
 		3C52608B24651ABC00D16DD5 /* role_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF724651ABA00D16DD5 /* role_gray@2x.png */; };
 		3C52608C24651ABC00D16DD5 /* kbps_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF824651ABA00D16DD5 /* kbps_gray@2x.png */; };
 		3C52608D24651ABC00D16DD5 /* recorder_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FF924651ABA00D16DD5 /* recorder_white@3x.png */; };
-		3C52608E24651ABC00D16DD5 /* micphone_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FFA24651ABA00D16DD5 /* micphone_gray@3x.png */; };
 		3C52608F24651ABC00D16DD5 /* talking_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FFB24651ABA00D16DD5 /* talking_green@2x.png */; };
 		3C52609024651ABC00D16DD5 /* grid_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FFC24651ABA00D16DD5 /* grid_gray@3x.png */; };
 		3C52609124651ABC00D16DD5 /* minimize_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C525FFD24651ABA00D16DD5 /* minimize_gray@3x.png */; };
@@ -584,12 +582,8 @@
 		3C52609524651ABC00D16DD5 /* grid_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600124651ABA00D16DD5 /* grid_white@2x.png */; };
 		3C52609624651ABC00D16DD5 /* bg_connecting@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600224651ABA00D16DD5 /* bg_connecting@3x.png */; };
 		3C52609724651ABC00D16DD5 /* kbps_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600324651ABA00D16DD5 /* kbps_white@3x.png */; };
-		3C52609824651ABC00D16DD5 /* micphone_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600424651ABA00D16DD5 /* micphone_white@2x.png */; };
-		3C52609924651ABC00D16DD5 /* speaker_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600524651ABA00D16DD5 /* speaker_white@2x.png */; };
 		3C52609A24651ABC00D16DD5 /* ring_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600624651ABA00D16DD5 /* ring_gray@2x.png */; };
 		3C52609B24651ABC00D16DD5 /* ring_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600724651ABA00D16DD5 /* ring_gray@3x.png */; };
-		3C52609C24651ABC00D16DD5 /* micphone_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600824651ABA00D16DD5 /* micphone_white@3x.png */; };
-		3C52609D24651ABC00D16DD5 /* speaker_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600924651ABA00D16DD5 /* speaker_white@3x.png */; };
 		3C52609E24651ABC00D16DD5 /* kbps_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600A24651ABA00D16DD5 /* kbps_white@2x.png */; };
 		3C52609F24651ABC00D16DD5 /* video_gray@2x 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600B24651ABA00D16DD5 /* video_gray@2x 2.png */; };
 		3C5260A024651ABC00D16DD5 /* bg_connecting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52600C24651ABA00D16DD5 /* bg_connecting@2x.png */; };
@@ -603,11 +597,9 @@
 		3C5260A824651ABC00D16DD5 /* video_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601424651ABA00D16DD5 /* video_white@3x.png */; };
 		3C5260A924651ABC00D16DD5 /* switchCamera_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601524651ABA00D16DD5 /* switchCamera_gray@2x.png */; };
 		3C5260AB24651ABC00D16DD5 /* mute_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601724651ABA00D16DD5 /* mute_red@2x.png */; };
-		3C5260AC24651ABC00D16DD5 /* speaker_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601824651ABA00D16DD5 /* speaker_gray@2x.png */; };
 		3C5260AD24651ABC00D16DD5 /* invite_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601924651ABA00D16DD5 /* invite_white@2x.png */; };
 		3C5260AE24651ABC00D16DD5 /* invite_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601A24651ABA00D16DD5 /* invite_white@3x.png */; };
 		3C5260AF24651ABC00D16DD5 /* mute_red@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601B24651ABA00D16DD5 /* mute_red@3x.png */; };
-		3C5260B024651ABC00D16DD5 /* speaker_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601C24651ABA00D16DD5 /* speaker_gray@3x.png */; };
 		3C5260B224651ABC00D16DD5 /* switchCamera_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601E24651ABA00D16DD5 /* switchCamera_gray@3x.png */; };
 		3C5260B324651ABC00D16DD5 /* video_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52601F24651ABA00D16DD5 /* video_white@2x.png */; };
 		3C5260B424651ABC00D16DD5 /* switchCamera_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */; };
@@ -697,6 +689,21 @@
 		3C8EBEF524ADDF7E00B6560A /* EMAuthorizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8EBEF424ADDF7E00B6560A /* EMAuthorizationView.m */; };
 		3C930B3323AB2CB600C8268D /* PAirSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C930B3123AB2CB600C8268D /* PAirSandbox.m */; };
 		3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C97EF2923A87B5C004E97B7 /* CloudKit.framework */; };
+		3C99E78E24F6117500782AF0 /* cuteFirstView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E78B24F6117000782AF0 /* cuteFirstView@2x.png */; };
+		3C99E78F24F6117500782AF0 /* cuteFirstView@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E78C24F6117100782AF0 /* cuteFirstView@3x.png */; };
+		3C99E79024F6117500782AF0 /* cuteFirstView.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E78D24F6117200782AF0 /* cuteFirstView.png */; };
+		3C99E79724F642CD00782AF0 /* microphone-connect-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E79124F642C900782AF0 /* microphone-connect-selected@2x.png */; };
+		3C99E79824F642CD00782AF0 /* loudspeaker-connect-selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E79224F642CA00782AF0 /* loudspeaker-connect-selected@3x.png */; };
+		3C99E79A24F642CD00782AF0 /* loudspeaker-connect-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E79424F642CB00782AF0 /* loudspeaker-connect-selected@2x.png */; };
+		3C99E79C24F642CD00782AF0 /* microphone-connect-selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E79624F642CC00782AF0 /* microphone-connect-selected@3x.png */; };
+		3C99E7A424F642E000782AF0 /* microphone-connect-default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E79E24F642DC00782AF0 /* microphone-connect-default@3x.png */; };
+		3C99E7A524F642E000782AF0 /* microphone-connect-default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E79F24F642DD00782AF0 /* microphone-connect-default@2x.png */; };
+		3C99E7A624F642E000782AF0 /* loudspeaker-connect-default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7A024F642DE00782AF0 /* loudspeaker-connect-default@2x.png */; };
+		3C99E7A724F642E000782AF0 /* loudspeaker-connect-default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7A124F642DF00782AF0 /* loudspeaker-connect-default@3x.png */; };
+		3C99E7AF24F642F200782AF0 /* microphone-initiate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7A924F642EC00782AF0 /* microphone-initiate@2x.png */; };
+		3C99E7B024F642F200782AF0 /* microphone-initiate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7AA24F642EC00782AF0 /* microphone-initiate@3x.png */; };
+		3C99E7B124F642F200782AF0 /* loudspeaker-initiate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7AB24F642ED00782AF0 /* loudspeaker-initiate@3x.png */; };
+		3C99E7B224F642F200782AF0 /* loudspeaker-initiate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7AC24F642EF00782AF0 /* loudspeaker-initiate@2x.png */; };
 		3C9B6BB624B4845B00D1C617 /* EMMsgTouchIncident.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9B6BB524B4845B00D1C617 /* EMMsgTouchIncident.m */; };
 		3CA5F46524D91C4F004BF0CF /* AudioRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5F46424D91C4F004BF0CF /* AudioRecord.m */; };
 		3CA5F46D24D9246B004BF0CF /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3CA5F46C24D9246A004BF0CF /* music.mp3 */; };
@@ -1479,14 +1486,12 @@
 		3C525FEE24651ABA00D16DD5 /* animate_00029.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = animate_00029.png; sourceTree = "<group>"; };
 		3C525FEF24651ABA00D16DD5 /* grid_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grid_gray@2x.png"; sourceTree = "<group>"; };
 		3C525FF024651ABA00D16DD5 /* talking_green@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "talking_green@3x.png"; sourceTree = "<group>"; };
-		3C525FF124651ABA00D16DD5 /* micphone_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "micphone_gray@2x.png"; sourceTree = "<group>"; };
 		3C525FF224651ABA00D16DD5 /* recorder_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recorder_white@2x.png"; sourceTree = "<group>"; };
 		3C525FF324651ABA00D16DD5 /* kbps_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kbps_gray@3x.png"; sourceTree = "<group>"; };
 		3C525FF424651ABA00D16DD5 /* role_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "role_gray@3x.png"; sourceTree = "<group>"; };
 		3C525FF724651ABA00D16DD5 /* role_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "role_gray@2x.png"; sourceTree = "<group>"; };
 		3C525FF824651ABA00D16DD5 /* kbps_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kbps_gray@2x.png"; sourceTree = "<group>"; };
 		3C525FF924651ABA00D16DD5 /* recorder_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recorder_white@3x.png"; sourceTree = "<group>"; };
-		3C525FFA24651ABA00D16DD5 /* micphone_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "micphone_gray@3x.png"; sourceTree = "<group>"; };
 		3C525FFB24651ABA00D16DD5 /* talking_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "talking_green@2x.png"; sourceTree = "<group>"; };
 		3C525FFC24651ABA00D16DD5 /* grid_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grid_gray@3x.png"; sourceTree = "<group>"; };
 		3C525FFD24651ABA00D16DD5 /* minimize_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minimize_gray@3x.png"; sourceTree = "<group>"; };
@@ -1496,12 +1501,8 @@
 		3C52600124651ABA00D16DD5 /* grid_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grid_white@2x.png"; sourceTree = "<group>"; };
 		3C52600224651ABA00D16DD5 /* bg_connecting@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_connecting@3x.png"; sourceTree = "<group>"; };
 		3C52600324651ABA00D16DD5 /* kbps_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kbps_white@3x.png"; sourceTree = "<group>"; };
-		3C52600424651ABA00D16DD5 /* micphone_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "micphone_white@2x.png"; sourceTree = "<group>"; };
-		3C52600524651ABA00D16DD5 /* speaker_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker_white@2x.png"; sourceTree = "<group>"; };
 		3C52600624651ABA00D16DD5 /* ring_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ring_gray@2x.png"; sourceTree = "<group>"; };
 		3C52600724651ABA00D16DD5 /* ring_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ring_gray@3x.png"; sourceTree = "<group>"; };
-		3C52600824651ABA00D16DD5 /* micphone_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "micphone_white@3x.png"; sourceTree = "<group>"; };
-		3C52600924651ABA00D16DD5 /* speaker_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker_white@3x.png"; sourceTree = "<group>"; };
 		3C52600A24651ABA00D16DD5 /* kbps_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kbps_white@2x.png"; sourceTree = "<group>"; };
 		3C52600B24651ABA00D16DD5 /* video_gray@2x 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video_gray@2x 2.png"; sourceTree = "<group>"; };
 		3C52600C24651ABA00D16DD5 /* bg_connecting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_connecting@2x.png"; sourceTree = "<group>"; };
@@ -1515,11 +1516,9 @@
 		3C52601424651ABA00D16DD5 /* video_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video_white@3x.png"; sourceTree = "<group>"; };
 		3C52601524651ABA00D16DD5 /* switchCamera_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switchCamera_gray@2x.png"; sourceTree = "<group>"; };
 		3C52601724651ABA00D16DD5 /* mute_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mute_red@2x.png"; sourceTree = "<group>"; };
-		3C52601824651ABA00D16DD5 /* speaker_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker_gray@2x.png"; sourceTree = "<group>"; };
 		3C52601924651ABA00D16DD5 /* invite_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_white@2x.png"; sourceTree = "<group>"; };
 		3C52601A24651ABA00D16DD5 /* invite_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invite_white@3x.png"; sourceTree = "<group>"; };
 		3C52601B24651ABA00D16DD5 /* mute_red@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mute_red@3x.png"; sourceTree = "<group>"; };
-		3C52601C24651ABA00D16DD5 /* speaker_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker_gray@3x.png"; sourceTree = "<group>"; };
 		3C52601E24651ABA00D16DD5 /* switchCamera_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switchCamera_gray@3x.png"; sourceTree = "<group>"; };
 		3C52601F24651ABA00D16DD5 /* video_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video_white@2x.png"; sourceTree = "<group>"; };
 		3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switchCamera_white@2x.png"; sourceTree = "<group>"; };
@@ -1636,6 +1635,21 @@
 		3C930B3123AB2CB600C8268D /* PAirSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAirSandbox.m; sourceTree = "<group>"; };
 		3C930B3223AB2CB600C8268D /* PAirSandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAirSandbox.h; sourceTree = "<group>"; };
 		3C97EF2923A87B5C004E97B7 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		3C99E78B24F6117000782AF0 /* cuteFirstView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cuteFirstView@2x.png"; sourceTree = "<group>"; };
+		3C99E78C24F6117100782AF0 /* cuteFirstView@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cuteFirstView@3x.png"; sourceTree = "<group>"; };
+		3C99E78D24F6117200782AF0 /* cuteFirstView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuteFirstView.png; sourceTree = "<group>"; };
+		3C99E79124F642C900782AF0 /* microphone-connect-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone-connect-selected@2x.png"; sourceTree = "<group>"; };
+		3C99E79224F642CA00782AF0 /* loudspeaker-connect-selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loudspeaker-connect-selected@3x.png"; sourceTree = "<group>"; };
+		3C99E79424F642CB00782AF0 /* loudspeaker-connect-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loudspeaker-connect-selected@2x.png"; sourceTree = "<group>"; };
+		3C99E79624F642CC00782AF0 /* microphone-connect-selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone-connect-selected@3x.png"; sourceTree = "<group>"; };
+		3C99E79E24F642DC00782AF0 /* microphone-connect-default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone-connect-default@3x.png"; sourceTree = "<group>"; };
+		3C99E79F24F642DD00782AF0 /* microphone-connect-default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone-connect-default@2x.png"; sourceTree = "<group>"; };
+		3C99E7A024F642DE00782AF0 /* loudspeaker-connect-default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loudspeaker-connect-default@2x.png"; sourceTree = "<group>"; };
+		3C99E7A124F642DF00782AF0 /* loudspeaker-connect-default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loudspeaker-connect-default@3x.png"; sourceTree = "<group>"; };
+		3C99E7A924F642EC00782AF0 /* microphone-initiate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone-initiate@2x.png"; sourceTree = "<group>"; };
+		3C99E7AA24F642EC00782AF0 /* microphone-initiate@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone-initiate@3x.png"; sourceTree = "<group>"; };
+		3C99E7AB24F642ED00782AF0 /* loudspeaker-initiate@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loudspeaker-initiate@3x.png"; sourceTree = "<group>"; };
+		3C99E7AC24F642EF00782AF0 /* loudspeaker-initiate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loudspeaker-initiate@2x.png"; sourceTree = "<group>"; };
 		3C9B6BB424B4845B00D1C617 /* EMMsgTouchIncident.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMMsgTouchIncident.h; sourceTree = "<group>"; };
 		3C9B6BB524B4845B00D1C617 /* EMMsgTouchIncident.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMMsgTouchIncident.m; sourceTree = "<group>"; };
 		3CA5F46324D91C4F004BF0CF /* AudioRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecord.h; sourceTree = "<group>"; };
@@ -2893,6 +2907,18 @@
 		3C525FA724651ABA00D16DD5 /* CallImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C99E7AC24F642EF00782AF0 /* loudspeaker-initiate@2x.png */,
+				3C99E7AB24F642ED00782AF0 /* loudspeaker-initiate@3x.png */,
+				3C99E7A924F642EC00782AF0 /* microphone-initiate@2x.png */,
+				3C99E7AA24F642EC00782AF0 /* microphone-initiate@3x.png */,
+				3C99E7A024F642DE00782AF0 /* loudspeaker-connect-default@2x.png */,
+				3C99E7A124F642DF00782AF0 /* loudspeaker-connect-default@3x.png */,
+				3C99E79F24F642DD00782AF0 /* microphone-connect-default@2x.png */,
+				3C99E79E24F642DC00782AF0 /* microphone-connect-default@3x.png */,
+				3C99E79424F642CB00782AF0 /* loudspeaker-connect-selected@2x.png */,
+				3C99E79224F642CA00782AF0 /* loudspeaker-connect-selected@3x.png */,
+				3C99E79124F642C900782AF0 /* microphone-connect-selected@2x.png */,
+				3C99E79624F642CC00782AF0 /* microphone-connect-selected@3x.png */,
 				3C4AEDA2249B1C53001F7C50 /* answer.png */,
 				3C4AEDA0249B1C4B001F7C50 /* answer@2x.png */,
 				3C4AEDA1249B1C4F001F7C50 /* answer@3x.png */,
@@ -2917,10 +2943,9 @@
 				3C525FF324651ABA00D16DD5 /* kbps_gray@3x.png */,
 				3C52600A24651ABA00D16DD5 /* kbps_white@2x.png */,
 				3C52600324651ABA00D16DD5 /* kbps_white@3x.png */,
-				3C525FF124651ABA00D16DD5 /* micphone_gray@2x.png */,
-				3C525FFA24651ABA00D16DD5 /* micphone_gray@3x.png */,
-				3C52600424651ABA00D16DD5 /* micphone_white@2x.png */,
-				3C52600824651ABA00D16DD5 /* micphone_white@3x.png */,
+				3C99E78D24F6117200782AF0 /* cuteFirstView.png */,
+				3C99E78B24F6117000782AF0 /* cuteFirstView@2x.png */,
+				3C99E78C24F6117100782AF0 /* cuteFirstView@3x.png */,
 				3C52601124651ABA00D16DD5 /* minimize_gray@2x.png */,
 				3C525FFD24651ABA00D16DD5 /* minimize_gray@3x.png */,
 				3C52601224651ABA00D16DD5 /* minimize_white@2x.png */,
@@ -2937,10 +2962,6 @@
 				3C525FF424651ABA00D16DD5 /* role_gray@3x.png */,
 				3C525FFF24651ABA00D16DD5 /* role_white@2x.png */,
 				3C52600F24651ABA00D16DD5 /* role_white@3x.png */,
-				3C52601824651ABA00D16DD5 /* speaker_gray@2x.png */,
-				3C52601C24651ABA00D16DD5 /* speaker_gray@3x.png */,
-				3C52600524651ABA00D16DD5 /* speaker_white@2x.png */,
-				3C52600924651ABA00D16DD5 /* speaker_white@3x.png */,
 				3C52601524651ABA00D16DD5 /* switchCamera_gray@2x.png */,
 				3C52601E24651ABA00D16DD5 /* switchCamera_gray@3x.png */,
 				3C52602024651ABA00D16DD5 /* switchCamera_white@2x.png */,
@@ -3600,7 +3621,6 @@
 				3A45E2862223A3D600505786 /* icon_027_cover.png in Resources */,
 				3C4AEDCC249B801D001F7C50 /* blankConversation.png in Resources */,
 				3A45E5422223D69800505786 /* checked@2x.png in Resources */,
-				3C52609924651ABC00D16DD5 /* speaker_white@2x.png in Resources */,
 				3CE7293524A1E20700AEA67D /* newFriend@2x.png in Resources */,
 				3A45E08A2223A28F00505786 /* close_white@3x.png in Resources */,
 				3C52606624651ABC00D16DD5 /* animate_00083.png in Resources */,
@@ -3611,6 +3631,7 @@
 				3C4AED022499D04B001F7C50 /* clearContent@3x.png in Resources */,
 				3C52605624651ABC00D16DD5 /* animate_00047.png in Resources */,
 				3C5260B524651ABC00D16DD5 /* minimize_white@3x.png in Resources */,
+				3C99E7AF24F642F200782AF0 /* microphone-initiate@2x.png in Resources */,
 				3C0C33332384DE870071BDDD /* 语音声波-right-2@3x.png in Resources */,
 				3A45E0F62223A30000505786 /* alert_success@3x.png in Resources */,
 				3C37DF45238251ED00399AE8 /* icon-search@2x.png in Resources */,
@@ -3655,12 +3676,14 @@
 				3C0C334C238684580071BDDD /* voice@2x.png in Resources */,
 				3C52605824651ABC00D16DD5 /* animate_00084.png in Resources */,
 				3C4AEDA3249B1C53001F7C50 /* answer@2x.png in Resources */,
+				3C99E7B124F642F200782AF0 /* loudspeaker-initiate@3x.png in Resources */,
 				3A45E2832223A3D600505786 /* icon_013_cover.png in Resources */,
 				3C52606A24651ABC00D16DD5 /* animate_00059.png in Resources */,
 				3C4AED4B249A2F95001F7C50 /* icon-tab通讯录@2x.png in Resources */,
 				3C4AEDCB249B801D001F7C50 /* blankConversation@3x.png in Resources */,
 				3C0C331B238403F90071BDDD /* backleft.png in Resources */,
 				3C4AED45249A2F89001F7C50 /* icon-tab我unselected@3x.png in Resources */,
+				3C99E7A524F642E000782AF0 /* microphone-connect-default@2x.png in Resources */,
 				3C52606824651ABC00D16DD5 /* animate_00040.png in Resources */,
 				3C52609F24651ABC00D16DD5 /* video_gray@2x 2.png in Resources */,
 				3C87876F24DC12E200A8D995 /* video-opposite.png in Resources */,
@@ -3707,7 +3730,6 @@
 				3A45E0892223A28F00505786 /* close_gray@2x.png in Resources */,
 				3C0C331C238403F90071BDDD /* backleft@3x.png in Resources */,
 				3C362E71239FB3DB0048E877 /* icon-setting@3x.png in Resources */,
-				3C5260AC24651ABC00D16DD5 /* speaker_gray@2x.png in Resources */,
 				3C52606324651ABC00D16DD5 /* animate_00041.png in Resources */,
 				3C4AED75249A327E001F7C50 /* camera@3x.png in Resources */,
 				3A45E08D2223A28F00505786 /* group_avatar@3x.png in Resources */,
@@ -3803,10 +3825,11 @@
 				3C3703C7238D06D500A8976B /* developerService@2x.png in Resources */,
 				3C8DFAB424EBDA0F0047C277 /* unCheck@3x.png in Resources */,
 				3C525E0E246410ED00D16DD5 /* close@2x.png in Resources */,
-				3C52608524651ABC00D16DD5 /* micphone_gray@2x.png in Resources */,
 				3A45DA2722239DE200505786 /* Images.xcassets in Resources */,
 				3A45E28F2223A3D600505786 /* icon_035.gif in Resources */,
+				3C99E7B024F642F200782AF0 /* microphone-initiate@3x.png in Resources */,
 				3C52606D24651ABC00D16DD5 /* animate_00064.png in Resources */,
+				3C99E79724F642CD00782AF0 /* microphone-connect-selected@2x.png in Resources */,
 				3C5260A924651ABC00D16DD5 /* switchCamera_gray@2x.png in Resources */,
 				3A45E0862223A28F00505786 /* close_white@2x.png in Resources */,
 				3C4AED63249A30C7001F7C50 /* icon叹号.png in Resources */,
@@ -3823,11 +3846,14 @@
 				3A45E3B62223A4C000505786 /* notification@3x.png in Resources */,
 				3CA5F46D24D9246B004BF0CF /* music.mp3 in Resources */,
 				3C4AED92249B0B78001F7C50 /* audio-unSelected.png in Resources */,
+				3C99E7A724F642E000782AF0 /* loudspeaker-connect-default@3x.png in Resources */,
 				3C52608F24651ABC00D16DD5 /* talking_green@2x.png in Resources */,
 				3A45E3602223A45500505786 /* msg_recv_audio02@3x.png in Resources */,
 				3C52606C24651ABC00D16DD5 /* animate_00065.png in Resources */,
 				3C5260AF24651ABC00D16DD5 /* mute_red@3x.png in Resources */,
 				3A45E0FC2223A30000505786 /* alert_info@2x.png in Resources */,
+				3C99E78E24F6117500782AF0 /* cuteFirstView@2x.png in Resources */,
+				3C99E7B224F642F200782AF0 /* loudspeaker-initiate@2x.png in Resources */,
 				3A45E08F2223A28F00505786 /* group_avatar@2x.png in Resources */,
 				3C0C337D2387849A0071BDDD /* audioSlide03-white@2x.png in Resources */,
 				3C0C335C2386A8130071BDDD /* redAudioBtn.png in Resources */,
@@ -3847,7 +3873,6 @@
 				3C0C3322238404530071BDDD /* 语音声波send@3x.png in Resources */,
 				3C4AED0F2499FE5F001F7C50 /* unableClick@3x.png in Resources */,
 				3C5260A724651ABC00D16DD5 /* switchCamera_white@3x.png in Resources */,
-				3C52609824651ABC00D16DD5 /* micphone_white@2x.png in Resources */,
 				3C52607D24651ABC00D16DD5 /* animate_00061.png in Resources */,
 				3A45E08E2223A28F00505786 /* back_gary@3x.png in Resources */,
 				3C52603D24651ABC00D16DD5 /* bg_micro@3x.png in Resources */,
@@ -3891,7 +3916,6 @@
 				3C0C33972387D02E0071BDDD /* 目标点@2x.png in Resources */,
 				3C52607A24651ABC00D16DD5 /* animate_00060.png in Resources */,
 				3C52604724651ABC00D16DD5 /* animate_00030.png in Resources */,
-				3C5260B024651ABC00D16DD5 /* speaker_gray@3x.png in Resources */,
 				3C87A0FD248F81C60051E06E /* icon-enter@3x.png in Resources */,
 				3C37DF1A2382508500399AE8 /* back_left@3x.png in Resources */,
 				3C37DF47238251ED00399AE8 /* icon-add@2x.png in Resources */,
@@ -3905,14 +3929,15 @@
 				3CFD5DE624C152800086D545 /* BootPage@2x.png in Resources */,
 				3C878A1624DD0FF900A8D995 /* groupSharedFile@3x.png in Resources */,
 				3C3703B5238D06D500A8976B /* developerService@3x.png in Resources */,
+				3C99E7A624F642E000782AF0 /* loudspeaker-connect-default@2x.png in Resources */,
 				3CBCF5FB23A24FC70053E227 /* systemNotify@3x.png in Resources */,
-				3C52609D24651ABC00D16DD5 /* speaker_white@3x.png in Resources */,
 				3C52603E24651ABC00D16DD5 /* video_gray@2x.png in Resources */,
 				3C52607B24651ABC00D16DD5 /* animate_00048.png in Resources */,
 				3A45E3AF2223A4C000505786 /* videocs_theme@3x.png in Resources */,
 				3C37DF132382508500399AE8 /* titleImage.png in Resources */,
 				3A45E27B2223A3D600505786 /* icon_029.gif in Resources */,
 				3C52609524651ABC00D16DD5 /* grid_white@2x.png in Resources */,
+				3C99E78F24F6117500782AF0 /* cuteFirstView@3x.png in Resources */,
 				3A45E0382223A22600505786 /* device@3x.png in Resources */,
 				3C7A1515239118C100F4AC48 /* web@3x.png in Resources */,
 				3C0C33412384DE870071BDDD /* 语音声波-left-1@3x.png in Resources */,
@@ -3922,7 +3947,6 @@
 				3C0C333C2384DE870071BDDD /* 语音声波-right-2.png in Resources */,
 				3C52607924651ABC00D16DD5 /* animate_00074.png in Resources */,
 				3C4AED87249B0AFD001F7C50 /* more-selected@2x.png in Resources */,
-				3C52609C24651ABC00D16DD5 /* micphone_white@3x.png in Resources */,
 				3C7A14E1238FC72800F4AC48 /* back_left_black@2x.png in Resources */,
 				3C52609424651ABC00D16DD5 /* invite_gray@2x.png in Resources */,
 				3C52607824651ABC00D16DD5 /* animate_00062.png in Resources */,
@@ -3936,6 +3960,7 @@
 				3C4AED25249A1415001F7C50 /* unAgreeProtocol@3x.png in Resources */,
 				3A45E2902223A3D600505786 /* icon_020_cover.png in Resources */,
 				3C52609224651ABC00D16DD5 /* recorder_gray@3x.png in Resources */,
+				3C99E7A424F642E000782AF0 /* microphone-connect-default@3x.png in Resources */,
 				3A45E3752223A46500505786 /* image@2x.png in Resources */,
 				3C4AED8D249B0B2D001F7C50 /* more-unselected@3x.png in Resources */,
 				3A45E0FA2223A30000505786 /* alert_default@2x.png in Resources */,
@@ -3987,11 +4012,11 @@
 				3CE7293924A1E24F00AEA67D /* groupchat.png in Resources */,
 				3C4AED0D2499FE5F001F7C50 /* unableClick@2x.png in Resources */,
 				3A45E2742223A3D600505786 /* icon_030.gif in Resources */,
+				3C99E79024F6117500782AF0 /* cuteFirstView.png in Resources */,
 				3C7A155E2391385300F4AC48 /* audio-selected.png in Resources */,
 				3C52605424651ABC00D16DD5 /* animate_00051.png in Resources */,
 				3A45E29B2223A3E500505786 /* chat_audio_blue@2x.png in Resources */,
 				3C37DF42238251ED00399AE8 /* icon-创建群组@3x.png in Resources */,
-				3C52608E24651ABC00D16DD5 /* micphone_gray@3x.png in Resources */,
 				3C4AEDA9249B5A38001F7C50 /* opinionFeedback@2x.png in Resources */,
 				3C4AED43249A2F89001F7C50 /* icon-tab我unselected@2x.png in Resources */,
 				3C5260BB24651ABC00D16DD5 /* ConfInviteUserCell.xib in Resources */,
@@ -3999,7 +4024,9 @@
 				3A45E36A2223A45500505786 /* msg_file_white@3x.png in Resources */,
 				3C52609024651ABC00D16DD5 /* grid_gray@3x.png in Resources */,
 				3C0C33342384DE870071BDDD /* 语音声波-right-1.png in Resources */,
+				3C99E79C24F642CD00782AF0 /* microphone-connect-selected@3x.png in Resources */,
 				3A45E3612223A45500505786 /* msg_location_white@3x.png in Resources */,
+				3C99E79824F642CD00782AF0 /* loudspeaker-connect-selected@3x.png in Resources */,
 				3C8DFAA224EA282F0047C277 /* currentAppkey@2x.png in Resources */,
 				3CE7293424A1E20700AEA67D /* newFriend.png in Resources */,
 				3A45E0F92223A30000505786 /* alert_error@3x.png in Resources */,
@@ -4030,6 +4057,7 @@
 				3C0C333D2384DE870071BDDD /* 语音声波-left-1.png in Resources */,
 				3C52606224651ABC00D16DD5 /* animate_00055.png in Resources */,
 				3C52606E24651ABC00D16DD5 /* animate_00070.png in Resources */,
+				3C99E79A24F642CD00782AF0 /* loudspeaker-connect-selected@2x.png in Resources */,
 				3C525E0F246410ED00D16DD5 /* video_conf@2x.png in Resources */,
 				3C37DF4C238251ED00399AE8 /* icon-add.png in Resources */,
 				3CE7293324A1E20700AEA67D /* newFriend@3x.png in Resources */,

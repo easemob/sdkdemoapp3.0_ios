@@ -33,7 +33,7 @@ static bool isHeadphone()
 @property (nonatomic, strong) EMButton *microphoneButton;
 @property (nonatomic, strong) EMButton *speakerButton;
 
-@property (nonatomic, strong) UIButton *hangupButton;
+@property (nonatomic, strong) EMButton *hangupButton;
 @property (nonatomic, strong) UIButton *minButton;
 
 - (void)microphoneButtonAction;

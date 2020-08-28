@@ -49,12 +49,12 @@ extern BOOL gIsConferenceCalling;
     [self.statusLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(30);
     }];
-    
+    /*
     [self.waitImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(20);
         make.right.equalTo(self.view).offset(-20);
         make.bottom.equalTo(self.answerButton.mas_top).offset(-40);
-    }];
+    }];*/
     
     self.floatingView.bgView.image = [UIImage imageNamed:@"floating_voice"];
     self.floatingView.bgView.layer.borderWidth = 0;

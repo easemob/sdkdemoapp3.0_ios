@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UILabel *remoteNameLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 
-@property (nonatomic, strong) UIButton *answerButton;
+@property (nonatomic, strong) EMButton *answerButton;
 
 @property (nonatomic, strong) UIImageView *waitImgView;
 

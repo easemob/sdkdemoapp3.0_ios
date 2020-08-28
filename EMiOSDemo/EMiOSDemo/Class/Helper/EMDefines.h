@@ -25,6 +25,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define DEF_APPKEY @"easemob-demo#chatdemoui"
 //#define DEF_APPKEY @"easemob-demo#testy"
 
+#define RTC_BUTTON_WIDTH 65
+#define RTC_BUTTON_HEIGHT 90
+#define RTC_BUTTON_PADDING ([UIScreen mainScreen].bounds.size.width - RTC_BUTTON_WIDTH * 3) / 3
+
 //会话
 #define CONVERSATION_STICK @"stick"
 #define CONVERSATION_ID @"convwesationId"

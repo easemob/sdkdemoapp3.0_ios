@@ -58,18 +58,18 @@
         make.top.equalTo(self);
         make.left.equalTo(self);
         make.right.equalTo(self);
-        make.height.equalTo(self).multipliedBy(0.6);
+        make.height.mas_equalTo(RTC_BUTTON_WIDTH);
     }];
     
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.textColor = EMButtonDefaultTitleColor;
-    self.titleLabel.font = [UIFont systemFontOfSize:13];
+    self.titleLabel.font = [UIFont systemFontOfSize:11];
     self.titleLabel.text = aTitle;
     [self addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.imgView.mas_bottom);
+        make.top.equalTo(self.imgView.mas_bottom).offset(10);
         make.bottom.equalTo(self);
         make.left.equalTo(self);
         make.right.equalTo(self);

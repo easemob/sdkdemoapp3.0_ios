@@ -42,10 +42,8 @@
     self.timeLabel.hidden = YES;
     self.answerButton.enabled = NO;
     self.callStatus = self.callSession.status;
-    [self.waitImgView startAnimating];
+    //[self.waitImgView startAnimating];
     [self floatingView];//初始化视频小窗
-    //监测耳机状态，如果是插入耳机状态，不显示扬声器按钮
-    self.speakerButton.hidden = isHeadphone();
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,27 +74,28 @@
     
     self.timeLabel = [[UILabel alloc] init];
     self.timeLabel.backgroundColor = [UIColor clearColor];
-    self.timeLabel.font = [UIFont systemFontOfSize:25];
-    self.timeLabel.textColor = [UIColor blackColor];
+    self.timeLabel.font = [UIFont systemFontOfSize:15];
+    self.timeLabel.textColor = [UIColor whiteColor];
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     self.timeLabel.text = @"00:00";
     [self.view addSubview:self.timeLabel];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.statusLabel);
-        make.right.equalTo(self.view).offset(-15);
+        make.bottom.equalTo(self.hangupButton.mas_top).offset(-18);
+        make.centerX.equalTo(self.view);
     }];
     
     self.remoteNameLabel = [[UILabel alloc] init];
     self.remoteNameLabel.backgroundColor = [UIColor clearColor];
-    self.remoteNameLabel.font = [UIFont systemFontOfSize:15];
+    self.remoteNameLabel.font = [UIFont systemFontOfSize:19];
     self.remoteNameLabel.textColor = [UIColor blackColor];
+    self.remoteNameLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.remoteNameLabel];
     [self.remoteNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.statusLabel.mas_bottom).offset(15);
         make.left.equalTo(self.statusLabel.mas_left).offset(5);
         make.right.equalTo(self.view).offset(-15);
     }];
-    
+    /*
     self.waitImgView = [[UIImageView alloc] init];
     self.waitImgView.contentMode = UIViewContentModeScaleAspectFit;
     NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -109,42 +108,41 @@
     [self.waitImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(20);
         make.right.equalTo(self.view).offset(-20);
-    }];
+    }];*/
     
-    [self.minButton setImage:[UIImage imageNamed:@"minimize_gray"] forState:UIControlStateNormal];
-    [self.minButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(-30);
-        make.right.equalTo(self.view).offset(-25);
-        make.width.height.equalTo(@40);
-    }];
+    [self.minButton setImage:[UIImage imageNamed:@"cuteFirstView"] forState:UIControlStateNormal];
     
     if (self.callSession.isCaller) {
+        //监测耳机状态，如果是插入耳机状态，不显示扬声器按钮
+        self.speakerButton.hidden = isHeadphone();
+        self.answerButton.hidden = YES;
         [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.view);
-            make.bottom.equalTo(self.view).offset(-40);
-            make.width.height.equalTo(@60);
+            make.bottom.equalTo(self.view).offset(-20);
+            make.width.mas_equalTo(RTC_BUTTON_WIDTH);
+            make.height.mas_equalTo(RTC_BUTTON_HEIGHT);
         }];
     } else {
-        CGFloat size = 60;
-        CGFloat padding = ([UIScreen mainScreen].bounds.size.width - size * 2) / 3;
-        
-        self.answerButton = [[UIButton alloc] init];
-        self.answerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.microphoneButton.hidden = YES;
+        self.speakerButton.hidden = YES;
+        self.answerButton = [[EMButton alloc] initWithTitle:@"接听" target:self action:@selector(answerAction)];
+        [self.answerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.answerButton setImage:[UIImage imageNamed:@"answer"] forState:UIControlStateNormal];
-        [self.answerButton addTarget:self action:@selector(answerAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.answerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [self.view addSubview:self.answerButton];
         [self.answerButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.view).offset(-40);
-            make.right.equalTo(self.view).offset(-padding);
-            make.width.height.mas_equalTo(size);
+            make.right.equalTo(self.view).offset(-35);
+            make.bottom.equalTo(self.view).offset(-20);
+            make.width.mas_equalTo(RTC_BUTTON_WIDTH);
+            make.height.mas_equalTo(RTC_BUTTON_HEIGHT);
         }];
         
         [self.hangupButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.answerButton);
-            make.left.equalTo(self.view).offset(padding);
-            make.width.height.mas_equalTo(size);
+            make.left.equalTo(self.view).offset(35);
+            make.bottom.equalTo(self.view).offset(-20);
+            make.width.mas_equalTo(RTC_BUTTON_WIDTH);
+            make.height.mas_equalTo(RTC_BUTTON_HEIGHT);
         }];
-        
     }
 }
 
@@ -222,10 +220,10 @@
     int s = self.callDuration - hour * 3600 - m * 60;
     
     if (hour > 0) {
-        self.timeLabel.text = [NSString stringWithFormat:@"%@:%@:%@", 0 <= hour && hour < 10 ? [NSString stringWithFormat:@"0%d",hour] : [NSString stringWithFormat:@"%d",m], 0 < m && m < 10 ? [NSString stringWithFormat:@"0%d",m] : [NSString stringWithFormat:@"%d",hour], 0 < s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
+        self.timeLabel.text = [NSString stringWithFormat:@"%@:%@:%@", 0 <= hour && hour < 10 ? [NSString stringWithFormat:@"0%d",hour] : [NSString stringWithFormat:@"%d",hour], 0 <= m && m < 10 ? [NSString stringWithFormat:@"0%d",m] : [NSString stringWithFormat:@"%d",m], 0 <= s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
     }
     else if(m > 0){
-        self.timeLabel.text = [NSString stringWithFormat:@"%@:%@", 0 <= m && m < 10 ? [NSString stringWithFormat:@"0%d",m] : [NSString stringWithFormat:@"%d",hour], 0 <= s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
+        self.timeLabel.text = [NSString stringWithFormat:@"%@:%@", 0 <= m && m < 10 ? [NSString stringWithFormat:@"0%d",m] : [NSString stringWithFormat:@"%d",m], 0 <= s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
     }
     else{
         self.timeLabel.text = [NSString stringWithFormat:@"00:%@", 0 <= s && s < 10 ? [NSString stringWithFormat:@"0%d",s] : [NSString stringWithFormat:@"%d",s]];
@@ -291,17 +289,14 @@
         case EMCallSessionStatusAccepted:
         {
             [self _startCallDurationTimer];
-            
-            //self.statusLabel.text = @"通话中...";
+            self.statusLabel.text = @"通话中...";
             self.statusLabel.hidden = YES;
             self.timeLabel.hidden = NO;
-            [self.waitImgView stopAnimating];
+            //[self.waitImgView stopAnimating];
             if (!self.callSession.isCaller) {
                 [self.answerButton removeFromSuperview];
-                [self.hangupButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+                [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.centerX.equalTo(self.view);
-                    make.bottom.equalTo(self.view).offset(-40);
-                    make.width.height.equalTo(@60);
                 }];
             }
             
@@ -312,7 +307,17 @@
                 connectStr = @"Direct";
             }
             self.remoteNameLabel.text = [NSString stringWithFormat:@"%@  --  %@", self.callSession.remoteName, connectStr];
-
+            
+            [self.hangupButton setTitle:@"挂断" forState:UIControlStateNormal];
+            self.speakerButton.hidden = isHeadphone();
+            self.microphoneButton.hidden = NO;
+            [self.microphoneButton setEnabled:YES];
+            [self.speakerButton setEnabled:YES];
+            [self.microphoneButton setImage:[UIImage imageNamed:@"microphone-connect-default"] forState:UIControlStateNormal];
+            [self.microphoneButton setImage:[UIImage imageNamed:@"microphone-connect-selected"] forState:UIControlStateSelected];
+            [self.speakerButton setImage:[UIImage imageNamed:@"loudspeaker-connect-default"] forState:UIControlStateNormal];
+            [self.speakerButton setImage:[UIImage imageNamed:@"loudspeaker-connect-selected"] forState:UIControlStateSelected];
+            
             if (self.microphoneButton.isSelected) {
                 [self.callSession pauseVoice];
             }

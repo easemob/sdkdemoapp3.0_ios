@@ -62,12 +62,8 @@
         make.left.equalTo(self.view).offset(padding);
         make.bottom.equalTo(self.hangupButton.mas_top).offset(-40);
     }];
-    
-    [self.microphoneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
-    [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_white"] forState:UIControlStateNormal];
-    [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_gray"] forState:UIControlStateSelected];
-    [self.microphoneButton mas_makeConstraints:^(MASConstraintMaker *make) {
+
+    [self.microphoneButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.switchCameraButton.mas_right).offset(padding);
         make.bottom.equalTo(self.switchCameraButton);
     }];
@@ -82,12 +78,8 @@
         make.left.equalTo(self.microphoneButton.mas_right).offset(padding);
         make.bottom.equalTo(self.switchCameraButton);
     }];
-    
-    [self.speakerButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.speakerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-    [self.speakerButton setImage:[UIImage imageNamed:@"speaker_gray"] forState:UIControlStateNormal];
-    [self.speakerButton setImage:[UIImage imageNamed:@"speaker_white"] forState:UIControlStateSelected];
-    [self.speakerButton mas_makeConstraints:^(MASConstraintMaker *make) {
+
+    [self.speakerButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(videoButton.mas_right).offset(padding);
         make.bottom.equalTo(self.switchCameraButton);
     }];
@@ -96,12 +88,12 @@
         make.width.mas_equalTo(width);
         make.height.mas_equalTo(height);
     }];
-    
+    /*
     [self.waitImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(20);
         make.right.equalTo(self.view).offset(-20);
         make.bottom.equalTo(self.switchCameraButton.mas_top).offset(-30);
-    }];
+    }];*/
     
     //初始化自己视频显示的页面
     width = 80;
@@ -202,7 +194,7 @@
     
     [self.callSession.localVideoView removeFromSuperview];
     [self.callSession.remoteVideoView removeFromSuperview];
-    [self.waitImgView removeFromSuperview];
+    //[self.waitImgView removeFromSuperview];
     if (self.minVideoView.tag == TAG_MINVIDEOVIEW_LOCAL) {
         self.minVideoView.tag = TAG_MINVIDEOVIEW_REMOTE;
         
@@ -218,10 +210,10 @@
                 make.edges.equalTo(self.minVideoView);
             }];
         } else {
-            [self.minVideoView addSubview:self.waitImgView];
+            /*[self.minVideoView addSubview:self.waitImgView];
             [self.waitImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self.minVideoView);\
-            }];
+            }];*/
         }
     } else if (self.minVideoView.tag == TAG_MINVIDEOVIEW_REMOTE) {
         self.minVideoView.tag = TAG_MINVIDEOVIEW_LOCAL;
@@ -238,13 +230,13 @@
                 make.edges.equalTo(self.view);
             }];
         } else {
-            [self.view addSubview:self.waitImgView];
+            /*[self.view addSubview:self.waitImgView];
             [self.view sendSubviewToBack:self.waitImgView];
             [self.waitImgView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.view).offset(20);
                 make.right.equalTo(self.view).offset(-20);
                 make.bottom.equalTo(self.switchCameraButton.mas_top).offset(-30);
-            }];
+            }];*/
         }
     }
 }

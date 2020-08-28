@@ -122,17 +122,16 @@
     
     NSString *str = [options.resource substringToIndex:range.location];
     
-    if ([str isEqualToString:@"ios"]) {
+    if ([str isEqualToString:@"ios"])
         imgView.image = [UIImage imageNamed:@"ios"];
-    } else if ([str isEqualToString:@"android"]) {
+    if ([str isEqualToString:@"android"])
         imgView.image = [UIImage imageNamed:@"android"];
-    } else if ([str isEqualToString:@"webim"]) {
+    if ([str isEqualToString:@"webim"])
         imgView.image = [UIImage imageNamed:@"web"];
-    } else if ([str isEqualToString:@"win"]) {
+    if ([str isEqualToString:@"win"])
         imgView.image = [UIImage imageNamed:@"win"];
-    } else if ([str isEqualToString:@"desktop"]) {
+    if ([str isEqualToString:@"desktop"]) 
         imgView.image = [UIImage imageNamed:@"iMac"];
-    }
     
     cell.textLabel.text = options.deviceName;
     if ([options.deviceName length] == 0) {
