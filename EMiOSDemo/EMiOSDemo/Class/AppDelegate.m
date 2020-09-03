@@ -55,6 +55,39 @@
     [[EMClient sharedClient] applicationWillEnterForeground:application];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    //单人通话中（非群组会议）
+    if (gIsCalling && !gIsConferenceCalling) {
+        EMCallEndReason reason = EMCallEndReasonNoResponse;
+        if (![SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY])
+            reason = EMCallEndReasonHangup;
+        [[EMClient sharedClient].callManager endCall:SingleCallController.sharedManager.chatter reason:reason];
+        //主叫方发送通话信息
+        if ([SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY]) {
+            EMTextMessageBody *body;
+            if (SingleCallController.sharedManager.callDurationTime) {
+                body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",SingleCallController.sharedManager.callDurationTime]];
+            } else {
+                body = [[EMTextMessageBody alloc] initWithText:EMCOMMUNICATE_CALLER_MISSEDCALL];
+            }
+            NSString *callType;
+            if (SingleCallController.sharedManager.type == EMCallTypeVoice)
+                callType = EMCOMMUNICATE_TYPE_VOICE;
+            if (SingleCallController.sharedManager.type == EMCallTypeVideo)
+                callType = EMCOMMUNICATE_TYPE_VIDEO;
+            NSDictionary *iOSExt = @{@"em_apns_ext":@{@"need-delete-content-id":@"communicate",@"em_push_content":@"有一条通话记录待查看", @"em_push_sound":@"ring.caf", @"em_push_mutable_content":@YES}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:callType};
+            NSDictionary *androidExt = @{@"em_push_ext":@{@"type":@"call"}, @"em_android_push_ext":@{@"em_push_sound":@"/raw/ring", @"em_push_channel_id":@"hyphenate_offline_push_notification"}};
+            NSMutableDictionary *pushExt = [[NSMutableDictionary alloc]initWithDictionary:iOSExt];
+            [pushExt addEntriesFromDictionary:androidExt];
+            NSString *to = SingleCallController.sharedManager.chatter;
+            EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:[[EMClient sharedClient] currentUsername] to:to body:body ext:pushExt];
+            message.chatType = EMChatTypeChat;
+            [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+        }
+    }
+}
+
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -70,12 +103,12 @@
     [alert show];
 }
 
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
 //    if (gMainController) {
 //        [gMainController jumpToChatList];
 //    }
-    
     [[EMClient sharedClient] application:application didReceiveRemoteNotification:userInfo];
 }
 

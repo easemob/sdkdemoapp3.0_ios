@@ -823,7 +823,7 @@
         communicatePushType = [NSString stringWithFormat:@"%@ 邀请你语音通话",[EMClient sharedClient].currentUsername];
     NSString *from = [[EMClient sharedClient] currentUsername];
     NSString *to = self.conversationModel.emModel.conversationId;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:[[EMTextMessageBody alloc]initWithText:EMCOMMUNICATE_CALLINVITE] ext:@{@"em_apns_ext":@{@"em_push_title":communicatePushType}, @"em_force_notification":@YES}];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:[[EMTextMessageBody alloc]initWithText:EMCOMMUNICATE_CALLINVITE] ext:@{@"em_apns_ext":@{@"target-content-id":@"communicate",@"em_push_content":communicatePushType}, @"em_force_notification":@YES, @"em_push_mutable_content":@YES}];
     message.chatType = (EMChatType)self.conversationModel.emModel.type;
     [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
         if (!error)

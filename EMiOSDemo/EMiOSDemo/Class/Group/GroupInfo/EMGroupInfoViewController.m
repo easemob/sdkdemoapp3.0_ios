@@ -669,6 +669,7 @@
     [occupants addObjectsFromArray:self.group.memberList];
     EMInviteGroupMemberViewController *controller = [[EMInviteGroupMemberViewController alloc] initWithBlocks:occupants];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = 0;
     [self presentViewController:navController animated:YES completion:nil];
     
     __weak typeof(self) weakself = self;

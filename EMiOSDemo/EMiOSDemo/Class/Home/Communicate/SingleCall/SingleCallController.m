@@ -7,10 +7,6 @@
 //
 
 #import "SingleCallController.h"
-
-#import <CoreTelephony/CTCallCenter.h>
-#import <CoreTelephony/CTCall.h>
-
 #import "EMCallOptions+NSCoding.h"
 
 #import "EMGlobalVariables.h"
@@ -30,10 +26,6 @@ static SingleCallController *callManager = nil;
 @property (strong, nonatomic) NSTimer *timeoutTimer;
 
 @property (strong, nonatomic) NSTimer *offlineTimer;
-
-@property (nonatomic, strong) CTCallCenter *callCenter;
-
-@property (nonatomic, strong) NSString *chatter;
 
 @property (nonatomic, strong) UIAlertController *alertView;
 
@@ -66,7 +58,6 @@ static SingleCallController *callManager = nil;
 
 - (void)dealloc
 {
-    self.callCenter = nil;
     [self _stopCallTimeoutTimer];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].callManager removeDelegate:self];
@@ -116,20 +107,6 @@ static SingleCallController *callManager = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMakeSingleCall:) name:CALL_MAKE1V1 object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeAlertView:) name:@"didAlert" object:nil];
-    
-//    __weak typeof(self) weakSelf = self;
-//    self.callCenter = [[CTCallCenter alloc] init];
-//    self.callCenter.callEventHandler = ^(CTCall* call) {
-////        if(call.callState == CTCallStateConnected) {
-////            [weakSelf hangupCallWithReason:EMCallEndReasonBusy];
-////        }
-//
-//        if(call.callState == CTCallStateConnected) {
-//            [weakSelf.currentController muteCall];
-//        } else if(call.callState == CTCallStateDisconnected) {
-//            [weakSelf.currentController resumeCall];
-//        }
-//    };
 }
 
 #pragma mark - Call Timeout Before Answered
@@ -137,7 +114,6 @@ static SingleCallController *callManager = nil;
 - (void)_timeoutBeforeCallAnswered:(NSTimer *)timer
 {
     NSString *reason = (NSString *)[timer userInfo]; //必须放在本timer关闭之前使用，不然会出现野指针错误
-    [self sendCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callType:self.currentCall.type]; //主叫方取消通话
     [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
     UIAlertView *alertView = nil;
     if (reason) {
@@ -145,16 +121,6 @@ static SingleCallController *callManager = nil;
     } else {
         alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"call.autoHangup", @"No response and Hang up") delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     }
-    /*
-    NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-    NSString *fromStr = [EMClient sharedClient].currentUsername;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:_chatter from:fromStr to:_chatter body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}, @"em_force_notification":@YES}];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.chatter type:EMConversationTypeChat createIfNotExist:NO];
-        [conversation deleteMessageWithId:message.messageId error:nil];
-    }];*/
     [alertView show];
 }
 
@@ -284,16 +250,13 @@ static SingleCallController *callManager = nil;
         [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
     }
     
-    if (aReason != EMCallEndReasonHangup) {
+    if (aReason != EMCallEndReasonNoResponse) {
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
         } else {
             NSString *reasonStr = @"通话结束";
             switch (aReason) {
-                case EMCallEndReasonNoResponse:
-                    reasonStr = @"没有响应";
-                    break;
                 case EMCallEndReasonDecline:
                     reasonStr = @"对方拒绝接通通话";
                     break;
@@ -348,14 +311,6 @@ static SingleCallController *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
-    /*
-    NSString *text = [[EMClient sharedClient].callManager getCallOptions].offlineMessageText;
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-    NSString *fromStr = [EMClient sharedClient].currentUsername;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:aRemoteName from:fromStr to:aRemoteName body:body ext:@{@"em_apns_ext":@{@"em_push_title":text}, @"em_force_notification":@YES}];
-    message.chatType = EMChatTypeChat;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];*/
-    
     [self _stopCallTimeoutTimer];
     self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
 }
@@ -375,10 +330,10 @@ static SingleCallController *callManager = nil;
         return;
     }
     
-    EMCallType type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
+    _type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
     _chatter = [notify.object valueForKey:CALL_CHATTER] ;
-    if (type == EMCallTypeVideo) {
-        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
+    if (_type == EMCallTypeVideo) {
+        [self _makeCallWithUsername:_chatter type:_type isCustomVideoData:NO];
 //        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 //
 //        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -395,7 +350,7 @@ static SingleCallController *callManager = nil;
 //
 //        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
     } else {
-        [self _makeCallWithUsername:_chatter type:type isCustomVideoData:NO];
+        [self _makeCallWithUsername:_chatter type:_type isCustomVideoData:NO];
     }
 }
 

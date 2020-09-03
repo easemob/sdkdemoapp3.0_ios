@@ -22,7 +22,6 @@
 		3A45DF0D2223A1FD00505786 /* EMBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DCD22223A1FC00505786 /* EMBlacklistViewController.m */; };
 		3A45DF0E2223A1FD00505786 /* EMAddBlacklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DCD52223A1FC00505786 /* EMAddBlacklistViewController.m */; };
 		3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DD262223A1FD00505786 /* libopencore-amrwb.a */; };
-		3A45DF3D2223A1FD00505786 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DD272223A1FD00505786 /* libopencore-amrnb.a */; };
 		3A45DF3E2223A1FD00505786 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DD2C2223A1FD00505786 /* wav.mm */; };
 		3A45DF3F2223A1FD00505786 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DD2D2223A1FD00505786 /* amrFileCodec.mm */; };
 		3A45DF492223A1FD00505786 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A45DD492223A1FD00505786 /* DACircularProgressView.m */; };
@@ -704,6 +703,7 @@
 		3C99E7B024F642F200782AF0 /* microphone-initiate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7AA24F642EC00782AF0 /* microphone-initiate@3x.png */; };
 		3C99E7B124F642F200782AF0 /* loudspeaker-initiate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7AB24F642ED00782AF0 /* loudspeaker-initiate@3x.png */; };
 		3C99E7B224F642F200782AF0 /* loudspeaker-initiate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C99E7AC24F642EF00782AF0 /* loudspeaker-initiate@2x.png */; };
+		3C9B237024FE347500DFCA99 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DD272223A1FD00505786 /* libopencore-amrnb.a */; };
 		3C9B6BB624B4845B00D1C617 /* EMMsgTouchIncident.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9B6BB524B4845B00D1C617 /* EMMsgTouchIncident.m */; };
 		3CA5F46524D91C4F004BF0CF /* AudioRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5F46424D91C4F004BF0CF /* AudioRecord.m */; };
 		3CA5F46D24D9246B004BF0CF /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3CA5F46C24D9246A004BF0CF /* music.mp3 */; };
@@ -718,6 +718,8 @@
 		3CBCF5F923A24FC70053E227 /* systemNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBCF5F623A24FC10053E227 /* systemNotify@2x.png */; };
 		3CBCF5FA23A24FC70053E227 /* systemNotify.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBCF5F723A24FC40053E227 /* systemNotify.png */; };
 		3CBCF5FB23A24FC70053E227 /* systemNotify@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CBCF5F823A24FC60053E227 /* systemNotify@3x.png */; };
+		3CDE80AA24FDFE8500BAA3E2 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE80A924FDFE8500BAA3E2 /* NotificationService.m */; };
+		3CDE80AE24FDFE8500BAA3E2 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3CDE80A624FDFE8500BAA3E2 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE6293219A1B13700829632 /* CoreText.framework */; };
 		3CE7293324A1E20700AEA67D /* newFriend@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE7293024A1E20300AEA67D /* newFriend@3x.png */; };
 		3CE7293424A1E20700AEA67D /* newFriend.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE7293124A1E20500AEA67D /* newFriend.png */; };
@@ -743,6 +745,16 @@
 		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3CDE80AC24FDFE8500BAA3E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9091101C192EEA70008A48AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3CDE80A524FDFE8500BAA3E2;
+			remoteInfo = EMPushNotificationService;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		3C2B1EBF244D9235000E97B2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -754,6 +766,17 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3CDE808924FD024000BAA3E2 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3CDE80AE24FDFE8500BAA3E2 /* NotificationService.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -761,7 +784,6 @@
 		3A45D69D22239DE200505786 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3A45D69E22239DE200505786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3A45D69F22239DE200505786 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3A45D6A122239DE200505786 /* EMiOSDemo.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = EMiOSDemo.entitlements; sourceTree = "<group>"; };
 		3A45D71F22239DE200505786 /* EMiOSDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EMiOSDemo-Prefix.pch"; sourceTree = "<group>"; };
 		3A45D72022239DE200505786 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3A45D72122239DE200505786 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -1279,6 +1301,7 @@
 		3C3BAE862398E45600344F63 /* EMGroupAllMembersViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMGroupAllMembersViewController.m; sourceTree = "<group>"; };
 		3C3BAE8823990DF600344F63 /* EMSecurityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMSecurityViewController.h; sourceTree = "<group>"; };
 		3C3BAE8923990DF600344F63 /* EMSecurityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMSecurityViewController.m; sourceTree = "<group>"; };
+		3C44794124FF4FBA000AD3E7 /* EMiOSDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EMiOSDemo.entitlements; sourceTree = "<group>"; };
 		3C4AECF22499CF7E001F7C50 /* hiddenPwd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hiddenPwd@2x.png"; sourceTree = "<group>"; };
 		3C4AECF32499CF80001F7C50 /* hiddenPwd@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hiddenPwd@3x.png"; sourceTree = "<group>"; };
 		3C4AECF42499CF83001F7C50 /* hiddenPwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hiddenPwd.png; sourceTree = "<group>"; };
@@ -1671,6 +1694,10 @@
 		3CBCF5F623A24FC10053E227 /* systemNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemNotify@2x.png"; sourceTree = "<group>"; };
 		3CBCF5F723A24FC40053E227 /* systemNotify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = systemNotify.png; sourceTree = "<group>"; };
 		3CBCF5F823A24FC60053E227 /* systemNotify@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemNotify@3x.png"; sourceTree = "<group>"; };
+		3CDE80A624FDFE8500BAA3E2 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CDE80A824FDFE8500BAA3E2 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		3CDE80A924FDFE8500BAA3E2 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		3CDE80AB24FDFE8500BAA3E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CE6293219A1B13700829632 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		3CE7293024A1E20300AEA67D /* newFriend@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "newFriend@3x.png"; sourceTree = "<group>"; };
 		3CE7293124A1E20500AEA67D /* newFriend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newFriend.png; sourceTree = "<group>"; };
@@ -1704,6 +1731,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3CDE80A324FDFE8500BAA3E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		90911021192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1718,7 +1752,6 @@
 				D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */,
 				C035E8151AEA40F400283EE9 /* CoreData.framework in Frameworks */,
 				3CE6293319A1B13700829632 /* CoreText.framework in Frameworks */,
-				3A45DF3D2223A1FD00505786 /* libopencore-amrnb.a in Frameworks */,
 				3C97EF2A23A87B5C004E97B7 /* CloudKit.framework in Frameworks */,
 				3C1CEF7F196EA37600DBA56B /* ImageIO.framework in Frameworks */,
 				3C06AB0319405D330076FF0B /* MapKit.framework in Frameworks */,
@@ -1728,6 +1761,7 @@
 				90F1BECD1930492300121AEC /* CFNetwork.framework in Frameworks */,
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
+				3C9B237024FE347500DFCA99 /* libopencore-amrnb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
 				FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */,
 			);
@@ -1751,9 +1785,9 @@
 				3CA5F46C24D9246A004BF0CF /* music.mp3 */,
 				3A45D72222239DE200505786 /* Class */,
 				3A45D72022239DE200505786 /* main.m */,
+				3C44794124FF4FBA000AD3E7 /* EMiOSDemo.entitlements */,
 				3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */,
 				3A45D71F22239DE200505786 /* EMiOSDemo-Prefix.pch */,
-				3A45D6A122239DE200505786 /* EMiOSDemo.entitlements */,
 				3A45D69A22239DE200505786 /* Localizable.strings */,
 				3A45D69C22239DE200505786 /* InfoPlist.strings */,
 				3A45D72122239DE200505786 /* Images.xcassets */,
@@ -3407,11 +3441,22 @@
 			path = ChatToolBarComponentsIncident;
 			sourceTree = "<group>";
 		};
+		3CDE80A724FDFE8500BAA3E2 /* NotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				3CDE80A824FDFE8500BAA3E2 /* NotificationService.h */,
+				3CDE80A924FDFE8500BAA3E2 /* NotificationService.m */,
+				3CDE80AB24FDFE8500BAA3E2 /* Info.plist */,
+			);
+			path = NotificationService;
+			sourceTree = "<group>";
+		};
 		9091101B192EEA70008A48AA = {
 			isa = PBXGroup;
 			children = (
 				3C8DFABA24EE7B1A0047C277 /* ring.caf */,
 				3A45D69922239DE200505786 /* EMiOSDemo */,
+				3CDE80A724FDFE8500BAA3E2 /* NotificationService */,
 				90911026192EEA70008A48AA /* Frameworks */,
 				90911025192EEA70008A48AA /* Products */,
 				1D7E04333D4AA6666664610F /* Pods */,
@@ -3422,6 +3467,7 @@
 			isa = PBXGroup;
 			children = (
 				90911024192EEA70008A48AA /* EMiOSDemo.app */,
+				3CDE80A624FDFE8500BAA3E2 /* NotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3464,6 +3510,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3CDE80A524FDFE8500BAA3E2 /* NotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CDE80AF24FDFE8500BAA3E2 /* Build configuration list for PBXNativeTarget "NotificationService" */;
+			buildPhases = (
+				3CDE80A224FDFE8500BAA3E2 /* Sources */,
+				3CDE80A324FDFE8500BAA3E2 /* Frameworks */,
+				3CDE80A424FDFE8500BAA3E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationService;
+			productName = EMPushNotificationService;
+			productReference = 3CDE80A624FDFE8500BAA3E2 /* NotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		90911023192EEA70008A48AA /* EMiOSDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "EMiOSDemo" */;
@@ -3475,10 +3538,12 @@
 				3C2B1EBF244D9235000E97B2 /* Embed Frameworks */,
 				47811CDAC419289BAD9EBC26 /* [CP] Embed Pods Frameworks */,
 				063E2ACC260BCBAD331F3F35 /* [CP] Copy Pods Resources */,
+				3CDE808924FD024000BAA3E2 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3CDE80AD24FDFE8500BAA3E2 /* PBXTargetDependency */,
 			);
 			name = EMiOSDemo;
 			productName = "ChatDemo-UI3.0";
@@ -3494,9 +3559,14 @@
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
-					90911023192EEA70008A48AA = {
+					3CDE80A524FDFE8500BAA3E2 = {
+						CreatedOnToolsVersion = 11.6;
 						DevelopmentTeam = 499WYUV8Q2;
 						ProvisioningStyle = Automatic;
+					};
+					90911023192EEA70008A48AA = {
+						DevelopmentTeam = 499WYUV8Q2;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -3524,11 +3594,19 @@
 			projectRoot = "";
 			targets = (
 				90911023192EEA70008A48AA /* EMiOSDemo */,
+				3CDE80A524FDFE8500BAA3E2 /* NotificationService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3CDE80A424FDFE8500BAA3E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		90911022192EEA70008A48AA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4125,6 +4203,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3CDE80A224FDFE8500BAA3E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CDE80AA24FDFE8500BAA3E2 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		90911020192EEA70008A48AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4317,6 +4403,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3CDE80AD24FDFE8500BAA3E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3CDE80A524FDFE8500BAA3E2 /* NotificationService */;
+			targetProxy = 3CDE80AC24FDFE8500BAA3E2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		3A45D69A22239DE200505786 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -4339,6 +4433,79 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3CDE80B024FDFE8500BAA3E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.new.chatdemo.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3CDE80B124FDFE8500BAA3E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.new.chatdemo.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9091104E192EEA70008A48AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4435,10 +4602,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_ENTITLEMENTS = EMiOSDemo/EMiOSDemo.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
@@ -4450,7 +4617,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/EMiOSDemo",
-					"\"$(SRCROOT)/../../RTC/webrtc-src/out/ios64\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EMiOSDemo/EMiOSDemo-Prefix.pch";
@@ -4462,12 +4628,11 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/EMiOSDemo/EMiOSDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Home/Call/plugin",
+					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 				);
 				MARKETING_VERSION = 3.7.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4499,10 +4664,10 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.new.chatdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = new.chatdemo.dev;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -4521,10 +4686,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_ENTITLEMENTS = EMiOSDemo/EMiOSDemo.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
@@ -4547,11 +4712,10 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/EMiOSDemo/EMiOSDemo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/EMiOSDemo/Class/Call/plugin",
 					"$(PROJECT_DIR)/EMiOSDemo/Class/Helper/3rdParty/VoiceConvert",
 				);
 				MARKETING_VERSION = 3.7.0;
@@ -4584,10 +4748,10 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.new.chatdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = new.chatdemo.inhouse;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -4598,6 +4762,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3CDE80AF24FDFE8500BAA3E2 /* Build configuration list for PBXNativeTarget "NotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CDE80B024FDFE8500BAA3E2 /* Debug */,
+				3CDE80B124FDFE8500BAA3E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		9091101F192EEA70008A48AA /* Build configuration list for PBXProject "EMiOSDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4605,7 +4778,7 @@
 				9091104F192EEA70008A48AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "EMiOSDemo" */ = {
 			isa = XCConfigurationList;
@@ -4614,7 +4787,7 @@
 				90911052192EEA70008A48AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

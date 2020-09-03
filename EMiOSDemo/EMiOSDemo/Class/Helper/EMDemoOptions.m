@@ -194,9 +194,9 @@ static EMDemoOptions *sharedOptions = nil;
 {
     self.appkey = DEF_APPKEY;
 #if DEBUG
-    self.apnsCertName = @"chatdemoui_dev";
+    self.apnsCertName = @"new_chatdemo_dev";
 #else
-    self.apnsCertName = @"chatdemoui";
+    self.apnsCertName = @"new_chatdemo";
 #endif
     self.usingHttpsOnly = NO;
     self.specifyServer = NO;

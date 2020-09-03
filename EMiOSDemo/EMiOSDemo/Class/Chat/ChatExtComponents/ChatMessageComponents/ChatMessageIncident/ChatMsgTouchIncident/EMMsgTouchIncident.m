@@ -70,6 +70,7 @@
     if (!aCell.model.emModel.isReadAcked) {
         [[EMClient sharedClient].chatManager sendMessageReadAck:aCell.model.emModel.messageId toUser:aCell.model.emModel.conversationId completion:nil];
     }
+    NSLog(@"conversationid : %@",aCell.model.emModel.conversationId);
     NSLog(@"msgid : %@",aCell.model.emModel.messageId);
     NSLog(@"msgext : %@",aCell.model.emModel.ext);
     NSString *callType = nil;

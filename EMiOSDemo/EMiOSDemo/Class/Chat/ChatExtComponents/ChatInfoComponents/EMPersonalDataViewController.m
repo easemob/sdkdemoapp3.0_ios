@@ -54,6 +54,11 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self.chatController];
+}
+
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
@@ -181,8 +186,6 @@
 {
     NSInteger section = indexPath.section;
     self.chatController = [[EMSingleChatViewController alloc]initWithConversationId:self.nickName type:EMConversationTypeChat createIfNotExist:YES isChatRecord:NO];
-    //EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.nickName type:EMConversationTypeChat createIfNotExist:YES];
-    //self.chatController = [[EMSingleChatViewController alloc]initWithCoversationModel:[[EMConversationModel alloc] initWithEMModel:conversation]];
     if (section == 1)
         //添加联系人
         [self addContact];
@@ -260,11 +263,6 @@
 - (NSArray *)getchBlackList
 {
     return [[EMClient sharedClient].contactManager getBlackList];
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self.chatController];
 }
 
 @end

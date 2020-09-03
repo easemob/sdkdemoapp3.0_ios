@@ -15,7 +15,7 @@
 #import "UIViewController+Search.h"
 #import "EMInviteFriendViewController.h"
 #import "PellTableViewSelect.h"
-//#import "EMJoinGroupViewController.h"
+#import "EMJoinGroupViewController.h"
 #import "EMPersonalDataViewController.h"
 
 @interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate>
@@ -514,7 +514,7 @@
         }];
     }];
 }
-/*
+
 #pragma mark - moreAction
 - (void)addAction
 {
@@ -540,7 +540,7 @@
     EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
     [self.navigationController pushViewController:controller animated:NO];
 }
-*/
+
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _fetchContactsFromServerWithIsShowHUD:NO];
