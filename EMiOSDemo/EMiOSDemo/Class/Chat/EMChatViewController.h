@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
                          ext:(NSDictionary * __nullable)aExt
                     isUpload:(BOOL)aIsUpload;
 
+//刷新页面
 - (void)refreshTableView;
 
 //消息已读回执

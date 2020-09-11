@@ -31,6 +31,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
+    self.title = @"关于环信";
     [self.view addSubview:self.logoView];
     [_logoView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.view);
@@ -134,9 +135,9 @@
 - (void)reagrdHuanXin:(UIButton *)btn
 {
     if (btn.tag == 0) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com/product/im"] options:[[NSDictionary alloc]init] completionHandler:nil];
     } else if (btn.tag == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com/about"] options:[[NSDictionary alloc]init] completionHandler:nil];
     }
 }
 

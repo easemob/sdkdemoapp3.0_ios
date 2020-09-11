@@ -88,7 +88,7 @@
     
     NSString *name = [self.dataArray objectAtIndex:indexPath.row];
     cell.nameLabel.text = name;
-    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     cell.indexPath = indexPath;
     
     NSArray *contacts = [[EMClient sharedClient].contactManager getContacts];

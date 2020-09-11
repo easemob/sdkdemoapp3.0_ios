@@ -72,13 +72,13 @@
 
     cell.indexPath = indexPath;
     if (tableView == self.tableView) {
-        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
+        cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
         cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
         cell.nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
         cell.nameLabel.font = [UIFont systemFontOfSize:18.f];
         return cell;
     }
-    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_gray"];
+    cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     cell.nameLabel.text = [self.searchResults objectAtIndex:indexPath.row];
     return cell;
 }

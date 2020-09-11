@@ -7,7 +7,7 @@
 //
 
 #import "EMChatroomMembersViewController.h"
-
+#import "EMPersonalDataViewController.h"
 #import "EMAvatarNameCell.h"
 
 @interface EMChatroomMembersViewController ()
@@ -45,7 +45,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItemWithTarget:self action:@selector(backAction)];
-    self.title = @"聊天室在线成员";
+    self.title = @"聊天室成员";
     self.showRefreshHeader = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -70,7 +70,7 @@
         cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     cell.indexPath = indexPath;
     
@@ -84,6 +84,11 @@
 }
 
 #pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self personalData:[self.dataArray objectAtIndex:indexPath.row]];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -242,6 +247,18 @@
             [weakself.tableView reloadData];
         }
     }];
+}
+
+//个人资料卡
+- (void)personalData:(NSString *)nickName
+{
+    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav pushViewController:controller animated:YES];
+    }
 }
 
 - (void)backAction

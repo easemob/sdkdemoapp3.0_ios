@@ -45,13 +45,13 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger count = 1;
     if (section == 1) {
-        count = 4;
+        count = 3;
     } else if (section == 2) {
         count = 2;
     }
@@ -97,12 +97,9 @@
             cell.detailTextLabel.text = [EMDemoOptions.sharedOptions.appkey isEqualToString:DEF_APPKEY] ? @"默认" : EMDemoOptions.sharedOptions.appkey;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (row == 1) {
-            cell.textLabel.text = @"允许使用token登录";
-            [switchControl setOn:YES animated:NO];
-        } else if (row == 2) {
             cell.textLabel.text = @"优先从服务器获取消息";
             [switchControl setOn:options.isPriorityGetMsgFromServer animated:NO];
-        } else if (row == 3) {
+        } else if (row == 2) {
             cell.textLabel.text = @"消息附件上传到环信服务器";
             [switchControl setOn:options.isAutoTransferMessageAttachments animated:NO];
         }
@@ -115,10 +112,6 @@
             cell.detailTextLabel.text = options.isSortMessageByServerTime ? @"按服务器时间" : @"按接收顺序";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-    } else if (section == 3) {
-        cell.textLabel.text = @"诊断";
-        cell.detailTextLabel.text = @"未完成";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
@@ -173,11 +166,9 @@
     NSInteger row = indexPath.row;
     if (section == 1) {
         if (row == 1) {
-            //允许使用token登录
-        } else if (row == 2) {
             options.isPriorityGetMsgFromServer = aSwitch.isOn;
             [options archive];
-        } else if (row == 3) {
+        } else if (row == 2) {
             [EMClient sharedClient].options.isAutoTransferMessageAttachments = aSwitch.isOn;
             options.isAutoTransferMessageAttachments = aSwitch.isOn;
             [options archive];

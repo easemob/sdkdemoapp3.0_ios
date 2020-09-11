@@ -15,7 +15,6 @@
 @property (nonatomic, strong) NSArray *blocks;
 
 @property (nonatomic, strong) NSMutableArray *selectedArray;
-@property (nonatomic, strong) UILabel *selectedLabel;
 
 @end
 
@@ -53,41 +52,16 @@
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"close_gray"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(closeAction)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成( 0 )" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     self.title = @"选择群组成员";
     
     self.view.backgroundColor = kColor_LightGray;
     self.tableView.backgroundColor = kColor_LightGray;
     self.showRefreshHeader = YES;
-    
-    UIView *bottomView = [[UIView alloc] init];
-    bottomView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:bottomView];
-    [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.height.equalTo(@(80));
-    }];
-    
-    self.selectedLabel = [[UILabel alloc] init];
-    self.selectedLabel.font = [UIFont systemFontOfSize:17];
-    self.selectedLabel.textColor = [UIColor blackColor];
-    self.selectedLabel.numberOfLines = 2;
-    self.selectedLabel.text = @"已选择群组成员( 0 )";
-    [bottomView addSubview:self.selectedLabel];
-    [self.selectedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(bottomView).offset(10);
-        make.left.equalTo(bottomView).offset(10);
-        make.right.equalTo(bottomView).offset(-10);
-        make.bottom.lessThanOrEqualTo(bottomView).offset(-10);
-    }];
-    
+
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchBar.mas_bottom);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(bottomView.mas_top);
+        make.right.left.bottom.equalTo(self.view);
     }];
 }
 
@@ -135,7 +109,7 @@
     } else {
         name = [self.searchResults objectAtIndex:indexPath.row];
     }
-    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     cell.nameLabel.text = name;
     
     UIButton *checkButton = (UIButton *)cell.accessoryView;
@@ -177,7 +151,7 @@
     EMAvatarNameCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     UIButton *checkButton = (UIButton *)cell.accessoryView;
     checkButton.selected = !isChecked;
-    self.selectedLabel.text = [NSString stringWithFormat:@"已选择群组成员( %@ )", @([self.selectedArray count])];
+    [self.navigationItem.rightBarButtonItem setTitle:[NSString stringWithFormat:@"完成( %@ )", @([self.selectedArray count])]];
 }
 
 #pragma mark - EMSearchBarDelegate

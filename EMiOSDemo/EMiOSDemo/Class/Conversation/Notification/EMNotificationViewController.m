@@ -62,7 +62,7 @@
 - (void)_setupViews
 {
     [self addPopBackLeftItem];
-    self.title = @"申请与通知";
+    self.title = @"系统通知";
     
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.estimatedRowHeight = 150;

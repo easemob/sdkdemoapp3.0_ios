@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol EMChatBarRecordAudioViewDelegate <NSObject>
 
+@optional
 - (void)chatBarRecordAudioViewStartRecord;
 
 - (void)chatBarRecordAudioViewStopRecord:(NSString *)aPath

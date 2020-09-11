@@ -620,6 +620,16 @@
 		3C5A15CD2383A6EA002CAE4E /* icon加载@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C12383A6E8002CAE4E /* icon加载@2x.png */; };
 		3C5A15CE2383A6EA002CAE4E /* 语音声波receive@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5A15C22383A6E9002CAE4E /* 语音声波receive@3x.png */; };
 		3C5A162B2383EA06002CAE4E /* LoadingCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5A162A2383EA06002CAE4E /* LoadingCALayer.m */; };
+		3C66261025073D9B00B88AD5 /* deleteEmoticon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C66260F25073D9B00B88AD5 /* deleteEmoticon.png */; };
+		3C662626250B2BD900B88AD5 /* chatroomConversation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662623250B2BD800B88AD5 /* chatroomConversation@3x.png */; };
+		3C662627250B2BD900B88AD5 /* chatroomConversation.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662624250B2BD900B88AD5 /* chatroomConversation.png */; };
+		3C662628250B2BD900B88AD5 /* chatroomConversation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662625250B2BD900B88AD5 /* chatroomConversation@2x.png */; };
+		3C66262C250B2C2400B88AD5 /* groupConversation3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662629250B2C2200B88AD5 /* groupConversation3x.png */; };
+		3C66262D250B2C2400B88AD5 /* groupConversation.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C66262A250B2C2300B88AD5 /* groupConversation.png */; };
+		3C66262E250B2C2400B88AD5 /* groupConversation2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C66262B250B2C2400B88AD5 /* groupConversation2x.png */; };
+		3C662638250B5B1700B88AD5 /* defaultAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662635250B5B1600B88AD5 /* defaultAvatar@2x.png */; };
+		3C662639250B5B1700B88AD5 /* defaultAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662636250B5B1700B88AD5 /* defaultAvatar.png */; };
+		3C66263A250B5B1700B88AD5 /* defaultAvatar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C662637250B5B1700B88AD5 /* defaultAvatar@3x.png */; };
 		3C710D5F24E2A718003D2467 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ACFA04E221168C000B16331 /* CoreServices.framework */; };
 		3C72A1BD23E9107800F747B7 /* video-opposite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C72A1BC23E9107800F747B7 /* video-opposite@3x.png */; };
 		3C72A1C023E91E2F00F747B7 /* EMChatInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C72A1BF23E91E2F00F747B7 /* EMChatInfoViewController.m */; };
@@ -1570,6 +1580,16 @@
 		3C5A15C22383A6E9002CAE4E /* 语音声波receive@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音声波receive@3x.png"; sourceTree = "<group>"; };
 		3C5A16292383EA06002CAE4E /* LoadingCALayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingCALayer.h; sourceTree = "<group>"; };
 		3C5A162A2383EA06002CAE4E /* LoadingCALayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingCALayer.m; sourceTree = "<group>"; };
+		3C66260F25073D9B00B88AD5 /* deleteEmoticon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deleteEmoticon.png; sourceTree = "<group>"; };
+		3C662623250B2BD800B88AD5 /* chatroomConversation@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroomConversation@3x.png"; sourceTree = "<group>"; };
+		3C662624250B2BD900B88AD5 /* chatroomConversation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chatroomConversation.png; sourceTree = "<group>"; };
+		3C662625250B2BD900B88AD5 /* chatroomConversation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chatroomConversation@2x.png"; sourceTree = "<group>"; };
+		3C662629250B2C2200B88AD5 /* groupConversation3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupConversation3x.png; sourceTree = "<group>"; };
+		3C66262A250B2C2300B88AD5 /* groupConversation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupConversation.png; sourceTree = "<group>"; };
+		3C66262B250B2C2400B88AD5 /* groupConversation2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupConversation2x.png; sourceTree = "<group>"; };
+		3C662635250B5B1600B88AD5 /* defaultAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "defaultAvatar@2x.png"; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/appicon/默认头像_slices/defaultAvatar@2x.png"; sourceTree = "<group>"; };
+		3C662636250B5B1700B88AD5 /* defaultAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = defaultAvatar.png; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/appicon/默认头像_slices/defaultAvatar.png"; sourceTree = "<group>"; };
+		3C662637250B5B1700B88AD5 /* defaultAvatar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "defaultAvatar@3x.png"; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/appicon/默认头像_slices/defaultAvatar@3x.png"; sourceTree = "<group>"; };
 		3C72A1BC23E9107800F747B7 /* video-opposite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite@3x.png"; sourceTree = "<group>"; };
 		3C72A1BE23E91E2F00F747B7 /* EMChatInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatInfoViewController.h; sourceTree = "<group>"; };
 		3C72A1BF23E91E2F00F747B7 /* EMChatInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatInfoViewController.m; sourceTree = "<group>"; };
@@ -2377,6 +2397,15 @@
 		3A45DD062223A1FD00505786 /* SharedImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C662636250B5B1700B88AD5 /* defaultAvatar.png */,
+				3C662635250B5B1600B88AD5 /* defaultAvatar@2x.png */,
+				3C662637250B5B1700B88AD5 /* defaultAvatar@3x.png */,
+				3C66262A250B2C2300B88AD5 /* groupConversation.png */,
+				3C66262B250B2C2400B88AD5 /* groupConversation2x.png */,
+				3C662629250B2C2200B88AD5 /* groupConversation3x.png */,
+				3C662624250B2BD900B88AD5 /* chatroomConversation.png */,
+				3C662625250B2BD900B88AD5 /* chatroomConversation@2x.png */,
+				3C662623250B2BD800B88AD5 /* chatroomConversation@3x.png */,
 				3C4AEDC9249B8019001F7C50 /* blankConversation.png */,
 				3C4AEDCA249B801C001F7C50 /* blankConversation@2x.png */,
 				3C4AEDC8249B8017001F7C50 /* blankConversation@3x.png */,
@@ -2726,6 +2755,7 @@
 		3A45E29F2223A40400505786 /* ChatBarImgs */ = {
 			isa = PBXGroup;
 			children = (
+				3C66260F25073D9B00B88AD5 /* deleteEmoticon.png */,
 				3C4AED96249B0BFD001F7C50 /* character.png */,
 				3C4AED94249B0BF8001F7C50 /* character@2x.png */,
 				3C4AED95249B0BFA001F7C50 /* character@3x.png */,
@@ -3536,9 +3566,9 @@
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
 				3C2B1EBF244D9235000E97B2 /* Embed Frameworks */,
-				47811CDAC419289BAD9EBC26 /* [CP] Embed Pods Frameworks */,
 				063E2ACC260BCBAD331F3F35 /* [CP] Copy Pods Resources */,
 				3CDE808924FD024000BAA3E2 /* Embed App Extensions */,
+				48EE851ACA51C00240F22823 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3562,7 +3592,7 @@
 					3CDE80A524FDFE8500BAA3E2 = {
 						CreatedOnToolsVersion = 11.6;
 						DevelopmentTeam = 499WYUV8Q2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					90911023192EEA70008A48AA = {
 						DevelopmentTeam = 499WYUV8Q2;
@@ -3681,12 +3711,14 @@
 				3C4AED7F249B0A98001F7C50 /* face.png in Resources */,
 				3C0C3374238784990071BDDD /* audioSlide03-blue@3x.png in Resources */,
 				3C7A15032390D8F600F4AC48 /* video-opposite@2x.png in Resources */,
+				3C66261025073D9B00B88AD5 /* deleteEmoticon.png in Resources */,
 				3A45E3ED2223A4F300505786 /* group_join@3x.png in Resources */,
 				3C52608D24651ABC00D16DD5 /* recorder_white@3x.png in Resources */,
 				3C8DFAB024EBDA0F0047C277 /* check.png in Resources */,
 				3C52605724651ABC00D16DD5 /* animate_00053.png in Resources */,
 				3A45E3522223A45500505786 /* msg_video_white@3x.png in Resources */,
 				3A45E27E2223A3D600505786 /* icon_013.gif in Resources */,
+				3C66262D250B2C2400B88AD5 /* groupConversation.png in Resources */,
 				3C4AEDAA249B5A38001F7C50 /* opinionFeedback@3x.png in Resources */,
 				3C0C33832387849A0071BDDD /* audioSlide03-white@3x.png in Resources */,
 				3C525E12246410ED00D16DD5 /* pin_readReceipt@2x.png in Resources */,
@@ -3752,6 +3784,7 @@
 				3A45E3EC2223A4F300505786 /* group_join@2x.png in Resources */,
 				3A45E2992223A3E500505786 /* chat_audio_red@3x.png in Resources */,
 				3C0C334C238684580071BDDD /* voice@2x.png in Resources */,
+				3C66263A250B5B1700B88AD5 /* defaultAvatar@3x.png in Resources */,
 				3C52605824651ABC00D16DD5 /* animate_00084.png in Resources */,
 				3C4AEDA3249B1C53001F7C50 /* answer@2x.png in Resources */,
 				3C99E7B124F642F200782AF0 /* loudspeaker-initiate@3x.png in Resources */,
@@ -3799,6 +3832,7 @@
 				3C0C3376238784990071BDDD /* audioSlide01-blue@3x.png in Resources */,
 				3C52604424651ABC00D16DD5 /* animate_00027.png in Resources */,
 				3C4AED9F249B1AE8001F7C50 /* hangup.png in Resources */,
+				3C662638250B5B1700B88AD5 /* defaultAvatar@2x.png in Resources */,
 				3A45E3662223A45500505786 /* msg_bg_recv@2x.png in Resources */,
 				3A45E3632223A45500505786 /* msg_recv_audio@3x.png in Resources */,
 				3A45E0942223A28F00505786 /* user_avatar_gray@3x.png in Resources */,
@@ -3818,6 +3852,7 @@
 				3C7A15622391388100F4AC48 /* face-selected@2x.png in Resources */,
 				3A45E3552223A45500505786 /* msg_location@2x.png in Resources */,
 				3A45E0922223A28F00505786 /* user_avatar_me@3x.png in Resources */,
+				3C662626250B2BD900B88AD5 /* chatroomConversation@3x.png in Resources */,
 				3A45E36C2223A45500505786 /* msg_send_audio02@3x.png in Resources */,
 				3C4AECFB2499CFF8001F7C50 /* showPwd@2x.png in Resources */,
 				3C7A14E3238FC72800F4AC48 /* back_left_black.png in Resources */,
@@ -3838,6 +3873,7 @@
 				3C52608324651ABC00D16DD5 /* grid_gray@2x.png in Resources */,
 				3C4AED072499F8B7001F7C50 /* agreeProtocol.png in Resources */,
 				3C0C3378238784990071BDDD /* audioSlide02-white@2x.png in Resources */,
+				3C66262C250B2C2400B88AD5 /* groupConversation3x.png in Resources */,
 				3C4AED2D249A2040001F7C50 /* icon.png in Resources */,
 				3A45E0322223A22600505786 /* qr@3x.png in Resources */,
 				3C7A1516239118C100F4AC48 /* iMac@2x.png in Resources */,
@@ -3875,6 +3911,7 @@
 				3C37DF0F2382508500399AE8 /* back_left@2x.png in Resources */,
 				3C37DF152382508500399AE8 /* titleImage@2x.png in Resources */,
 				3C3703BD238D06D500A8976B /* 黑名单@2x.png in Resources */,
+				3C662628250B2BD900B88AD5 /* chatroomConversation@2x.png in Resources */,
 				3C4AED55249A2FAB001F7C50 /* icon-tab会话@3x.png in Resources */,
 				3A45E0912223A28F00505786 /* user_avatar_blue@3x.png in Resources */,
 				3A45E3B52223A4C000505786 /* videocs_theme@2x.png in Resources */,
@@ -4035,6 +4072,7 @@
 				3C52605024651ABC00D16DD5 /* animate_00044.png in Resources */,
 				3C0C338F23879E700071BDDD /* grayAudioBtn@2x.png in Resources */,
 				3C52605524651ABC00D16DD5 /* animate_00079.png in Resources */,
+				3C66262E250B2C2400B88AD5 /* groupConversation2x.png in Resources */,
 				3C4AED25249A1415001F7C50 /* unAgreeProtocol@3x.png in Resources */,
 				3A45E2902223A3D600505786 /* icon_020_cover.png in Resources */,
 				3C52609224651ABC00D16DD5 /* recorder_gray@3x.png in Resources */,
@@ -4064,6 +4102,7 @@
 				3A45E2772223A3D600505786 /* icon_024_cover.png in Resources */,
 				3A45E3EB2223A4F300505786 /* group_create@2x.png in Resources */,
 				3C5260B424651ABC00D16DD5 /* switchCamera_white@2x.png in Resources */,
+				3C662639250B5B1700B88AD5 /* defaultAvatar.png in Resources */,
 				3C4AED9E249B1AE8001F7C50 /* hangup@3x.png in Resources */,
 				3C52606F24651ABC00D16DD5 /* animate_00058.png in Resources */,
 				3C0C3379238784990071BDDD /* audioSlide01-white@2x.png in Resources */,
@@ -4104,6 +4143,7 @@
 				3C0C33342384DE870071BDDD /* 语音声波-right-1.png in Resources */,
 				3C99E79C24F642CD00782AF0 /* microphone-connect-selected@3x.png in Resources */,
 				3A45E3612223A45500505786 /* msg_location_white@3x.png in Resources */,
+				3C662627250B2BD900B88AD5 /* chatroomConversation.png in Resources */,
 				3C99E79824F642CD00782AF0 /* loudspeaker-connect-selected@3x.png in Resources */,
 				3C8DFAA224EA282F0047C277 /* currentAppkey@2x.png in Resources */,
 				3CE7293424A1E20700AEA67D /* newFriend.png in Resources */,
@@ -4164,7 +4204,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		47811CDAC419289BAD9EBC26 /* [CP] Embed Pods Frameworks */ = {
+		48EE851ACA51C00240F22823 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4450,9 +4490,9 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -4463,7 +4503,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.new.chatdemo.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = new.chatdemo.NotificationService.dev;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4486,9 +4526,9 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
@@ -4500,7 +4540,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.new.chatdemo.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = new.chatdemo.NotificationService.inhouse;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4510,6 +4550,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4546,9 +4587,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -4585,9 +4628,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
@@ -4595,6 +4640,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
@@ -4602,10 +4648,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_ENTITLEMENTS = EMiOSDemo/EMiOSDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
@@ -4669,6 +4715,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = new.chatdemo.dev;
 				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -4686,10 +4733,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_ENTITLEMENTS = EMiOSDemo/EMiOSDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";
@@ -4753,6 +4800,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = new.chatdemo.inhouse;
 				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;

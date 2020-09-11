@@ -62,7 +62,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
+    /*
     UIImageView *imgView = [[UIImageView alloc]init];
     [cell.contentView addSubview:imgView];
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,9 +73,9 @@
         make.left.equalTo(imgView.mas_right).offset(18);
         make.centerY.equalTo(cell.contentView);
     }];
-    
+    */
     if (section == 0) {
-        imgView.image = [UIImage imageNamed:@"多端多设备管理"];
+        //imgView.image = [UIImage imageNamed:@"多端多设备管理"];
         cell.textLabel.text = @"多端多设备管理";
         cell.textLabel.font = [UIFont systemFontOfSize:14.f];
     }

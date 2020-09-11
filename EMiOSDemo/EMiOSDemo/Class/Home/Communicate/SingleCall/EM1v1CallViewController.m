@@ -293,12 +293,13 @@
             self.statusLabel.hidden = YES;
             self.timeLabel.hidden = NO;
             //[self.waitImgView stopAnimating];
-            if (!self.callSession.isCaller) {
-                [self.answerButton removeFromSuperview];
-                [self.hangupButton mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.centerX.equalTo(self.view);
-                }];
-            }
+            [self.answerButton removeFromSuperview];
+            [self.hangupButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.view);
+                make.bottom.equalTo(self.view).offset(-20);
+                make.width.mas_equalTo(RTC_BUTTON_WIDTH);
+                make.height.mas_equalTo(RTC_BUTTON_HEIGHT);
+            }];
             
             NSString *connectStr = @"";
             if (self.callSession.connectType == EMCallConnectTypeRelay) {
@@ -391,9 +392,12 @@
     [self clearDataAndView];
     
     NSString *callId = self.callSession.callId;
+    
+    //EMCallEndReason reason = EMCallEndReasonHangup;
     EMCallEndReason reason = EMCallEndReasonNoResponse;
-    if (_callDuration < 1 && !_callSession.isCaller) {
+    if (self.callDuration < 1 && !self.callSession.isCaller) {
         reason = EMCallEndReasonHangup;
+        //reason = EMCallEndReasonDecline;
     }
     [[SingleCallController sharedManager] endCallWithId:callId reason:reason];
     _callSession = nil;

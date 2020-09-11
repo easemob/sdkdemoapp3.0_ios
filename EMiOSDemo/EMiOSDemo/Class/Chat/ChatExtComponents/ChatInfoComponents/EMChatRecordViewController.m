@@ -56,6 +56,7 @@
         make.right.equalTo(self.view).offset(-8);
         make.height.equalTo(@36);
     }];
+    [self.searchBar.textField becomeFirstResponder];
     
     self.searchResultTableView.backgroundColor = kColor_LightGray;
     self.searchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -140,7 +141,7 @@
             timeStr = [EMDateHelper formattedTimeFromTimeInterval:msg.timestamp];
             self.msgTimelTag = msg.timestamp;
         }
-        EMAvatarNameModel *model = [[EMAvatarNameModel alloc]initWithInfo:_keyWord img:[UIImage imageNamed:@"user_avatar_me"] msg:msg time:timeStr];
+        EMAvatarNameModel *model = [[EMAvatarNameModel alloc]initWithInfo:_keyWord img:[UIImage imageNamed:@"defaultAvatar"] msg:msg time:timeStr];
         [formated addObject:model];
     }
     

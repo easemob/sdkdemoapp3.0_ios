@@ -31,20 +31,6 @@
 
 @property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
 
-//聊天页-查找记录页
-@property (nonatomic) BOOL isChatRecord;
-//聊天记录-全部按钮
-@property (nonatomic, strong) UIButton *allRecordBtn;
-
-//聊天记录-图片/视频按钮
-@property (nonatomic, strong) UIButton *picAndVideoRecordBtn;
-//聊天记录类型类型
-@property (nonatomic) NSInteger type;
-//聊天记录-图片与视频tableview
-@property (nonatomic, strong) UITableView *picAndVideoRecordTableView;
-//聊天记录数组
-@property (nonatomic, strong) NSArray *recordArray;
-
 @end
 
 @implementation EMChatViewController
@@ -82,7 +68,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.msgTimelTag = -1;
-    self.type = 1;
     
     [self _setupChatSubviews];
     
@@ -153,9 +138,6 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 130;
     
-    if (self.isChatRecord)
-        [self _setupSwitchviews];
-    
     self.chatBar = [[EMChatBar alloc] init];
     self.chatBar.delegate = self;
     [self.view addSubview:self.chatBar];
@@ -176,80 +158,6 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.chatBar.mas_top);
     }];
-}
-
-#pragma mark - SubviewsSwitch
-//聊天记录类型
-- (void)_setupSwitchviews
-{
-    self.chatBar.hidden = YES;
-    self.searchBar.delegate = self;
-    
-    CGFloat width = (self.view.frame.size.width)/2;
-    
-    self.allRecordBtn = [[UIButton alloc]init];
-    [_allRecordBtn setBackgroundColor:[UIColor whiteColor]];
-    [_allRecordBtn setTitle:@"全部" forState:UIControlStateNormal];
-    [_allRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
-    _allRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    _allRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    _allRecordBtn.tag = 1;
-    [_allRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.allRecordBtn];
-    [_allRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.left.equalTo(self.view);
-        make.width.mas_equalTo(width);
-        make.height.equalTo(@40);
-    }];
-    
-    self.picAndVideoRecordBtn = [[UIButton alloc]init];
-    [_picAndVideoRecordBtn setBackgroundColor:[UIColor whiteColor]];
-    [_picAndVideoRecordBtn setTitle:@"图片/视频" forState:UIControlStateNormal];
-    _picAndVideoRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    _picAndVideoRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [_picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
-    _picAndVideoRecordBtn.tag = 2;
-    [_picAndVideoRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.picAndVideoRecordBtn];
-    [_picAndVideoRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.width.mas_equalTo(width);
-        make.height.equalTo(@40);
-    }];
-    
-    [self.searchBar mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.allRecordBtn.mas_bottom);
-        make.left.equalTo(self.view);
-        make.width.mas_equalTo(width);
-        make.height.equalTo(@40);
-    }];
-    
-    self.picAndVideoRecordBtn = [[UIButton alloc]init];
-    [_picAndVideoRecordBtn setBackgroundColor:[UIColor whiteColor]];
-    [_picAndVideoRecordBtn setTitle:@"图片/视频" forState:UIControlStateNormal];
-    _picAndVideoRecordBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    _picAndVideoRecordBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [_picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
-    _picAndVideoRecordBtn.tag = 2;
-    [_picAndVideoRecordBtn addTarget:self action:@selector(cutRecordType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.picAndVideoRecordBtn];
-    [_picAndVideoRecordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.height.equalTo(@50);
-    }];
-    
-    [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.searchBar.mas_bottom);
-        make.left.right.bottom.equalTo(self.view);
-    }];
-    self.searchResultTableView.backgroundColor = kColor_LightGray;
-    self.searchResultTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.searchResultTableView.rowHeight = UITableViewAutomaticDimension;
-    self.searchResultTableView.estimatedRowHeight = 130;
-    
 }
 
 - (void)_setupNavigationBarTitle
@@ -312,130 +220,6 @@
     return path;
 }
 
-//切换聊天记录类型
-#pragma mark - cutRecordType
-- (void)cutRecordType:(UIButton *)btn
-{
-    if (self.type == btn.tag) return;
-    self.type = btn.tag;
-    if (btn.tag == 1) {
-        //全部记录
-        [self.allRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
-        [self.picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
-        self.searchBar.hidden = NO;
-        self.tableView.hidden = NO;
-        self.searchResultTableView.hidden = NO;
-        self.picAndVideoRecordTableView.hidden = YES;
-        [self.tableView reloadData];
-    }
-    if (btn.tag == 2) {
-        //图片与视频记录
-        [self.allRecordBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
-        [self.picAndVideoRecordBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
-        self.searchBar.hidden = YES;
-        self.tableView.hidden = YES;
-        self.searchResultTableView.hidden = YES;
-        self.picAndVideoRecordTableView.hidden = NO;
-        [self picAndVideoRecord];
-    }
-}
-
-//图片与视频
-- (void)loadPicAndVideoRecordTableView
-{
-    self.picAndVideoRecordTableView = [[UITableView alloc] init];
-    self.picAndVideoRecordTableView.tableFooterView = [[UIView alloc] init];
-    self.picAndVideoRecordTableView.rowHeight = [UIScreen mainScreen].bounds.size.width / 4;
-    self.picAndVideoRecordTableView.delegate = self;
-    self.picAndVideoRecordTableView.dataSource = self;
-    [self.view addSubview:self.picAndVideoRecordTableView];
-    [self.picAndVideoRecordTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(40);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
-    }];
-}
-
-//获取聊天记录的图片&视频
-- (void)picAndVideoRecord
-{
-    __weak typeof(self) weakself = self;
-    //图片
-    [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeImage timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        NSArray *imgArray = [[NSArray alloc]init];
-        imgArray = [weakself _formatRecordMsg:aMessages];
-        //视频
-        [self.conversationModel.emModel loadMessagesWithType:EMMessageBodyTypeVideo timestamp:-1 count:50 fromUser:nil searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-            NSArray *videoArray = [[NSArray alloc]init];
-            videoArray = [weakself _formatRecordMsg:aMessages];
-            [weakself _sortChatRecord:imgArray videoArray:videoArray];
-            [weakself loadPicAndVideoRecordTableView];
-            [weakself.picAndVideoRecordTableView reloadData];
-        }];
-    }];
-}
-//格式化聊天记录图片&视频
-- (NSArray *)_formatRecordMsg:(NSArray<EMMessage *> *)aMessages
-{
-    NSMutableArray *formated = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [aMessages count]; i++) {
-        EMMessage *msg = aMessages[i];
-        EMMessageModel *model = [[EMMessageModel alloc] initWithEMMessage:msg];
-        [formated addObject:model];
-    }
-    return formated;
-}
-
-//排序聊天记录的图片与视频（按localtime本地时间）
-- (void)_sortChatRecord:(NSArray *)imgArray videoArray:(NSArray *)videoArray
-{
-    NSMutableArray *recordMutableArray = [[NSMutableArray alloc]initWithArray:imgArray];
-    long i = ([imgArray count] - 1);
-    long v = ([videoArray count] - 1);
-    
-    EMMessageModel *imgModel;
-    EMMessageModel *videoModel;
-    while (v >= 0) {
-        videoModel = (EMMessageModel *)[videoArray objectAtIndex:v];
-        while (i > 0) {
-            imgModel = (EMMessageModel *)[imgArray objectAtIndex:i];
-            if (videoModel.emModel.localTime >= imgModel.emModel.localTime) {
-                [recordMutableArray insertObject:videoModel atIndex:i+1];
-                break;
-            }
-            if (videoModel.emModel.localTime < imgModel.emModel.localTime && videoModel.emModel.localTime >= ((EMMessageModel *)[imgArray objectAtIndex:(i-1)]).emModel.localTime) {
-                [recordMutableArray insertObject:videoModel atIndex:i];
-                break;
-            }
-            i--;
-        }
-        if (i == 0) {
-            if (videoModel.emModel.localTime < ((EMMessageModel *)[imgArray objectAtIndex:0]).emModel.localTime) {
-                [recordMutableArray insertObject:videoModel atIndex:0];
-            }
-        }
-        v--;
-    }
-    NSMutableArray *tempArray1 = [[NSMutableArray alloc]init];
-    NSMutableArray *tempArray2 = [[NSMutableArray alloc]init];
-    i = 1;
-    for (EMMessageModel *model in recordMutableArray) {
-        [tempArray1 addObject:model];
-        if (i % 4 == 0) {
-            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
-            for (EMMessageModel *model in tempArray1) {
-                [tempArray addObject:model];
-            }
-            [tempArray2 addObject:tempArray];
-            [tempArray1 removeAllObjects];
-        }
-        ++i;
-    }
-    [tempArray2 addObject:tempArray1];
-    self.recordArray = [[NSArray alloc]initWithArray:tempArray2];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -443,16 +227,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.tableView)
-        return [self.dataArray count];
+    NSInteger count = [self.dataArray count];
     if (tableView == self.searchResultTableView)
-        return [self.searchResults count];
-    
-    return [self.recordArray count];
+        count = [self.searchResults count];
+    return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id obj = [self.recordArray objectAtIndex:indexPath.row];;
+    id obj;
     if (tableView == self.tableView)
         obj = [self.dataArray objectAtIndex:indexPath.row];
     if (tableView == self.searchResultTableView)
@@ -478,29 +260,17 @@
     }
     
     UITableViewCell *cell;
-    if (!(tableView == self.picAndVideoRecordTableView)) {
-        EMMessageModel *model = (EMMessageModel *)obj;
-        NSString *identifier;
-        identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
-        EMMessageCell *msgCell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-        // Configure the cell...
-        if (msgCell == nil) {
-            msgCell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
-            msgCell.delegate = self;
-        }
-        msgCell.model = model;
-        cell = msgCell;
-    } else {
-        NSArray *modelArray = (NSArray *)obj;
-        EMMsgRecordCell *msgCell = (EMMsgRecordCell *)[tableView dequeueReusableCellWithIdentifier:@"msgRecordCell"];
-        // Configure the cell...
-        if (msgCell == nil) {
-            msgCell = [[EMMsgRecordCell alloc] init];
-            //msgCell.delegate = self;
-        }
-        msgCell.models = modelArray;
-        cell = msgCell;
+    EMMessageModel *model = (EMMessageModel *)obj;
+    NSString *identifier;
+    identifier = [EMMessageCell cellIdentifierWithDirection:model.direction type:model.type];
+    EMMessageCell *msgCell = (EMMessageCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    // Configure the cell...
+    if (msgCell == nil) {
+        msgCell = [[EMMessageCell alloc] initWithDirection:model.direction type:model.type];
+        msgCell.delegate = self;
     }
+    msgCell.model = model;
+    cell = msgCell;
     return cell;
 }
 
@@ -532,11 +302,6 @@
 
 #pragma mark - EMChatBarRecordAudioViewDelegate
 
-- (void)chatBarRecordAudioViewStartRecord
-{
-    
-}
-
 - (void)chatBarRecordAudioViewStopRecord:(NSString *)aPath
                               timeLength:(NSInteger)aTimeLength
 {
@@ -549,12 +314,12 @@
     [self sendMessageWithBody:body ext:nil isUpload:YES];
 }
 
-- (void)chatBarRecordAudioViewCancelRecord
-{
-    
-}
-
 #pragma mark - EMChatBarEmoticonViewDelegate
+
+- (void)didSelectedTextDetele
+{
+    [self.chatBar deleteTailText];
+}
 
 - (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
 {
@@ -565,11 +330,6 @@
         NSDictionary *ext = @{MSG_EXT_GIF:@(YES), MSG_EXT_GIF_ID:aModel.eId};
         [self sendTextAction:aModel.name ext:ext];
     }
-}
-
-- (void)didChatBarEmoticonViewSendAction
-{
-    [self sendTextAction:self.chatBar.textView.text ext:nil];
 }
 
 #pragma mark - EMMessageCellDelegate
@@ -689,7 +449,6 @@
                             [sameObject addObject:prevMessage];
                         }
                     }
-                    
                     [sameObject addObject:model];
                     *stop = YES;
                 }
@@ -723,7 +482,6 @@
             }
         }
     };
-    
     [self.conversationModel.emModel loadMessagesStartFromId:self.moreMsgId count:self.conversationModel.emModel.unreadMessagesCount searchDirection:EMMessageSearchDirectionUp completion:block];
 }
 
@@ -815,20 +573,22 @@
 
 - (void)handleWillPushCallController:(NSNotification *)aNotif
 {
-    __weak typeof(self) weakself = self;
-    NSString *communicatePushType = [NSString stringWithFormat:@"%@ 邀请你通话",[EMClient sharedClient].currentUsername];
-    if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
-        communicatePushType = [NSString stringWithFormat:@"%@ 邀请你视频通话",[EMClient sharedClient].currentUsername];
-    if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
-        communicatePushType = [NSString stringWithFormat:@"%@ 邀请你语音通话",[EMClient sharedClient].currentUsername];
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    NSString *to = self.conversationModel.emModel.conversationId;
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:[[EMTextMessageBody alloc]initWithText:EMCOMMUNICATE_CALLINVITE] ext:@{@"em_apns_ext":@{@"target-content-id":@"communicate",@"em_push_content":communicatePushType}, @"em_force_notification":@YES, @"em_push_mutable_content":@YES}];
-    message.chatType = (EMChatType)self.conversationModel.emModel.type;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-        if (!error)
-            [weakself.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
-    }];
+    if (aNotif) {
+        __weak typeof(self) weakself = self;
+        NSString *communicatePushType = [NSString stringWithFormat:@"%@ 邀请你通话",[EMClient sharedClient].currentUsername];
+        if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
+            communicatePushType = [NSString stringWithFormat:@"%@ 邀请你视频通话",[EMClient sharedClient].currentUsername];
+        if ([[aNotif.object objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
+            communicatePushType = [NSString stringWithFormat:@"%@ 邀请你语音通话",[EMClient sharedClient].currentUsername];
+        NSString *from = [[EMClient sharedClient] currentUsername];
+        NSString *to = self.conversationModel.emModel.conversationId;
+        EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:[[EMTextMessageBody alloc]initWithText:EMCOMMUNICATE_CALLINVITE] ext:@{@"em_apns_ext":@{@"target-content-id":@"communicate",@"em_push_content":communicatePushType}, @"em_force_notification":@YES, @"em_push_mutable_content":@YES}];
+        message.chatType = (EMChatType)self.conversationModel.emModel.type;
+        [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+            if (!error)
+                [weakself.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
+        }];
+    }
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];

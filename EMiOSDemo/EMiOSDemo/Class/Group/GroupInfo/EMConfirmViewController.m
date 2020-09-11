@@ -69,7 +69,7 @@
         make.right.equalTo(confirmView).offset(-32);
         make.height.equalTo(@90);
     }];
-    UIImageView *avatarView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"user_avatar_blue"]];
+    UIImageView *avatarView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"defaultAvatar"]];
     [memberView addSubview:avatarView];
     [avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(memberView).offset(22);

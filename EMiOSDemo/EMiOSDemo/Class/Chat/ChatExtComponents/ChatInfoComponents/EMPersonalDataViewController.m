@@ -1,5 +1,5 @@
 //
-//  EMFriendProfileViewController.m
+//  EMPersonalDataViewController.m
 //  EMiOSDemo
 //
 //  Created by 娜塔莎 on 2019/12/10.
@@ -9,6 +9,7 @@
 #import "EMPersonalDataViewController.h"
 #import "EMAvatarNameCell.h"
 #import "EMSingleChatViewController.h"
+#import "PellTableViewSelect.h"
 
 @interface EMPersonalDataViewController ()
 
@@ -16,7 +17,6 @@
 @property (nonatomic, strong) NSArray *contacts;
 
 @property (nonatomic, strong) NSString *hint;
-@property (nonatomic, strong) UIView *blackListView;
 @property (nonatomic, strong) EMSingleChatViewController *chatController;
 @property (nonatomic) BOOL isChatting;
 @end
@@ -79,33 +79,6 @@
         else
             make.height.equalTo(@152);
     }];
-    
-    self.blackListView = [[UIView alloc]init];
-    self.blackListView.backgroundColor = [UIColor blackColor];
-    self.blackListView.alpha = 0.6;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelView:)];
-    [self.blackListView addGestureRecognizer:tap];
-    [self.view addSubview:self.blackListView];
-    [self.blackListView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.bottom.left.equalTo(self.view);
-    }];
-    UIButton *blackListBtn = [[UIButton alloc]init];
-    blackListBtn.alpha = 1.0;
-    [blackListBtn addTarget:self action:@selector(addContactToBlackList) forControlEvents:UIControlEventTouchUpInside];
-    [blackListBtn setTitle:@"加入黑名单" forState:UIControlStateNormal];
-    blackListBtn.layer.cornerRadius = 8;
-    [blackListBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [blackListBtn setBackgroundColor:[UIColor whiteColor]];
-    [blackListBtn.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
-    [self.blackListView addSubview:blackListBtn];
-    [blackListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(2);
-        make.right.equalTo(self.view).offset(-16);
-        make.width.equalTo(@120);
-        make.height.equalTo(@50);
-    }];
-    [self.view addSubview:self.blackListView];
-    self.blackListView.hidden = YES;
 }
 
 - (void)_setupNavigationBarRightItem
@@ -133,7 +106,7 @@
 
     if (section == 0) {
         EMAvatarNameCell *cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
-        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+        cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
         cell.nameLabel.text = self.nickName;
         cell.userInteractionEnabled = NO;
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -214,13 +187,14 @@
 //黑名单view
 - (void)addBlackListView
 {
-    self.blackListView.hidden = NO;
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-140, self.navigationController.navigationBar.frame.size.height + 24, 125, 52) selectData:@[@"加入黑名单"] images:@[@""] locationY:60 action:^(NSInteger index){
+        if(index == 0) {
+            [self addContactToBlackList];
+        }
+    } animated:YES];
 }
 #pragma mark - Action
-- (void)cancelView:(UITapGestureRecognizer *)aTap
-{
-    self.blackListView.hidden = YES;
-}
+
 //添加黑名单
 - (void)addContactToBlackList
 {
@@ -236,9 +210,8 @@
             [EMAlertController showSuccessAlert:@"拉黑用户成功"];
         else
             [EMAlertController showErrorAlert:@"拉黑用户失败"];
-        if (!aError && weakself.shieldingContactSuccess)
-            weakself.shieldingContactSuccess();
-        weakself.blackListView.hidden = YES;
+        if (!aError)
+            [[NSNotificationCenter defaultCenter] postNotificationName:CONTACT_BLACKLIST_UPDATE object:nil];
     }];
 }
 

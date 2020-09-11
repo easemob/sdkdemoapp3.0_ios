@@ -40,7 +40,7 @@
     [super viewDidLoad];
     /*
     for (int i=0; i<4; i++) {
-        EMReadReceiptMemberModel *model = [[EMReadReceiptMemberModel alloc]initWithInfo:[UIImage imageNamed:@"user_avatar_me"] nick:[NSString stringWithFormat:@"member %d",i] time:@"12:12"];
+        EMReadReceiptMemberModel *model = [[EMReadReceiptMemberModel alloc]initWithInfo:[UIImage imageNamed:@"defaultAvatar"] nick:[NSString stringWithFormat:@"member %d",i] time:@"12:12"];
         [self.dataArray  addObject:model];
     }*/
     self.msgTimelTag = -1;
@@ -100,7 +100,7 @@
             timeStr = [EMDateHelper formattedTimeFromTimeInterval:msg.timestamp];
             self.msgTimelTag = msg.timestamp;
         }
-        EMReadReceiptMemberModel *model = [[EMReadReceiptMemberModel alloc]initWithInfo:[UIImage imageNamed:@"user_avatar_me"] nick:msg.from time:timeStr];
+        EMReadReceiptMemberModel *model = [[EMReadReceiptMemberModel alloc]initWithInfo:[UIImage imageNamed:@"defaultAvatar"] nick:msg.from time:timeStr];
         [formated addObject:model];
     }
     

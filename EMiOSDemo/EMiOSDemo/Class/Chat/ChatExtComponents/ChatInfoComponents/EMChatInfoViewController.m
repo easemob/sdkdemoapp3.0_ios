@@ -103,7 +103,7 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     if (section == 0) {
-        cell.imageView.image = [UIImage imageNamed:@"group_avatar"];
+        cell.imageView.image = [UIImage imageNamed:self.conversationModel.emModel.type == EMConversationTypeChat ? @"defaultAvatar" : @"groupConversation"];
         cell.textLabel.font = [UIFont systemFontOfSize:18.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
         cell.textLabel.text = self.conversationModel.emModel.conversationId;
@@ -174,7 +174,8 @@
 - (void)deleteChatRecord
 {
     __weak typeof(self) weakself = self;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"确定删除和%@的聊天记录吗？",self.conversationModel.emModel.conversationId] preferredStyle:UIAlertControllerStyleAlert];
+    //UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"确定删除和%@的聊天记录吗？",self.conversationModel.emModel.conversationId] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确认清空聊天记录？" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *clearAction = [UIAlertAction actionWithTitle:@"清空" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO];
         EMError *error = nil;

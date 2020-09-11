@@ -109,7 +109,7 @@
         make.width.height.equalTo(@120);
     }];
     insideLayer.layer.cornerRadius = 60;
-    UIImageView *avatarImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"user_avatar_me"]];
+    UIImageView *avatarImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"defaultAvatar"]];
     [self.view addSubview:avatarImage];
     [avatarImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.mas_centerX);

@@ -190,6 +190,7 @@
 }
 
 #pragma mark - moreAction
+
 - (void)moreAction
 {
     [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-160, self.addImageBtn.frame.origin.y + 24, 145, 104) selectData:@[@"创建群组",@"添加好友"] images:@[@"icon-创建群组",@"icon-添加好友"] locationY:18 action:^(NSInteger index){

@@ -96,7 +96,7 @@
     
     UISwitch *switchControl = nil;
     BOOL isSwitchCell = NO;
-    if (section == 1 || section == 2) {
+    if (section != 0) {
         isSwitchCell = YES;
     }
     
@@ -285,6 +285,10 @@
     NSRange range = [date rangeOfString:@"-"];
     NSString *start = [date substringToIndex:range.location];
     NSString *end = [date substringFromIndex:range.location + 1];
+    if ([start isEqualToString:end]) {
+        [self showHint:@"起止时间不能相同"];
+        return;
+    }
     EMPushOptions *options = [[EMClient sharedClient] pushOptions];
     options.noDisturbingStartH = [start intValue];
     options.noDisturbingEndH = [end intValue];

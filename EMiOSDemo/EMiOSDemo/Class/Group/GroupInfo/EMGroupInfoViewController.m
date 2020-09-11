@@ -190,7 +190,7 @@
     
     if (section == 0) {
         if (row == 0) {
-            cell.imageView.image = [UIImage imageNamed:@"group_avatar"];
+            cell.imageView.image = [UIImage imageNamed:@"groupConversation"];
             cell.textLabel.font = [UIFont systemFontOfSize:18.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
             cell.textLabel.text = self.group.groupName;

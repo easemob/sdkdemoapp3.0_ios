@@ -75,7 +75,6 @@
     self.textView = [[EMTextView alloc] init];
     
     self.textView.delegate = self;
-    self.textView.placeholder = @"输入了什么东西";
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.textAlignment = NSTextAlignmentLeft;
     self.textView.textContainerInset = UIEdgeInsetsMake(10, 10, 12, 0);
@@ -280,6 +279,14 @@
         self.textView.text = [NSString stringWithFormat:@"%@%@", self.textView.text, aText];
         [self textChangedExt];
         [self _updatetextViewHeight];
+    }
+}
+
+- (void)deleteTailText
+{
+    if ([self.textView.text length] > 0) {
+        NSRange range = [self.textView.text rangeOfComposedCharacterSequenceAtIndex:self.textView.text.length-1];
+        self.textView.text = [self.textView.text substringToIndex:range.location];
     }
 }
 

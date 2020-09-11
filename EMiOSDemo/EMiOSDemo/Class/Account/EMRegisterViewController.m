@@ -13,7 +13,7 @@
 
 #import "EMQRCodeViewController.h"
 #import "EMSDKOptionsViewController.h"
-
+#import "EMAlertController.h"
 #import "EMErrorAlertViewController.h"
 #import "LoadingCALayer.h"
 #import "OneLoadingAnimationView.h"
@@ -115,7 +115,7 @@
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
         make.top.equalTo(titleLabel.mas_bottom).offset(20);
-        make.height.equalTo(@45);
+        make.height.equalTo(@55);
     }];
     
     self.pswdField = [[UITextField alloc] init];
@@ -129,6 +129,7 @@
     self.pswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
     [self.pswdRightView.rightViewBtn addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.pswdField.rightView = self.pswdRightView;
+    self.pswdRightView.hidden = YES;
     self.pswdField.rightViewMode = UITextFieldViewModeAlways;
     self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.pswdField.leftViewMode = UITextFieldViewModeAlways;
@@ -154,6 +155,7 @@
     self.confirmPswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
     [self.confirmPswdRightView.rightViewBtn addTarget:self action:@selector(confirmPswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.confirmPswdField.rightView = self.confirmPswdRightView;
+    self.confirmPswdRightView.hidden = YES;
     self.confirmPswdField.rightViewMode = UITextFieldViewModeAlways;
     self.confirmPswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.confirmPswdField.leftViewMode = UITextFieldViewModeAlways;
@@ -169,6 +171,7 @@
     }];
     
     self.userAgreementView = [[EMUserAgreementView alloc]initUserAgreement];
+    [self.userAgreementView.userAgreementBtn addTarget:self action:@selector(confirmProtocol) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_userAgreementView];
     [_userAgreementView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.confirmPswdField.mas_bottom).offset(6);
@@ -210,7 +213,7 @@
 {
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
-    if(self.nameField.text.length > 0 && self.pswdField.text.length > 0 && self.confirmPswdField.text.length > 0){
+    if(![self.nameField.text isEqualToString:@""] && ![self.pswdField.text isEqualToString:@""] && ![self.confirmPswdField.text isEqualToString:@""] && self.userAgreementView.userAgreementBtn.isSelected){
         [self.authorizationView setupAuthBtnBgcolor:YES];  
         self.isRegiste = true;
     } else {
@@ -227,15 +230,61 @@
     }
     if (textField == self.nameField) {
         self.userIdRightView.hidden = NO;
-        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""]) {
+        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""])
             self.userIdRightView.hidden = YES;
-        }
     }
-    
+    if (textField == self.pswdField) {
+        NSString *updatedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        textField.text = updatedString;
+        self.pswdRightView.hidden = NO;
+        if ([self.pswdField.text length] <= 0 && [string isEqualToString:@""]) {
+            self.pswdRightView.hidden = YES;
+            self.pswdField.secureTextEntry = YES;
+            [self.pswdRightView.rightViewBtn setSelected:NO];
+        }
+        return NO;
+    }
+    if (textField == self.confirmPswdField) {
+        NSString *updatedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        textField.text = updatedString;
+        self.confirmPswdRightView.hidden = NO;
+        if ([self.pswdField.text length] <= 0 && [string isEqualToString:@""]) {
+            self.confirmPswdRightView.hidden = YES;
+            self.confirmPswdField.secureTextEntry = YES;
+            [self.confirmPswdRightView.rightViewBtn setSelected:NO];
+        }
+        return NO;
+    }
     return YES;
 }
 
+- (void)textFieldDidChangeSelection:(UITextField *)textField
+{
+    UITextRange *rang = textField.markedTextRange;
+    if (rang == nil) {
+        if(![self.nameField.text isEqualToString:@""] && ![self.pswdField.text isEqualToString:@""] && ![self.confirmPswdField.text isEqualToString:@""] && self.userAgreementView.userAgreementBtn.isSelected){
+            [self.authorizationView setupAuthBtnBgcolor:YES];
+            self.isRegiste = true;
+            return;
+        }
+        [self.authorizationView setupAuthBtnBgcolor:NO];
+        self.isRegiste = false;
+    }
+}
+
 #pragma mark - Action
+
+- (void)confirmProtocol
+{
+    if(![self.nameField.text isEqualToString:@""] && ![self.pswdField.text isEqualToString:@""] && ![self.confirmPswdField.text isEqualToString:@""] && self.userAgreementView.userAgreementBtn.isSelected){
+        [self.authorizationView setupAuthBtnBgcolor:YES];
+        self.isRegiste = true;
+        return;
+    }
+    [self.authorizationView setupAuthBtnBgcolor:NO];
+    self.isRegiste = false;
+}
+
 //清除用户名
 - (void)clearUserIdAction
 {
@@ -320,9 +369,11 @@
     }*/
     
     if(![pswd isEqualToString:confirmPwd]) {
+        [EMAlertController showErrorAlert:@"两次输入密码不一致"];
+        /*
         EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:@"两次输入密码不一致"];
         errorAlerController.modalPresentationStyle = 0;
-        [self presentViewController:errorAlerController animated:NO completion:nil];
+        [self presentViewController:errorAlerController animated:NO completion:nil];*/
         return;
     }
     
@@ -363,10 +414,12 @@
             default:
                 break;
         }
+        [EMAlertController showErrorAlert:errorDes];
+        /*
         EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:errorDes];
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
-        [weakself.authorizationView setupAuthBtnBgcolor:YES];
+        [weakself.authorizationView setupAuthBtnBgcolor:YES];*/
     }];
 }
 @end

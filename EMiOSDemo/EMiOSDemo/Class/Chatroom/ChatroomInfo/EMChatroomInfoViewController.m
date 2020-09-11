@@ -21,8 +21,6 @@
 @property (nonatomic, strong) EMChatroom *chatroom;
 @property (nonatomic) BOOL isOwner;
 
-@property (nonatomic, strong) UITableViewCell *leaveCell;
-
 @end
 
 @implementation EMChatroomInfoViewController
@@ -66,15 +64,12 @@
     self.showRefreshHeader = YES;
     
     self.tableView.rowHeight = 60;
-    self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultRedFont"];
-    self.leaveCell.textLabel.textColor = [UIColor redColor];
-    self.leaveCell.textLabel.text = @"退出聊天室";
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -88,8 +83,6 @@
         if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner || self.chatroom.permissionType == EMChatroomPermissionTypeAdmin) {
             count = 2;
         }
-    } else if (section == 3) {
-        count = 1;
     }
     
     return count;
@@ -98,9 +91,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if (section == 3 && row == 0) {
-        return self.leaveCell;
-    }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCellStyleValue1"];
     
@@ -134,13 +124,12 @@
         if (row == 0) {
             cell.textLabel.text = @"聊天室成员";
             cell.detailTextLabel.text = nil;
-//            cell.detailTextLabel.text = @([self.chatroom.memberList count]).stringValue;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }  else if (section == 2) {
         if (row == 0) {
             cell.textLabel.text = @"管理员";
-            cell.detailTextLabel.text = @([self.chatroom.adminList count]).stringValue;
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@人",@([self.chatroom.adminList count] + 1).stringValue];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (row == 1) {
             cell.textLabel.text = @"禁言列表";
@@ -193,10 +182,6 @@
             EMChatroomMutesViewController *controller = [[EMChatroomMutesViewController alloc] initWithChatroom:self.chatroom];
             [self.navigationController pushViewController:controller animated:NO];
         }
-    } else if (section == 3) {
-        if (row == 0) {
-            [self _leaveChatroomAction];
-        }
     }
 }
 
@@ -239,11 +224,6 @@
 - (void)_resetChatroom:(EMChatroom *)aChatroom
 {
     self.chatroom = aChatroom;
-    if (aChatroom.permissionType == EMChatroomPermissionTypeOwner) {
-        self.leaveCell.textLabel.text = @"解散聊天室";
-    } else {
-        self.leaveCell.textLabel.text = @"退出聊天室";
-    }
     [self.tableView reloadData];
 }
 
@@ -392,28 +372,6 @@
         [weakself _resetChatroom:aChatroom];
     }];
     [self.navigationController pushViewController:controller animated:NO];
-}
-
-- (void)_leaveChatroomAction
-{
-    __weak typeof(self) weakself = self;
-    void (^block)(EMError *aError) = ^(EMError *aError) {
-        [weakself hideHud];
-        if (!aError) {
-            if (weakself.leaveCompletion) {
-                weakself.leaveCompletion();
-            }
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }
-    };
-    
-    if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner) {
-        [self showHudInView:self.view hint:@"解散群组..."];
-        [[EMClient sharedClient].roomManager destroyChatroom:self.chatroom.chatroomId completion:block];
-    } else {
-        [self showHudInView:self.view hint:@"离开群组..."];
-        [[EMClient sharedClient].roomManager leaveChatroom:self.chatroom.chatroomId completion:block];
-    }
 }
 
 @end

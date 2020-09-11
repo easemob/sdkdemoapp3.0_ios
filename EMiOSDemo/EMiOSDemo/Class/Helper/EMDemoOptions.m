@@ -35,7 +35,7 @@ static EMDemoOptions *sharedOptions = nil;
         
         self.isOfflineHangup = NO;
         
-        self.isShowCallInfo = NO;
+        self.isShowCallInfo = YES;
         self.isUseBackCamera = NO;
         
         self.willRecord = NO;

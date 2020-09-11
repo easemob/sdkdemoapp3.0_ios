@@ -84,7 +84,7 @@
         name = [self.searchResults objectAtIndex:indexPath.row];
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     cell.nameLabel.text = name;
     cell.indexPath = indexPath;
     return cell;

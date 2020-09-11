@@ -80,7 +80,7 @@
         make.bottom.equalTo(self.contentView).offset(-15);
     }];
     
-    self.avatarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_avatar_blue"]];
+    self.avatarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaultAvatar"]];
     self.avatarView.backgroundColor = [UIColor clearColor];
     [self.cardView addSubview:self.avatarView];
     [self.avatarView mas_makeConstraints:^(MASConstraintMaker *make) {

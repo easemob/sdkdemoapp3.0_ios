@@ -27,7 +27,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 #define RTC_BUTTON_WIDTH 65
 #define RTC_BUTTON_HEIGHT 90
-#define RTC_BUTTON_PADDING ([UIScreen mainScreen].bounds.size.width - RTC_BUTTON_WIDTH * 3) / 3
+#define RTC_BUTTON_PADDING ([UIScreen mainScreen].bounds.size.width - RTC_BUTTON_WIDTH * 3) / 4
 
 //会话
 #define CONVERSATION_STICK @"stick"

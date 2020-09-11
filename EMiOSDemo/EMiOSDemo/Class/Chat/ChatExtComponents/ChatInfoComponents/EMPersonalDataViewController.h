@@ -1,5 +1,5 @@
 //
-//  EMFriendProfileViewController.h
+//  EMPersonalDataViewController.h
 //  EMiOSDemo
 //
 //  Created by 娜塔莎 on 2019/12/10.

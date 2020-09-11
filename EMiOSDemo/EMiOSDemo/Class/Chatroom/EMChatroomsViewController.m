@@ -75,7 +75,7 @@
         chatroom = self.searchResults[indexPath.row];
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"chatroom_avatar"];
+    cell.avatarView.image = [UIImage imageNamed:@"chatroomConversation"];
     if ([chatroom.subject length]) {
         cell.nameLabel.text = chatroom.subject;
     } else {

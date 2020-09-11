@@ -398,7 +398,7 @@
         group = self.tempSearchResults[(indexPath.section)][indexPath.row];
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"group_avatar"];
+    cell.avatarView.image = [UIImage imageNamed:@"groupConversation"];
     if ([group.groupName length]) {
         cell.nameLabel.text = group.groupName;
     } else {

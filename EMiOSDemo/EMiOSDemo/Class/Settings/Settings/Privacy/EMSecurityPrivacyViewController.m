@@ -25,7 +25,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.title = @"安全与隐私";
+    self.title = @"隐私";
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
 
     self.tableView.scrollEnabled = NO;
@@ -62,7 +62,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
+    /*
     UIImageView *imgView = [[UIImageView alloc]init];
     [cell.contentView addSubview:imgView];
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -72,10 +72,10 @@
     [cell.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imgView.mas_right).offset(18);
         make.centerY.equalTo(cell.contentView);
-    }];
+    }];*/
     
     if (section == 0) {
-        imgView.image = [UIImage imageNamed:@"黑名单"];
+        //imgView.image = [UIImage imageNamed:@"黑名单"];
         cell.textLabel.text = @"黑名单";
     }
     

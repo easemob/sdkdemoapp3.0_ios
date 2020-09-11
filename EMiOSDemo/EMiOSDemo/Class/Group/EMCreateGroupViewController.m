@@ -77,7 +77,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(createGroupAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(createGroupAction)];
     self.title = @"创建群组";
     
     self.tableView.backgroundColor = kColor_LightGray;
@@ -330,6 +330,8 @@
     self.optionCell.textLabel.text = self.isPublic ? @"加入是否需要验证" : @"群成员是否有邀请权限";
     UISwitch *sw = (UISwitch *)self.optionCell.accessoryView;
     [sw setOn:NO];
+    if (!self.isPublic)
+        self.isMemberCanInvite = NO;
     
     [self.tableView reloadData];
 }

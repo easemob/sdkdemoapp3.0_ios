@@ -43,20 +43,21 @@
 //用户协议内容链接
 - (void)_setupLinkProtocol
 {
-    NSString *linkStr = @"我已阅读《服务条款》与《隐私协议》";
+    NSString *linkStr = @"阅读《环信服务条款》与《环信隐私协议》";
     UIFont *linkFont = [UIFont systemFontOfSize:12.0];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:linkStr];
-    [attributedString addAttribute:NSLinkAttributeName value:@"serviceClouse://" range:[[attributedString string] rangeOfString:@"《服务条款》"]];
-    [attributedString addAttribute:NSLinkAttributeName value:@"privacyProtocol://" range:[[attributedString string] rangeOfString:@"《隐私协议》"]];
+    [attributedString addAttribute:NSLinkAttributeName value:@"serviceClouse://" range:[[attributedString string] rangeOfString:@"《环信服务条款》"]];
+    [attributedString addAttribute:NSLinkAttributeName value:@"privacyProtocol://" range:[[attributedString string] rangeOfString:@"《环信隐私协议》"]];
     NSDictionary *attriDict = @{NSFontAttributeName:linkFont};
     [attributedString addAttributes:attriDict range:NSMakeRange(0, attributedString.length)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, [attributedString length])];
     
     self.linkProtocol.attributedText = attributedString;
-    self.linkProtocol.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor systemBlueColor], NSUnderlineColorAttributeName: [UIColor whiteColor], NSUnderlineStyleAttributeName: @(NSUnderlinePatternSolid)};
+    self.linkProtocol.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor], NSUnderlineColorAttributeName: [UIColor whiteColor], NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
     self.protocolTextHeight = [self getAttributionHeightWithString:linkStr lineSpace:1.5 kern:1 font:linkFont width:[UIScreen mainScreen].bounds.size.width - self.userAgreementBtn.frame.origin.x - ComponentHeight].height;
     [self addSubview:self.linkProtocol];
     [self.linkProtocol mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.userAgreementBtn.mas_right).offset(10);
+        make.left.equalTo(self.userAgreementBtn.mas_right).offset(5);
         make.centerY.equalTo(self.userAgreementBtn);
         make.height.equalTo(@(self.protocolTextHeight));
     }];
@@ -88,10 +89,10 @@
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
     if ([[URL scheme] isEqualToString:@"serviceClouse"]) 
         //服务条款
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
     if ([[URL scheme] isEqualToString:@"privacyProtocol"])
         //隐私协议
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
     return NO;
 }
 

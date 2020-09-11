@@ -48,7 +48,7 @@
 {
     [self addPopBackLeftItem];
     if (self.isEditable) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     }
     
     self.view.backgroundColor = kColor_LightGray;
@@ -66,7 +66,10 @@
     self.textView.delegate = self;
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.font = [UIFont systemFontOfSize:16];
-    self.textView.placeholder = self.placeholder;
+    if (!self.isEditable)
+        self.textView.placeholder = @"联系管理员获取编辑权限";
+    else
+        self.textView.placeholder = self.placeholder;
     self.textView.returnKeyType = UIReturnKeyDone;
     if (self.originalString && ![self.originalString isEqualToString:@""]) {
         self.textView.text = self.originalString;

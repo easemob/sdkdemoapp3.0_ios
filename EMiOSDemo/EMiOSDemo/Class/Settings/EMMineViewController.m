@@ -81,7 +81,7 @@
     self.userCell.nameLabel.font = [UIFont systemFontOfSize:18];
     self.userCell.detailLabel.font = [UIFont systemFontOfSize:15];
     self.userCell.detailLabel.textColor = [UIColor grayColor];
-    self.userCell.avatarView.image = [UIImage imageNamed:@"user_avatar_me"];
+    self.userCell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     self.userCell.nameLabel.text = [EMClient sharedClient].currentUsername;
     self.userCell.detailLabel.text = [EMClient sharedClient].pushOptions.displayName;
     
@@ -196,7 +196,7 @@
     self.nameLabel.font = [UIFont systemFontOfSize:18];
     self.detailLabel.font = [UIFont systemFontOfSize:15];
     self.detailLabel.textColor = [UIColor grayColor];
-    self.avatarView.image = [UIImage imageNamed:@"user_avatar_me"];
+    self.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     self.nameLabel.text = [EMClient sharedClient].currentUsername;
     self.detailLabel.text = [EMClient sharedClient].pushOptions.displayName;
 }

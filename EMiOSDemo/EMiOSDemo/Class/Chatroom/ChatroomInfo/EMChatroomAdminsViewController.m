@@ -7,7 +7,7 @@
 //
 
 #import "EMChatroomAdminsViewController.h"
-
+#import "EMPersonalDataViewController.h"
 #import "EMAvatarNameCell.h"
 
 @interface EMChatroomAdminsViewController ()
@@ -65,12 +65,15 @@
     
     // Configure the cell...
     if (cell == nil) {
-        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
+        cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EMAvatarNameCell"];
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     cell.nameLabel.text = [self.dataArray objectAtIndex:indexPath.row];
     cell.indexPath = indexPath;
+    cell.detailTextLabel.text = @"管理员";
+    if (indexPath.row == 0)
+        cell.detailTextLabel.text = @"创建者";
     
     if (self.chatroom.permissionType == EMChatroomPermissionTypeOwner) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -82,6 +85,11 @@
 }
 
 #pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self personalData:[self.dataArray objectAtIndex:indexPath.row]];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -137,6 +145,7 @@
             weakself.chatroom = aChatroom;
             
             [weakself.dataArray removeAllObjects];
+            [weakself.dataArray addObject:aChatroom.owner];
             [weakself.dataArray addObjectsFromArray:aChatroom.adminList];
             [weakself.tableView reloadData];
         }
@@ -219,6 +228,18 @@
             [weakself.tableView reloadData];
         }
     }];
+}
+
+//个人资料卡
+- (void)personalData:(NSString *)nickName
+{
+    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *rootViewController = window.rootViewController;
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav pushViewController:controller animated:YES];
+    }
 }
 
 - (void)backAction

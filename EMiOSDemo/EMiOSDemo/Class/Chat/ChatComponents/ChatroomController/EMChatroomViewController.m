@@ -22,13 +22,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self _setupNavigationBarRightItem];
-    
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
     [self _joinChatroom];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)dealloc

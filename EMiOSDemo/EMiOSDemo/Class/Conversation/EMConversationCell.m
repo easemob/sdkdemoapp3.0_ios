@@ -249,11 +249,12 @@
         [self _setNotiModel:_model.notiModel];
     } else {
         EMConversation *conversation = self.model.emModel;
-        if (conversation.type == EMConversationTypeChat) {
-            self.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
-        } else {
-            self.avatarView.image = [UIImage imageNamed:@"group_avatar"];
-        }
+        if (conversation.type == EMConversationTypeChat)
+            self.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
+        if (conversation.type == EMConversationTypeGroupChat)
+            self.avatarView.image = [UIImage imageNamed:@"groupConversation"];
+        if (conversation.type == EMConversationTypeChatRoom)
+            self.avatarView.image = [UIImage imageNamed:@"chatroomConversation"];
         self.nameLabel.text = self.model.name;
         self.detailLabel.attributedText = [self _getDetailWithModel:conversation];
         self.timeLabel.text = [self _getTimeWithModel:conversation];

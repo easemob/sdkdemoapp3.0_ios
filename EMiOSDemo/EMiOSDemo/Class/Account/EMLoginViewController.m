@@ -17,11 +17,9 @@
 
 #import "EMGlobalVariables.h"
 #import "EMDemoOptions.h"
-
+#import "EMAlertController.h"
 #import "EMErrorAlertViewController.h"
-
 #import "EMRightViewToolView.h"
-#import "EMUserAgreementView.h"
 #import "EMAuthorizationView.h"
 
 @interface EMLoginViewController ()<UITextFieldDelegate>
@@ -31,7 +29,6 @@
 @property (nonatomic, strong) UITextField *pswdField;
 @property (nonatomic, strong) EMRightViewToolView *pswdRightView;
 @property (nonatomic, strong) EMRightViewToolView *userIdRightView;
-@property (nonatomic, strong) EMUserAgreementView *userAgreementView;//用户协议
 @property (nonatomic, strong) EMAuthorizationView *authorizationView;//授权操作视图
 
 @property (nonatomic, strong) UIButton *loginTypeButton;
@@ -88,7 +85,7 @@
     self.nameField.delegate = self;
     self.nameField.borderStyle = UITextBorderStyleNone;
     self.nameField.placeholder = @"用户名";
-    self.nameField.returnKeyType = UIReturnKeyDone;
+    self.nameField.returnKeyType = UIReturnKeyGo;
     self.nameField.font = [UIFont systemFontOfSize:17];
     self.nameField.rightViewMode = UITextFieldViewModeWhileEditing;
     self.nameField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -114,11 +111,13 @@
     self.pswdField.borderStyle = UITextBorderStyleNone;
     self.pswdField.placeholder = @"密码";
     self.pswdField.font = [UIFont systemFontOfSize:17];
-    self.pswdField.returnKeyType = UIReturnKeyDone;
+    self.pswdField.returnKeyType = UIReturnKeyGo;
     self.pswdField.secureTextEntry = YES;
+    self.pswdField.clearsOnBeginEditing = NO;
     self.pswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
     [self.pswdRightView.rightViewBtn addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
     self.pswdField.rightView = self.pswdRightView;
+    self.pswdRightView.hidden = YES;
     self.pswdField.rightViewMode = UITextFieldViewModeAlways;
     self.pswdField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
     self.pswdField.leftViewMode = UITextFieldViewModeAlways;
@@ -131,15 +130,6 @@
         make.right.equalTo(self.view).offset(-30);
         make.top.equalTo(self.nameField.mas_bottom).offset(20);
         make.height.equalTo(@55);
-    }];
-    
-    self.userAgreementView = [[EMUserAgreementView alloc]initUserAgreement];
-    [self.view addSubview:self.userAgreementView];
-    [self.userAgreementView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.pswdField.mas_bottom).offset(6);
-        make.left.equalTo(self.pswdField.mas_left).offset(15);
-        make.right.equalTo(self.view);
-        make.height.equalTo(@(self.userAgreementView.protocolTextHeight));
     }];
     
     [self _setupLoginButton];
@@ -155,7 +145,7 @@
     [self.authorizationView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(30);
         make.right.equalTo(self.view).offset(-30);
-        make.top.equalTo(self.userAgreementView.mas_bottom).offset(40);
+        make.top.equalTo(self.pswdField.mas_bottom).offset(40);
         make.height.equalTo(@55);
     }];
     
@@ -182,10 +172,10 @@
     [serverConfigurationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@80);
         make.height.equalTo(@17);
-        make.centerX.equalTo(self.authorizationView);
+        make.right.equalTo(self.authorizationView);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
     }];
-    
+    /*
     self.loginTypeButton = [[UIButton alloc] init];
     self.loginTypeButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [self.loginTypeButton setTitle:@"token登录" forState:UIControlStateNormal];
@@ -197,7 +187,7 @@
         make.height.equalTo(@17);
         make.right.equalTo(self.authorizationView);
         make.bottom.equalTo(self.view.mas_bottom).offset(-60);
-    }];
+    }];*/
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -206,6 +196,16 @@
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(self.nameField.text.length > 0 && self.pswdField.text.length > 0){
+        [self.authorizationView setupAuthBtnBgcolor:YES];
+        self.isLogin = true;
+        [self loginAction];
+    }
+    return YES;
+}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -218,6 +218,8 @@
     
     if (textField == self.nameField && [self.nameField.text length] == 0)
         self.userIdRightView.hidden = YES;
+    if (textField == self.pswdField && [self.pswdField.text length] == 0)
+        self.pswdRightView.hidden = YES;
     if(self.nameField.text.length > 0 && self.pswdField.text.length > 0){
         [self.authorizationView setupAuthBtnBgcolor:YES];
         self.isLogin = true;
@@ -235,12 +237,36 @@
     }
     if (textField == self.nameField) {
         self.userIdRightView.hidden = NO;
-        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""]) {
+        if ([self.nameField.text length] <= 1 && [string isEqualToString:@""])
             self.userIdRightView.hidden = YES;
+    }
+    if (textField == self.pswdField) {
+        NSString *updatedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        textField.text = updatedString;
+        self.pswdRightView.hidden = NO;
+        if ([self.pswdField.text length] <= 0 && [string isEqualToString:@""]) {
+            self.pswdRightView.hidden = YES;
+            self.pswdField.secureTextEntry = YES;
+            [self.pswdRightView.rightViewBtn setSelected:NO];
         }
+        return NO;
     }
     
     return YES;
+}
+
+- (void)textFieldDidChangeSelection:(UITextField *)textField
+{
+    UITextRange *rang = textField.markedTextRange;
+    if (rang == nil) {
+        if(![self.nameField.text isEqualToString:@""] && ![self.pswdField.text isEqualToString:@""]){
+            [self.authorizationView setupAuthBtnBgcolor:YES];
+            self.isLogin = true;
+            return;
+        }
+        [self.authorizationView setupAuthBtnBgcolor:NO];
+        self.isLogin = false;
+    }
 }
 
 #pragma mark - Action
@@ -316,11 +342,6 @@
     }
     [self.view endEditing:YES];
     
-    if (!self.userAgreementView.userAgreementBtn.selected) {
-        [EMAlertController showErrorAlert:@"请选择同意服务条款与隐私协议！"];
-        return;
-    }
-    
     BOOL isTokenLogin = self.loginTypeButton.selected;
     NSString *name = self.nameField.text;
     NSString *pswd = self.pswdField.text;
@@ -378,11 +399,11 @@
             default:
                 break;
         }
-        //[EMAlertController showErrorAlert:errorDes];
-        EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:errorDes];
+        [EMAlertController showErrorAlert:errorDes];
+        /*EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:errorDes];
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];
-        [weakself.authorizationView setupAuthBtnBgcolor:YES];
+        [weakself.authorizationView setupAuthBtnBgcolor:YES];*/
     };
     
     [weakself.authorizationView beingLoadedView];//正在加载视图
@@ -416,6 +437,7 @@
     
     self.loginTypeButton.selected = !self.loginTypeButton.selected;
     if (self.loginTypeButton.selected) {
+        self.pswdField.text = @"";
         self.pswdField.placeholder = @"token";
         self.pswdField.secureTextEntry = NO;
         self.pswdField.rightView = nil;
@@ -427,6 +449,7 @@
     self.pswdField.placeholder = @"密码";
     self.pswdField.secureTextEntry = !self.pswdRightView.rightViewBtn.selected;
     self.pswdField.rightView = self.pswdRightView;
+    self.pswdRightView.hidden = YES;
     self.pswdField.rightViewMode = UITextFieldViewModeAlways;
     self.pswdField.clearButtonMode = UITextFieldViewModeNever;
     [self.loginTypeButton setTitle:@"token登录" forState:UIControlStateNormal];

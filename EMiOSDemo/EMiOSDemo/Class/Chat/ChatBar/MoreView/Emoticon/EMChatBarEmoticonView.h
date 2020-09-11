@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel;
 
-- (void)didChatBarEmoticonViewSendAction;
+- (void)didSelectedTextDetele;
 
 @end
 

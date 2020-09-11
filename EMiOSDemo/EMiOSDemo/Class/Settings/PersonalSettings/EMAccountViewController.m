@@ -37,7 +37,7 @@
     self.tableView.estimatedSectionHeaderHeight = 0;
     self.tableView.estimatedSectionFooterHeight = 0;
     
-    self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"user_avatar_me"]];
+    self.headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaultAvatar"]];
     self.headerView.frame = CGRectMake(0, 0, 36, 36);
     self.headerView.userInteractionEnabled = YES;
 }

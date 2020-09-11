@@ -16,7 +16,6 @@
 #import "EMInviteFriendViewController.h"
 #import "PellTableViewSelect.h"
 #import "EMJoinGroupViewController.h"
-#import "EMPersonalDataViewController.h"
 
 @interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate>
 
@@ -131,7 +130,7 @@
         
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+        cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
         cell.nameLabel.text = contact;
         return cell;
     }];
@@ -175,8 +174,8 @@
         [weakself searchBarCancelButtonAction:nil];
         [weakself.resultNavigationController dismissViewControllerAnimated:NO completion:nil];
         
-        [weakself personalData:contact];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
+        //[weakself personalData:contact];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }];
 }
 
@@ -222,7 +221,7 @@
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
-        cell.avatarView.image = [UIImage imageNamed:@"user_avatar_blue"];
+        cell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
         cell.nameLabel.text = contact;
     }
     [cell setSeparatorInset:UIEdgeInsetsMake(0, cell.avatarView.frame.size.height + 23, 0, 1)];
@@ -291,8 +290,8 @@
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
-        [self personalData:contact];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
+        //[self personalData:contact];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }
 }
 
@@ -544,17 +543,6 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _fetchContactsFromServerWithIsShowHUD:NO];
-}
-
-//个人资料卡
-- (void)personalData:(NSString *)nickName
-{
-    __weak typeof(self) weakself = self;
-    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
-    [controller setShieldingContactSuccess:^{
-        [weakself _loadAllContactsFromDB];
-    }];
-    [self.navigationController pushViewController:controller animated:NO];
 }
 
 @end
