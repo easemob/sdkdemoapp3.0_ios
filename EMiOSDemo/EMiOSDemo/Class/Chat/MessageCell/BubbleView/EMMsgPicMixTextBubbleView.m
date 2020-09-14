@@ -56,11 +56,11 @@
     if ([body.text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
         if ([model.emModel.from isEqualToString:[EMClient sharedClient].currentUsername])
             self.textLabel.text = @"已取消";
-        else self.textLabel.text = @"对方已取消";
+        else self.textLabel.text = @"未接听，点击回拨";
     } else if ([body.text isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
         if ([model.emModel.from isEqualToString:[EMClient sharedClient].currentUsername])
             self.textLabel.text = @"对方拒绝通话";
-        else self.textLabel.text = @"未接听，点击回拨";
+        else self.textLabel.text = @"对方已取消";
     } else
         self.textLabel.text = body.text;
     

@@ -46,7 +46,8 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define CHAT_CLEANMESSAGES @"EMChatCleanMessages"
 
 //通话
-#define EMCOMMMUNICATE @"EMCommunicate"
+#define EMCOMMMUNICATE_RECORD @"EMCommunicateRecord" //本地通话记录
+#define EMCOMMMUNICATE @"EMCommunicate" //远端通话记录
 #define EMCOMMUNICATE_TYPE @"EMCommunicateType"
 #define EMCOMMUNICATE_TYPE_VOICE @"EMCommunicateTypeVoice"
 #define EMCOMMUNICATE_TYPE_VIDEO @"EMCommunicateTypeVideo"
@@ -54,13 +55,14 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 //通话状态
 #define EMCOMMUNICATE_MISSED_CALL @"EMCommunicateMissedCall" //（通话取消）
-#define EMCOMMUNICATE_CALLER_MISSEDCALL @"EMCommunicateCallerMissedCall" //（主叫方取消通话）
-#define EMCOMMUNICATE_CALLED_MISSEDCALL @"EMCommunicateCalledMissedCall" //（被叫方拒绝接通）
+#define EMCOMMUNICATE_CALLER_MISSEDCALL @"EMCommunicateCallerMissedCall" //（我方取消通话）
+#define EMCOMMUNICATE_CALLED_MISSEDCALL @"EMCommunicateCalledMissedCall" //（对方拒绝接通）
 //发起邀请
 #define EMCOMMUNICATE_CALLINVITE @"EMCommunicateCallInvite" //（发起通话邀请）
-
-#define EMCOMMUNICATE_DICT_CALLEDPARTY @"EMCommunicateDictCalledParty"
-#define EMCOMMUNICATE_DICT_CALLINGPARTY @"EMCommunicateDictCallingParty"
+//通话发起方
+#define EMCOMMUNICATE_DIRECTION @"EMCommunicateDirection"
+#define EMCOMMUNICATE_DIRECTION_CALLEDPARTY @"EMCommunicateDirectionCalledParty"
+#define EMCOMMUNICATE_DIRECTION_CALLINGPARTY @"EMCommunicateDirectionCallingParty"
 
 //消息动图
 #define MSG_EXT_GIF_ID @"em_expression_id"

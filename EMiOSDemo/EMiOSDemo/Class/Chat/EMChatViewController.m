@@ -29,8 +29,6 @@
 
 @interface EMChatViewController ()<UIScrollViewDelegate, EMMultiDevicesDelegate, EMChatManagerDelegate, EMChatBarDelegate, EMMessageCellDelegate, EMChatBarEmoticonViewDelegate, EMChatBarRecordAudioViewDelegate,EMMoreFunctionViewDelegate>
 
-@property (nonatomic, strong) NSString *moreMsgId;  //第一条消息的消息id
-
 @end
 
 @implementation EMChatViewController
@@ -573,6 +571,7 @@
 
 - (void)handleWillPushCallController:(NSNotification *)aNotif
 {
+    /*
     if (aNotif) {
         __weak typeof(self) weakself = self;
         NSString *communicatePushType = [NSString stringWithFormat:@"%@ 邀请你通话",[EMClient sharedClient].currentUsername];
@@ -585,10 +584,9 @@
         EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:[[EMTextMessageBody alloc]initWithText:EMCOMMUNICATE_CALLINVITE] ext:@{@"em_apns_ext":@{@"target-content-id":@"communicate",@"em_push_content":communicatePushType}, @"em_force_notification":@YES, @"em_push_mutable_content":@YES}];
         message.chatType = (EMChatType)self.conversationModel.emModel.type;
         [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
-            if (!error)
-                [weakself.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
+            [weakself.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
         }];
-    }
+    }*/
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     [[EMImageBrowser sharedBrowser] dismissViewController];
     [[EMAudioPlayerHelper sharedHelper] stopPlayer];

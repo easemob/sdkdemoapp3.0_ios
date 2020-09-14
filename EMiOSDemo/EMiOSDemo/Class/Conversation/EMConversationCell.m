@@ -158,12 +158,12 @@
         {
             NSString *str = [EMEmojiHelper convertEmoji:((EMTextMessageBody *)messageBody).text];
             if ([str isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
-                str = @"对方已取消";
+                str = @"未接听，点击回拨";
                 if ([lastMessage.from isEqualToString:[EMClient sharedClient].currentUsername])
                     str = @"已取消";
             }
             if ([str isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
-                str = @"未接听，点击回拨";
+                str = @"对方已取消";
                 if ([lastMessage.from isEqualToString:[EMClient sharedClient].currentUsername])
                     str = @"对方拒绝通话";
             }

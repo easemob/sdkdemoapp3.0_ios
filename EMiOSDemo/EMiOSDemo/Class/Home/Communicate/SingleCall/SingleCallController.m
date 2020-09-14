@@ -114,7 +114,8 @@ static SingleCallController *callManager = nil;
 - (void)_timeoutBeforeCallAnswered:(NSTimer *)timer
 {
     NSString *reason = (NSString *)[timer userInfo]; //必须放在本timer关闭之前使用，不然会出现野指针错误
-    [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonNoResponse];
+    
+    [self endCallWithId:self.currentCall.callId reason:EMCallEndReasonFailed];
     UIAlertView *alertView = nil;
     if (reason) {
         alertView = [[UIAlertView alloc] initWithTitle:nil message:reason delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
@@ -201,7 +202,7 @@ static SingleCallController *callManager = nil;
                 }*/
 
                 [rootViewController presentViewController:self.currentController animated:NO completion:nil];
-                self->_callDirection = EMCOMMUNICATE_DICT_CALLEDPARTY;
+                self->_callDirection = EMCOMMUNICATE_DIRECTION_CALLEDPARTY;
             }
         });
     }
@@ -250,7 +251,8 @@ static SingleCallController *callManager = nil;
         [self _endCallWithId:aSession.callId isNeedHangup:NO reason:aReason];
     }
     
-    if (aReason != EMCallEndReasonNoResponse) {
+    if (aReason != EMCallEndReasonFailed) {
+    //if (aReason != EMCallEndReasonHangup) {
         if (aError) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:aError.errorDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
@@ -285,9 +287,11 @@ static SingleCallController *callManager = nil;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:reasonStr delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
             [alertView show];
         }
-        [self sendCallRecord:EMCOMMUNICATE_CALLED_MISSEDCALL callType:aSession.type];//被叫方取消通话
+        //[self sendCallRecord:EMCOMMUNICATE_CALLED_MISSEDCALL callType:aSession.type];//被叫方取消通话
+        [self insertLocationCallRecord:EMCOMMUNICATE_CALLED_MISSEDCALL callSession:aSession];
     } else {
-        [self sendCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callType:aSession.type];//主叫方取消通话
+        //[self sendCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callType:aSession.type];//主叫方取消通话
+        [self insertLocationCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callSession:aSession];
     }
 }
 
@@ -311,8 +315,11 @@ static SingleCallController *callManager = nil;
 
 - (void)callRemoteOffline:(NSString *)aRemoteName
 {
+    /*
     [self _stopCallTimeoutTimer];
-    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(_timeoutBeforeCallAnswered:) userInfo:@"对方不在线，无法接听通话" repeats:NO];*/
+    //[self endCallWithId:self.currentCall.callId reason:EMCallEndReasonRemoteOffline];
+    [self sendCallRecord:EMCOMMUNICATE_CALLER_MISSEDCALL callType:self.currentCall.type];
 }
 
 #pragma mark - NSNotification
@@ -332,26 +339,7 @@ static SingleCallController *callManager = nil;
     
     _type = (EMCallType)[[notify.object objectForKey:CALL_TYPE] integerValue];
     _chatter = [notify.object valueForKey:CALL_CHATTER] ;
-    if (_type == EMCallTypeVideo) {
-        [self _makeCallWithUsername:_chatter type:_type isCustomVideoData:NO];
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.default", @"Default") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:NO];
-//        }];
-//        [alertController addAction:defaultAction];
-//
-//        UIAlertAction *customAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"title.conference.custom", @"Custom") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self _makeCallWithUsername:[notify.object valueForKey:@"chatter"] type:type isCustomVideoData:YES];
-//        }];
-//        [alertController addAction:customAction];
-//
-//        [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-//
-//        [self.mainController.navigationController presentViewController:alertController animated:YES completion:nil];
-    } else {
-        [self _makeCallWithUsername:_chatter type:_type isCustomVideoData:NO];
-    }
+    [self _makeCallWithUsername:_chatter type:_type isCustomVideoData:NO];
 }
 
 //主叫方
@@ -409,7 +397,7 @@ static SingleCallController *callManager = nil;
         }
         else {
             gIsCalling = NO;
-            [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonNoResponse];
+            [[EMClient sharedClient].callManager endCall:aCallSession.callId reason:EMCallEndReasonFailed];
         }
     };
     
@@ -423,12 +411,44 @@ static SingleCallController *callManager = nil;
                                                ext:@"123" completion:^(EMCallSession *aCallSession, EMError *aError) {
                                                    completionBlock(aCallSession, aError);
                                                }];
-    _callDirection = EMCOMMUNICATE_DICT_CALLINGPARTY;
+    _callDirection = EMCOMMUNICATE_DIRECTION_CALLINGPARTY;
 }
 
 #pragma mark - public
 
-//通话记录
+//插入本地通话记录
+- (void)insertLocationCallRecord:(NSString *)missedCallDirection callSession:(EMCallSession *)callSession
+{
+    //通话类型
+    NSString *callTypeStr;
+    if (callSession.type == EMCallTypeVoice)
+        callTypeStr = EMCOMMUNICATE_TYPE_VOICE;
+    if (callSession.type == EMCallTypeVideo)
+        callTypeStr = EMCOMMUNICATE_TYPE_VIDEO;
+    EMTextMessageBody *body;
+    if (self.callDurationTime && ![self.callDurationTime isEqualToString:@""])
+        body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",self.callDurationTime]];
+    else
+        body = [[EMTextMessageBody alloc] initWithText:missedCallDirection];
+    NSDictionary *ext = @{EMCOMMUNICATE_TYPE:callTypeStr};
+    NSString *from, *to;
+    if ([self.callDirection isEqualToString:EMCOMMUNICATE_DIRECTION_CALLINGPARTY]) {
+        from = [[EMClient sharedClient] currentUsername];
+        to = callSession.remoteName;
+    } else {
+        from = callSession.remoteName;
+        to = [[EMClient sharedClient] currentUsername];
+    }
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:callSession.remoteName from:from to:to body:body ext:ext];
+    message.direction = [from isEqualToString:[[EMClient sharedClient] currentUsername]] ? EMMessageDirectionSend : EMMessageDirectionReceive;
+    message.chatType = EMChatTypeChat;
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:callSession.remoteName type:EMConversationTypeChat createIfNotExist:YES];
+    [conversation appendMessage:message error:nil];
+    self.callDurationTime = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE_RECORD object:@{@"msg":message}];//刷新页面
+}
+
+//发送通话记录
 - (void)sendCallRecord:(NSString *)missedCallDirection callType:(EMCallType)callType
 {
     //通话类型
@@ -439,7 +459,7 @@ static SingleCallController *callManager = nil;
         callTypeStr = EMCOMMUNICATE_TYPE_VIDEO;
     }
     //主叫方发送通话信息
-    if ([self.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY]) {
+    if ([self.callDirection isEqualToString:EMCOMMUNICATE_DIRECTION_CALLINGPARTY]) {
         if (self.callDurationTime) {
             [[NSNotificationCenter defaultCenter] postNotificationName:EMCOMMMUNICATE object:@{EMCOMMUNICATE_TYPE:callTypeStr,EMCOMMUNICATE_DURATION_TIME:self.callDurationTime,EMCOMMUNICATE_MISSED_CALL:@""}];
         } else {

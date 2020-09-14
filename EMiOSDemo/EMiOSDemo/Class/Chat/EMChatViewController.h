@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) EMConversationModel *conversationModel;
 
+//第一条消息的消息id
+@property (nonatomic, strong) NSString *moreMsgId;
+
 //消息格式化
 @property (nonatomic) NSTimeInterval msgTimelTag;
 

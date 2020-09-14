@@ -392,13 +392,14 @@
     [self clearDataAndView];
     
     NSString *callId = self.callSession.callId;
-    
+    /*
     //EMCallEndReason reason = EMCallEndReasonHangup;
-    EMCallEndReason reason = EMCallEndReasonNoResponse;
+    EMCallEndReason reason = EMCallEndReasonHangup;
     if (self.callDuration < 1 && !self.callSession.isCaller) {
-        reason = EMCallEndReasonHangup;
+        reason = EMCallEndReasonNoResponse;
         //reason = EMCallEndReasonDecline;
-    }
+    }*/
+    EMCallEndReason reason = EMCallEndReasonFailed;
     [[SingleCallController sharedManager] endCallWithId:callId reason:reason];
     _callSession = nil;
 }

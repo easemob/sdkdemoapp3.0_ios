@@ -142,8 +142,8 @@
     [self.switchCameraButton setImage:[UIImage imageNamed:@"switchCamera_gray"] forState:UIControlStateSelected];
     [self.view addSubview:self.switchCameraButton];
     [self.switchCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view).offset(-padding);
-        make.top.equalTo(self.minVideoView.mas_bottom).offset(40);
+        make.left.equalTo(self.view).offset(RTC_BUTTON_PADDING);
+        make.bottom.equalTo(self.speakerButton.mas_top).offset(-40);
     }];
 }
 

@@ -256,7 +256,7 @@
             self.statusView.hidden = model.emModel.isReadAcked;
         }
         if (model.type == EMMessageTypePictMixText) {
-            if ([((EMTextMessageBody *)model.emModel.body).text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL])
+            if ([((EMTextMessageBody *)model.emModel.body).text isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL])
                 self.statusView.hidden = model.emModel.isReadAcked;
             else self.statusView.hidden = YES;
         }

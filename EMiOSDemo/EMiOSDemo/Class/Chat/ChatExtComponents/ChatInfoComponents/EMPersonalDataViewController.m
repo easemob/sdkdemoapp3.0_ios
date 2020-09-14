@@ -174,13 +174,15 @@
         //语音通话
         [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:self.nickName, CALL_TYPE:@(EMCallTypeVoice)}];
         if (!self.isChatting)
-            [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
+            //[[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
     }
     if (section == 4) {
         //视频通话
         [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:self.nickName, CALL_TYPE:@(EMCallTypeVideo)}];
         if (!self.isChatting)
-            [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
+            //[[NSNotificationCenter defaultCenter] addObserver:self.chatController selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
     }
 }
 

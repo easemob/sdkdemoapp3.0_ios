@@ -59,12 +59,13 @@
 {
     //单人通话中（非群组会议）
     if (gIsCalling && !gIsConferenceCalling) {
-        EMCallEndReason reason = EMCallEndReasonNoResponse;
-        if (![SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY])
+        EMCallEndReason reason = EMCallEndReasonFailed;
+        if (![SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DIRECTION_CALLINGPARTY])
             reason = EMCallEndReasonHangup;
         [[EMClient sharedClient].callManager endCall:SingleCallController.sharedManager.chatter reason:reason];
+        /*
         //主叫方发送通话信息
-        if ([SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DICT_CALLINGPARTY]) {
+        if ([SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DIRECTION_CALLINGPARTY]) {
             EMTextMessageBody *body;
             if (SingleCallController.sharedManager.callDurationTime) {
                 body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",SingleCallController.sharedManager.callDurationTime]];
@@ -84,7 +85,33 @@
             EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:[[EMClient sharedClient] currentUsername] to:to body:body ext:pushExt];
             message.chatType = EMChatTypeChat;
             [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:nil];
+        }*/
+        
+        EMTextMessageBody *body;
+        if (SingleCallController.sharedManager.callDurationTime) {
+            body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",SingleCallController.sharedManager.callDurationTime]];
+        } else {
+            body = [[EMTextMessageBody alloc] initWithText:EMCOMMUNICATE_CALLER_MISSEDCALL];
         }
+        NSString *callType;
+        if (SingleCallController.sharedManager.type == EMCallTypeVoice)
+            callType = EMCOMMUNICATE_TYPE_VOICE;
+        if (SingleCallController.sharedManager.type == EMCallTypeVideo)
+            callType = EMCOMMUNICATE_TYPE_VIDEO;
+        NSDictionary *ext = @{EMCOMMUNICATE_TYPE:callType};
+        NSString *from, *to;
+        if ([SingleCallController.sharedManager.callDirection isEqualToString:EMCOMMUNICATE_DIRECTION_CALLINGPARTY]) {
+            from = [[EMClient sharedClient] currentUsername];
+            to = SingleCallController.sharedManager.chatter;
+        } else {
+            from = SingleCallController.sharedManager.chatter;
+            to = [[EMClient sharedClient] currentUsername];
+        }
+        EMMessage *message = [[EMMessage alloc] initWithConversationID:SingleCallController.sharedManager.chatter from:from to:to body:body ext:ext];
+        message.direction = [from isEqualToString:[[EMClient sharedClient] currentUsername]] ? EMMessageDirectionSend : EMMessageDirectionReceive;
+        message.chatType = EMChatTypeChat;
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:SingleCallController.sharedManager.chatter type:EMConversationTypeChat createIfNotExist:YES];
+        [conversation appendMessage:message error:nil];
     }
 }
 

@@ -35,8 +35,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    //单聊主叫方才能发送通话记录信息
+    //本地通话记录
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
+    //单聊主叫方才能发送通话记录信息(远端通话记录)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendCallEndMsg:) name:EMCOMMMUNICATE object:nil];
     self.isTyping = NO;
     self.enableTyping = NO;
@@ -193,10 +194,20 @@
     if (!aIsMarkRead && (body.type == EMMessageBodyTypeVideo || body.type == EMMessageBodyTypeVoice || body.type == EMMessageBodyTypeImage))
         return NO;
 
-    if (body.type == EMMessageTypeText && [((EMTextMessageBody *)body).text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL] && aMessage.direction == EMMessageDirectionReceive)
+    if (body.type == EMMessageTypeText && [((EMTextMessageBody *)body).text isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL] && aMessage.direction == EMMessageDirectionReceive)
         return NO;
         
     return YES;
+}
+
+//本地通话记录
+- (void)insertLocationCallRecord:(NSNotification*)noti
+{
+    EMMessage *message = (EMMessage *)[noti.object objectForKey:@"msg"];
+    NSArray *formated = [self formatMessages:@[message]];
+    [self.dataArray addObjectsFromArray:formated];
+    self.moreMsgId = message.messageId;
+    [self refreshTableView];
 }
 
 //通话记录消息
@@ -205,12 +216,21 @@
     EMTextMessageBody *body;
     if (![[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME] isEqualToString:@""])
         body = [[EMTextMessageBody alloc] initWithText:[NSString stringWithFormat:@"通话时长 %@",[noti.object objectForKey:EMCOMMUNICATE_DURATION_TIME]]];
-    else body = [[EMTextMessageBody alloc] initWithText:[noti.object objectForKey:EMCOMMUNICATE_MISSED_CALL]];
+    else
+        //body = [[EMTextMessageBody alloc] initWithText:[noti.object objectForKey:EMCOMMUNICATE_MISSED_CALL]];
+        body = [[EMTextMessageBody alloc] initWithText:@"有一个未接通话"];
     NSDictionary *iOSExt = @{@"em_apns_ext":@{@"need-delete-content-id":@"communicate",@"em_push_content":@"有一条通话记录待查看", @"em_push_sound":@"ring.caf", @"em_push_mutable_content":@YES}, @"em_force_notification":@YES, EMCOMMUNICATE_TYPE:[noti.object objectForKey:EMCOMMUNICATE_TYPE]};
     NSDictionary *androidExt = @{@"em_push_ext":@{@"type":@"call"}, @"em_android_push_ext":@{@"em_push_sound":@"/raw/ring", @"em_push_channel_id":@"hyphenate_offline_push_notification"}};
     NSMutableDictionary *pushExt = [[NSMutableDictionary alloc]initWithDictionary:iOSExt];
     [pushExt addEntriesFromDictionary:androidExt];
-    [self sendMessageWithBody:body ext:[NSDictionary dictionaryWithDictionary:pushExt] isUpload:NO];
+    //[self sendMessageWithBody:body ext:[NSDictionary dictionaryWithDictionary:pushExt] isUpload:NO];
+    NSString *from = [[EMClient sharedClient] currentUsername];
+    NSString *to = self.conversationModel.emModel.conversationId;
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:to from:from to:to body:body ext:nil];
+    message.chatType = (EMChatType)self.conversationModel.emModel.type;
+    [[EMClient sharedClient].chatManager sendMessage:message progress:nil completion:^(EMMessage *message, EMError *error) {
+        [self.conversationModel.emModel deleteMessageWithId:message.messageId error:nil];
+    }];
 }
 
 //单聊详情页

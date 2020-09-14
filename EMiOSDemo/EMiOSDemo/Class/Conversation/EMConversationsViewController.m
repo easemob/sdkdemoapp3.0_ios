@@ -60,6 +60,9 @@
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     [self _loadAllConversationsFromDBWithIsShowHud:YES];
     
+    //本地通话记录
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertLocationCallRecord:) name:EMCOMMMUNICATE_RECORD object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupSubjectUpdated:) name:GROUP_SUBJECT_UPDATED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AgreeJoinGroupInvite:) name:NOTIF_ADD_SOCIAL_CONTACT object:nil];
@@ -484,6 +487,13 @@
 }
 
 #pragma mark - noti
+
+//本地通话记录
+- (void)insertLocationCallRecord:(NSNotification*)noti
+{
+    [self _reSortedConversationModelsAndReloadView];
+}
+
 //加群邀请被同意
 - (void)AgreeJoinGroupInvite:(NSNotification *)aNotif
 {
