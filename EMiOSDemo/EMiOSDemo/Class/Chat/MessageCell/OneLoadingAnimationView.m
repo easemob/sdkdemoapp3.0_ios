@@ -11,9 +11,12 @@
 
 static CGFloat kRadius = 9;
 static CGFloat kLineWidth = 2;
-static CGFloat kStep1Duration = 2.5;
+static CGFloat kStep1Duration = 3.0;
 
 @interface OneLoadingAnimationView ()
+{
+    NSTimer *_timer;
+}
 @property (nonatomic) LoadingCALayer *arcToCircleLayer;
 @end
 
@@ -35,8 +38,8 @@ static CGFloat kStep1Duration = 2.5;
 #pragma mark - public
 - (void)startAnimation {
     //self.arcToCircleLayer = [LoadingCALayer layer];
-    [self reset];
-    [self doStep];
+    
+    [self startTimer];
 }
 
 #pragma mark - animation
@@ -50,7 +53,7 @@ static CGFloat kStep1Duration = 2.5;
     [self.layer addSublayer:self.arcToCircleLayer];
 
     self.arcToCircleLayer.bounds = CGRectMake(0, 0, kRadius * 2 + kLineWidth, kRadius * 2 + kLineWidth);
-    self.arcToCircleLayer.position = CGPointMake(self.frame.origin.x + 10, self.frame.origin.y + 10);
+    self.arcToCircleLayer.position = CGPointMake(10, 10);
 
     // animation
     self.arcToCircleLayer.progress = 1; // end status
@@ -60,6 +63,25 @@ static CGFloat kStep1Duration = 2.5;
     animation.fromValue = @0.0;
     animation.toValue = @1.0;
     [self.arcToCircleLayer addAnimation:animation forKey:nil];
+}
+
+- (void)startTimer {
+    [self stopTimer];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(startAnimate) userInfo:nil repeats:YES];
+    [_timer fire];
+}
+
+- (void)startAnimate
+{
+    [self reset];
+    [self doStep];
+}
+
+- (void)stopTimer {
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
 }
 
 @end

@@ -17,7 +17,6 @@
 #import "PellTableViewSelect.h"
 #import "EMJoinGroupViewController.h"
 #import "EMPersonalDataViewController.h"
-#import "EMAccountViewController.h"
 
 @interface EMContactsViewController ()<EMMultiDevicesDelegate, EMContactManagerDelegate, EMSearchControllerDelegate>
 
@@ -66,7 +65,6 @@
 
 - (void)dealloc
 {
-    [[EMNotificationHelper shared] removeDelegate:self];
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -91,13 +89,13 @@
     }];
     
     self.addImageBtn = [[UIButton alloc]init];
-    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-加群"] forState:UIControlStateNormal];
+    [self.addImageBtn setImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
     [self.addImageBtn addTarget:self action:@selector(addAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.addImageBtn];
     [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@24);
+        make.width.height.equalTo(@35);
         make.centerY.equalTo(titleLabel);
-        make.right.equalTo(self.view).offset(-15);
+        make.right.equalTo(self.view).offset(-24);
     }];
     
     [self enableSearchController];
@@ -108,7 +106,7 @@
         make.height.equalTo(@35);
     }];
     
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 74;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);
@@ -118,26 +116,6 @@
     }];
     
     [self _setupSearchResultController];
-    /*
-    self.notifCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMNotificationsCell"];
-    self.notifCell.avatarView.image = [UIImage imageNamed:@"notification"];
-    self.notifCell.nameLabel.text = @"申请与通知";
-    
-    self.notifBadgeLabel = [[UILabel alloc] init];
-    self.notifBadgeLabel.backgroundColor = [UIColor redColor];
-    self.notifBadgeLabel.textColor = [UIColor whiteColor];
-    self.notifBadgeLabel.font = [UIFont systemFontOfSize:13];
-    self.notifBadgeLabel.hidden = YES;
-    self.notifBadgeLabel.clipsToBounds = YES;
-    self.notifBadgeLabel.layer.cornerRadius = 10;
-    [self.notifCell.contentView addSubview:self.notifBadgeLabel];
-    [self.notifBadgeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.notifCell.contentView);
-        make.right.equalTo(self.notifCell.contentView).offset(-10);
-        make.height.equalTo(@20);
-        make.width.greaterThanOrEqualTo(@20);
-    }];
-     */
 }
 
 - (void)_setupSearchResultController
@@ -190,7 +168,15 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         NSString *contact = weakself.resultController.dataArray[row];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
+        
+        weakself.resultController.searchBar.text = @"";
+        [weakself.resultController.searchBar resignFirstResponder];
+        weakself.resultController.searchBar.showsCancelButton = NO;
+        [weakself searchBarCancelButtonAction:nil];
+        [weakself.resultNavigationController dismissViewControllerAnimated:NO completion:nil];
+        
+        [weakself personalData:contact];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:contact];
     }];
 }
 
@@ -206,7 +192,7 @@
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        return 4;
+        return 3;
     }
     
     return [(NSArray *)(self.dataArray[section - 1]) count];
@@ -225,17 +211,14 @@
 
     if (section == 0) {
         if (row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@"新的好友"];
+            cell.avatarView.image = [UIImage imageNamed:@"newFriend"];
             cell.nameLabel.text = @"新的好友";
         } else if (row == 1) {
-            cell.avatarView.image = [UIImage imageNamed:@"群聊"];
+            cell.avatarView.image = [UIImage imageNamed:@"groupchat"];
             cell.nameLabel.text = @"群聊";
         } else if (row == 2) {
-            cell.avatarView.image = [UIImage imageNamed:@"聊天室"];
+            cell.avatarView.image = [UIImage imageNamed:@"chatroom"];
             cell.nameLabel.text = @"聊天室";
-        } else if (row == 3) {
-            cell.avatarView.image = [UIImage imageNamed:@"call"];
-            cell.nameLabel.text = @"多人视频";
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
@@ -300,27 +283,11 @@
     if (section == 0) {
         if (row == 0) {
             EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 1) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
         } else if (row == 2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:CHATROOM_LIST_PUSHVIEWCONTROLLER object:@{NOTIF_NAVICONTROLLER:self.navigationController}];
-        } else if (row == 3) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-            UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-            }];
-            [alertController addAction:defaultAction];
-
-            UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-            }];
-            [alertController addAction:mixAction];
-
-            [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-
-            [self presentViewController:alertController animated:YES completion:nil];
         }
     } else {
         NSString *contact = self.dataArray[section - 1][row];
@@ -419,24 +386,6 @@
         });
     }];
 }
-/*
-#pragma mark - EMNotificationsDelegate
-
-- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount
-{
-    if (aUnreadCount > 0) {
-        if (aUnreadCount < 10) {
-            self.notifBadgeLabel.textAlignment = NSTextAlignmentCenter;
-            self.notifBadgeLabel.text = @(aUnreadCount).stringValue;
-        } else {
-            self.notifBadgeLabel.textAlignment = NSTextAlignmentLeft;
-            self.notifBadgeLabel.text = [NSString stringWithFormat:@" %@ ", @(aUnreadCount)];
-        }
-        self.notifBadgeLabel.hidden = NO;
-    } else {
-        self.notifBadgeLabel.hidden = YES;
-    }
-}*/
 
 #pragma mark - Private
 
@@ -569,8 +518,7 @@
 #pragma mark - moreAction
 - (void)addAction
 {
-    // 弹出QQ的自定义视图
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 120, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 110, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
         if(index == 0) {
             [self lookForSomeOne];
         } else if (index == 1) {
@@ -583,14 +531,14 @@
 - (void)lookForSomeOne
 {
     EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 //找群
 - (void)findGroup
 {
     EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
@@ -601,13 +549,12 @@
 //个人资料卡
 - (void)personalData:(NSString *)nickName
 {
-    UIViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    UIViewController *rootViewController = window.rootViewController;
-    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController *)rootViewController;
-        [nav pushViewController:controller animated:YES];
-    }
+    __weak typeof(self) weakself = self;
+    EMPersonalDataViewController *controller = [[EMPersonalDataViewController alloc]initWithNickName:nickName];
+    [controller setShieldingContactSuccess:^{
+        [weakself _loadAllContactsFromDB];
+    }];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 @end

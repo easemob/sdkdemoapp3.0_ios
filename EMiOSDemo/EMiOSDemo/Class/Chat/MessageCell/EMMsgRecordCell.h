@@ -11,12 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ 聊天记录
+*/
 @protocol EMMsgRecordCellDelegate;
 @interface EMMsgRecordCell : UITableViewCell
 
 @property (nonatomic, weak) id<EMMsgRecordCellDelegate> delegate;
 
-@property (nonatomic, strong) NSArray *models;
+@property (nonatomic, strong) NSArray<EMMessageModel *> *models;
 
 @end
 

@@ -26,12 +26,10 @@
        self.selectionStyle = UITableViewCellSelectionStyleDefault;
        self.selectedBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)];
        self.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:233/255.0 green:233/255.0 blue:233/255.0 alpha:1.0];
-       self.contentView.backgroundColor = [UIColor whiteColor];
        self.backgroundColor = [UIColor whiteColor];
        [self _setupSubview];
    }
    return self;
-    
 }
 
 #pragma mark - private layout subviews
@@ -43,15 +41,15 @@
     _avatarView = [[UIImageView alloc] init];
     [self.contentView addSubview:_avatarView];
     [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(5);
-        make.left.equalTo(self.contentView).offset(15);
-        make.bottom.equalTo(self.contentView).offset(-5);
+        make.top.equalTo(self.contentView).offset(14);
+        make.left.equalTo(self.contentView).offset(16);
+        make.bottom.equalTo(self.contentView).offset(-14);
         make.width.equalTo(self.avatarView.mas_height).multipliedBy(1);
     }];
     
     _timeLabel = [[UILabel alloc] init];
-    _timeLabel.font = [UIFont systemFontOfSize:13];
-    _timeLabel.textColor = [UIColor grayColor];
+    _timeLabel.font = [UIFont systemFontOfSize:12];
+    _timeLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     _timeLabel.backgroundColor = [UIColor clearColor];
     [_timeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.contentView addSubview:_timeLabel];
@@ -62,8 +60,8 @@
     
     _nameLabel = [[UILabel alloc] init];
     _nameLabel.backgroundColor = [UIColor clearColor];
-    _nameLabel.textColor = [UIColor blackColor];
-    _nameLabel.font = [UIFont systemFontOfSize:18];
+    _nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
+    _nameLabel.font = [UIFont systemFontOfSize:16];
     [self.contentView addSubview:_nameLabel];
     [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView.mas_centerY);
@@ -85,8 +83,8 @@
     _detailLabel = [[UILabel alloc] init];
     _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _detailLabel.backgroundColor = [UIColor clearColor];
-    _detailLabel.font = [UIFont systemFontOfSize:15];
-    _detailLabel.textColor = [UIColor grayColor];
+    _detailLabel.font = [UIFont systemFontOfSize:16];
+    _detailLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0];
     [self.contentView addSubview:_detailLabel];
     [_detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_centerY).offset(3);
@@ -128,6 +126,7 @@
     if (aLongPress.state == UIGestureRecognizerStateBegan) {
         self.selected = YES;
         if (self.delegate && [self.delegate respondsToSelector:@selector(conversationCellDidLongPress:)]) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setSelectedStatus) name:UIMenuControllerDidHideMenuNotification object:nil];
             [self.delegate conversationCellDidLongPress:self];
         }
     }
@@ -135,9 +134,10 @@
 
 - (void)setSelectedStatus
 {
-    if(([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [(NSNumber *)[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (self.model.notiModel && (!self.model.notiModel.stickTime || [self.model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]]))) {
+    if(![self.model.emModel.ext objectForKey:CONVERSATION_STICK] || ([self.model.emModel.ext objectForKey:CONVERSATION_STICK] && [(NSNumber *)[self.model.emModel.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) || (self.model.notiModel && (!self.model.notiModel.stickTime || [self.model.notiModel.stickTime isEqualToNumber:[NSNumber numberWithLong:0]]))) {
         self.selected = NO;
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerDidHideMenuNotification object:nil];
 }
 
 #pragma mark - setter
@@ -157,7 +157,25 @@
         case EMMessageBodyTypeText:
         {
             NSString *str = [EMEmojiHelper convertEmoji:((EMTextMessageBody *)messageBody).text];
+            if ([str isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
+                str = @"对方已取消";
+                if ([lastMessage.from isEqualToString:[EMClient sharedClient].currentUsername])
+                    str = @"已取消";
+            }
+            if ([str isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
+                str = @"未接听，点击回拨";
+                if ([lastMessage.from isEqualToString:[EMClient sharedClient].currentUsername])
+                    str = @"对方拒绝通话";
+            }
             latestMessageTitle = str;
+            if (lastMessage.ext && [lastMessage.ext objectForKey:EMCOMMUNICATE_TYPE]) {
+                NSString *communicateStr = @"";
+                if ([[lastMessage.ext objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO])
+                    communicateStr = @"[视频通话]";
+                if ([[lastMessage.ext objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VOICE])
+                    communicateStr = @"[语音通话]";
+                latestMessageTitle = [NSString stringWithFormat:@"%@ %@", communicateStr, latestMessageTitle];
+            }
         }
             break;
         case EMMessageBodyTypeImage:
@@ -190,17 +208,16 @@
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", allMsg, latestMessageTitle];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
         [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, allMsg.length)];
-        
     } else if (ext && [ext[kConversation_IsRead] isEqualToString:kConversation_AtYou]) {
         NSString *atStr = @"[有人@我]";
         latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, latestMessageTitle];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
+        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, atStr.length)];
     } else if (ext && [ext objectForKey:kConversation_Draft] && ![[ext objectForKey:kConversation_Draft] isEqualToString:@""]){
-        NSString *atStr = @"[草稿]";
-        latestMessageTitle = [NSString stringWithFormat:@"%@ %@", atStr, [ext objectForKey:kConversation_Draft]];
+        NSString *draftStr = @"[草稿]";
+        latestMessageTitle = [NSString stringWithFormat:@"%@ %@", draftStr, [ext objectForKey:kConversation_Draft]];
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:1.0 green:.0 blue:.0 alpha:0.5]} range:NSMakeRange(0, atStr.length)];
+        [attributedStr setAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:255/255.0 green:43/255.0 blue:43/255.0 alpha:1.0]} range:NSMakeRange(0, draftStr.length)];
     } else {
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
     }
@@ -255,13 +272,12 @@
 {
     self.avatarView.image = [UIImage imageNamed:@"systemNotify"];
     self.nameLabel.text = @"系统通知";
-    if (notiModel.type == EMNotificationModelTypeContact) {
+    if (notiModel.type == EMNotificationModelTypeContact)
         self.detailLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"好友申请来自：%@",notiModel.sender]];
-    } else if (notiModel.type == EMNotificationModelTypeGroupJoin) {
+    if (notiModel.type == EMNotificationModelTypeGroupJoin)
         self.detailLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"加群申请来自：%@",notiModel.sender]];
-    } else if (notiModel.type == EMNotificationModelTypeGroupInvite) {
+    if (notiModel.type == EMNotificationModelTypeGroupInvite)
         self.detailLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"加群邀请来自：%@",notiModel.sender]];
-    }
     self.timeLabel.text = [notiModel.time substringToIndex:10];
     if (EMNotificationHelper.shared.unreadCount == 0) {
         self.badgeLabel.value = @"";

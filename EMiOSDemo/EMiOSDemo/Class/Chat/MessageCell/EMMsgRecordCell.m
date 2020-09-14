@@ -107,22 +107,7 @@
     EMMessageModel *model;
     for (int i = 0; i < [models count]; ++i) {
         model = models[i];
-        switch (i) {
-            case 0:
-                [self setImageView:(self.imgViewLeft) model:model tag:0];
-                break;
-            case 1:
-                [self setImageView:(self.imgViewLeft_mid) model:model tag:1];
-                break;
-            case 2:
-                [self setImageView:(self.imgViewRight_mid) model:model tag:2];
-                break;
-            case 3:
-                [self setImageView:(self.imgViewRight) model:model tag:3];
-                break;
-            default:
-                break;
-        }
+        [self setImageView:(self.imgViewLeft) model:model tag:i];
     }
 }
 
@@ -193,23 +178,6 @@
 
 - (EMMessageModel *)getMsgModel:(NSInteger)tag
 {
-    EMMessageModel *model;
-    switch (tag) {
-       case 0:
-           model = self.models[0];
-           break;
-       case 1:
-           model = self.models[1];
-           break;
-       case 2:
-           model = self.models[2];
-           break;
-       case 3:
-           model = self.models[3];
-           break;
-       default:
-           break;
-   }
-   return model;
+    return self.models[tag];
 }
 @end

@@ -22,7 +22,7 @@
 #import "EMInviteGroupMemberViewController.h"
 #import "EMGroupManageViewController.h"
 #import "EMGroupAllMembersViewController.h"
-#import "EMChatViewController.h"
+#import "EMChatRecordViewController.h"
 
 @interface EMGroupInfoViewController ()<EMMultiDevicesDelegate>
 
@@ -52,7 +52,7 @@
     // Uncomment the following line to preserve selection between presentations.
     [self _setupSubviews];
 //    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
-    self.showRefreshHeader = YES;
+    self.showRefreshHeader = NO;
     [self _fetchGroupWithId:self.groupId isShowHUD:YES];
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
@@ -105,42 +105,44 @@
     self.addMemberCell.separatorInset = UIEdgeInsetsMake(0, [UIScreen mainScreen].bounds.size.width, 0, 0);
     
     self.leaveCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellStyleDefaultRedFont"];
-    self.leaveCell.textLabel.textColor = [UIColor redColor];
-    self.leaveCell.textLabel.text = @"退出群组";
+    self.leaveCell.textLabel.textColor = [UIColor colorWithRed:245/255.0 green:52/255.0 blue:41/255.0 alpha:1.0];
+    self.leaveCell.textLabel.font = [UIFont systemFontOfSize:18.0];
+    [self.leaveCell.textLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.leaveCell.contentView);
+    }];
+    self.leaveCell.textLabel.text = @"删除并退出";
+    self.leaveCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, [UIScreen mainScreen].bounds.size.width);
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
    
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = 0;
     if (section == 0) {
-        if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin)) {
-            count = 3;
-        } else if (self.group.setting.style == EMGroupStylePrivateMemberCanInvite) {
-            count = 3;
-        } else {
-            count = 2;
+        if (((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin)) || self.group.setting.style == EMGroupStylePrivateMemberCanInvite || self.group.setting.style == EMGroupStylePublicOpenJoin) {
+            return 3;
         }
-    } else if (section == 1) {
-        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin) {
-            count = 5;
-        } else {
-            count = 4;
-        }
-    } else if (section == 2) {
-        count = 1;
-    } else if (section == 3) {
-        count = 2;
-    } else if (section == 4) {
-        count = 1;
+        return 2;
     }
-
-    return count;
+    if (section == 1) {
+        if (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType == EMGroupPermissionTypeAdmin)
+            return 5;
+        return 4;
+    }
+    if (section == 2)
+        return 1;
+    if (section == 3)
+        return 2;
+    if (section == 4)
+        return 1;
+    if (section == 5)
+        return 1;
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -173,15 +175,14 @@
             [switchControl addTarget:self action:@selector(cellSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:switchControl];
         }
-    } else if (isSwitchCell) {
+    }
+    if (isSwitchCell)
         switchControl = [cell.contentView viewWithTag:[self _tagWithIndexPath:indexPath]];
-    }
     
-    if (section == 4 && row == 0) {
+    if (section == 5 && row == 0)
         return self.leaveCell;
-    } else if (section == 0 && row == 2) {
+    if (section == 0 && row == 2)
         return self.addMemberCell;
-    }
     
     cell.separatorInset = UIEdgeInsetsMake(0, 16, 0, 16);
     cell.detailTextLabel.textColor = [UIColor grayColor];
@@ -192,7 +193,7 @@
             cell.imageView.image = [UIImage imageNamed:@"group_avatar"];
             cell.textLabel.font = [UIFont systemFontOfSize:18.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-            cell.textLabel.text = self.group.subject;
+            cell.textLabel.text = self.group.groupName;
             if (self.group.description && ![self.group.description isEqualToString:@""]) {
                 cell.detailTextLabel.text = self.group.description;
             } else {
@@ -201,13 +202,13 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         } else if (row == 1) {
             cell.textLabel.text = @"群聊成员";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",self.group.occupantsCount];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%ld人",(long)self.group.occupantsCount];
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, [UIScreen mainScreen].bounds.size.width);
         }
     } else if (section == 1) {
         if (row == 0) {
             cell.textLabel.text = @"群聊名称";
-            cell.detailTextLabel.text = self.group.subject;
+            cell.detailTextLabel.text = self.group.groupName;
             cell.accessoryType = self.group.permissionType == EMGroupPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 1) {
             cell.textLabel.text = @"共享文件";
@@ -238,6 +239,9 @@
             [switchControl setOn:([conversastion.ext objectForKey:CONVERSATION_STICK] && ![(NSNumber *)[conversastion.ext objectForKey:CONVERSATION_STICK] isEqualToNumber:[NSNumber numberWithLong:0]]) animated:NO];
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
+    } else if (section == 4) {
+        cell.textLabel.text = @"清空聊天记录";
+        cell.detailTextLabel.text = @"";
     }
     return cell;
 }
@@ -246,30 +250,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 2) {
+    if (indexPath.section == 0 && indexPath.row == 2)
         return 50;
-    }
     
-    return 60;
+    return 66;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
-    if (section == 0) {
+    if (section == 0)
         return 0.001;
-    }
     
-    return 20.0;
+    return 24.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 4) {
-        return 40;
-    }
-    
-    return 1;
+    return 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -280,19 +277,19 @@
         if (row == 1) {
             //群成员
             EMGroupAllMembersViewController *controller = [[EMGroupAllMembersViewController alloc]initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 2) {
             //邀请成员
             [self addMemberAction];
         }
     } else if (section == 1) {
         if (row == 0) {
-            //修改群名称
+             //修改群名称
             [self _updateGroupNameAction];
         } else if (row == 1) {
             //群共享文件
             EMGroupSharedFilesViewController *controller = [[EMGroupSharedFilesViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 2) {
             [self groupAnnouncementAction];
         } else if (row == 3) {
@@ -301,15 +298,21 @@
         } else if (row == 4) {
             //群管理
             EMGroupManageViewController *controller = [[EMGroupManageViewController alloc]initWithGroup:self.groupId];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         }
     } else if (section == 2) {
         if (row == 0) {
             //查找聊天记录
-            EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO isChatRecord:YES];
-            [self.navigationController pushViewController:controller animated:YES];
+            EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+            EMConversationModel *model = [[EMConversationModel alloc]initWithEMModel:conversation];
+            EMChatRecordViewController *chatRrcordController = [[EMChatRecordViewController alloc]initWithCoversationModel:model];
+            //EMChatViewController *controller = [[EMChatViewController alloc]initWithConversationId:self.conversationModel.emModel.conversationId type:EMConversationTypeChat createIfNotExist:NO isChatRecord:YES];
+            [self.navigationController pushViewController:chatRrcordController animated:NO];
         }
     } else if (section == 4) {
+        //删除聊天记录
+        [self deleteGroupRecord];
+    } else if (section == 5) {
         if (row == 0) {
             [self _leaveOrDestroyGroupAction];
         }
@@ -346,11 +349,11 @@
 
 - (void)_resetGroup:(EMGroup *)aGroup
 {
-    if (![self.group.subject isEqualToString:aGroup.subject]) {
+    if (![self.group.groupName isEqualToString:aGroup.groupName]) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aGroup.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
         if (conversation) {
             NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-            [ext setObject:aGroup.subject forKey:@"subject"];
+            [ext setObject:aGroup.groupName forKey:@"subject"];
             [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
             conversation.ext = ext;
             
@@ -360,9 +363,9 @@
     
     self.group = aGroup;
     if (aGroup.permissionType == EMGroupPermissionTypeOwner) {
-        self.leaveCell.textLabel.text = @"解散群组";
+        self.leaveCell.textLabel.text = @"解散并退出";
     } else {
-        self.leaveCell.textLabel.text = @"退出群组";
+        self.leaveCell.textLabel.text = @"删除并退出";
     }
     [self.tableView reloadData];
 }
@@ -439,6 +442,36 @@
     }
 }
 
+//清空聊天记录
+- (void)deleteGroupRecord
+{
+    __weak typeof(self) weakself = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定删除群的聊天记录吗？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:@"清空" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:self.group.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
+        EMError *error = nil;
+        [conversation deleteAllMessages:&error];
+        if (weakself.clearRecordCompletion) {
+            if (!error) {
+                [EMAlertController showSuccessAlert:@"聊天记录已清空！"];
+                weakself.clearRecordCompletion(YES);
+            } else {
+                [EMAlertController showErrorAlert:@"清空聊天记录失败！"];
+                weakself.clearRecordCompletion(NO);
+            }
+        }
+    }];
+    [clearAction setValue:[UIColor colorWithRed:245/255.0 green:52/255.0 blue:41/255.0 alpha:1.0] forKey:@"_titleTextColor"];
+    [alertController addAction:clearAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [cancelAction  setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 - (void)groupAnnouncementAction
 {
     __weak typeof(self) weakself = self;
@@ -474,7 +507,7 @@
                 return NO;
             }];
             
-            [weakself.navigationController pushViewController:controller animated:YES];
+            [weakself.navigationController pushViewController:controller animated:NO];
         } else {
             [EMAlertController showErrorAlert:@"获取群组公告失败"];
         }
@@ -496,7 +529,7 @@
 {
     EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:[self acquireGroupNickNamkeOfMine] placeholder:@"输入你的群昵称" isEditable:YES];
     controller.title = @"编辑群昵称";
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
@@ -532,9 +565,9 @@
     if (!isEditable) {
         return;
     }
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.subject placeholder:@"输入群聊名称" isEditable:isEditable];
+    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.groupName placeholder:@"输入群聊名称" isEditable:isEditable];
     controller.title = @"编辑群聊名称";
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
@@ -568,7 +601,7 @@
     } else {
         controller.title = @"群介绍";
     }
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
     
     __weak typeof(self) weakself = self;
     __weak typeof(controller) weakController = controller;
@@ -599,7 +632,7 @@
     [controller setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
         [weakself _resetGroup:aGroup];
     }];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)_leaveOrDestroyGroupAction
@@ -636,6 +669,7 @@
     [occupants addObjectsFromArray:self.group.memberList];
     EMInviteGroupMemberViewController *controller = [[EMInviteGroupMemberViewController alloc] initWithBlocks:occupants];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = 0;
     [self presentViewController:navController animated:YES completion:nil];
     
     __weak typeof(self) weakself = self;

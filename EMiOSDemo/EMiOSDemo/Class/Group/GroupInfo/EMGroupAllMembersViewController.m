@@ -32,6 +32,8 @@
     [super viewDidLoad];
     [self _setupSubviews];
     self.showRefreshHeader = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupMembersUpdated:) name:GROUP_INFO_UPDATED object:nil];
     // Do any additional setup after loading the view.
 }
 
@@ -41,6 +43,7 @@
     self.title = @"群成员";
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
 
+    self.tableView.scrollEnabled = NO;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -78,7 +81,7 @@
     if (section == 0) {
         if (row == 0) {
             cell.textLabel.text = @"群管理员";
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(unsigned long)self.group.adminList.count];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(unsigned long)self.group.adminList.count + 1];
         } else if (row == 1) {
             cell.textLabel.text = @"群成员";
             cell.detailTextLabel.text = [NSString stringWithFormat:@"共%lu人",(self.group.occupantsCount - self.group.adminList.count - 1)];
@@ -113,12 +116,21 @@
     if (section == 0) {
         if (row == 0) {
             EMGroupAdminsViewController *controller = [[EMGroupAdminsViewController alloc]initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 1) {
             EMGroupMembersViewController *controller = [[EMGroupMembersViewController alloc]initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         }
     }
+}
+
+#pragma mark - MemebersUpdateNoti
+
+- (void)handleGroupMembersUpdated:(NSNotification *)aNotif
+{
+    EMGroup *group = aNotif.object;
+    self.group = group;
+    [self.tableView reloadData];
 }
 
 @end

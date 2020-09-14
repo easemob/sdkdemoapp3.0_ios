@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
+@property(nonatomic, strong) UIAlertController *alertController;
+
 //我参与的群类型
 @property (nonatomic) NSInteger type;
 //我参与的公开/私有群
@@ -34,9 +36,14 @@
 @property (nonatomic, strong) UIButton *managementBtn;
 @property (nonatomic, strong) UIView *managementView;
 
+//切换群类型
+@property (nonatomic, strong) UIButton *cutGroupAuthorityBtn;
+
 @property (nonatomic, strong) NSMutableArray *tempArray;
 @property (nonatomic, strong) NSMutableArray *tempSearchResults;
 @property (nonatomic, strong) NSMutableArray *tempSectionTitles;
+
+@property (nonatomic, strong) NSMutableArray *currentSearchGroupArray;
 
 @end
 
@@ -47,6 +54,7 @@
     // Do any additional setup after loading the view.
     [self _setupSubviews];
     [self _setupSwitchviews];
+    self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     
     self.type = 1;//我参与的群
     self.isPublic = YES;//公开/私有群
@@ -79,6 +87,7 @@
 {
     [self addPopBackLeftItem];
     [self.navigationController.navigationBar.layer setMasksToBounds:YES];
+    /*
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"公开群" style:UIBarButtonItemStylePlain target:self action:@selector(_cutSpecialGroupType)];
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
@@ -90,32 +99,51 @@
     self.navigationItem.rightBarButtonItems = @[rightBarItem,backBtnI];
     
      [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:15], NSFontAttributeName, nil] forState:UIControlStateNormal];
-    
+    */
     //self.navigationItem.rightBarButtonItem.enabled = NO;
     self.title = @"群组列表";
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
+    //[self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
     self.view.backgroundColor = [UIColor whiteColor];
     self.showRefreshHeader = YES;
+    self.tableView.rowHeight = 74;
+    self.searchResultTableView.rowHeight = 74;
 }
 
 #pragma mark - SubviewsSwitch
 //我的群类型
 - (void)_setupSwitchviews
 {
-    CGFloat width = (self.view.frame.size.width)/2;
+    CGFloat width = (self.view.frame.size.width) / 3;
+
+    self.cutGroupAuthorityBtn = [[UIButton alloc]init];
+    [_cutGroupAuthorityBtn setTitle:@"公开群" forState:UIControlStateNormal];
+    [_cutGroupAuthorityBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _cutGroupAuthorityBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _cutGroupAuthorityBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _cutGroupAuthorityBtn.backgroundColor = [UIColor whiteColor];
+    _cutGroupAuthorityBtn.tag = 1;
+    [_cutGroupAuthorityBtn addTarget:self action:@selector(_cutGroupAuthorityType) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_cutGroupAuthorityBtn];
+    [_cutGroupAuthorityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(50);
+        make.left.equalTo(self.view);
+        make.width.mas_equalTo(width-1);
+        make.height.equalTo(@40);
+    }];
     
     self.participantBtn = [[UIButton alloc]init];
     [_participantBtn setTitle:@"我参与的" forState:UIControlStateNormal];
     [_participantBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
     _participantBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     _participantBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _participantBtn.backgroundColor = [UIColor whiteColor];
     _participantBtn.tag = 1;
     [_participantBtn addTarget:self action:@selector(cutGroupType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_participantBtn];
     [_participantBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(50);
-        make.left.equalTo(self.view);
-        make.width.mas_equalTo(width);
+        make.left.equalTo(self.cutGroupAuthorityBtn.mas_right).offset(1);
+        make.width.mas_equalTo(width-1);
         make.height.equalTo(@40);
     }];
     self.participantView = [[UIView alloc]init];
@@ -133,13 +161,15 @@
     _managementBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     _managementBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     [_managementBtn setTitleColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _managementBtn.backgroundColor = [UIColor whiteColor];
     _managementBtn.tag = 2;
     [_managementBtn addTarget:self action:@selector(cutGroupType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.managementBtn];
     [_managementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(50);
         make.right.equalTo(self.view);
-        make.width.mas_equalTo(width);
+        make.left.equalTo(self.participantBtn.mas_right).offset(1);
+        make.width.mas_equalTo(width-1);
         make.height.equalTo(@40);
     }];
     self.managementView = [[UIView alloc]init];
@@ -162,8 +192,10 @@
 #pragma mark - cutGroupType
 - (void)cutGroupType:(UIButton *)btn
 {
+    if (self.isSearching) {
+        return;
+    }
     self.type = btn.tag;
-    
     if (btn.tag == 1) {
         [self.participantBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
         self.participantView.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
@@ -177,31 +209,54 @@
         [self.managementBtn setTitleColor:[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0] forState:UIControlStateNormal];
         self.managementView.backgroundColor = [UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0];
     }
-    
-    if (self.isSearching) {
-        [self.searchResultTableView reloadData];
-    } else {
-        [self.tableView reloadData];
-    }
-        
+    [self.tableView reloadData];
 }
 
 //切换公开/私有群
-- (void)_cutSpecialGroupType
+#pragma mark - Action
+
+- (void)_cutGroupAuthorityType
+{
+    if (self.isSearching) {
+        [EMAlertController showErrorAlert:@"切换群类型请重新搜索！"];
+        return;
+    }
+    self.alertController = [[UIAlertController alloc]init];
+    __weak typeof(self) weakself = self;
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"公开群" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (weakself.isPublic) {
+            [EMAlertController showSuccessAlert:@"当前已是公开群！"];
+            return;
+        }
+        [weakself _cutGroupAuthorityOperate];
+    }]];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"私有群" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (!weakself.isPublic) {
+            [EMAlertController showSuccessAlert:@"当前已是私有群！"];
+            return;
+        }
+        [weakself _cutGroupAuthorityOperate];
+    }]];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    for (UIAlertAction *alertAction in self.alertController.actions) {
+        [alertAction setValue:[UIColor colorWithRed:49/255.0 green:49/255.0 blue:49/255.0 alpha:1.0] forKey:@"_titleTextColor"];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAlert" object:@{@"alert":self.alertController}];
+    [self presentViewController:self.alertController animated:YES completion:nil];
+}
+
+- (void)_cutGroupAuthorityOperate
 {
     self.isPublic = !self.isPublic;
     if (self.isPublic) {
-        self.navigationItem.rightBarButtonItem.title = @"公开群";
+        [_cutGroupAuthorityBtn setTitle:@"公开群" forState:UIControlStateNormal];
+        //self.navigationItem.rightBarButtonItem.title = @"公开群";
     } else {
-        self.navigationItem.rightBarButtonItem.title = @"私有群";
+        [_cutGroupAuthorityBtn setTitle:@"私有群" forState:UIControlStateNormal];
+        //self.navigationItem.rightBarButtonItem.title = @"私有群";
     }
-    
-    if (self.isSearching) {
-        [self.searchResultTableView reloadData];
-    } else {
-        [self.tableView reloadData];
-    }
-    
+    [self.tableView reloadData];
 }
 
 #pragma mark - EMSearchBarDelegate
@@ -232,7 +287,6 @@
     for (EMGroup *group in aGroupList) {
         [groupList addObject:group];
     }
-    [self.dataArray removeAllObjects];
     [self.sectionTitles removeAllObjects];
     
     //建立索引的核心, 返回27，是a－z和＃
@@ -248,7 +302,7 @@
     
     //按group-subject首字母分组
     for (EMGroup *group in groupList) {
-        NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:group.subject];
+        NSString *firstLetter = [EMChineseToPinyin pinyinFromChineseString:group.groupName];
         NSInteger section;
         if (firstLetter.length > 0) {
             section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
@@ -264,10 +318,10 @@
     //每个section内的数组排序
     for (int i = 0; i < [sortedArray count]; i++) {
         NSArray *array = [[sortedArray objectAtIndex:i] sortedArrayUsingComparator:^NSComparisonResult(EMGroup *group1, EMGroup *group2) {
-            NSString *firstLetter1 = [EMChineseToPinyin pinyinFromChineseString:group1.subject];
+            NSString *firstLetter1 = [EMChineseToPinyin pinyinFromChineseString:group1.groupName];
             firstLetter1 = [[firstLetter1 substringToIndex:1] uppercaseString];
             
-            NSString *firstLetter2 = [EMChineseToPinyin pinyinFromChineseString:group2.subject];
+            NSString *firstLetter2 = [EMChineseToPinyin pinyinFromChineseString:group2.groupName];
             firstLetter2 = [[firstLetter2 substringToIndex:1] uppercaseString];
             
             return [firstLetter1 caseInsensitiveCompare:firstLetter2];
@@ -286,8 +340,10 @@
     }
     
     if(!self.isSearching){
+        [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:sortedArray];
     }else{
+        [self.searchResults removeAllObjects];
         [self.searchResults addObjectsFromArray:sortedArray];
     }
     
@@ -317,13 +373,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
     if (tableView == self.tableView) {
         return [(NSArray *)(self.tempArray[section]) count];
     } else {
         return [(NSArray *)(self.tempSearchResults[section]) count];
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -335,30 +389,18 @@
     if (cell == nil) {
         cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    /*
-    if (tableView == self.tableView && indexPath.section == 0) {
-        cell.detailLabel.text = nil;
-        if (indexPath.row == 0) {
-            cell.avatarView.image = [UIImage imageNamed:@"group_create"];
-            cell.nameLabel.text = @"创建群组";
-        } else if (indexPath.row == 1) {
-            cell.avatarView.image = [UIImage imageNamed:@"group_join"];
-            cell.nameLabel.text = @"加入群组";
-        }
-        
-        return cell;
-    }*/
     
     EMGroup *group = nil;
     if (tableView == self.tableView) {
         group = self.tempArray[(indexPath.section)][indexPath.row];
+        [self.currentSearchGroupArray addObject:group];
     } else {
         group = self.tempSearchResults[(indexPath.section)][indexPath.row];
     }
     
     cell.avatarView.image = [UIImage imageNamed:@"group_avatar"];
-    if ([group.subject length]) {
-        cell.nameLabel.text = group.subject;
+    if ([group.groupName length]) {
+        cell.nameLabel.text = group.groupName;
     } else {
         cell.nameLabel.text = group.groupId;
     }
@@ -371,10 +413,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-   /* if (tableView == self.tableView) {
-        return 20;
-    }*/
-    
     return 20;
 }
 
@@ -398,15 +436,6 @@
 {
     [self.view endEditing:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    /*
-    if (tableView == self.tableView && indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            [self _createGroupAction];
-        } else if (indexPath.row == 1) {
-            [self _joinGroupAction];
-        }
-        return;
-    }*/
     
     EMGroup *group = nil;
     if (tableView == self.tableView) {
@@ -418,6 +447,12 @@
 }
 
 #pragma mark - EMSearchBarDelegate
+
+- (void)searchBarCancelButtonAction:(EMSearchBar *)searchBar
+{
+    [super searchBarCancelButtonAction:searchBar];
+    [self getJoinedGroupsAndReloadView];
+}
 
 - (void)searchBarSearchButtonClicked:(NSString *)aString
 {
@@ -431,7 +466,7 @@
     }
     
     __weak typeof(self) weakself = self;
-    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
+    [[EMRealtimeSearch shared] realtimeSearchWithSource:self.currentSearchGroupArray searchText:aString collationStringSelector:@selector(subject) resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
@@ -474,6 +509,7 @@
 {
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:aGroupList];
+    [self _sortAllGroups:self.dataArray];
     [self.tableView reloadData];
 }
 
@@ -481,7 +517,7 @@
 
 - (void)handleGroupSubjectUpdated:(NSNotification *)aNotif
 {
-    EMGroup *group = aNotif.object;
+    EMGroup *group = (EMGroup *)aNotif.object;
     if (!group) {
         return;
     }
@@ -502,8 +538,14 @@
 - (NSMutableArray *)_getSpecificGroupCount:(NSMutableArray *)data
 {
     [self.tempSectionTitles removeAllObjects];
+    if ([data count] <= 0) {
+        return nil;
+    }
     for (NSArray<NSString *> *str in self.sectionTitles) {
         [self.tempSectionTitles addObject:str];
+    }
+    if (!self.isSearching) {
+        [self.currentSearchGroupArray removeAllObjects];
     }
     [self.tempArray removeAllObjects];
     [self.tempSearchResults removeAllObjects];
@@ -588,7 +630,7 @@
     NSArray *groups = [[EMClient sharedClient].groupManager getJoinedGroups];
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:groups];
-    
+    [self _sortAllGroups:self.dataArray];
     [self.tableView reloadData];
 }
 
@@ -603,7 +645,7 @@
     [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
         EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
         createController.inviteController = weakself.inviteController;
-        [weakself.navigationController pushViewController:createController animated:YES];
+        [weakself.navigationController pushViewController:createController animated:NO];
     }];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.inviteController];
@@ -613,7 +655,7 @@
 - (void)_joinGroupAction
 {
     EMJoinGroupViewController *controller = [[EMJoinGroupViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (NSMutableArray *)tempArray
@@ -638,6 +680,14 @@
         _tempSectionTitles = [[NSMutableArray alloc]init];
     }
     return _tempSectionTitles;
+}
+
+- (NSMutableArray *)currentSearchGroupArray
+{
+    if(_currentSearchGroupArray == nil){
+        _currentSearchGroupArray = [[NSMutableArray alloc]init];
+    }
+    return _currentSearchGroupArray;
 }
 
 @end

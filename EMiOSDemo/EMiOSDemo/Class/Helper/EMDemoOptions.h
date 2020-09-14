@@ -40,7 +40,11 @@ static NSString *kOptions_WillRecord = @"WillRecord";
 static NSString *kOptions_WillMergeStrem = @"WillMergeStrem";
 static NSString *kOptions_EnableConsoleLog = @"enableConsoleLog";
 
-#define DEF_APPKEY @"easemob-demo#chatdemoui"
+static NSString *kOptions_LocationAppkeyArray = @"LocationAppkeyArray";
+
+static NSString *kOptions_IsSupportWechatMiniProgram = @"IsSupportMiniProgram";
+static NSString *kOptions_EnableCustomAudioData = @"EnableCustomAudioData";
+static NSString *kOptions_CustomAudioDataSamples = @"CustomAudioDataSamples";
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -83,8 +87,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL willRecord;
 @property (nonatomic) BOOL willMergeStrem;
 @property (nonatomic) BOOL enableConsoleLog;
+@property (nonatomic) BOOL enableCustomAudioData;
+@property (nonatomic) int  customAudioDataSamples;
 
+@property (nonatomic) BOOL isSupportWechatMiniProgram;
 
+@property (nonatomic, strong) NSMutableArray *locationAppkeyArray;
 
 + (instancetype)sharedOptions;
 

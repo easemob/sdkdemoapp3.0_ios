@@ -26,6 +26,7 @@
 @property (nonatomic) BOOL isViewAppear;
 @property (nonatomic) BOOL isNeedReload;
 @property (nonatomic) BOOL isNeedReloadSorted;
+@property (nonatomic) BOOL isAddBlankView;
 
 @property (nonatomic, strong) UIMenuItem *deleteMenuItem;
 @property (nonatomic, strong) UIMenuItem *stickMenuItem;
@@ -34,6 +35,10 @@
 @property (strong, nonatomic) NSIndexPath *menuIndexPath;
 
 @property (nonatomic, strong) UIButton *addImageBtn;
+
+@property (nonatomic, strong) UIImageView *blankPerchView;
+
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @property (nonatomic, strong) EMInviteGroupMemberViewController *inviteController;
 
@@ -44,7 +49,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.isAddBlankView = NO;
     [self _setupSubviews];
     
     [[EMNotificationHelper shared] addDelegate:self];
@@ -60,10 +65,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AgreeJoinGroupInvite:) name:NOTIF_ADD_SOCIAL_CONTACT object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationControllerBack) name:SYSTEM_NOTIF_DETAIL object:nil];
-    
-    [[EMClient sharedClient].chatManager asyncFetchHistoryMessagesFromServer:@"99263146164225" conversationType:EMConversationTypeGroupChat startMessageId:nil pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
-        NSLog(@"result:   %@",aResult);
-    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -75,7 +76,6 @@
     if (self.isNeedReloadSorted) {
         self.isNeedReloadSorted = NO;
         [self _loadAllConversationsFromDBWithIsShowHud:NO];
-        
     } else if (self.isNeedReload) {
         self.isNeedReload = NO;
         [self.tableView reloadData];
@@ -102,6 +102,7 @@
 {
     [EMNotificationHelper shared].isCheckUnreadCount = YES;
     [[EMNotificationHelper shared] removeDelegate:self];
+    [EMNotificationHelper destoryShared];
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].groupManager removeDelegate:self];
     [[EMConversationHelper shared] removeDelegate:self];
@@ -127,13 +128,13 @@
     }];
     
     self.addImageBtn = [[UIButton alloc]init];
-    [self.addImageBtn setBackgroundImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
+    [self.addImageBtn setImage:[UIImage imageNamed:@"icon-add"] forState:UIControlStateNormal];
     [self.addImageBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.addImageBtn];
     [self.addImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@24);
+        make.width.height.equalTo(@35);
         make.centerY.equalTo(titleLabel);
-        make.right.equalTo(self.view).offset(-15);
+        make.right.equalTo(self.view).offset(-24);
     }];
     
     [self enableSearchController];
@@ -144,7 +145,21 @@
         make.height.equalTo(@36);
     }];
     
-    self.tableView.rowHeight = 60;
+    self.blankPerchView = [[UIImageView alloc]init];
+    self.blankPerchView.image = [UIImage imageNamed:@"blankConversation"];
+    UILabel *blankPadding = [[UILabel alloc]init];
+    blankPadding.text = @"寻找自我 保持本色";
+    blankPadding.textColor = [UIColor colorWithRed:204/255.0 green:204/255.0 blue:204/255.0 alpha:1.0];
+    blankPadding.font = [UIFont systemFontOfSize:12.0];
+    [self.blankPerchView addSubview:blankPadding];
+    [blankPadding mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.blankPerchView.mas_bottom).offset(14);
+        make.centerX.equalTo(self.blankPerchView);
+    }];
+    
+    self.tableView.rowHeight = 74;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchButton.mas_bottom).offset(15);
         make.left.equalTo(self.view);
@@ -155,40 +170,35 @@
     [self _setupSearchResultController];
 }
 
+//空白占位视图
+- (void)addBlankPerchView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.dataArray count] <= 0 && !self.isAddBlankView) {
+            //空会话列表占位视图
+            [self.view addSubview:self.blankPerchView];
+            self.isAddBlankView = YES;
+            [self.blankPerchView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.centerY.equalTo(self.view);
+                make.width.height.equalTo(@82);
+            }];
+        } else if ([self.dataArray count] > 0) {
+            [self.blankPerchView removeFromSuperview];
+            self.isAddBlankView = NO;
+        }
+    });
+}
+
 #pragma mark - moreAction
 - (void)moreAction
 {
-    
-    // 弹出QQ的自定义视图
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-175, self.addImageBtn.frame.origin.y + 24, 165, 156) selectData:@[@"音视频会议",@"创建群组",@"添加好友"] images:@[@"icon-音视频会议",@"icon-创建群组",@"icon-添加好友"] locationY:-8 action:^(NSInteger index){
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-160, self.addImageBtn.frame.origin.y + 24, 145, 104) selectData:@[@"创建群组",@"添加好友"] images:@[@"icon-创建群组",@"icon-添加好友"] locationY:18 action:^(NSInteger index){
         if(index == 0) {
-            [self avConfrence];
-        } else if (index == 1) {
             [self createGroup];
-        } else {
+        } else if (index == 1) {
             [self addFriend];
         }
     } animated:YES];
-}
-
-//音视频会议
-- (void)avConfrence
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"会议类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"普通会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-    }];
-    [alertController addAction:defaultAction];
-
-    UIAlertAction *mixAction = [UIAlertAction actionWithTitle:@"混音会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKECONFERENCE object:@{CALL_TYPE:@(EMConferenceTypeLargeCommunication), NOTIF_NAVICONTROLLER:self.navigationController}];
-    }];
-    [alertController addAction:mixAction];
-
-    [alertController addAction: [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"Cancel") style: UIAlertActionStyleCancel handler:nil]];
-
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 //创建群组
@@ -200,7 +210,10 @@
     [self.inviteController setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
         EMCreateGroupViewController *createController = [[EMCreateGroupViewController alloc] initWithSelectedMembers:aSelectedArray];
         createController.inviteController = weakself.inviteController;
-        [weakself.navigationController pushViewController:createController animated:YES];
+        [createController setSuccessCompletion:^(EMGroup * _Nonnull aGroup) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:aGroup];
+        }];
+        [weakself.navigationController pushViewController:createController animated:NO];
     }];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.inviteController];
@@ -212,7 +225,7 @@
 - (void)addFriend
 {
     EMInviteFriendViewController *controller = [[EMInviteFriendViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)_setupSearchResultController
@@ -249,7 +262,17 @@
     [self.resultController setDidSelectRowAtIndexPathCompletion:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSInteger row = indexPath.row;
         EMConversationModel *model = [weakself.resultController.dataArray objectAtIndex:row];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
+        weakself.resultController.searchBar.text = @"";
+        [weakself.resultController.searchBar resignFirstResponder];
+        weakself.resultController.searchBar.showsCancelButton = NO;
+        [weakself searchBarCancelButtonAction:nil];
+        [weakself.resultNavigationController dismissViewControllerAnimated:NO completion:nil];
+        if (!model.notiModel) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
+        } else {
+            EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
+            [weakself.navigationController pushViewController:controller animated:NO];
+        }
     }];
 }
 
@@ -276,6 +299,8 @@
     }
     
     NSInteger row = indexPath.row;
+    //if (row >= [self.dataArray count])
+        //return [[EMConversationCell alloc]init];
     EMConversationModel *model = [self.dataArray objectAtIndex:row];
     cell.model = model;
     cell.delegate = self;
@@ -303,7 +328,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:CHAT_PUSHVIEWCONTROLLER object:model];
     } else {
         EMNotificationViewController *controller = [[EMNotificationViewController alloc] initWithStyle:UITableViewStylePlain];
-        [self.navigationController pushViewController:controller animated:YES];
+        [self.navigationController pushViewController:controller animated:NO];
     }
 }
 
@@ -348,7 +373,12 @@
             for (EMMessage *msg in aMessages) {
                 if(msg.body.type == EMMessageBodyTypeText) {
                     EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:msg.conversationId type:EMConversationTypeGroupChat createIfNotExist:YES];
-                    //群聊@提醒功能
+                    //通话邀请
+                    if ([((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) {
+                        [conversation deleteMessageWithId:msg.messageId error:nil];
+                        continue;
+                    }
+                    //群聊@“我”提醒
                     NSString *content = [NSString stringWithFormat:@"@%@",EMClient.sharedClient.currentUsername];
                     if(conversation.type == EMConversationTypeGroupChat && [((EMTextMessageBody *)msg.body).text containsString:content]) {
                         NSMutableDictionary *dic;
@@ -362,7 +392,8 @@
                     };
                 }
             }
-            [self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:0.8];
+            [self _reSortedConversationModelsAndReloadView];
+            //[self performSelector:@selector(_reSortedConversationModelsAndReloadView) withObject:nil afterDelay:0.8];
         }
     } else {
         self.isNeedReload = YES;
@@ -388,7 +419,8 @@
 {
     [[EMRealtimeSearch shared] realtimeSearchStop];
     
-    [self.resultController.dataArray removeAllObjects];
+    if ([self.resultController.dataArray count] > 0)
+        [self.resultController.dataArray removeAllObjects];
     [self.resultController.tableView reloadData];
 }
 
@@ -403,8 +435,9 @@
     
     __weak typeof(self) weakself = self;
     [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(name) resultBlock:^(NSArray *results) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakself.resultController.dataArray removeAllObjects];
+         dispatch_async(dispatch_get_main_queue(), ^{
+            if ([weakself.resultController.dataArray count] > 0)
+                [weakself.resultController.dataArray removeAllObjects];
             [weakself.resultController.dataArray addObjectsFromArray:results];
             [weakself.resultController.tableView reloadData];
         });
@@ -505,7 +538,7 @@
     NSString *groupId = group.groupId;
     for (EMConversationModel *model in self.dataArray) {
         if ([model.emModel.conversationId isEqualToString:groupId]) {
-            model.name = group.subject;
+            model.name = group.groupName;
             [self.tableView reloadData];
         }
     }
@@ -542,17 +575,15 @@
                                                  completion:nil];
     [self.dataArray removeObjectAtIndex:row];
     [self.tableView reloadData];
+    [self addBlankPerchView];
 }
 
 //置顶
 - (void)_stickConversation
 {
     EMConversationModel *conversationModel = [self.dataArray objectAtIndex:self.menuIndexPath.row];
-    
     NSDate *date = [NSDate date];
-    NSDateFormatter *format=[[NSDateFormatter alloc]init];
-    [format setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *time = [format dateFromString:[format stringFromDate:date]];
+    NSDate *time = [self.dateFormatter dateFromString:[self.dateFormatter stringFromDate:date]];
     NSTimeInterval stickTimeInterval = [time timeIntervalSince1970];
     NSNumber *stickTime = [NSNumber numberWithLong:stickTimeInterval];
     
@@ -565,7 +596,6 @@
         [[EMNotificationHelper shared] archive];
     }
     [self _reSortedConversationModelsAndReloadView];
-    [self.tableView reloadData];
 }
 
 //取消置顶
@@ -581,7 +611,6 @@
         [[EMNotificationHelper shared] archive];
     }
     [self _reSortedConversationModelsAndReloadView];
-    [self.tableView reloadData];
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -621,7 +650,6 @@
     [self.menuController setMenuItems:items];
     [self.menuController setTargetRect:aCell.frame inView:self.tableView];
     [self.menuController setMenuVisible:YES animated:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:aCell selector:@selector(setSelectedStatus) name:UIMenuControllerDidHideMenuNotification object:nil];
 }
 
 #pragma mark - Data
@@ -663,14 +691,13 @@
 - (long)stickTime:(EMConversationModel *)model
 {
     long time = 0;
-    if (model.emModel) {
+    if (model.emModel)
         time = [(NSNumber *)[model.emModel.ext objectForKey:CONVERSATION_STICK] longValue];
-    } else if (model.notiModel) {
+    if (model.notiModel)
         time = [model.notiModel.stickTime longValue];
-    }
     return time;
 }
-
+//重排序会话model
 - (void)_reSortedConversationModelsAndReloadView
 {
     NSArray *sorted = [self.dataArray sortedArrayUsingComparator:^(EMConversationModel *obj1, EMConversationModel *obj2) {
@@ -680,7 +707,8 @@
             return(NSComparisonResult)NSOrderedAscending;
         } else {
             return(NSComparisonResult)NSOrderedDescending;
-        }}];
+        }
+    }];
     
     NSMutableArray *conversationModels = [NSMutableArray array];
     for (EMConversationModel *model in sorted) {
@@ -693,12 +721,13 @@
         [conversationModels addObject:model];
     }
     
-    [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:conversationModels];
-    [self _insertSystemNotify];//插入系统通知
-    self.dataArray = [self _stickSortedConversationModels:self.dataArray];//置顶重排序
+    NSMutableArray *modelArray = [self _insertSystemNotify:conversationModels];//插入系统通知
+    NSMutableArray *finalDataArray = [self _stickSortedConversationModels:[modelArray copy]];//置顶重排序
+    if ([self.dataArray count] > 0)
+        [self.dataArray removeAllObjects];
+    self.dataArray = finalDataArray;
+
     [self.tableView reloadData];
-    
     self.isNeedReload = NO;
 }
 
@@ -721,17 +750,22 @@
             }
             
         }];
-        
-        [weakself.dataArray removeAllObjects];
+
         NSArray *models = [EMConversationHelper modelsFromEMConversations:sorted];
-        [weakself.dataArray addObjectsFromArray:models];
-        [weakself _insertSystemNotify];//插入系统通知
-        weakself.dataArray = [weakself _stickSortedConversationModels:weakself.dataArray];//置顶重排序
+        
+        NSMutableArray *modelArray = [weakself _insertSystemNotify:[models mutableCopy]];//插入系统通知
+        NSMutableArray *finalDataArray = [weakself _stickSortedConversationModels:[modelArray copy]];//置顶重排序
+        
+        if ([weakself.dataArray count] > 0)
+            [weakself.dataArray removeAllObjects];
+        weakself.dataArray = finalDataArray;
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (aIsShowHUD) {
                 [weakself hideHud];
             }
             
+            [weakself addBlankPerchView];
             [weakself tableViewDidFinishTriggerHeader:YES reload:NO];
             [weakself.tableView reloadData];
             weakself.isNeedReload = NO;
@@ -740,32 +774,30 @@
 }
 
 //插入系统通知到会话列表
-- (void)_insertSystemNotify
+- (NSMutableArray *)_insertSystemNotify:(NSMutableArray *)modelArray
 {
     if ([EMNotificationHelper.shared.notificationList count] == 0) {
-        return;
+        return modelArray;
     }
     //系统通知插入到 dataarray 中
     EMNotificationModel *lastNotiModel = [EMNotificationHelper.shared.notificationList objectAtIndex:0];
     EMConversationModel *model = [[EMConversationModel alloc]init];
     model.notiModel = lastNotiModel;
 
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     //最后一个系统通知信息时间
-    NSDate *notiTime = [dateFormatter dateFromString:model.notiModel.time];
+    NSDate *notiTime = [self.dateFormatter dateFromString:model.notiModel.time];
     NSTimeInterval notiTimeInterval = [notiTime timeIntervalSince1970];
     long long lastNotiTime = [[NSNumber numberWithDouble:notiTimeInterval] longLongValue];
     //系统通知插入排序到会话列表中
-    int low = 0, high = (int)([self.dataArray count] - 1);
+    int low = 0, high = (int)([modelArray count] - 1);
     while (low <= high) {
         int mid = (low + high) / 2;
-        EMConversationModel *conversationModel = [self.dataArray objectAtIndex:mid];
+        EMConversationModel *conversationModel = [modelArray objectAtIndex:mid];
         
         //每个会话的最后一条信息时间
         NSDate *timestampDate = [EMDateHelper dateWithTimeIntervalInMilliSecondSince1970:conversationModel.emModel.latestMessage.timestamp];
-        NSString *dateStr = [dateFormatter stringFromDate:timestampDate];//先格式化该会话最后一天信息的时间
-        timestampDate = [dateFormatter dateFromString:dateStr];
+        NSString *dateStr = [self.dateFormatter stringFromDate:timestampDate];//先格式化该会话最后一天信息的时间
+        timestampDate = [self.dateFormatter dateFromString:dateStr];
         NSTimeInterval time = [timestampDate timeIntervalSince1970];
         long long lastConversationTime = [[NSNumber numberWithDouble:time] longLongValue];
         
@@ -775,12 +807,22 @@
             low = mid + 1;
         }
     }
-    [self.dataArray insertObject:model atIndex:(high + 1)];
+    [modelArray insertObject:model atIndex:(high + 1)];
+    return modelArray;
 }
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
     [self _loadAllConversationsFromDBWithIsShowHud:NO];
+}
+
+- (NSDateFormatter *)dateFormatter
+{
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc]init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    }
+    return _dateFormatter;
 }
 
 - (UIMenuItem *)deleteMenuItem

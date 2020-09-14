@@ -5820,7 +5820,7 @@ char pinyinFirstLet(unsigned short hanzi) {
 
 + (NSString *)pinyinFromChineseString:(NSString *)string
 {
-	if(!string || ![string length]) return nil;
+	if(!string || ![string length]) return @"";
 	
 	NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding( kCFStringEncodingGB_18030_2000);
 	NSData *gb2312_data = [string dataUsingEncoding:enc];

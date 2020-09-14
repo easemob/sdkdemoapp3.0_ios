@@ -9,7 +9,6 @@
 #import "EMMsgPicMixTextBubbleView.h"
 
 @implementation EMMsgPicMixTextBubbleView
-
 {
     NSString *callType;
     NSString *conversationId;
@@ -44,7 +43,7 @@
     [self addSubview:self.textImgBtn];
     [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@25);
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self.mas_centerY);
     }];
     
 }
@@ -54,30 +53,40 @@
 - (void)setModel:(EMMessageModel *)model
 {
     EMTextMessageBody *body = (EMTextMessageBody *)model.emModel.body;
-    self.textLabel.text = [EMEmojiHelper convertEmoji:body.text];
+    if ([body.text isEqualToString:EMCOMMUNICATE_CALLER_MISSEDCALL]) {
+        if ([model.emModel.from isEqualToString:[EMClient sharedClient].currentUsername])
+            self.textLabel.text = @"已取消";
+        else self.textLabel.text = @"对方已取消";
+    } else if ([body.text isEqualToString:EMCOMMUNICATE_CALLED_MISSEDCALL]) {
+        if ([model.emModel.from isEqualToString:[EMClient sharedClient].currentUsername])
+            self.textLabel.text = @"对方拒绝通话";
+        else self.textLabel.text = @"未接听，点击回拨";
+    } else
+        self.textLabel.text = body.text;
+    
     conversationId = model.emModel.conversationId;
-
+    
     if (self.direction == EMMessageDirectionSend) {
         
         [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self).offset(-15);
+            make.right.equalTo(self.mas_right).offset(-15);
         }];
         
         self.textLabel.textColor = [UIColor whiteColor];
         [self.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.textImgBtn.mas_left).offset(-5);
-            make.left.equalTo(self).offset(10);
+            make.left.equalTo(self.mas_left).offset(10);
         }];
         
     } else {
         [self.textImgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self).offset(15);
+            make.left.equalTo(self.mas_left).offset(15);
         }];
         
         self.textLabel.textColor = [UIColor blackColor];
         [self.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.textImgBtn.mas_right).offset(5);
-            make.right.equalTo(self).offset(-10);
+            make.right.equalTo(self.mas_right).offset(-10);
         }];
         
     }
@@ -86,7 +95,7 @@
         [self.textImgBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@10);
         }];
-        [self.textImgBtn setImage:[UIImage imageNamed:@"语音通话"] forState:UIControlStateNormal];
+        [self.textImgBtn setImage:[UIImage imageNamed:@"voice"] forState:UIControlStateNormal];
     } else if ([[model.emModel.ext objectForKey:EMCOMMUNICATE_TYPE] isEqualToString:EMCOMMUNICATE_TYPE_VIDEO]) {
         callType = EMCOMMUNICATE_TYPE_VIDEO;
         [self.textImgBtn mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -98,18 +107,6 @@
             [self.textImgBtn setImage:[UIImage imageNamed:@"video-opposite"] forState:UIControlStateNormal];
         }
     }
-    [self.textImgBtn addTarget:self action:@selector(communicate) forControlEvents:UIControlEventTouchUpInside];
-
-}
-
-- (void)communicate
-{
-    if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VOICE]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:conversationId, CALL_TYPE:@(EMCallTypeVoice)}];
-    } else if ([callType isEqualToString:EMCOMMUNICATE_TYPE_VIDEO]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CALL_MAKE1V1 object:@{CALL_CHATTER:conversationId,   CALL_TYPE:@(EMCallTypeVideo)}];
-    }
-   
 }
 
 @end

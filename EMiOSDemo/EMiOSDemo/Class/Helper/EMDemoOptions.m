@@ -41,6 +41,12 @@ static EMDemoOptions *sharedOptions = nil;
         self.willRecord = NO;
         self.willMergeStrem = NO;
         self.enableConsoleLog = YES;
+        
+        self.enableCustomAudioData = NO;
+        self.customAudioDataSamples = 48000;
+        self.isSupportWechatMiniProgram = NO;
+        
+        self.locationAppkeyArray = [[NSMutableArray alloc]init];
     }
     
     return self;
@@ -49,11 +55,17 @@ static EMDemoOptions *sharedOptions = nil;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
-        NSString *appkey = [aDecoder decodeObjectForKey:kOptions_Appkey];
-        if ([appkey length] == 0) {
-            appkey = DEF_APPKEY;
+        NSMutableArray *tempArray = [aDecoder decodeObjectForKey:kOptions_LocationAppkeyArray];
+        if (tempArray == nil || [tempArray count] == 0) {
+            self.locationAppkeyArray = [[NSMutableArray alloc]init];
+            [self.locationAppkeyArray insertObject:DEF_APPKEY atIndex:0];
+        } else {
+            self.locationAppkeyArray = tempArray;
         }
-        self.appkey = appkey;
+        self.appkey = [aDecoder decodeObjectForKey:kOptions_Appkey];
+        if ([self.appkey length] == 0) {
+            self.appkey = [self.locationAppkeyArray objectAtIndex:0];
+        }
         self.apnsCertName = [aDecoder decodeObjectForKey:kOptions_ApnsCertname];
         self.usingHttpsOnly = [aDecoder decodeBoolForKey:kOptions_HttpsOnly];
         
@@ -84,6 +96,10 @@ static EMDemoOptions *sharedOptions = nil;
         self.willRecord = [aDecoder decodeBoolForKey:kOptions_WillRecord];
         self.willMergeStrem = [aDecoder decodeBoolForKey:kOptions_WillMergeStrem];
         self.enableConsoleLog = [aDecoder decodeBoolForKey:kOptions_EnableConsoleLog];
+        
+        self.enableCustomAudioData = [aDecoder decodeBoolForKey:kOptions_EnableCustomAudioData];
+        self.customAudioDataSamples = [aDecoder decodeIntForKey:kOptions_CustomAudioDataSamples];
+        self.isSupportWechatMiniProgram = [aDecoder decodeBoolForKey:kOptions_IsSupportWechatMiniProgram];
     }
     return self;
 }
@@ -121,6 +137,13 @@ static EMDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.willRecord forKey:kOptions_WillRecord];
     [aCoder encodeBool:self.willMergeStrem forKey:kOptions_WillMergeStrem];
     [aCoder encodeBool:self.enableConsoleLog forKey:kOptions_EnableConsoleLog];
+    
+    [aCoder encodeBool:self.enableCustomAudioData forKey:kOptions_EnableCustomAudioData];
+    [aCoder encodeInt:self.customAudioDataSamples forKey:kOptions_CustomAudioDataSamples];
+    
+    [aCoder encodeBool:self.isSupportWechatMiniProgram forKey:kOptions_IsSupportWechatMiniProgram];
+    
+    [aCoder encodeObject:self.locationAppkeyArray forKey:kOptions_LocationAppkeyArray];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -150,6 +173,10 @@ static EMDemoOptions *sharedOptions = nil;
     retModel.willRecord = self.willRecord;
     retModel.willMergeStrem = self.willMergeStrem;
     retModel.enableConsoleLog = self.enableConsoleLog;
+    retModel.enableCustomAudioData = self.enableCustomAudioData;
+    retModel.customAudioDataSamples = self.customAudioDataSamples;
+    retModel.isSupportWechatMiniProgram = self.isSupportWechatMiniProgram;
+    retModel.locationAppkeyArray = self.locationAppkeyArray;
     return retModel;
 }
 
@@ -167,15 +194,17 @@ static EMDemoOptions *sharedOptions = nil;
 {
     self.appkey = DEF_APPKEY;
 #if DEBUG
-    self.apnsCertName = @"chatdemoui_dev";
+    self.apnsCertName = @"new_chatdemo_dev";
 #else
-    self.apnsCertName = @"chatdemoui";
+    self.apnsCertName = @"new_chatdemo";
 #endif
     self.usingHttpsOnly = NO;
     self.specifyServer = NO;
     self.chatServer = @"msync-im1.sandbox.easemob.com";
+    //self.chatServer = @"116.85.43.118";
     self.chatPort = 6717;
     self.restServer = @"a1.sdb.easemob.com";
+    //self.restServer = @"a1-hsb.easemob.com";
 }
 
 #pragma mark - Public
@@ -193,7 +222,6 @@ static EMDemoOptions *sharedOptions = nil;
     retOpt.apnsCertName = self.apnsCertName;
     retOpt.usingHttpsOnly = self.usingHttpsOnly;
 
-    retOpt.enableConsoleLog = NO;
     if (self.specifyServer) {
         retOpt.enableDnsConfig = NO;
         retOpt.chatPort = self.chatPort;

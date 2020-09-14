@@ -5,13 +5,13 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'EMiOSDemo' do
 
-    pod 'Bugly'
     pod 'Masonry'
     pod 'MJRefresh'
     pod 'MBProgressHUD', '~> 1.1.0'
     pod 'SDWebImage', '~> 4.0'
     pod 'SDWebImage/GIF'
     pod 'FLAnimatedImage', '~> 1.0'
-    pod 'Hyphenate', '~> 3.6.6'
+    pod 'Hyphenate', '~> 3.7.0'
 
 end
+

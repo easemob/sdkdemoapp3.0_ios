@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EMMsgImageBubbleView.h"
+#import "EMMessageBubbleView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMMsgPicMixTextBubbleView : EMMsgImageBubbleView
+@interface EMMsgPicMixTextBubbleView : EMMessageBubbleView
 
 @property (nonatomic, strong) UILabel *textLabel;
 

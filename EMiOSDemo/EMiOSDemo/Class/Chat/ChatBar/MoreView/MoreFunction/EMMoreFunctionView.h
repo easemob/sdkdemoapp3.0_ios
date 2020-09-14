@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EMReadReceiptMsgViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol EMMoreFunctionViewDelegate;
@@ -15,15 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<EMMoreFunctionViewDelegate> delegate;
 
+- (instancetype)initWithConversation:(EMConversation *)conversation;
+
 @end
 
 @protocol EMMoreFunctionViewDelegate <NSObject>
 
-- (void)chatBarMoreFunctionReadReceipt;//阅读回执
+@optional
 
-- (void)chatBarMoreFunctionLocation;//位置
+- (void)chatBarMoreFunctionReadReceipt;//群组阅读回执
 
-- (void)chatBarMoreFunctionDidCallAction;//视频通话
+- (void)chatBarMoreFunctionAction:(NSInteger)componentType;
 
 @end
 

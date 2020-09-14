@@ -108,6 +108,8 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.tableFooterView = self.defaultFooterView;
+        _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
     }
     
     return _tableView;

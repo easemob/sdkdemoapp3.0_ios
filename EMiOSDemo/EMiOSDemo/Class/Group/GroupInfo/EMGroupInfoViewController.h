@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithGroupId:(NSString *)aGroupId;
 
+@property (nonatomic, copy) void (^clearRecordCompletion)(BOOL isClearRecord);
+
 @end
 
 NS_ASSUME_NONNULL_END

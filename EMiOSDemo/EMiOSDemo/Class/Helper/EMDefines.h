@@ -21,6 +21,14 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
 #define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
 
+//appkey
+#define DEF_APPKEY @"easemob-demo#chatdemoui"
+//#define DEF_APPKEY @"easemob-demo#testy"
+
+#define RTC_BUTTON_WIDTH 65
+#define RTC_BUTTON_HEIGHT 90
+#define RTC_BUTTON_PADDING ([UIScreen mainScreen].bounds.size.width - RTC_BUTTON_WIDTH * 3) / 3
+
 //会话
 #define CONVERSATION_STICK @"stick"
 #define CONVERSATION_ID @"convwesationId"
@@ -43,6 +51,13 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMCOMMUNICATE_TYPE_VOICE @"EMCommunicateTypeVoice"
 #define EMCOMMUNICATE_TYPE_VIDEO @"EMCommunicateTypeVideo"
 #define EMCOMMUNICATE_DURATION_TIME @"EMCommunicateDurationTime"
+
+//通话状态
+#define EMCOMMUNICATE_MISSED_CALL @"EMCommunicateMissedCall" //（通话取消）
+#define EMCOMMUNICATE_CALLER_MISSEDCALL @"EMCommunicateCallerMissedCall" //（主叫方取消通话）
+#define EMCOMMUNICATE_CALLED_MISSEDCALL @"EMCommunicateCalledMissedCall" //（被叫方拒绝接通）
+//发起邀请
+#define EMCOMMUNICATE_CALLINVITE @"EMCommunicateCallInvite" //（发起通话邀请）
 
 #define EMCOMMUNICATE_DICT_CALLEDPARTY @"EMCommunicateDictCalledParty"
 #define EMCOMMUNICATE_DICT_CALLINGPARTY @"EMCommunicateDictCallingParty"
@@ -98,6 +113,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define CALL_MODEL @"EMCallForModel"
 #define CALL_MAKECONFERENCE @"EMMakeConference"
 #define CALL_SELECTCONFERENCECELL @"EMSelectConferenceCell"
+#define CALL_INVITECONFERENCEVIEW @"EMInviteConverfenceView"
 
 //用户黑名单
 #define CONTACT_BLACKLIST_UPDATE @"EMContactBlacklistUpdate"
@@ -107,13 +123,13 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define GROUP_LIST_PUSHVIEWCONTROLLER @"EMPushGroupsViewController"
 #define GROUP_INFO_UPDATED @"EMGroupInfoUpdated"
 #define GROUP_SUBJECT_UPDATED @"EMGroupSubjectUpdated"
-#define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
 #define GROUP_INFO_REFRESH @"EMGroupInfoRefresh"
+#define GROUP_INFO_PUSHVIEWCONTROLLER @"EMPushGroupInfoViewController"
+#define GROUP_INFO_CLEARRECORD @"EMGroupInfoClearRecord"
 
 //聊天室
 #define CHATROOM_LIST_PUSHVIEWCONTROLLER @"EMPushChatroomsViewController"
 #define CHATROOM_INFO_UPDATED @"EMChatroomInfoUpdated"
 #define CHATROOM_INFO_PUSHVIEWCONTROLLER @"EMPushChatroomInfoViewController"
-
 
 #endif /* EMDefines_h */

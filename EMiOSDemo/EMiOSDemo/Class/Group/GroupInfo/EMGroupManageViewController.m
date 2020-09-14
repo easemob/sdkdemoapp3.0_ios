@@ -44,7 +44,7 @@
     [EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.groupId completion:^(EMGroup *aGroup, EMError *aError) {
         weakself.group = aGroup;
         [weakself _setupSubviews];
-        weakself.showRefreshHeader = YES;
+        weakself.showRefreshHeader = NO;
     }];
 }
 
@@ -54,6 +54,7 @@
     self.title = @"群管理";
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
 
+    self.tableView.scrollEnabled = NO;
     self.tableView.rowHeight = 60;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -143,10 +144,10 @@
     if (section == 0) {
         if (row == 0) {
             EMGroupBlacklistViewController *controller = [[EMGroupBlacklistViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         } else if (row == 1) {
             EMGroupMutesViewController *controller = [[EMGroupMutesViewController alloc] initWithGroup:self.group];
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.navigationController pushViewController:controller animated:NO];
         }
     }
 }
@@ -161,7 +162,7 @@
         weakself.groupOwnerTurnOverBtn.hidden = YES;
         [weakself.navigationController popViewControllerAnimated:YES];
     }];
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:NO];
 }
 
 @end

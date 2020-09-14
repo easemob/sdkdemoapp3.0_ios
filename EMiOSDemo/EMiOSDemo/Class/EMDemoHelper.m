@@ -18,6 +18,9 @@
 #import "EMChatroomsViewController.h"
 #import "EMChatroomInfoViewController.h"
 #import "EMRemindManager.h"
+#import "EMSingleChatViewController.h"
+#import "EMGroupChatViewController.h"
+#import "EMChatroomViewController.h"
 
 static EMDemoHelper *helper = nil;
 @implementation EMDemoHelper
@@ -64,9 +67,9 @@ static EMDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushNotificationController:) name:NOTIF_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatController:) name:CHAT_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupsController:) name:GROUP_LIST_PUSHVIEWCONTROLLER object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupInfoController:) name:GROUP_INFO_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomsController:) name:CHATROOM_LIST_PUSHVIEWCONTROLLER object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushChatroomInfoController:) name:CHATROOM_INFO_PUSHVIEWCONTROLLER object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePushGroupInfoController:) name:GROUP_INFO_PUSHVIEWCONTROLLER object:nil];
 }
 
 #pragma mark - EMClientDelegate
@@ -147,6 +150,8 @@ static EMDemoHelper *helper = nil;
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
     for (EMMessage *msg in aMessages) {
+        if (msg.body.type == EMMessageBodyTypeText && [((EMTextMessageBody *)msg.body).text isEqualToString:EMCOMMUNICATE_CALLINVITE]) //通话邀请
+            continue;
         [EMRemindManager remindMessage:msg];
     }
 }
@@ -158,9 +163,9 @@ static EMDemoHelper *helper = nil;
 {
     NSString *str = nil;
     if (aReason == EMGroupLeaveReasonBeRemoved) {
-        str = [NSString stringWithFormat:@"你被踢出群组: %@ [%@]", aGroup.subject, aGroup.groupId];
+        str = [NSString stringWithFormat:@"你被踢出群组: %@ [%@]", aGroup.groupName, aGroup.groupId];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
-        str = [NSString stringWithFormat:@"群组被解散: %@ [%@]", aGroup.subject, aGroup.groupId];
+        str = [NSString stringWithFormat:@"群组被解散: %@ [%@]", aGroup.groupName, aGroup.groupId];
     }
     
     if (str.length > 0) {
@@ -177,13 +182,13 @@ static EMDemoHelper *helper = nil;
 //    }
 //
 //    if (!aReason || aReason.length == 0) {
-//        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aApplicant, aGroup.subject];
+//        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aApplicant, aGroup.groupName];
 //    }
 //    else{
-//        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aApplicant, aGroup.subject, aReason];
+//        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aApplicant, aGroup.groupName, aReason];
 //    }
 //
-//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aGroup.subject, @"groupId":aGroup.groupId, @"username":aApplicant, @"groupname":aGroup.subject, @"applyMessage":aReason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"title":aGroup.groupName, @"groupId":aGroup.groupId, @"username":aApplicant, @"groupname":aGroup.groupName, @"applyMessage":aReason, @"applyStyle":[NSNumber numberWithInteger:ApplyStyleJoinGroup]}];
 //    [[ApplyViewController shareController] addNewApply:dic];
 //    if (gMainController) {
 //        [gMainController setupUntreatedApplyCount];
@@ -201,7 +206,7 @@ static EMDemoHelper *helper = nil;
                inviter:(NSString *)aInviter
                message:(NSString *)aMessage
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:NSLocalizedString(@"group.inviteSomeone", nil), aInviter, aGroup.subject, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:[NSString stringWithFormat:NSLocalizedString(@"group.inviteSomeone", nil), aInviter, aGroup.groupName, aGroup.groupId] delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -209,7 +214,7 @@ static EMDemoHelper *helper = nil;
                           invitee:(NSString *)aInvitee
                            reason:(NSString *)aReason
 {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declinedInvite", nil), aInvitee, aGroup.subject];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declinedInvite", nil), aInvitee, aGroup.groupName];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -217,7 +222,7 @@ static EMDemoHelper *helper = nil;
 - (void)groupInvitationDidAccept:(EMGroup *)aGroup
                          invitee:(NSString *)aInvitee
 {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptedInvite", nil), aInvitee, aGroup.subject, aGroup.groupId];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptedInvite", nil), aInvitee, aGroup.groupName, aGroup.groupId];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -234,7 +239,7 @@ static EMDemoHelper *helper = nil;
 
 - (void)joinGroupRequestDidApprove:(EMGroup *)aGroup
 {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.groupName];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -326,7 +331,7 @@ static EMDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.join", @"Join the group"), aGroup.subject];
+    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.join", @"Join the group"), aGroup.groupName];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.membersUpdate", @"Group Members Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -336,7 +341,7 @@ static EMDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.leave", @"Leave group"), aGroup.subject];
+    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@", aUsername, NSLocalizedString(@"group.leave", @"Leave group"), aGroup.groupName];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.membersUpdate", @"Group Members Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -346,7 +351,7 @@ static EMDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
     
-    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"group.clearAnnouncement", @"Group:%@ Announcement is clear"), aGroup.subject] : [NSString stringWithFormat:NSLocalizedString(@"group.updateAnnouncement", @"Group:%@ Announcement: %@"), aGroup.subject, aAnnouncement];
+    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"group.clearAnnouncement", @"Group:%@ Announcement is clear"), aGroup.groupName] : [NSString stringWithFormat:NSLocalizedString(@"group.updateAnnouncement", @"Group:%@ Announcement: %@"), aGroup.groupName, aAnnouncement];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -356,7 +361,7 @@ static EMDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupSharedFile" object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.uploadSharedFile", @"Group:%@ Upload file ID: %@"), aGroup.subject, aSharedFile.fileId];
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.uploadSharedFile", @"Group:%@ Upload file ID: %@"), aGroup.groupName, aSharedFile.fileId];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.sharedFileUpdate", @"Group SharedFile Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -366,7 +371,7 @@ static EMDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupSharedFile" object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.removeSharedFile", @"Group:%@ Remove file ID: %@"), aGroup.subject, aFileId];
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.removeSharedFile", @"Group:%@ Remove file ID: %@"), aGroup.groupName, aFileId];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.sharedFileUpdate", @"Group SharedFile Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -433,7 +438,7 @@ static EMDemoHelper *helper = nil;
     }
     
     if (model) {
-        EMChatViewController *controller = [[EMChatViewController alloc] initWithCoversationModel:model];
+        EMChatViewController *controller = [self getChatControllerWithConversationModel:model];
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = window.rootViewController;
         if ([rootViewController isKindOfClass:[UINavigationController class]]) {
@@ -453,23 +458,6 @@ static EMDemoHelper *helper = nil;
     }
     
     EMGroupsViewController *controller = [[EMGroupsViewController alloc] init];
-    [navController pushViewController:controller animated:NO];
-}
-
-- (void)handlePushGroupInfoController:(NSNotification *)aNotif
-{
-    NSDictionary *dic = aNotif.object;
-    if ([dic count] == 0) {
-        return;
-    }
-    
-    NSString *groupId = [dic objectForKey:NOTIF_ID];
-    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
-
-    EMGroupInfoViewController *controller = [[EMGroupInfoViewController alloc] initWithGroupId:groupId];
-    [controller setLeaveOrDestroyCompletion:^{
-        [navController popViewControllerAnimated:YES];
-    }];
     [navController pushViewController:controller animated:NO];
 }
 
@@ -503,5 +491,40 @@ static EMDemoHelper *helper = nil;
     [navController pushViewController:controller animated:NO];
 }
 
+- (void)handlePushGroupInfoController:(NSNotification *)aNotif
+{
+    NSDictionary *dic = aNotif.object;
+    if ([dic count] == 0) {
+        return;
+    }
+    
+    NSString *groupId = [dic objectForKey:NOTIF_ID];
+    UINavigationController *navController = [dic objectForKey:NOTIF_NAVICONTROLLER];
+    
+    EMGroupInfoViewController *groupInfocontroller = [[EMGroupInfoViewController alloc] initWithGroupId:groupId];
+    [groupInfocontroller setLeaveOrDestroyCompletion:^{
+        [navController popViewControllerAnimated:YES];
+    }];
+    [groupInfocontroller setClearRecordCompletion:^(BOOL isClearRecord) {
+        if (isClearRecord) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GROUP_INFO_CLEARRECORD object:nil];
+        }
+    }];
+    [navController pushViewController:groupInfocontroller animated:NO];
+}
+
+#pragma mark - EMChatviewControllerFactory
+
+- (EMChatViewController * _Nonnull)getChatControllerWithConversationModel:(EMConversationModel *)model
+{
+    if (model.emModel.type == EMConversationTypeChat)
+        return [[EMSingleChatViewController alloc]initWithCoversationModel:model];
+    if (model.emModel.type == EMConversationTypeGroupChat)
+        return [[EMGroupChatViewController alloc]initWithCoversationModel:model];
+    if (model.emModel.type == EMConversationTypeChatRoom)
+        return [[EMChatroomViewController alloc]initWithCoversationModel:model];
+    
+    return [[EMChatViewController alloc]initWithCoversationModel:model];
+}
 
 @end

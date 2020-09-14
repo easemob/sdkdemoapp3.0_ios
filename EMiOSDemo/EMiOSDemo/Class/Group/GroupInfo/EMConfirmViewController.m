@@ -56,13 +56,12 @@
     [confirmView addSubview:content];
     [content mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(confirmView).offset(20);
-        make.left.equalTo(confirmView).offset(32);
-        make.right.equalTo(confirmView).offset(-32);
+        make.left.right.equalTo(confirmView);
         make.height.equalTo(@28);
     }];
     
     UIView *memberView = [[UIView alloc]init];
-    memberView.backgroundColor = [UIColor lightGrayColor];
+    memberView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
     [confirmView addSubview:memberView];
     [memberView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(content.mas_bottom).offset(20);

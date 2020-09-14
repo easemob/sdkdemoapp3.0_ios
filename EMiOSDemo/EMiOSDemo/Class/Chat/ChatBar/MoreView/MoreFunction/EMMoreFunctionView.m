@@ -11,25 +11,35 @@
 
 @interface EMMoreFunctionView()<UICollectionViewDataSource,SessionToolbarCellDelegate>
 {
-    NSArray *_toolbarImgArray;
-    NSArray *_toolbarDescArray;
+    NSMutableArray *_toolbarImgArray;
+    NSMutableArray *_toolbarDescArray;
 }
 
-@property (nonatomic,strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UICollectionView *collectionView;
+
+@property (nonatomic, strong) EMConversation *conversation;
 
 @end
 
 @implementation EMMoreFunctionView
 
-- (instancetype)init
+- (instancetype)initWithConversation:(EMConversation *)conversation
 {
     self = [super init];
     if(self){
-        _toolbarImgArray = @[@"video_conf",@"location",@"pin_readReceipt"];
-        _toolbarDescArray = @[@"视频通话",@"位置",@"群组回执"];
+        _conversation = conversation;
+        //_toolbarImgArray = @[@"video_conf",@"location",@"pin_readReceipt",@"icloudFile",@"camera",@"photo-album"];
+        //_toolbarDescArray = @[@"视频通话",@"位置",@"群组回执",@"文件",@"相机",@"相册"];
+        _toolbarImgArray = [NSMutableArray arrayWithArray:@[@"photo-album",@"camera",@"video_conf",@"location",@"icloudFile"]];
+        _toolbarDescArray = [NSMutableArray arrayWithArray:@[@"相册",@"相机",@"音视频",@"位置",@"文件"]];
+        if (_conversation.type == EMConversationTypeGroupChat) {
+            if ([[EMClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:_conversation.conversationId error:nil].owner isEqualToString:EMClient.sharedClient.currentUsername]) {
+                [_toolbarImgArray addObject:@"pin_readReceipt"];
+                [_toolbarDescArray addObject:@"群组回执"];
+            }
+        }
         self.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
         [self _setupUI];
-        
     }
     
     return self;
@@ -60,8 +70,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SessionToolbarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    NSInteger row = indexPath.row;
-    [cell personalizeToolbar:_toolbarImgArray[row] funcDesc:_toolbarDescArray[row] tag:row];
+    NSInteger row = indexPath.row;;
+    [cell personalizeToolbar:(NSString *)[_toolbarImgArray objectAtIndex:row] funcDesc:[_toolbarDescArray objectAtIndex:row] tag:row];
     cell.delegate = self;
     return cell;
 }
@@ -70,22 +80,15 @@
 
 - (void)toolbarCellDidSelected:(NSInteger)tag
 {
-    if (tag == 0) {
-        //视频通话
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)]) {
-            [self.delegate chatBarMoreFunctionDidCallAction];
-        }
-    } else if (tag == 1) {
-        //位置
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionLocation)]) {
-            [self.delegate chatBarMoreFunctionLocation];
-        }
-    } else if (tag == 2) {
+    if (tag == 5) {
         //群组回执
-        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionReadReceipt)])
             [self.delegate chatBarMoreFunctionReadReceipt];
-        }
+        return;
     }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBarMoreFunctionAction:)])
+        [self.delegate chatBarMoreFunctionAction:tag];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EMAvatarNameModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,7 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UILabel *detailLabel;
 
+@property (nonatomic, strong) UILabel *timestampLabel;
+
 @property (nonatomic, strong) UIButton *accessoryButton;
+
+@property (nonatomic, strong) EMAvatarNameModel *model;
 
 @end
 

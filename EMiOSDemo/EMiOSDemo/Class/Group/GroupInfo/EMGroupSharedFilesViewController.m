@@ -12,12 +12,16 @@
 #import "EMGroupSharedFilesViewController.h"
 
 #import "EMAvatarNameCell.h"
+#import "EMDateHelper.h"
+#import "PellTableViewSelect.h"
 
-@interface EMGroupSharedFilesViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMGroupManagerDelegate>
+@interface EMGroupSharedFilesViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMGroupManagerDelegate, UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong) EMGroup *group;
 
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -27,6 +31,8 @@
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        self.dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
         self.group = aGroup;
     }
     
@@ -55,7 +61,7 @@
 - (void)_setupSubviews
 {
     [self addPopBackLeftItem];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"上传" style:UIBarButtonItemStylePlain target:self action:@selector(uploadFileAction)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"上传" style:UIBarButtonItemStylePlain target:self action:@selector(moreAction)];
     self.title = @"共享文件";
     self.showRefreshHeader = YES;
     
@@ -87,13 +93,16 @@
     }
     
     EMGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
-    cell.avatarView.image = [UIImage imageNamed:@"file"];
+    cell.avatarView.image = [UIImage imageNamed:@"groupSharedFile"];
     if (file.fileName.length > 0) {
         cell.nameLabel.text = file.fileName;
     } else {
         cell.nameLabel.text = file.fileId;
     }
-    cell.detailLabel.text = [NSString stringWithFormat:@"%.2lf MB",(float)file.fileSize / (1024 * 1024)];
+    
+    NSString *fileCreateTime = [_dateFormatter stringFromDate:[EMDateHelper dateWithTimeIntervalInMilliSecondSince1970:file.createTime]];
+    NSString *fileOwner = [file.fileOwner length] <= 10 ? file.fileOwner : [NSString stringWithFormat:@"%@...",[file.fileOwner substringWithRange:NSMakeRange(0, 10)]];
+    cell.detailLabel.text = [NSString stringWithFormat:@"%@ 来自 %@ %.2lf MB",fileCreateTime,fileOwner,(float)file.fileSize / (1024 * 1024)];
     
     return cell;
 }
@@ -150,41 +159,58 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSURL *url = info[UIImagePickerControllerReferenceURL];
-    if (url == nil) {
-        UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
-        NSData *data = UIImageJPEGRepresentation(orgImage, 1.0f);
-        [self _uploadFileData:data fileName:nil];
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
+        NSURL *videoURL = info[UIImagePickerControllerMediaURL];
+        // we will convert it to mp4 format
+        NSURL *mp4 = [self _videoConvert2Mp4:videoURL];
+        NSFileManager *fileman = [NSFileManager defaultManager];
+        if ([fileman fileExistsAtPath:videoURL.path]) {
+            NSError *error = nil;
+            [fileman removeItemAtURL:videoURL error:&error];
+            if (error) {
+                NSLog(@"failed to remove file, error:%@.", error);
+            }
+        }
+        [self uploadAction:[mp4 path]];
     } else {
-        if ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0f) {
-            PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
-            [result enumerateObjectsUsingBlock:^(PHAsset *asset , NSUInteger idx, BOOL *stop) {
-                if (asset) {
-                    [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *data, NSString *uti, UIImageOrientation orientation, NSDictionary *dic){
-                        if (data != nil) {
-                            NSURL *path = [dic objectForKey:@"PHImageFileURLKey"];
-                            NSString *fileName = nil;
-                            if (path) {
-                                fileName = [[path absoluteString] lastPathComponent];
-                            }
-                            [self _uploadFileData:data fileName:fileName];
-                        }
-                    }];
-                }
-            }];
+        NSURL *url = info[UIImagePickerControllerReferenceURL];
+        if (url == nil) {
+            UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
+            NSData *data = UIImageJPEGRepresentation(orgImage, 1);
+            [self _uploadFileData:data fileName:nil];
         } else {
-            ALAssetsLibrary *alasset = [[ALAssetsLibrary alloc] init];
-            [alasset assetForURL:url resultBlock:^(ALAsset *asset) {
-                if (asset) {
-                    ALAssetRepresentation* assetRepresentation = [asset defaultRepresentation];
-                    Byte* buffer = (Byte*)malloc((size_t)[assetRepresentation size]);
-                    NSUInteger bufferSize = [assetRepresentation getBytes:buffer fromOffset:0.0 length:(NSUInteger)[assetRepresentation size] error:nil];
-                    NSData* data = [NSData dataWithBytesNoCopy:buffer length:bufferSize freeWhenDone:YES];
-                    [self _uploadFileData:data fileName:nil];
-                }
-            } failureBlock:nil];
+            if ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0f) {
+                PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
+                [result enumerateObjectsUsingBlock:^(PHAsset *asset , NSUInteger idx, BOOL *stop) {
+                    if (asset) {
+                        [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *data, NSString *uti, UIImageOrientation orientation, NSDictionary *dic){
+                            if (data != nil) {
+                                NSURL *path = [dic objectForKey:@"PHImageFileURLKey"];
+                                NSString *fileName = nil;
+                                if (path) {
+                                    fileName = [[path absoluteString] lastPathComponent];
+                                }
+                                [self _uploadFileData:data fileName:fileName];
+                            }
+                        }];
+                    }
+                }];
+            } else {
+                ALAssetsLibrary *alasset = [[ALAssetsLibrary alloc] init];
+                [alasset assetForURL:url resultBlock:^(ALAsset *asset) {
+                    if (asset) {
+                        ALAssetRepresentation* assetRepresentation = [asset defaultRepresentation];
+                        Byte* buffer = (Byte*)malloc((size_t)[assetRepresentation size]);
+                        NSUInteger bufferSize = [assetRepresentation getBytes:buffer fromOffset:0.0 length:(NSUInteger)[assetRepresentation size] error:nil];
+                        NSData* data = [NSData dataWithBytesNoCopy:buffer length:bufferSize freeWhenDone:YES];
+                        [self _uploadFileData:data fileName:nil];
+                    }
+                } failureBlock:nil];
+            }
         }
     }
+    
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -231,6 +257,12 @@
     
     [aData writeToFile:filePath atomically:YES];
     
+    [self uploadAction:filePath];
+}
+
+//开始上传
+- (void)uploadAction:(NSString *)filePath
+{
     __weak typeof(self) weakself = self;
     [self showHudInView:self.view hint:@"上传共享文件..."];
     [[EMClient sharedClient].groupManager uploadGroupSharedFileWithId:self.group.groupId filePath:filePath progress:^(int progress){
@@ -269,6 +301,61 @@
     UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
     controller.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail, UIActivityTypeSaveToCameraRoll, UIActivityTypeAirDrop];
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (NSURL *)_videoConvert2Mp4:(NSURL *)movUrl
+{
+    NSURL *mp4Url = nil;
+    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:movUrl options:nil];
+    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+    
+    if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset presetName:AVAssetExportPresetHighestQuality];
+        NSString *mp4Path = [NSString stringWithFormat:@"%@/%d%d.mp4", [self _getAudioOrVideoPath], (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
+        mp4Url = [NSURL fileURLWithPath:mp4Path];
+        exportSession.outputURL = mp4Url;
+        exportSession.shouldOptimizeForNetworkUse = YES;
+        exportSession.outputFileType = AVFileTypeMPEG4;
+        dispatch_semaphore_t wait = dispatch_semaphore_create(0l);
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            switch ([exportSession status]) {
+                case AVAssetExportSessionStatusFailed: {
+                    NSLog(@"failed, error:%@.", exportSession.error);
+                } break;
+                case AVAssetExportSessionStatusCancelled: {
+                    NSLog(@"cancelled.");
+                } break;
+                case AVAssetExportSessionStatusCompleted: {
+                    NSLog(@"completed.");
+                } break;
+                default: {
+                    NSLog(@"others.");
+                } break;
+            }
+            dispatch_semaphore_signal(wait);
+        }];
+        long timeout = dispatch_semaphore_wait(wait, DISPATCH_TIME_FOREVER);
+        if (timeout) {
+            NSLog(@"timeout.");
+        }
+        
+        if (wait) {
+            //dispatch_release(wait);
+            wait = nil;
+        }
+    }
+    
+    return mp4Url;
+}
+
+- (NSString *)_getAudioOrVideoPath
+{
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    path = [path stringByAppendingPathComponent:@"groupShareRecord"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return path;
 }
 
 #pragma mark - Data
@@ -328,7 +415,21 @@
 
 #pragma mark - Action
 
-- (void)uploadFileAction
+- (void)moreAction
+{
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-150, 44, 145, 156) selectData:@[@"上传图片",@"上传视频",@"上传文件"] images:@[@"icon-创建群组",@"icon-添加好友",@"icon-添加好友"] locationY:0 action:^(NSInteger index){
+        if(index == 0) {
+            [self uploadMediaAction:0];
+        } else if (index == 1) {
+            [self uploadMediaAction:1];
+        } else if (index == 2) {
+            [self uploadFileAction];
+        }
+    } animated:YES];
+}
+
+//上传图片/视频
+- (void)uploadMediaAction:(NSInteger)tag
 {
     if (_imagePicker == nil) {
         _imagePicker = [[UIImagePickerController alloc] init];
@@ -337,8 +438,68 @@
     }
     
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    if (tag == 0) {
+        self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    } else {
+        self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
+    }
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
+}
+
+//上传文件（icloud driver文件）
+- (void)uploadFileAction
+{
+    NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code", @"public.image", @"public.jpeg", @"public.png", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
+    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
+    picker.delegate = self;
+    picker.modalPresentationStyle = 0;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+#pragma mark - UIDocumentPickerDelegate
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
+{
+    BOOL fileAuthorized = [urls.firstObject startAccessingSecurityScopedResource];
+    if (fileAuthorized) {
+        //[self selectedDocumentAtURLs:urls reName:nil];
+        [urls.firstObject stopAccessingSecurityScopedResource];
+    } else {
+        [self showHint:@"授权失败!"];
+    }
+}
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller
+{
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url
+{
+    BOOL fileAuthorized = [url startAccessingSecurityScopedResource];
+    if (fileAuthorized) {
+        [self selectedDocumentAtURLs:url reName:nil];
+        [url stopAccessingSecurityScopedResource];
+    } else {
+        [self showHint:@"授权失败!"];
+    }
+}
+
+//icloud
+- (void)selectedDocumentAtURLs:(NSURL *)url reName:(NSString *)rename
+{
+    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc]init];
+    NSError *error;
+    [fileCoordinator coordinateReadingItemAtURL:url options:0 error:&error byAccessor:^(NSURL * _Nonnull newURL) {
+        //读取文件
+        NSString *fileName = [newURL lastPathComponent];
+        NSError *error = nil;
+        NSData *fileData = [NSData dataWithContentsOfURL:newURL options:NSDataReadingMappedIfSafe error:&error];
+        if (error) {
+            [self showHint:@"文件读取失败!"];;
+        }else {
+            NSLog(@"fileName: %@\nfileUrl: %@", fileName, newURL);
+            [self _uploadFileData:fileData fileName:fileName];
+        };
+    }];
 }
 
 @end

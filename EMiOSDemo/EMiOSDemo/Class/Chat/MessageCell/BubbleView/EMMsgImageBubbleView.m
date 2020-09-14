@@ -34,7 +34,7 @@
 
 - (CGSize)_getImageSize:(CGSize)aSize
 {
-    CGSize retSize = CGSizeMake(kEMMsgImageDefaultSize, kEMMsgImageDefaultSize);
+    CGSize retSize = CGSizeZero;
     do {
         if (aSize.width == 0 || aSize.height == 0) {
             break;
@@ -52,9 +52,7 @@
         if (tmpHeight > kEMMsgImageMaxHeight) {
             tmpHeight = kEMMsgImageMaxHeight;
         }
-        
-        retSize.width = tmpWidth;
-        retSize.height = tmpHeight;
+        retSize = CGSizeMake(tmpWidth, tmpHeight);
         
     } while (0);
     
@@ -81,27 +79,22 @@
     };
     
     CGSize size = aThumbSize;
-    if (aThumbSize.width == 0 || aThumbSize.height == 0) {
+    if (aThumbSize.width == 0 || aThumbSize.height == 0) 
         size = aSize;
-    }
     
     if (img) {
         self.image = img;
         size = img.size;
+        block(size);
     } else {
+        block(size);
         BOOL isAutoDownloadThumbnail = ([EMClient sharedClient].options.isAutoDownloadThumbnail);
         if (isAutoDownloadThumbnail) {
-            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                //            if (error) {
-                //                self.image = [UIImage imageNamed:@"msg_img_broken"];
-                //            }
-            }];
+            [self sd_setImageWithURL:[NSURL URLWithString:aRemotePath] placeholderImage:[UIImage imageNamed:@"msg_img_broken"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {}];
         } else {
             self.image = [UIImage imageNamed:@"msg_img_broken"];
         }
     }
-    
-    block(size);
 }
 
 #pragma mark - Setter
@@ -114,7 +107,6 @@
         NSString *imgPath = body.thumbnailLocalPath;
         if ([imgPath length] == 0 && model.direction == EMMessageDirectionSend) {
             imgPath = body.localPath;
-            body.thumbnailLocalPath = imgPath;
         }
         [self setThumbnailImageWithLocalPath:imgPath remotePath:body.thumbnailRemotePath thumbImgSize:body.thumbnailSize imgSize:body.size];
     }

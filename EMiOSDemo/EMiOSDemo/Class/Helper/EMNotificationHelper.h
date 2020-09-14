@@ -59,6 +59,8 @@ typedef NS_ENUM(NSInteger, EMNotificationModelType) {
 
 + (instancetype)shared;
 
++ (void)destoryShared;
+
 - (void)addDelegate:(id<EMNotificationsDelegate>)aDelegate;
 
 - (void)removeDelegate:(id<EMNotificationsDelegate>)aDelegate;
