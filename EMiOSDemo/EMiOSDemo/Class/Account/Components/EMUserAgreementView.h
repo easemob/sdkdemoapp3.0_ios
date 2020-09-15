@@ -15,13 +15,22 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  用户协议组件
 */
+
+@protocol EMUserProtocol <NSObject>
+
+- (void)didTapUserProtocol:(NSString *)protocolUrl sign:(NSString *)sign;
+
+@end
+
 @interface EMUserAgreementView : UIView
+
+@property (nonatomic, weak) id<EMUserProtocol> delegate;
 
 - (instancetype)initUserAgreement;
 
 @property (assign) CGFloat protocolTextHeight;//文本高度
 
-@property (nonatomic, strong) UIButton *userAgreementBtn;//已阅读并同意用户协议按钮
+@property (nonatomic, strong) UIButton *userAgreementBtn;//同意用户协议按钮
 
 @end
 

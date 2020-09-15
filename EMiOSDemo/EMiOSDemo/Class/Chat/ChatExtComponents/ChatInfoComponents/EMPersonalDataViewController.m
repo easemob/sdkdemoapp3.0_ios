@@ -189,7 +189,7 @@
 //黑名单view
 - (void)addBlackListView
 {
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-140, self.navigationController.navigationBar.frame.size.height + 24, 125, 52) selectData:@[@"加入黑名单"] images:@[@""] locationY:60 action:^(NSInteger index){
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-140, self.navigationController.navigationBar.frame.size.height + 30, 125, 52) selectData:@[@"加入黑名单"] images:@[@""] locationY:30 + EMVIEWTOPMARGIN action:^(NSInteger index){
         if(index == 0) {
             [self addContactToBlackList];
         }

@@ -62,7 +62,7 @@
 
 - (void)_setupSubviews
 {
-    self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1.0];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = @"我";
@@ -71,19 +71,22 @@
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).offset(35);
+        make.top.equalTo(self.view).offset(EMVIEWTOPMARGIN + 35);
         make.height.equalTo(@25);
     }];
     
     self.userCell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMAvatarNameCell"];
     self.userCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.userCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.userCell.accessoryType = UITableViewCellAccessoryNone;
     self.userCell.nameLabel.font = [UIFont systemFontOfSize:18];
     self.userCell.detailLabel.font = [UIFont systemFontOfSize:15];
     self.userCell.detailLabel.textColor = [UIColor grayColor];
     self.userCell.avatarView.image = [UIImage imageNamed:@"defaultAvatar"];
     self.userCell.nameLabel.text = [EMClient sharedClient].currentUsername;
     self.userCell.detailLabel.text = [EMClient sharedClient].pushOptions.displayName;
+    [self.userCell.avatarView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.userCell.contentView.mas_left).offset(28);
+    }];
     
     self.tableView.backgroundColor = kColor_LightGray;
     self.tableView.delegate = self;
@@ -220,7 +223,7 @@
             count = 1;
             break;
         case 1:
-            count = 4;
+            count = 3;
             break;
         default:
             break;
@@ -261,13 +264,13 @@
         if (row == 0) {
             imgView.image = [UIImage imageNamed:@"settings"];
             cell.textLabel.text = @"设置";
-        } else if (row == 1){
+        } else if (row == 3){
             imgView.image = [UIImage imageNamed:@"opinionFeedback"];
             cell.textLabel.text = @"意见反馈";
-        } else if (row == 2) {
+        } else if (row == 1) {
             imgView.image = [UIImage imageNamed:@"aboutHX"];
             cell.textLabel.text = @"关于环信IM";
-        } else if (row == 3) {
+        } else if (row == 2) {
             imgView.image = [UIImage imageNamed:@"developerService"];
             cell.textLabel.text = @"开发者服务";
         }
@@ -313,13 +316,13 @@
         if (row == 0) {
             EMSettingsViewController *settingsController = [[EMSettingsViewController alloc]init];
             [self.navigationController pushViewController:settingsController animated:NO];
-        } else if (row == 1) {
+        } else if (row == 3) {
             EMOpinionFeedbackViewController *opinionController = [[EMOpinionFeedbackViewController alloc]init];
             [self.navigationController pushViewController:opinionController animated:NO];
-        } else if (row == 2) {
+        } else if (row == 1) {
             EMAboutHuanXinViewController *aboutHuanXin = [[EMAboutHuanXinViewController alloc]init];
             [self.navigationController pushViewController:aboutHuanXin animated:NO];
-        } else if (row == 3) {
+        } else if (row == 2) {
             EMDeveloperServiceViewController *developerServiceController = [[EMDeveloperServiceViewController alloc]init];
             [self.navigationController pushViewController:developerServiceController animated:NO];
         }

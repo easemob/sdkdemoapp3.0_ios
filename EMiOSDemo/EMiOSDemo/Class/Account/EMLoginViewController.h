@@ -1,8 +1,8 @@
 //
 //  EMLoginViewController.h
-//  ChatDemo-UI3.0
+//  EMiOSDemo
 //
-//  Created by XieYajie on 2018/12/11.
+//  Update by zhangchong on 2020/8/1.
 //  Copyright © 2018 XieYajie. All rights reserved.
 //
 

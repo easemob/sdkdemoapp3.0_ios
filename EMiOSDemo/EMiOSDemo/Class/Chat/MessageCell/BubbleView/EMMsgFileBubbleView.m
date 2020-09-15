@@ -46,6 +46,19 @@
         make.top.equalTo(self.textLabel.mas_bottom).offset(16);
         make.bottom.equalTo(self).offset(-10);
         make.left.equalTo(self.textLabel);
+        make.right.equalTo(self.mas_centerX);
+    }];
+    
+    self.downloadStatusLabel = [[UILabel alloc] init];
+    self.downloadStatusLabel.font = [UIFont systemFontOfSize:10];
+    self.downloadStatusLabel.numberOfLines = 0;
+    self.downloadStatusLabel.textAlignment = NSTextAlignmentRight;
+    self.downloadStatusLabel.textColor = [UIColor colorWithRed:173/255.0 green:173/255.0 blue:173/255.0 alpha:1.0];
+    [self addSubview:self.downloadStatusLabel];
+    [self.downloadStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.textLabel.mas_bottom).offset(16);
+        make.bottom.equalTo(self).offset(-10);
+        make.left.equalTo(self.mas_centerX);
         make.right.equalTo(self.textLabel);
     }];
     
@@ -103,6 +116,12 @@
         self.textLabel.attributedText = attributedStr;
         self.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         self.detailLabel.text = [NSString stringWithFormat:@"%.2lf MB",(float)body.fileLength / (1024 * 1024)];
+        
+        if (self.direction == EMMessageDirectionReceive && body.downloadStatus == EMDownloadStatusSucceed) {
+            self.downloadStatusLabel.text = @"已下载";
+        } else {
+            self.downloadStatusLabel.text = @"";
+        }
     }
 }
 

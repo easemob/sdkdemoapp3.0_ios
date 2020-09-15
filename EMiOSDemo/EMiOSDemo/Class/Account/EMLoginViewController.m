@@ -400,6 +400,7 @@
                 break;
         }
         [EMAlertController showErrorAlert:errorDes];
+        [self.authorizationView originalView];//恢复原始视图
         /*EMErrorAlertViewController *errorAlerController = [[EMErrorAlertViewController alloc]initWithErrorReason:errorDes];
         errorAlerController.modalPresentationStyle = 0;
         [self presentViewController:errorAlerController animated:NO completion:nil];

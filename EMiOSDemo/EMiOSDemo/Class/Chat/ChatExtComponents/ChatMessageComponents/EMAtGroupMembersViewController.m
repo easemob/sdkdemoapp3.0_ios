@@ -174,6 +174,7 @@
             
             weakself.group = aGroup;
             [weakself.dataArray removeAllObjects];
+            [weakself.dataArray addObject:aGroup.owner];
             [weakself.dataArray addObjectsFromArray:aGroup.adminList];
             fetchMembersBlock();
         }];

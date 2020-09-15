@@ -126,7 +126,7 @@
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).offset(35);
+        make.top.equalTo(self.view).offset(EMVIEWTOPMARGIN + 35);
         make.height.equalTo(@25);
     }];
     
@@ -196,7 +196,7 @@
 
 - (void)moreAction
 {
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-160, self.addImageBtn.frame.origin.y + 24, 145, 104) selectData:@[@"创建群组",@"添加好友"] images:@[@"icon-创建群组",@"icon-添加好友"] locationY:18 action:^(NSInteger index){
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-160, self.addImageBtn.frame.origin.y + 30, 145, 104) selectData:@[@"创建群组",@"添加好友"] images:@[@"icon-创建群组",@"icon-添加好友"] locationY:30 action:^(NSInteger index){
         if(index == 0) {
             [self createGroup];
         } else if (index == 1) {

@@ -21,8 +21,9 @@
 #import "EMRightViewToolView.h"
 #import "EMUserAgreementView.h"
 #import "EMAuthorizationView.h"
+#import "EMProtocolViewController.h"
 
-@interface EMRegisterViewController ()<UITextFieldDelegate>
+@interface EMRegisterViewController ()<UITextFieldDelegate, EMUserProtocol>
 
 @property (nonatomic, strong) UITextField *nameField;
 @property (nonatomic, strong) EMRightViewToolView *userIdRightView;
@@ -74,7 +75,7 @@
     [backButton addTarget:self action:@selector(backBackion) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
     [backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(44);
+        make.top.equalTo(self.view).offset(44 + EMVIEWTOPMARGIN);
         make.left.equalTo(self.view).offset(24);
         make.height.equalTo(@24);
         make.width.equalTo(@24);
@@ -171,6 +172,7 @@
     }];
     
     self.userAgreementView = [[EMUserAgreementView alloc]initUserAgreement];
+    self.userAgreementView.delegate = self;
     [self.userAgreementView.userAgreementBtn addTarget:self action:@selector(confirmProtocol) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_userAgreementView];
     [_userAgreementView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -270,6 +272,15 @@
         [self.authorizationView setupAuthBtnBgcolor:NO];
         self.isRegiste = false;
     }
+}
+
+#pragma mark - EMUserProtocol
+
+- (void)didTapUserProtocol:(NSString *)protocolUrl sign:(NSString *)sign
+{
+    EMProtocolViewController *protocolController = [[EMProtocolViewController alloc]initWithUrl:protocolUrl sign:sign];
+    protocolController.modalPresentationStyle = 0;
+    [self presentViewController:protocolController animated:NO completion:nil];
 }
 
 #pragma mark - Action

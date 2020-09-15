@@ -43,10 +43,10 @@
 //用户协议内容链接
 - (void)_setupLinkProtocol
 {
-    NSString *linkStr = @"阅读《环信服务条款》与《环信隐私协议》";
+    NSString *linkStr = @"同意《环信服务条款》与《环信隐私协议》";
     UIFont *linkFont = [UIFont systemFontOfSize:12.0];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:linkStr];
-    [attributedString addAttribute:NSLinkAttributeName value:@"serviceClouse://" range:[[attributedString string] rangeOfString:@"《环信服务条款》"]];
+    [attributedString addAttribute:NSLinkAttributeName value:@"serviceClause://" range:[[attributedString string] rangeOfString:@"《环信服务条款》"]];
     [attributedString addAttribute:NSLinkAttributeName value:@"privacyProtocol://" range:[[attributedString string] rangeOfString:@"《环信隐私协议》"]];
     NSDictionary *attriDict = @{NSFontAttributeName:linkFont};
     [attributedString addAttributes:attriDict range:NSMakeRange(0, attributedString.length)];
@@ -87,12 +87,22 @@
 #pragma mark - UITextViewDelegate
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-    if ([[URL scheme] isEqualToString:@"serviceClouse"]) 
+    if ([[URL scheme] isEqualToString:@"serviceClause"]) {
         //服务条款
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
-    if ([[URL scheme] isEqualToString:@"privacyProtocol"])
+        if (self.delegate && [self.delegate respondsToSelector:@selector(didTapUserProtocol:sign:)]) {
+            [self.delegate didTapUserProtocol:@"http://www.easemob.com" sign:@"serviceClause"];
+        }
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
+    }
+        
+    if ([[URL scheme] isEqualToString:@"privacyProtocol"]) {
         //隐私协议
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(didTapUserProtocol:sign:)]) {
+            [self.delegate didTapUserProtocol:@"http://www.easemob.com" sign:@"privacyProtocol"];
+        }
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
+    }
+        
     return NO;
 }
 

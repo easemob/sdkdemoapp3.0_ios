@@ -83,7 +83,7 @@
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).offset(35);
+        make.top.equalTo(self.view).offset(EMVIEWTOPMARGIN + 35);
         make.height.equalTo(@25);
     }];
     
@@ -517,7 +517,7 @@
 #pragma mark - moreAction
 - (void)addAction
 {
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 24, 110, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:18 action:^(NSInteger index) {
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-100, self.addImageBtn.frame.origin.y + 30, 110, 104) selectData:@[@"找人",@"找群"] images:@[@"icon-添加好友",@"icon-加群"] locationY:30 action:^(NSInteger index) {
         if(index == 0) {
             [self lookForSomeOne];
         } else if (index == 1) {

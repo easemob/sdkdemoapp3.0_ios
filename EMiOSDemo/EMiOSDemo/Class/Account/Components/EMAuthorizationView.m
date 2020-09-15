@@ -64,7 +64,7 @@
     
     self.arrowView = [[UIImageView alloc]init];
     self.arrowView.layer.cornerRadius = 21;
-    self.arrowView.image = [UIImage imageNamed:@"unableClick"];
+    //self.arrowView.image = [UIImage imageNamed:@"unableClick"];
     [self addSubview:self.arrowView];
     [self.arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@43);
@@ -87,7 +87,7 @@
 //加载视图
 - (void)beingLoadedView
 {
-    self.arrowView.image = [UIImage imageNamed:@""];
+    //self.arrowView.image = [UIImage imageNamed:@""];
     [self.arrowView addSubview:self.loadingView];
     [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(self.arrowView).offset(11.5);
@@ -109,7 +109,7 @@
         _authorizationBtn.alpha = 1;
         _authorizationLabel.alpha = 1;
         [_authorizationLabel setTextColor:[UIColor colorWithRed:244/255.0 green:244/255.0 blue:244/255.0 alpha:1.0]];
-        _arrowView.image = [UIImage imageNamed:@"enableClick"];
+        //_arrowView.image = [UIImage imageNamed:@"enableClick"];
         return;
     }
     [self.gl removeFromSuperlayer];
@@ -117,7 +117,7 @@
     _authorizationBtn.alpha = 0.3;
     _authorizationLabel.alpha = 0.3;
     [_authorizationLabel setTextColor:[UIColor whiteColor]];
-    _arrowView.image = [UIImage imageNamed:@"unableClick"];
+    //_arrowView.image = [UIImage imageNamed:@"unableClick"];
 }
 
 #pragma mark - Getter
