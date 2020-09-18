@@ -98,7 +98,7 @@
     if ([[URL scheme] isEqualToString:@"privacyProtocol"]) {
         //隐私协议
         if (self.delegate && [self.delegate respondsToSelector:@selector(didTapUserProtocol:sign:)]) {
-            [self.delegate didTapUserProtocol:@"http://www.easemob.com" sign:@"privacyProtocol"];
+            [self.delegate didTapUserProtocol:@"http://www.easemob.com/protocol" sign:@"privacyProtocol"];
         }
         //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com"] options:[[NSDictionary alloc]init] completionHandler:nil];
     }

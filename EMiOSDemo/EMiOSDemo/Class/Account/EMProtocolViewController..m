@@ -134,7 +134,7 @@
 - (NSDictionary *)protocolDict
 {
     if (!_protocolDict) {
-        _protocolDict = @{@"serviceClause":@"服务条款",@"privacyProtocol":@"隐私协议"};
+        _protocolDict = @{@"serviceClause":@"用户服务条款",@"privacyProtocol":@"用户隐私协议"};
     }
     return _protocolDict;
 }

@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Easemob IM</string>
+	<string>EaseIM</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

@@ -1590,9 +1590,9 @@
 		3C662629250B2C2200B88AD5 /* groupConversation3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupConversation3x.png; sourceTree = "<group>"; };
 		3C66262A250B2C2300B88AD5 /* groupConversation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupConversation.png; sourceTree = "<group>"; };
 		3C66262B250B2C2400B88AD5 /* groupConversation2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupConversation2x.png; sourceTree = "<group>"; };
-		3C662635250B5B1600B88AD5 /* defaultAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "defaultAvatar@2x.png"; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/appicon/默认头像_slices/defaultAvatar@2x.png"; sourceTree = "<group>"; };
-		3C662636250B5B1700B88AD5 /* defaultAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = defaultAvatar.png; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/appicon/默认头像_slices/defaultAvatar.png"; sourceTree = "<group>"; };
-		3C662637250B5B1700B88AD5 /* defaultAvatar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "defaultAvatar@3x.png"; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/appicon/默认头像_slices/defaultAvatar@3x.png"; sourceTree = "<group>"; };
+		3C662635250B5B1600B88AD5 /* defaultAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "defaultAvatar@2x.png"; sourceTree = "<group>"; };
+		3C662636250B5B1700B88AD5 /* defaultAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultAvatar.png; sourceTree = "<group>"; };
+		3C662637250B5B1700B88AD5 /* defaultAvatar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "defaultAvatar@3x.png"; sourceTree = "<group>"; };
 		3C72A1BC23E9107800F747B7 /* video-opposite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-opposite@3x.png"; sourceTree = "<group>"; };
 		3C72A1BE23E91E2F00F747B7 /* EMChatInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMChatInfoViewController.h; sourceTree = "<group>"; };
 		3C72A1BF23E91E2F00F747B7 /* EMChatInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMChatInfoViewController.m; sourceTree = "<group>"; };
@@ -4665,7 +4665,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
@@ -4750,7 +4750,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				EASEMOB_INC = "";
 				EASEMOB_LIB = "";

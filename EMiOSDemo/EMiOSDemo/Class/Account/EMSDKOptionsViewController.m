@@ -106,8 +106,8 @@
     [self.backButton addTarget:self action:@selector(backBackion) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.backButton];
     [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(40);
-        make.left.equalTo(self.view).offset(8);
+        make.top.equalTo(self.view).offset(44 + EMVIEWTOPMARGIN);
+        make.left.equalTo(self.view).offset(24);
         make.height.equalTo(@24);
         make.width.equalTo(@24);
     }];
@@ -122,7 +122,7 @@
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.backButton.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(8);
+        make.left.equalTo(self.view).offset(24);
         make.width.equalTo(@170);
         make.height.equalTo(@25);
     }];

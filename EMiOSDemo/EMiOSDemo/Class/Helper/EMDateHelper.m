@@ -107,7 +107,7 @@ static EMDateHelper *shared = nil;
 - (NSDateFormatter *)dfAAHM
 {
     if (_dfAAHM == nil) {
-        _dfAAHM = [self _getDateFormatterWithFormat:@"hh:mmAM"];
+        _dfAAHM = [self _getDateFormatterWithFormat:@"上午hh:mm"];
     }
     
     return _dfAAHM;
@@ -116,7 +116,7 @@ static EMDateHelper *shared = nil;
 - (NSDateFormatter *)dfPPHM
 {
     if (_dfPPHM == nil) {
-        _dfPPHM = [self _getDateFormatterWithFormat:@"hh:mmPM"];
+        _dfPPHM = [self _getDateFormatterWithFormat:@"下午hh:mm"];
     }
     
     return _dfPPHM;
