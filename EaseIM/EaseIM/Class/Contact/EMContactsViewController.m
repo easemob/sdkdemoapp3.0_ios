@@ -67,11 +67,6 @@
     [[EMClient sharedClient] removeMultiDevicesDelegate:self];
     [[EMClient sharedClient].contactManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    //联系人控制器
-    EMContactsViewController *contactController = [[EMContactsViewController alloc]init];
-    [self.navigationController pushViewController:contactController animated:YES];
-    
 }
 
 #pragma mark - Subviews
