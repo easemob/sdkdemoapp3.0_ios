@@ -74,7 +74,7 @@
         cell = [[EMAvatarNameCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCellOwner"];
         cell.delegate = self;
         
-        UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 35)];
+        UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 90, 35)];
         rightButton.clipsToBounds = YES;
         rightButton.backgroundColor = kColor_Blue;
         rightButton.titleLabel.font = [UIFont systemFontOfSize:16];

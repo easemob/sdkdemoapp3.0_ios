@@ -38,6 +38,10 @@
                 [_toolbarDescArray addObject:@"群组回执"];
             }
         }
+        if (_conversation.type == EMConversationTypeChatRoom) {
+            [_toolbarImgArray removeObject:@"video_conf"];
+            [_toolbarDescArray removeObject:@"音视频"];
+        }
         self.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
         [self _setupUI];
     }

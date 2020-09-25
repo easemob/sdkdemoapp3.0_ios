@@ -219,7 +219,7 @@
 {
     EMConversation *conversation = self.conversationModel.emModel;
     if (conversation.type == EMChatTypeGroupChat && [aGroup.groupId isEqualToString:conversation.conversationId]) {
-        [self.navigationController popToViewController:self animated:YES];
+        //[self.navigationController popToViewController:self animated:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

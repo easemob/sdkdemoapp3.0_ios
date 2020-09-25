@@ -181,16 +181,16 @@
 
 - (void)_deleteAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"删除管理员..."];
+    [self showHudInView:self.view hint:@"删除成员..."];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].roomManager removeMembers:@[aUsername] fromChatroom:self.chatroom.chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
         [weakself hideHud];
         if (aError) {
-            [EMAlertController showErrorAlert:@"删除管理员失败"];
+            [EMAlertController showErrorAlert:@"删除成员失败"];
         } else {
             weakself.isUpdated = YES;
-            [EMAlertController showSuccessAlert:@"删除管理员成功"];
+            [EMAlertController showSuccessAlert:@"删除成员成功"];
             [weakself.dataArray removeObject:aUsername];
             [weakself.tableView reloadData];
         }
@@ -217,7 +217,7 @@
 
 - (void)_muteAdmin:(NSString *)aUsername
 {
-    [self showHudInView:self.view hint:@"禁言管理员..."];
+    [self showHudInView:self.view hint:@"禁言成员..."];
     
     __weak typeof(self) weakself = self;
     [[EMClient sharedClient].roomManager muteMembers:@[aUsername] muteMilliseconds:-1 fromChatroom:self.chatroom.chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {

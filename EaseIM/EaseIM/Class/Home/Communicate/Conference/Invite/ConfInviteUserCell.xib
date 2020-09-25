@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFp-4j-u4W">
-                        <rect key="frame" x="71" y="0.0" width="204" height="60"/>
+                        <rect key="frame" x="71" y="0.0" width="184" height="60"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -30,9 +30,9 @@
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="uncheck.png" translatesAutoresizingMaskIntoConstraints="NO" id="DzB-3P-k4C">
-                        <rect key="frame" x="285" y="0.0" width="25" height="60"/>
+                        <rect key="frame" x="265" y="0.0" width="45" height="60"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="25" id="aM4-ur-Hkx"/>
+                            <constraint firstAttribute="width" constant="45" id="aM4-ur-Hkx" userLabel="width = 45"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -44,7 +44,8 @@
                     <constraint firstItem="3Zr-MT-aud" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="dhI-lP-usq"/>
                     <constraint firstItem="OFp-4j-u4W" firstAttribute="leading" secondItem="3Zr-MT-aud" secondAttribute="trailing" constant="10" id="ey5-af-Bfo"/>
                     <constraint firstAttribute="trailing" secondItem="DzB-3P-k4C" secondAttribute="trailing" constant="10" id="lTT-3Q-ODP"/>
-                    <constraint firstItem="DzB-3P-k4C" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ruZ-p8-d7Q"/>
+                    <constraint firstItem="DzB-3P-k4C" firstAttribute="right" secondItem="H2p-sc-9uM" secondAttribute="right" constant="-8" id="ruZ-p8-D7q" userLabel="Check View.right = right - 8"/>
+                    <constraint firstItem="DzB-3P-k4C" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ruZ-p8-d7Q" userLabel="Check View.centerY = centerY"/>
                     <constraint firstItem="DzB-3P-k4C" firstAttribute="leading" secondItem="OFp-4j-u4W" secondAttribute="trailing" constant="10" id="s8T-5k-IuJ"/>
                 </constraints>
             </tableViewCellContentView>

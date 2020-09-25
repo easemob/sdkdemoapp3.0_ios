@@ -54,7 +54,7 @@
                         reason:(EMChatroomBeKickedReason)aReason
 {
     self.page = 1;
-    [self _fetchChatroomsWithPage:self.page isHeader:NO isShowHUD:NO];
+    [self _fetchChatroomsWithPage:self.page isHeader:YES isShowHUD:NO];
 }
 
 #pragma mark - Table view data source

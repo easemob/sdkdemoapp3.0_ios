@@ -123,7 +123,7 @@
         [[EMClient sharedClient].groupManager acceptInvitationFromGroup:aModel.groupId inviter:aModel.sender completion:^(EMGroup *aGroup, EMError *aError) {
             block(aError);
             if (!aError) {
-                NSString *msg = [NSString stringWithFormat:@"您已加入 %@ 群",aGroup.groupName];
+                NSString *msg = [NSString stringWithFormat:@"您已加入群 「%@」",aGroup.groupName];
                 [self showAlertWithTitle:@"O(∩_∩)O" message:msg];
                 [[NSNotificationCenter defaultCenter] postNotificationName:NOTIF_ADD_SOCIAL_CONTACT object:@{CONVERSATION_ID:aModel.groupId,CONVERSATION_OBJECT:EMClient.sharedClient.currentUsername}];
             }

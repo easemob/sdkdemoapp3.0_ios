@@ -18,11 +18,12 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    
     // Initialization code
     
 //    self.selectionStyle = UITableViewCellSelectionStyleNone;
 //    self.checkView.contentMode = UIViewContentModeScaleAspectFit;
-//    self.checkView.image = [UIImage imageNamed:@"conf_uncheck"];
+    self.checkView.image = [UIImage imageNamed:@"unCheck"];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -35,11 +36,10 @@
 {
     if (_isChecked != isChecked) {
         _isChecked = isChecked;
-        
         if (isChecked) {
-            self.checkView.image = [UIImage imageNamed:@"checked"];
+            self.checkView.image = [UIImage imageNamed:@"check"];
         } else {
-            self.checkView.image = [UIImage imageNamed:@"uncheck"];
+            self.checkView.image = [UIImage imageNamed:@"unCheck"];
         }
     }
 }

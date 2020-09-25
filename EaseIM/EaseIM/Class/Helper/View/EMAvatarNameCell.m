@@ -90,7 +90,7 @@
     _avatarView.image = model.avatarImg;
     _nameLabel.text = model.from;
     _detailLabel.attributedText = model.detail;
-    _detailLabel.lineBreakMode = 
+    _detailLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     _timestampLabel.text = model.timestamp;
 }
 

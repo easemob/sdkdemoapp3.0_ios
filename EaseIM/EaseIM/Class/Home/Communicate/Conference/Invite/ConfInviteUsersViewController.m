@@ -85,7 +85,7 @@
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(45);
         make.right.equalTo(self.view).offset(-45);
-        make.top.equalTo(self.view).offset(20);
+        make.top.equalTo(self.view).offset(20 + EMVIEWTOPMARGIN);
         make.height.equalTo(@45);
     }];
     
@@ -224,7 +224,7 @@
     
     __weak typeof(self) weakSelf = self;
     [[EMRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:searchBar.text collationStringSelector:nil resultBlock:^(NSArray *results) {
-        if (results) {
+        if ([results count] > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.searchDataArray removeAllObjects];
                 [weakSelf.searchDataArray addObjectsFromArray:results];

@@ -71,7 +71,7 @@
         [self showHint:@"您的账号已离线"];
     EMConversation *conversation = self.conversationModel.emModel;
     if (conversation.type == EMChatTypeChatRoom && [aChatroom.chatroomId isEqualToString:conversation.conversationId]) {
-        [self.navigationController popToViewController:self animated:YES];
+        //[self.navigationController popToViewController:self animated:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -79,14 +79,14 @@
 - (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom removedMutedMembers:(NSArray *)aMutes
 {
     if ([aMutes containsObject:EMClient.sharedClient.currentUsername]) {
-        [self showHint:@"您已被禁言"];
+        [self showHint:@"您已被解除禁言"];
     }
 }
 
 - (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom addedMutedMembers:(NSArray *)aMutes muteExpire:(NSInteger)aMuteExpire
 {
     if ([aMutes containsObject:EMClient.sharedClient.currentUsername]) {
-        [self showHint:@"您已被解除禁言"];
+        [self showHint:@"您已被禁言"];
     }
 }
 

@@ -22,7 +22,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
 
 //appkey
-#define DEF_APPKEY @"请添入您的APPKEY"
+#define DEF_APPKEY @"easemob-demo#easeim"
 
 #define RTC_BUTTON_WIDTH 65
 #define RTC_BUTTON_HEIGHT 90

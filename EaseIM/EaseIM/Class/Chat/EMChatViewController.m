@@ -389,7 +389,7 @@
 {
     if (aEvent == EMMultiDevicesEventGroupDestroy || aEvent == EMMultiDevicesEventGroupLeave) {
         if ([self.conversationModel.emModel.conversationId isEqualToString:aGroupId]) {
-            [self.navigationController popToViewController:self animated:YES];
+            //[self.navigationController popToViewController:self animated:YES];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }

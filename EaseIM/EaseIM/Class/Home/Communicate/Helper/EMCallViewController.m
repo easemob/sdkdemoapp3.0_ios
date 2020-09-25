@@ -52,7 +52,7 @@
     self.statusLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.statusLabel];
     [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(35);
+        make.top.equalTo(self.view).offset(35 + EMVIEWTOPMARGIN);
         make.left.equalTo(self.view).offset(15);
     }];
     

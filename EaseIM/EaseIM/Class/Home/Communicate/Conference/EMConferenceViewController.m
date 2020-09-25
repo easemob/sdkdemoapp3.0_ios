@@ -145,6 +145,12 @@
         make.width.height.equalTo(@60);
     }];
     
+    [self.minButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-40);
+        make.right.equalTo(self.view).offset(-25);
+        make.width.height.equalTo(@44);
+    }];
+    
     CGFloat width = 80;
     CGFloat height = 50;
     CGFloat padding = ([UIScreen mainScreen].bounds.size.width - width * 4) / 5;
@@ -171,6 +177,7 @@
         make.bottom.equalTo(inviteButton.mas_top).offset(-20);
     }];
     
+    [self.microphoneButton setEnabled:YES];
     [self.microphoneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.microphoneButton setImage:[UIImage imageNamed:@"micphone_white"] forState:UIControlStateNormal];
     [self.microphoneButton setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
@@ -197,6 +204,7 @@
         make.bottom.equalTo(self.switchCameraButton);
     }];
     
+    [self.speakerButton setEnabled:YES];
     [self.speakerButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.speakerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.speakerButton setImage:[UIImage imageNamed:@"speaker_gray"] forState:UIControlStateNormal];

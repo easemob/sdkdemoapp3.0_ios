@@ -173,7 +173,7 @@ static EaseIMHelper *helper = nil;
 {
     NSString *str = nil;
     if (aReason == EMGroupLeaveReasonBeRemoved) {
-        str = [NSString stringWithFormat:@"您已被移出群组: %@", [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
+        str = [NSString stringWithFormat:@"您已被群管理员移出群组: %@", [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
     } else if (aReason == EMGroupLeaveReasonDestroyed) {
         str = [NSString stringWithFormat:@"群组 %@ 已被解散", [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
     }
@@ -195,7 +195,7 @@ static EaseIMHelper *helper = nil;
                           invitee:(NSString *)aInvitee
                            reason:(NSString *)aReason
 {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declinedInvite", nil), aInvitee, [NSString stringWithFormat:@"「%@」",aGroup.groupName]];
+    NSString *message = [NSString stringWithFormat:@"%@ 已拒绝了您的加群「%@」邀请", aInvitee, aGroup.groupName];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -203,7 +203,7 @@ static EaseIMHelper *helper = nil;
 - (void)groupInvitationDidAccept:(EMGroup *)aGroup
                          invitee:(NSString *)aInvitee
 {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptedInvite", nil), aInvitee, [NSString stringWithFormat:@"「%@」",aGroup.groupName], aGroup.groupId];
+    NSString *message = [NSString stringWithFormat:@"您在群「%@」的加群邀请已经被 %@ 同意", aGroup.groupName, aInvitee];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"prompt", @"Prompt") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -231,7 +231,7 @@ static EaseIMHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
     NSString *message = NSLocalizedString(@"group.toMute", @"Mute");
     if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername])
-        message = [NSString stringWithFormat:@"您已被群 %@ 禁言",[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
+        message = [NSString stringWithFormat:@"您在群 %@ 已被禁言",[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.update", @"Group update") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -243,7 +243,7 @@ static EaseIMHelper *helper = nil;
     NSString *message = NSLocalizedString(@"group.toMute", @"Mute");
     if ([aMutedMembers containsObject:EMClient.sharedClient.currentUsername])
         message = [NSString stringWithFormat:@"您在群 %@ 恢复发言",[NSString stringWithFormat:@"「%@」",aGroup.groupName]];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.update", @"Group update")  message:NSLocalizedString(@"group.unmute", @"Unmute") delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.update", @"Group update")  message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -333,7 +333,7 @@ static EaseIMHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGroupDetail" object:aGroup];
     
-    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"group.clearAnnouncement", @"Group:%@ Announcement is clear"), [NSString stringWithFormat:@"「%@」",aGroup.groupName]] : [NSString stringWithFormat:NSLocalizedString(@"group.updateAnnouncement", @"Group:%@ Announcement: %@"), [NSString stringWithFormat:@"「%@」",aGroup.groupName], aAnnouncement];
+    NSString *msg = [NSString stringWithFormat:@"群组「%@」 公告内容已更新，请查看",aGroup.groupName];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
     [alertView show];
 }
