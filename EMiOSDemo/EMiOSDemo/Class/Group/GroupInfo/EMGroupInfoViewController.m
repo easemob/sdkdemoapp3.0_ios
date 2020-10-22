@@ -105,7 +105,8 @@
     } else if (section == 1) {
         if ((self.group.setting.style == EMGroupStylePrivateOnlyOwnerInvite || self.group.setting.style == EMGroupStylePublicJoinNeedApproval) && (self.group.permissionType == EMGroupPermissionTypeOwner || self.group.permissionType  == EMGroupPermissionTypeAdmin)) {
             count = 2;
-        } else if (self.group.setting.style == EMGroupStylePrivateMemberCanInvite) {
+        } else if (self.group.setting.style == EMGroupStylePrivateMemberCanInvite
+                   || self.group.permissionType == EMGroupPermissionTypeOwner) {
             count = 2;
         } else {
             count = 1;
@@ -147,7 +148,7 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         } else if (row == 1) {
             cell.textLabel.text = @"名称";
-            cell.detailTextLabel.text = self.group.subject;
+            cell.detailTextLabel.text = self.group.groupName;
             cell.accessoryType = self.group.permissionType == EMGroupPermissionTypeOwner ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         } else if (row == 2) {
             cell.textLabel.text = @"简介";
