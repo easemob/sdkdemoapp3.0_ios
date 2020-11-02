@@ -21,9 +21,8 @@
 #import "EMGroupSettingsViewController.h"
 #import "EMInviteGroupMemberViewController.h"
 
-@interface EMGroupInfoViewController ()<EMMultiDevicesDelegate>
+@interface EMGroupInfoViewController ()<EMMultiDevicesDelegate, EMGroupManagerDelegate>
 
-@property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) EMGroup *group;
 
 @property (nonatomic, strong) EMAvatarNameCell *addMemberCell;
@@ -38,7 +37,7 @@
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _groupId = aGroupId;
+        self.group = [EMGroup groupWithId:aGroupId];
     }
     
     return self;
@@ -52,9 +51,11 @@
     
 //    [[EMClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     
-    [self _fetchGroupWithId:self.groupId isShowHUD:YES];
+    [self _fetchGroupWithId:self.group.groupId isShowHUD:YES];
     
     [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+    [[EMClient sharedClient] addMultiDevicesDelegate:self delegateQueue:nil];
+    [EMClient.sharedClient.groupManager addDelegate:self delegateQueue:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGroupInfoUpdated:) name:GROUP_INFO_UPDATED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadInfo) name:GROUP_INFO_REFRESH object:nil];
 }
@@ -66,9 +67,9 @@
 
 - (void)dealloc
 {
-//    [[EMClient sharedClient].groupManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 #pragma mark - Subviews
 
@@ -188,6 +189,13 @@
     return cell;
 }
 
+#pragma mark - EMGroupManagerDelegate
+- (void)groupOwnerDidUpdate:(EMGroup *)aGroup
+                   newOwner:(NSString *)aNewOwner
+                   oldOwner:(NSString *)aOldOwner {
+    [self _resetGroup:aGroup];
+}
+
 #pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -279,11 +287,11 @@
 
 - (void)_resetGroup:(EMGroup *)aGroup
 {
-    if (![self.group.subject isEqualToString:aGroup.subject]) {
+    if (![self.group.groupName isEqualToString:aGroup.groupName]) {
         EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:aGroup.groupId type:EMConversationTypeGroupChat createIfNotExist:NO];
         if (conversation) {
             NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-            [ext setObject:aGroup.subject forKey:@"subject"];
+            [ext setObject:aGroup.groupName forKey:@"subject"];
             [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
             conversation.ext = ext;
             
@@ -322,7 +330,7 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     self.page = 1;
-    [self _fetchGroupWithId:self.groupId isShowHUD:NO];
+    [self _fetchGroupWithId:self.group.groupId isShowHUD:NO];
 }
 
 #pragma mark - NSNotification
@@ -330,11 +338,11 @@
 - (void)handleGroupInfoUpdated:(NSNotification *)aNotif
 {
     EMGroup *group = aNotif.object;
-    if (!group || ![group.groupId isEqualToString:self.groupId]) {
+    if (!group || ![group.groupId isEqualToString:self.group.groupId]) {
         return;
     }
     
-    [self _fetchGroupWithId:self.groupId isShowHUD:NO];
+    [self _fetchGroupWithId:self.group.groupId isShowHUD:NO];
 }
 
 #pragma mark - Action
@@ -343,7 +351,8 @@
 {
     __weak typeof(self) weakself = self;
     [self showHudInView:self.view hint:@"获取群组公告..."];
-    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, EMError *aError) {
+    [[EMClient sharedClient].groupManager getGroupAnnouncementWithId:self.group.groupId
+                                                          completion:^(NSString *aAnnouncement, EMError *aError) {
         [weakself hideHud];
         if (!aError) {
             BOOL isEditable = NO;
@@ -356,7 +365,9 @@
             __weak typeof(controller) weakController = controller;
             [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
                 [weakController showHudInView:weakController.view hint:@"更新群组公告..."];
-                [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakself.groupId announcement:aString completion:^(EMGroup *aGroup, EMError *aError) {
+                [[EMClient sharedClient].groupManager updateGroupAnnouncementWithId:weakself.group.groupId
+                                                                       announcement:aString
+                                                                         completion:^(EMGroup *aGroup, EMError *aError) {
                     [weakController hideHud];
                     if (aError) {
                         [EMAlertController showErrorAlert:@"更新群组公告失败"];
@@ -378,7 +389,8 @@
 - (void)_updateGroupNameAction
 {
     BOOL isEditable = self.group.permissionType == EMGroupPermissionTypeOwner ? YES : NO;
-    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.subject placeholder:@"请输入群组名称" isEditable:isEditable];
+    EMTextFieldViewController *controller = [[EMTextFieldViewController alloc] initWithString:self.group.groupName
+                                                                                  placeholder:@"请输入群组名称" isEditable:isEditable];
     controller.title = @"群组名称";
     [self.navigationController pushViewController:controller animated:YES];
     
@@ -391,7 +403,8 @@
         }
         
         [weakController showHudInView:weakController.view hint:@"更新群组名称..."];
-        [[EMClient sharedClient].groupManager updateGroupSubject:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+        [[EMClient sharedClient].groupManager updateGroupSubject:aString forGroup:weakself.group.groupId
+                                                      completion:^(EMGroup *aGroup, EMError *aError) {
             [weakController hideHud];
             if (!aError) {
                 [weakself _resetGroup:aGroup];
@@ -416,7 +429,8 @@
     __weak typeof(controller) weakController = controller;
     [controller setDoneCompletion:^BOOL(NSString * _Nonnull aString) {
         [weakController showHudInView:weakController.view hint:@"更新群组简介..."];
-        [[EMClient sharedClient].groupManager updateDescription:aString forGroup:weakself.groupId completion:^(EMGroup *aGroup, EMError *aError) {
+        [[EMClient sharedClient].groupManager updateDescription:aString forGroup:weakself.group.groupId
+                                                     completion:^(EMGroup *aGroup, EMError *aError) {
             [weakController hideHud];
             if (!aError) {
                 [weakself _resetGroup:aGroup];
@@ -449,7 +463,8 @@
     __weak typeof(self) weakself = self;
     void (^block)(EMError *aError) = ^(EMError *aError) {
         if (!aError) {
-            [[EMClient sharedClient].chatManager deleteConversation:weakself.groupId isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
+            [[EMClient sharedClient].chatManager deleteConversation:weakself.group.groupId
+                                                   isDeleteMessages:YES completion:^(NSString *aConversationId, EMError *aError) {
                 [weakself hideHud];
                 if (weakself.leaveOrDestroyCompletion) {
                     weakself.leaveOrDestroyCompletion();
@@ -463,10 +478,11 @@
     
     if (self.group.permissionType == EMGroupPermissionTypeOwner) {
         [self showHudInView:self.view hint:@"解散群组..."];
-        [[EMClient sharedClient].groupManager destroyGroup:self.groupId finishCompletion:block];
+        [[EMClient sharedClient].groupManager destroyGroup:self.group.groupId
+                                          finishCompletion:block];
     } else {
         [self showHudInView:self.view hint:@"离开群组..."];
-        [[EMClient sharedClient].groupManager leaveGroup:self.groupId completion:block];
+        [[EMClient sharedClient].groupManager leaveGroup:self.group.groupId completion:block];
     }
 }
 
@@ -483,12 +499,14 @@
     __weak typeof(self) weakself = self;
     [controller setDoneCompletion:^(NSArray * _Nonnull aSelectedArray) {
         [weakself showHudInView:weakself.view hint:@"添加成员..."];
-        [[EMClient sharedClient].groupManager addMembers:aSelectedArray toGroup:weakself.groupId message:@"" completion:^(EMGroup *aGroup, EMError *aError) {
+        [[EMClient sharedClient].groupManager addMembers:aSelectedArray
+                                                 toGroup:weakself.group.groupId
+                                                 message:@"" completion:^(EMGroup *aGroup, EMError *aError) {
             [weakself hideHud];
             if (aError) {
                 [EMAlertController showErrorAlert:aError.errorDescription];
             } else {
-                [weakself _fetchGroupWithId:weakself.groupId isShowHUD:NO];
+                [weakself _fetchGroupWithId:weakself.group.groupId isShowHUD:NO];
             }
         }];
     }];
