@@ -491,7 +491,6 @@
 		C0BEF25423ED6F1800FBD5CF /* watermark.png in Resources */ = {isa = PBXBuildFile; fileRef = C0BEF25323ED6F1800FBD5CF /* watermark.png */; };
 		D29A6BB51B7209C1002324BB /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29A6BB41B7209C1002324BB /* Accounts.framework */; };
 		D29A6BB61B7209C8002324BB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3527421931D33A00385240 /* Social.framework */; };
-		FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -507,7 +506,6 @@
 		3A45D9B022239DE200505786 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3A45D9B122239DE200505786 /* EMDemoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMDemoHelper.h; sourceTree = "<group>"; };
 		3A45D9B222239DE200505786 /* EMiOSDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "EMiOSDemo-Info.plist"; sourceTree = "<group>"; };
-		3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-EMiOSDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A45DBE92223A1FC00505786 /* EMChatBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMChatBar.h; sourceTree = "<group>"; };
 		3A45DC3E2223A1FC00505786 /* EMChatBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMChatBar.m; sourceTree = "<group>"; };
 		3A45DC842223A1FC00505786 /* EMImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMImageBrowser.m; sourceTree = "<group>"; };
@@ -1149,9 +1147,7 @@
 		D29A6BB41B7209C1002324BB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		D2B1B9EC1C3B800E0087A74F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D2B1B9EE1C3B80290087A74F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.release.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.release.xcconfig"; sourceTree = "<group>"; };
 		EBF955E21ADD17700087E035 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EMiOSDemo.debug.xcconfig"; path = "Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1179,7 +1175,6 @@
 				9091102C192EEA70008A48AA /* UIKit.framework in Frameworks */,
 				3A45DF3C2223A1FD00505786 /* libopencore-amrwb.a in Frameworks */,
 				90911028192EEA70008A48AA /* Foundation.framework in Frameworks */,
-				FA4EB8B90BA742ADD5C8BB15 /* libPods-EMiOSDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1189,8 +1184,6 @@
 		1D7E04333D4AA6666664610F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */,
-				E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -2311,7 +2304,6 @@
 		90911026192EEA70008A48AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3A45DBE12223A08900505786 /* libPods-EMiOSDemo.a */,
 				3ACFA04E221168C000B16331 /* CoreServices.framework */,
 				3AB62A121D926375000776F0 /* libbz2.tbd */,
 				3AB62A101D92636E000776F0 /* libiconv.tbd */,
@@ -2383,12 +2375,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90911050192EEA70008A48AA /* Build configuration list for PBXNativeTarget "EMiOSDemo" */;
 			buildPhases = (
-				F000030740294730DC04F490 /* [CP] Check Pods Manifest.lock */,
 				90911020192EEA70008A48AA /* Sources */,
 				90911021192EEA70008A48AA /* Frameworks */,
 				90911022192EEA70008A48AA /* Resources */,
-				FF48AD2140650593D16E5B9F /* [CP] Copy Pods Resources */,
-				CE88DEBBA988DCFB7FA4DFC1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2772,67 +2761,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		CE88DEBBA988DCFB7FA4DFC1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh",
-				"${PODS_ROOT}/Hyphenate/Hyphenate.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F000030740294730DC04F490 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-EMiOSDemo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FF48AD2140650593D16E5B9F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh",
-				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EMiOSDemo/Pods-EMiOSDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		90911020192EEA70008A48AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -3095,7 +3023,6 @@
 		};
 		90911051192EEA70008A48AA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8844A9D6113CA6560072AC9 /* Pods-EMiOSDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -3172,7 +3099,6 @@
 		};
 		90911052192EEA70008A48AA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E9D55D9A7AA28681D7C4F223 /* Pods-EMiOSDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
